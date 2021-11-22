@@ -30,11 +30,11 @@
       <Link>Base\StructBsonSerialize.cs</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
+    <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Demo\SessionStreamDispatcherType.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Demo\SessionStreamDispatcherType.cs">
       <Link>Demo\SessionStreamDispatcherType.cs</Link>
     </Compile>
 
@@ -43,68 +43,68 @@
     </Compile>
     
 
-    <Compile Include="..\..\Unity\Assets\Model\Demo\Move\MoveComponent.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Move\MoveComponent.cs">
       <Link>Demo\Move\MoveComponent.cs</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Module\Config\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
       <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Module\AI\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\AI\**\*.cs">
       <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\CoroutineLock\**\*.cs">
       <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
     
     <Compile Remove="Libs\**" />
     
-    <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\ActorResponse.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\ActorResponse.cs">
       <Link>Module\ActorLocation\ActorResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\PacketParser.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\PacketParser.cs">
       <Link>Module\NetworkTCP\PacketParser.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\TChannel.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\TChannel.cs">
       <Link>Module\NetworkTCP\TChannel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\TService.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\TService.cs">
       <Link>Module\NetworkTCP\TService.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\INumericWatcher.cs">
       <Link>Module\Numeric\INumericWatcher.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\NumericComponent.cs">
       <Link>Module\Numeric\NumericComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\NumericType.cs">
       <Link>Module\Numeric\NumericType.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\NumericWatcherAttribute.cs">
       <Link>Module\Numeric\NumericWatcherAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\NumericWatcherComponent.cs">
       <Link>Module\Numeric\NumericWatcherComponent.cs</Link>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
 
-    <Compile Include="..\..\Unity\Assets\Model\Module\Network\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Network\**\*.cs">
       <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Module\Message\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Model\Module\Message\**\*.cs">
       <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
   </ItemGroup>

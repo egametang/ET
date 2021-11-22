@@ -19,10 +19,10 @@ namespace ET
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
             {
-                "Assets/Model/",
-                "Assets/ModelView/",
-                "Assets/Hotfix/",
-                "Assets/HotfixView/"
+                "Codes/Model/",
+                "Codes/ModelView/",
+                "Codes/Hotfix/",
+                "Codes/HotfixView/"
             });
             AssetDatabase.Refresh();
         }
@@ -73,13 +73,13 @@ namespace ET
             // };
 
             //需要排除自身的引用
-            assemblyBuilder.excludeReferences = new[]
-            {
-                "Library/ScriptAssemblies/Unity.Model.dll", 
-                "Library/ScriptAssemblies/Unity.ModelView.dll",
-                "Library/ScriptAssemblies/Unity.Hotfix.dll", 
-                "Library/ScriptAssemblies/Unity.HotfixView.dll"
-            };
+            //assemblyBuilder.excludeReferences = new[]
+            //{
+            //    "Library/ScriptAssemblies/Unity.Model.dll", 
+            //    "Library/ScriptAssemblies/Unity.ModelView.dll",
+            //    "Library/ScriptAssemblies/Unity.Hotfix.dll", 
+            //    "Library/ScriptAssemblies/Unity.HotfixView.dll"
+            //};
 
             assemblyBuilder.buildStarted += delegate(string assemblyPath) { Debug.LogFormat("build start：" + assemblyPath); };
 

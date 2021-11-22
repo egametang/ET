@@ -31,11 +31,11 @@
         <Compile Include="..\..\Unity\Assets\Editor\Helper\StructBsonSerialize.cs">
           <Link>Base\StructBsonSerialize.cs</Link>
         </Compile>
-        <Compile Include="..\..\Unity\Assets\Model\Module\Config\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs">
             <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -43,15 +43,15 @@
             <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\AI\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\AI\**\*.cs">
             <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\Network\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Network\**\*.cs">
             <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\**\*.cs">
             <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -63,11 +63,11 @@
             <Link>Module\MessageInner\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\Ping\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Ping\**\*.cs">
             <Link>Module\Ping\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\Message\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Message\**\*.cs">
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -75,11 +75,11 @@
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\**\*.cs">
             <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Demo\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Demo\**\*.cs">
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -91,15 +91,15 @@
             <Link>Module\Actor\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\Actor\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Actor\**\*.cs">
             <Link>Module\Actor\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\**\*.cs">
             <Link>Module\ActorLocation\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\CoroutineLock\**\*.cs">
             <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 

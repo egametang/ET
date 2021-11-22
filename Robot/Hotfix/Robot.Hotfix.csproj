@@ -31,19 +31,19 @@
         <Compile Include="..\..\Server\Hotfix\Demo\Session\SessionStreamDispatcherServerInner.cs">
           <Link>Server\Session\SessionStreamDispatcherServerInner.cs</Link>
         </Compile>
-        <Compile Include="..\..\Unity\Assets\Hotfix\Module\AI\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\AI\**\*.cs">
             <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Message\**\*.cs">
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Module\MessageOuter\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\MessageOuter\**\*.cs">
             <Link>Module\MessageOuter\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\**\*.cs">
             <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -63,15 +63,15 @@
             <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Demo\**\*.cs"> 
+        <Compile Include="..\..\Unity\Codes\Hotfix\Demo\**\*.cs"> 
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Module\Config\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Module\Ping\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Ping\**\*.cs">
             <Link>Module\Ping\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 

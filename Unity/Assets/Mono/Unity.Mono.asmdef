@@ -1,14 +1,15 @@
 {
     "name": "Unity.Mono",
     "references": [
-        "GUID:bebd02018e98e44409a761968a7cbcd9",
-        "GUID:7a1fa966b0ea23f40a6a4dc4dab1e297"
+        "ILRuntime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        ""
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

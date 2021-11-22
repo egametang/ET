@@ -19,24 +19,24 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Hotfix\Demo\Move\MoveComponentSystem.cs">
+    <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Move\MoveComponentSystem.cs">
       <Link>Demo\Move\MoveComponentSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Config\ConfigComponentSystem.cs">
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Config\ConfigComponentSystem.cs">
       <Link>Module\Config\ConfigComponentSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs">
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs">
       <Link>Module\Numeric\NumericChangeEvent_NotifyWatcher.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
       <Link>Module\Numeric\NumericWatcher_Hp_ShowUI.cs</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\AI\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\AI\**\*.cs">
       <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\**\*.cs">
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Message\**\*.cs">
       <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
   </ItemGroup>
