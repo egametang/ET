@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.ourpalm.ilruntime": "1.6.7",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.assetbundlebrowser": "1.7.0",

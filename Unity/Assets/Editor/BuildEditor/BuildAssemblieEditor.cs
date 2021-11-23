@@ -119,10 +119,13 @@ namespace ET
 
         private static async ETVoid AfterCompiling(AssemblyBuilder assemblyBuilder)
         {
+            Debug.Log("Compiling wait");
             while (EditorApplication.isCompiling)
             {
                 await Task.Delay(100);
             }
+            
+            Debug.Log("Compiling finish");
             
             
             Directory.CreateDirectory(CodeDir);

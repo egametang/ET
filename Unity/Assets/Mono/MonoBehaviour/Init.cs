@@ -27,17 +27,17 @@ namespace ET
 
 		private void Update()
 		{
-			this.codeLoader.Update();
+			this.codeLoader.Update.Invoke();
 		}
 
 		private void LateUpdate()
 		{
-			this.codeLoader.LateUpdate();
+			this.codeLoader.LateUpdate.Invoke();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.codeLoader.OnApplicationQuit();
+			this.codeLoader.OnApplicationQuit.Invoke();
 		}
 	}
 }

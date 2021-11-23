@@ -90,9 +90,53 @@ namespace ET
 			this.Add(typeof(EventSystem).Assembly);
 		}
 
+		public void Add(List<Type> addTypes)
+		{
+			this.types.Clear();
+
+			foreach (Type addType in addTypes)
+			{
+				this.types.Add(addType.GetType(), addType);
+			}
+
+			this.typeSystems = new TypeSystems();
+			
+			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
+			{
+				object obj = Activator.CreateInstance(type);
+
+				if (obj is ISystemType iSystemType)
+				{
+					OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+					oneTypeSystems.Add(iSystemType.SystemType(), obj);
+				}
+			}
+
+			this.allEvents.Clear();
+			foreach (Type type in types[typeof(EventAttribute)])
+			{
+				IEvent obj = Activator.CreateInstance(type) as IEvent;
+				if (obj == null)
+				{
+					throw new Exception($"type not is AEvent: {obj.GetType().Name}");
+				}
+
+				Type eventType = obj.GetEventType();
+				if (!this.allEvents.ContainsKey(eventType))
+				{
+					this.allEvents.Add(eventType, new List<object>());
+				}
+				this.allEvents[eventType].Add(obj);
+			}
+			
+			this.Load();
+		}
+
 		public void Add(Assembly assembly)
 		{
 			this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
+
+			List<Type> addTypes = new List<Type>();
 			this.types.Clear();
 			foreach (Assembly value in this.assemblies.Values)
 			{

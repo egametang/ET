@@ -13,10 +13,10 @@ namespace ET
 	public class CodeLoader
 	{
 		public static CodeLoader Instance = new CodeLoader();
-		
-		public Action Update { get; set; }
-		public Action LateUpdate { get; set; }
-		public Action OnApplicationQuit { get; set; }
+
+		public Action Update;
+		public Action LateUpdate;
+		public Action OnApplicationQuit;
 
 		private readonly IStaticMethod start;
 		
