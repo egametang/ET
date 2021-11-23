@@ -1,7 +1,8 @@
-#if !NO_RUNTIME
+﻿#if !NO_RUNTIME
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ProtoBuf.Serializers;
 
@@ -994,7 +995,14 @@ namespace ProtoBuf.Meta
 #if WINRT || PORTABLE || CF || FX11 || COREFX
                     fieldNumber = Convert.ToInt32(((FieldInfo)member).GetValue(null));
 #else
-                    fieldNumber = Convert.ToInt32(((FieldInfo)member).GetRawConstantValue());
+                    if (member.ReflectedType is ILRuntime.Reflection.ILRuntimeType)
+                    {
+                        fieldNumber = member.ReflectedType.GetFields().ToList().IndexOf((FieldInfo)member);
+                    }
+                    else
+                    {
+                        fieldNumber = Convert.ToInt32(((FieldInfo)member).GetRawConstantValue());
+                    }
 #endif
                     if (attrib != null)
                     {
@@ -1183,12 +1191,12 @@ namespace ProtoBuf.Meta
 			if (itemType != null && itemType.FullName == "ILRuntime.Runtime.Intepreter.ILTypeInstance") {
 				if (typeName == null)
 					throw new ProtoException ("TypeName Must Not Null For " + itemType);
-				itemType = PBType.FindType (typeName);
+				itemType = PType.FindType (typeName);
 			}
 			if (defaultType != null && defaultType.FullName == "ILRuntime.Runtime.Intepreter.ILTypeInstance") {
 				if (typeName == null)
 					throw new ProtoException ("TypeName Must Not Null For " + itemType);
-				defaultType = PBType.FindType (typeName);
+				defaultType = PType.FindType (typeName);
 			}
             ValueMember vm = ((isEnum || normalizedAttribute.Tag > 0))
                 ? new ValueMember(model, type, normalizedAttribute.Tag, member, effectiveType, itemType, defaultType, normalizedAttribute.DataFormat, defaultValue)

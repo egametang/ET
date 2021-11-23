@@ -157,7 +157,7 @@ namespace ET
                 {
                     continue;
                 }
-                sb.Append($"\t\t[ProtoMember({i + 1}, IsRequired  = true)]\n");
+                sb.Append($"\t\t[ProtoMember({i + 1})]\n");
                 sb.Append($"\t\tpublic {headInfo.FieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
             string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());

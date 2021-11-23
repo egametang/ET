@@ -12,5 +12,10 @@ namespace ET
             byte[] bytes = ProtobufHelper.ToBytes(this);
             return ProtobufHelper.FromBytes(this.GetType(), bytes, 0, bytes.Length);
         }
+
+        public virtual void AfterEndInit()
+        {
+            
+        }
     }
 }

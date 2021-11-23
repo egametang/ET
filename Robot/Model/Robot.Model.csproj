@@ -112,7 +112,6 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />
       <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
       <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
     </ItemGroup>

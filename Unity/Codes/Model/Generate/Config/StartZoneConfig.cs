@@ -24,15 +24,15 @@ namespace ET
             Instance = this;
         }
 		
-		[ProtoAfterDeserialization]
-        public void AfterDeserialization()
+        public override void EndInit()
         {
             foreach (StartZoneConfig config in list)
             {
                 this.dict.Add(config.Id, config);
             }
             list.Clear();
-            this.EndInit();
+            
+            this.AfterEndInit();
         }
 		
         public StartZoneConfig Get(int id)
@@ -70,18 +70,12 @@ namespace ET
     [ProtoContract]
 	public partial class StartZoneConfig: ProtoObject, IConfig
 	{
-		[ProtoMember(1, IsRequired  = true)]
+		[ProtoMember(1)]
 		public int Id { get; set; }
-		[ProtoMember(2, IsRequired  = true)]
+		[ProtoMember(2)]
 		public string DBConnection { get; set; }
-		[ProtoMember(3, IsRequired  = true)]
+		[ProtoMember(3)]
 		public string DBName { get; set; }
 
-
-		[ProtoAfterDeserialization]
-        public void AfterDeserialization()
-        {
-            this.EndInit();
-        }
 	}
 }

@@ -27,7 +27,7 @@ namespace ET
 
         public StartMachineConfig StartMachineConfig => StartMachineConfigCategory.Instance.Get(this.MachineId);
 
-        public override void EndInit()
+        public override void AfterEndInit()
         {
             InstanceIdStruct instanceIdStruct = new InstanceIdStruct((int)this.Id, 0);
             this.SceneId = instanceIdStruct.ToLong();

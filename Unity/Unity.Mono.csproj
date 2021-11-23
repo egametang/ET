@@ -230,6 +230,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_String_Binding_Enumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Task_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Type_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_UnityWebRequest_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Vector3_Binding.cs" />
@@ -625,7 +626,7 @@
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeModel.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\ValueMember.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\NetObjectCache.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PBType.cs" />
+     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PType.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PrefixStyle.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoContractAttribute.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoConverterAttribute.cs" />

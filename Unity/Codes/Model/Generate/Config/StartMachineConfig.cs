@@ -24,15 +24,15 @@ namespace ET
             Instance = this;
         }
 		
-		[ProtoAfterDeserialization]
-        public void AfterDeserialization()
+        public override void EndInit()
         {
             foreach (StartMachineConfig config in list)
             {
                 this.dict.Add(config.Id, config);
             }
             list.Clear();
-            this.EndInit();
+            
+            this.AfterEndInit();
         }
 		
         public StartMachineConfig Get(int id)
@@ -70,20 +70,14 @@ namespace ET
     [ProtoContract]
 	public partial class StartMachineConfig: ProtoObject, IConfig
 	{
-		[ProtoMember(1, IsRequired  = true)]
+		[ProtoMember(1)]
 		public int Id { get; set; }
-		[ProtoMember(2, IsRequired  = true)]
+		[ProtoMember(2)]
 		public string InnerIP { get; set; }
-		[ProtoMember(3, IsRequired  = true)]
+		[ProtoMember(3)]
 		public string OuterIP { get; set; }
-		[ProtoMember(4, IsRequired  = true)]
+		[ProtoMember(4)]
 		public string WatcherPort { get; set; }
 
-
-		[ProtoAfterDeserialization]
-        public void AfterDeserialization()
-        {
-            this.EndInit();
-        }
 	}
 }

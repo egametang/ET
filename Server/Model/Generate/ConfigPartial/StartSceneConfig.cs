@@ -26,7 +26,7 @@ namespace ET
             return this.ZoneScenesByName[zone][name];
         }
         
-        public override void EndInit()
+        public override void AfterEndInit()
         {
             foreach (StartSceneConfig startSceneConfig in this.GetAll().Values)
             {

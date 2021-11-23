@@ -24,15 +24,15 @@ namespace ET
             Instance = this;
         }
 		
-		[ProtoAfterDeserialization]
-        public void AfterDeserialization()
+        public override void EndInit()
         {
             foreach (StartSceneConfig config in list)
             {
                 this.dict.Add(config.Id, config);
             }
             list.Clear();
-            this.EndInit();
+            
+            this.AfterEndInit();
         }
 		
         public StartSceneConfig Get(int id)
@@ -70,24 +70,18 @@ namespace ET
     [ProtoContract]
 	public partial class StartSceneConfig: ProtoObject, IConfig
 	{
-		[ProtoMember(1, IsRequired  = true)]
+		[ProtoMember(1)]
 		public int Id { get; set; }
-		[ProtoMember(2, IsRequired  = true)]
+		[ProtoMember(2)]
 		public int Process { get; set; }
-		[ProtoMember(3, IsRequired  = true)]
+		[ProtoMember(3)]
 		public int Zone { get; set; }
-		[ProtoMember(4, IsRequired  = true)]
+		[ProtoMember(4)]
 		public string SceneType { get; set; }
-		[ProtoMember(5, IsRequired  = true)]
+		[ProtoMember(5)]
 		public string Name { get; set; }
-		[ProtoMember(6, IsRequired  = true)]
+		[ProtoMember(6)]
 		public int OuterPort { get; set; }
 
-
-		[ProtoAfterDeserialization]
-        public void AfterDeserialization()
-        {
-            this.EndInit();
-        }
 	}
 }

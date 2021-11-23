@@ -31,6 +31,20 @@ namespace ET
 			self.AllConfig[configType] = category;
 		}
 		
+		public static void Load(this ConfigComponent self)
+		{
+			self.AllConfig.Clear();
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+			
+			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
+			self.ConfigLoader.GetAllConfigBytes(configBytes);
+
+			foreach (Type type in types)
+			{
+				self.LoadOneInThread(type, configBytes);
+			}
+		}
+		
 		public static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();

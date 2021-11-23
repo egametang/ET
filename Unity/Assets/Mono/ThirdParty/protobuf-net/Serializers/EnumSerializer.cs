@@ -54,6 +54,16 @@ namespace ProtoBuf.Serializers
         private ProtoTypeCode GetTypeCode() {
             Type type = Helpers.GetUnderlyingType(enumType);
             if(type == null) type = enumType;
+            if (Helpers.IsEnum(type) && type is ILRuntime.Reflection.ILRuntimeType)
+            {
+                Type e_type = Enum.GetUnderlyingType (type);
+                if (e_type == typeof(long)
+                    || e_type == typeof(uint)
+                    || e_type == typeof(ulong))
+                    return ProtoTypeCode.UInt64;
+                else
+                    return ProtoTypeCode.UInt32;
+            }
             return Helpers.GetTypeCode(type);
         }
 
@@ -66,6 +76,10 @@ namespace ProtoBuf.Serializers
 #if !FEAT_IKVM
         private int EnumToWire(object value)
         {
+            if (value is int)
+            {
+                return (int)value;
+            }
             unchecked
             {
                 switch (GetTypeCode())
@@ -84,6 +98,11 @@ namespace ProtoBuf.Serializers
         }
         private object WireToEnum(int value)
         {
+            //ILRuntime enum就是int
+            if (Helpers.IsEnum(enumType) && enumType is ILRuntime.Reflection.ILRuntimeType)
+            {
+                return value;
+            }
             unchecked
             {
                 switch (GetTypeCode())

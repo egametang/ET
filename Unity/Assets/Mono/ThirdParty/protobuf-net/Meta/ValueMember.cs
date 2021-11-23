@@ -123,7 +123,9 @@ namespace ProtoBuf.Meta
             if (memberType == null) throw new ArgumentNullException("memberType");
             if (model == null) throw new ArgumentNullException("model");
             this.fieldNumber = fieldNumber;
-            this.memberType = memberType;
+            this.memberType = memberType is ILRuntime.Reflection.ILRuntimeWrapperType
+                ? ((ILRuntime.Reflection.ILRuntimeWrapperType) memberType).RealType
+                : memberType;
             this.itemType = itemType;
             this.defaultType = defaultType;
 
@@ -232,7 +234,16 @@ namespace ProtoBuf.Meta
             if(convertType != null) return Convert.ChangeType(value, convertType, CultureInfo.InvariantCulture);
             throw new ArgumentException("Unable to process default value: " + value + ", " + type.FullName);
 #else
-            if (Helpers.IsEnum(type)) return Enum.ToObject(type, value);
+            if (Helpers.IsEnum(type))
+            {
+                if (value is ILRuntime.Mono.Cecil.CustomAttributeArgument)
+                {
+                    var v = (ILRuntime.Mono.Cecil.CustomAttributeArgument)value;
+                    return v.Value;
+                }
+                
+                return Enum.ToObject(type, value);
+            }
             return Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
 #endif
         }

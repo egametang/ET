@@ -1,4 +1,4 @@
-#if !NO_RUNTIME
+﻿#if !NO_RUNTIME
 using System;
 using System.Collections;
 using System.Text;
@@ -16,6 +16,7 @@ using System.Reflection.Emit;
 
 using ProtoBuf.Serializers;
 using System.Threading;
+
 
 namespace ProtoBuf.Meta
 {
@@ -825,7 +826,7 @@ namespace ProtoBuf.Meta
             //Helpers.DebugWriteLine("Deserialize", value);
             IProtoSerializer ser = ((MetaType)types[key]).Serializer;
             if (value == null && Helpers.IsValueType(ser.ExpectedType)) {
-				if(ser.RequiresOldValue) value = PBType.CreateInstance(ser.ExpectedType);
+				if(ser.RequiresOldValue) value = PType.CreateInstance(ser.ExpectedType);
                 return ser.Read(value, source);
             } else {
                 return ser.Read(value, source);

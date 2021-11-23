@@ -15,10 +15,8 @@ namespace ET
 			return this.AIConfigs[aiConfigId];
 		}
 		
-		public override void EndInit()
+		public override void AfterEndInit()
 		{
-			base.EndInit();
-			
 			foreach (var kv in this.GetAll())
 			{
 				SortedDictionary<int, AIConfig> aiNodeConfig;

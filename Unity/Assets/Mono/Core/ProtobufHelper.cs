@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using ProtoBuf;
 using ProtoBuf.Meta;
 
 namespace ET
@@ -14,7 +17,13 @@ namespace ET
         {
 	        using (MemoryStream stream = new MemoryStream(bytes, index, count))
 	        {
-		        return RuntimeTypeModel.Default.Deserialize(stream, null, type);
+		        object o = RuntimeTypeModel.Default.Deserialize(stream, null, type);
+		        if (o is ISupportInitialize supportInitialize)
+		        {
+			        supportInitialize.EndInit();
+		        }
+
+		        return o;
 	        }
         }
 
@@ -34,7 +43,12 @@ namespace ET
 
         public static object FromStream(Type type, MemoryStream stream)
         {
-	        return RuntimeTypeModel.Default.Deserialize(stream, null, type);
+	        object o = RuntimeTypeModel.Default.Deserialize(stream, null, type);
+	        if (o is ISupportInitialize supportInitialize)
+	        {
+		        supportInitialize.EndInit();
+	        }
+	        return o;
         }
     }
 }

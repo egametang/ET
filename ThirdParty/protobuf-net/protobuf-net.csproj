@@ -7,10 +7,18 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>TRACE;COREAPP;NOT_UNITY</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <Compile Include="..\..\Unity\Assets\Mono\ThirdParty\protobuf-net\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
 
 </Project>

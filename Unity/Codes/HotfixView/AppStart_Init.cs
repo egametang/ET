@@ -11,7 +11,7 @@ namespace ET
             Game.Scene.AddComponent<ResourcesComponent>();
             ResourcesComponent.Instance.LoadBundle("config.unity3d");
             Game.Scene.AddComponent<ConfigComponent>();
-            await ConfigComponent.Instance.LoadAsync();
+            ConfigComponent.Instance.Load();
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             
             Game.Scene.AddComponent<OpcodeTypeComponent>();
