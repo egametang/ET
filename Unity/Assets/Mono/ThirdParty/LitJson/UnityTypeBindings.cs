@@ -5,7 +5,7 @@ using LitJson.Extensions;
 namespace LitJson
 {
 
-#if !NOT_CLIENT
+#if !SERVER
 #endif
     /// <summary>
     /// Unity内建类型拓展
@@ -37,7 +37,7 @@ namespace LitJson
             {
                 return Type.GetType(s);
             });
-#if !NOT_CLIENT
+#if !SERVER
             // 注册Vector2类型的Exporter
             Action<UnityEngine.Vector2, JsonWriter> writeVector2 = (v, w) =>
             {

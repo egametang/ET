@@ -35,7 +35,7 @@ namespace ProtoBuf.ServiceModel
     /// </summary>
     public class ProtoEndpointBehavior : IEndpointBehavior
     {
-        #region IEndpointBehavior Members
+#region IEndpointBehavior Members
 
         void IEndpointBehavior.AddBindingParameters(ServiceEndpoint endpoint, System.ServiceModel.Channels.BindingParameterCollection bindingParameters)
         {
@@ -63,6 +63,7 @@ namespace ProtoBuf.ServiceModel
             }
         }
 
+
         private static void ReplaceDataContractSerializerOperationBehavior(OperationDescription description)
         {
             DataContractSerializerOperationBehavior dcsOperationBehavior = description.Behaviors.Find<DataContractSerializerOperationBehavior>();
@@ -76,7 +77,9 @@ namespace ProtoBuf.ServiceModel
             }
         }
 
+
         #endregion
     }
+
 }
 #endif

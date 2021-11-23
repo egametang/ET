@@ -31,8 +31,8 @@ namespace LitJson
         #region Fields
         private delegate bool StateHandler (FsmContext ctx);
 
-        private static readonly int[]          fsm_return_table;
-        private static readonly StateHandler[] fsm_handler_table;
+        private static int[]          fsm_return_table;
+        private static StateHandler[] fsm_handler_table;
 
         private bool          allow_comments;
         private bool          allow_single_quoted_strings;
@@ -77,7 +77,7 @@ namespace LitJson
         #region Constructors
         static Lexer ()
         {
-            PopulateFsmTables (out fsm_handler_table, out fsm_return_table);
+            PopulateFsmTables ();
         }
 
         public Lexer (TextReader reader)
@@ -130,7 +130,7 @@ namespace LitJson
             }
         }
 
-        private static void PopulateFsmTables (out StateHandler[] fsm_handler_table, out int[] fsm_return_table)
+        private static void PopulateFsmTables ()
         {
             // See section A.1. of the manual for details of the finite
             // state machine.

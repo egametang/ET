@@ -30,11 +30,10 @@ namespace ET
 			
 #if ILRuntime
 			ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-			using (System.IO.MemoryStream assStream = new System.IO.MemoryStream(assBytes))
-			using (System.IO.MemoryStream pdbStream = new System.IO.MemoryStream(pdbBytes))
-			{
-				appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
-			}
+			System.IO.MemoryStream assStream = new System.IO.MemoryStream(assBytes);
+			System.IO.MemoryStream pdbStream = new System.IO.MemoryStream(pdbBytes);
+			appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+			
 			ILHelper.InitILRuntime(appDomain);
 			
 			this.hotfixTypes = Type.EmptyTypes;

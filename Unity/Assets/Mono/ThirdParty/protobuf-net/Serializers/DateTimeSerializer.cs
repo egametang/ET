@@ -1,29 +1,40 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Reflection;
+
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
+
+#endif
 
 namespace ProtoBuf.Serializers
 {
-    internal sealed class DateTimeSerializer : IProtoSerializer
+    sealed class DateTimeSerializer : IProtoSerializer
     {
-        private static readonly Type expectedType = typeof(DateTime);
-
+#if FEAT_IKVM
+        readonly Type expectedType;
+#else
+        static readonly Type expectedType = typeof(DateTime);
+#endif
         public Type ExpectedType => expectedType;
 
         bool IProtoSerializer.RequiresOldValue => false;
         bool IProtoSerializer.ReturnsValue => true;
 
         private readonly bool includeKind, wellKnown;
-
         public DateTimeSerializer(DataFormat dataFormat, ProtoBuf.Meta.TypeModel model)
         {
+#if FEAT_IKVM
+            expectedType = model.MapType(typeof(DateTime));
+#endif
             wellKnown = dataFormat == DataFormat.WellKnown;
-            includeKind = model?.SerializeDateTimeKind() == true;
+            includeKind = model != null && model.SerializeDateTimeKind();
         }
-
+#if !FEAT_IKVM
         public object Read(object value, ProtoReader source)
         {
-            if (wellKnown)
+            if(wellKnown)
             {
                 return BclHelpers.ReadTimestamp(source);
             }
@@ -31,18 +42,18 @@ namespace ProtoBuf.Serializers
             {
                 Helpers.DebugAssert(value == null); // since replaces
                 return BclHelpers.ReadDateTime(source);
-            }
+            }            
         }
-
         public void Write(object value, ProtoWriter dest)
         {
-            if (wellKnown)
+            if(wellKnown)
                 BclHelpers.WriteTimestamp((DateTime)value, dest);
-            else if (includeKind)
+            else if(includeKind)
                 BclHelpers.WriteDateTimeWithKind((DateTime)value, dest);
             else
                 BclHelpers.WriteDateTime((DateTime)value, dest);
         }
+#endif
 #if FEAT_COMPILER
         void IProtoSerializer.EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
         {
@@ -50,10 +61,9 @@ namespace ProtoBuf.Serializers
                 wellKnown ? nameof(BclHelpers.WriteTimestamp)
                 : includeKind ? nameof(BclHelpers.WriteDateTimeWithKind) : nameof(BclHelpers.WriteDateTime), valueFrom);
         }
-
-        void IProtoSerializer.EmitRead(Compiler.CompilerContext ctx, Compiler.Local entity)
+        void IProtoSerializer.EmitRead(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
         {
-            if (wellKnown) ctx.LoadValue(entity);
+            if (wellKnown) ctx.LoadValue(valueFrom);
             ctx.EmitBasicRead(ctx.MapType(typeof(BclHelpers)),
                 wellKnown ? nameof(BclHelpers.ReadTimestamp) : nameof(BclHelpers.ReadDateTime),
                 ExpectedType);

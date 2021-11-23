@@ -51,7 +51,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Mono\AssetsBundleHelper.cs" />
      <Compile Include="Assets\Mono\CodeLoader.cs" />
      <Compile Include="Assets\Mono\Core\Async\AsyncETTaskCompletedMethodBuilder.cs" />
      <Compile Include="Assets\Mono\Core\Async\AsyncETTaskMethodBuilder.cs" />
@@ -63,6 +62,7 @@
      <Compile Include="Assets\Mono\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETVoid.cs" />
      <Compile Include="Assets\Mono\Core\Async\IAwaiter.cs" />
+     <Compile Include="Assets\Mono\Core\DoubleMap.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ByteHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\EnumHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\FileHelper.cs" />
@@ -74,16 +74,42 @@
      <Compile Include="Assets\Mono\Core\Helper\RandomHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ZipHelper.cs" />
+     <Compile Include="Assets\Mono\Core\Log\FileLogger.cs" />
+     <Compile Include="Assets\Mono\Core\Log\ILog.cs" />
+     <Compile Include="Assets\Mono\Core\Log\Log.cs" />
+     <Compile Include="Assets\Mono\Core\Log\NLogger.cs" />
+     <Compile Include="Assets\Mono\Core\Log\UnityLogger.cs" />
+     <Compile Include="Assets\Mono\Core\MultiDictionary.cs" />
+     <Compile Include="Assets\Mono\Core\MultiMap.cs" />
+     <Compile Include="Assets\Mono\Core\MultiMapSet.cs" />
+     <Compile Include="Assets\Mono\Core\Options.cs" />
+     <Compile Include="Assets\Mono\Core\ProtobufHelper.cs" />
      <Compile Include="Assets\Mono\Core\ThreadSynchronizationContext.cs" />
+     <Compile Include="Assets\Mono\Core\TimeHelper.cs" />
+     <Compile Include="Assets\Mono\Core\TimeInfo.cs" />
+     <Compile Include="Assets\Mono\Core\UnOrderMultiMap.cs" />
+     <Compile Include="Assets\Mono\Core\UnOrderMultiMapSet.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
+     <Compile Include="Assets\Mono\Helper\AssetsBundleHelper.cs" />
      <Compile Include="Assets\Mono\Helper\IStaticMethod.cs" />
      <Compile Include="Assets\Mono\Helper\MonoStaticMethod.cs" />
      <Compile Include="Assets\Mono\Helper\PathHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\CLRBindings.cs" />
      <Compile Include="Assets\Mono\ILRuntime\IAsyncStateMachineAdaptor.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\IDisposableAdapter.cs" />
      <Compile Include="Assets\Mono\ILRuntime\ILHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\ILStaticMethod.cs" />
      <Compile Include="Assets\Mono\ILRuntime\ISupportInitializeAdapter.cs" />
+     <Compile Include="Assets\Mono\Module\Message\RpcException.cs" />
+     <Compile Include="Assets\Mono\Module\Network\AChannel.cs" />
+     <Compile Include="Assets\Mono\Module\Network\AService.cs" />
+     <Compile Include="Assets\Mono\Module\Network\Circularbuffer.cs" />
+     <Compile Include="Assets\Mono\Module\Network\ErrorCore.cs" />
+     <Compile Include="Assets\Mono\Module\Network\KChannel.cs" />
+     <Compile Include="Assets\Mono\Module\Network\KService.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\PacketParser.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\TChannel.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\TService.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\CanvasConfig.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\ComponentView.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\GizmosDebug.cs" />
@@ -111,7 +137,6 @@
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Compiler\CompilerDelegates.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Compiler\Local.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\DataFormat.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\DiscriminatedUnion.Serializable.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\DiscriminatedUnion.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Extensible.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ExtensibleUtil.cs" />
@@ -119,8 +144,6 @@
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Helpers.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\IExtensible.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\IExtension.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\IProtoInputT.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\IProtoOutputT.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ImplicitFields.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\KeyValuePairProxy.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\AttributeMap.cs" />
@@ -131,12 +154,11 @@
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\RuntimeTypeModel.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\SubType.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeFormatEventArgs.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeModel.InputOutput.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeModel.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\ValueMember.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\NetObjectCache.cs" />
+     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PBType.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PrefixStyle.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Properties\AssemblyInfo.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoContractAttribute.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoConverterAttribute.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoEnumAttribute.cs" />
@@ -147,6 +169,7 @@
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoMemberAttribute.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoReader.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoWriter.cs" />
+     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtobufPropertyHelper.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\SerializationContext.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializer.cs" />
      <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ArrayDecorator.cs" />

@@ -41,7 +41,7 @@ namespace ET
                 catch (Exception exception)
                 {
                     Log.Error(exception);
-                    response.Error = ErrorCode.ERR_RpcFail;
+                    response.Error = ErrorCore.ERR_RpcFail;
                     response.Message = exception.ToString();
                     Reply();
                 }

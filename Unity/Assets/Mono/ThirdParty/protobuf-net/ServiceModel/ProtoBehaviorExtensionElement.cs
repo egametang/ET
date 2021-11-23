@@ -1,4 +1,4 @@
-﻿#if FEAT_SERVICEMODEL && PLAT_XMLSERIALIZER && FEAT_SERVICECONFIGMODEL
+﻿#if FEAT_SERVICEMODEL && PLAT_XMLSERIALIZER
 using System;
 using System.ServiceModel.Configuration;
 
@@ -13,17 +13,29 @@ namespace ProtoBuf.ServiceModel
         /// <summary>
         /// Creates a new ProtoBehaviorExtension instance.
         /// </summary>
-        public ProtoBehaviorExtension() { }
+        public ProtoBehaviorExtension()
+        {
+        }
+
         /// <summary>
         /// Gets the type of behavior.
         /// </summary>     
-        public override Type BehaviorType => typeof(ProtoEndpointBehavior);
+        public override Type BehaviorType
+        {
+            get
+            {
+                return typeof(ProtoEndpointBehavior);
+            }
+        }
 
         /// <summary>
         /// Creates a behavior extension based on the current configuration settings.
         /// </summary>
         /// <returns>The behavior extension.</returns>
-        protected override object CreateBehavior() => new ProtoEndpointBehavior();
+        protected override object CreateBehavior()
+        {
+            return new ProtoEndpointBehavior();
+        }
     }
 }
 #endif

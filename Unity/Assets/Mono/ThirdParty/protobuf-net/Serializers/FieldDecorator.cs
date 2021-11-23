@@ -1,16 +1,24 @@
 ﻿#if !NO_RUNTIME
 using System;
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
 using System.Reflection;
+#endif
+
+
 
 namespace ProtoBuf.Serializers
 {
     sealed class FieldDecorator : ProtoDecoratorBase
     {
-        public override Type ExpectedType => forType;
+
+        public override Type ExpectedType { get { return forType; } }
         private readonly FieldInfo field;
         private readonly Type forType;
-        public override bool RequiresOldValue => true;
-        public override bool ReturnsValue => false;
+        public override bool RequiresOldValue { get { return true; } }
+        public override bool ReturnsValue { get { return false; } }
         public FieldDecorator(Type forType, FieldInfo field, IProtoSerializer tail) : base(tail)
         {
             Helpers.DebugAssert(forType != null);
@@ -18,22 +26,21 @@ namespace ProtoBuf.Serializers
             this.forType = forType;
             this.field = field;
         }
-
+#if !FEAT_IKVM
         public override void Write(object value, ProtoWriter dest)
         {
             Helpers.DebugAssert(value != null);
             value = field.GetValue(value);
-            if (value != null) Tail.Write(value, dest);
+            if(value != null) Tail.Write(value, dest);
         }
-
         public override object Read(object value, ProtoReader source)
         {
             Helpers.DebugAssert(value != null);
             object newValue = Tail.Read((Tail.RequiresOldValue ? field.GetValue(value) : null), source);
-            if (newValue != null) field.SetValue(value, newValue);
+            if(newValue != null) field.SetValue(value,newValue);
             return null;
         }
-
+#endif
 
 #if FEAT_COMPILER
         protected override void EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
@@ -49,7 +56,7 @@ namespace ProtoBuf.Serializers
                 if (Tail.RequiresOldValue)
                 {
                     ctx.LoadAddress(loc, ExpectedType);
-                    ctx.LoadValue(field);
+                    ctx.LoadValue(field);  
                 }
                 // value is either now on the stack or not needed
                 ctx.ReadNullCheckedTail(field.FieldType, Tail, null);

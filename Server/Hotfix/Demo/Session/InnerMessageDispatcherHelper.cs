@@ -15,7 +15,7 @@ namespace ET
             Entity entity = Game.EventSystem.Get(actorId);
             if (entity == null)
             {
-                FailResponse(iActorRequest, ErrorCode.ERR_NotFoundActor, reply);
+                FailResponse(iActorRequest, ErrorCore.ERR_NotFoundActor, reply);
                 return;
             }
 
@@ -23,7 +23,7 @@ namespace ET
             if (mailBoxComponent == null)
             {
                 Log.Warning($"actor not found mailbox: {entity.GetType().Name} {actorId} {iActorRequest}");
-                FailResponse(iActorRequest, ErrorCode.ERR_NotFoundActor, reply);
+                FailResponse(iActorRequest, ErrorCore.ERR_NotFoundActor, reply);
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace ET
                         {
                             if (entity.InstanceId != instanceId)
                             {
-                                FailResponse(iActorRequest, ErrorCode.ERR_NotFoundActor, reply);
+                                FailResponse(iActorRequest, ErrorCore.ERR_NotFoundActor, reply);
                                 return;
                             }
 

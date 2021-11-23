@@ -22,7 +22,7 @@ namespace ET
 #if NOT_UNITY
             return MongoDB.Bson.Serialization.BsonSerializer.Deserialize(json, type);
 #else
-            return LitJson.JsonMapper.ToObject(json, type);
+            return LitJson.JsonMapper.ToObject(type, json);
 #endif
             
         }

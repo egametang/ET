@@ -47,11 +47,11 @@
             <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Codes\Model\Module\Network\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Mono\Module\Network\**\*.cs">
             <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Mono\Module\NetworkTCP\**\*.cs">
             <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -68,6 +68,10 @@
         </Compile>
 
         <Compile Include="..\..\Unity\Codes\Model\Module\Message\**\*.cs">
+            <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Mono\Module\Message\**\*.cs">
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 

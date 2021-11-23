@@ -1,62 +1,69 @@
 ﻿#if !NO_RUNTIME
 using System;
-using ProtoBuf.Meta;
-using System.Reflection;
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
+
+#endif
 
 namespace ProtoBuf.Serializers
 {
     sealed class EnumSerializer : IProtoSerializer
     {
-        public readonly struct EnumPair
+        public struct EnumPair
         {
             public readonly object RawValue; // note that this is boxing, but I'll live with it
+#if !FEAT_IKVM
             public readonly Enum TypedValue; // note that this is boxing, but I'll live with it
+#endif
             public readonly int WireValue;
             public EnumPair(int wireValue, object raw, Type type)
             {
                 WireValue = wireValue;
                 RawValue = raw;
+#if !FEAT_IKVM
                 TypedValue = (Enum)Enum.ToObject(type, raw);
+#endif
             }
-        }
-
-        private readonly Type enumType;
+        } 
+        private readonly Type enumType; 
         private readonly EnumPair[] map;
         public EnumSerializer(Type enumType, EnumPair[] map)
         {
-            this.enumType = enumType ?? throw new ArgumentNullException(nameof(enumType));
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            this.enumType = enumType;
             this.map = map;
             if (map != null)
             {
                 for (int i = 1; i < map.Length; i++)
-                    for (int j = 0; j < i; j++)
+                for (int j = 0 ; j < i ; j++)
+                {
+                    if (map[i].WireValue == map[j].WireValue && !Equals(map[i].RawValue, map[j].RawValue))
                     {
-                        if (map[i].WireValue == map[j].WireValue && !Equals(map[i].RawValue, map[j].RawValue))
-                        {
-                            throw new ProtoException("Multiple enums with wire-value " + map[i].WireValue.ToString());
-                        }
-                        if (Equals(map[i].RawValue, map[j].RawValue) && map[i].WireValue != map[j].WireValue)
-                        {
-                            throw new ProtoException("Multiple enums with deserialized-value " + map[i].RawValue);
-                        }
+                        throw new ProtoException("Multiple enums with wire-value " + map[i].WireValue.ToString());
                     }
+                    if (Equals(map[i].RawValue, map[j].RawValue) && map[i].WireValue != map[j].WireValue)
+                    {
+                        throw new ProtoException("Multiple enums with deserialized-value " + map[i].RawValue);
+                    }
+                }
 
             }
         }
-
-        private ProtoTypeCode GetTypeCode()
-        {
+        private ProtoTypeCode GetTypeCode() {
             Type type = Helpers.GetUnderlyingType(enumType);
-            if (type == null) type = enumType;
+            if(type == null) type = enumType;
             return Helpers.GetTypeCode(type);
         }
 
-        public Type ExpectedType => enumType;
+        
+        public Type ExpectedType { get { return enumType; } }
+        
+        bool IProtoSerializer.RequiresOldValue { get { return false; } }
+        bool IProtoSerializer.ReturnsValue { get { return true; } }
 
-        bool IProtoSerializer.RequiresOldValue => false;
-
-        bool IProtoSerializer.ReturnsValue => true;
-
+#if !FEAT_IKVM
         private int EnumToWire(object value)
         {
             unchecked
@@ -75,7 +82,6 @@ namespace ProtoBuf.Serializers
                 }
             }
         }
-
         private object WireToEnum(int value)
         {
             unchecked
@@ -99,21 +105,17 @@ namespace ProtoBuf.Serializers
         {
             Helpers.DebugAssert(value == null); // since replaces
             int wireValue = source.ReadInt32();
-            if (map == null)
-            {
+            if(map == null) {
                 return WireToEnum(wireValue);
             }
-            for (int i = 0; i < map.Length; i++)
-            {
-                if (map[i].WireValue == wireValue)
-                {
+            for(int i = 0 ; i < map.Length ; i++) {
+                if(map[i].WireValue == wireValue) {
                     return map[i].TypedValue;
                 }
             }
             source.ThrowEnumException(ExpectedType, wireValue);
             return null; // to make compiler happy
         }
-
         public void Write(object value, ProtoWriter dest)
         {
             if (map == null)
@@ -133,7 +135,7 @@ namespace ProtoBuf.Serializers
                 ProtoWriter.ThrowEnumException(dest, value);
             }
         }
-
+#endif
 #if FEAT_COMPILER
         void IProtoSerializer.EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
         {
@@ -169,8 +171,8 @@ namespace ProtoBuf.Serializers
                     ctx.MarkLabel(@continue);
                 }
             }
+            
         }
-
         void IProtoSerializer.EmitRead(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
         {
             ProtoTypeCode typeCode = GetTypeCode();
@@ -215,8 +217,7 @@ namespace ProtoBuf.Serializers
                             ctx.LoadValue(group.First);
                             ctx.Subtract(); // jump-tables are zero-based
                             Compiler.CodeLabel[] jmp = new Compiler.CodeLabel[groupItemCount];
-                            for (int i = 0; i < groupItemCount; i++)
-                            {
+                            for (int i = 0; i < groupItemCount; i++) {
                                 jmp[i] = ctx.DefineLabel();
                             }
                             ctx.Switch(jmp);

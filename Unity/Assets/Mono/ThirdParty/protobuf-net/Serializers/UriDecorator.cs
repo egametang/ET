@@ -1,27 +1,35 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Reflection;
 
-#if FEAT_COMPILER
-using ProtoBuf.Compiler;
+//using ProtoBuf.Compiler;
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
+
 #endif
 
 namespace ProtoBuf.Serializers
 {
     sealed class UriDecorator : ProtoDecoratorBase
     {
+#if FEAT_IKVM
+        readonly Type expectedType;
+#else
         static readonly Type expectedType = typeof(Uri);
+#endif
         public UriDecorator(ProtoBuf.Meta.TypeModel model, IProtoSerializer tail) : base(tail)
         {
-
+#if FEAT_IKVM
+            expectedType = model.MapType(typeof(Uri));
+#endif
         }
+        public override Type ExpectedType { get { return expectedType; } }
+        public override bool RequiresOldValue { get { return false; } }
+        public override bool ReturnsValue { get { return true; } }
+        
 
-        public override Type ExpectedType => expectedType;
-
-        public override bool RequiresOldValue => false;
-
-        public override bool ReturnsValue => true;
-
+#if !FEAT_IKVM
         public override void Write(object value, ProtoWriter dest)
         {
             Tail.Write(((Uri)value).OriginalString, dest);
@@ -33,6 +41,7 @@ namespace ProtoBuf.Serializers
             string s = (string)Tail.Read(null, source);
             return s.Length == 0 ? null : new Uri(s, UriKind.RelativeOrAbsolute);
         }
+#endif
 
 #if FEAT_COMPILER
         protected override void EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
@@ -56,7 +65,7 @@ namespace ProtoBuf.Serializers
             ctx.EmitCtor(ctx.MapType(typeof(Uri)), ctx.MapType(typeof(string)), ctx.MapType(typeof(UriKind)));
             ctx.MarkLabel(@end);
         }
-#endif
+#endif 
     }
 }
 #endif

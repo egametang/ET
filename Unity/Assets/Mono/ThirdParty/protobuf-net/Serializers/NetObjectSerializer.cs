@@ -1,10 +1,17 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Reflection;
 using ProtoBuf.Meta;
+
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
+
+#endif
 
 namespace ProtoBuf.Serializers
 {
+
     sealed class NetObjectSerializer : IProtoSerializer
     {
         private readonly int key;
@@ -20,21 +27,28 @@ namespace ProtoBuf.Serializers
             this.options = options;
         }
 
-        public Type ExpectedType => type;
-
-        public bool ReturnsValue => true;
-
-        public bool RequiresOldValue => true;
-
+        public Type ExpectedType
+        {
+            get { return type; }
+        }
+        public bool ReturnsValue
+        {
+            get { return true; }
+        }
+        public bool RequiresOldValue
+        {
+            get { return true; }
+        }
+#if !FEAT_IKVM
         public object Read(object value, ProtoReader source)
         {
             return BclHelpers.ReadNetObject(value, source, key, type == typeof(object) ? null : type, options);
         }
-
         public void Write(object value, ProtoWriter dest)
         {
             BclHelpers.WriteNetObject(value, dest, key, options);
         }
+#endif
 
 #if FEAT_COMPILER
         public void EmitRead(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
@@ -43,7 +57,7 @@ namespace ProtoBuf.Serializers
             ctx.CastToObject(type);
             ctx.LoadReaderWriter();
             ctx.LoadValue(ctx.MapMetaKeyToCompiledKey(key));
-            if (type == ctx.MapType(typeof(object))) ctx.LoadNullRef();
+            if (type ==  ctx.MapType(typeof(object))) ctx.LoadNullRef();
             else ctx.LoadValue(type);
             ctx.LoadValue((int)options);
             ctx.EmitCall(ctx.MapType(typeof(BclHelpers)).GetMethod("ReadNetObject"));

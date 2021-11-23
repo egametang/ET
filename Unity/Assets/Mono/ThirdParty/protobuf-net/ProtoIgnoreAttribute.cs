@@ -8,7 +8,7 @@ namespace ProtoBuf
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field,
         AllowMultiple = false, Inherited = true)]
-    public class ProtoIgnoreAttribute : Attribute { }
+    public class ProtoIgnoreAttribute : Attribute {}
 
     /// <summary>
     /// Indicates that a member should be excluded from serialization; this
@@ -28,13 +28,13 @@ namespace ProtoBuf
         public ProtoPartialIgnoreAttribute(string memberName)
             : base()
         {
-            if (string.IsNullOrEmpty(memberName)) throw new ArgumentNullException(nameof(memberName));
-
-            MemberName = memberName;
+            if (Helpers.IsNullOrEmpty(memberName)) throw new ArgumentNullException("memberName");
+            this.memberName = memberName;
         }
         /// <summary>
         /// The name of the member to be ignored.
         /// </summary>
-        public string MemberName { get; }
+        public string MemberName { get { return memberName; } }
+        private readonly string memberName;
     }
 }

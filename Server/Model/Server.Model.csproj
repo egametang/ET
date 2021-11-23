@@ -72,14 +72,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\PacketParser.cs">
-      <Link>Module\NetworkTCP\PacketParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\TChannel.cs">
-      <Link>Module\NetworkTCP\TChannel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Codes\Model\Module\NetworkTCP\TService.cs">
-      <Link>Module\NetworkTCP\TService.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Mono\Module\NetworkTCP\**\*.cs">
+      <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
     <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\INumericWatcher.cs">
       <Link>Module\Numeric\INumericWatcher.cs</Link>
@@ -100,11 +94,15 @@
 
   <ItemGroup>
 
-    <Compile Include="..\..\Unity\Codes\Model\Module\Network\**\*.cs">
+    <Compile Include="..\..\Unity\Assets\Mono\Module\Network\**\*.cs">
       <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
     <Compile Include="..\..\Unity\Codes\Model\Module\Message\**\*.cs">
+      <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Mono\Module\Message\**\*.cs">
       <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
   </ItemGroup>

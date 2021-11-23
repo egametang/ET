@@ -1,6 +1,5 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Collections.Generic;
 using ProtoBuf.Serializers;
 
 namespace ProtoBuf.Meta
@@ -10,15 +9,16 @@ namespace ProtoBuf.Meta
     /// </summary>
     public sealed class SubType
     {
-        internal sealed class Comparer : System.Collections.IComparer, IComparer<SubType>
+        internal sealed class Comparer : System.Collections.IComparer
+#if !NO_GENERICS
+, System.Collections.Generic.IComparer<SubType>
+#endif
         {
             public static readonly Comparer Default = new Comparer();
-
             public int Compare(object x, object y)
             {
                 return Compare(x as SubType, y as SubType);
             }
-
             public int Compare(SubType x, SubType y)
             {
                 if (ReferenceEquals(x, y)) return 0;
@@ -28,37 +28,16 @@ namespace ProtoBuf.Meta
                 return x.FieldNumber.CompareTo(y.FieldNumber);
             }
         }
-
-        private int _fieldNumber;
-
+        private readonly int fieldNumber;
         /// <summary>
         /// The field-number that is used to encapsulate the data (as a nested
         /// message) for the derived dype.
         /// </summary>
-        public int FieldNumber
-        {
-            get => _fieldNumber;
-            internal set
-            {
-                if (_fieldNumber != value)
-                {
-                    MetaType.AssertValidFieldNumber(value);
-                    ThrowIfFrozen();
-                    _fieldNumber = value;
-                }
-            }
-        }
-
-        private void ThrowIfFrozen()
-        {
-            if (serializer != null) throw new InvalidOperationException("The type cannot be changed once a serializer has been generated");
-        }
-
-
+        public int FieldNumber { get { return fieldNumber; } }
         /// <summary>
         /// The sub-type to be considered.
         /// </summary>
-        public MetaType DerivedType => derivedType;
+        public MetaType DerivedType { get { return derivedType; } }
         private readonly MetaType derivedType;
 
         /// <summary>
@@ -70,9 +49,9 @@ namespace ProtoBuf.Meta
         /// <param name="format">Specific encoding style to use; in particular, Grouped can be used to avoid buffering, but is not the default.</param>
         public SubType(int fieldNumber, MetaType derivedType, DataFormat format)
         {
-            if (derivedType == null) throw new ArgumentNullException(nameof(derivedType));
-            if (fieldNumber <= 0) throw new ArgumentOutOfRangeException(nameof(fieldNumber));
-            _fieldNumber = fieldNumber;
+            if (derivedType == null) throw new ArgumentNullException("derivedType");
+            if (fieldNumber <= 0) throw new ArgumentOutOfRangeException("fieldNumber");
+            this.fieldNumber = fieldNumber;
             this.derivedType = derivedType;
             this.dataFormat = format;
         }
@@ -80,8 +59,14 @@ namespace ProtoBuf.Meta
         private readonly DataFormat dataFormat;
 
         private IProtoSerializer serializer;
-
-        internal IProtoSerializer Serializer => serializer ?? (serializer = BuildSerializer());
+        internal IProtoSerializer Serializer
+        {
+            get
+            {
+                if (serializer == null) serializer = BuildSerializer();
+                return serializer;
+            }
+        }
 
         private IProtoSerializer BuildSerializer()
         {
@@ -90,7 +75,7 @@ namespace ProtoBuf.Meta
             if(dataFormat == DataFormat.Group) wireType = WireType.StartGroup; // only one exception
             
             IProtoSerializer ser = new SubItemSerializer(derivedType.Type, derivedType.GetKey(false, false), derivedType, false);
-            return new TagDecorator(_fieldNumber, wireType, false, ser);
+            return new TagDecorator(fieldNumber, wireType, false, ser);
         }
     }
 }

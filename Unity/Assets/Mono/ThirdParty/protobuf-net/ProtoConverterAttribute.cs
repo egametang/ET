@@ -9,5 +9,5 @@ namespace ProtoBuf
     /// to/from interface types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public class ProtoConverterAttribute : Attribute { }
+    public class ProtoConverterAttribute : Attribute {}
 }

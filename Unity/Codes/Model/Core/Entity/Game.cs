@@ -29,9 +29,7 @@ namespace ET
 
         public static IdGenerater IdGenerater => IdGenerater.Instance;
 
-        public static Options Options;
-
-        public static ILog ILog;
+        public static Options Options => Options.Instance;
 
         public static List<Action> FrameFinishCallback = new List<Action>();
 

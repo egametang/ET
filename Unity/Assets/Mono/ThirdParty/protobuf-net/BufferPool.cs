@@ -1,75 +1,51 @@
-using System;
-
+﻿
+using System.Threading;
 namespace ProtoBuf
 {
     internal sealed class BufferPool
     {
         internal static void Flush()
         {
-            lock (Pool)
+#if PLAT_NO_INTERLOCKED
+            lock(pool)
             {
-                for (var i = 0; i < Pool.Length; i++)
-                    Pool[i] = null;
+                for (int i = 0; i < pool.Length; i++) pool[i] = null;
             }
+#else
+            for (int i = 0; i < pool.Length; i++)
+            {
+                Interlocked.Exchange(ref pool[i], null); // and drop the old value on the floor
+            }
+#endif
         }
-
         private BufferPool() { }
-        private const int POOL_SIZE = 20;
-        internal const int BUFFER_LENGTH = 1024;
-        private static readonly CachedBuffer[] Pool = new CachedBuffer[POOL_SIZE];
+        const int PoolSize = 20;
+        internal const int BufferLength = 1024;
+        private static readonly object[] pool = new object[PoolSize];
 
-        internal static byte[] GetBuffer() => GetBuffer(BUFFER_LENGTH);
-
-        internal static byte[] GetBuffer(int minSize)
+        internal static byte[] GetBuffer()
         {
-            byte[] cachedBuff = GetCachedBuffer(minSize);
-            return cachedBuff ?? new byte[minSize];
-        }
-
-        internal static byte[] GetCachedBuffer(int minSize)
-        {
-            lock (Pool)
+            object tmp;
+            #if PLAT_NO_INTERLOCKED
+            lock(pool)
             {
-                var bestIndex = -1;
-                byte[] bestMatch = null;
-                for (var i = 0; i < Pool.Length; i++)
+                for (int i = 0; i < pool.Length; i++)
                 {
-                    var buffer = Pool[i];
-                    if (buffer == null || buffer.Size < minSize)
+                    if((tmp = pool[i]) != null)
                     {
-                        continue;
-                    }
-                    if (bestMatch != null && bestMatch.Length < buffer.Size)
-                    {
-                        continue;
-                    }
-
-                    var tmp = buffer.Buffer;
-                    if (tmp == null)
-                    {
-                        Pool[i] = null;
-                    }
-                    else
-                    {
-                        bestMatch = tmp;
-                        bestIndex = i;
+                        pool[i] = null;
+                        return (byte[])tmp;
                     }
                 }
-
-                if (bestIndex >= 0)
-                {
-                    Pool[bestIndex] = null;
-                }
-
-                return bestMatch;
             }
+#else
+            for (int i = 0; i < pool.Length; i++)
+            {
+                if ((tmp = Interlocked.Exchange(ref pool[i], null)) != null) return (byte[])tmp;
+            }
+#endif
+            return new byte[BufferLength];
         }
-
-        /// <remarks>
-        /// https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/gcallowverylargeobjects-element
-        /// </remarks>
-        private const int MaxByteArraySize = int.MaxValue - 56;
-
         internal static void ResizeAndFlushLeft(ref byte[] buffer, int toFitAtLeastBytes, int copyFromIndex, int copyBytes)
         {
             Helpers.DebugAssert(buffer != null);
@@ -77,73 +53,51 @@ namespace ProtoBuf
             Helpers.DebugAssert(copyFromIndex >= 0);
             Helpers.DebugAssert(copyBytes >= 0);
 
+            // try doubling, else match
             int newLength = buffer.Length * 2;
-            if (newLength < 0)
-            {
-                newLength = MaxByteArraySize;
-            }
-
             if (newLength < toFitAtLeastBytes) newLength = toFitAtLeastBytes;
 
-            if (copyBytes == 0)
-            {
-                ReleaseBufferToPool(ref buffer);
-            }
-
-            var newBuffer = GetCachedBuffer(toFitAtLeastBytes) ?? new byte[newLength];
-
+            byte[] newBuffer = new byte[newLength];
             if (copyBytes > 0)
             {
-                Buffer.BlockCopy(buffer, copyFromIndex, newBuffer, 0, copyBytes);
-                ReleaseBufferToPool(ref buffer);
+                Helpers.BlockCopy(buffer, copyFromIndex, newBuffer, 0, copyBytes);
             }
-
+            if (buffer.Length == BufferPool.BufferLength)
+            {
+                BufferPool.ReleaseBufferToPool(ref buffer);
+            }
             buffer = newBuffer;
         }
-
         internal static void ReleaseBufferToPool(ref byte[] buffer)
         {
             if (buffer == null) return;
-
-            lock (Pool)
+            if (buffer.Length == BufferLength)
             {
-                var minIndex = 0;
-                var minSize = int.MaxValue;
-                for (var i = 0; i < Pool.Length; i++)
+#if PLAT_NO_INTERLOCKED
+                lock (pool)
                 {
-                    var tmp = Pool[i];
-                    if (tmp == null || !tmp.IsAlive)
+                    for (int i = 0; i < pool.Length; i++)
                     {
-                        minIndex = 0;
-                        break;
-                    }
-                    if (tmp.Size < minSize)
-                    {
-                        minIndex = i;
-                        minSize = tmp.Size;
+                        if(pool[i] == null)
+                        {
+                            pool[i] = buffer;
+                            break;
+                        }
                     }
                 }
-
-                Pool[minIndex] = new CachedBuffer(buffer);
+#else
+                for (int i = 0; i < pool.Length; i++)
+                {
+                    if (Interlocked.CompareExchange(ref pool[i], buffer, null) == null)
+                    {
+                        break; // found a null; swapped it in
+                    }
+                }
+#endif
             }
-
+            // if no space, just drop it on the floor
             buffer = null;
         }
 
-        private class CachedBuffer
-        {
-            private readonly WeakReference _reference;
-
-            public int Size { get; }
-
-            public bool IsAlive => _reference.IsAlive;
-            public byte[] Buffer => (byte[])_reference.Target;
-
-            public CachedBuffer(byte[] buffer)
-            {
-                Size = buffer.Length;
-                _reference = new WeakReference(buffer);
-            }
-        }
     }
 }

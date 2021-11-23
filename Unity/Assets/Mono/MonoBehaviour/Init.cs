@@ -13,6 +13,10 @@ namespace ET
 			
 			DontDestroyOnLoad(gameObject);
 
+			Log.ILog = new UnityLogger();
+
+			Options.Instance = new Options();
+
 			this.codeLoader = CodeLoader.Instance;
 		}
 

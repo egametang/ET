@@ -19,14 +19,13 @@ namespace ProtoBuf.Meta
             get { return type; }
             set
             {
-                if (type != value)
+                if(type != value)
                 {
                     if (typeFixed) throw new InvalidOperationException("The type is fixed and cannot be changed");
                     type = value;
                 }
             }
         }
-
         /// <summary>
         /// The formatted-name involved in this map; if this is initially null, a formatted-name is expected from the type in Type.
         /// </summary>
@@ -42,21 +41,20 @@ namespace ProtoBuf.Meta
                 }
             }
         }
-
         internal TypeFormatEventArgs(string formattedName)
         {
-            if (string.IsNullOrEmpty(formattedName)) throw new ArgumentNullException("formattedName");
+            if (Helpers.IsNullOrEmpty(formattedName)) throw new ArgumentNullException("formattedName");
             this.formattedName = formattedName;
             // typeFixed = false; <== implicit
         }
-
-        internal TypeFormatEventArgs(Type type)
+        internal TypeFormatEventArgs(System.Type type)
         {
-            this.type = type ?? throw new ArgumentNullException(nameof(type));
+            if (type == null) throw new ArgumentNullException("type");
+            this.type = type;
             typeFixed = true;
         }
-    }
 
+    }
     /// <summary>
     /// Delegate type used to perform type-formatting functions; the sender originates as the type-model.
     /// </summary>

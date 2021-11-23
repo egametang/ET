@@ -19,7 +19,7 @@
         /// Public properties and fields are eligible for implicit serialization;
         /// this treats the public API as a contract. Ordering beings from ImplicitFirstTag.
         /// </summary>
-        AllPublic = 1,
+        AllPublic= 1,
         /// <summary>
         /// Public and non-public fields are eligible for implicit serialization;
         /// this acts as a state/implementation serializer. Ordering beings from ImplicitFirstTag.

@@ -1,8 +1,12 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Net;
 using ProtoBuf.Meta;
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
 using System.Reflection;
+#endif
 
 namespace ProtoBuf.Serializers
 {
@@ -12,11 +16,11 @@ namespace ProtoBuf.Serializers
         public static ParseableSerializer TryCreate(Type type, TypeModel model)
         {
             if (type == null) throw new ArgumentNullException("type");
-#if PORTABLE || COREFX || PROFILE259
-			MethodInfo method = null;
-
-#if COREFX || PROFILE259
-			foreach (MethodInfo tmp in type.GetTypeInfo().GetDeclaredMethods("Parse"))
+#if WINRT || PORTABLE || COREFX
+            MethodInfo method = null;
+            
+#if WINRT || COREFX
+            foreach (MethodInfo tmp in type.GetTypeInfo().GetDeclaredMethods("Parse"))
 #else
             foreach (MethodInfo tmp in type.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly))
 #endif
@@ -46,8 +50,14 @@ namespace ProtoBuf.Serializers
         }
         private static MethodInfo GetCustomToString(Type type)
         {
-#if PORTABLE || COREFX || PROFILE259
-			MethodInfo method = Helpers.GetInstanceMethod(type, "ToString", Helpers.EmptyTypes);
+#if WINRT
+            foreach (MethodInfo method in type.GetTypeInfo().GetDeclaredMethods("ToString"))
+            {
+                if (method.IsPublic && !method.IsStatic && method.GetParameters().Length == 0) return method;
+            }
+            return null;
+#elif PORTABLE || COREFX
+            MethodInfo method = Helpers.GetInstanceMethod(type, "ToString", Helpers.EmptyTypes);
             if (method == null || !method.IsPublic || method.IsStatic || method.DeclaringType != type) return null;
             return method;
 #else
@@ -56,27 +66,26 @@ namespace ProtoBuf.Serializers
                         null, Helpers.EmptyTypes, null);
 #endif
         }
-
         private ParseableSerializer(MethodInfo parse)
         {
             this.parse = parse;
         }
-
-        public Type ExpectedType => parse.DeclaringType;
+        public Type ExpectedType { get { return parse.DeclaringType; } }
 
         bool IProtoSerializer.RequiresOldValue { get { return false; } }
         bool IProtoSerializer.ReturnsValue { get { return true; } }
 
+#if !FEAT_IKVM
         public object Read(object value, ProtoReader source)
         {
             Helpers.DebugAssert(value == null); // since replaces
             return parse.Invoke(null, new object[] { source.ReadString() });
         }
-
         public void Write(object value, ProtoWriter dest)
         {
             ProtoWriter.WriteString(value.ToString(), dest);
         }
+#endif
 
 #if FEAT_COMPILER
         void IProtoSerializer.EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
@@ -85,7 +94,7 @@ namespace ProtoBuf.Serializers
             if (Helpers.IsValueType(type))
             {   // note that for structs, we've already asserted that a custom ToString
                 // exists; no need to handle the box/callvirt scenario
-
+                
                 // force it to a variable if needed, so we can take the address
                 using (Compiler.Local loc = ctx.GetLocalWithValue(type, valueFrom))
                 {
@@ -93,8 +102,7 @@ namespace ProtoBuf.Serializers
                     ctx.EmitCall(GetCustomToString(type));
                 }
             }
-            else
-            {
+            else {
                 ctx.EmitCall(ctx.MapType(typeof(object)).GetMethod("ToString"));
             }
             ctx.EmitBasicWrite("WriteString", valueFrom);

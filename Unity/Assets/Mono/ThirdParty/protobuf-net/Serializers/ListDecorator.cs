@@ -2,7 +2,13 @@
 using System;
 using System.Collections;
 using ProtoBuf.Meta;
+
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
 using System.Reflection;
+#endif
 
 namespace ProtoBuf.Serializers
 {
@@ -21,7 +27,6 @@ namespace ProtoBuf.Serializers
                     return false;
             }
         }
-
         private readonly byte options;
 
         private const byte OPTIONS_IsList = 1,
@@ -44,21 +49,19 @@ namespace ProtoBuf.Serializers
         private bool ReturnList { get { return (options & OPTIONS_ReturnList) != 0; } }
         protected readonly WireType packedWireType;
 
+
         internal static ListDecorator Create(TypeModel model, Type declaredType, Type concreteType, IProtoSerializer tail, int fieldNumber, bool writePacked, WireType packedWireType, bool returnList, bool overwriteList, bool supportNull)
         {
-            if (returnList && ImmutableCollectionDecorator.IdentifyImmutable(model, declaredType,
-                out MethodInfo builderFactory,
-                out PropertyInfo isEmpty,
-                out PropertyInfo length,
-                out MethodInfo add,
-                out MethodInfo addRange,
-                out MethodInfo finish))
+#if !NO_GENERICS
+            MethodInfo builderFactory, add, addRange, finish;
+            if (returnList && ImmutableCollectionDecorator.IdentifyImmutable(model, declaredType, out builderFactory, out add, out addRange, out finish))
             {
                 return new ImmutableCollectionDecorator(
                     model, declaredType, concreteType, tail, fieldNumber, writePacked, packedWireType, returnList, overwriteList, supportNull,
-                    builderFactory, isEmpty, length, add, addRange, finish);
+                    builderFactory, add, addRange, finish);
             }
 
+#endif
             return new ListDecorator(model, declaredType, concreteType, tail, fieldNumber, writePacked, packedWireType, returnList, overwriteList, supportNull);
         }
 
@@ -73,7 +76,7 @@ namespace ProtoBuf.Serializers
             {
                 if (writePacked) throw new InvalidOperationException("Only simple data-types can use packed encoding");
                 packedWireType = WireType.None;
-            }
+            }            
 
             this.fieldNumber = fieldNumber;
             if (writePacked) options |= OPTIONS_WritePacked;
@@ -82,7 +85,7 @@ namespace ProtoBuf.Serializers
             if (declaredType.IsArray) throw new ArgumentException("Cannot treat arrays as lists", "declaredType");
             this.declaredType = declaredType;
             this.concreteType = concreteType;
-
+            
             // look for a public list.Add(typedObject) method
             if (RequireAdd)
             {
@@ -101,13 +104,11 @@ namespace ProtoBuf.Serializers
             }
 
         }
-        protected virtual bool RequireAdd => true;
+        protected virtual bool RequireAdd { get { return true; } }
 
-        public override Type ExpectedType => declaredType;
-
-        public override bool RequiresOldValue => AppendToCollection;
-
-        public override bool ReturnsValue => ReturnList;
+        public override Type ExpectedType { get { return declaredType;  } }
+        public override bool RequiresOldValue { get { return AppendToCollection; } }
+        public override bool ReturnsValue { get { return ReturnList; } }
 
         protected bool AppendToCollection
         {
@@ -129,7 +130,7 @@ namespace ProtoBuf.Serializers
              *  - handling whether or not the tail *returns* the value vs updates the input
              */
             bool returnList = ReturnList;
-
+            
             using (Compiler.Local list = AppendToCollection ? ctx.GetLocalWithValue(ExpectedType, valueFrom) : new Compiler.Local(ctx, declaredType))
             using (Compiler.Local origlist = (returnList && AppendToCollection && !Helpers.IsValueType(ExpectedType)) ? new Compiler.Local(ctx, ExpectedType) : null)
             {
@@ -183,7 +184,7 @@ namespace ProtoBuf.Serializers
         {
             using (Compiler.Local fieldNumber = new Compiler.Local(ctx, ctx.MapType(typeof(int))))
             {
-                Compiler.CodeLabel readPacked = packedWireType == WireType.None ? new Compiler.CodeLabel() : ctx.DefineLabel();
+                Compiler.CodeLabel readPacked = packedWireType == WireType.None ? new Compiler.CodeLabel() : ctx.DefineLabel();                                   
                 if (packedWireType != WireType.None)
                 {
                     ctx.LoadReaderWriter();
@@ -229,6 +230,9 @@ namespace ProtoBuf.Serializers
                     ctx.EmitCall(ctx.MapType(typeof(ProtoReader)).GetMethod("EndSubItem"));
                     ctx.MarkLabel(allDone);
                 }
+
+
+                
             }
         }
 
@@ -279,19 +283,20 @@ namespace ProtoBuf.Serializers
             }
             // our "Add" is chosen either to take the correct type, or to take "object";
             // we may need to box the value
-
+                
             Type addParamType = add.GetParameters()[0].ParameterType;
-            if (addParamType != itemType)
-            {
+            if(addParamType != itemType) {
                 if (addParamType == ctx.MapType(typeof(object)))
                 {
                     ctx.CastToObject(itemType);
                 }
-                else if (Helpers.GetUnderlyingType(addParamType) == itemType)
+#if !NO_GENERICS
+                else if(Helpers.GetUnderlyingType(addParamType) == itemType)
                 { // list is nullable
-                    ConstructorInfo ctor = Helpers.GetConstructor(addParamType, new Type[] { itemType }, false);
+                    ConstructorInfo ctor = Helpers.GetConstructor(addParamType, new Type[] {itemType}, false);
                     ctx.EmitCtor(ctor); // the itemType on the stack is now a Nullable<ItemType>
                 }
+#endif
                 else
                 {
                     throw new InvalidOperationException("Conflicting item/add type");
@@ -305,17 +310,17 @@ namespace ProtoBuf.Serializers
         }
 #endif
 
-#if COREFX
+#if WINRT || COREFX
         private static readonly TypeInfo ienumeratorType = typeof(IEnumerator).GetTypeInfo(), ienumerableType = typeof (IEnumerable).GetTypeInfo();
 #else
-        private static readonly System.Type ienumeratorType = typeof(IEnumerator), ienumerableType = typeof(IEnumerable);
+        private static readonly System.Type ienumeratorType = typeof (IEnumerator), ienumerableType = typeof (IEnumerable);
 #endif
         protected MethodInfo GetEnumeratorInfo(TypeModel model, out MethodInfo moveNext, out MethodInfo current)
             => GetEnumeratorInfo(model, ExpectedType, Tail.ExpectedType, out moveNext, out current);
         internal static MethodInfo GetEnumeratorInfo(TypeModel model, Type expectedType, Type itemType, out MethodInfo moveNext, out MethodInfo current)
         {
 
-#if COREFX
+#if WINRT || COREFX
             TypeInfo enumeratorType = null, iteratorType;
 #else
             Type enumeratorType = null, iteratorType;
@@ -329,18 +334,14 @@ namespace ProtoBuf.Serializers
             {
                 getReturnType = getEnumerator.ReturnType;
                 iteratorType = getReturnType
-#if COREFX || COREFX
+#if WINRT || COREFX || COREFX
                     .GetTypeInfo()
 #endif
                     ;
                 moveNext = Helpers.GetInstanceMethod(iteratorType, "MoveNext", null);
                 PropertyInfo prop = Helpers.GetProperty(iteratorType, "Current", false);
                 current = prop == null ? null : Helpers.GetGetMethod(prop, false, false);
-#if PROFILE259
-				if (moveNext == null && (model.MapType(ienumeratorType).GetTypeInfo().IsAssignableFrom(iteratorType.GetTypeInfo())))
-#else
                 if (moveNext == null && (model.MapType(ienumeratorType).IsAssignableFrom(iteratorType)))
-#endif
                 {
                     moveNext = Helpers.GetInstanceMethod(model.MapType(ienumeratorType), "MoveNext", null);
                 }
@@ -352,27 +353,24 @@ namespace ProtoBuf.Serializers
                 }
                 moveNext = current = getEnumerator = null;
             }
-
+            
+#if !NO_GENERICS
             // try IEnumerable<T>
             Type tmp = model.MapType(typeof(System.Collections.Generic.IEnumerable<>), false);
-
+            
             if (tmp != null)
             {
                 tmp = tmp.MakeGenericType(itemType);
 
-#if COREFX
+#if WINRT || COREFX
                 enumeratorType = tmp.GetTypeInfo();
 #else
                 enumeratorType = tmp;
 #endif
             }
 ;
-#if PROFILE259
-			if (enumeratorType != null && enumeratorType.GetTypeInfo().IsAssignableFrom(expectedType
-#else
             if (enumeratorType != null && enumeratorType.IsAssignableFrom(expectedType
-#endif
-#if COREFX || PROFILE259
+#if WINRT || COREFX
                 .GetTypeInfo()
 #endif
                 ))
@@ -380,7 +378,7 @@ namespace ProtoBuf.Serializers
                 getEnumerator = Helpers.GetInstanceMethod(enumeratorType, "GetEnumerator");
                 getReturnType = getEnumerator.ReturnType;
 
-#if COREFX
+#if WINRT || COREFX
                 iteratorType = getReturnType.GetTypeInfo();
 #else
                 iteratorType = getReturnType;
@@ -390,17 +388,18 @@ namespace ProtoBuf.Serializers
                 current = Helpers.GetGetMethod(Helpers.GetProperty(iteratorType, "Current", false), false, false);
                 return getEnumerator;
             }
+#endif
             // give up and fall-back to non-generic IEnumerable
             enumeratorType = model.MapType(ienumerableType);
             getEnumerator = Helpers.GetInstanceMethod(enumeratorType, "GetEnumerator");
             getReturnType = getEnumerator.ReturnType;
             iteratorType = getReturnType
-#if COREFX
+#if WINRT || COREFX
                 .GetTypeInfo()
 #endif
                 ;
             moveNext = Helpers.GetInstanceMethod(iteratorType, "MoveNext");
-            current = Helpers.GetGetMethod(Helpers.GetProperty(iteratorType, "Current", false), false, false);
+            current = Helpers.GetGetMethod(Helpers.GetProperty(iteratorType,"Current", false), false, false);
             return getEnumerator;
         }
 #if FEAT_COMPILER
@@ -408,7 +407,7 @@ namespace ProtoBuf.Serializers
         {
             using (Compiler.Local list = ctx.GetLocalWithValue(ExpectedType, valueFrom))
             {
-                MethodInfo getEnumerator = GetEnumeratorInfo(ctx.Model, out MethodInfo moveNext, out MethodInfo current);
+                MethodInfo moveNext, current, getEnumerator = GetEnumeratorInfo(ctx.Model, out moveNext, out current);
                 Helpers.DebugAssert(moveNext != null);
                 Helpers.DebugAssert(current != null);
                 Helpers.DebugAssert(getEnumerator != null);
@@ -441,7 +440,7 @@ namespace ProtoBuf.Serializers
                     {
                         Compiler.CodeLabel body = ctx.DefineLabel(), next = ctx.DefineLabel();
                         ctx.Branch(next, false);
-
+                        
                         ctx.MarkLabel(body);
 
                         ctx.LoadAddress(iter, enumeratorType);
@@ -464,12 +463,13 @@ namespace ProtoBuf.Serializers
                         ctx.LoadValue(token);
                         ctx.LoadReaderWriter();
                         ctx.EmitCall(ctx.MapType(typeof(ProtoWriter)).GetMethod("EndSubItem"));
-                    }
+                    }                    
                 }
             }
         }
 #endif
 
+#if !FEAT_IKVM
         public override void Write(object value, ProtoWriter dest)
         {
             SubItemToken token;
@@ -512,8 +512,9 @@ namespace ProtoBuf.Serializers
             }
         }
 
-        private bool CanUsePackedPrefix(object obj) =>
-            ArrayDecorator.CanUsePackedPrefix(packedWireType, Tail.ExpectedType);
+		private bool CanUsePackedPrefix(object obj) {
+			return ArrayDecorator.CanUsePackedPrefix (packedWireType, Tail.ExpectedType);
+		}
 
         public override object Read(object value, ProtoReader source)
         {
@@ -566,13 +567,13 @@ namespace ProtoBuf.Serializers
                     }
                 }
                 return origValue == value ? null : value;
-            }
-            catch (TargetInvocationException tie)
+            } catch(TargetInvocationException tie)
             {
                 if (tie.InnerException != null) throw tie.InnerException;
                 throw;
             }
         }
+#endif
 
     }
 }

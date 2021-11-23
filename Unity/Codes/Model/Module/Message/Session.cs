@@ -109,7 +109,7 @@ namespace ET
             }
 
             this.requestCallbacks.Remove(response.RpcId);
-            if (ErrorCode.IsRpcNeedThrowException(response.Error))
+            if (ErrorCore.IsRpcNeedThrowException(response.Error))
             {
                 action.Tcs.SetException(new Exception($"Rpc error, request: {action.Request} response: {response}"));
                 return;
@@ -136,7 +136,7 @@ namespace ET
                 this.requestCallbacks.Remove(rpcId);
                 Type responseType = OpcodeTypeComponent.Instance.GetResponseType(action.Request.GetType());
                 IResponse response = (IResponse) Activator.CreateInstance(responseType);
-                response.Error = ErrorCode.ERR_Cancel;
+                response.Error = ErrorCore.ERR_Cancel;
                 action.Tcs.SetResult(response);
             }
 

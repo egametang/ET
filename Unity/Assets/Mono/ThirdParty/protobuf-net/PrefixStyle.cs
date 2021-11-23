@@ -9,18 +9,18 @@ namespace ProtoBuf
         /// <summary>
         /// No length prefix is applied to the data; the data is terminated only be the end of the stream.
         /// </summary>
-        None = 0,
+        None,
         /// <summary>
-        /// A base-128 ("varint", the default prefix format in protobuf) length prefix is applied to the data (efficient for short messages).
+        /// A base-128 length prefix is applied to the data (efficient for short messages).
         /// </summary>
-        Base128 = 1,
+        Base128,
         /// <summary>
         /// A fixed-length (little-endian) length prefix is applied to the data (useful for compatibility).
         /// </summary>
-        Fixed32 = 2,
-        /// <summary>
+        Fixed32,
+                /// <summary>
         /// A fixed-length (big-endian) length prefix is applied to the data (useful for compatibility).
         /// </summary>
-        Fixed32BigEndian = 3
+        Fixed32BigEndian
     }
 }

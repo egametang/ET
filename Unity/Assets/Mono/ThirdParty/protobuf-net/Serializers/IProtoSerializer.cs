@@ -1,6 +1,9 @@
 ﻿#if !NO_RUNTIME
 using System;
 
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+#endif
 
 namespace ProtoBuf.Serializers
 {
@@ -11,6 +14,7 @@ namespace ProtoBuf.Serializers
         /// </summary>
         Type ExpectedType { get; }
 
+#if !FEAT_IKVM
         /// <summary>
         /// Perform the steps necessary to serialize this data.
         /// </summary>
@@ -25,7 +29,7 @@ namespace ProtoBuf.Serializers
         /// <param name="source">The reader providing the input data.</param>
         /// <returns>The updated / replacement value.</returns>
         object Read(object value, ProtoReader source);
-
+#endif
         /// <summary>
         /// Indicates whether a Read operation <em>replaces</em> the existing value, or
         /// <em>extends</em> the value. If false, the "value" parameter to Read is
@@ -37,8 +41,11 @@ namespace ProtoBuf.Serializers
         /// value should be expected.
         /// </summary>
         bool ReturnsValue { get; }
-
+        
 #if FEAT_COMPILER
+
+
+
         /// <summary>Emit the IL necessary to perform the given actions
         /// to serialize this data.
         /// </summary>

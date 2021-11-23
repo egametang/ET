@@ -1,4 +1,5 @@
-﻿//using System.Collections.Generic;
+﻿//#if !NO_GENERICS
+//using System.Collections.Generic;
 
 //namespace ProtoBuf
 //{
@@ -42,3 +43,4 @@
 //        }
 //    }
 //}
+//#endif

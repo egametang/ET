@@ -1,13 +1,20 @@
 ﻿#if !NO_RUNTIME
 using System;
 using System.Collections;
-using System.Reflection;
 using ProtoBuf.Meta;
+
+#if FEAT_IKVM
+using Type = IKVM.Reflection.Type;
+using IKVM.Reflection;
+#else
+
+#endif
 
 namespace ProtoBuf.Serializers
 {
     sealed class ArrayDecorator : ProtoDecoratorBase
     {
+
         private readonly int fieldNumber;
         private const byte
                    OPTIONS_WritePacked = 1,
@@ -19,9 +26,13 @@ namespace ProtoBuf.Serializers
             : base(tail)
         {
             Helpers.DebugAssert(arrayType != null, "arrayType should be non-null");
-            Helpers.DebugAssert(arrayType.IsArray && arrayType.GetArrayRank() == 1, "should be single-dimension array; " + arrayType.FullName);
+            //Helpers.DebugAssert(arrayType.IsArray && arrayType.GetArrayRank() == 1, "should be single-dimension array; " + arrayType.FullName);
             this.itemType = arrayType.GetElementType();
+#if NO_GENERICS
+            Type underlyingItemType = itemType;
+#else
             Type underlyingItemType = supportNull ? itemType : (Helpers.GetUnderlyingType(itemType) ?? itemType);
+#endif
 
             Helpers.DebugAssert(underlyingItemType == Tail.ExpectedType
                 || (Tail.ExpectedType == model.MapType(typeof(object)) && !Helpers.IsValueType(underlyingItemType)), "invalid tail");
@@ -31,7 +42,7 @@ namespace ProtoBuf.Serializers
             {
                 if (writePacked) throw new InvalidOperationException("Only simple data-types can use packed encoding");
                 packedWireType = WireType.None;
-            }
+            }       
             this.fieldNumber = fieldNumber;
             this.packedWireType = packedWireType;
             if (writePacked) options |= OPTIONS_WritePacked;
@@ -43,23 +54,6 @@ namespace ProtoBuf.Serializers
         public override Type ExpectedType { get { return arrayType; } }
         public override bool RequiresOldValue { get { return AppendToCollection; } }
         public override bool ReturnsValue { get { return true; } }
-        private bool CanUsePackedPrefix() => CanUsePackedPrefix(packedWireType, itemType);
-
-        internal static bool CanUsePackedPrefix(WireType packedWireType, Type itemType)
-        {
-            // needs to be a suitably simple type *and* be definitely not nullable
-            switch (packedWireType)
-            {
-                case WireType.Fixed32:
-                case WireType.Fixed64:
-                    break;
-                default:
-                    return false; // nope
-            }
-            if (!Helpers.IsValueType(itemType)) return false;
-            return Helpers.GetUnderlyingType(itemType) == null;
-        }
-
 #if FEAT_COMPILER
         protected override void EmitWrite(ProtoBuf.Compiler.CompilerContext ctx, ProtoBuf.Compiler.Local valueFrom)
         {
@@ -72,7 +66,7 @@ namespace ProtoBuf.Serializers
 
                 using (Compiler.Local token = (writePacked && !fixedLengthPacked) ? new Compiler.Local(ctx, ctx.MapType(typeof(SubItemToken))) : null)
                 {
-                    Type mappedWriter = ctx.MapType(typeof(ProtoWriter));
+                    Type mappedWriter = ctx.MapType(typeof (ProtoWriter));
                     if (writePacked)
                     {
                         ctx.LoadValue(fieldNumber);
@@ -80,7 +74,7 @@ namespace ProtoBuf.Serializers
                         ctx.LoadReaderWriter();
                         ctx.EmitCall(mappedWriter.GetMethod("WriteFieldHeader"));
 
-                        if (fixedLengthPacked)
+                        if(fixedLengthPacked)
                         {
                             // write directly - no need for buffering
                             ctx.LoadLength(arr, false);
@@ -155,10 +149,32 @@ namespace ProtoBuf.Serializers
             ctx.BranchIfLess(processItem, false);
         }
 #endif
-        private bool AppendToCollection => (options & OPTIONS_OverwriteList) == 0;
 
+		private bool CanUsePackedPrefix() { 
+			return CanUsePackedPrefix (packedWireType, itemType);
+		}
+		internal static bool CanUsePackedPrefix(WireType packedWireType,  Type itemType)
+		{
+			// needs to be a suitably simple type *and* be definitely not nullable
+			switch(packedWireType)
+			{
+			case WireType.Fixed32:
+			case WireType.Fixed64:
+				break;
+			default:
+				return false; // nope
+			}
+			if (!Helpers.IsValueType(itemType)) return false;
+			return Helpers.GetUnderlyingType(itemType) == null;
+		}
+
+        private bool AppendToCollection
+        {
+            get { return (options & OPTIONS_OverwriteList) == 0; }
+        }
         private bool SupportNull { get { return (options & OPTIONS_SupportNull) != 0; } }
 
+#if !FEAT_IKVM
         public override void Write(object value, ProtoWriter dest)
         {
             IList arr = (IList)value;
@@ -203,7 +219,7 @@ namespace ProtoBuf.Serializers
                 {
                     ProtoWriter.EndSubItem(token, dest);
                 }
-            }
+            }            
         }
         public override object Read(object value, ProtoReader source)
         {
@@ -219,7 +235,7 @@ namespace ProtoBuf.Serializers
                 ProtoReader.EndSubItem(token, source);
             }
             else
-            {
+            { 
                 do
                 {
                     list.Add(Tail.Read(null, source));
@@ -231,12 +247,17 @@ namespace ProtoBuf.Serializers
             list.CopyTo(result, oldLen);
             return result;
         }
+#endif
 
 #if FEAT_COMPILER
         protected override void EmitRead(ProtoBuf.Compiler.CompilerContext ctx, ProtoBuf.Compiler.Local valueFrom)
         {
             Type listType;
+#if NO_GENERICS
+            listType = typeof(BasicList);
+#else
             listType = ctx.MapType(typeof(System.Collections.Generic.List<>)).MakeGenericType(itemType);
+#endif
             Type expected = ExpectedType;
             using (Compiler.Local oldArr = AppendToCollection ? ctx.GetLocalWithValue(expected, valueFrom) : null)
             using (Compiler.Local newArr = new Compiler.Local(ctx, expected))
@@ -247,8 +268,7 @@ namespace ProtoBuf.Serializers
                 ListDecorator.EmitReadList(ctx, list, Tail, listType.GetMethod("Add"), packedWireType, false);
 
                 // leave this "using" here, as it can share the "FieldNumber" local with EmitReadList
-                using (Compiler.Local oldLen = AppendToCollection ? new ProtoBuf.Compiler.Local(ctx, ctx.MapType(typeof(int))) : null)
-                {
+                using(Compiler.Local oldLen = AppendToCollection ? new ProtoBuf.Compiler.Local(ctx, ctx.MapType(typeof(int))) : null) {
                     Type[] copyToArrayInt32Args = new Type[] { ctx.MapType(typeof(Array)), ctx.MapType(typeof(int)) };
 
                     if (AppendToCollection)
@@ -276,7 +296,7 @@ namespace ProtoBuf.Serializers
                         ctx.LoadValue(list);
                         ctx.LoadValue(newArr);
                         ctx.LoadValue(oldLen);
-
+                        
                     }
                     else
                     {

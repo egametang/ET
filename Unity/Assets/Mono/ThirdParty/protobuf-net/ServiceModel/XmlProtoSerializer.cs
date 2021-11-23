@@ -1,9 +1,9 @@
-﻿#if FEAT_SERVICEMODEL && PLAT_XMLSERIALIZER
-using System;
+﻿#if (FEAT_SERVICEMODEL && PLAT_XMLSERIALIZER) || (SILVERLIGHT && !PHONE7)
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 using ProtoBuf.Meta;
+using System;
 
 namespace ProtoBuf.ServiceModel
 {
@@ -18,11 +18,13 @@ namespace ProtoBuf.ServiceModel
         private readonly Type type;
         internal XmlProtoSerializer(TypeModel model, int key, Type type, bool isList)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
             if (key < 0) throw new ArgumentOutOfRangeException(nameof(key));
-            this.model = model ?? throw new ArgumentNullException(nameof(model));
+            if (type == null) throw new ArgumentOutOfRangeException(nameof(type));
+            this.model = model;
             this.key = key;
             this.isList = isList;
-            this.type = type ?? throw new ArgumentOutOfRangeException(nameof(type));
+            this.type = type;
             this.isEnum = Helpers.IsEnum(type);
         }
         /// <summary>
@@ -34,14 +36,14 @@ namespace ProtoBuf.ServiceModel
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            int key = GetKey(model, ref type, out bool isList);
+            bool isList;
+            int key = GetKey(model, ref type, out isList);
             if (key >= 0)
             {
                 return new XmlProtoSerializer(model, key, type, isList);
             }
             return null;
         }
-
         /// <summary>
         /// Creates a new serializer for the given model and type
         /// </summary>
@@ -56,7 +58,6 @@ namespace ProtoBuf.ServiceModel
             this.isEnum = Helpers.IsEnum(type);
             if (key < 0) throw new ArgumentOutOfRangeException(nameof(type), "Type not recognised by the model: " + type.FullName);
         }
-
         static int GetKey(TypeModel model, ref Type type, out bool isList)
         {
             if (model != null && type != null)
@@ -81,32 +82,29 @@ namespace ProtoBuf.ServiceModel
 
             isList = false;
             return -1;
+            
         }
-
         /// <summary>
         /// Ends an object in the output
         /// </summary>
-        public override void WriteEndObject(XmlDictionaryWriter writer)
+        public override void WriteEndObject(System.Xml.XmlDictionaryWriter writer)
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
             writer.WriteEndElement();
         }
-
         /// <summary>
         /// Begins an object in the output
         /// </summary>
-        public override void WriteStartObject(XmlDictionaryWriter writer, object graph)
+        public override void WriteStartObject(System.Xml.XmlDictionaryWriter writer, object graph)
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
             writer.WriteStartElement(PROTO_ELEMENT);
         }
-
         private const string PROTO_ELEMENT = "proto";
-
         /// <summary>
         /// Writes the body of an object in the output
         /// </summary>
-        public override void WriteObjectContent(XmlDictionaryWriter writer, object graph)
+        public override void WriteObjectContent(System.Xml.XmlDictionaryWriter writer, object graph)
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
             if (graph == null)
@@ -123,7 +121,7 @@ namespace ProtoBuf.ServiceModel
                     }
                     else
                     {
-                        using (ProtoWriter protoWriter = ProtoWriter.Create(ms, model, null))
+                        using (ProtoWriter protoWriter = new ProtoWriter(ms, model, null))
                         {
                             model.Serialize(key, graph, protoWriter);
                         }
@@ -137,17 +135,17 @@ namespace ProtoBuf.ServiceModel
         /// <summary>
         /// Indicates whether this is the start of an object we are prepared to handle
         /// </summary>
-        public override bool IsStartObject(XmlDictionaryReader reader)
+        public override bool IsStartObject(System.Xml.XmlDictionaryReader reader)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             reader.MoveToContent();
-            return reader.NodeType == XmlNodeType.Element && reader.Name == PROTO_ELEMENT;
+            return reader.NodeType == System.Xml.XmlNodeType.Element && reader.Name == PROTO_ELEMENT;
         }
 
         /// <summary>
         /// Reads the body of an object
         /// </summary>
-        public override object ReadObject(XmlDictionaryReader reader, bool verifyObjectName)
+        public override object ReadObject(System.Xml.XmlDictionaryReader reader, bool verifyObjectName)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             reader.MoveToContent();
@@ -157,10 +155,10 @@ namespace ProtoBuf.ServiceModel
             // explicitly null
             if (isNil)
             {
-                if (!isSelfClosed) reader.ReadEndElement();
+                if(!isSelfClosed) reader.ReadEndElement();
                 return null;
             }
-            if (isSelfClosed) // no real content
+            if(isSelfClosed) // no real content
             {
                 if (isList || isEnum)
                 {
