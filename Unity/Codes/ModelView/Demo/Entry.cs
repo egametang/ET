@@ -8,11 +8,11 @@ namespace ET
 		{
 			try
 			{
-				Game.EventSystem.Add(typeof(Entry).Assembly);
-
 				CodeLoader.Instance.Update += Game.Update;
 				CodeLoader.Instance.LateUpdate += Game.LateUpdate;
 				CodeLoader.Instance.OnApplicationQuit += Game.Close;
+				
+				Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
 				
 				ProtobufHelper.Init();
 				

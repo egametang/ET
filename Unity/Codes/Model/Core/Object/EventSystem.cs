@@ -87,16 +87,47 @@ namespace ET
 
 		private EventSystem()
 		{
-			this.Add(typeof(EventSystem).Assembly);
 		}
 
-		public void Add(List<Type> addTypes)
+
+		private static List<Type> GetBaseAttributes(Type[] addTypes)
+		{
+			List<Type> attributeTypes = new List<Type>();
+			foreach (Type type in addTypes)
+			{
+				if (type.IsAbstract)
+				{
+					continue;
+				}
+                
+				if (type.IsSubclassOf(typeof(BaseAttribute)))
+				{
+					attributeTypes.Add(type);
+				}
+			}
+			return attributeTypes;
+		}
+
+		public void Add(Type[] addTypes)
 		{
 			this.types.Clear();
-
-			foreach (Type addType in addTypes)
+			
+			List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
+			foreach (Type baseAttributeType in baseAttributeTypes)
 			{
-				this.types.Add(addType.GetType(), addType);
+				foreach (Type type in addTypes)
+				{
+					if (type.IsAbstract)
+					{
+						continue;
+					}
+					object[] objects = type.GetCustomAttributes(baseAttributeType, true);
+					if (objects.Length == 0)
+					{
+						continue;
+					}
+					this.types.Add(baseAttributeType, type);
+				}
 			}
 
 			this.typeSystems = new TypeSystems();
@@ -137,67 +168,13 @@ namespace ET
 			this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
 
 			List<Type> addTypes = new List<Type>();
-			this.types.Clear();
-			foreach (Assembly value in this.assemblies.Values)
+
+			foreach (Assembly ass in this.assemblies.Values)
 			{
-				foreach (Type type in value.GetTypes())
-				{
-					if (type.IsAbstract)
-					{
-						continue;
-					}
-
-					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
-					if (objects.Length == 0)
-					{
-						continue;
-					}
-
-					foreach (BaseAttribute baseAttribute in objects)
-					{
-						this.types.Add(baseAttribute.AttributeType, type);
-					}
-				}
-			}
-
-			this.typeSystems = new TypeSystems();
-			
-			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
-			{
-				object obj = Activator.CreateInstance(type);
-
-				if (obj is ISystemType iSystemType)
-				{
-					OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
-					oneTypeSystems.Add(iSystemType.SystemType(), obj);
-				}
-			}
-
-			this.allEvents.Clear();
-			foreach (Type type in types[typeof(EventAttribute)])
-			{
-				IEvent obj = Activator.CreateInstance(type) as IEvent;
-				if (obj == null)
-				{
-					throw new Exception($"type not is AEvent: {obj.GetType().Name}");
-				}
-
-				Type eventType = obj.GetEventType();
-				if (!this.allEvents.ContainsKey(eventType))
-				{
-					this.allEvents.Add(eventType, new List<object>());
-				}
-				this.allEvents[eventType].Add(obj);
+				addTypes.AddRange(ass.GetTypes());
 			}
 			
-			this.Load();
-		}
-
-
-		
-		public Assembly GetAssembly(string name)
-		{
-			return this.assemblies[name];
+			this.Add(addTypes.ToArray());
 		}
 		
 		public HashSet<Type> GetTypes(Type systemAttributeType)

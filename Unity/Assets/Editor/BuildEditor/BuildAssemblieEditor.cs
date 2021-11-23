@@ -119,10 +119,11 @@ namespace ET
 
         private static async ETVoid AfterCompiling(AssemblyBuilder assemblyBuilder)
         {
-            Debug.Log("Compiling wait");
             while (EditorApplication.isCompiling)
             {
-                await Task.Delay(100);
+                Debug.Log("Compiling wait1");
+                await Task.Delay(2000);
+                Debug.Log("Compiling wait2");
             }
             
             Debug.Log("Compiling finish");
