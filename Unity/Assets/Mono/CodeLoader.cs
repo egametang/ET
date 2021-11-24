@@ -1,4 +1,4 @@
-﻿#define ILRuntime1
+﻿#define ILRuntime
 
 using System;
 using System.Collections.Generic;
@@ -17,17 +17,19 @@ namespace ET
 		public Action Update;
 		public Action LateUpdate;
 		public Action OnApplicationQuit;
-
-		private readonly IStaticMethod start;
 		
-		private readonly Type[] hotfixTypes;
+		private Type[] hotfixTypes;
 
 		private CodeLoader()
+		{
+		}
+		
+		public void Start()
 		{
 			Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 			byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
 			byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
-			
+
 #if ILRuntime
 			ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 			System.IO.MemoryStream assStream = new System.IO.MemoryStream(assBytes);
@@ -38,18 +40,15 @@ namespace ET
 			
 			this.hotfixTypes = Type.EmptyTypes;
 			this.hotfixTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
-			this.start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
+			IStaticMethod start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
 #else
 
 			System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assBytes, pdbBytes);
 			hotfixTypes = assembly.GetTypes();
-			this.start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
+			IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
 #endif
-		}
-		
-		public void Start()
-		{
-			this.start.Run();
+			
+			start.Run();
 		}
 
 		public Type[] GetHotfixTypes()

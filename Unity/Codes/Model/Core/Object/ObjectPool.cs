@@ -3,36 +3,36 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ComponentQueue: Object
+    public class ComponentQueue: DisposeObject
     {
         public string TypeName
         {
             get;
         }
 
-        private readonly Queue<Object> queue = new Queue<Object>();
+        private readonly Queue<DisposeObject> queue = new Queue<DisposeObject>();
 
         public ComponentQueue(string typeName)
         {
             this.TypeName = typeName;
         }
 
-        public void Enqueue(Object entity)
+        public void Enqueue(DisposeObject entity)
         {
             this.queue.Enqueue(entity);
         }
 
-        public Object Dequeue()
+        public DisposeObject Dequeue()
         {
             return this.queue.Dequeue();
         }
 
-        public Object Peek()
+        public DisposeObject Peek()
         {
             return this.queue.Peek();
         }
 
-        public Queue<Object> Queue => this.queue;
+        public Queue<DisposeObject> Queue => this.queue;
 
         public int Count => this.queue.Count;
 
@@ -40,13 +40,13 @@ namespace ET
         {
             while (this.queue.Count > 0)
             {
-                Object component = this.queue.Dequeue();
+                DisposeObject component = this.queue.Dequeue();
                 component.Dispose();
             }
         }
     }
 
-    public class ObjectPool: Object
+    public class ObjectPool: DisposeObject
     {
         private static ObjectPool instance;
 
@@ -65,16 +65,16 @@ namespace ET
 
         private readonly Dictionary<Type, ComponentQueue> dictionary = new Dictionary<Type, ComponentQueue>();
 
-        public Object Fetch(Type type)
+        public DisposeObject Fetch(Type type)
         {
-            Object obj;
+            DisposeObject obj;
             if (!this.dictionary.TryGetValue(type, out ComponentQueue queue))
             {
-                obj = (Object) Activator.CreateInstance(type);
+                obj = (DisposeObject) Activator.CreateInstance(type);
             }
             else if (queue.Count == 0)
             {
-                obj = (Object) Activator.CreateInstance(type);
+                obj = (DisposeObject) Activator.CreateInstance(type);
             }
             else
             {
@@ -84,13 +84,13 @@ namespace ET
             return obj;
         }
 
-        public T Fetch<T>() where T : Object
+        public T Fetch<T>() where T : DisposeObject
         {
             T t = (T) this.Fetch(typeof (T));
             return t;
         }
 
-        public void Recycle(Object obj)
+        public void Recycle(DisposeObject obj)
         {
             Type type = obj.GetType();
             ComponentQueue queue;

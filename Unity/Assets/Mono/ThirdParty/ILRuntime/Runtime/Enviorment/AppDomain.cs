@@ -682,6 +682,11 @@ namespace ILRuntime.Runtime.Enviorment
             }
             else
                 isArray = false;
+            if (fullname.Length > 2 && fullname.Substring(fullname.Length - 2) == "[]")
+            {
+                baseType = fullname;
+                return;
+            }
             if (fullname.Contains('<') || fullname.Contains('['))
             {
                 foreach (var i in fullname)

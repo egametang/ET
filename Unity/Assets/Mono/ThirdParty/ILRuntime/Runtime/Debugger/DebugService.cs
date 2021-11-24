@@ -26,6 +26,7 @@ namespace ILRuntime.Runtime.Debugger
         AutoResetEvent evt = new AutoResetEvent(false);
         
         public Action<string> OnBreakPoint;
+        public Action<string> OnILRuntimeException;
 
         public Enviorment.AppDomain AppDomain { get { return domain; } }
 

@@ -390,7 +390,27 @@ namespace ILRuntime.Reflection
         {
             if (methods == null)
                 InitializeMethods();
-            return methods;
+            bool isPublic = (bindingAttr & BindingFlags.Public) == BindingFlags.Public;
+            bool isPrivate = (bindingAttr & BindingFlags.NonPublic) == BindingFlags.NonPublic;
+            bool isStatic = (bindingAttr & BindingFlags.Static) == BindingFlags.Static;
+            bool isInstance = (bindingAttr & BindingFlags.Instance) == BindingFlags.Instance;
+            List<MethodInfo> res = new List<MethodInfo>();
+            foreach (var i in methods)
+            {
+                if (isPublic != i.IsPublic && isPrivate != !i.IsPublic)
+                    continue;
+                if ((isStatic != i.IsStatic) && (isInstance != !i.IsStatic))
+                    continue;
+                res.Add(i);
+            }
+            if ((bindingAttr & BindingFlags.DeclaredOnly) != BindingFlags.DeclaredOnly)
+            {
+                if (BaseType != null && (BaseType is ILRuntimeWrapperType || BaseType is ILRuntimeType))
+                {
+                    res.AddRange(BaseType.GetMethods(bindingAttr));
+                }
+            }
+            return res.ToArray();
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
@@ -503,8 +523,14 @@ namespace ILRuntime.Reflection
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
             IMethod res;
+            bool declearedOnly = (bindingAttr & BindingFlags.DeclaredOnly) == BindingFlags.DeclaredOnly;
+
             if (types == null)
+            {
                 res = type.GetMethod(name);
+                if (res == null && !declearedOnly && type.BaseType is ILType)
+                    return BaseType.GetMethod(name, bindingAttr);
+            }
             else
             {
                 List<IType> param = new List<IType>();
@@ -522,7 +548,6 @@ namespace ILRuntime.Reflection
                         param.Add(t);
                     }
                 }
-                bool declearedOnly = (bindingAttr & BindingFlags.DeclaredOnly) == BindingFlags.DeclaredOnly;
                 res = type.GetMethod(name, param, null, null, declearedOnly);
             }
             if (res != null)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class HashSetComponent<T>: Object
+    public class HashSetComponent<T>: DisposeObject
     {
         private bool isDispose;
         
