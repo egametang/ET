@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
@@ -113,22 +114,22 @@ namespace ET
                 Debug.LogErrorFormat("build fail：" + assemblyBuilder.assemblyPath);
                 return;
             }
-            
-            AfterCompiling(assemblyBuilder).Coroutine();
+
+            AfterCompiling(assemblyBuilder);
         }
 
-        private static async ETVoid AfterCompiling(AssemblyBuilder assemblyBuilder)
+        private static void AfterCompiling(AssemblyBuilder assemblyBuilder)
         {
             while (EditorApplication.isCompiling)
             {
                 Debug.Log("Compiling wait1");
-                await Task.Delay(2000);
+                // 主线程sleep并不影响编译线程
+                Thread.Sleep(1000);
                 Debug.Log("Compiling wait2");
             }
             
             Debug.Log("Compiling finish");
-            
-            
+
             Directory.CreateDirectory(CodeDir);
             File.Copy(Path.Combine(ScriptAssembliesDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
             File.Copy(Path.Combine(ScriptAssembliesDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
