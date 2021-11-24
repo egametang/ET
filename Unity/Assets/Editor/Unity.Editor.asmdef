@@ -2,7 +2,7 @@
     "name": "Unity.Editor",
     "references": [
         "Unity.Mono",
-        "ILRuntime"
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [
         "Editor"

@@ -326,199 +326,6 @@
      <Compile Include="Assets\Mono\MonoBehaviour\Init.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\ReferenceCollector.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\UILayerScript.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\Method\CLRMethod.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\Method\ExceptionHandler.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\Method\ILMethod.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\Method\IMethod.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\TypeSystem\CLRType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\TypeSystem\ILGenericParameterType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\TypeSystem\ILType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\TypeSystem\IType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\CLR\Utils\Extensions.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Other\ByReferenceKeyComparer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Other\DelegateExportAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Other\NeedAdaptorAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Other\ThreadSafeDictionary.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Other\UncheckedList.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Other\UncheckedStack.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\Extensions.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimeConstructorInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimeFieldInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimeMethodInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimeParameterInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimePropertyInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimeType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Reflection\ILRuntimeWrapperType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Adaptors\CLRCrossBindingAdaptors.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\BindingCodeGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\BindingGeneratorExtensions.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\CLRBindingUtils.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\CommonBindingGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\ConstructorBindingGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\FieldBindingGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\MethodBindingGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\CLRBinding\ValueTypeBindingGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\BreakPointContext.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\BreakpointInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\DebugMessageType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\DebugService.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\DebugSocket.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\DebuggerServer\DebuggerServer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSBindBreakpoint.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSDeleteBreakpoint.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSEnumChildren.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSExecute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSResolveIndexer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSResolveVariable.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\CSStep.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCAttachResult.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCBindBreakpointResult.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCBreakpointHit.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCEnumChildrenResult.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCModuleLoaded.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCResolveVariableResult.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCStepComplete.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCThreadStarted.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\StackFrameInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\StepTypes.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Debugger\VariableInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\AppDomain.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\CLRRedirections.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\CrossBindingAdaptor.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\CrossBindingCodeGenerator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\CrossBindingMethodInfo.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\DelegateManager.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\InvocationContext.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Enviorment\ValueTypeBinder.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Extensions.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\ILRuntimeJITAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\DelegateAdapter.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\ILIntepreter.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\ILRuntimeException.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\ILTypeInstance.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\OpCodes\OpCode.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\OpCodes\OpCodeEnum.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\OpCodes\OpCodeREnum.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\AsyncJITCompileWorker.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\CodeBasicBlock.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\ILIntepreter.Register.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\JITCompiler.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.BCP.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.ELDC.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.FCP.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.InlineMethod.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.RegisterCleanup.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.Utils.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Stack\RuntimeStack.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Stack\StackFrame.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Stack\StackObject.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ILRuntime\Runtime\Stack\StackObjectAllocator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\Extensions.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\IJsonWrapper.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\JsonData.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\JsonException.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\JsonMapper.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\JsonMockWrapper.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\JsonReader.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\JsonWriter.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\Lexer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\Netstandard15Polyfill.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\ParserToken.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\LitJson\UnityTypeBindings.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\ShareLib\Kcp\Kcp.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\BclHelpers.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\BufferExtension.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\BufferPool.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\CallbackAttributes.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Compiler\CompilerContext.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Compiler\CompilerDelegates.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Compiler\Local.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\DataFormat.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\DiscriminatedUnion.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Extensible.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ExtensibleUtil.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\GlobalSuppressions.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Helpers.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\IExtensible.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\IExtension.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ImplicitFields.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\KeyValuePairProxy.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\AttributeMap.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\BasicList.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\CallbackSet.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\MetaType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\ProtoSyntax.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\RuntimeTypeModel.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\SubType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeFormatEventArgs.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeModel.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\ValueMember.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\NetObjectCache.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PType.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\PrefixStyle.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoContractAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoConverterAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoEnumAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoException.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoIgnoreAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoIncludeAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoMapAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoMemberAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoReader.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtoWriter.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ProtobufPropertyHelper.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\SerializationContext.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ArrayDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\BlobSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\BooleanSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ByteSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\CharSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\CompiledSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\DateTimeSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\DecimalSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\DefaultValueDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\DoubleSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\EnumSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\FieldDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\GuidSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\IProtoSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ISerializerProxy.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ImmutableCollectionDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\Int16Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\Int32Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\Int64Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ListDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\MapDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\MemberSpecifiedDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\NetObjectSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\NullDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ParseableSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\PropertyDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ProtoDecoratorBase.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\ReflectedUriDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\SByteSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\SingleSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\StringSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\SubItemSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\SurrogateSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\SystemTypeSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\TagDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\TimeSpanSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\TupleSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\TypeSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\UInt16Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\UInt32Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\UInt64Serializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\UriDecorator.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ServiceModel\ProtoEndpointBehavior.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ServiceModel\ProtoOperationBehavior.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\SubItemToken.cs" />
-     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\WireType.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Apps/Unity/2019.4.10f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -722,13 +529,13 @@
  <HintPath>E:/ET/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>
  </Reference>
  <Reference Include="ILRuntime.Mono.Cecil.Mdb">
- <HintPath>E:/ET/Unity/Assets/Mono/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
+ <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
  </Reference>
  <Reference Include="ILRuntime.Mono.Cecil">
- <HintPath>E:/ET/Unity/Assets/Mono/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
+ <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
  </Reference>
  <Reference Include="ILRuntime.Mono.Cecil.Pdb">
- <HintPath>E:/ET/Unity/Assets/Mono/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
+ <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Apps/Unity/2019.4.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -1092,6 +899,10 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.ThirdParty.csproj">
+      <Project>{d2ad5be1-263a-9a30-ab0f-dc5b08044350}</Project>
+      <Name>Unity.ThirdParty</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

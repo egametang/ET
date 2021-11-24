@@ -1,7 +1,7 @@
 {
     "name": "Unity.Mono",
     "references": [
-        "ILRuntime"
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
