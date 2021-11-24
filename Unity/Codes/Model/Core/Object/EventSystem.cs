@@ -69,7 +69,9 @@ namespace ET
 		private readonly Dictionary<long, Entity> allEntities = new Dictionary<long, Entity>();
 
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
-		
+
+		private readonly Dictionary<string, Type> allTypes = new Dictionary<string, Type>();
+
 		private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
 
 		private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
@@ -110,6 +112,12 @@ namespace ET
 
 		public void Add(Type[] addTypes)
 		{
+			this.allTypes.Clear();
+			foreach (Type addType in addTypes)
+			{
+				this.allTypes[addType.FullName] = addType;
+			}
+			
 			this.types.Clear();
 			
 			List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
@@ -186,19 +194,14 @@ namespace ET
 			return this.types[systemAttributeType];
 		}
 		
-		public List<Type> GetTypes()
+		public Dictionary<string, Type> GetTypes()
 		{
-			List<Type> allTypes = new List<Type>();
-			foreach (Assembly assembly in this.assemblies.Values)
-			{
-				allTypes.AddRange(assembly.GetTypes());
-			}
 			return allTypes;
 		}
 
 		public Type GetType(string typeName)
 		{
-			return typeof (Game).Assembly.GetType(typeName);
+			return this.allTypes[typeName];
 		}
 
 		public void RegisterSystem(Entity component, bool isRegister = true)

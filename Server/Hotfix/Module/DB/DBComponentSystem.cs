@@ -13,7 +13,7 @@ namespace ET
 			self.database = self.mongoClient.GetDatabase(dbName);
 			
 			self.Transfers.Clear();
-			foreach (Type type in Game.EventSystem.GetTypes())
+			foreach (Type type in Game.EventSystem.GetTypes().Values)
 			{
 				if (type == typeof (IDBCollection))
 				{

@@ -75,7 +75,7 @@ namespace ET
                 if (newline.StartsWith("//ResponseType"))
                 {
                     string responseType = line.Split(" ")[1].TrimEnd('\r', '\n');
-                    sb.AppendLine($"\t[ResponseType(typeof({responseType}))]");
+                    sb.AppendLine($"\t[ResponseType(\"{responseType}\")]");
                     continue;
                 }
 

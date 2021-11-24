@@ -26,7 +26,7 @@ namespace ET
 		
         public override void EndInit()
         {
-            Log.Debug("1111111111111111111111111 list数量: " + list.Count.ToString());
+            Log.Debug($"1111111111111111111111111111: {this.list.Count}");
             
             foreach (AIConfig config in list)
             {

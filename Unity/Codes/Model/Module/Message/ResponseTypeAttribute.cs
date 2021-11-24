@@ -4,9 +4,9 @@ namespace ET
 {
     public class ResponseTypeAttribute: BaseAttribute
     {
-        public Type Type { get; }
+        public string Type { get; }
 
-        public ResponseTypeAttribute(Type type)
+        public ResponseTypeAttribute(string type)
         {
             this.Type = type;
         }

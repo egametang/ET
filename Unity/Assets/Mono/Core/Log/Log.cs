@@ -79,6 +79,11 @@ namespace ET
 
         public static void Error(Exception e)
         {
+            if (e.Data.Contains("StackTrace"))
+            {
+                ILog.Error(e.Data["StackTrace"].ToString());
+                return;
+            }
             string str = e.ToString();
             ILog.Error(str);
         }

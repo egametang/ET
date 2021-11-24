@@ -30,7 +30,7 @@ namespace ET
 
             var types = Game.EventSystem.GetTypes();
 
-            foreach (Type type in types)
+            foreach (Type type in types.Values)
             {
                 if (!type.IsSubclassOf(typeof (Object)))
                 {

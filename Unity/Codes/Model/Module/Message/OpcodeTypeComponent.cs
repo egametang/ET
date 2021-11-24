@@ -80,7 +80,7 @@ namespace ET
                     }
 
                     ResponseTypeAttribute responseTypeAttribute = attrs[0] as ResponseTypeAttribute;
-                    this.requestResponse.Add(type, responseTypeAttribute.Type);
+                    this.requestResponse.Add(type, Game.EventSystem.GetType($"ET.{responseTypeAttribute.Type}"));
                 }
             }
         }
