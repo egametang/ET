@@ -151,7 +151,7 @@ namespace ET
             if (Define.IsAsync)
             {
                 LoadOneBundle("StreamingAssets");
-                AssetBundleManifestObject = (AssetBundleManifest) GetAsset("StreamingAssets", "AssetBundleManifest");
+                AssetBundleManifestObject = (AssetBundleManifest)GetAsset("StreamingAssets", "AssetBundleManifest");
             }
         }
 
@@ -273,7 +273,7 @@ namespace ET
 
             return resource;
         }
-        
+
         // 一帧卸载一个包，避免卡死
         public async ETTask UnloadBundleAsync(string assetBundleName, bool unload = true)
         {
@@ -412,6 +412,7 @@ namespace ET
                         Log.Error($"assets bundle not found: {assetBundleName}");
                     }
                 }
+
                 return;
             }
 
@@ -460,9 +461,8 @@ namespace ET
             string[] dependencies = GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load async start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 
-            
-                List<ABInfo> abInfos = new List<ABInfo>();
-                
+            using (ListComponent<ABInfo> abInfos = ListComponent<ABInfo>.Create())
+            {
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
                     CoroutineLock coroutineLock = null;
@@ -474,6 +474,7 @@ namespace ET
                         {
                             return;
                         }
+
                         abInfosList.Add(abInfo);
                     }
                     finally
@@ -481,21 +482,27 @@ namespace ET
                         coroutineLock?.Dispose();
                     }
                 }
+
                 // LoadFromFileAsync部分可以并发加载
-                List<ETTask> tasks = new List<ETTask>();
-                foreach (string dependency in dependencies)
+                using (ListComponent<ETTask> tasks = ListComponent<ETTask>.Create())
                 {
-                    tasks.Add(LoadDependency(dependency, abInfos));
+                    foreach (string dependency in dependencies)
+                    {
+                        tasks.Add(LoadDependency(dependency, abInfos.List));
+                    }
+
+                    await ETTaskHelper.WaitAll(tasks.List);
+
+                    // ab包从硬盘加载完成，可以再并发加载all assets
+                    tasks.List.Clear();
+                    foreach (ABInfo abInfo in abInfos.List)
+                    {
+                        tasks.Add(LoadOneBundleAllAssets(abInfo));
+                    }
+
+                    await ETTaskHelper.WaitAll(tasks.List);
                 }
-                await ETTaskHelper.WaitAll(tasks);
-                    
-                // ab包从硬盘加载完成，可以再并发加载all assets
-                tasks.Clear();
-                foreach (ABInfo abInfo in abInfos)
-                {
-                    tasks.Add(LoadOneBundleAllAssets(abInfo));
-                }
-                await ETTaskHelper.WaitAll(tasks);
+            }
         }
 
         private async ETTask<ABInfo> LoadOneBundleAsync(string assetBundleName)
@@ -537,7 +544,7 @@ namespace ET
 
                     // 编辑器模式也不能同步加载
                     await TimerComponent.Instance.WaitAsync(100);
-                    
+
                     return abInfo;
                 }
             }
@@ -578,7 +585,7 @@ namespace ET
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
-                
+
                 if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
                 {
                     return;

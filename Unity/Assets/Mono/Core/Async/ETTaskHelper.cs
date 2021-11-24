@@ -23,7 +23,6 @@ namespace ET
                 {
                     return;
                 }
-
                 if (this.count == 0)
                 {
                     List<ETTask> t = this.tcss;
@@ -35,7 +34,6 @@ namespace ET
 
                     return;
                 }
-
                 ETTask tcs = ETTask.Create(true);
 
                 tcss.Add(tcs);

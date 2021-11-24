@@ -63,6 +63,7 @@
      <Compile Include="Assets\Mono\Core\Async\ETVoid.cs" />
      <Compile Include="Assets\Mono\Core\Async\IAwaiter.cs" />
      <Compile Include="Assets\Mono\Core\DoubleMap.cs" />
+     <Compile Include="Assets\Mono\Core\HashSetComponent.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ByteHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\EnumHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\FileHelper.cs" />
@@ -74,6 +75,7 @@
      <Compile Include="Assets\Mono\Core\Helper\RandomHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ZipHelper.cs" />
+     <Compile Include="Assets\Mono\Core\ListComponent.cs" />
      <Compile Include="Assets\Mono\Core\Log\FileLogger.cs" />
      <Compile Include="Assets\Mono\Core\Log\ILog.cs" />
      <Compile Include="Assets\Mono\Core\Log\Log.cs" />
@@ -121,6 +123,11 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ErrorCore_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ILog_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_JsonHelper_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ETTask_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ILTypeInstance_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_String_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Task_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Vector3_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_Log_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_MultiMap_2_Int64_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_MultiMap_2_Int64_Int64_Binding.cs" />
@@ -521,15 +528,6 @@
  </Reference>
  <Reference Include="MongoDB.Bson">
  <HintPath>E:/ET/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil.Mdb">
- <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil">
- <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil.Pdb">
- <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Apps/Unity/2019.4.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.IO;
 
 namespace ET
@@ -39,7 +39,7 @@ namespace ET
 
                     if (timeNow > actorLocationMessageSender.LastSendOrRecvTime + ActorLocationSenderComponent.TIMEOUT_TIME)
                     {
-                        list.List.Add(key);
+                        list.Add(key);
                     }
                 }
 

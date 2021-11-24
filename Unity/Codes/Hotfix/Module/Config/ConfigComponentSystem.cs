@@ -53,15 +53,16 @@ namespace ET
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
-			List<Task> listTasks = new List<Task>();
-
-			foreach (Type type in types)
+			using (ListComponent<Task> listTasks = ListComponent<Task>.Create())
 			{
-				Task task = Task.Run(() => self.LoadOneInThread(type, configBytes));
-				listTasks.Add(task);
-			}
+				foreach (Type type in types)
+				{
+					Task task = Task.Run(() => self.LoadOneInThread(type, configBytes));
+					listTasks.Add(task);
+				}
 
-			await Task.WhenAll(listTasks.ToArray());
+				await Task.WhenAll(listTasks.List.ToArray());
+			}
 		}
 
 		private static void LoadOneInThread(this ConfigComponent self, Type configType, Dictionary<string, byte[]> configBytes)

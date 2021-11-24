@@ -180,8 +180,11 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_String_Int32_Binding.Register(app);
-            System_Collections_Generic_List_1_ETTask_Binding.Register(app);
+            ET_ListComponent_1_ILTypeInstance_Binding.Register(app);
+            ET_ListComponent_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
+            System_Collections_Generic_List_1_ETTask_Binding.Register(app);
+            ET_ListComponent_1_String_Binding.Register(app);
             System_Collections_Generic_HashSet_1_String_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_AnimationClip_Binding.Register(app);
             UnityEngine_LayerMask_Binding.Register(app);
@@ -190,6 +193,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Int32_Transform_Binding.Register(app);
             ET_ETTask_1_Int32_Binding.Register(app);
             ET_NetworkHelper_Binding.Register(app);
+            ET_ListComponent_1_Vector3_Binding.Register(app);
             ET_ETTaskCompleted_Binding.Register(app);
             System_Action_1_Boolean_Binding.Register(app);
             System_Math_Binding.Register(app);
@@ -201,8 +205,9 @@ namespace ILRuntime.Runtime.Generated
             ET_ETVoid_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Byte_Array_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
-            System_Collections_Generic_List_1_Task_Binding.Register(app);
+            ET_ListComponent_1_Task_Binding.Register(app);
             System_Threading_Tasks_Task_Binding.Register(app);
+            System_Collections_Generic_List_1_Task_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_Binding.Register(app);
             ET_TService_Binding.Register(app);
             ET_RandomHelper_Binding.Register(app);

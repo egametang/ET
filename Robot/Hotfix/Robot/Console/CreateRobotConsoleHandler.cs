@@ -31,7 +31,7 @@ namespace ET
                             {
                                 continue;
                             }
-                            thisProcessRobotScenes.List.Add(robotSceneConfig);
+                            thisProcessRobotScenes.Add(robotSceneConfig);
                         }
                         
                         // 创建机器人

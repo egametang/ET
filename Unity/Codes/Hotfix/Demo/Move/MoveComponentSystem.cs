@@ -51,27 +51,17 @@ namespace ET
             
             Unit unit = self.GetParent<Unit>();
 
-            ListComponent<Vector3> path = null;
-            try
+            using (ListComponent<Vector3> path = ListComponent<Vector3>.Create())
             {
-                path = ListComponent<Vector3>.Create();
-                {
-                    self.MoveForward(true);
+                self.MoveForward(true);
                 
-                    path.List.Add(unit.Position); // 第一个是Unit的pos
-                    for (int i = self.N; i < self.Targets.Count; ++i)
-                    {
-                        path.List.Add(self.Targets[i]);
-                    }
-                    self.MoveToAsync(path.List, speed).Coroutine();
+                path.Add(unit.Position); // 第一个是Unit的pos
+                for (int i = self.N; i < self.Targets.Count; ++i)
+                {
+                    path.Add(self.Targets[i]);
                 }
+                self.MoveToAsync(path.List, speed).Coroutine();
             }
-            finally
-            {
-                path?.Dispose();
-            }
-
-
             return true;
         }
 
