@@ -9,7 +9,7 @@ namespace ET
         public override void Awake(AIComponent self, int aiConfigId)
         {
             self.AIConfigId = aiConfigId;
-            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, self.Check);
+            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, ()=> { self.Check(); });
         }
     }
 

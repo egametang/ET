@@ -15,7 +15,7 @@ namespace ET
         public const string ScriptAssembliesDir = "Temp/MyAssembly/";
         private const string CodeDir = "Assets/Bundles/Code/";
 
-        [MenuItem("Tools/BuildDll")]
+        [MenuItem("Tools/BuildDll _F5")]
         public static void BuildDll()
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
