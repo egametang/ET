@@ -9,6 +9,7 @@ namespace ET
 	public partial class AIConfigCategory
 	{
 		[ProtoIgnore]
+		[BsonIgnore]
 		public Dictionary<int, SortedDictionary<int, AIConfig>> AIConfigs = new Dictionary<int, SortedDictionary<int, AIConfig>>();
 
 		public SortedDictionary<int, AIConfig> GetAI(int aiConfigId)

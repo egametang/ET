@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 
 namespace ET
@@ -11,13 +12,31 @@ namespace ET
                 case AppType.ExcelExporter:
                 {
                     Game.Options.Console = 1;
-                    ExcelExporter.Export();
+                    try
+                    {
+                        ExcelExporter.Export();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Console(e.ToString());
+                        System.Environment.Exit(1);
+                    }
+                    System.Environment.Exit(0);
                     return;
                 }
                 case AppType.Proto2CS:
                 {
                     Game.Options.Console = 1;
-                    Proto2CS.Export();
+                    try
+                    {
+                        Proto2CS.Export();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Console(e.ToString());
+                        System.Environment.Exit(1);
+                    }
+                    System.Environment.Exit(0);
                     return;
                 }
             }

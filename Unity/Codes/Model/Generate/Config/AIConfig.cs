@@ -26,14 +26,10 @@ namespace ET
 		
         public override void EndInit()
         {
-            Log.Debug($"1111111111111111111111111111: {this.list.Count}");
-            
             foreach (AIConfig config in list)
             {
                 this.dict.Add(config.Id, config);
-            }
-            list.Clear();
-            
+            }            
             this.AfterEndInit();
         }
 		

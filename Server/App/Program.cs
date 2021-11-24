@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using CommandLine;
+using MongoDB.Bson;
 using NLog;
 
 namespace ET
