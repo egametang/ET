@@ -24,7 +24,7 @@ namespace ET
     public static class InnerProto2CS
     {
         private const string protoPath = ".";
-        private const string clientMessagePath = "../Unity/Assets/Model/Generate/Message/";
+        private const string clientMessagePath = "../Unity/Codes/Model/Generate/Message/";
         private const string serverMessagePath = "../Server/Model/Generate/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
@@ -75,7 +75,7 @@ namespace ET
                 if (newline.StartsWith("//ResponseType"))
                 {
                     string responseType = line.Split(" ")[1].TrimEnd('\r', '\n');
-                    sb.AppendLine($"\t[ResponseType(\"{responseType}\")]");
+                    sb.AppendLine($"\t[ResponseType(nameof({responseType}))]");
                     continue;
                 }
 
