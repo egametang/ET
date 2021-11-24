@@ -38,7 +38,7 @@ namespace ET
         public static void Load(this AIDispatcherComponent self)
         {
             self.AIHandlers.Clear();
-
+            
             var types = Game.EventSystem.GetTypes(typeof (AIHandlerAttribute));
             foreach (Type type in types)
             {

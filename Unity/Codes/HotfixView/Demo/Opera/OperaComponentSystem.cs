@@ -36,6 +36,14 @@ namespace ET
                     self.DomainScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                CodeLoader.Instance.LoadHotfix();
+                Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
+                Game.EventSystem.Load();
+                Log.Debug("hot reload success!");
+            }
         }
     }
 }

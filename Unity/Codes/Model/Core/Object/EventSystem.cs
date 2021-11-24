@@ -171,8 +171,6 @@ namespace ET
 
                 this.allEvents[eventType].Add(obj);
             }
-
-            this.Load();
         }
 
         public void Add(Assembly assembly)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+using ILRuntime.Mono.Cecil;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -12,7 +12,6 @@ namespace ET
 {
     public static class BuildAssemblieEditor
     {
-        public const string ScriptAssembliesDir = "Temp/MyAssembly/";
         private const string CodeDir = "Assets/Bundles/Code/";
 
         [MenuItem("Tools/BuildDll _F5")]
@@ -31,10 +30,10 @@ namespace ET
             AssetDatabase.Refresh();
         }
         
-        [MenuItem("Tools/BuildModel")]
-        public static void BuildModel()
+        [MenuItem("Tools/BuildData")]
+        public static void BuildData()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Model", new []
+            BuildAssemblieEditor.BuildMuteAssembly("Data", new []
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
@@ -42,37 +41,46 @@ namespace ET
         }
         
         
-        [MenuItem("Tools/BuildHotfix")]
-        public static void BuildHotfix()
+        [MenuItem("Tools/BuildLogic")]
+        public static void BuildLogic()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Hotfix", new []
+            BuildAssemblieEditor.BuildMuteAssembly("Logic", new []
             {
                 "Codes/Hotfix/",
                 "Codes/HotfixView/",
-            }, new[]{"Temp/MyAssembly/Model.dll"});
+            }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")});
         }
 
-        private static void BuildMuteAssembly(string Name, string[] CodeDirectorys, string[] additionalReferences)
+        [MenuItem("Tools/FF")]
+        private static void FF()
         {
-            List<string> Scripts = new List<string>();
+            ModuleDefinition module = ModuleDefinition.CreateModule(Path.Combine(Define.BuildOutputDir, "../Bin/Debug/Unity.Hotfix.dll"), ModuleKind.Dll);
+        }
+
+        private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences)
+        {
+            List<string> scripts = new List<string>();
             for (int i = 0; i < CodeDirectorys.Length; i++)
             {
                 DirectoryInfo dti = new DirectoryInfo(CodeDirectorys[i]);
                 FileInfo[] fileInfos = dti.GetFiles("*.cs", System.IO.SearchOption.AllDirectories);
                 for (int j = 0; j < fileInfos.Length; j++)
                 {
-                    Scripts.Add(fileInfos[j].FullName);
+                    scripts.Add(fileInfos[j].FullName);
                 }
             }
 
-            string outputAssembly = "Temp/MyAssembly/" + Name + ".dll";
+            string dllPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll");
+            string pdbPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb");
+            File.Delete(dllPath);
+            File.Delete(pdbPath);
 
-            Directory.CreateDirectory("Temp/MyAssembly");
+            Directory.CreateDirectory(Define.BuildOutputDir);
 
-            AssemblyBuilder assemblyBuilder = new AssemblyBuilder(outputAssembly, Scripts.ToArray());
-
+            AssemblyBuilder assemblyBuilder = new AssemblyBuilder(dllPath, scripts.ToArray());
+            
             //启用UnSafe
-            assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
+            //assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
 
             BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 
@@ -81,31 +89,15 @@ namespace ET
 
             assemblyBuilder.additionalReferences = additionalReferences;
             
-            assemblyBuilder.flags = AssemblyBuilderFlags.None;
+            assemblyBuilder.flags = AssemblyBuilderFlags.DevelopmentBuild;
             //AssemblyBuilderFlags.None                 正常发布
             //AssemblyBuilderFlags.DevelopmentBuild     开发模式打包
             //AssemblyBuilderFlags.EditorAssembly       编辑器状态
-
             assemblyBuilder.referencesOptions = ReferencesOptions.UseEngineModules;
 
             assemblyBuilder.buildTarget = EditorUserBuildSettings.activeBuildTarget;
 
             assemblyBuilder.buildTargetGroup = buildTargetGroup;
-
-            //添加额外的宏定义
-            // assemblyBuilder.additionalDefines = new[]
-            // {
-            //     ""
-            // };
-
-            //需要排除自身的引用
-            //assemblyBuilder.excludeReferences = new[]
-            //{
-            //    "Library/ScriptAssemblies/Unity.Model.dll", 
-            //    "Library/ScriptAssemblies/Unity.ModelView.dll",
-            //    "Library/ScriptAssemblies/Unity.Hotfix.dll", 
-            //    "Library/ScriptAssemblies/Unity.HotfixView.dll"
-            //};
 
             assemblyBuilder.buildStarted += delegate(string assemblyPath) { Debug.LogFormat("build start：" + assemblyPath); };
 
@@ -154,8 +146,8 @@ namespace ET
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
-            File.Copy(Path.Combine(ScriptAssembliesDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
-            File.Copy(Path.Combine(ScriptAssembliesDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
             AssetDatabase.Refresh();
             Debug.Log("copy Code.dll to Bundles/Code success!");
             

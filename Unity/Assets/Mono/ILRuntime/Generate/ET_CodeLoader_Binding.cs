@@ -58,7 +58,7 @@ namespace ILRuntime.Runtime.Generated
             ET.CodeLoader instance_of_this_method = (ET.CodeLoader)typeof(ET.CodeLoader).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetHotfixTypes();
+            var result_of_this_method = instance_of_this_method.GetTypes();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
