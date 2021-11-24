@@ -247,15 +247,6 @@
     <Reference Include="MongoDB.Bson">
       <HintPath>./Temp/bin/Debug/MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="ILRuntime.Mono.Cecil">
-      <HintPath>./Temp/bin/Debug/ILRuntime.Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="ILRuntime.Mono.Cecil.Mdb">
-      <HintPath>./Temp/bin/Debug/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="ILRuntime.Mono.Cecil.Pdb">
-      <HintPath>./Temp/bin/Debug/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
       <HintPath>./Temp/bin/Debug/mscorlib.dll</HintPath>
     </Reference>
@@ -600,15 +591,6 @@
     </Reference>
     <Reference Include="System.Xml.XPath.XDocument">
       <HintPath>./Temp/bin/Debug/System.Xml.XPath.XDocument.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityScript">
-      <HintPath>./Temp/bin/Debug/UnityScript.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityScript.Lang">
-      <HintPath>./Temp/bin/Debug/UnityScript.Lang.dll</HintPath>
-    </Reference>
-    <Reference Include="Boo.Lang">
-      <HintPath>./Temp/bin/Debug/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>./Temp/bin/Debug/UnityEngine.UI.dll</HintPath>
