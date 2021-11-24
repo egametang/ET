@@ -11,7 +11,6 @@ namespace ET
             await ResourcesComponent.Instance.LoadBundleAsync(UIType.UILogin.StringToAB());
             GameObject bundleGameObject = (GameObject) ResourcesComponent.Instance.GetAsset(UIType.UILogin.StringToAB(), UIType.UILogin);
             GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject);
-
             UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILogin, gameObject);
 
             ui.AddComponent<UILoginComponent>();

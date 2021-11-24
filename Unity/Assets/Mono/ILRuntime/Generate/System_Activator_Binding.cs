@@ -39,12 +39,12 @@ namespace ILRuntime.Runtime.Generated
                     lst.Add(m);
                 }
             }
-            args = new Type[]{typeof(System.Collections.Generic.HashSet<ET.IDisposableAdapter.Adapter>)};
+            args = new Type[]{typeof(System.Collections.Generic.HashSet<ILRuntime.Runtime.Intepreter.ILTypeInstance>)};
             if (genericMethods.TryGetValue("CreateInstance", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.HashSet<ET.IDisposableAdapter.Adapter>)))
+                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.HashSet<ILRuntime.Runtime.Intepreter.ILTypeInstance>)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, CreateInstance_1);
@@ -53,12 +53,12 @@ namespace ILRuntime.Runtime.Generated
                     }
                 }
             }
-            args = new Type[]{typeof(System.Collections.Generic.Dictionary<System.Type, ET.IDisposableAdapter.Adapter>)};
+            args = new Type[]{typeof(System.Collections.Generic.Dictionary<System.Type, ILRuntime.Runtime.Intepreter.ILTypeInstance>)};
             if (genericMethods.TryGetValue("CreateInstance", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.Dictionary<System.Type, ET.IDisposableAdapter.Adapter>)))
+                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.Dictionary<System.Type, ILRuntime.Runtime.Intepreter.ILTypeInstance>)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, CreateInstance_2);
@@ -67,12 +67,12 @@ namespace ILRuntime.Runtime.Generated
                     }
                 }
             }
-            args = new Type[]{typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>)};
+            args = new Type[]{typeof(System.Collections.Generic.Dictionary<System.Int64, ILRuntime.Runtime.Intepreter.ILTypeInstance>)};
             if (genericMethods.TryGetValue("CreateInstance", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>)))
+                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.Dictionary<System.Int64, ILRuntime.Runtime.Intepreter.ILTypeInstance>)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, CreateInstance_3);
@@ -113,7 +113,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = System.Activator.CreateInstance<System.Collections.Generic.HashSet<ET.IDisposableAdapter.Adapter>>();
+            var result_of_this_method = System.Activator.CreateInstance<System.Collections.Generic.HashSet<ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -124,7 +124,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = System.Activator.CreateInstance<System.Collections.Generic.Dictionary<System.Type, ET.IDisposableAdapter.Adapter>>();
+            var result_of_this_method = System.Activator.CreateInstance<System.Collections.Generic.Dictionary<System.Type, ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -135,7 +135,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = System.Activator.CreateInstance<System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>>();
+            var result_of_this_method = System.Activator.CreateInstance<System.Collections.Generic.Dictionary<System.Int64, ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

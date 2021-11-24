@@ -12,7 +12,8 @@ namespace ET
 		{
 			ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 			self.loginBtn = rc.Get<GameObject>("LoginBtn");
-			self.loginBtn.GetComponent<Button>().onClick.AddListener(self.OnLogin);
+			
+			self.loginBtn.GetComponent<Button>().onClick.AddListener(()=> { self.OnLogin(); });
 			self.account = rc.Get<GameObject>("Account");
 			self.password = rc.Get<GameObject>("Password");
 		}

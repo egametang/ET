@@ -9,8 +9,10 @@ namespace ET
         {
             async ETTask UnLoadAsync()
             {
-                using (ListComponent<string> list = ListComponent<string>.Create())
+                ListComponent<string> list = null;
+                try
                 {
+                    list = ListComponent<string>.Create();
                     list.List.AddRange(self.LoadedResource);
                     self.LoadedResource = null;
 
@@ -19,20 +21,32 @@ namespace ET
 
                     foreach (string abName in list.List)
                     {
-                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0))
+                        CoroutineLock coroutineLock = null;
+                        try
                         {
-                            if (ResourcesComponent.Instance == null)
+                            coroutineLock =
+                                    await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
                             {
-                                return;
-                            }
+                                if (ResourcesComponent.Instance == null)
+                                {
+                                    return;
+                                }
 
-                            await ResourcesComponent.Instance.UnloadBundleAsync(abName);
+                                await ResourcesComponent.Instance.UnloadBundleAsync(abName);
+                            }
+                        }
+                        finally
+                        {
+                            coroutineLock?.Dispose();
                         }
                     }
                 }
+                finally
+                {
+                    list?.Dispose();
+                }
             }
-            
-            
+
             UnLoadAsync().Coroutine();
         }
     }
@@ -43,21 +57,27 @@ namespace ET
 
         public async ETTask LoadAsync(string ab)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0))
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
                 if (this.IsDisposed)
                 {
                     Log.Error($"resourceload already disposed {ab}");
                     return;
                 }
-                
+
                 if (this.LoadedResource.Contains(ab))
                 {
                     return;
                 }
-                
+
                 LoadedResource.Add(ab);
                 await ResourcesComponent.Instance.LoadBundleAsync(ab);
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
     }

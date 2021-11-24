@@ -1,8 +1,3 @@
-/**
- * 封装List，用于重用
- */
-
-using System;
 using System.Collections.Generic;
 
 namespace ET
@@ -10,7 +5,7 @@ namespace ET
     public class ListComponent<T>: DisposeObject
     {
         private bool isDispose;
-        
+
         public static ListComponent<T> Create()
         {
             ListComponent<T> listComponent = ObjectPool.Instance.Fetch<ListComponent<T>>();

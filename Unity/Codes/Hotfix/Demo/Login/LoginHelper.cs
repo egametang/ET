@@ -11,9 +11,17 @@ namespace ET
             {
                 // 创建一个ETModel层的Session
                 R2C_Login r2CLogin;
-                using (Session session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address)))
+                Session session = null;
+                try
                 {
-                    r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = account, Password = password });
+                    session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
+                    {
+                        r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = account, Password = password });
+                    }
+                }
+                finally
+                {
+                    session?.Dispose();
                 }
 
                 // 创建一个gate Session,并且保存到SessionComponent中

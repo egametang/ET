@@ -34,12 +34,12 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("Warning", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Warning_3);
-            args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("Debug", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Debug_4);
             args = new Type[]{};
             method = type.GetMethod("get_ILog", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_ILog_5);
+            app.RegisterCLRMethodRedirection(method, get_ILog_4);
+            args = new Type[]{typeof(System.String)};
+            method = type.GetMethod("Debug", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Debug_5);
 
 
         }
@@ -109,7 +109,18 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* Debug_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_ILog_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = ET.Log.ILog;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* Debug_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -123,17 +134,6 @@ namespace ILRuntime.Runtime.Generated
             ET.Log.Debug(@msg);
 
             return __ret;
-        }
-
-        static StackObject* get_ILog_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = ET.Log.ILog;
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 

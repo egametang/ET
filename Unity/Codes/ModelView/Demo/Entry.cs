@@ -14,8 +14,6 @@ namespace ET
 				
 				Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
 				
-				ProtobufInit.Init();
-				
 				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 			}
 			catch (Exception e)

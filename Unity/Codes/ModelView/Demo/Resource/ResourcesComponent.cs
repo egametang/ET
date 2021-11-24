@@ -284,11 +284,16 @@ namespace ET
             //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
             foreach (string dependency in dependencies)
             {
-                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode()))
+                CoroutineLock coroutineLock = null;
+                try
                 {
+                    coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode());
                     this.UnloadOneBundle(dependency, unload);
-                    
                     await TimerComponent.Instance.WaitFrameAsync();
+                }
+                finally
+                {
+                    coroutineLock?.Dispose();
                 }
             }
             //Log.Debug($"-----------dep unload finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
@@ -455,44 +460,42 @@ namespace ET
             string[] dependencies = GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load async start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 
-            using (var abInfos = ListComponent<ABInfo>.Create())
-            {
+            
+                List<ABInfo> abInfos = new List<ABInfo>();
+                
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode()))
+                    CoroutineLock coroutineLock = null;
+                    try
                     {
+                        coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
                         ABInfo abInfo = await this.LoadOneBundleAsync(dependency);
                         if (abInfo == null || abInfo.RefCount > 1)
                         {
                             return;
                         }
-
                         abInfosList.Add(abInfo);
                     }
+                    finally
+                    {
+                        coroutineLock?.Dispose();
+                    }
                 }
-
                 // LoadFromFileAsync部分可以并发加载
-                using (var tasks = ListComponent<ETTask>.Create())
+                List<ETTask> tasks = new List<ETTask>();
+                foreach (string dependency in dependencies)
                 {
-                    foreach (string dependency in dependencies)
-                    {
-                        tasks.List.Add(LoadDependency(dependency, abInfos.List));
-                    }
-
-                    await ETTaskHelper.WaitAll(tasks.List);
+                    tasks.Add(LoadDependency(dependency, abInfos));
                 }
-
+                await ETTaskHelper.WaitAll(tasks);
+                    
                 // ab包从硬盘加载完成，可以再并发加载all assets
-                using (var tasks = ListComponent<ETTask>.Create())
+                tasks.Clear();
+                foreach (ABInfo abInfo in abInfos)
                 {
-                    foreach (ABInfo abInfo in abInfos.List)
-                    {
-                        tasks.List.Add(LoadOneBundleAllAssets(abInfo));
-                    }
-
-                    await ETTaskHelper.WaitAll(tasks.List);
+                    tasks.Add(LoadOneBundleAllAssets(abInfo));
                 }
-            }
+                await ETTaskHelper.WaitAll(tasks);
         }
 
         private async ETTask<ABInfo> LoadOneBundleAsync(string assetBundleName)
@@ -571,8 +574,11 @@ namespace ET
         // 加载ab包中的all assets
         private async ETTask LoadOneBundleAllAssets(ABInfo abInfo)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode()))
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
+                
                 if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
                 {
                     return;
@@ -590,6 +596,10 @@ namespace ET
                 }
 
                 abInfo.AlreadyLoadAssets = true;
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
 
