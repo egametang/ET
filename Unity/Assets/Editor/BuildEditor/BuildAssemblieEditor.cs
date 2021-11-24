@@ -24,12 +24,35 @@ namespace ET
                 "Codes/ModelView/",
                 "Codes/Hotfix/",
                 "Codes/HotfixView/"
-            });
+            }, Array.Empty<string>());
+
+            AfterCompiling();
+            
             AssetDatabase.Refresh();
         }
+        
+        [MenuItem("Tools/BuildModel")]
+        public static void BuildModel()
+        {
+            BuildAssemblieEditor.BuildMuteAssembly("Model", new []
+            {
+                "Codes/Model/",
+                "Codes/ModelView/",
+            }, Array.Empty<string>());
+        }
+        
+        
+        [MenuItem("Tools/BuildHotfix")]
+        public static void BuildHotfix()
+        {
+            BuildAssemblieEditor.BuildMuteAssembly("Hotfix", new []
+            {
+                "Codes/Hotfix/",
+                "Codes/HotfixView/",
+            }, new[]{"Temp/MyAssembly/Model.dll"});
+        }
 
-
-        private static void BuildMuteAssembly(string Name, string[] CodeDirectorys)
+        private static void BuildMuteAssembly(string Name, string[] CodeDirectorys, string[] additionalReferences)
         {
             List<string> Scripts = new List<string>();
             for (int i = 0; i < CodeDirectorys.Length; i++)
@@ -56,6 +79,8 @@ namespace ET
             assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 
+            assemblyBuilder.additionalReferences = additionalReferences;
+            
             assemblyBuilder.flags = AssemblyBuilderFlags.None;
             //AssemblyBuilderFlags.None                 正常发布
             //AssemblyBuilderFlags.DevelopmentBuild     开发模式打包
@@ -114,11 +139,9 @@ namespace ET
                 Debug.LogErrorFormat("build fail：" + assemblyBuilder.assemblyPath);
                 return;
             }
-
-            AfterCompiling(assemblyBuilder);
         }
 
-        private static void AfterCompiling(AssemblyBuilder assemblyBuilder)
+        private static void AfterCompiling()
         {
             while (EditorApplication.isCompiling)
             {
