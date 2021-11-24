@@ -66,6 +66,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_Type_ET_IDisposableAdapter_Binding_Adapter_Binding.Register(app);
             System_Activator_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Type_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_HashSet_1_Type_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.Register(app);
             ET_UnOrderMultiMapSet_2_Type_Type_Binding.Register(app);
@@ -102,7 +103,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Vector3_Binding.Register(app);
             ET_ETTask_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
-            System_Int32_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -113,6 +113,9 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_Int32_Binding.Register(app);
             System_Collections_Generic_List_1_Single_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Type_Binding_ValueCollection_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Type_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
+            ProtoBuf_PType_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_ET_IDisposableAdapter_Binding_Adapter_Binding.Register(app);
             System_Collections_Generic_Queue_1_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
@@ -161,6 +164,7 @@ namespace ILRuntime.Runtime.Generated
             ET_ETAsyncTaskMethodBuilder_1_AssetBundle_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Object_Array_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_String_Binding.Register(app);
+            System_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_String_Binding.Register(app);
             UnityEngine_AssetBundleCreateRequest_Binding.Register(app);
             ET_ETTask_1_AssetBundle_Binding.Register(app);

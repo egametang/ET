@@ -52,6 +52,7 @@ namespace ET
             LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
             //注册ProtoBuf的CLR
             PType.RegisterILRuntimeCLRRedirection(appdomain);
+           
             
             CLRBindings.Initialize(appdomain);
         }

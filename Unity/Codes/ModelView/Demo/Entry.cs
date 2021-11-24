@@ -14,7 +14,7 @@ namespace ET
 				
 				Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
 				
-				ProtobufHelper.Init();
+				ProtobufInit.Init();
 				
 				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 			}
