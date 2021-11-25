@@ -81,9 +81,15 @@ namespace ET
 		public void LoadHotfix()
 		{
 			// 傻屌Unity在这里搞了个傻逼优化，认为同一个路径的dll，返回的程序集就一样。所以这里每次编译都要随机名字
-			string logicVersion = File.ReadAllText(Path.Combine(Define.BuildOutputDir, Define.LogicVersion));
-			byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicVersion}.dll"));
-			byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicVersion}.pdb"));
+			string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*.dll");
+			if (logicFiles.Length != 1)
+			{
+				throw new Exception("Logic dll count != 1");
+			}
+
+			string logicName = Path.GetFileNameWithoutExtension(logicFiles[0]);
+			byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.dll"));
+			byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.pdb"));
 
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
 			

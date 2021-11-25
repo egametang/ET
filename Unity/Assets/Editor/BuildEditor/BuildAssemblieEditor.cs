@@ -30,9 +30,14 @@ namespace ET
             AssetDatabase.Refresh();
         }
         
-        [MenuItem("Tools/BuildData")]
+        [MenuItem("Tools/BuildData _F6")]
         public static void BuildData()
         {
+            if (Define.CodeMode != Define.CodeMode_Reload)
+            {
+                throw new Exception("you code mode is not reload mode! please change Define.CodeMode");
+            }
+            
             BuildAssemblieEditor.BuildMuteAssembly("Data", new []
             {
                 "Codes/Model/",
@@ -41,24 +46,22 @@ namespace ET
         }
         
         
-        [MenuItem("Tools/BuildLogic")]
+        [MenuItem("Tools/BuildLogic _F7")]
         public static void BuildLogic()
         {
+            if (Define.CodeMode != Define.CodeMode_Reload)
+            {
+                throw new Exception("you code mode is not reload mode! please change Define.CodeMode");
+            }
+            
+            string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*");
+            foreach (string file in logicFiles)
+            {
+                File.Delete(file);
+            }
+            
             int random = RandomHelper.RandomNumber(100000000, 999999999);
             string logicFile = $"Logic_{random}";
-            string logicVersionPath = Path.Combine(Define.BuildOutputDir, Define.LogicVersion);
-
-            if (File.Exists(logicVersionPath))
-            {
-                string oldLogicFile = File.ReadAllText(logicVersionPath);
-                if (oldLogicFile.Trim() != "")
-                {
-                    File.Delete(Path.Combine(Define.BuildOutputDir, $"{oldLogicFile}.dll"));
-                    File.Delete(Path.Combine(Define.BuildOutputDir, $"{oldLogicFile}.pdb"));
-                }
-            }
-
-            File.WriteAllText(logicVersionPath, logicFile);
             
             BuildAssemblieEditor.BuildMuteAssembly(logicFile, new []
             {
