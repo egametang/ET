@@ -89,10 +89,6 @@ namespace ET
         private Queue<long> lateUpdates2 = new Queue<long>();
 
 
-  public List<Type> GetAllType()
-        {
-            return allType;
-        }
 
         private EventSystem()
         {
@@ -116,11 +112,11 @@ namespace ET
 
             return attributeTypes;
         }
- List<Type> allType = new List<Type>();
+
         public void Add(Type[] addTypes)
         {
             this.allTypes.Clear();
-			this.allType.Clear();
+			
 			 allType.AddRange(addTypes);
             foreach (Type addType in addTypes)
             {
