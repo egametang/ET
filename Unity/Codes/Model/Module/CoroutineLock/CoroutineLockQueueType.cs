@@ -8,6 +8,11 @@ namespace ET
     {
         public override void Awake(CoroutineLockQueueType self)
         {
+            if (self.dictionary == null)
+            {
+                self.dictionary = new Dictionary<long, CoroutineLockQueue>();
+            }
+
             self.dictionary.Clear();
         }
     }
@@ -23,7 +28,7 @@ namespace ET
     
     public class CoroutineLockQueueType: Entity
     {
-        public Dictionary<long, CoroutineLockQueue> dictionary = new Dictionary<long, CoroutineLockQueue>();
+        public Dictionary<long, CoroutineLockQueue> dictionary;
 
         public bool TryGetValue(long key, out CoroutineLockQueue value)
         {

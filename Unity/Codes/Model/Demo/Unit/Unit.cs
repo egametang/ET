@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-    [BsonIgnoreExtraElements]
-    public sealed class Unit: Entity
+    public class Unit: Entity
     {
         public int ConfigId; //配置表id
 

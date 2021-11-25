@@ -15,8 +15,28 @@ namespace ET
 {
     public static class ILHelper
     {
+        public static List<Type> list = new List<Type>();
+
         public static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain appdomain)
         {
+            list.Add(typeof(Dictionary<int, ILTypeInstance>));
+            list.Add(typeof(Dictionary<int, int>));
+            list.Add(typeof(Dictionary<object, object>));
+            list.Add(typeof(Dictionary<int, object>));
+            list.Add(typeof(Dictionary<long, object>));
+            list.Add(typeof(Dictionary<long, int>));
+            list.Add(typeof(Dictionary<int, long>));
+            list.Add(typeof(Dictionary<string, long>));
+            list.Add(typeof(Dictionary<string, int>));
+            list.Add(typeof(Dictionary<string, object>));
+            list.Add(typeof(List<int>));
+            list.Add(typeof(List<long>));
+            list.Add(typeof(List<string>));
+            list.Add(typeof(List<object>));
+            list.Add(typeof(ETTask<int>));
+            list.Add(typeof(ETTask<long>));
+            list.Add(typeof(ETTask<string>));
+            list.Add(typeof(ETTask<object>));
             
             // 注册重定向函数
 

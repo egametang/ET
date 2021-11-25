@@ -7,11 +7,20 @@ namespace ET
     {
         public override void Awake(CoroutineLockComponent self)
         {
+            Log.Info($"1111111111111111111111111111111111111111111111311a1");
             CoroutineLockComponent.Instance = self;
-            for (int i = 0; i < self.list.Capacity; ++i)
+            
+            self.list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);
+            Log.Info($"1111111111111111111111111111111111111111111111311a2");
+            for (int i = 0; i < CoroutineLockType.Max; ++i)
             {
-                self.list.Add(self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator));
+                Log.Info($"1111111111111111111111111111111111111111111111311a22 {i}");
+                CoroutineLockQueueType coroutineLockQueueType = self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator);
+                Log.Info($"1111111111111111111111111111111111111111111111311a23 {i}");
+                self.list.Add(coroutineLockQueueType);
+                Log.Info($"1111111111111111111111111111111111111111111111311a24 {i}");
             }
+            Log.Info($"1111111111111111111111111111111111111111111111311a3");
         }
     }
 
@@ -40,7 +49,7 @@ namespace ET
             // 循环过程中会有对象继续加入队列
             while(self.nextFrameRun.Count > 0)
             {
-                (CoroutineLockType coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
+                (int coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
                 self.Notify(coroutineLockType, key, count);
             }
         }
@@ -102,7 +111,7 @@ namespace ET
 
     public static class CoroutineLockComponentSystem
     {
-        public static void RunNextCoroutine(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int level)
+        public static void RunNextCoroutine(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
         {
             // 一个协程队列一帧处理超过100个,说明比较多了,打个warning,检查一下是否够正常
             if (level == 100)
@@ -121,9 +130,9 @@ namespace ET
             }
         }
 
-        public static async ETTask<CoroutineLock> Wait(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time = 60000)
+        public static async ETTask<CoroutineLock> Wait(this CoroutineLockComponent self, int coroutineLockType, long key, int time = 60000)
         {
-            CoroutineLockQueueType coroutineLockQueueType = self.list[(int) coroutineLockType];
+            CoroutineLockQueueType coroutineLockQueueType = self.list[coroutineLockType];
    
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
             {
@@ -137,9 +146,9 @@ namespace ET
             return await tcs;
         }
 
-        private static CoroutineLock CreateCoroutineLock(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time, int level)
+        private static CoroutineLock CreateCoroutineLock(this CoroutineLockComponent self, int coroutineLockType, long key, int time, int level)
         {
-            CoroutineLock coroutineLock = self.AddChildWithId<CoroutineLock, CoroutineLockType, long, int>(++self.idGenerator, coroutineLockType, key, level, true);
+            CoroutineLock coroutineLock = self.AddChildWithId<CoroutineLock, int, long, int>(++self.idGenerator, coroutineLockType, key, level, true);
             if (time > 0)
             {
                 self.AddTimer(TimeHelper.ClientFrameTime() + time, coroutineLock);
@@ -147,9 +156,9 @@ namespace ET
             return coroutineLock;
         }
 
-        public static void Notify(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int level)
+        public static void Notify(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
         {
-            CoroutineLockQueueType coroutineLockQueueType = self.list[(int) coroutineLockType];
+            CoroutineLockQueueType coroutineLockQueueType = self.list[coroutineLockType];
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
             {
                 return;
@@ -169,9 +178,9 @@ namespace ET
     public class CoroutineLockComponent: Entity
     {
         public static CoroutineLockComponent Instance;
-        
-        public List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>((int) CoroutineLockType.Max);
-        public Queue<(CoroutineLockType, long, int)> nextFrameRun = new Queue<(CoroutineLockType, long, int)>();
+
+        public List<CoroutineLockQueueType> list;
+        public Queue<(int, long, int)> nextFrameRun = new Queue<(int, long, int)>();
         public MultiMap<long, CoroutineLockTimer> timers = new MultiMap<long, CoroutineLockTimer>();
         public Queue<long> timeOutIds = new Queue<long>();
         public Queue<CoroutineLockTimer> timerOutTimer = new Queue<CoroutineLockTimer>();

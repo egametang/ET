@@ -1,4 +1,4 @@
-﻿﻿namespace ET
+﻿namespace ET
 {
     [ObjectSystem]
     public class SessionAcceptTimeoutComponentAwakeSystem: AwakeSystem<SessionAcceptTimeoutComponent>

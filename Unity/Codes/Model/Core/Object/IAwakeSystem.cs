@@ -47,7 +47,7 @@ namespace ET
 
         public abstract void Awake(T self);
     }
-
+    
     [ObjectSystem]
     public abstract class AwakeSystem<T, A> : IAwakeSystem<A>
     {

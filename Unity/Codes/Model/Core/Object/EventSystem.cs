@@ -120,7 +120,7 @@ namespace ET
             }
 
             this.types.Clear();
-
+            Log.Info($"11111111111111111111111111111111111111111111111a1");
             List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
             foreach (Type baseAttributeType in baseAttributeTypes)
             {
@@ -141,6 +141,7 @@ namespace ET
                 }
             }
 
+            Log.Info($"11111111111111111111111111111111111111111111111a3");
             this.typeSystems = new TypeSystems();
 
             foreach (Type type in this.GetTypes(typeof (ObjectSystemAttribute)))
@@ -154,6 +155,7 @@ namespace ET
                 }
             }
 
+            Log.Info($"11111111111111111111111111111111111111111111111a4");
             this.allEvents.Clear();
             foreach (Type type in types[typeof (EventAttribute)])
             {

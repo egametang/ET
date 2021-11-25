@@ -3,9 +3,9 @@ using System;
 namespace ET
 {
     [ObjectSystem]
-    public class CoroutineLockAwakeSystem: AwakeSystem<CoroutineLock, CoroutineLockType, long, int>
+    public class CoroutineLockAwakeSystem: AwakeSystem<CoroutineLock, int, long, int>
     {
-        public override void Awake(CoroutineLock self, CoroutineLockType type, long k, int count)
+        public override void Awake(CoroutineLock self, int type, long k, int count)
         {
             self.coroutineLockType = type;
             self.key = k;
@@ -35,7 +35,7 @@ namespace ET
     
     public class CoroutineLock: Entity
     {
-        public CoroutineLockType coroutineLockType;
+        public int coroutineLockType;
         public long key;
         public int level;
     }

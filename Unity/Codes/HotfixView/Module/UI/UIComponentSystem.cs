@@ -2,13 +2,6 @@
 
 namespace ET
 {
-	public class UIComponentAwakeSystem : AwakeSystem<UIComponent>
-	{
-		public override void Awake(UIComponent self)
-		{
-		}
-	}
-	
 	/// <summary>
 	/// 管理Scene上的UI
 	/// </summary>

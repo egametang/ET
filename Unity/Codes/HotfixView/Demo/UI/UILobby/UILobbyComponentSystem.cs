@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+    [ObjectSystem]
     public class UILobbyComponentAwakeSystem: AwakeSystem<UILobbyComponent>
     {
         public override void Awake(UILobbyComponent self)

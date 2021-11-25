@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b216745cd6e9bc94da5bdf9fe8aae6d1, type: 3}
   m_Name: ETBuildSettings
   m_EditorClassIdentifier: 
-  clearFolder: 0
-  isBuildExe: 1
+  clearFolder: 1
+  isBuildExe: 0
   isContainAB: 1
-  buildType: 1
+  buildType: 0
   buildAssetBundleOptions: 0

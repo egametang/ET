@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-	
+	[ObjectSystem]
 	public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
 	{
 		public override void Awake(UI self, string name, GameObject gameObject)

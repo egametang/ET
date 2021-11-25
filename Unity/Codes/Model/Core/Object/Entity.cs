@@ -15,6 +15,9 @@ namespace ET
         IsCreate = 1 << 3,
     }
 
+#if NOT_UNITY
+    [BsonIgnoreExtraElements]
+#endif
     public partial class Entity: DisposeObject
     {
         [IgnoreDataMember]
@@ -676,15 +679,21 @@ namespace ET
             Entity component;
             if (isFromPool)
             {
-                component = (Entity)ObjectPool.Instance.Fetch(type);
+                component = ObjectPool.Instance.Fetch(type) as Entity;
             }
             else
             {
-                component = (Entity)Activator.CreateInstance(type);
+                Log.Info($"1111111111111111111111111111111111111111111111311a22b2g1 : {type.Name}");
+                object obj = Activator.CreateInstance(type);
+                Log.Info($"1111111111111111111111111111111111111111111111311a22b2g1a : {type.Name}");
+                component = obj as Entity;
+                Log.Info($"1111111111111111111111111111111111111111111111311a22b2g2 : {type.Name}");
             }
             component.IsFromPool = isFromPool;
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b2g3 : {type.Name}");
             component.IsCreate = true;
             component.Id = 0;
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b2g4 : {type.Name}");
             return component;
         }
 
@@ -835,14 +844,18 @@ namespace ET
             return component;
         }
 
-        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity
+        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity, new()
         {
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b1");
             Type type = typeof (T);
-            T component = (T) Entity.Create(type, isFromPool);
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b2");
+            T component = Entity.Create(type, isFromPool) as T;
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b3");
             component.Id = id;
             component.Parent = this;
-
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b4");
             EventSystem.Instance.Awake(component);
+            Log.Info($"1111111111111111111111111111111111111111111111311a22b5");
             return component;
         }
 
