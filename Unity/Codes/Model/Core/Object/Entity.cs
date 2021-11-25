@@ -680,17 +680,11 @@ namespace ET
             }
             else
             {
-                Log.Info($"1111111111111111111111111111111111111111111111311a22b2g1 : {type.Name}");
-                object obj = Activator.CreateInstance(type);
-                Log.Info($"1111111111111111111111111111111111111111111111311a22b2g1a : {type.Name}");
-                component = obj as Entity;
-                Log.Info($"1111111111111111111111111111111111111111111111311a22b2g2 : {type.Name}");
+                component = Activator.CreateInstance(type) as Entity;
             }
             component.IsFromPool = isFromPool;
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b2g3 : {type.Name}");
             component.IsCreate = true;
             component.Id = 0;
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b2g4 : {type.Name}");
             return component;
         }
 
@@ -843,16 +837,11 @@ namespace ET
 
         public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity, new()
         {
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b1");
             Type type = typeof (T);
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b2");
             T component = Entity.Create(type, isFromPool) as T;
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b3");
             component.Id = id;
             component.Parent = this;
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b4");
             EventSystem.Instance.Awake(component);
-            Log.Info($"1111111111111111111111111111111111111111111111311a22b5");
             return component;
         }
 

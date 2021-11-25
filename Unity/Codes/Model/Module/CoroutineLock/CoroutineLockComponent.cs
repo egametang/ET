@@ -7,20 +7,14 @@ namespace ET
     {
         public override void Awake(CoroutineLockComponent self)
         {
-            Log.Info($"1111111111111111111111111111111111111111111111311a1");
             CoroutineLockComponent.Instance = self;
             
             self.list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);
-            Log.Info($"1111111111111111111111111111111111111111111111311a2");
             for (int i = 0; i < CoroutineLockType.Max; ++i)
             {
-                Log.Info($"1111111111111111111111111111111111111111111111311a22 {i}");
                 CoroutineLockQueueType coroutineLockQueueType = self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator);
-                Log.Info($"1111111111111111111111111111111111111111111111311a23 {i}");
                 self.list.Add(coroutineLockQueueType);
-                Log.Info($"1111111111111111111111111111111111111111111111311a24 {i}");
             }
-            Log.Info($"1111111111111111111111111111111111111111111111311a3");
         }
     }
 
@@ -139,10 +133,8 @@ namespace ET
                 coroutineLockQueueType.Add(key, self.AddChildWithId<CoroutineLockQueue>(++self.idGenerator, true));
                 return self.CreateCoroutineLock(coroutineLockType, key, time, 1);
             }
-
             ETTask<CoroutineLock> tcs = ETTask<CoroutineLock>.Create(true);
             queue.Add(tcs, time);
-            
             return await tcs;
         }
 
