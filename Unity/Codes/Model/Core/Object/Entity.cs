@@ -15,9 +15,6 @@ namespace ET
         IsCreate = 1 << 3,
     }
 
-#if NOT_UNITY
-    [BsonIgnoreExtraElements]
-#endif
     public partial class Entity: DisposeObject
     {
         [IgnoreDataMember]

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ETBuildSettings
   m_EditorClassIdentifier: 
   clearFolder: 1
-  isBuildExe: 0
+  isBuildExe: 1
   isContainAB: 1
   buildType: 0
   buildAssetBundleOptions: 0

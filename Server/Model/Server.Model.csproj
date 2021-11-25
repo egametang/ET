@@ -22,14 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
 
-    <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
-      <Link>Base\MongoHelper.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Editor\Helper\StructBsonSerialize.cs">
-      <Link>Base\StructBsonSerialize.cs</Link>
-    </Compile>
-
     <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

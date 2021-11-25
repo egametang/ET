@@ -40,7 +40,7 @@ namespace ET
         }
     }
     
-    public abstract class DisposeObject: IDisposable, ISupportInitialize
+    public abstract class DisposeObject: Object, IDisposable, ISupportInitialize
     {
         public virtual void Dispose()
         {

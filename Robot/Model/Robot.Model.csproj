@@ -22,13 +22,13 @@
       <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="..\..\Server\Model\Base\MongoHelper.cs">
+          <Link>Base\MongoHelper.cs</Link>
+        </Compile>
         <Compile Include="..\..\Server\Model\Base\MongoRegister.cs">
           <Link>Base\MongoRegister.cs</Link>
         </Compile>
-        <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
-          <Link>Base\MongoHelper.cs</Link>
-        </Compile>
-        <Compile Include="..\..\Unity\Assets\Editor\Helper\StructBsonSerialize.cs">
+        <Compile Include="..\..\Server\Model\Base\StructBsonSerialize.cs">
           <Link>Base\StructBsonSerialize.cs</Link>
         </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
