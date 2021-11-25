@@ -40,43 +40,62 @@ namespace ET
 			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
-
+Log.Error("加载config");
 			foreach (Type type in types)
 			{
+				Log.Error("加载config："+type.Name);
 				self.LoadOneInThread(type, configBytes);
 			}
+			Log.Error("加载config完成");
 		}
 		
-		public static async ETTask LoadAsync(this ConfigComponent self)
+		public  static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
 			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
-
-			using (ListComponent<Task> listTasks = ListComponent<Task>.Create())
+            
+//#if !NOT_UNITY
+			async ETTask Load1(Type configType, Dictionary<string, byte[]> configBytes)
 			{
-				foreach (Type type in types)
-				{
-					Task task = Task.Run(() => self.LoadOneInThread(type, configBytes));
-					listTasks.Add(task);
-				}
-
-				await Task.WhenAll(listTasks.List.ToArray());
+			   await ETTask.CompletedTask;
+				self.LoadOneInThread(configType, configBytes);
 			}
+			List<ETTask> tasks = new List<ETTask>();
+
+			foreach (var item in types)
+			{
+
+				tasks.Add(Load1(item, configBytes));//好像这么写还是同步加载
+			}
+			await ETTaskHelper.WaitAll(tasks);
+//#else
+            // List<Task> listTasks = new List<Task>();
+
+            // foreach (Type type in types)
+            // {
+                // Task task = Task.Run(() => self.LoadOneInThread(type, configBytes));
+                // listTasks.Add(task);
+            // }
+
+            // await Task.WhenAll(listTasks.ToArray());
+//#endif
 		}
 
 		private static void LoadOneInThread(this ConfigComponent self, Type configType, Dictionary<string, byte[]> configBytes)
 		{
+				Log.Error("加载1");
 			byte[] oneConfigBytes = configBytes[configType.Name];
-
+	Log.Error("加载2");
 			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-
+	Log.Error("加载3");
 			lock (self)
 			{
 				self.AllConfig[configType] = category;	
 			}
+				Log.Error("加载4");
 		}
 	}
 }

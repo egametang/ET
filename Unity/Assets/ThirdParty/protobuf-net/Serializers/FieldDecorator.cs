@@ -36,6 +36,10 @@ namespace ProtoBuf.Serializers
         public override object Read(object value, ProtoReader source)
         {
             Helpers.DebugAssert(value != null);
+#if !NOT_UNITY
+          //  UnityEngine.Debug.Log(field.Name);
+            UnityEngine.Debug.Log("fval=>" + field.DeclaringType.FullName + "->"+Tail.RequiresOldValue);
+#endif
             object newValue = Tail.Read((Tail.RequiresOldValue ? field.GetValue(value) : null), source);
             if(newValue != null) field.SetValue(value,newValue);
             return null;

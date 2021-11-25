@@ -13,6 +13,24 @@ namespace ET
     {
 	    public static void Init()
         {
+			#if !NOT_UNITY
+            var types = Game.EventSystem.GetAllType();
+
+            foreach (Type type in types)
+            {
+                //Log.Info($"typename :{type} ");
+                if (type.GetCustomAttributes(typeof(ProtoContractAttribute), false).Length == 0 && type.GetCustomAttributes(typeof(ProtoMemberAttribute), false).Length == 0)
+                {
+                    continue;
+                }
+                //if (!type.IsSubclassOf(typeof(ProtoObject)))
+                //{
+                //    continue;
+                //}
+                //Log.Info($"注册 ;{type.FullName }");
+                PBType.RegisterType(type.FullName, type);
+            }
+#endif
         }
 
         public static object FromBytes(Type type, byte[] bytes, int index, int count)

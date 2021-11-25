@@ -88,6 +88,12 @@ namespace ET
         private Queue<long> lateUpdates = new Queue<long>();
         private Queue<long> lateUpdates2 = new Queue<long>();
 
+
+  public List<Type> GetAllType()
+        {
+            return allType;
+        }
+
         private EventSystem()
         {
         }
@@ -110,10 +116,12 @@ namespace ET
 
             return attributeTypes;
         }
-
+ List<Type> allType = new List<Type>();
         public void Add(Type[] addTypes)
         {
             this.allTypes.Clear();
+			this.allType.Clear();
+			 allType.AddRange(addTypes);
             foreach (Type addType in addTypes)
             {
                 this.allTypes[addType.FullName] = addType;
@@ -589,7 +597,8 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+					   Log.Error(e.GetType().FullName + "->\r\n" + e.Message + "\r\n" + e.StackTrace);
+                //    Log.Error(e);
                 }
             }
         }

@@ -501,7 +501,6 @@ namespace ProtoBuf
             {
                 return RuntimeTypeModel.Default.IsDefined(type);
             }
-
         }
 
 

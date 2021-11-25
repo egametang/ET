@@ -16,7 +16,7 @@ namespace ET
             ResourcesComponent.Instance.LoadBundle("config.unity3d");
             Log.Info($"111111111111111111111111111111111111111111111132");
             Game.Scene.AddComponent<ConfigComponent>();
-            ConfigComponent.Instance.Load();
+            await ConfigComponent.Instance.LoadAsync();
             Log.Info($"111111111111111111111111111111111111111111111133");
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             Log.Info($"111111111111111111111111111111111111111111111134");

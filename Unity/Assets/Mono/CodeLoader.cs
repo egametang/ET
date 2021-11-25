@@ -24,6 +24,7 @@ namespace ET
 
 		private CodeLoader()
 		{
+			UnityEngine.Debug.Log(typeof(MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute));
 		}
 		
 		public void Start()
