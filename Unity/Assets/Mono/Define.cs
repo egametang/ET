@@ -2,7 +2,9 @@
 {
 	public static class Define
 	{
-		public const string BuildOutputDir = "Temp/bin/Debug/";
+		public const string BuildOutputDir = "./Temp/Bin/Debug";
+		
+		public const string LogicVersion = "LogicVersion.txt";
 
 		// 1 mono模式 2 ILRuntime模式 3 mono热重载模式
 		public static int CodeMode = 3;

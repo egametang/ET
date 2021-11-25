@@ -14,8 +14,8 @@ namespace ET
     {
         private const string CodeDir = "Assets/Bundles/Code/";
 
-        [MenuItem("Tools/BuildDll _F5")]
-        public static void BuildDll()
+        [MenuItem("Tools/BuildCode _F5")]
+        public static void BuildCode()
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
             {
@@ -44,17 +44,27 @@ namespace ET
         [MenuItem("Tools/BuildLogic")]
         public static void BuildLogic()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Logic", new []
+            int random = RandomHelper.RandomNumber(100000000, 999999999);
+            string logicFile = $"Logic_{random}";
+            string logicVersionPath = Path.Combine(Define.BuildOutputDir, Define.LogicVersion);
+
+            if (File.Exists(logicVersionPath))
+            {
+                string oldLogicFile = File.ReadAllText(logicVersionPath);
+                if (oldLogicFile.Trim() != "")
+                {
+                    File.Delete(Path.Combine(Define.BuildOutputDir, $"{oldLogicFile}.dll"));
+                    File.Delete(Path.Combine(Define.BuildOutputDir, $"{oldLogicFile}.pdb"));
+                }
+            }
+
+            File.WriteAllText(logicVersionPath, logicFile);
+            
+            BuildAssemblieEditor.BuildMuteAssembly(logicFile, new []
             {
                 "Codes/Hotfix/",
                 "Codes/HotfixView/",
             }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")});
-        }
-
-        [MenuItem("Tools/FF")]
-        private static void FF()
-        {
-            ModuleDefinition module = ModuleDefinition.CreateModule(Path.Combine(Define.BuildOutputDir, "../Bin/Debug/Unity.Hotfix.dll"), ModuleKind.Dll);
         }
 
         private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences)

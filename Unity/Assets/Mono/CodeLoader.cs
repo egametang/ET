@@ -80,10 +80,13 @@ namespace ET
 		// Game.EventSystem.Load();
 		public void LoadHotfix()
 		{
-			byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Logic.dll"));
-			byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Logic.pdb"));
-			
+			// 傻屌Unity在这里搞了个傻逼优化，认为同一个路径的dll，返回的程序集就一样。所以这里每次编译都要随机名字
+			string logicVersion = File.ReadAllText(Path.Combine(Define.BuildOutputDir, Define.LogicVersion));
+			byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicVersion}.dll"));
+			byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicVersion}.pdb"));
+
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
+			
 			List<Type> listType = new List<Type>();
 			listType.AddRange(this.assembly.GetTypes());
 			listType.AddRange(hotfixAssembly.GetTypes());
