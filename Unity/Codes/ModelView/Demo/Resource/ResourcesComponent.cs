@@ -465,7 +465,6 @@ namespace ET
             {
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
-                    Log.Debug($"111111111111111111111111111111111111ggggg1");
                     CoroutineLock coroutineLock = null;
                     try
                     {
@@ -515,7 +514,6 @@ namespace ET
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 return null;
             }
-            Log.Debug($"111111111111111111111111111111111111gggggdddddd1");
             string p = "";
             AssetBundle assetBundle = null;
 
