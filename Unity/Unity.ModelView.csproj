@@ -244,9 +244,6 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>./Temp/bin/Debug/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>./Temp/bin/Debug/MongoDB.Bson.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
       <HintPath>./Temp/bin/Debug/mscorlib.dll</HintPath>
     </Reference>
