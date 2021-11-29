@@ -40,11 +40,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ServiceType @serviceType = (ET.ServiceType)typeof(ET.ServiceType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            ET.ServiceType @serviceType = (ET.ServiceType)typeof(ET.ServiceType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ThreadSynchronizationContext @threadSynchronizationContext = (ET.ThreadSynchronizationContext)typeof(ET.ThreadSynchronizationContext).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.ThreadSynchronizationContext @threadSynchronizationContext = (ET.ThreadSynchronizationContext)typeof(ET.ThreadSynchronizationContext).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
 
@@ -59,15 +59,15 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ServiceType @serviceType = (ET.ServiceType)typeof(ET.ServiceType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            ET.ServiceType @serviceType = (ET.ServiceType)typeof(ET.ServiceType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Net.IPEndPoint @ipEndPoint = (System.Net.IPEndPoint)typeof(System.Net.IPEndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.IPEndPoint @ipEndPoint = (System.Net.IPEndPoint)typeof(System.Net.IPEndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ET.ThreadSynchronizationContext @threadSynchronizationContext = (ET.ThreadSynchronizationContext)typeof(ET.ThreadSynchronizationContext).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.ThreadSynchronizationContext @threadSynchronizationContext = (ET.ThreadSynchronizationContext)typeof(ET.ThreadSynchronizationContext).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
 

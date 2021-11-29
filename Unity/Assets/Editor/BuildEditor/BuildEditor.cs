@@ -71,7 +71,7 @@ namespace ET
 			switch (buildType)
 			{
 				case BuildType.Development:
-					this.buildOptions = BuildOptions.Development | BuildOptions.AllowDebugging;
+					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
 					break;
 				case BuildType.Release:
 					this.buildOptions = BuildOptions.None;

@@ -552,6 +552,15 @@
      <Reference Include="ICSharpCode.SharpZipLib">
      <HintPath>E:/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
      </Reference>
+     <Reference Include="ILRuntime.Mono.Cecil">
+     <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
+     </Reference>
+     <Reference Include="ILRuntime.Mono.Cecil.Mdb">
+     <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
+     </Reference>
+     <Reference Include="ILRuntime.Mono.Cecil.Pdb">
+     <HintPath>E:/ET/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
+     </Reference>
      <Reference Include="mscorlib">
      <HintPath>C:/Apps/Unity/2020.3.23f1c1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
      </Reference>

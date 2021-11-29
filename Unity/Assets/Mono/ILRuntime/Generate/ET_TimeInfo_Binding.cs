@@ -53,7 +53,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int64 @value = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.TimeInfo instance_of_this_method = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.TimeInfo instance_of_this_method = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.ServerMinusClientTime = value;
@@ -68,7 +68,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.TimeInfo instance_of_this_method = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.TimeInfo instance_of_this_method = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Update();
@@ -96,7 +96,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            ET.TimeInfo @Instance = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.TimeInfo @Instance = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ET.TimeInfo.Instance = @Instance;
             return ptr_of_this_method;
         }
