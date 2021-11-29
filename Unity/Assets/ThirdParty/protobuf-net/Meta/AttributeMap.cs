@@ -1,5 +1,6 @@
 ﻿#if !NO_RUNTIME
 using System;
+using System.Linq;
 #if FEAT_IKVM
 using Type = IKVM.Reflection.Type;
 using IKVM.Reflection;
@@ -38,7 +39,9 @@ namespace ProtoBuf.Meta
 #if WINRT || COREFX
             Attribute[] all = System.Linq.Enumerable.ToArray(type.GetTypeInfo().GetCustomAttributes(inherit));
 #else
-            object[] all = type.GetCustomAttributes(inherit);
+            //object[] all = type.GetCustomAttributes(inherit);
+            // 过滤掉null的Attribute
+            object[] all = type.GetCustomAttributes(inherit).Where((x)=>x != null).ToArray();
 #endif
             AttributeMap[] result = new AttributeMap[all.Length];
             for(int i = 0 ; i < all.Length ; i++)
@@ -64,7 +67,9 @@ namespace ProtoBuf.Meta
 #if WINRT || COREFX
             Attribute[] all = System.Linq.Enumerable.ToArray(member.GetCustomAttributes(inherit));
 #else
-            object[] all = member.GetCustomAttributes(inherit);
+            //object[] all = member.GetCustomAttributes(inherit);
+            // 过滤掉null的Attribute
+            object[] all = member.GetCustomAttributes(inherit).Where((x)=>x != null).ToArray();
 #endif
             AttributeMap[] result = new AttributeMap[all.Length];
             for(int i = 0 ; i < all.Length ; i++)
@@ -92,7 +97,9 @@ namespace ProtoBuf.Meta
             Attribute[] all = System.Linq.Enumerable.ToArray(assembly.GetCustomAttributes());
 #else
             const bool inherit = false;
-            object[] all = assembly.GetCustomAttributes(inherit);
+            //object[] all = assembly.GetCustomAttributes(inherit);
+            // 过滤掉null的Attribute
+            object[] all = assembly.GetCustomAttributes(inherit).Where((x)=>x != null).ToArray();
 #endif
             AttributeMap[] result = new AttributeMap[all.Length];
             for(int i = 0 ; i < all.Length ; i++)

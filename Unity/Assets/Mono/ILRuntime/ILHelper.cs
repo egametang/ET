@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using ILRuntime.CLR.Method;
-using ILRuntime.CLR.TypeSystem;
-using ILRuntime.Runtime.Enviorment;
-//using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using ProtoBuf;
 using UnityEngine;
@@ -20,6 +15,8 @@ namespace ET
         public static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain appdomain)
         {
             list.Add(typeof(Dictionary<int, ILTypeInstance>));
+            list.Add(typeof(Dictionary<long, ILTypeInstance>));
+            list.Add(typeof(Dictionary<string, ILTypeInstance>));
             list.Add(typeof(Dictionary<int, int>));
             list.Add(typeof(Dictionary<object, object>));
             list.Add(typeof(Dictionary<int, object>));
@@ -34,13 +31,13 @@ namespace ET
             list.Add(typeof(List<long>));
             list.Add(typeof(List<string>));
             list.Add(typeof(List<object>));
-            list.Add(typeof(ListComponent<ILTypeInstance>));
             list.Add(typeof(ETTask<int>));
             list.Add(typeof(ETTask<long>));
             list.Add(typeof(ETTask<string>));
             list.Add(typeof(ETTask<object>));
             list.Add(typeof(ETTask<AssetBundle>));
             list.Add(typeof(ETTask<UnityEngine.Object[]>));
+            list.Add(typeof(ListComponent<ILTypeInstance>));
             list.Add(typeof(ListComponent<ETTask>));
             list.Add(typeof(ListComponent<Vector3>));
             
@@ -105,7 +102,7 @@ namespace ET
             {
                 t.GetMethod("Initialize")?.Invoke(null, new object[] { appdomain });
             }
-            // CLRBindings.Initialize(appdomain);
+            //ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
         }
         
         public static void RegisterAdaptor(ILRuntime.Runtime.Enviorment.AppDomain appdomain)

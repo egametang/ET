@@ -11,13 +11,6 @@ namespace ET
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 
-
-        [MenuItem("Tools/web资源服务器")]
-        public static void OpenFileServer()
-        {
-            ProcessHelper.Run("dotnet", "FileServer.dll", "../FileServer/");
-        }
-
         public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB, bool clearFolder)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;

@@ -17,11 +17,15 @@ namespace ET
 		
 		private CodeLoader codeLoader;
 
-		public CodeMode CodeMode = CodeMode.ILRuntime;
+		public CodeMode CodeMode = CodeMode.Mono;
 		
 		private void Awake()
 		{
 			Instance = this;
+			
+#if ENABLE_IL2CPP
+			this.CodeMode = CodeMode.ILRuntime;
+#endif
 			
 			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
