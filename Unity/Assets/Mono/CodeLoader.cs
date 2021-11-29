@@ -41,12 +41,12 @@ namespace ET
 				}
 				case CodeMode.ILRuntime:
 				{
-					//Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					//byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
-					//byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
+					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
+					byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
 					
-					byte[] assBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.dll"));
-					byte[] pdbBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.pdb"));
+					//byte[] assBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.dll"));
+					//byte[] pdbBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.pdb"));
 				
 					ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 					MemoryStream assStream = new MemoryStream(assBytes);
