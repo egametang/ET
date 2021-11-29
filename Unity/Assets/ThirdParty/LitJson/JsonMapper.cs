@@ -979,13 +979,6 @@ namespace LitJson
             writer.WriteObjectStart();
             foreach (PropertyMetadata p_data in props)
             {
-                var skipAttributesList = p_data.Info.GetCustomAttributes(typeof (IgnoreDataMemberAttribute), true);
-                var skipAttributes = skipAttributesList as ICollection<Attribute>;
-                if (skipAttributes.Count > 0)
-                {
-                    continue;
-                }
-                
                 if (p_data.IsField)
                 {
                     writer.WritePropertyName(p_data.Info.Name);
