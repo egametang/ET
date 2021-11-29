@@ -20,7 +20,7 @@ namespace ET
             {
                 return JsonHelper.FromJson(type, memoryStream.GetBuffer().ToStr((int)memoryStream.Position, (int)(memoryStream.Length - memoryStream.Position)));
             }
-#if NOT_CLIENT
+#if NOT_UNITY
             return MongoHelper.FromStream(type, memoryStream);
 #else
             throw new Exception($"client no message: {opcode}");
@@ -42,7 +42,7 @@ namespace ET
                 memoryStream.Write(bytes, 0, bytes.Length);
                 return;
             }
-#if NOT_CLIENT
+#if NOT_UNITY
             MongoHelper.ToStream(obj, memoryStream);
 #else
             throw new Exception($"client no message: {opcode}");

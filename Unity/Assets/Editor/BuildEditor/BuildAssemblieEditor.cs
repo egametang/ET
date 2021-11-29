@@ -33,11 +33,6 @@ namespace ET
         [MenuItem("Tools/BuildData _F6")]
         public static void BuildData()
         {
-            if (Define.CodeMode != Define.CodeMode_Reload)
-            {
-                throw new Exception("you code mode is not reload mode! please change Define.CodeMode");
-            }
-            
             BuildAssemblieEditor.BuildMuteAssembly("Data", new []
             {
                 "Codes/Model/",
@@ -49,11 +44,6 @@ namespace ET
         [MenuItem("Tools/BuildLogic _F7")]
         public static void BuildLogic()
         {
-            if (Define.CodeMode != Define.CodeMode_Reload)
-            {
-                throw new Exception("you code mode is not reload mode! please change Define.CodeMode");
-            }
-            
             string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*");
             foreach (string file in logicFiles)
             {
@@ -97,12 +87,13 @@ namespace ET
 
             BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 
+            assemblyBuilder.compilerOptions.CodeOptimization = CodeOptimization.Debug;
             assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 
             assemblyBuilder.additionalReferences = additionalReferences;
             
-            assemblyBuilder.flags = AssemblyBuilderFlags.DevelopmentBuild;
+            assemblyBuilder.flags = AssemblyBuilderFlags.None;
             //AssemblyBuilderFlags.None                 正常发布
             //AssemblyBuilderFlags.DevelopmentBuild     开发模式打包
             //AssemblyBuilderFlags.EditorAssembly       编辑器状态

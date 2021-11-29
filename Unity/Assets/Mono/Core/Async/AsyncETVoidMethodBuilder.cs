@@ -25,11 +25,7 @@ namespace ET
         [DebuggerHidden]
         public void SetException(Exception e)
         {
-#if NOT_UNITY
             Log.Error(e);
-#else
-            UnityEngine.Debug.LogError(e);
-#endif
         }
 
         // 4. SetResult

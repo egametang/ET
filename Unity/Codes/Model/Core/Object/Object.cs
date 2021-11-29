@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace ET
+﻿namespace ET
 {
     public abstract class Object
     {

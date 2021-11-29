@@ -25,12 +25,12 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_Instance", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Instance_0);
-            args = new Type[]{};
-            method = type.GetMethod("Update", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Update_1);
             args = new Type[]{typeof(System.Action)};
             method = type.GetMethod("PostNext", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, PostNext_2);
+            app.RegisterCLRMethodRedirection(method, PostNext_1);
+            args = new Type[]{};
+            method = type.GetMethod("Update", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Update_2);
 
 
         }
@@ -47,22 +47,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* Update_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ThreadSynchronizationContext instance_of_this_method = (ET.ThreadSynchronizationContext)typeof(ET.ThreadSynchronizationContext).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Update();
-
-            return __ret;
-        }
-
-        static StackObject* PostNext_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* PostNext_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -77,6 +62,21 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.PostNext(@action);
+
+            return __ret;
+        }
+
+        static StackObject* Update_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.ThreadSynchronizationContext instance_of_this_method = (ET.ThreadSynchronizationContext)typeof(ET.ThreadSynchronizationContext).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Update();
 
             return __ret;
         }

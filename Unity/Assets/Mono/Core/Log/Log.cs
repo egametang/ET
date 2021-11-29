@@ -81,7 +81,7 @@ namespace ET
         {
             if (e.Data.Contains("StackTrace"))
             {
-                ILog.Error(e.Data["StackTrace"].ToString());
+                ILog.Error($"{e.Data["StackTrace"]}\n{e}");
                 return;
             }
             string str = e.ToString();

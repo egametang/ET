@@ -4,12 +4,6 @@
 	{
 		public const string BuildOutputDir = "./Temp/Bin/Debug";
 
-		// 1 mono模式 2 ILRuntime模式 3 mono热重载模式
-		public static int CodeMode = 2;
-		public const int CodeMode_Mono = 1;
-		public const int CodeMode_ILRuntime = 2;
-		public const int CodeMode_Reload = 3;
-		
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;
 #else

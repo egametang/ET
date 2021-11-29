@@ -6,7 +6,7 @@ using System.Reflection;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
-using ILRuntime.Runtime.Generated;
+//using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using ProtoBuf;
 using UnityEngine;
@@ -97,7 +97,15 @@ namespace ET
             PType.RegisterILRuntimeCLRRedirection(appdomain);
            
             
-            CLRBindings.Initialize(appdomain);
+            ////////////////////////////////////
+            // CLR绑定的注册，一定要记得将CLR绑定的注册写在CLR重定向的注册后面，因为同一个方法只能被重定向一次，只有先注册的那个才能生效
+            ////////////////////////////////////
+            Type t = Type.GetType("ILRuntime.Runtime.Generated.CLRBindings");
+            if (t != null)
+            {
+                t.GetMethod("Initialize")?.Invoke(null, new object[] { appdomain });
+            }
+            // CLRBindings.Initialize(appdomain);
         }
         
         public static void RegisterAdaptor(ILRuntime.Runtime.Enviorment.AppDomain appdomain)

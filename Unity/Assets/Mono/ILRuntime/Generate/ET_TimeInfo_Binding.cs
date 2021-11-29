@@ -23,12 +23,12 @@ namespace ILRuntime.Runtime.Generated
             FieldInfo field;
             Type[] args;
             Type type = typeof(ET.TimeInfo);
-            args = new Type[]{};
-            method = type.GetMethod("Update", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Update_0);
             args = new Type[]{typeof(System.Int64)};
             method = type.GetMethod("set_ServerMinusClientTime", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, set_ServerMinusClientTime_1);
+            app.RegisterCLRMethodRedirection(method, set_ServerMinusClientTime_0);
+            args = new Type[]{};
+            method = type.GetMethod("Update", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Update_1);
 
             field = type.GetField("Instance", flag);
             app.RegisterCLRFieldGetter(field, get_Instance_0);
@@ -43,22 +43,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* Update_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.TimeInfo instance_of_this_method = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Update();
-
-            return __ret;
-        }
-
-        static StackObject* set_ServerMinusClientTime_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* set_ServerMinusClientTime_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -72,6 +57,21 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.ServerMinusClientTime = value;
+
+            return __ret;
+        }
+
+        static StackObject* Update_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.TimeInfo instance_of_this_method = (ET.TimeInfo)typeof(ET.TimeInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Update();
 
             return __ret;
         }

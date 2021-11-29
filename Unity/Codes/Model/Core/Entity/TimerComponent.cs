@@ -243,7 +243,7 @@ namespace ET
 
         public long NewFrameTimer(Action action)
         {
-#if NOT_CLIENT
+#if NOT_UNITY
 			return NewRepeatedTimerInner(100, action);
 #else
             return NewRepeatedTimerInner(1, action);
@@ -255,7 +255,7 @@ namespace ET
         /// </summary>
         private long NewRepeatedTimerInner(long time, Action action)
         {
-#if NOT_CLIENT
+#if NOT_UNITY
 			if (time < 100)
 			{
 				throw new Exception($"repeated timer < 100, timerType: time: {time}");

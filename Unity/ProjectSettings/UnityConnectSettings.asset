@@ -9,6 +9,9 @@ UnityConnectSettings:
   m_EventOldUrl: https://api.uca.cloud.unity3d.com/v1/events
   m_EventUrl: https://cdp.cloud.unity3d.com/v1/events
   m_ConfigUrl: https://config.uca.cloud.unity3d.com
+  m_DashboardUrl: https://dashboard.unity3d.com
+  m_CNEventUrl: https://cdp.cloud.unity.cn/v1/events
+  m_CNConfigUrl: https://cdp.cloud.unity.cn/config
   m_TestInitMode: 0
   CrashReportingSettings:
     m_EventUrl: https://perf-events.cloud.unity3d.com

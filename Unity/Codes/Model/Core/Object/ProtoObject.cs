@@ -36,7 +36,6 @@ namespace ET
 
         public virtual void AfterEndInit()
         {
-            
         }
     }
     
@@ -53,5 +52,13 @@ namespace ET
         public virtual void EndInit()
         {
         }
+        
+#if !NOT_UNITY
+        public override string ToString()
+        {
+            return this.GetType().Name;
+
+        }
+#endif
     }
 }

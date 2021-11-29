@@ -127,8 +127,8 @@ namespace ET
                 case AwaiterStatus.Faulted:
                     ExceptionDispatchInfo c = this.callback as ExceptionDispatchInfo;
                     this.callback = null;
-                    c?.Throw();
                     this.Recycle();
+                    c?.Throw();
                     break;
                 default:
                     throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
@@ -252,8 +252,8 @@ namespace ET
                 case AwaiterStatus.Faulted:
                     ExceptionDispatchInfo c = this.callback as ExceptionDispatchInfo;
                     this.callback = null;
-                    c?.Throw();
                     this.Recycle();
+                    c?.Throw();
                     return default;
                 default:
                     throw new NotSupportedException("ETask does not allow call GetResult directly when task not completed. Please use 'await'.");

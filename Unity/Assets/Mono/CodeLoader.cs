@@ -1,12 +1,9 @@
-﻿#define ILRuntime
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Linq;
-using AppDomain = ILRuntime.Runtime.Enviorment.AppDomain;
 
 namespace ET
 {
@@ -28,9 +25,9 @@ namespace ET
 		
 		public void Start()
 		{
-			switch (Define.CodeMode)
+			switch (Init.Instance.CodeMode)
 			{
-				case Define.CodeMode_Mono:
+				case CodeMode.Mono:
 				{
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
@@ -42,13 +39,16 @@ namespace ET
 					start.Run();
 					break;
 				}
-				case Define.CodeMode_ILRuntime:
+				case CodeMode.ILRuntime:
 				{
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
 					byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
+					
+					//byte[] assBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.dll"));
+					//byte[] pdbBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.pdb"));
 				
-					AppDomain appDomain = new AppDomain();
+					ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 					MemoryStream assStream = new MemoryStream(assBytes);
 					MemoryStream pdbStream = new MemoryStream(pdbBytes);
 					appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
@@ -60,7 +60,7 @@ namespace ET
 					start.Run();
 					break;
 				}
-				case Define.CodeMode_Reload:
+				case CodeMode.Reload:
 				{
 					byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.dll"));
 					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.pdb"));

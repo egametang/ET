@@ -23,27 +23,27 @@ namespace ILRuntime.Runtime.Generated
             FieldInfo field;
             Type[] args;
             Type type = typeof(ET.AService);
-            args = new Type[]{typeof(System.Int64)};
-            method = type.GetMethod("RemoveChannel", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, RemoveChannel_0);
-            args = new Type[]{};
-            method = type.GetMethod("get_ServiceType", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_ServiceType_1);
-            args = new Type[]{typeof(System.Int64), typeof(System.Int64), typeof(System.IO.MemoryStream)};
-            method = type.GetMethod("SendStream", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SendStream_2);
             args = new Type[]{};
             method = type.GetMethod("Destroy", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Destroy_3);
+            app.RegisterCLRMethodRedirection(method, Destroy_0);
             args = new Type[]{typeof(System.Int64), typeof(System.Net.IPEndPoint)};
             method = type.GetMethod("GetOrCreate", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetOrCreate_4);
+            app.RegisterCLRMethodRedirection(method, GetOrCreate_1);
             args = new Type[]{};
             method = type.GetMethod("Update", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Update_5);
+            app.RegisterCLRMethodRedirection(method, Update_2);
             args = new Type[]{};
             method = type.GetMethod("IsDispose", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, IsDispose_6);
+            app.RegisterCLRMethodRedirection(method, IsDispose_3);
+            args = new Type[]{typeof(System.Int64)};
+            method = type.GetMethod("RemoveChannel", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, RemoveChannel_4);
+            args = new Type[]{};
+            method = type.GetMethod("get_ServiceType", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_ServiceType_5);
+            args = new Type[]{typeof(System.Int64), typeof(System.Int64), typeof(System.IO.MemoryStream)};
+            method = type.GetMethod("SendStream", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, SendStream_6);
 
             field = type.GetField("ErrorCallback", flag);
             app.RegisterCLRFieldGetter(field, get_ErrorCallback_0);
@@ -62,7 +62,76 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* RemoveChannel_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Destroy_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Destroy();
+
+            return __ret;
+        }
+
+        static StackObject* GetOrCreate_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Net.IPEndPoint @address = (System.Net.IPEndPoint)typeof(System.Net.IPEndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Int64 @id = *(long*)&ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.GetOrCreate(@id, @address);
+
+            return __ret;
+        }
+
+        static StackObject* Update_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Update();
+
+            return __ret;
+        }
+
+        static StackObject* IsDispose_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.IsDispose();
+
+            __ret->ObjectType = ObjectTypes.Integer;
+            __ret->Value = result_of_this_method ? 1 : 0;
+            return __ret + 1;
+        }
+
+        static StackObject* RemoveChannel_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -80,7 +149,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* get_ServiceType_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_ServiceType_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -95,7 +164,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* SendStream_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* SendStream_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -118,75 +187,6 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method.SendStream(@channelId, @actorId, @stream);
 
             return __ret;
-        }
-
-        static StackObject* Destroy_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Destroy();
-
-            return __ret;
-        }
-
-        static StackObject* GetOrCreate_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.IPEndPoint @address = (System.Net.IPEndPoint)typeof(System.Net.IPEndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Int64 @id = *(long*)&ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.GetOrCreate(@id, @address);
-
-            return __ret;
-        }
-
-        static StackObject* Update_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Update();
-
-            return __ret;
-        }
-
-        static StackObject* IsDispose_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.IsDispose();
-
-            __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method ? 1 : 0;
-            return __ret + 1;
         }
 
 

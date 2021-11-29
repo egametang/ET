@@ -486,7 +486,6 @@ namespace ET
                 // LoadFromFileAsync部分可以并发加载
                 using (ListComponent<ETTask> tasks = ListComponent<ETTask>.Create())
                 {
-                    Log.Debug($"111111111111111111111111111111111111ggggga1");
                     foreach (string dependency in dependencies)
                     {
                         tasks.Add(LoadDependency(dependency, abInfos.List));

@@ -3,12 +3,31 @@ using UnityEngine;
 
 namespace ET
 {
+	// 1 mono模式 2 ILRuntime模式 3 mono热重载模式
+	public enum CodeMode
+	{
+		Mono = 1,
+		ILRuntime = 2,
+		Reload = 3,
+	}
+	
 	public class Init: MonoBehaviour
 	{
+		public static Init Instance;
+		
 		private CodeLoader codeLoader;
+
+		public CodeMode CodeMode = CodeMode.ILRuntime;
 		
 		private void Awake()
 		{
+			Instance = this;
+			
+			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+			{
+				Log.Error(e.ExceptionObject.ToString());
+			};
+			
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			DontDestroyOnLoad(gameObject);
