@@ -4,6 +4,22 @@ using UnityEngine;
 
 namespace ET
 {
+    [Timer(TimerType.MoveTimer)]
+    public class MoveTimer: ATimer<MoveComponent>
+    {
+        public override void Run(MoveComponent self)
+        {
+            try
+            {
+                self.MoveForward(false);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+    
     [ObjectSystem]
     public class MoveComponentDestroySystem: DestroySystem<MoveComponent>
     {
@@ -185,18 +201,7 @@ namespace ET
             self.StartTime = self.BeginTime;
             self.SetNextTarget();
 
-            self.MoveTimer = TimerComponent.Instance.NewFrameTimer(() =>
-                    {
-                        try
-                        {
-                            self.MoveForward(false);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error($"move timer error: {unit.Id}\n{e}");
-                        }
-                    }
-            );
+            self.MoveTimer = TimerComponent.Instance.NewFrameTimer(TimerType.MoveTimer, self);
         }
 
         private static void SetNextTarget(this MoveComponent self)
@@ -266,55 +271,6 @@ namespace ET
         {
             Unit unit = self.GetParent<Unit>();
             unit.Position = target;
-            return true;
-        }
-
-        public static bool MoveTo(this MoveComponent self, Vector3 target, float speed, int turnTime = 0, bool isTurnHorizontal = false)
-        {
-            if (speed < 0.001)
-            {
-                Log.Error($"speed is 0 {self.GetParent<Unit>().Config.Id} {self.GetParent<Unit>().Id} {speed}");
-                return false;
-            }
-
-            self.Stop();
-
-            self.IsTurnHorizontal = isTurnHorizontal;
-            self.TurnTime = turnTime;
-            self.Targets.Add(self.GetParent<Unit>().Position);
-            self.Targets.Add(target);
-            self.Speed = speed;
-
-            self.StartMove();
-            return true;
-        }
-
-        public static bool MoveTo(this MoveComponent self, List<Vector3> target, float speed, int turnTime = 0)
-        {
-            if (target.Count == 0)
-            {
-                return true;
-            }
-
-            if (Math.Abs(speed) < 0.001)
-            {
-                Log.Error($"speed is 0 {self.GetParent<Unit>().Config.Id} {self.GetParent<Unit>().Id}");
-                return false;
-            }
-
-            self.Stop();
-
-            foreach (Vector3 v in target)
-            {
-                self.Targets.Add(v);
-            }
-
-            self.IsTurnHorizontal = true;
-            self.TurnTime = turnTime;
-            self.Speed = speed;
-
-            self.StartMove();
-
             return true;
         }
 

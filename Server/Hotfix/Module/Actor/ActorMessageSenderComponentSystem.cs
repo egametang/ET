@@ -3,6 +3,22 @@ using System.IO;
 
 namespace ET
 {
+    [Timer(TimerType.ActorMessageSenderChecker)]
+    public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
+    {
+        public override void Run(ActorMessageSenderComponent self)
+        {
+            try
+            {
+                self.Check();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+    
     [ObjectSystem]
     public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
     {
@@ -10,7 +26,7 @@ namespace ET
         {
             ActorMessageSenderComponent.Instance = self;
 
-            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, self.Check);
+            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerType.ActorMessageSenderChecker, self);
         }
     }
 

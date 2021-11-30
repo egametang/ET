@@ -51,32 +51,35 @@ namespace ET
 
         public class ResultCallback<K>: IDestroyRun where K : struct, IWaitType
         {
-            private readonly ETTask<K> tcs;
-            private readonly long timer;
+            private ETTask<K> tcs;
 
             public ResultCallback()
             {
                 this.tcs = ETTask<K>.Create(true);
             }
-            
-            public ResultCallback(long timer)
+
+            public bool IsDisposed
             {
-                this.timer = timer;
-                this.tcs = ETTask<K>.Create(true);
+                get
+                {
+                    return this.tcs == null;
+                }
             }
 
             public ETTask<K> Task => this.tcs;
 
             public void SetResult(K k)
             {
-                TimerComponent.Instance.Remove(this.timer);
-                this.tcs.SetResult(k);
+                var t = tcs;
+                this.tcs = null;
+                t.SetResult(k);
             }
 
             public void SetResult()
             {
-                TimerComponent.Instance.Remove(this.timer);
-                this.tcs.SetResult(new K() { Error = WaitTypeError.Destroy });
+                var t = tcs;
+                this.tcs = null;
+                t.SetResult(new K() { Error = WaitTypeError.Destroy });
             }
         }
 
@@ -108,12 +111,23 @@ namespace ET
 
         public async ETTask<T> Wait<T>(int timeout, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
         {
-            long timerId = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + timeout, () =>
+            ResultCallback<T> tcs = new ResultCallback<T>();
+            async ETTask WaitTimeout()
             {
+                bool retV = await TimerComponent.Instance.WaitAsync(timeout, cancellationToken);
+                if (!retV)
+                {
+                    return;
+                }
+                if (tcs.IsDisposed)
+                {
+                    return;
+                }
                 Notify(new T() { Error = WaitTypeError.Timeout });
-            });
+            }
             
-            ResultCallback<T> tcs = new ResultCallback<T>(timerId);
+            WaitTimeout().Coroutine();
+            
             this.tcss.Add(typeof (T), tcs);
             
             void CancelAction()

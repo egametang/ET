@@ -3,6 +3,22 @@ using System.IO;
 
 namespace ET
 {
+    [Timer(TimerType.ActorLocationSenderChecker)]
+    public class ActorLocationSenderChecker: ATimer<ActorLocationSenderComponent>
+    {
+        public override void Run(ActorLocationSenderComponent self)
+        {
+            try
+            {
+                self.Check();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+    
     [ObjectSystem]
     public class ActorLocationSenderComponentAwakeSystem: AwakeSystem<ActorLocationSenderComponent>
     {
@@ -12,7 +28,7 @@ namespace ET
 
             // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
             // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
-            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, self.Check);
+            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerType.ActorLocationSenderChecker, self);
         }
     }
 

@@ -38,6 +38,11 @@
     <Compile Include="..\..\Unity\Codes\Model\Demo\Move\MoveComponent.cs">
       <Link>Demo\Move\MoveComponent.cs</Link>
     </Compile>
+    
+
+    <Compile Include="..\..\Unity\Codes\Model\Demo\TimerType.cs">
+      <Link>Demo\TimerType.cs</Link>
+    </Compile>
 
     <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
       <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>

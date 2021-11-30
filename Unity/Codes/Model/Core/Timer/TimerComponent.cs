@@ -6,19 +6,19 @@ namespace ET
     public enum TimerClass
     {
         None,
-        OnceWaitTimer,
         OnceTimer,
         RepeatedTimer,
     }
     
     [ObjectSystem]
-    public class TimerActionAwakeSystem: AwakeSystem<TimerAction, TimerClass, long, object>
+    public class TimerActionAwakeSystem: AwakeSystem<TimerAction, TimerClass, long, int, object>
     {
-        public override void Awake(TimerAction self, TimerClass timerClass, long time, object callback)
+        public override void Awake(TimerAction self, TimerClass timerClass, long time, int type, object obj)
         {
             self.TimerClass = timerClass;
-            self.Callback = callback;
+            self.Object = obj;
             self.Time = time;
+            self.Type = type;
         }
     }
 
@@ -27,9 +27,10 @@ namespace ET
     {
         public override void Destroy(TimerAction self)
         {
-            self.Callback = null;
+            self.Object = null;
             self.Time = 0;
             self.TimerClass = TimerClass.None;
+            self.Type = 0;
         }
     }
     
@@ -37,9 +38,11 @@ namespace ET
     {
         public TimerClass TimerClass;
 
-        public object Callback;
+        public object Object;
 
         public long Time;
+
+        public int Type;
     }
 
     [ObjectSystem]
@@ -48,6 +51,7 @@ namespace ET
         public override void Awake(TimerComponent self)
         {
             TimerComponent.Instance = self;
+            self.Awake();
         }
     }
 
@@ -79,6 +83,37 @@ namespace ET
 
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
+
+        private readonly Dictionary<int, ITimer> timerActions = new Dictionary<int, ITimer>();
+
+        public void Awake()
+        {
+            this.timerActions.Clear();
+
+            HashSet<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
+
+            foreach (Type type in types)
+            {
+                ITimer iTimer = Activator.CreateInstance(type) as ITimer;
+                if (iTimer == null)
+                {
+                    Log.Error($"Timer Action {type.Name} 需要继承 ITimer");
+                    continue;
+                }
+                
+                object[] attrs = type.GetCustomAttributes(typeof(TimerAttribute), false);
+                if (attrs.Length == 0)
+                {
+                    continue;
+                }
+
+                foreach (object attr in attrs)
+                {
+                    TimerAttribute timerAttribute = attr as TimerAttribute;
+                    this.timerActions.Add(timerAttribute.Type, iTimer);
+                }
+            }
+        }
 
         public void Update()
         {
@@ -134,26 +169,24 @@ namespace ET
         {
             switch (timerAction.TimerClass)
             {
-                case TimerClass.OnceWaitTimer:
+                case TimerClass.OnceTimer:
                 {
-                    ETTask<bool> tcs = timerAction.Callback as ETTask<bool>;
+                    ETTask<bool> tcs = timerAction.Object as ETTask<bool>;
                     this.Remove(timerAction.Id);
                     tcs.SetResult(true);
                     break;
                 }
-                case TimerClass.OnceTimer:
-                {
-                    Action action = timerAction.Callback as Action;
-                    this.Remove(timerAction.Id);
-                    action?.Invoke();
-                    break;
-                }
                 case TimerClass.RepeatedTimer:
                 {
-                    Action action = timerAction.Callback as Action;
+                    int type = timerAction.Type;
                     long tillTime = TimeHelper.ServerNow() + timerAction.Time;
                     this.AddTimer(tillTime, timerAction);
-                    action?.Invoke();
+                    
+                    if (!this.timerActions.TryGetValue(type, out ITimer timer))
+                    {
+                        return;
+                    }
+                    timer.Handle(timerAction.Object);
                     break;
                 }
             }
@@ -168,15 +201,39 @@ namespace ET
             }
         }
 
+        public bool Remove(ref long id)
+        {
+            long i = id;
+            id = 0;
+            return this.Remove(i);
+        }
+        
+        private bool Remove(long id)
+        {
+            if (id == 0)
+            {
+                return false;
+            }
+
+            TimerAction timerAction = this.GetChild<TimerAction>(id);
+            if (timerAction == null)
+            {
+                return false;
+            }
+            timerAction.Dispose();
+            return true;
+        }
+
         public async ETTask<bool> WaitTillAsync(long tillTime, ETCancellationToken cancellationToken = null)
         {
-            if (TimeHelper.ServerNow() >= tillTime)
+            long timeNow = TimeHelper.ServerNow();
+            if (timeNow >= tillTime)
             {
                 return true;
             }
 
             ETTask<bool> tcs = ETTask<bool>.Create(true);
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.OnceWaitTimer, 0, tcs, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceTimer, tillTime - timeNow, 0, tcs, true);
             this.AddTimer(tillTime, timer);
             long timerId = timer.Id;
 
@@ -216,7 +273,7 @@ namespace ET
 
             ETTask<bool> tcs = ETTask<bool>.Create(true);
             
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.OnceWaitTimer, 0, tcs, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceTimer, time, 0, tcs, true);
             this.AddTimer(tillTime, timer);
             long timerId = timer.Id;
 
@@ -241,19 +298,19 @@ namespace ET
             return ret;
         }
 
-        public long NewFrameTimer(Action action)
+        public long NewFrameTimer(int type, object args)
         {
 #if NOT_UNITY
-			return NewRepeatedTimerInner(100, action);
+			return NewRepeatedTimerInner(100, type, args);
 #else
-            return NewRepeatedTimerInner(1, action);
+            return NewRepeatedTimerInner(1, type, args);
 #endif
         }
 
         /// <summary>
         /// 创建一个RepeatedTimer
         /// </summary>
-        private long NewRepeatedTimerInner(long time, Action action)
+        private long NewRepeatedTimerInner(long time, int type, object args)
         {
 #if NOT_UNITY
 			if (time < 100)
@@ -262,47 +319,14 @@ namespace ET
 			}
 #endif
             long tillTime = TimeHelper.ServerNow() + time;
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.RepeatedTimer, time, action, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.RepeatedTimer, time, type, args, true);
             this.AddTimer(tillTime, timer);
             return timer.Id;
         }
 
-        public long NewRepeatedTimer(long time, Action action)
+        public long NewRepeatedTimer(long time, int type, object args)
         {
-            return NewRepeatedTimerInner(time, action);
-        }
-
-        public void Remove(ref long id)
-        {
-            this.Remove(id);
-            id = 0;
-        }
-
-        public bool Remove(long id)
-        {
-            if (id == 0)
-            {
-                return false;
-            }
-
-            TimerAction timerAction = this.GetChild<TimerAction>(id);
-            if (timerAction == null)
-            {
-                return false;
-            }
-            timerAction.Dispose();
-            return true;
-        }
-
-        public long NewOnceTimer(long tillTime, Action action)
-        {
-            if (tillTime < TimeHelper.ServerNow())
-            {
-                Log.Error($"new once time too small: {tillTime}");
-            }
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.OnceTimer, 0, action, true);
-            this.AddTimer(tillTime, timer);
-            return timer.Id;
+            return NewRepeatedTimerInner(time, type, args);
         }
     }
 }

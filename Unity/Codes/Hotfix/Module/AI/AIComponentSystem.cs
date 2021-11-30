@@ -3,13 +3,29 @@ using UnityEngine;
 
 namespace ET
 {
+    [Timer(TimerType.AITimer)]
+    public class AITimer: ATimer<AIComponent>
+    {
+        public override void Run(AIComponent self)
+        {
+            try
+            {
+                self.Check();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+    
     [ObjectSystem]
     public class AIComponentAwakeSystem: AwakeSystem<AIComponent, int>
     {
         public override void Awake(AIComponent self, int aiConfigId)
         {
             self.AIConfigId = aiConfigId;
-            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, ()=> { self.Check(); });
+            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerType.AITimer, self);
         }
     }
 
