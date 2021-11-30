@@ -25,7 +25,8 @@
             this.Zone = zone;
             this.SceneType = sceneType;
             this.Name = name;
-            this.IsCreate = true;
+            this.IsCreated = true;
+            this.IsNew = true;
             this.IsRegister = true;
             this.Parent = parent;
             this.Domain = this;
@@ -39,7 +40,8 @@
             this.Zone = zone;
             this.SceneType = sceneType;
             this.Name = name;
-            this.IsCreate = true;
+            this.IsCreated = true;
+            this.IsNew = true;
             this.IsRegister = true;
             this.Parent = parent;
             this.Domain = this;

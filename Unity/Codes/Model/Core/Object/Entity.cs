@@ -12,7 +12,8 @@ namespace ET
         IsFromPool = 1,
         IsRegister = 1 << 1,
         IsComponent = 1 << 2,
-        IsCreate = 1 << 3,
+        IsCreated = 1 << 3,
+        IsNew = 1 << 4,
     }
 
     public partial class Entity: DisposeObject
@@ -96,18 +97,36 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        protected bool IsCreate
+        protected bool IsCreated
         {
-            get => (this.status & EntityStatus.IsCreate) == EntityStatus.IsCreate;
+            get => (this.status & EntityStatus.IsCreated) == EntityStatus.IsCreated;
             set
             {
                 if (value)
                 {
-                    this.status |= EntityStatus.IsCreate;
+                    this.status |= EntityStatus.IsCreated;
                 }
                 else
                 {
-                    this.status &= ~EntityStatus.IsCreate;
+                    this.status &= ~EntityStatus.IsCreated;
+                }
+            }
+        }
+        
+        [IgnoreDataMember]
+        [BsonIgnore]
+        protected bool IsNew
+        {
+            get => (this.status & EntityStatus.IsNew) == EntityStatus.IsNew;
+            set
+            {
+                if (value)
+                {
+                    this.status |= EntityStatus.IsNew;
+                }
+                else
+                {
+                    this.status &= ~EntityStatus.IsNew;
                 }
             }
         }
@@ -289,9 +308,9 @@ namespace ET
                     }
                 }
 
-                if (!this.IsCreate)
+                if (!this.IsCreated)
                 {
-                    this.IsCreate = true;
+                    this.IsCreated = true;
                     EventSystem.Instance.Deserialize(this);
                 }
             }
@@ -370,13 +389,10 @@ namespace ET
 
             this.childrenDB.Remove(entity);
 
-            if (this.childrenDB.Count == 0)
+            if (this.childrenDB.Count == 0 && this.IsNew)
             {
-                if (this.IsFromPool)
-                {
-                    MonoPool.Instance.Recycle(this.childrenDB);
-                    this.childrenDB = null;
-                }
+                MonoPool.Instance.Recycle(this.childrenDB);
+                this.childrenDB = null;
             }
         }
 
@@ -425,12 +441,11 @@ namespace ET
                 MonoPool.Instance.Recycle(this.components);
                 this.components = null;
 
-                // 从池中创建的才需要回到池中,从db中不需要回收
+                // 创建的才需要回到池中,从db中不需要回收
                 if (this.componentsDB != null)
                 {
                     this.componentsDB.Clear();
-
-                    if (this.IsFromPool)
+                    if (this.IsNew)
                     {
                         MonoPool.Instance.Recycle(this.componentsDB);
                         this.componentsDB = null;
@@ -453,8 +468,8 @@ namespace ET
                 if (this.childrenDB != null)
                 {
                     this.childrenDB.Clear();
-                    // 从池中创建的才需要回到池中,从db中不需要回收
-                    if (this.IsFromPool)
+                    // 创建的才需要回到池中,从db中不需要回收
+                    if (this.IsNew)
                     {
                         MonoPool.Instance.Recycle(this.childrenDB);
                         this.childrenDB = null;
@@ -518,7 +533,7 @@ namespace ET
             }
 
             this.componentsDB.Remove(component);
-            if (this.componentsDB.Count == 0 && this.IsFromPool)
+            if (this.componentsDB.Count == 0 && this.IsNew)
             {
                 MonoPool.Instance.Recycle(this.componentsDB);
                 this.componentsDB = null;
@@ -540,7 +555,7 @@ namespace ET
 
             this.components.Remove(component.GetType());
 
-            if (this.components.Count == 0 && this.IsFromPool)
+            if (this.components.Count == 0)
             {
                 MonoPool.Instance.Recycle(this.components);
                 this.components = null;
@@ -627,7 +642,7 @@ namespace ET
             c.Dispose();
         }
 
-        public virtual K GetComponent<K>() where K : Entity
+        public K GetComponent<K>() where K : Entity
         {
             if (this.components == null)
             {
@@ -643,7 +658,7 @@ namespace ET
             return (K) component;
         }
 
-        public virtual Entity GetComponent(Type type)
+        public Entity GetComponent(Type type)
         {
             if (this.components == null)
             {
@@ -664,14 +679,15 @@ namespace ET
             Entity component;
             if (isFromPool)
             {
-                component = ObjectPool.Instance.Fetch(type) as Entity;
+                component = ObjectPool.Instance.Fetch(type);
             }
             else
             {
                 component = Activator.CreateInstance(type) as Entity;
             }
             component.IsFromPool = isFromPool;
-            component.IsCreate = true;
+            component.IsCreated = true;
+            component.IsNew = true;
             component.Id = 0;
             return component;
         }
