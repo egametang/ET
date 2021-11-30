@@ -63,6 +63,15 @@ namespace ET
             self.Update();
         }
     }
+    
+    [ObjectSystem]
+    public class TimerComponentLoadSystem: LoadSystem<TimerComponent>
+    {
+        public override void Load(TimerComponent self)
+        {
+            self.Awake();
+        }
+    }
 
     public class TimerComponent: Entity
     {
