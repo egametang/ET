@@ -3,31 +3,29 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class Pool
+    public class MonoPool: IDisposable
     {
         private readonly Dictionary<Type, Queue<object>> pool = new Dictionary<Type, Queue<object>>();
         
-        public static Pool Instance = new Pool();
+        public static MonoPool Instance = new MonoPool();
         
-        private Pool()
+        private MonoPool()
         {
         }
 
-        public object Get(Type type)
+        public object Fetch(Type type)
         {
             Queue<object> queue = null;
             if (!pool.TryGetValue(type, out queue))
             {
-                queue = new Queue<object>();
-                pool.Add(type, queue);
+                return Activator.CreateInstance(type);
             }
 
-            if (queue.Count > 0)
+            if (queue.Count == 0)
             {
-                return queue.Dequeue();
+                return Activator.CreateInstance(type);
             }
-
-            return Activator.CreateInstance(type);
+            return queue.Dequeue();
         }
 
         public void Recycle(object obj)
@@ -40,6 +38,11 @@ namespace ET
                 pool.Add(type, queue);
             }
             queue.Enqueue(obj);
+        }
+
+        public void Dispose()
+        {
+            this.pool.Clear();
         }
     }
 }

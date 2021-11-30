@@ -58,7 +58,7 @@ namespace ET
         {
             scene?.Dispose();
             scene = null;
-            ObjectPool.Instance.Dispose();
+            MonoPool.Instance.Dispose();
             EventSystem.Instance.Dispose();
             IdGenerater.Instance.Dispose();
         }

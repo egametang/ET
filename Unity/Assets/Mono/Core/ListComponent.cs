@@ -7,13 +7,13 @@ namespace ET
     {
         public static ListComponent<T> Create()
         {
-            return Pool.Instance.Get(typeof (ListComponent<T>)) as ListComponent<T>;
+            return MonoPool.Instance.Fetch(typeof (ListComponent<T>)) as ListComponent<T>;
         }
 
         public void Dispose()
         {
             this.Clear();
-            Pool.Instance.Recycle(this);
+            MonoPool.Instance.Recycle(this);
         }
     }
 }
