@@ -14,8 +14,8 @@ namespace ET
     {
         private const string CodeDir = "Assets/Bundles/Code/";
 
-        [MenuItem("Tools/BuildCode _F5")]
-        public static void BuildCode()
+        [MenuItem("Tools/BuildCodeDebug _F5")]
+        public static void BuildCodeDebug()
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
             {
@@ -23,25 +23,41 @@ namespace ET
                 "Codes/ModelView/",
                 "Codes/Hotfix/",
                 "Codes/HotfixView/"
-            }, Array.Empty<string>());
+            }, Array.Empty<string>(), CodeOptimization.Debug);
 
             AfterCompiling();
             
             AssetDatabase.Refresh();
         }
         
-        [MenuItem("Tools/BuildData _F6")]
+        [MenuItem("Tools/BuildCodeRelease _F6")]
+        public static void BuildCodeRelease()
+        {
+            BuildAssemblieEditor.BuildMuteAssembly("Code", new []
+            {
+                "Codes/Model/",
+                "Codes/ModelView/",
+                "Codes/Hotfix/",
+                "Codes/HotfixView/"
+            }, Array.Empty<string>(), CodeOptimization.Release);
+
+            AfterCompiling();
+            
+            AssetDatabase.Refresh();
+        }
+        
+        [MenuItem("Tools/BuildData _F7")]
         public static void BuildData()
         {
             BuildAssemblieEditor.BuildMuteAssembly("Data", new []
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
-            }, Array.Empty<string>());
+            }, Array.Empty<string>(), CodeOptimization.Debug);
         }
         
         
-        [MenuItem("Tools/BuildLogic _F7")]
+        [MenuItem("Tools/BuildLogic _F8")]
         public static void BuildLogic()
         {
             string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*");
@@ -57,10 +73,10 @@ namespace ET
             {
                 "Codes/Hotfix/",
                 "Codes/HotfixView/",
-            }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")});
+            }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
         }
 
-        private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences)
+        private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
         {
             List<string> scripts = new List<string>();
             for (int i = 0; i < CodeDirectorys.Length; i++)
@@ -87,7 +103,7 @@ namespace ET
 
             BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 
-            assemblyBuilder.compilerOptions.CodeOptimization = CodeOptimization.Debug;
+            assemblyBuilder.compilerOptions.CodeOptimization = codeOptimization;
             assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 
