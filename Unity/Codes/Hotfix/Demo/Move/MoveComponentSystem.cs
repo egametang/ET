@@ -76,7 +76,7 @@ namespace ET
                 {
                     path.Add(self.Targets[i]);
                 }
-                self.MoveToAsync(path.List, speed).Coroutine();
+                self.MoveToAsync(path, speed).Coroutine();
             }
             return true;
         }

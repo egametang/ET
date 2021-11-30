@@ -12,13 +12,13 @@ namespace ET
                 ListComponent<string> list = ListComponent<string>.Create();
                 try
                 {
-                    list.List.AddRange(self.LoadedResource);
+                    list.AddRange(self.LoadedResource);
                     self.LoadedResource = null;
 
                     // 延迟5秒卸载包，因为包卸载是引用技术，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
                     await TimerComponent.Instance.WaitAsync(5000);
 
-                    foreach (string abName in list.List)
+                    foreach (string abName in list)
                     {
                         CoroutineLock coroutineLock = null;
                         try

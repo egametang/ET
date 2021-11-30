@@ -36,10 +36,10 @@ namespace ILRuntime.Runtime.Generated
             ET_ListComponent_1_Vector3_Binding.Register(app);
             System_Collections_Generic_List_1_Single_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
+            System_Collections_Generic_List_1_Vector3_Binding.Register(app);
             System_IDisposable_Binding.Register(app);
             UnityEngine_Quaternion_Binding.Register(app);
             ET_ETTaskCompleted_Binding.Register(app);
-            System_Collections_Generic_List_1_Vector3_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Boolean_Binding.Register(app);
             System_Action_1_Boolean_Binding.Register(app);
             System_Math_Binding.Register(app);
@@ -118,12 +118,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Action_Binding.Register(app);
             System_Collections_Generic_List_1_Action_Binding_Enumerator_Binding.Register(app);
             System_Action_Binding.Register(app);
-            System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding.Register(app);
-            System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_Int64_List_1_Int64_Binding.Register(app);
-            System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
-            ET_MultiMap_2_Int64_Int64_Binding.Register(app);
-            System_Collections_Generic_List_1_Int64_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
@@ -144,6 +138,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Binding_Enumerator_Binding.Register(app);
             ET_ObjectHelper_Binding.Register(app);
             System_Text_StringBuilder_Binding.Register(app);
@@ -161,6 +156,11 @@ namespace ILRuntime.Runtime.Generated
             ProtoBuf_Meta_RuntimeTypeModel_Binding.Register(app);
             ProtoBuf_Meta_TypeModel_Binding.Register(app);
             ProtoBuf_Serializer_Binding.Register(app);
+            System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding.Register(app);
+            System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_KeyValuePair_2_Int64_List_1_Int64_Binding.Register(app);
+            ET_MultiMap_2_Int64_Int64_Binding.Register(app);
+            System_Collections_Generic_List_1_Int64_Binding_Enumerator_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
             UnityEngine_Mathf_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -223,8 +223,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_String_Int32_Binding.Register(app);
             ET_ListComponent_1_ILTypeInstance_Binding.Register(app);
             ET_ListComponent_1_ETTask_Binding.Register(app);
-            ET_ETTaskHelper_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
+            ET_ETTaskHelper_Binding.Register(app);
             ET_ListComponent_1_String_Binding.Register(app);
             ET_ComponentView_Binding.Register(app);
             System_Collections_Generic_Queue_1_HashSet_1_ILTypeInstance_Binding.Register(app);

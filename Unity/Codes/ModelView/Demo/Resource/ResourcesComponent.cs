@@ -488,17 +488,17 @@ namespace ET
                 {
                     foreach (string dependency in dependencies)
                     {
-                        tasks.Add(LoadDependency(dependency, abInfos.List));
+                        tasks.Add(LoadDependency(dependency, abInfos));
                     }
-                    await ETTaskHelper.WaitAll(tasks.List);
+                    await ETTaskHelper.WaitAll(tasks);
 
                     // ab包从硬盘加载完成，可以再并发加载all assets
-                    tasks.List.Clear();
-                    foreach (ABInfo abInfo in abInfos.List)
+                    tasks.Clear();
+                    foreach (ABInfo abInfo in abInfos)
                     {
                         tasks.Add(LoadOneBundleAllAssets(abInfo));
                     }
-                    await ETTaskHelper.WaitAll(tasks.List);
+                    await ETTaskHelper.WaitAll(tasks);
                 }
             }
         }

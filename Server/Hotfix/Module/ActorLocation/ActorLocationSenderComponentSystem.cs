@@ -59,7 +59,7 @@ namespace ET
                     }
                 }
 
-                foreach (long id in list.List)
+                foreach (long id in list)
                 {
                     self.Remove(id);
                 }

@@ -37,8 +37,8 @@ namespace ET
                         // 创建机器人
                         for (int i = 0; i < options.Num; ++i)
                         {
-                            int index = i % thisProcessRobotScenes.List.Count;
-                            StartSceneConfig robotSceneConfig = thisProcessRobotScenes.List[index];
+                            int index = i % thisProcessRobotScenes.Count;
+                            StartSceneConfig robotSceneConfig = thisProcessRobotScenes[index];
                             Scene robotScene = Game.Scene.Get(robotSceneConfig.Id);
                             RobotManagerComponent robotManagerComponent = robotScene.GetComponent<RobotManagerComponent>();
                             Scene robot = await robotManagerComponent.NewRobot(Game.Options.Process * 10000 + i);

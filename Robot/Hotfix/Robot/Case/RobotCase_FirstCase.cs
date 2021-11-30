@@ -10,9 +10,9 @@ namespace ET
             using ListComponent<Scene> robots = ListComponent<Scene>.Create();
             
             // 创建了两个机器人，生命周期是RobotCase，RobotCase_FirstCase.Run执行结束，机器人就会删除
-            await robotCase.NewRobot(2, robots.List);
+            await robotCase.NewRobot(2, robots);
 
-            foreach (Scene robotScene in robots.List)
+            foreach (Scene robotScene in robots)
             {
                 M2C_TestRobotCase response = await robotScene.GetComponent<SessionComponent>().Session.Call(new C2M_TestRobotCase() {N = robotScene.Zone}) as M2C_TestRobotCase;
                 if (response.N != robotScene.Zone)

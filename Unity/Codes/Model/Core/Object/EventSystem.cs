@@ -582,7 +582,7 @@ namespace ET
 
                 try
                 {
-                    await ETTaskHelper.WaitAll(list.List);
+                    await ETTaskHelper.WaitAll(list);
                 }
                 catch (Exception e)
                 {

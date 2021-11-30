@@ -323,6 +323,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Quaternion_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_AService_Binding_Enumerator_Bind.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
+     <Compile Include="Assets\Mono\Core\Pool.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:/Apps/Unity/2020.3.23f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
