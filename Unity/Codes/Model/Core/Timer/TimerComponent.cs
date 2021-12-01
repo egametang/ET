@@ -93,11 +93,13 @@ namespace ET
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
 
-        private readonly Dictionary<int, ITimer> timerActions = new Dictionary<int, ITimer>();
+        private const int TimeTypeMax = 10000;
+
+        private ITimer[] timerActions;
 
         public void Awake()
         {
-            this.timerActions.Clear();
+            this.timerActions = new ITimer[TimeTypeMax];
 
             HashSet<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
 
@@ -119,7 +121,7 @@ namespace ET
                 foreach (object attr in attrs)
                 {
                     TimerAttribute timerAttribute = attr as TimerAttribute;
-                    this.timerActions.Add(timerAttribute.Type, iTimer);
+                    this.timerActions[timerAttribute.Type] = iTimer;
                 }
             }
         }
@@ -190,9 +192,11 @@ namespace ET
                     int type = timerAction.Type;
                     long tillTime = TimeHelper.ServerNow() + timerAction.Time;
                     this.AddTimer(tillTime, timerAction);
-                    
-                    if (!this.timerActions.TryGetValue(type, out ITimer timer))
+
+                    ITimer timer = this.timerActions[type];
+                    if (timer == null)
                     {
+                        Log.Error($"not found timer action: {type}");
                         return;
                     }
                     timer.Handle(timerAction.Object);
