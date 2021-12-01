@@ -1,3 +1,3 @@
 cd /d ../Bin
-dotnet Server.dll --AppType=Proto2CS
+dotnet Tools.dll --AppType=Proto2CS
 pause

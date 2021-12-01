@@ -1,3 +1,3 @@
 cd /d ../Bin
-dotnet Server.dll --AppType=ExcelExporter
+dotnet Tools.dll --AppType=ExcelExporter
 pause

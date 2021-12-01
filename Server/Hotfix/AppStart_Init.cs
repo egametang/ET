@@ -7,40 +7,6 @@ namespace ET
     {
         protected override async ETTask Run(EventType.AppStart args)
         {
-            switch (Game.Options.AppType)
-            {
-                case AppType.ExcelExporter:
-                {
-                    Game.Options.Console = 1;
-                    try
-                    {
-                        ExcelExporter.Export();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Console(e.ToString());
-                        System.Environment.Exit(1);
-                    }
-                    System.Environment.Exit(0);
-                    return;
-                }
-                case AppType.Proto2CS:
-                {
-                    Game.Options.Console = 1;
-                    try
-                    {
-                        Proto2CS.Export();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Console(e.ToString());
-                        System.Environment.Exit(1);
-                    }
-                    System.Environment.Exit(0);
-                    return;
-                }
-            }
-
             Game.Scene.AddComponent<ConfigComponent>();
             await ConfigComponent.Instance.LoadAsync();
 
