@@ -221,9 +221,8 @@ namespace ET
                 {
                     ++this.lastInstanceIdTime; // 借用下一秒
                     this.instanceIdValue = 0;
-#if NOT_UNITY
+
                     Log.Error($"instanceid count per sec overflow: {time} {this.lastInstanceIdTime}");
-#endif
                 }
             }
 
