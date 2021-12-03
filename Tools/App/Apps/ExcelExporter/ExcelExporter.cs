@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -16,23 +17,25 @@ namespace ET
 {
     public enum ConfigType
     {
-        Client,
-        Server,
+        c,
+        s,
     }
     
-    struct HeadInfo
+    class HeadInfo
     {
         public string FieldAttribute;
         public string FieldDesc;
         public string FieldName;
         public string FieldType;
+        public int FieldIndex;
 
-        public HeadInfo(string cs, string desc, string name, string type)
+        public HeadInfo(string cs, string desc, string name, string type, int index)
         {
             this.FieldAttribute = cs;
             this.FieldDesc = desc;
             this.FieldName = name;
             this.FieldType = type;
+            this.FieldIndex = index;
         }
     }
     
@@ -56,6 +59,10 @@ namespace ET
             {
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                
+                Directory.Delete(clientClassDir, true);
+                Directory.Delete(serverClassDir, true);
+                
                 foreach (string path in Directory.GetFiles(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
@@ -66,16 +73,28 @@ namespace ET
                     using Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     using ExcelPackage p = new ExcelPackage(stream);
                     string name = Path.GetFileNameWithoutExtension(path);
-                
-                    ExportExcelClass(p, name, ConfigType.Client);
-                    ExportExcelClass(p, name, ConfigType.Server);
-                
-                    ExportExcelJson(p, name, ConfigType.Client);
-                    ExportExcelJson(p, name, ConfigType.Server);
+
+                    string cs = p.Workbook.Worksheets[0].Cells[1, 1].Text.Trim();
+                    if (cs.Contains("#"))
+                    {
+                        continue;
+                    }
+                    if (cs == "")
+                    {
+                        cs = "cs";
+                    }
+                    if (cs.Contains("c"))
+                    {
+                        ExportExcelClass(p, name, ConfigType.c);    
+                    }
+                    if (cs.Contains("s"))
+                    {
+                        ExportExcelClass(p, name, ConfigType.s);    
+                    }
                 }
             
-                ExportExcelProtobuf(ConfigType.Client);
-                ExportExcelProtobuf(ConfigType.Server);
+                ExportExcelProtobuf(ConfigType.c);
+                ExportExcelProtobuf(ConfigType.s);
                 
                 Console.WriteLine("导表成功!");
             }
@@ -87,7 +106,7 @@ namespace ET
 
         private static string GetProtoDir(ConfigType configType)
         {
-            if (configType == ConfigType.Client)
+            if (configType == ConfigType.c)
             {
                 return clientProtoDir;
             }
@@ -96,7 +115,7 @@ namespace ET
         
         private static string GetClassDir(ConfigType configType)
         {
-            if (configType == ConfigType.Client)
+            if (configType == ConfigType.c)
             {
                 return clientClassDir;
             }
@@ -107,38 +126,63 @@ namespace ET
 #region 导出class
         static void ExportExcelClass(ExcelPackage p, string name, ConfigType configType)
         {
-            List<HeadInfo> classField = new List<HeadInfo>();
-            HashSet<string> uniqeField = new HashSet<string>();
+            Dictionary<string, HeadInfo> classField = new Dictionary<string, HeadInfo>();
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                ExportSheetClass(worksheet, classField, uniqeField, configType);
+                ExportSheetClass(worksheet, classField, configType);
             }
             ExportClass(name, classField, configType);
+            ExportExcelJson(p, name, classField, configType);
         }
         
-        static void ExportSheetClass(ExcelWorksheet worksheet, List<HeadInfo> classField, HashSet<string> uniqeField, ConfigType configType)
+        static void ExportSheetClass(ExcelWorksheet worksheet, Dictionary<string, HeadInfo> classField, ConfigType configType)
         {
+            string configTypeStr = configType.ToString();
             const int row = 2;
             for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
             {
+                if (worksheet.Name.StartsWith("#"))
+                {
+                    continue;
+                }
+                
                 string fieldName = worksheet.Cells[row + 2, col].Text.Trim();
                 if (fieldName == "")
                 {
                     continue;
                 }
-                if (!uniqeField.Add(fieldName))
+
+                if (classField.ContainsKey(fieldName))
                 {
                     continue;
                 }
-                string fieldCS = worksheet.Cells[row, col].Text.Trim();
+                
+                string fieldCS = worksheet.Cells[row, col].Text.Trim().ToLower();
+                if (fieldCS.Contains("#"))
+                {
+                    classField[fieldName] = null;
+                    continue;
+                }
+
+                if (fieldCS == "")
+                {
+                    fieldCS = "cs";
+                }
+
+                if (!fieldCS.Contains(configTypeStr))
+                {
+                    classField[fieldName] = null;
+                    continue;
+                }
+                
                 string fieldDesc = worksheet.Cells[row + 1, col].Text.Trim();
                 string fieldType = worksheet.Cells[row + 3, col].Text.Trim();
 
-                classField.Add(new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType));
+                classField[fieldName] = new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType, col);
             }
         }
 
-        static void ExportClass(string protoName, List<HeadInfo> classField, ConfigType configType)
+        static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
         {
             string dir = GetClassDir(configType);
             if (!Directory.Exists(dir))
@@ -151,14 +195,13 @@ namespace ET
             using StreamWriter sw = new StreamWriter(txt);
             
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < classField.Count; i++)
+            foreach ((string _, HeadInfo headInfo) in classField)
             {
-                HeadInfo headInfo = classField[i];
-                if (headInfo.FieldAttribute.StartsWith("#"))
+                if (headInfo == null)
                 {
                     continue;
                 }
-                sb.Append($"\t\t[ProtoMember({i + 1})]\n");
+                sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex - 2})]\n");
                 sb.Append($"\t\tpublic {headInfo.FieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
             string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
@@ -167,13 +210,17 @@ namespace ET
 #endregion
 
 #region 导出json
-        static void ExportExcelJson(ExcelPackage p, string name, ConfigType configType)
+        static void ExportExcelJson(ExcelPackage p, string name, Dictionary<string, HeadInfo> classField, ConfigType configType)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("{\"list\":[");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                ExportSheetJson(worksheet, name, configType, sb);
+                if (worksheet.Name.StartsWith("#"))
+                {
+                    continue;
+                }
+                ExportSheetJson(worksheet, name, classField, configType, sb);
             }
             sb.AppendLine("]}");
             
@@ -189,59 +236,54 @@ namespace ET
             sw.Write(sb.ToString());
         }
         
-        static void ExportSheetJson(ExcelWorksheet worksheet, string name, ConfigType configType, StringBuilder sb)
+        static void ExportSheetJson(ExcelWorksheet worksheet, string name, Dictionary<string, HeadInfo> classField, ConfigType configType, StringBuilder sb)
         {
-            int infoRow = 2;
-            HeadInfo[] headInfos = new HeadInfo[100];
-            for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
-            {
-                string fieldCS = worksheet.Cells[infoRow, col].Text.Trim();
-                if (fieldCS.Contains("#"))
-                {
-                    continue;
-                }
-                
-                string fieldName = worksheet.Cells[infoRow + 2, col].Text.Trim();
-                if (fieldName == "")
-                {
-                    continue;
-                }
-                
-                string fieldDesc = worksheet.Cells[infoRow + 1, col].Text.Trim();
-                string fieldType = worksheet.Cells[infoRow + 3, col].Text.Trim();
-
-                headInfos[col] = new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType);
-            }
-            
+            string configTypeStr = configType.ToString();
             for (int row = 6; row <= worksheet.Dimension.End.Row; ++row)
             {
+                string prefix = worksheet.Cells[row, 2].Text.Trim();
+                if (prefix.Contains("#"))
+                {
+                    continue;
+                }
+
+                if (prefix == "")
+                {
+                    prefix = "cs";
+                }
+
+                if (!prefix.Contains(configTypeStr))
+                {
+                    continue;
+                }
+                
                 if (worksheet.Cells[row, 3].Text.Trim() == "")
                 {
                     continue;
                 }
                 sb.Append("{");
-                sb.Append($"\"_t\":\"{name}\",");
+                sb.Append($"\"_t\":\"{name}\"");
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
-                    HeadInfo headInfo = headInfos[col];
-                    if (headInfo.FieldAttribute == null)
-                    {
-                        continue;
-                    }
-                    if (headInfo.FieldAttribute.Contains("#"))
+                    string fieldName = worksheet.Cells[4, col].Text.Trim();
+                    if (!classField.ContainsKey(fieldName))
                     {
                         continue;
                     }
 
-                    if (headInfo.FieldName == "Id")
+                    HeadInfo headInfo = classField[fieldName];
+
+                    if (headInfo == null)
                     {
-                        headInfo.FieldName = "_id";
+                        continue;
                     }
-                    else
+                    
+                    string fieldN = headInfo.FieldName;
+                    if (fieldN == "Id")
                     {
-                        sb.Append(",");
+                        fieldN = "_id";
                     }
-                    sb.Append($"\"{headInfo.FieldName}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
+                    sb.Append($",\"{fieldN}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
                 }
                 sb.Append("},\n");
             }
