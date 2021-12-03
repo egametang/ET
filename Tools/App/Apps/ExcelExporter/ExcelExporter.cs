@@ -59,10 +59,17 @@ namespace ET
             {
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                
-                Directory.Delete(clientClassDir, true);
-                Directory.Delete(serverClassDir, true);
-                
+
+                if (Directory.Exists(clientClassDir))
+                {
+                    Directory.Delete(clientClassDir, true);
+                }
+
+                if (Directory.Exists(serverClassDir))
+                {
+                    Directory.Delete(serverClassDir, true);
+                }
+
                 foreach (string path in Directory.GetFiles(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
