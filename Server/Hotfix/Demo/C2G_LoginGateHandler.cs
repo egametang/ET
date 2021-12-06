@@ -17,6 +17,8 @@ namespace ET
 				reply();
 				return;
 			}
+			
+			session.RemoveComponent<SessionAcceptTimeoutComponent>();
 
 			PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
 			Player player = playerComponent.AddChild<Player, string>(account);
