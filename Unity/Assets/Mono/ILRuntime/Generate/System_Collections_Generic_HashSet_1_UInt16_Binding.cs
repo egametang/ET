@@ -46,7 +46,7 @@ namespace ILRuntime.Runtime.Generated
             System.UInt16 @item = (ushort)ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.HashSet<System.UInt16> instance_of_this_method = (System.Collections.Generic.HashSet<System.UInt16>)typeof(System.Collections.Generic.HashSet<System.UInt16>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.HashSet<System.UInt16> instance_of_this_method = (System.Collections.Generic.HashSet<System.UInt16>)typeof(System.Collections.Generic.HashSet<System.UInt16>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Contains(@item);
@@ -66,7 +66,7 @@ namespace ILRuntime.Runtime.Generated
             System.UInt16 @item = (ushort)ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.HashSet<System.UInt16> instance_of_this_method = (System.Collections.Generic.HashSet<System.UInt16>)typeof(System.Collections.Generic.HashSet<System.UInt16>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.HashSet<System.UInt16> instance_of_this_method = (System.Collections.Generic.HashSet<System.UInt16>)typeof(System.Collections.Generic.HashSet<System.UInt16>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Add(@item);

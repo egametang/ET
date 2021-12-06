@@ -32,6 +32,10 @@ namespace ILRuntime.Runtime.Intepreter
                     thisInfo = "";
                 localInfo = ds.GetLocalVariableInfo(intepreter);
             }
+
+            if (ds.OnILRuntimeException != null) {
+                ds.OnILRuntimeException(ToString());
+            }
         }
 
         public override string StackTrace

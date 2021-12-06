@@ -9,6 +9,23 @@ namespace ILRuntime.Runtime
 {
     public static class Extensions
     {
+        public static bool GetJITFlags(this Mono.Cecil.CustomAttribute attribute, Enviorment.AppDomain appdomain, out int flags)
+        {
+            var at = appdomain.GetType(attribute.AttributeType, null, null);
+            flags = ILRuntimeJITFlags.None;
+            if (at == appdomain.JITAttributeType)
+            {
+                if (attribute.HasConstructorArguments)
+                {
+                    flags = (int)attribute.ConstructorArguments[0].Value;
+                }
+                else
+                    flags = ILRuntimeJITFlags.JITOnDemand;
+                return true;
+            }
+            else
+                return false;
+        }
         public static void GetClassName(this Type type, out string clsName, out string realClsName, out bool isByRef, bool simpleClassName = false)
         {
             isByRef = type.IsByRef;

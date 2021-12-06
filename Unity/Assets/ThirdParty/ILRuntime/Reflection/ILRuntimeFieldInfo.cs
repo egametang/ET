@@ -157,7 +157,6 @@ namespace ILRuntime.Reflection
             List<object> res = new List<object>();
             for (int i = 0; i < customAttributes.Length; i++)
             {
-                //commit 3fb47e0b2ed4fa280c312ba97a354dd8c12393f3
                 if (attributeTypes[i].Equals(attributeType) || attributeTypes[i].IsSubclassOf(attributeType))
                 {
                     res.Add(customAttributes[i]);
@@ -182,7 +181,6 @@ namespace ILRuntime.Reflection
                     else
                         ins = ((CrossBindingAdaptorType)obj).ILInstance;
                 }
-             
                 return fieldType.TypeForCLR.CheckCLRTypes(ins[fieldIdx]);
             }
         }

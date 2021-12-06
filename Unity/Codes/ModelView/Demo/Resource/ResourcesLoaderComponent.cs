@@ -9,8 +9,7 @@ namespace ET
         {
             async ETTask UnLoadAsync()
             {
-                ListComponent<string> list = ListComponent<string>.Create();
-                try
+                using (ListComponent<string> list = ListComponent<string>.Create())
                 {
                     list.AddRange(self.LoadedResource);
                     self.LoadedResource = null;
@@ -39,10 +38,6 @@ namespace ET
                             coroutineLock?.Dispose();
                         }
                     }
-                }
-                finally
-                {
-                    list.Dispose();
                 }
             }
 

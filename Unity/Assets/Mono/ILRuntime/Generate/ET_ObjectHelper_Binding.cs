@@ -61,10 +61,10 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Queue<System.Int64> @t2 = (System.Collections.Generic.Queue<System.Int64>)typeof(System.Collections.Generic.Queue<System.Int64>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            System.Collections.Generic.Queue<System.Int64> @t2 = (System.Collections.Generic.Queue<System.Int64>)typeof(System.Collections.Generic.Queue<System.Int64>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.Queue<System.Int64> @t1 = (System.Collections.Generic.Queue<System.Int64>)typeof(System.Collections.Generic.Queue<System.Int64>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            System.Collections.Generic.Queue<System.Int64> @t1 = (System.Collections.Generic.Queue<System.Int64>)typeof(System.Collections.Generic.Queue<System.Int64>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
 
             ET.ObjectHelper.Swap<System.Collections.Generic.Queue<System.Int64>>(ref @t1, ref @t2);

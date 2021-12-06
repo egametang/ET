@@ -96,7 +96,7 @@ namespace ILRuntime.Runtime.Stack
                 case ObjectTypes.ValueTypeObjectReference:
                     {
                         StackObject* dst = ILIntepreter.ResolveReference(esp);
-                        IType type = appdomain.GetType(dst->Value);
+                        IType type = appdomain.GetTypeByIndex(dst->Value);
                         if (type is ILType)
                         {
                             ILType iltype = (ILType)type;
@@ -197,32 +197,7 @@ namespace ILRuntime.Runtime.Stack
             
             if (type.IsPrimitive)
             {
-                if (t == typeof(int) || t == typeof(uint) || t == typeof(short) || t == typeof(ushort) || t == typeof(byte) || t == typeof(sbyte) || t == typeof(char) || t == typeof(bool))
-                {
-                    esp->ObjectType = ObjectTypes.Integer;
-                    esp->Value = 0;
-                    esp->ValueLow = 0;
-                }
-                else if (t == typeof(long) || t == typeof(ulong))
-                {
-                    esp->ObjectType = ObjectTypes.Long;
-                    esp->Value = 0;
-                    esp->ValueLow = 0;
-                }
-                else if (t == typeof(float))
-                {
-                    esp->ObjectType = ObjectTypes.Float;
-                    esp->Value = 0;
-                    esp->ValueLow = 0;
-                }
-                else if (t == typeof(double))
-                {
-                    esp->ObjectType = ObjectTypes.Double;
-                    esp->Value = 0;
-                    esp->ValueLow = 0;
-                }
-                else
-                    throw new NotImplementedException();
+                *esp = type.DefaultObject;
             }
             else if (type.IsEnum)
             {

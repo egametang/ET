@@ -69,7 +69,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Destroy();
@@ -84,14 +84,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.IPEndPoint @address = (System.Net.IPEndPoint)typeof(System.Net.IPEndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Net.IPEndPoint @address = (System.Net.IPEndPoint)typeof(System.Net.IPEndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Int64 @id = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.GetOrCreate(@id, @address);
@@ -106,7 +106,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Update();
@@ -121,7 +121,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.IsDispose();
@@ -141,7 +141,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int64 @channelId = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RemoveChannel(@channelId);
@@ -156,7 +156,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.ServiceType;
@@ -171,7 +171,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 4);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.IO.MemoryStream @stream = (System.IO.MemoryStream)typeof(System.IO.MemoryStream).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.IO.MemoryStream @stream = (System.IO.MemoryStream)typeof(System.IO.MemoryStream).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
@@ -181,7 +181,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int64 @channelId = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
-            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.AService instance_of_this_method = (ET.AService)typeof(ET.AService).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.SendStream(@channelId, @actorId, @stream);
@@ -209,7 +209,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_ErrorCallback_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action<System.Int64, System.Int32> @ErrorCallback = (System.Action<System.Int64, System.Int32>)typeof(System.Action<System.Int64, System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action<System.Int64, System.Int32> @ErrorCallback = (System.Action<System.Int64, System.Int32>)typeof(System.Action<System.Int64, System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((ET.AService)o).ErrorCallback = @ErrorCallback;
             return ptr_of_this_method;
         }
@@ -233,7 +233,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_ReadCallback_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action<System.Int64, System.IO.MemoryStream> @ReadCallback = (System.Action<System.Int64, System.IO.MemoryStream>)typeof(System.Action<System.Int64, System.IO.MemoryStream>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action<System.Int64, System.IO.MemoryStream> @ReadCallback = (System.Action<System.Int64, System.IO.MemoryStream>)typeof(System.Action<System.Int64, System.IO.MemoryStream>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((ET.AService)o).ReadCallback = @ReadCallback;
             return ptr_of_this_method;
         }
@@ -257,7 +257,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_AcceptCallback_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action<System.Int64, System.Net.IPEndPoint> @AcceptCallback = (System.Action<System.Int64, System.Net.IPEndPoint>)typeof(System.Action<System.Int64, System.Net.IPEndPoint>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action<System.Int64, System.Net.IPEndPoint> @AcceptCallback = (System.Action<System.Int64, System.Net.IPEndPoint>)typeof(System.Action<System.Int64, System.Net.IPEndPoint>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((ET.AService)o).AcceptCallback = @AcceptCallback;
             return ptr_of_this_method;
         }

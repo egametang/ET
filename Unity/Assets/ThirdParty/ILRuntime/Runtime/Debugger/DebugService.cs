@@ -9,6 +9,7 @@ using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.CLR.Utils;
+using ILRuntime.Runtime.Intepreter.RegisterVM;
 
 namespace ILRuntime.Runtime.Debugger
 {
@@ -25,6 +26,7 @@ namespace ILRuntime.Runtime.Debugger
         AutoResetEvent evt = new AutoResetEvent(false);
         
         public Action<string> OnBreakPoint;
+        public Action<string> OnILRuntimeException;
 
         public Enviorment.AppDomain AppDomain { get { return domain; } }
 
@@ -66,7 +68,8 @@ namespace ILRuntime.Runtime.Debugger
         public void StopDebugService()
         {
 #if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-            server.Stop();
+            if (server != null)
+                server.Stop();
             server = null;
 #endif
         }
@@ -93,36 +96,83 @@ namespace ILRuntime.Runtime.Debugger
             return false;
         }
 
+        string GetInstructionDocument(Mono.Cecil.Cil.Instruction ins, Mono.Cecil.MethodDefinition md)
+        {
+            if (ins != null)
+            {
+                var seq = FindSequencePoint(ins, md.DebugInformation.GetSequencePointMapping());
+                if (seq != null)
+                {
+                    string path = seq.Document.Url.Replace("\\", "/");
+                    return string.Format("(at {0}:{1})", path, seq.StartLine);
+                }
+            }
+            return null;
+        }
+
         public string GetStackTrace(ILIntepreter intepreper)
         {
             StringBuilder sb = new StringBuilder();
             ILRuntime.CLR.Method.ILMethod m;
             StackFrame[] frames = intepreper.Stack.Frames.ToArray();
             Mono.Cecil.Cil.Instruction ins = null;
+            RegisterVMSymbol vmSymbol;
             if (frames[0].Address != null)
             {
-                ins = frames[0].Method.Definition.Body.Instructions[frames[0].Address.Value];
-                sb.AppendLine(ins.ToString());
+                if (frames[0].IsRegister)
+                {
+                    frames[0].Method.RegisterVMSymbols.TryGetValue(frames[0].Address.Value, out vmSymbol);
+                    ins = vmSymbol.Instruction;
+                    sb.AppendLine(string.Format("{0}(JIT_{1:0000}:{2})", ins, frames[0].Address.Value, frames[0].Method.BodyRegister[frames[0].Address.Value]));
+                }
+                else
+                {
+                    ins = frames[0].Method.Definition.Body.Instructions[frames[0].Address.Value];
+                    sb.AppendLine(ins.ToString());
+                }
             }
             for (int i = 0; i < frames.Length; i++)
             {
                 var f = frames[i];
                 m = f.Method;
                 string document = "";
-                if (f.Address != null)
+                if (f.IsRegister)
                 {
-                    ins = m.Definition.Body.Instructions[f.Address.Value];
-                    
-                    var seq = FindSequencePoint(ins, m.Definition.DebugInformation.GetSequencePointMapping());
-                    if (seq != null)
+                    if (f.Address != null)
                     {
-                        string path = seq.Document.Url.Replace("\\", "/");
-                        document = string.Format("(at {0}:{1})", path, seq.StartLine);
+                        if (f.Method.RegisterVMSymbols.TryGetValue(f.Address.Value, out vmSymbol))
+                        {
+                            RegisterVMSymbolLink link = null;
+                            do
+                            {
+                                if (link != null)
+                                    vmSymbol = link.Value;
+                                ins = vmSymbol.Instruction;
+                                var md = vmSymbol.Method.Definition;
+                                document = GetInstructionDocument(ins, md);
+                                sb.AppendFormat("at {0} {1}\r\n", vmSymbol.Method, document);
+                                link = vmSymbol.ParentSymbol;
+                            }
+                            while (link != null);
+                        }
+                        else
+                            sb.AppendFormat("at {0} {1}\r\n", m, document);
                     }
+                    else
+                        sb.AppendFormat("at {0} {1}\r\n", m, document);
                 }
-                sb.AppendFormat("at {0} {1}\r\n", m, document);
-            }
+                else
+                {
+                    if (f.Address != null)
+                    {
+                        ins = m.Definition.Body.Instructions[f.Address.Value];
+                        var md = m.Definition;
 
+                        document = GetInstructionDocument(ins, md);
+                    }
+                    sb.AppendFormat("at {0} {1}\r\n", m, document);
+                }
+            }
             return sb.ToString();
         }
 
@@ -287,19 +337,77 @@ namespace ILRuntime.Runtime.Debugger
                 {
                     intp.ClearDebugState();
                     intp.CurrentStepType = type;
-                    intp.LastStepFrameBase = intp.Stack.Frames.Count > 0 ? intp.Stack.Frames.Peek().BasePointer : (StackObject*)0;
                     intp.LastStepInstructionIndex = intp.Stack.Frames.Count > 0 ? intp.Stack.Frames.Peek().Address.Value : 0;
+                    intp.LastStepFrameBase = intp.Stack.Frames.Count > 0 ? ResolveCurrentFrameBasePointer(intp) : (StackObject*)0;
 
                     intp.Resume();
                 }
             }
         }
 
+        unsafe StackObject* ResolveCurrentFrameBasePointer(ILIntepreter intp,ILMethod method = null, int ip = -1)
+        {
+            StackObject* basePointer = intp.Stack.Frames.Peek().BasePointer;
+            if (method == null)
+                method = intp.Stack.Frames.Peek().Method;
+            if (ip < 0)
+                ip = intp.Stack.Frames.Peek().Address.Value;
+            if (intp.Stack.Frames.Peek().IsRegister)
+            {
+                basePointer = intp.Stack.Frames.Peek().LocalVarPointer;
+                RegisterVMSymbol vmSymbol;
+                if (method.RegisterVMSymbols.TryGetValue(ip, out vmSymbol))
+                {
+                    var paramCnt = method.HasThis ? method.ParameterCount + 1 : method.ParameterCount;
+                    var frameBase = basePointer - paramCnt;
+                    int registerCnt = vmSymbol.Method.StackRegisterCount + vmSymbol.Method.LocalVariableCount;
+                    if (method.HasThis)
+                        frameBase--;
+                    var curParamCnt = vmSymbol.Method.HasThis ? vmSymbol.Method.ParameterCount + 1 : vmSymbol.Method.ParameterCount;
+
+                    if (vmSymbol.ParentSymbol != null)
+                    {
+                        basePointer = frameBase + vmSymbol.ParentSymbol.BaseRegisterIndex;
+                    }
+                    else
+                    {
+                        registerCnt -= vmSymbol.Method.StackRegisterCount;
+                        basePointer = frameBase ;
+                    }
+                    basePointer = basePointer + curParamCnt + registerCnt;
+                }
+            }
+            return basePointer;
+        }
+
         unsafe internal void CheckShouldBreak(ILMethod method, ILIntepreter intp, int ip)
         {
             if (server != null && server.IsAttached)
             {
-                int methodHash = method.GetHashCode();
+                RegisterVMSymbol vmSymbol;
+                Mono.Cecil.Cil.Instruction ins = null;
+                Mono.Cecil.MethodDefinition md = null;
+                ILMethod m = method;
+                if (intp.Stack.Frames.Peek().IsRegister)
+                {
+                    if (!method.IsRegisterVMSymbolFixed)
+                        method.FixRegisterVMSymbol();
+                    if(method.RegisterVMSymbols.TryGetValue(ip, out vmSymbol))
+                    {
+                        ins = vmSymbol.Instruction;
+                        m = vmSymbol.Method;
+                        md = vmSymbol.Method.Definition;
+                        
+                    }
+                }
+                else
+                {
+                    md = method.Definition;
+                    ins = md.Body.Instructions[ip];
+                }
+                StackObject* basePointer = ResolveCurrentFrameBasePointer(intp, method, ip);
+
+                int methodHash = m.GetHashCode();
                 BreakpointInfo[] lst = null;
 
                 lock (activeBreakpoints)
@@ -308,11 +416,11 @@ namespace ILRuntime.Runtime.Debugger
                     if (activeBreakpoints.TryGetValue(methodHash, out bps))
                         lst = bps.ToArray();
                 }
-                bool bpHit = false;
-
+                if (ins == null)
+                    return;
                 if (lst != null)
                 {
-                    var sp = method.Definition.DebugInformation.GetSequencePoint(method.Definition.Body.Instructions[ip]);
+                    var sp = md.DebugInformation.GetSequencePoint(ins);
                     if (sp != null)
                     {
                         foreach (var i in lst)
@@ -320,16 +428,15 @@ namespace ILRuntime.Runtime.Debugger
                             if ((i.StartLine + 1) == sp.StartLine)
                             {
                                 DoBreak(intp, i.BreakpointHashCode, false);
-                                bpHit = true;
-                                break;
+                                return;
                             }
                         }
                     }
                 }
 
-                if (!bpHit)
+                if (intp.CurrentStepType != StepTypes.None)
                 {
-                    var sp = method.Definition.DebugInformation.GetSequencePoint(method.Definition.Body.Instructions[ip]);//.SequencePoint;
+                    var sp = md.DebugInformation.GetSequencePoint(ins);
                     if (sp != null && IsSequenceValid(sp))
                     {
                         switch (intp.CurrentStepType)
@@ -338,14 +445,14 @@ namespace ILRuntime.Runtime.Debugger
                                 DoBreak(intp, 0, true);
                                 break;
                             case StepTypes.Over:
-                                if (intp.Stack.Frames.Peek().BasePointer <= intp.LastStepFrameBase && ip != intp.LastStepInstructionIndex)
+                                if (basePointer <= intp.LastStepFrameBase && ip != intp.LastStepInstructionIndex)
                                 {
                                     DoBreak(intp, 0, true);
                                 }
                                 break;
                             case StepTypes.Out:
                                 {
-                                    if (intp.Stack.Frames.Count > 0 && intp.Stack.Frames.Peek().BasePointer < intp.LastStepFrameBase)
+                                    if (intp.Stack.Frames.Count > 0 && basePointer < intp.LastStepFrameBase)
                                     {
                                         DoBreak(intp, 0, true);
                                     }
@@ -364,10 +471,11 @@ namespace ILRuntime.Runtime.Debugger
 
         void DoBreak(ILIntepreter intp, int bpHash, bool isStep)
         {
-            KeyValuePair<int, StackFrameInfo[]>[] frames = new KeyValuePair<int, StackFrameInfo[]>[AppDomain.Intepreters.Count];
+            var arr = AppDomain.Intepreters.ToArray();
+            KeyValuePair<int, StackFrameInfo[]>[] frames = new KeyValuePair<int, StackFrameInfo[]>[arr.Length];
             frames[0] = new KeyValuePair<int, StackFrameInfo[]>(intp.GetHashCode(), GetStackFrameInfo(intp));
             int idx = 1;
-            foreach (var j in AppDomain.Intepreters)
+            foreach (var j in arr)
             {
                 if (j.Value != intp)
                 {
@@ -390,89 +498,149 @@ namespace ILRuntime.Runtime.Debugger
             intp.Break();
         }
 
+        unsafe void InitializeStackFrameInfo(ILIntepreter intp, StackFrame f, List<StackFrameInfo> frameInfos)
+        {
+            Mono.Cecil.Cil.Instruction ins = null;
+            var m = f.Method;
+            int argCnt = m.HasThis ? m.ParameterCount + 1 : m.ParameterCount;
+            StackObject* frameBasePointer = Minus(f.LocalVarPointer, argCnt);
+            if (f.Address != null)
+            {
+                if (f.IsRegister)
+                {
+                    RegisterVMSymbol vmSymbol;
+                    if(m.RegisterVMSymbols.TryGetValue(f.Address.Value, out vmSymbol))
+                    {
+                        RegisterVMSymbolLink link = null;
+                        StackObject* basePointer;
+                        do
+                        {
+                            if (link != null)
+                            {
+                                vmSymbol = link.Value;
+                            }                            
+                            ins = vmSymbol.Instruction;
+                            m = vmSymbol.Method;
+                            if(vmSymbol.ParentSymbol!=null)
+                            {
+                                basePointer = Add(frameBasePointer, vmSymbol.ParentSymbol.BaseRegisterIndex);
+                            }
+                            else
+                            {
+                                basePointer = frameBasePointer;
+                            }
+                            var info = CreateStackFrameInfo(m, ins);
+                            AddStackFrameInfoVariables(intp, info, m, basePointer);
+                            frameInfos.Add(info);
+                            link = vmSymbol.ParentSymbol;
+                        }
+                        while (link != null);
+                    }
+                    else
+                    {
+                        var info = CreateStackFrameInfo(m, null);
+                        AddStackFrameInfoVariables(intp, info, m, frameBasePointer);
+                        frameInfos.Add(info);
+                    }
+                }
+                else
+                {
+                    ins = m.Definition.Body.Instructions[f.Address.Value];
+                    var info = CreateStackFrameInfo(m, ins);
+                    AddStackFrameInfoVariables(intp, info, m, frameBasePointer);
+                    frameInfos.Add(info);
+                }
+            }
+            else
+            {
+                var info = CreateStackFrameInfo(m, null);
+                AddStackFrameInfoVariables(intp, info, m, frameBasePointer);
+                frameInfos.Add(info);
+            }
+        }
+
+        StackFrameInfo CreateStackFrameInfo(ILMethod m, Mono.Cecil.Cil.Instruction ins)
+        {
+            Mono.Cecil.MethodDefinition md = m.Definition;
+            StackFrameInfo info = new StackFrameInfo();
+            info.MethodName = m.ToString();
+            if (ins != null)
+            {
+                var seq = FindSequencePoint(ins, md.DebugInformation.GetSequencePointMapping());
+                if (seq != null)
+                {
+                    info.DocumentName = seq.Document.Url;
+                    info.StartLine = seq.StartLine - 1;
+                    info.StartColumn = seq.StartColumn - 1;
+                    info.EndLine = seq.EndLine - 1;
+                    info.EndColumn = seq.EndColumn - 1;
+                }
+            }
+            return info;
+        }
+
+        unsafe void AddStackFrameInfoVariables(ILIntepreter intp, StackFrameInfo info, ILMethod m, StackObject* basePointer)
+        {
+            int argumentCount = m.ParameterCount;
+            if (m.HasThis)
+                argumentCount++;
+            info.LocalVariables = new VariableInfo[argumentCount + m.LocalVariableCount];
+            for (int i = 0; i < argumentCount; i++)
+            {
+                int argIdx = m.HasThis ? i - 1 : i;
+                var arg = basePointer;
+                string name = null;
+                object v = null;
+                string typeName = null;
+                var val = Add(arg, i);
+                v = StackObject.ToObject(val, intp.AppDomain, intp.Stack.ManagedStack);
+                if (argIdx >= 0)
+                {
+                    var lv = m.Definition.Parameters[argIdx];
+                    name = string.IsNullOrEmpty(lv.Name) ? "arg" + lv.Index : lv.Name;
+                    typeName = lv.ParameterType.FullName;
+                }
+                else
+                {
+                    name = "this";
+                    typeName = m.DeclearingType.FullName;
+                }
+
+                VariableInfo vinfo = VariableInfo.FromObject(v);
+                vinfo.Address = (long)val;
+                vinfo.Name = name;
+                vinfo.TypeName = typeName;
+                vinfo.Expandable = GetValueExpandable(val, intp.Stack.ManagedStack);
+
+                info.LocalVariables[i] = vinfo;
+            }
+            for (int i = argumentCount; i < info.LocalVariables.Length; i++)
+            {
+                var locIdx = i - argumentCount;
+                var lv = m.Definition.Body.Variables[locIdx];
+                var val = Add(basePointer, argumentCount + locIdx);
+                var v = StackObject.ToObject(val, intp.AppDomain, intp.Stack.ManagedStack);
+                var type = intp.AppDomain.GetType(lv.VariableType, m.DeclearingType, m);
+                string vName = null;
+                m.Definition.DebugInformation.TryGetName(lv, out vName);
+                string name = string.IsNullOrEmpty(vName) ? "v" + lv.Index : vName;
+                VariableInfo vinfo = VariableInfo.FromObject(v);
+                vinfo.Address = (long)val;
+                vinfo.Name = name;
+                vinfo.TypeName = lv.VariableType.FullName;
+                vinfo.Expandable = GetValueExpandable(val, intp.Stack.ManagedStack);
+                info.LocalVariables[i] = vinfo;
+            }
+        }
+
         unsafe StackFrameInfo[] GetStackFrameInfo(ILIntepreter intp)
         {
             StackFrame[] frames = intp.Stack.Frames.ToArray();
-            Mono.Cecil.Cil.Instruction ins = null;
-            ILMethod m;
             List<StackFrameInfo> frameInfos = new List<StackFrameInfo>();
 
             for (int j = 0; j < frames.Length; j++)
             {
-                StackFrameInfo info = new Debugger.StackFrameInfo();
-                var f = frames[j];
-                m = f.Method;
-                info.MethodName = m.ToString();
-
-                if (f.Address != null)
-                {
-                    ins = m.Definition.Body.Instructions[f.Address.Value];
-
-                    var seq = FindSequencePoint(ins, m.Definition.DebugInformation.GetSequencePointMapping());
-                    if (seq != null)
-                    {
-                        info.DocumentName = seq.Document.Url;
-                        info.StartLine = seq.StartLine - 1;
-                        info.StartColumn = seq.StartColumn - 1;
-                        info.EndLine = seq.EndLine - 1;
-                        info.EndColumn = seq.EndColumn - 1;
-                    }
-                    else
-                        continue;
-                }
-                StackFrame topFrame = f;
-                m = topFrame.Method;
-                int argumentCount = m.ParameterCount;
-                if (m.HasThis)
-                    argumentCount++;
-                info.LocalVariables = new VariableInfo[argumentCount + m.LocalVariableCount];
-                for(int i = 0; i < argumentCount; i++)
-                {
-                    int argIdx = m.HasThis ? i - 1 : i;
-                    var arg = Minus(topFrame.LocalVarPointer, argumentCount);
-                    string name = null;
-                    object v = null;
-                    string typeName = null;
-                    var val = Add(arg, i);
-                    v =  StackObject.ToObject(val, intp.AppDomain, intp.Stack.ManagedStack);
-                    if (argIdx >= 0)
-                    {
-                        var lv = m.Definition.Parameters[argIdx];
-                        name = string.IsNullOrEmpty(lv.Name) ? "arg" + lv.Index : lv.Name;
-                        typeName = lv.ParameterType.FullName;
-                    }
-                    else
-                    {
-                        name = "this";
-                        typeName = m.DeclearingType.FullName;
-                    }
-
-                    VariableInfo vinfo = VariableInfo.FromObject(v);
-                    vinfo.Address = (long)val;
-                    vinfo.Name = name;
-                    vinfo.TypeName = typeName;
-                    vinfo.Expandable = GetValueExpandable(val, intp.Stack.ManagedStack);
-
-                    info.LocalVariables[i] = vinfo;
-                }
-                for (int i = argumentCount; i < info.LocalVariables.Length; i++)
-                {
-                    var locIdx = i - argumentCount;
-                    var lv = m.Definition.Body.Variables[locIdx];
-                    var val = Add(topFrame.LocalVarPointer, locIdx);
-                    var v = StackObject.ToObject(val, intp.AppDomain, intp.Stack.ManagedStack);
-                    var type = intp.AppDomain.GetType(lv.VariableType, m.DeclearingType, m);
-                    string vName = null;
-                    m.Definition.DebugInformation.TryGetName(lv, out vName);
-                    string name = string.IsNullOrEmpty(vName) ? "v" + lv.Index : vName;
-                    VariableInfo vinfo = VariableInfo.FromObject(v);
-                    vinfo.Address = (long)val;
-                    vinfo.Name = name;
-                    vinfo.TypeName = lv.VariableType.FullName;
-                    vinfo.Expandable = GetValueExpandable(val, intp.Stack.ManagedStack);
-                    info.LocalVariables[i] = vinfo;
-                }
-                frameInfos.Add(info);
+                InitializeStackFrameInfo(intp, frames[j], frameInfos);
             }
             return frameInfos.ToArray();
         }
@@ -482,7 +650,7 @@ namespace ILRuntime.Runtime.Debugger
             ILIntepreter intepreter;
             if (AppDomain.Intepreters.TryGetValue(threadHashCode, out intepreter))
             {
-#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
+#if DEBUG && !NO_PROFILER
                 if (domain.IsNotUnityMainThread())
                 {
                     lock (pendingEnuming)
@@ -704,7 +872,7 @@ namespace ILRuntime.Runtime.Debugger
             res = null;
             if (AppDomain.Intepreters.TryGetValue(threadHashCode, out intepreter))
             {
-#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
+#if DEBUG && !NO_PROFILER
                 if (domain.IsNotUnityMainThread())
                 {
                     lock (pendingIndexing)
@@ -866,7 +1034,7 @@ namespace ILRuntime.Runtime.Debugger
             {
                 if (variable != null)
                 {
-#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
+#if DEBUG && !NO_PROFILER
                     if (domain.IsNotUnityMainThread())
                     {
                         lock (pendingReferences)
@@ -1182,7 +1350,7 @@ namespace ILRuntime.Runtime.Debugger
 
             for (var i = stack.ValueTypeStackBase; i > stack.ValueTypeStackPointer;)
             {
-                var vt = domain.GetType(i->Value);
+                var vt = domain.GetTypeByIndex(i->Value);
                 var cnt = i->ValueLow;
                 bool leak = leakVObj.Contains((long)i);
                 final.AppendLine("----------------------------------------------");
@@ -1234,7 +1402,7 @@ namespace ILRuntime.Runtime.Debugger
                         {
                             text = "Invalid Object";
                         }
-                        text += string.Format("({0})", domain.GetType(dst->Value));
+                        text += string.Format("({0})", domain.GetTypeByIndex(dst->Value));
                     }
                     sb.Append(string.Format("Value:0x{0:X8} Text:{1} ", (long)ILIntepreter.ResolveReference(esp), text));
                     break;

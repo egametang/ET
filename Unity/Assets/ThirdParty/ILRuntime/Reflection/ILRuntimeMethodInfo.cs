@@ -175,9 +175,6 @@ namespace ILRuntime.Reflection
             }
         }
 
-
-        //委托
-
         public override Delegate CreateDelegate(Type delegateType)
         {
             throw new NotSupportedException("please use CreateDelegate(Type delegateType, object target)");
@@ -212,6 +209,5 @@ namespace ILRuntime.Reflection
             }
             return del.GetConvertor(delegateType);
         }
-
     }
 }

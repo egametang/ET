@@ -42,8 +42,7 @@ namespace ");
             sb.Append(clsName);
             sb.AppendLine(@"Adapter : CrossBindingAdaptor
     {");
-            GenerateCrossBindingMethodInfo(sb, virtMethods);
-
+            
             sb.Append(@"        public override Type BaseCLRType
         {
             get
@@ -69,7 +68,10 @@ namespace ");
 ");
 
             sb.AppendLine(string.Format("        public class Adapter : {0}, CrossBindingAdaptorType", realClsName));
-            sb.AppendLine(@"        {
+            sb.AppendLine("        {");
+            GenerateCrossBindingMethodInfo(sb, virtMethods);
+            sb.AppendLine(@"
+            bool isInvokingToString;
             ILTypeInstance instance;
             ILRuntime.Runtime.Enviorment.AppDomain appdomain;
 
@@ -93,7 +95,15 @@ namespace ");
             sb.AppendLine(@"                m = instance.Type.GetVirtualMethod(m);
                 if (m == null || m is ILMethod)
                 {
-                    return instance.ToString();
+                    if (!isInvokingToString)
+                    {
+                        isInvokingToString = true;
+                        string res = instance.ToString();
+                        isInvokingToString = false;
+                        return res;
+                    }
+                    else
+                        return instance.Type.FullName;
                 }
                 else
                     return instance.Type.FullName;");
@@ -262,20 +272,20 @@ namespace ");
                 if (NeedGenerateCrossBindingMethodClass(param))
                 {
                     GenerateCrossBindingMethodClass(sb, i.Name, index, param, i.ReturnType);
-                    sb.AppendLine(string.Format("        static {0}_{1}Info m{0}_{1} = new {0}_{1}Info();", i.Name, index));
+                    sb.AppendLine(string.Format("            {0}_{1}Info m{0}_{1} = new {0}_{1}Info();", i.Name, index));
                 }
                 else
                 {
                     if (i.ReturnType != typeof(void))
                     {
-                        sb.AppendLine(string.Format("        static CrossBindingFunctionInfo<{0}> m{1}_{2} = new CrossBindingFunctionInfo<{0}>(\"{1}\");", GetParametersString(param, i.ReturnType), i.Name, index));
+                        sb.AppendLine(string.Format("            CrossBindingFunctionInfo<{0}> m{1}_{2} = new CrossBindingFunctionInfo<{0}>(\"{1}\");", GetParametersString(param, i.ReturnType), i.Name, index));
                     }
                     else
                     {
                         if (param.Length > 0)
-                            sb.AppendLine(string.Format("        static CrossBindingMethodInfo<{0}> m{1}_{2} = new CrossBindingMethodInfo<{0}>(\"{1}\");", GetParametersString(param, i.ReturnType), i.Name, index));
+                            sb.AppendLine(string.Format("            CrossBindingMethodInfo<{0}> m{1}_{2} = new CrossBindingMethodInfo<{0}>(\"{1}\");", GetParametersString(param, i.ReturnType), i.Name, index));
                         else
-                            sb.AppendLine(string.Format("        static CrossBindingMethodInfo m{0}_{1} = new CrossBindingMethodInfo(\"{0}\");", i.Name, index));
+                            sb.AppendLine(string.Format("            CrossBindingMethodInfo m{0}_{1} = new CrossBindingMethodInfo(\"{0}\");", i.Name, index));
                     }
                 }
                 index++;
@@ -297,12 +307,16 @@ namespace ");
             for (int i = 0; i < paramInfos.Length; ++i)
             {
                 var paramType = paramInfos[i].ParameterType;
+                if (paramType.IsByRef)
+                    paramType = paramType.GetElementType();
                 if (paramType.IsPointer || paramType.IsNotPublic || paramType.IsNested && !paramType.IsNestedPublic)
                 {
                     return true;
                 }
             }
             var returnType = info.ReturnType;
+            if (returnType.IsByRef)
+                returnType = returnType.GetElementType();
             if (returnType.IsNotPublic || returnType.IsNested && !returnType.IsNestedPublic)
                 return true;
 
@@ -421,19 +435,19 @@ namespace ");
 
         static void GenerateCrossBindingMethodClass(StringBuilder sb, string funcName, int index, ParameterInfo[] param, Type returnType)
         {
-            sb.AppendLine(string.Format("        class {0}_{1}Info : CrossBindingMethodInfo", funcName, index));
-            sb.Append(@"        {
-            static Type[] pTypes = new Type[] {");
+            sb.AppendLine(string.Format("            class {0}_{1}Info : CrossBindingMethodInfo", funcName, index));
+            sb.Append(@"            {
+                static Type[] pTypes = new Type[] {");
             sb.Append(GetParametersTypeString(param, returnType));
             sb.AppendLine("};");
             sb.AppendLine();
-            sb.AppendLine(string.Format("            public {0}_{1}Info()", funcName, index));
-            sb.AppendLine(string.Format("                : base(\"{0}\")", funcName));
-            sb.Append(@"            {
+            sb.AppendLine(string.Format("                public {0}_{1}Info()", funcName, index));
+            sb.AppendLine(string.Format("                    : base(\"{0}\")", funcName));
+            sb.Append(@"                {
 
-            }
+                }
 
-            protected override Type ReturnType { get { return ");
+                protected override Type ReturnType { get { return ");
 
             string clsName, realClsName;
             bool isByRef;
@@ -449,47 +463,47 @@ namespace ");
             }
             sb.AppendLine(@"; } }
 
-            protected override Type[] Parameters { get { return pTypes; } }");
-            sb.AppendFormat("            public {0} Invoke(ILTypeInstance instance", !hasReturn ? "void" : realClsName);
+                protected override Type[] Parameters { get { return pTypes; } }");
+            sb.AppendFormat("                public {0} Invoke(ILTypeInstance instance", !hasReturn ? "void" : realClsName);
             GetParameterDefinition(sb, param, false);
             sb.AppendLine(@")
-            {
-                EnsureMethod(instance);");
+                {
+                    EnsureMethod(instance);");
             GenInitParams(sb, param);
             sb.AppendLine(@"
-                if (method != null)
-                {
-                    invoking = true;");
+                    if (method != null)
+                    {
+                        invoking = true;");
 
             if (hasReturn)
-                sb.AppendLine(string.Format("                    {0} __res = default({0});", rtRealName));
-            sb.AppendLine(@"                    try
-                    {
-                        using (var ctx = domain.BeginInvoke(method))
-                        {");
+                sb.AppendLine(string.Format("                        {0} __res = default({0});", rtRealName));
+            sb.AppendLine(@"                        try
+                        {
+                            using (var ctx = domain.BeginInvoke(method))
+                            {");
             Dictionary<ParameterInfo, int> refIndex = new Dictionary<ParameterInfo, int>();
             int idx = 0;
             foreach (var p in param)
             {
                 if (p.ParameterType.IsByRef)
                 {
-                    sb.AppendLine(GetPushString(p.ParameterType, p.Name));
+                    sb.AppendLine(GetPushString(p.ParameterType.GetElementType(), p.Name));
                     refIndex[p] = idx++;
                 }
             }
-            sb.AppendLine("                            ctx.PushObject(instance);");
+            sb.AppendLine("                                ctx.PushObject(instance);");
             foreach (var p in param)
             {
                 if (p.ParameterType.IsByRef)
                 {
-                    sb.AppendLine(string.Format("                            ctx.PushReference({0});", refIndex[p]));
+                    sb.AppendLine(string.Format("                                ctx.PushReference({0});", refIndex[p]));
                 }
                 else
                 {
                     sb.AppendLine(GetPushString(p.ParameterType, p.Name));
                 }
             }
-            sb.AppendLine("                            ctx.Invoke();");
+            sb.AppendLine("                                ctx.Invoke();");
             if (hasReturn)
                 sb.AppendLine(GetReadString(returnType, rtRealName, "", "__res"));
             foreach (var p in param)
@@ -498,28 +512,28 @@ namespace ");
                 {
                     p.ParameterType.GetClassName(out clsName, out realClsName, out isByRef, true);
 
-                    sb.AppendLine(GetReadString(p.ParameterType, realClsName, refIndex[p].ToString(), p.Name));
+                    sb.AppendLine(GetReadString(p.ParameterType.GetElementType(), realClsName, refIndex[p].ToString(), p.Name));
                 }
             }
-            sb.AppendLine("                        }");
-            sb.AppendLine(@"                    }
-                    finally
-                    {
-                        invoking = false;
-                    }");
+            sb.AppendLine("                            }");
+            sb.AppendLine(@"                        }
+                        finally
+                        {
+                            invoking = false;
+                        }");
             if (hasReturn)
-                sb.AppendLine("                   return __res;");
-            sb.AppendLine("                }");
+                sb.AppendLine("                       return __res;");
+            sb.AppendLine("                    }");
             if (hasReturn)
-                sb.AppendLine(@"                else
-                    return default(TResult);");
-            sb.AppendLine(@"            }
+                sb.AppendLine(@"                    else
+                        return default(TResult);");
+            sb.AppendLine(@"                }
 
-            public override void Invoke(ILTypeInstance instance)
-            {
-                throw new NotSupportedException();
-            }
-        }");
+                public override void Invoke(ILTypeInstance instance)
+                {
+                    throw new NotSupportedException();
+                }
+            }");
         }
 
         static void GetMethods(Type type, List<MethodInfo> list)
@@ -614,7 +628,7 @@ namespace ");
                 }
                 else if (type == typeof(float))
                 {
-                    return string.Format("                            ctx.PushInteger({0});", argName);
+                    return string.Format("                            ctx.PushFloat({0});", argName);
                 }
                 else if (type == typeof(double))
                 {

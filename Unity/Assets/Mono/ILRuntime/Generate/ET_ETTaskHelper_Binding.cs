@@ -37,11 +37,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETCancellationToken @cancellationToken = (ET.ETCancellationToken)typeof(ET.ETCancellationToken).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETCancellationToken @cancellationToken = (ET.ETCancellationToken)typeof(ET.ETCancellationToken).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.List<ET.ETTask> @tasks = (System.Collections.Generic.List<ET.ETTask>)typeof(System.Collections.Generic.List<ET.ETTask>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.List<ET.ETTask> @tasks = (System.Collections.Generic.List<ET.ETTask>)typeof(System.Collections.Generic.List<ET.ETTask>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
 

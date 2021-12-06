@@ -5,6 +5,7 @@ using System.Text;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Intepreter;
+using ILRuntime.Runtime.Stack;
 
 namespace ILRuntime.Runtime.Enviorment
 {
@@ -114,6 +115,11 @@ namespace ILRuntime.Runtime.Enviorment
         public IMethod GetVirtualMethod(IMethod method)
         {
             return type.GetVirtualMethod(method);
+        }
+
+        public void GetValueTypeSize(out int fieldCout, out int managedCount)
+        {
+            type.GetValueTypeSize(out fieldCout, out managedCount);
         }
 
         public bool IsGenericInstance
@@ -280,6 +286,30 @@ namespace ILRuntime.Runtime.Enviorment
         public int ArrayRank
         {
             get { return type.ArrayRank; }
+        }
+
+        public int TotalFieldCount
+        {
+            get
+            {
+                return type.TotalFieldCount;
+            }
+        }
+
+        public StackObject DefaultObject
+        {
+            get
+            {
+                return default(StackObject);
+            }
+        }
+
+        public int TypeIndex
+        {
+            get
+            {
+                return -1;
+            }
         }
         #endregion
     }
