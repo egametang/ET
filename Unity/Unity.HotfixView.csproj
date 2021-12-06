@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-    <_TargetFrameworkDirectories>non_empty_path_generated_by_unity.rider.package</_TargetFrameworkDirectories>
-    <_FullFrameworkReferenceAssemblyPaths>non_empty_path_generated_by_unity.rider.package</_FullFrameworkReferenceAssemblyPaths>
-    <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -29,12 +26,8 @@
     <DefineConstants>DEBUG;TRACE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>
-    </NoWarn>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,12 +35,8 @@
     <OutputPath>Temp\Bin\Release\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>
-    </NoWarn>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>

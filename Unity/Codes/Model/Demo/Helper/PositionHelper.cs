@@ -66,7 +66,7 @@ namespace ET
             float C = endVe2.x * startVe2.y - startVe2.x * endVe2.y;
             float denominator = Mathf.Sqrt(A * A + B * B);
             Vector2 pointVe2 = point.IgnoreYAxis();
-            return Mathf.Abs((A * pointVe2.x + B * pointVe2.y + C) / denominator); ;
+            return Mathf.Abs((A * pointVe2.x + B * pointVe2.y + C) / denominator);
         }
         /// <summary>
         /// 勾股定理
