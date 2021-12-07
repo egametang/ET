@@ -23,12 +23,11 @@ namespace ET
 
         public class IAsyncStateMachineAdaptor: IAsyncStateMachine, CrossBindingAdaptorType
         {
-            private ILTypeInstance instance;
-            private AppDomain appDomain;
+            private readonly ILTypeInstance instance;
+            private readonly AppDomain appDomain;
 
-            private IMethod mMoveNext;
-            private IMethod mSetStateMachine;
-            private readonly object[] param1 = new object[1];
+            private readonly IMethod mMoveNext;
+            private readonly IMethod mSetStateMachine;
 
             public IAsyncStateMachineAdaptor()
             {
@@ -38,27 +37,19 @@ namespace ET
             {
                 this.appDomain = appDomain;
                 this.instance = instance;
+                mMoveNext = instance.Type.GetMethod("MoveNext", 0);
+                mSetStateMachine = instance.Type.GetMethod("SetStateMachine");
             }
 
             public ILTypeInstance ILInstance => instance;
 
             public void MoveNext()
             {
-                if (this.mMoveNext == null)
-                {
-                    mMoveNext = instance.Type.GetMethod("MoveNext", 0);
-                }
-
                 this.appDomain.Invoke(mMoveNext, instance, null);
             }
 
             public void SetStateMachine(IAsyncStateMachine stateMachine)
             {
-                if (this.mSetStateMachine == null)
-                {
-                    mSetStateMachine = instance.Type.GetMethod("SetStateMachine");
-                }
-
                 this.appDomain.Invoke(mSetStateMachine, instance, stateMachine);
             }
 
