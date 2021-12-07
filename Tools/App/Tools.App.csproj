@@ -53,5 +53,11 @@
     <ItemGroup>
       <Folder Include="Apps" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Template.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 
 </Project>
