@@ -82,6 +82,7 @@ namespace ET
                 if (newline.StartsWith("//"))
                 {
                     sb.Append($"{newline}\n");
+                    continue;
                 }
 
                 if (newline.StartsWith("message"))
