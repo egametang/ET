@@ -13,16 +13,10 @@ namespace ET
 	
 	public class Init: MonoBehaviour
 	{
-		public static Init Instance;
-		
-		private CodeLoader codeLoader;
-
 		public CodeMode CodeMode = CodeMode.Mono;
 		
 		private void Awake()
 		{
-			Instance = this;
-			
 #if ENABLE_IL2CPP
 			this.CodeMode = CodeMode.ILRuntime;
 #endif
@@ -40,27 +34,27 @@ namespace ET
 
 			Options.Instance = new Options();
 
-			this.codeLoader = CodeLoader.Instance;
+			CodeLoader.Instance.CodeMode = this.CodeMode;
 		}
 
 		private void Start()
 		{
-			this.codeLoader.Start();
+			CodeLoader.Instance.Start();
 		}
 
 		private void Update()
 		{
-			this.codeLoader.Update();
+			CodeLoader.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.codeLoader.LateUpdate();
+			CodeLoader.Instance.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.codeLoader.OnApplicationQuit();
+			CodeLoader.Instance.OnApplicationQuit();
 		}
 	}
 }

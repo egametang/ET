@@ -41,7 +41,7 @@ namespace ET
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                CodeLoader.Instance.LoadHotfix();
+                CodeLoader.Instance.LoadLogic();
                 Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
                 Game.EventSystem.Load();
                 Log.Debug("hot reload success!");

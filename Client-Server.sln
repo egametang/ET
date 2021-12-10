@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{46008B91-6EC0-448B-8D1A-D8C6D2EEBEF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.App", "Server\App\Server.App.csproj", "{69F1AA11-D05A-4843-B0DD-56B5E2E212A8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C305ED5B-8425-47A1-BEE1-85830CADC27A} = {C305ED5B-8425-47A1-BEE1-85830CADC27A}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Model", "Server\Model\Server.Model.csproj", "{EE38E3D2-3D2A-4061-BD50-AE8568126C7D}"
 EndProject
@@ -26,6 +29,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Robot", "Robot", "{0CFA1E78-9E36-48A3-A134-6EC704815CC8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robot.App", "Robot\App\Robot.App.csproj", "{3743C043-A5B7-4D63-8009-19E8C2FB89D4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57098A03-52D4-455F-9B88-3A0951D651DF} = {57098A03-52D4-455F-9B88-3A0951D651DF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robot.Model", "Robot\Model\Robot.Model.csproj", "{405D6513-704F-4715-ACC9-F1C0C07EE39F}"
 EndProject
@@ -43,7 +49,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.ThirdParty", "Unity\U
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{7B755614-03A1-4EDB-8596-4CEDE942336E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.App", "Tools\App\Tools.App.csproj", "{8926376D-98AA-4530-A1D4-CF6B45979C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools.App", "Tools\App\Tools.App.csproj", "{8926376D-98AA-4530-A1D4-CF6B45979C2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

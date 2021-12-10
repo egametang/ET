@@ -24,8 +24,8 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ET.CodeLoader);
             args = new Type[]{};
-            method = type.GetMethod("LoadHotfix", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, LoadHotfix_0);
+            method = type.GetMethod("LoadLogic", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, LoadLogic_0);
             args = new Type[]{};
             method = type.GetMethod("GetTypes", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetTypes_1);
@@ -51,7 +51,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* LoadHotfix_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* LoadLogic_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -61,7 +61,7 @@ namespace ILRuntime.Runtime.Generated
             ET.CodeLoader instance_of_this_method = (ET.CodeLoader)typeof(ET.CodeLoader).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.LoadHotfix();
+            instance_of_this_method.LoadLogic();
 
             return __ret;
         }
