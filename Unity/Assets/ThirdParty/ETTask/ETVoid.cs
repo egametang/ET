@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace ET
 {
     [AsyncMethodBuilder(typeof (AsyncETVoidMethodBuilder))]
-    public struct ETVoid: ICriticalNotifyCompletion
+    internal struct ETVoid: ICriticalNotifyCompletion
     {
         [DebuggerHidden]
         public void Coroutine()
@@ -15,13 +15,11 @@ namespace ET
         [DebuggerHidden]
         public bool IsCompleted => true;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void OnCompleted(Action continuation)
         {
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void UnsafeOnCompleted(Action continuation)
         {

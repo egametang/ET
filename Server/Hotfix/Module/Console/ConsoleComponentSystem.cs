@@ -54,7 +54,7 @@ namespace ET
             }
         }
         
-        public static async ETVoid Start(this ConsoleComponent self)
+        public static async ETTask Start(this ConsoleComponent self)
         {
             self.CancellationTokenSource = new CancellationTokenSource();
 

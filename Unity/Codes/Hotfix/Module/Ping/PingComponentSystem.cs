@@ -10,7 +10,7 @@ namespace ET
             PingAsync(self).Coroutine();
         }
 
-        private static async ETVoid PingAsync(PingComponent self)
+        private static async ETTask PingAsync(PingComponent self)
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;

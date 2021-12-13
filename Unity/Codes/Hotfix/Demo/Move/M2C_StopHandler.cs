@@ -5,7 +5,7 @@ namespace ET
 	[MessageHandler]
 	public class M2C_StopHandler : AMHandler<M2C_Stop>
 	{
-		protected override async ETVoid Run(Session session, M2C_Stop message)
+		protected override async ETTask Run(Session session, M2C_Stop message)
 		{
 			Unit unit = session.Domain.GetComponent<UnitComponent>().Get(message.Id);
 			

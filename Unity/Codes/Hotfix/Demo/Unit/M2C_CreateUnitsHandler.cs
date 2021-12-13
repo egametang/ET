@@ -6,7 +6,7 @@ namespace ET
 	[MessageHandler]
 	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>
 	{
-		protected override async ETVoid Run(Session session, M2C_CreateUnits message)
+		protected override async ETTask Run(Session session, M2C_CreateUnits message)
 		{	
 			UnitComponent unitComponent = session.Domain.GetComponent<UnitComponent>();
 			

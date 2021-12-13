@@ -30,6 +30,8 @@ namespace ET
 			
 			DontDestroyOnLoad(gameObject);
 
+			ETTask.ExceptionHandler += Log.Error;
+
 			Log.ILog = new UnityLogger();
 
 			Options.Instance = new Options();

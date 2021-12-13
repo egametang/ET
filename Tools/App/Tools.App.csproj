@@ -47,6 +47,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
       <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
     </ItemGroup>
     

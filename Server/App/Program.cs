@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using CommandLine;
-using MongoDB.Bson;
 using NLog;
 
 namespace ET
@@ -16,6 +13,8 @@ namespace ET
 			{
 				Log.Error(e.ExceptionObject.ToString());
 			};
+			
+			ETTask.ExceptionHandler += Log.Error;
 
 			// 异步方法全部会回掉到主线程
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);

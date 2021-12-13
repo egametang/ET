@@ -12,7 +12,7 @@ namespace ET
             HandleAsync(session, message).Coroutine();
         }
 
-        private async ETVoid HandleAsync(Session session, object message)
+        private async ETTask HandleAsync(Session session, object message)
         {
             try
             {

@@ -82,6 +82,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Stack\StackObject.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.PE\Image.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\ETCancellationToken.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Cil\CodeReader.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\GenericParameter.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\MetadataSystem.cs" />
@@ -128,6 +129,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Debugger\DebugMessageType.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\StringSerializer.cs" />
      <Compile Include="Assets\ThirdParty\LitJson\JsonReader.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\ETTask.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.RegisterCleanup.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodBuilder.cs" />
@@ -163,6 +165,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\ReferenceType.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Extensions.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\SubItemSerializer.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\AsyncETVoidMethodBuilder.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolTable.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\ParameterReference.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\GenericParameterAttributes.cs" />
@@ -198,6 +201,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\CLR\TypeSystem\CLRType.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbFileHeader.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Debugger\Protocol\SCEnumChildrenResult.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\AsyncMethodBuilderAttribute.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbSource.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Metadata\ElementType.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Cil\Code.cs" />
@@ -214,6 +218,7 @@
      <Compile Include="Assets\ThirdParty\LitJson\JsonWriter.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Enviorment\CrossBindingMethodInfo.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\DateTimeSerializer.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\IAwaiter.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\CLR\Method\ExceptionHandler.cs" />
      <Compile Include="Assets\ThirdParty\LitJson\Extensions.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Cil\Document.cs" />
@@ -259,6 +264,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Cil\ExceptionHandler.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\BaseAssemblyResolver.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\MemberDefinitionCollection.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\AsyncETTaskCompletedMethodBuilder.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Cil\MethodBody.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Intepreter\RegisterVM\AsyncJITCompileWorker.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\BufferExtension.cs" />
@@ -295,6 +301,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\MsfDirectory.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\AssemblyDefinition.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\DecimalSerializer.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\AsyncETTaskMethodBuilder.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\MarshalInfo.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\BooleanSerializer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbTokenLine.cs" />
@@ -325,6 +332,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\DbiDbgHdr.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\PropertyDefinition.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Metadata\TokenType.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\ETVoid.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\TypeAttributes.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\PropertyReference.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Enviorment\ValueTypeBinder.cs" />
@@ -340,6 +348,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\MetaType.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\AttributeMap.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.Cil\OpCodes.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\ETTaskCompleted.cs" />
      <Compile Include="Assets\ThirdParty\LitJson\ParserToken.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Collections.Generic\Collection.cs" />
      <Compile Include="Assets\ThirdParty\LitJson\Netstandard15Polyfill.cs" />
@@ -407,6 +416,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Reflection\ILRuntimeConstructorInfo.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\ModuleDefinition.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolFile.cs" />
+     <Compile Include="Assets\ThirdParty\ETTask\ETTaskHelper.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Other\NeedAdaptorAttribute.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbConstant.cs" />
      <Compile Include="Assets\ThirdParty\LitJson\IJsonWrapper.cs" />

@@ -594,6 +594,10 @@
       <Project>{5910fa29-5797-199c-985b-fc9fc473328e}</Project>
       <Name>Unity.Mono</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.ThirdParty.csproj">
+      <Project>{d2ad5be1-263a-9a30-ab0f-dc5b08044350}</Project>
+      <Name>Unity.ThirdParty</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

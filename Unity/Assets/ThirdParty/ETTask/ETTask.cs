@@ -9,6 +9,8 @@ namespace ET
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
     public class ETTask: ICriticalNotifyCompletion
     {
+        public static Action<Exception> ExceptionHandler;
+        
         public static ETTaskCompleted CompletedTask
         {
             get
@@ -63,21 +65,18 @@ namespace ET
         {
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         private async ETVoid InnerCoroutine()
         {
             await this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void Coroutine()
         {
             InnerCoroutine().Coroutine();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public ETTask GetAwaiter()
         {
@@ -87,7 +86,6 @@ namespace ET
         
         public bool IsCompleted
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             [DebuggerHidden]
             get
             {
@@ -95,7 +93,6 @@ namespace ET
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void UnsafeOnCompleted(Action action)
         {
@@ -108,14 +105,12 @@ namespace ET
             this.callback = action;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void OnCompleted(Action action)
         {
             this.UnsafeOnCompleted(action);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void GetResult()
         {
@@ -135,7 +130,6 @@ namespace ET
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void SetResult()
         {
@@ -218,28 +212,24 @@ namespace ET
         {
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         private async ETVoid InnerCoroutine()
         {
             await this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void Coroutine()
         {
             InnerCoroutine().Coroutine();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public ETTask<T> GetAwaiter()
         {
             return this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public T GetResult()
         {
@@ -264,14 +254,12 @@ namespace ET
         public bool IsCompleted
         {
             [DebuggerHidden]
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
                 return state != AwaiterStatus.Pending;
             }
         } 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void UnsafeOnCompleted(Action action)
         {
@@ -284,14 +272,12 @@ namespace ET
             this.callback = action;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void OnCompleted(Action action)
         {
             this.UnsafeOnCompleted(action);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void SetResult(T result)
         {
@@ -308,8 +294,7 @@ namespace ET
             this.callback = null;
             c?.Invoke();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         [DebuggerHidden]
         public void SetException(Exception e)
         {

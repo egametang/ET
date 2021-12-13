@@ -5,10 +5,9 @@ using System.Security;
 
 namespace ET
 {
-    public struct AsyncETVoidMethodBuilder
+    internal struct AsyncETVoidMethodBuilder
     {
         // 1. Static Create method.
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public static AsyncETVoidMethodBuilder Create()
         {
@@ -21,15 +20,13 @@ namespace ET
         public ETVoid Task => default;
 
         // 3. SetException
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void SetException(Exception e)
         {
-            Log.Error(e);
+            ETTask.ExceptionHandler.Invoke(e);
         }
 
         // 4. SetResult
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void SetResult()
         {
@@ -37,7 +34,6 @@ namespace ET
         }
 
         // 5. AwaitOnCompleted
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
@@ -45,7 +41,6 @@ namespace ET
         }
 
         // 6. AwaitUnsafeOnCompleted
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         [SecuritySafeCritical]
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
@@ -54,7 +49,6 @@ namespace ET
         }
 
         // 7. Start
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
@@ -62,7 +56,6 @@ namespace ET
         }
 
         // 8. SetStateMachine
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void SetStateMachine(IAsyncStateMachine stateMachine)
         {

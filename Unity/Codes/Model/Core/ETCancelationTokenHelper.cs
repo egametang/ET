@@ -2,7 +2,7 @@ namespace ET
 {
     public static class ETCancelationTokenHelper
     {
-        public static async ETVoid CancelAfter(this ETCancellationToken self, long afterTimeCancel)
+        public static async ETTask CancelAfter(this ETCancellationToken self, long afterTimeCancel)
         {
             if (self.IsCancel())
             {

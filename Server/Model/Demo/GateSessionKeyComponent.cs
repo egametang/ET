@@ -24,7 +24,7 @@ namespace ET
 			this.sessionKey.Remove(key);
 		}
 
-		private async ETVoid TimeoutRemoveKey(long key)
+		private async ETTask TimeoutRemoveKey(long key)
 		{
 			await TimerComponent.Instance.WaitAsync(20000);
 			this.sessionKey.Remove(key);

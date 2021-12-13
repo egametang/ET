@@ -46,7 +46,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                ETTask.ExceptionHandler.Invoke(e);
             }
         }
     }

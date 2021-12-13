@@ -31,7 +31,7 @@ namespace ET
             {
                 case MailboxType.MessageDispatcher:
                 {
-                    async ETVoid MessageDispatcherHandler()
+                    async ETTask MessageDispatcherHandler()
                     {
                         long instanceId = entity.InstanceId;
                         using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
@@ -87,7 +87,7 @@ namespace ET
                 
                 case MailboxType.MessageDispatcher:
                 {
-                    async ETVoid MessageDispatcherHandler()
+                    async ETTask MessageDispatcherHandler()
                     {
                         long instanceId = entity.InstanceId;
                         using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))

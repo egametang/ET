@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACE;NOT_UNITY</DefineConstants>
+      <OutputPath>..\..\Bin\</OutputPath>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DefineConstants>TRACE;NOT_UNITY</DefineConstants>
+      <OutputPath>..\..\Bin\</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+
+    <Compile Include="..\..\Unity\Assets\ThirdParty\ETTask\**\*.cs">
+        <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+    </ItemGroup>
+
+</Project>
