@@ -18,7 +18,7 @@ namespace ET
     }
 #endif
     
-    public class ProtoObject: Object, ISupportInitialize
+    public abstract class ProtoObject: Object, ISupportInitialize
     {
         public object Clone()
         {
