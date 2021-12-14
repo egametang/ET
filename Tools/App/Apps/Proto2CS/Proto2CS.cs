@@ -34,6 +34,9 @@ namespace ET
             msgOpcode.Clear();
             Proto2CS("ET", "../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
             GenerateOpcode("ET", "InnerOpcode", serverMessagePath);
+            
+            Proto2CS("ET", "../Proto/MongoMessage.proto", serverMessagePath, "MongoOpcode", 40000);
+            GenerateOpcode("ET", "MongoOpcode", serverMessagePath);
 
             Proto2CS("ET", "../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", 20000);
             GenerateOpcode("ET", "OuterOpcode", serverMessagePath);

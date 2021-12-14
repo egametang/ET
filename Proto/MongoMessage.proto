@@ -1,0 +1,20 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType ObjectQueryResponse
+message ObjectQueryRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+    int64 InstanceId = 2;
+}
+
+message ObjectQueryResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+    
+    Entity entity = 1;
+}
