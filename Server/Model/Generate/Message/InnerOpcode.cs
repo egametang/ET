@@ -2,7 +2,7 @@ namespace ET
 {
 	public static partial class InnerOpcode
 	{
-		 public const ushort M2M_TrasferUnitRequest = 10001;
+		 public const ushort ObjectQueryRequest = 10001;
 		 public const ushort M2M_TrasferUnitResponse = 10002;
 		 public const ushort M2A_Reload = 10003;
 		 public const ushort A2M_Reload = 10004;

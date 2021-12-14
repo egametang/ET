@@ -3,13 +3,10 @@ using ProtoBuf;
 using System.Collections.Generic;
 namespace ET
 {
-/// <summary>
-/// 传送unit
-/// </summary>
-	[ResponseType(nameof(M2M_TrasferUnitResponse))]
-	[Message(InnerOpcode.M2M_TrasferUnitRequest)]
+	[ResponseType(nameof(ObjectQueryResponse))]
+	[Message(InnerOpcode.ObjectQueryRequest)]
 	[ProtoContract]
-	public partial class M2M_TrasferUnitRequest: Object, IActorRequest
+	public partial class ObjectQueryRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -18,7 +15,10 @@ namespace ET
 		public long ActorId { get; set; }
 
 		[ProtoMember(1)]
-		public Unit Unit { get; set; }
+		public long Key { get; set; }
+
+		[ProtoMember(2)]
+		public long InstanceId { get; set; }
 
 	}
 
