@@ -4,11 +4,11 @@ package ET;
 
 message ObjectQueryResponse // IActorResponse
 {
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-    
-    Entity entity = 1;
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+	Entity entity = 1;
 }
 
 /// <summary>
@@ -17,7 +17,7 @@ message ObjectQueryResponse // IActorResponse
 //ResponseType M2M_TrasferUnitResponse
 message M2M_TrasferUnitRequest // IActorRequest
 {
-    int32 RpcId = 90;
-    int64 ActorId = 93;
-    Unit Unit = 1;
+	int32 RpcId = 90;
+	int64 ActorId = 93;
+	Unit Unit = 1;
 }
