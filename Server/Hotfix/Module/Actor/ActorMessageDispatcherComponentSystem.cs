@@ -57,14 +57,17 @@ namespace ET
                 }
 
                 Type messageType = imHandler.GetRequestType();
-                Type responseType = OpcodeTypeComponent.Instance.GetResponseType(messageType);
-
-                Type handleResponseType = imHandler.GetResponseType();
-                if (handleResponseType != null && handleResponseType != responseType)
-                {
-                    throw new Exception($"message handler response type error: {messageType.FullName}");
-                }
                 
+                Type handleResponseType = imHandler.GetResponseType();
+                if (handleResponseType != null)
+                {
+                    Type responseType = OpcodeTypeComponent.Instance.GetResponseType(messageType);
+                    if (handleResponseType != responseType)
+                    {
+                        throw new Exception($"message handler response type error: {messageType.FullName}");
+                    }
+                }
+
                 self.ActorMessageHandlers.Add(messageType, imHandler);
             }
         }
