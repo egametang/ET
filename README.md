@@ -4,11 +4,13 @@
 
 # [ET论坛](https://et-framework.cn)  
 
+# [ET6.0视频教程上线](https://edu.uwa4d.com/course-intro/1/375)   
+
 # 重大注意事项：
-1. Hotfix跟HotfixView是纯逻辑的，类中不要带有任何字段，否则热更就会丢失
-2. ETTask跟要么调用Coroutine要么就await，打开VS中的错误列表窗口，没有使用这两种的会报出问题，虽然既不await也不Coroutine的话能够编译通过，但是会丢失异常，十分危险
-3. 请不要使用任何虚函数，用逻辑分发替代
-4. 请不要使用任何继承，除了继承Entity，用组件替代
+1. Hotfix跟HotfixView是纯逻辑的，类中不要带有任何字段，否则热更就会丢失  
+2. ETTask跟要么调用Coroutine要么就await，打开VS中的错误列表窗口，没有使用这两种的会报出问题，虽然既不await也不Coroutine的话能够编译通过，但是会丢失异常，十分危险  
+3. 请不要使用任何虚函数，用逻辑分发替代  
+4. 请不要使用任何继承，除了继承Entity，用组件替代  
 
 
 # ET6 发布！ET6相比ET5有巨大变化，可以说是凤姐变亦菲，6.0拥有如下惊人的特点
