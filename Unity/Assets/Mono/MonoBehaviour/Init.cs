@@ -57,6 +57,7 @@ namespace ET
 		private void OnApplicationQuit()
 		{
 			CodeLoader.Instance.OnApplicationQuit();
+			CodeLoader.Instance.Dispose();
 		}
 	}
 }

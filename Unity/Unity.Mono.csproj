@@ -138,8 +138,8 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_AService_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Message\RpcException.cs" />
      <Compile Include="Assets\Mono\ILRuntime\ILStaticMethod.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Object_Array_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_UInt16_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Object_Array_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_LayerMask_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_ETTask_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding__t1.cs" />
