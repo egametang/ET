@@ -5,18 +5,14 @@ namespace ET
 {
     public static class MessageSerializeHelper
     {
-        public const ushort PbMaxOpcode = 40000;
-        
-        public const ushort JsonMinOpcode = 51000;
-        
         public static object DeserializeFrom(ushort opcode, Type type, MemoryStream memoryStream)
         {
-            if (opcode < PbMaxOpcode)
+            if (opcode < OpcodeRangeDefine.PbMaxOpcode)
             {
                 return ProtobufHelper.FromStream(type, memoryStream);
             }
             
-            if (opcode >= JsonMinOpcode)
+            if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
             {
                 return JsonHelper.FromJson(type, memoryStream.GetBuffer().ToStr((int)memoryStream.Position, (int)(memoryStream.Length - memoryStream.Position)));
             }
@@ -29,13 +25,13 @@ namespace ET
 
         public static void SerializeTo(ushort opcode, object obj, MemoryStream memoryStream)
         {
-            if (opcode < PbMaxOpcode)
+            if (opcode < OpcodeRangeDefine.PbMaxOpcode)
             {
                 ProtobufHelper.ToStream(obj, memoryStream);
                 return;
             }
 
-            if (opcode >= JsonMinOpcode)
+            if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
             {
                 string s = JsonHelper.ToJson(obj);
                 byte[] bytes = s.ToUtf8();

@@ -19,12 +19,12 @@ namespace ET
             ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), 8);
             Type type = OpcodeTypeComponent.Instance.GetType(opcode);
 
-            if (opcode < MessageSerializeHelper.PbMaxOpcode)
+            if (opcode < OpcodeRangeDefine.PbMaxOpcode)
             {
                 return ProtobufHelper.FromBytes(type, memoryStream.GetBuffer(), 10, (int)memoryStream.Length - 10);
             }
             
-            if (opcode >= MessageSerializeHelper.JsonMinOpcode)
+            if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
             {
                 return JsonHelper.FromJson(type, memoryStream.GetBuffer().ToStr(10, (int)(memoryStream.Length - 10)));
             }
