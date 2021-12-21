@@ -51,7 +51,8 @@ namespace ILRuntime.Reflection
                 {
                     foreach (var j in attribute.Fields)
                     {
-                        var field = it.GetField(j.Name, out int index);
+                        int index;
+                        var field = it.GetField(j.Name, out index);
                         if (field != null)
                             ((ILRuntime.Runtime.Intepreter.ILTypeInstance)ins)[index] = j.Argument.Value;
                     }
@@ -78,7 +79,13 @@ namespace ILRuntime.Reflection
                     foreach (var j in attribute.Properties)
                     {
                         var prop = at.TypeForCLR.GetProperty(j.Name);
-                        prop.SetValue(ins, j.Argument.Value, null);
+                        if (prop.PropertyType == typeof(Type) && j.Argument.Value != null)
+                        {
+                            var type = appdomain.GetType(j.Argument.Value, null, null);
+                            prop.SetValue(ins, type.TypeForCLR, null);
+                        }
+                        else
+                            prop.SetValue(ins, j.Argument.Value, null);
                     }
                 }
                 if(attribute.HasFields)

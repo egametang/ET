@@ -120,36 +120,11 @@ namespace ILRuntime.Runtime.Stack
             }
         }
 
-        public unsafe static void Initialized(ref StackObject esp, int idx, Type t, IType fieldType, IList<object> mStack)
+        public unsafe static void Initialized(ref StackObject esp, int idx, IType fieldType, IList<object> mStack)
         {
-            if (t.IsPrimitive)
+            if (fieldType.IsPrimitive)
             {
-                if (t == typeof(int) || t == typeof(uint) || t == typeof(short) || t == typeof(ushort) || t == typeof(byte) || t == typeof(sbyte) || t == typeof(char) || t == typeof(bool))
-                {
-                    esp.ObjectType = ObjectTypes.Integer;
-                    esp.Value = 0;
-                    esp.ValueLow = 0;
-                }
-                else if (t == typeof(long) || t == typeof(ulong))
-                {
-                    esp.ObjectType = ObjectTypes.Long;
-                    esp.Value = 0;
-                    esp.ValueLow = 0;
-                }
-                else if (t == typeof(float))
-                {
-                    esp.ObjectType = ObjectTypes.Float;
-                    esp.Value = 0;
-                    esp.ValueLow = 0;
-                }
-                else if (t == typeof(double))
-                {
-                    esp.ObjectType = ObjectTypes.Double;
-                    esp.Value = 0;
-                    esp.ValueLow = 0;
-                }
-                else
-                    throw new NotImplementedException();
+                esp = fieldType.DefaultObject;
             }
             else
             {
@@ -193,8 +168,6 @@ namespace ILRuntime.Runtime.Stack
         //IL2CPP can't process esp->Initialized() properly, so I can only use static function for this
         public unsafe static void Initialized(StackObject* esp, IType type)
         {
-            var t = type.TypeForCLR;
-            
             if (type.IsPrimitive)
             {
                 *esp = type.DefaultObject;

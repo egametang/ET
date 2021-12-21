@@ -138,7 +138,7 @@ namespace ");
                         StringBuilder sBuilder = new StringBuilder();
                         var p = i.GetParameters()[0];
                         p.ParameterType.GetClassName(out clsName, out realClsName, out isByRef, true);
-                        pName = $"this [{realClsName + " " + p.Name}]";
+                        pName = string.Format("this [{0}]", realClsName + " " + p.Name);
 
                         isIndexFunc = true;
                     }
@@ -192,8 +192,8 @@ namespace ");
                     if (isProperty)
                     {
                         string baseMethodName = isIndexFunc
-                            ? $"base[{i.GetParameters()[0].Name}]"
-                            : $"base.{i.Name.Substring(4)}";
+                            ? string.Format("base[{0}]", i.GetParameters()[0].Name)
+                            : string.Format("base.{0}", i.Name.Substring(4));
                         if (isGetter)
                         {
                             sb.AppendLine(string.Format("                    return {0};", baseMethodName));
@@ -597,7 +597,7 @@ namespace ");
             {
                 if (p.IsOut)
                 {
-                    sb.AppendLine($"                    {p.Name} = default({p.ParameterType.GetElementType().FullName});");
+                    sb.AppendLine(string.Format("                    {0} = default({1});", p.Name, p.ParameterType.GetElementType().FullName));
                 }
             }
         }

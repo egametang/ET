@@ -114,7 +114,7 @@ namespace ILRuntime.Reflection
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
-            return et.GetMethod(name, bindingAttr, binder, callConvention, types, modifiers);
+            return types != null ? et.GetMethod(name, bindingAttr, binder, callConvention, types, modifiers) : et.GetMethod(name, bindingAttr);
         }
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)

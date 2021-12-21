@@ -215,16 +215,31 @@ namespace ILRuntime.Runtime.Enviorment
 
         internal StackObject* ESP
         {
-            get => esp;
+            get
+            {
+                return esp;
+            }
             set
             {
                 esp = value;
             }
         }
 
-        internal ILIntepreter Intepreter => intp;
+        internal ILIntepreter Intepreter
+        {
+            get
+            {
+                return intp;
+            }
+        }
 
-        internal IList<object> ManagedStack => mStack;
+        internal IList<object> ManagedStack
+        {
+            get
+            {
+                return mStack;
+            }
+        }
 
         public void PushBool(bool val)
         {
@@ -300,7 +315,8 @@ namespace ILRuntime.Runtime.Enviorment
             Type t = typeof(T);
             bool needPush = false;
             StackObject* res = default(StackObject*);
-            if (domain.ValueTypeBinders.TryGetValue(t, out var binder))
+            ValueTypeBinder binder;
+            if (domain.ValueTypeBinders.TryGetValue(t, out binder))
             {
                 var binderT = binder as ValueTypeBinder<T>;
                 if (binderT != null)
@@ -492,7 +508,8 @@ namespace ILRuntime.Runtime.Enviorment
             CheckReturnValue();
             Type t = typeof(T);
             T res = default(T);
-            if (domain.ValueTypeBinders.TryGetValue(t, out var binder))
+            ValueTypeBinder binder;
+            if (domain.ValueTypeBinders.TryGetValue(t, out binder))
             {
                 var binderT = binder as ValueTypeBinder<T>;
                 if (binderT != null)
