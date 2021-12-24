@@ -229,6 +229,37 @@ namespace ILRuntime.Runtime.Enviorment
             }
         }
 
+        internal IDelegateAdapter FindDelegateAdapter(CLRType type, ILTypeInstance ins, ILMethod ilMethod)
+        {
+            IDelegateAdapter dele;
+            if (ins != null)
+            {
+                dele = (ins).GetDelegateAdapter(ilMethod);
+                if (dele == null)
+                {
+                    var invokeMethod =
+                        type.GetMethod("Invoke",
+                            ilMethod.ParameterCount);
+                    if (invokeMethod == null && ilMethod.IsExtend)
+                    {
+                        invokeMethod = type.GetMethod("Invoke", ilMethod.ParameterCount - 1);
+                    }
+                    dele = appdomain.DelegateManager.FindDelegateAdapter(
+                        ins, ilMethod, invokeMethod);
+                }
+            }
+            else
+            {
+                if (ilMethod.DelegateAdapter == null)
+                {
+                    var invokeMethod = type.GetMethod("Invoke", ilMethod.ParameterCount);
+                    ilMethod.DelegateAdapter = appdomain.DelegateManager.FindDelegateAdapter(null, ilMethod, invokeMethod);
+                }
+                dele = ilMethod.DelegateAdapter;
+            }
+            return dele;
+        }
+
         /// <summary>
         /// ilMethod代表的delegate会赋值给method对应的delegate，一般两者参数类型都一致，
         /// 但新版本的支持泛型协变之后，有些时候会不一致，所以此处判断是用method判断，而不是用ilMethod判断

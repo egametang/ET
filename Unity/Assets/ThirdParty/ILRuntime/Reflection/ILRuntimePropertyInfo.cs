@@ -141,7 +141,13 @@ namespace ILRuntime.Reflection
             }
         }
 
-        public ILRuntime.Mono.Cecil.TypeReference Definition => definition.GetMethod != null ? definition.GetMethod.ReturnType : definition.SetMethod.Parameters [ 0 ].ParameterType;
+        public ILRuntime.Mono.Cecil.TypeReference Definition
+        {
+            get
+            {
+                return definition.GetMethod != null ? definition.GetMethod.ReturnType : definition.SetMethod.Parameters[0].ParameterType;
+            }
+        }
 
 
         public override Type DeclaringType

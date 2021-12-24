@@ -29,5 +29,8 @@ namespace ILRuntime.CLR.Method
         bool IsStatic { get; }
 
         IMethod MakeGenericMethod(IType[] genericArguments);
+
+
+        bool IsExtend { get; }
     }
 }

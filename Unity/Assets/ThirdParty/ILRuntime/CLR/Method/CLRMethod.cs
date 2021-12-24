@@ -417,7 +417,7 @@ namespace ILRuntime.CLR.Method
                 }
 
                 argString = argString.Substring(0, argString.Length - 2);
-                throw new Exception($"MakeGenericMethod failed : {def.DeclaringType.FullName}.{def.Name}<{argString}>");
+                throw new Exception(string.Format("MakeGenericMethod failed : {0}.{1}<{2}>", def.DeclaringType.FullName, def.Name, argString));
             }
 #endif
             var res = new CLRMethod(t, declaringType, appdomain);
@@ -438,6 +438,20 @@ namespace ILRuntime.CLR.Method
             if (hashCode == -1)
                 hashCode = System.Threading.Interlocked.Add(ref instance_id, 1);
             return hashCode;
+        }
+
+
+        bool? isExtend;
+        public bool IsExtend
+        {
+            get
+            {
+                if (isExtend == null)
+                {
+                    isExtend = this.IsExtendMethod();
+                }
+                return isExtend.Value;
+            }
         }
     }
 }

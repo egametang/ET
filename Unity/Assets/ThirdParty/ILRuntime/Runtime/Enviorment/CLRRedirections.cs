@@ -1249,7 +1249,7 @@ namespace ILRuntime.Runtime.Enviorment
             intp.Free(p);
 
             bool res = false;
-            if(ins is ILEnumTypeInstance)
+            if (ins is ILEnumTypeInstance)
             {
                 ILEnumTypeInstance enumIns = (ILEnumTypeInstance)ins;
                 int num = enumIns.Fields[0].Value;
@@ -1297,5 +1297,212 @@ namespace ILRuntime.Runtime.Enviorment
             return ret + 1;
         }
 #endif
+
+        public static StackObject* DelegateCreateDelegate(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
+        {
+            var ret = esp - 2;
+            AppDomain domain = intp.AppDomain;
+
+            var p = esp - 1;
+            MethodInfo mi = (MethodInfo)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            p = esp - 1 - 1;
+            Type t = (Type)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            if (t is ILRuntimeType)
+            {
+                ILType it = ((ILRuntimeType)t).ILType;
+                if (it.IsDelegate)
+                {
+                    var m = it.GetMethod("Invoke") as ILMethod;
+                    object ins = null;
+                    if (mi is ILRuntimeMethodInfo)
+                    {
+                        ILRuntimeMethodInfo imi = (ILRuntimeMethodInfo)mi;
+                        var ilMethod = imi.ILMethod;
+                        if (ilMethod.DelegateAdapter == null)
+                        {
+                            ilMethod.DelegateAdapter = domain.DelegateManager.FindDelegateAdapter(null, ilMethod, m);
+                        }
+                        ins = ilMethod.DelegateAdapter;
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                    return ILIntepreter.PushObject(ret, mStack, ins, true);
+                }
+                else
+                    throw new NotSupportedException(string.Format("{0} is not Delegate", t.FullName));
+            }
+            else if (t is ILRuntimeWrapperType)
+            {
+                ILRuntimeWrapperType iwt = (ILRuntimeWrapperType)t;
+                object ins = null;
+                if (mi is ILRuntimeMethodInfo)
+                {
+                    ILRuntimeMethodInfo imi = (ILRuntimeMethodInfo)mi;
+
+                    ins = domain.DelegateManager.FindDelegateAdapter(iwt.CLRType, null, imi.ILMethod);
+                }
+                else
+                {
+                    ins = Delegate.CreateDelegate(iwt.RealType, mi);
+                }
+                return ILIntepreter.PushObject(ret, mStack, ins, true);
+            }
+            else
+                return ILIntepreter.PushObject(ret, mStack, Delegate.CreateDelegate(t, mi), true);
+        }
+
+        public static StackObject* DelegateCreateDelegate2(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
+        {
+            var ret = esp - 3;
+            AppDomain domain = intp.AppDomain;
+
+            var p = esp - 1;
+            string name = (string)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            p = esp - 2;
+            object obj = (object)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            p = esp - 3;
+            Type t = (Type)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            if (obj == null)
+                throw new ArgumentNullException("Argument target cannot be null");
+
+            if (t is ILRuntimeType)
+            {
+                ILType it = ((ILRuntimeType)t).ILType;
+                if (it.IsDelegate)
+                {
+                    var m = it.GetMethod("Invoke") as ILMethod;
+                    if (obj is ILTypeInstance)
+                    {
+                        ILTypeInstance ii = (ILTypeInstance)obj;
+                        var ilMethod = ii.Type.GetMethod(name) as ILMethod;
+                        if (ilMethod == null)
+                            throw new ArgumentException(string.Format("Cannot find method \"{0}\" in type {1}", name, it.FullName));
+                        if (ilMethod.DelegateAdapter == null)
+                        {
+                            ilMethod.DelegateAdapter = domain.DelegateManager.FindDelegateAdapter(ii, ilMethod, m);
+                        }
+                        object ins = ilMethod.DelegateAdapter;
+                        return ILIntepreter.PushObject(ret, mStack, ins, true);
+                    }
+                    else
+                        throw new NotSupportedException();
+
+                }
+                else
+                    throw new NotSupportedException(string.Format("{0} is not Delegate", t.FullName));
+            }
+            else if (t is ILRuntimeWrapperType)
+            {
+                ILRuntimeWrapperType iwt = (ILRuntimeWrapperType)t;
+                object ins = null;
+                if (obj is ILTypeInstance)
+                {
+                    ILTypeInstance ii = (ILTypeInstance)obj;
+                    var ilMethod = ii.Type.GetMethod(name) as ILMethod;
+                    if (ilMethod == null)
+                        throw new ArgumentException(string.Format("Cannot find method \"{0}\" in type {1}", name, ii.Type.FullName));
+                    ins = domain.DelegateManager.FindDelegateAdapter(iwt.CLRType, ii, ilMethod);
+                }
+                else
+                {
+                    ins = Delegate.CreateDelegate(iwt.RealType, obj, name);
+                }
+                return ILIntepreter.PushObject(ret, mStack, ins, true);
+            }
+            else
+                return ILIntepreter.PushObject(ret, mStack, Delegate.CreateDelegate(t, obj, name), true);
+        }
+
+        public static StackObject* DelegateCreateDelegate3(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
+        {
+            var ret = esp - 3;
+            AppDomain domain = intp.AppDomain;
+
+            var p = esp - 1;
+            MethodInfo mi = (MethodInfo)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            p = esp - 2;
+            object obj = (object)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            p = esp - 3;
+            Type t = (Type)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+
+            if (t is ILRuntimeType)
+            {
+                ILType it = ((ILRuntimeType)t).ILType;
+                if (it.IsDelegate)
+                {
+                    object ins = null;
+                    if (mi is ILRuntimeMethodInfo)
+                    {
+                        ILRuntimeMethodInfo imi = (ILRuntimeMethodInfo)mi;
+                        var ilMethod = imi.ILMethod;
+                        if (obj != null)
+                        {
+                            ins = ((ILTypeInstance)obj).GetDelegateAdapter(ilMethod);
+                            if (ins == null)
+                            {
+                                var invokeMethod = it.GetMethod("Invoke", ilMethod.ParameterCount);
+                                if (invokeMethod == null && ilMethod.IsExtend)
+                                {
+                                    invokeMethod = it.GetMethod("Invoke", ilMethod.ParameterCount - 1);
+                                }
+                                ins = domain.DelegateManager.FindDelegateAdapter(
+                                    (ILTypeInstance)obj, ilMethod, invokeMethod);
+                            }
+                        }
+                        else
+                        {
+                            if (ilMethod.DelegateAdapter == null)
+                            {
+                                var m = it.GetMethod("Invoke") as ILMethod;
+                                ilMethod.DelegateAdapter = domain.DelegateManager.FindDelegateAdapter(null, ilMethod, m);
+                            }
+                            ins = ilMethod.DelegateAdapter;
+                        }
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                    return ILIntepreter.PushObject(ret, mStack, ins, true);
+                }
+                else
+                    throw new NotSupportedException(string.Format("{0} is not Delegate", t.FullName));
+            }
+            else if (t is ILRuntimeWrapperType)
+            {
+                ILRuntimeWrapperType iwt = (ILRuntimeWrapperType)t;
+                object ins = null;
+                if (mi is ILRuntimeMethodInfo)
+                {
+                    ILRuntimeMethodInfo imi = (ILRuntimeMethodInfo)mi;
+
+                    ins = domain.DelegateManager.FindDelegateAdapter(iwt.CLRType, obj as ILTypeInstance, imi.ILMethod);
+                }
+                else
+                {
+                    ins = Delegate.CreateDelegate(iwt.RealType, obj, mi);
+                }
+                return ILIntepreter.PushObject(ret, mStack, ins, true);
+            }
+            else
+                return ILIntepreter.PushObject(ret, mStack, Delegate.CreateDelegate(t, obj, mi), true);
+        }
     }
 }

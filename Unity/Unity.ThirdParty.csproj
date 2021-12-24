@@ -423,6 +423,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\ProtoSyntax.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\UInt16Serializer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\AssemblyFlags.cs" />
+     <Compile Include="Assets\ThirdParty\ILRuntime\CLR\Method\IMethodExtensions.cs" />
      <None Include="Assets\ThirdParty\Unity.ThirdParty.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:/Apps/Unity/2020.3.23f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
