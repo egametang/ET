@@ -5,7 +5,6 @@ package ET;
 message ObjectQueryRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Key = 1;
 	int64 InstanceId = 2;
 }
@@ -23,7 +22,6 @@ message M2M_TrasferUnitResponse // IActorResponse
 message M2A_Reload // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 }
 
 message A2M_Reload // IActorResponse
@@ -37,7 +35,6 @@ message A2M_Reload // IActorResponse
 message G2G_LockRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Id = 1;
 	string Address = 2;
 }
@@ -53,7 +50,6 @@ message G2G_LockResponse // IActorResponse
 message G2G_LockReleaseRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Id = 1;
 	string Address = 2;
 }
@@ -69,7 +65,6 @@ message G2G_LockReleaseResponse // IActorResponse
 message ObjectAddRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Key = 1;
 	int64 InstanceId = 2;
 }
@@ -85,7 +80,6 @@ message ObjectAddResponse // IActorResponse
 message ObjectLockRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Key = 1;
 	int64 InstanceId = 2;
 	int32 Time = 3;
@@ -101,7 +95,6 @@ message ObjectLockResponse // IActorResponse
 message ObjectUnLockRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Key = 1;
 	int64 OldInstanceId = 2;
 	int64 InstanceId = 3;
@@ -117,7 +110,6 @@ message ObjectUnLockResponse // IActorResponse
 message ObjectRemoveRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Key = 1;
 }
 message ObjectRemoveResponse // IActorResponse
@@ -131,7 +123,6 @@ message ObjectRemoveResponse // IActorResponse
 message ObjectGetRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 Key = 1;
 }
 message ObjectGetResponse // IActorResponse
@@ -147,7 +138,6 @@ message ObjectGetResponse // IActorResponse
 message R2G_GetLoginKey // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	string Account = 1;
 }
 
@@ -165,7 +155,6 @@ message G2R_GetLoginKey // IActorResponse
 message G2M_CreateUnit // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int64 PlayerId = 1;
 	int64 GateSessionId = 2;
 }
@@ -185,5 +174,4 @@ message M2G_CreateUnit // IActorResponse
 message G2M_SessionDisconnect // IActorLocationMessage
 {
 	int32 RpcId = 90;
-	int64 ActorId = 94;
 }

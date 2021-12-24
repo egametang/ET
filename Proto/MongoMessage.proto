@@ -18,6 +18,5 @@ message ObjectQueryResponse // IActorResponse
 message M2M_TrasferUnitRequest // IActorRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	Unit Unit = 1;
 }

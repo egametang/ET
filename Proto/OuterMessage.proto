@@ -5,7 +5,6 @@ package ET;
 message C2M_TestRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	string request = 1;
 }
 
@@ -21,7 +20,6 @@ message M2C_TestResponse // IActorLocationResponse
 message Actor_TransferRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int32 MapIndex = 1;
 }
 
@@ -63,14 +61,12 @@ message UnitInfo
 message M2C_CreateUnits // IActorMessage
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	repeated UnitInfo Units = 2;
 }
 
 message C2M_PathfindingResult // IActorLocationMessage
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 
 	float X = 1;
 	float Y = 2;
@@ -80,13 +76,10 @@ message C2M_PathfindingResult // IActorLocationMessage
 message C2M_Stop // IActorLocationMessage
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 }
 
 message M2C_PathfindingResult // IActorMessage
 {
-	int64 ActorId = 93;
-
 	int64 Id = 1;
 
 	float X = 2;
@@ -191,7 +184,6 @@ message G2C_TestHotfixMessage // IMessage
 message C2M_TestRobotCase // IActorLocationRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 93;
 	int32 N = 1;
 }
 
