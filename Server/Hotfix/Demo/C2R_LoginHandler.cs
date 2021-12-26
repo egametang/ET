@@ -7,6 +7,8 @@ namespace ET
 	[MessageHandler]
 	public class C2R_LoginHandler : AMRpcHandler<C2R_Login, R2C_Login>
 	{
+		//游戏服务器是如何返回客户端的消息，这里的Session是一个服务器的电话，专门接听客户端的电话（seccion)的通信
+		//一旦我们的session关闭，我们的Socket就关闭
 		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response, Action reply)
 		{
 			// 随机分配一个Gate
@@ -20,6 +22,8 @@ namespace ET
 			response.Address = config.OuterIPPort.ToString();
 			response.Key = g2RGetLoginKey.Key;
 			response.GateId = g2RGetLoginKey.GateId;
+			//关闭某一个电话，意思就是不接这个电话，可以理解成封闭服务器，将某一个账号踢出去
+			//session.Dispose();
 			reply();
 		}
 	}

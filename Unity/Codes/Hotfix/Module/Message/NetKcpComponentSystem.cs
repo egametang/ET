@@ -92,10 +92,11 @@ namespace ET
         public static Session Create(this NetKcpComponent self, IPEndPoint realIPEndPoint)
         {
             long channelId = RandomHelper.RandInt64();
+            //创建Session - 一部电话
             Session session = self.AddChildWithId<Session, AService>(channelId, self.Service);
             session.RemoteAddress = realIPEndPoint;
             session.AddComponent<SessionIdleCheckerComponent, int>(NetThreadComponent.checkInteral);
-            
+            //通过session.id关联对应的channel ，找到了channel就能找到Socket  ,反过来也成立，形成一个映射表的关系
             self.Service.GetOrCreate(session.Id, realIPEndPoint);
 
             return session;
