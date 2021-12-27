@@ -17,7 +17,7 @@ namespace ET
 
             using var list = ListComponent<Vector3>.Create();
             
-            unit.Domain.GetComponent<RecastPathComponent>().SearchPath(10001, unit.Position, target, list);
+            unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, list);
 
             List<Vector3> path = list;
             if (path.Count < 2)

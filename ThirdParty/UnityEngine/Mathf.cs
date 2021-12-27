@@ -569,16 +569,6 @@ namespace UnityEngine
             r.NextBytes(buffer);
             return (long) BitConverter.ToUInt64(buffer, 0) & long.MaxValue;
         }
-        
-        public static float Rad2Deg(float radians)
-        {
-            return (float)(radians * 180 / System.Math.PI);
-        }
-        
-        public static float Deg2Rad(float degrees)
-        {
-            return (float)(degrees * System.Math.PI / 180);
-        }
 
         public static Vector3 Rad2Deg(Vector3 radians)
         {

@@ -61,6 +61,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\GuidSerializer.cs" />
      <Compile Include="Assets\ThirdParty\ShareLib\Kcp\Kcp.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\IMemberDefinition.cs" />
+     <Compile Include="Assets\ThirdParty\ILRuntime\CLR\Method\IMethodExtensions.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\BufferPool.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Debugger\DebuggerServer\DebuggerServer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Debugger\StackFrameInfo.cs" />
@@ -135,6 +136,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodBuilder.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbException.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ImplicitFields.cs" />
+     <Compile Include="Assets\ThirdParty\ShareLib\Recast\Recast.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Intepreter\OpCodes\OpCodeREnum.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\EmbeddedResource.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\Resource.cs" />
@@ -423,7 +425,6 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\ProtoSyntax.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\UInt16Serializer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\AssemblyFlags.cs" />
-     <Compile Include="Assets\ThirdParty\ILRuntime\CLR\Method\IMethodExtensions.cs" />
      <None Include="Assets\ThirdParty\Unity.ThirdParty.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:/Apps/Unity/2020.3.23f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

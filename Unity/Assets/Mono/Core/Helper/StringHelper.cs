@@ -58,5 +58,47 @@ namespace ET
 			}
 			return sb.ToString();
 		}
+		
+		public static string ArrayToString<T>(this T[] args)
+		{
+			if (args == null)
+			{
+				return "";
+			}
+
+			string argStr = " [";
+			for (int arrIndex = 0; arrIndex < args.Length; arrIndex++)
+			{
+				argStr += args[arrIndex];
+				if (arrIndex != args.Length - 1)
+				{
+					argStr += ", ";
+				}
+			}
+
+			argStr += "]";
+			return argStr;
+		}
+        
+		public static string ArrayToString<T>(this T[] args, int index, int count)
+		{
+			if (args == null)
+			{
+				return "";
+			}
+
+			string argStr = " [";
+			for (int arrIndex = index; arrIndex < count + index; arrIndex++)
+			{
+				argStr += args[arrIndex];
+				if (arrIndex != args.Length - 1)
+				{
+					argStr += ", ";
+				}
+			}
+
+			argStr += "]";
+			return argStr;
+		}
 	}
 }

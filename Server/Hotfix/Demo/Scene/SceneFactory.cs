@@ -31,7 +31,6 @@ namespace ET
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
-                    scene.AddComponent<RecastPathComponent>();
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
