@@ -13,7 +13,7 @@ namespace ET
         
         public string Name;
         
-        public IntPtr NavMesh;
+        public long NavMesh;
 
         [NoMemoryCheck]
         public float[] StartPos = new float[3];

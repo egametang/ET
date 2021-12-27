@@ -13,9 +13,9 @@ namespace ET
             }
         }
         
-        public static IntPtr Get(this NavmeshComponent self, string name)
+        public static long Get(this NavmeshComponent self, string name)
         {
-            IntPtr ptr;
+            long ptr;
             if (self.Navmeshs.TryGetValue(name, out ptr))
             {
                 return ptr;
@@ -27,7 +27,7 @@ namespace ET
                 throw new Exception($"no nav data: {name}");
             }
 
-            ptr = Recast.RecastLoad(name.GetHashCode(), buffer, buffer.Length);
+            ptr = Recast.RecastLoadLong(name.GetHashCode(), buffer, buffer.Length);
             self.Navmeshs[name] = ptr;
 
             return ptr;

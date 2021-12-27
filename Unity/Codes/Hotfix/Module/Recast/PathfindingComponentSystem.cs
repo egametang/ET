@@ -14,7 +14,7 @@ namespace ET
                 self.Name = name;
                 self.NavMesh = NavmeshComponent.Instance.Get(name);
 
-                if (self.NavMesh == IntPtr.Zero)
+                if (self.NavMesh == 0)
                 {
                     throw new Exception($"nav load fail: {name}");
                 }
@@ -27,13 +27,13 @@ namespace ET
             public override void Destroy(PathfindingComponent self)
             {
                 self.Name = string.Empty;
-                self.NavMesh = IntPtr.Zero;
+                self.NavMesh = 0;
             }
         }
         
         public static void Find(this PathfindingComponent self, Vector3 start, Vector3 target, List<Vector3> result)
         {
-            if (self.NavMesh == IntPtr.Zero)
+            if (self.NavMesh == 0)
             {
                 Log.Debug("寻路| Find 失败 pathfinding ptr is zero");
                 throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
@@ -68,7 +68,7 @@ namespace ET
         
         public static Vector3 FindRandomPointWithRaduis(this PathfindingComponent self, Vector3 pos, float raduis)
         {
-            if (self.NavMesh == IntPtr.Zero)
+            if (self.NavMesh == 0)
             {
                 throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
             }
@@ -100,7 +100,7 @@ namespace ET
         /// <exception cref="Exception"></exception>
         public static Vector3 FindRandomPointWithRectangle(this PathfindingComponent self, Vector3 pos, int width, int height)
         {
-            if (self.NavMesh == IntPtr.Zero)
+            if (self.NavMesh == 0)
             {
                 throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
             }
@@ -120,7 +120,7 @@ namespace ET
         
         public static Vector3 FindRandomPointWithRaduis(this PathfindingComponent self, Vector3 pos, float minRadius, float maxRadius)
         {
-            if (self.NavMesh == IntPtr.Zero)
+            if (self.NavMesh == 0)
             {
                 throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
             }
@@ -143,7 +143,7 @@ namespace ET
 
         public static Vector3 RecastFindNearestPoint(this PathfindingComponent self, Vector3 pos)
         {
-            if (self.NavMesh == IntPtr.Zero)
+            if (self.NavMesh == 0)
             {
                 throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
             }
