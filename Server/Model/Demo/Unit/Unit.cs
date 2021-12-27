@@ -8,6 +8,8 @@ namespace ET
     {
         public int ConfigId; //配置表id
 
+        public UnitType Type;
+
         [BsonIgnore]
         public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
 

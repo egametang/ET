@@ -10,33 +10,28 @@ namespace ET
 		{
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), 1001);
+			unit.Type = UnitType.Player;
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<PathfindingComponent, string>("solo");
 			unit.Position = new Vector3(-10, 0, -10);
 			
 			NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
 			numericComponent.Set(NumericType.Speed, 6f); // 速度是6米每秒
+			numericComponent.Set(NumericType.AOI, 15000); // 视野15米
 			
 			unit.AddComponent<MailBoxComponent>();
 			await unit.AddLocation();
 			unit.AddComponent<UnitGateComponent, long>(request.GateSessionId);
 			unitComponent.Add(unit);
-			response.UnitId = unit.Id;
-			
-			// 把自己广播给周围的人
-			M2C_CreateUnits createUnits = new M2C_CreateUnits();
-			createUnits.Units.Add(UnitHelper.CreateUnitInfo(unit));
-			MessageHelper.Broadcast(unit, createUnits);
-			
-			// 把周围的人通知给自己
-			createUnits.Units.Clear();
-			Unit[] units = scene.GetComponent<UnitComponent>().GetAll();
-			foreach (Unit u in units)
-			{
-				createUnits.Units.Add(UnitHelper.CreateUnitInfo(u));
-			}
-			MessageHelper.SendActor(unit.GetComponent<UnitGateComponent>().GateSessionActorId, createUnits);
+			// 加入aoi
+			unit.AddComponent<AOIEntity, int, Vector3>(15, unit.Position);
 
+			M2C_CreateUnits m2CCreateUnits = new M2C_CreateUnits();
+			m2CCreateUnits.Units.Add(UnitHelper.CreateUnitInfo(unit));
+			MessageHelper.SendToClient(unit, m2CCreateUnits);
+			
+			response.MyId = unit.Id;
+			
 			reply();
 		}
 	}

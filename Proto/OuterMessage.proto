@@ -41,10 +41,8 @@ message G2C_EnterMap // IResponse
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
-	// 自己的unit id
-	int64 UnitId = 1;
-	// 所有的unit
-	repeated UnitInfo Units = 2;
+	// 自己unit
+	int64 MyId = 1;
 }
 
 message UnitInfo
@@ -62,6 +60,11 @@ message M2C_CreateUnits // IActorMessage
 {
 	int32 RpcId = 90;
 	repeated UnitInfo Units = 2;
+}
+
+message M2C_RemoveUnits // IActorMessage
+{
+	repeated int64 Units = 2;
 }
 
 message C2M_PathfindingResult // IActorLocationMessage

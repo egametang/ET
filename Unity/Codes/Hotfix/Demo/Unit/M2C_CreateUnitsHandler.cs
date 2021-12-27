@@ -1,7 +1,4 @@
-﻿
-using Vector3 = UnityEngine.Vector3;
-
-namespace ET
+﻿namespace ET
 {
 	[MessageHandler]
 	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>

@@ -18,8 +18,9 @@ namespace ET
             get => this.position;
             set
             {
+                Vector3 oldPos = this.position;
                 this.position = value;
-                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this }).Coroutine();
+                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this, OldPos = oldPos }).Coroutine();
             }
         }
 

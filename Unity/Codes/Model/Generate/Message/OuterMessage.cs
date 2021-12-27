@@ -85,13 +85,9 @@ namespace ET
 		[ProtoMember(92)]
 		public string Message { get; set; }
 
-// 自己的unit id
+// 自己unit
 		[ProtoMember(1)]
-		public long UnitId { get; set; }
-
-// 所有的unit
-		[ProtoMember(2)]
-		public List<UnitInfo> Units = new List<UnitInfo>();
+		public long MyId { get; set; }
 
 	}
 
@@ -131,6 +127,15 @@ namespace ET
 
 		[ProtoMember(2)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
+
+	}
+
+	[Message(OuterOpcode.M2C_RemoveUnits)]
+	[ProtoContract]
+	public partial class M2C_RemoveUnits: Object, IActorMessage
+	{
+		[ProtoMember(2)]
+		public List<long> Units = new List<long>();
 
 	}
 

@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
     namespace EventType
     {
@@ -9,6 +11,7 @@
         public struct ChangePosition
         {
             public Unit Unit;
+            public Vector3 OldPos;
         }
 
         public struct ChangeRotation
@@ -70,6 +73,10 @@
         public struct MoveStop
         {
             public Unit Unit;
+        }
+
+        public struct UnitEnterSightRange
+        {
         }
     }
 }

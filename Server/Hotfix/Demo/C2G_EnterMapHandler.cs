@@ -13,8 +13,8 @@ namespace ET
 			long mapInstanceId = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Map").InstanceId;
 			M2G_CreateUnit createUnit = (M2G_CreateUnit)await ActorMessageSenderComponent.Instance.Call(
 				mapInstanceId, new G2M_CreateUnit() { PlayerId = player.Id, GateSessionId = session.InstanceId });
-			player.UnitId = createUnit.UnitId;
-			response.UnitId = createUnit.UnitId;
+			player.UnitId = createUnit.MyId;
+			response.MyId = createUnit.MyId;
 			reply();
 		}
 	}
