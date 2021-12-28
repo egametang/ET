@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
@@ -8,11 +9,33 @@ namespace ET
         {
             UnitInfo unitInfo = new UnitInfo();
             NumericComponent nc = unit.GetComponent<NumericComponent>();
-            unitInfo.X = unit.Position.x;
-            unitInfo.Y = unit.Position.y;
-            unitInfo.Z = unit.Position.z;
             unitInfo.UnitId = unit.Id;
             unitInfo.ConfigId = unit.ConfigId;
+            unitInfo.Type = (int)unit.Type;
+            Vector3 position = unit.Position;
+            unitInfo.X = position.x;
+            unitInfo.Y = position.y;
+            unitInfo.Z = position.z;
+            Vector3 forward = unit.Forward;
+            unitInfo.ForwardX = forward.x;
+            unitInfo.ForwardY = forward.y;
+            unitInfo.ForwardZ = forward.z;
+
+            MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
+            if (moveComponent != null)
+            {
+                if (!moveComponent.IsArrived())
+                {
+                    unitInfo.MoveInfo = new MoveInfo();
+                    for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
+                    {
+                        Vector3 pos = moveComponent.Targets[i];
+                        unitInfo.MoveInfo.X.Add(pos.x);
+                        unitInfo.MoveInfo.Y.Add(pos.y);
+                        unitInfo.MoveInfo.Z.Add(pos.z);
+                    }
+                }
+            }
 
             foreach ((int key, long value) in nc.NumericDic)
             {

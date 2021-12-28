@@ -10,7 +10,7 @@
 	    SpeedPct = Speed * 10 + 3,
 	    SpeedFinalAdd = Speed * 10 + 4,
 	    SpeedFinalPct = Speed * 10 + 5,
-
+ 
 	    Hp = 1001,
 	    HpBase = Hp * 10 + 1,
 

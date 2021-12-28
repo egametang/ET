@@ -10,7 +10,6 @@ namespace ET
 		{
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), 1001);
-			unit.Type = UnitType.Player;
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<PathfindingComponent, string>("solo");
 			unit.Position = new Vector3(-10, 0, -10);
