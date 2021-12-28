@@ -22,10 +22,10 @@
 		MaxHpFinalPct = MaxHp * 10 + 5,
 		
 		AOI = 1003,
-		AOIBase = MaxHp * 10 + 1,
-		AOIAdd = MaxHp * 10 + 2,
-		AOIPct = MaxHp * 10 + 3,
-		AOIFinalAdd = MaxHp * 10 + 4,
-		AOIFinalPct = MaxHp * 10 + 5,
+		AOIBase = AOI * 10 + 1,
+		AOIAdd = AOI * 10 + 2,
+		AOIPct = AOI * 10 + 3,
+		AOIFinalAdd = AOI * 10 + 4,
+		AOIFinalPct = AOI * 10 + 5,
 	}
 }
