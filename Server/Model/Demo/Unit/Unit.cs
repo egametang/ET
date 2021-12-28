@@ -22,7 +22,7 @@ namespace ET
             set
             {
                 this.position = value;
-                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this }).Coroutine();
+                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this });
             }
         }
 
@@ -40,7 +40,7 @@ namespace ET
             set
             {
                 this.rotation = value;
-                Game.EventSystem.Publish(new EventType.ChangeRotation() {Unit = this}).Coroutine();
+                Game.EventSystem.Publish(new EventType.ChangeRotation() {Unit = this});
             }
         }
     }

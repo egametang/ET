@@ -559,10 +559,10 @@ namespace ET
             ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
         }
 
-        public async ETTask Publish<T>(T a) where T : struct
+        public async ETTask PublishAsync<T>(T a) where T : struct
         {
             List<object> iEvents;
-            if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
+            if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
             {
                 return;
             }
@@ -588,6 +588,25 @@ namespace ET
                 {
                     Log.Error(e);
                 }
+            }
+        }
+
+        public void Publish<T>(T a) where T : struct
+        {
+            List<object> iEvents;
+            if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
+            {
+                return;
+            }
+
+            foreach (object obj in iEvents)
+            {
+                if (!(obj is AEvent<T> aEvent))
+                {
+                    Log.Error($"event error: {obj.GetType().Name}");
+                    continue;
+                }
+                aEvent.Handle(a).Coroutine();
             }
         }
 

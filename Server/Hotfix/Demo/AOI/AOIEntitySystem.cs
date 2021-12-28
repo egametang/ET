@@ -134,7 +134,7 @@ namespace ET
                     enter.BeSeeUnits.Add(self.Id, self);
                 }
             }
-            Game.EventSystem.Publish(new EventType.UnitEnterSightRange() {A = self, B = enter}).Coroutine();
+            Game.EventSystem.Publish(new EventType.UnitEnterSightRange() {A = self, B = enter});
         }
 
         // leave离开self视野
@@ -162,7 +162,7 @@ namespace ET
                 leave.BeSeePlayers.Remove(self.Id);
             }
 
-            Game.EventSystem.Publish(new EventType.UnitLeaveSightRange {A = self, B = leave}).Coroutine();
+            Game.EventSystem.Publish(new EventType.UnitLeaveSightRange {A = self, B = leave});
         }
 
         /// <summary>

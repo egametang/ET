@@ -127,7 +127,7 @@ namespace ET
 				NumericType = (NumericType) final,
 				Old = old,
 				New = result
-			}).Coroutine();
+			});
 		}
 	}
 }

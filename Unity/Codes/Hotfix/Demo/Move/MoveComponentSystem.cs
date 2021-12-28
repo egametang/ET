@@ -96,7 +96,7 @@ namespace ET
             ETTask<bool> tcs = ETTask<bool>.Create(true);
             self.Callback = (ret) => { tcs.SetResult(ret); };
 
-            Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()}).Coroutine();
+            Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()});
             
             self.StartMove();
             
@@ -118,7 +118,7 @@ namespace ET
 
             if (moveRet)
             {
-                Game.EventSystem.Publish(new EventType.MoveStop(){Unit = self.GetParent<Unit>()}).Coroutine();
+                Game.EventSystem.Publish(new EventType.MoveStop(){Unit = self.GetParent<Unit>()});
             }
             return moveRet;
         }
