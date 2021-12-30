@@ -298,6 +298,11 @@ namespace ET
 			{
 				return;
 			}
+
+			if (this.isSending)
+			{
+				return;
+			}
 			
 			while (true)
 			{
