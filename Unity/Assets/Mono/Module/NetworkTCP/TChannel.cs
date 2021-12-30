@@ -310,6 +310,7 @@ namespace ET
 				{
 					if (this.socket == null)
 					{
+						this.isSending = false;
 						return;
 					}
 					
@@ -347,6 +348,8 @@ namespace ET
 		private void OnSendComplete(object o)
 		{
 			HandleSend(o);
+			
+			this.isSending = false;
 			
 			this.StartSend();
 		}
