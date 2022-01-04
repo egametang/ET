@@ -23,7 +23,7 @@ namespace ET
 			unit.AddComponent<UnitGateComponent, long>(request.GateSessionId);
 			unitComponent.Add(unit);
 			// 加入aoi
-			unit.AddComponent<AOIEntity, int, Vector3>(15, unit.Position);
+			unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
 
 			M2C_CreateUnits m2CCreateUnits = new M2C_CreateUnits();
 			m2CCreateUnits.Units.Add(UnitHelper.CreateUnitInfo(unit));

@@ -72,6 +72,8 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_BitConverter_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Helper\NetworkHelper.cs" />
      <Compile Include="Assets\Mono\Core\DoubleMap.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\WChannel.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\WService.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\Init.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t3.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_V.cs" />
