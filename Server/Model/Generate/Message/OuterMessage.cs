@@ -85,15 +85,9 @@ namespace ET
 		[ProtoMember(3)]
 		public string Message { get; set; }
 
-// 自己unit
+// 自己unitId
 		[ProtoMember(4)]
 		public long MyId { get; set; }
-
-		[ProtoMember(5)]
-		public string MapName { get; set; }
-
-		[ProtoMember(6)]
-		public long SceneInstanceId { get; set; }
 
 	}
 

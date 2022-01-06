@@ -22,8 +22,6 @@ namespace ET
 			
 			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Map");
 			response.MyId = player.Id;
-			response.MapName = startSceneConfig.Name;
-			response.SceneInstanceId = startSceneConfig.InstanceId;
 			reply();
 			
 			// 开始传送
