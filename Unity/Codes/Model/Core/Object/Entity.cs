@@ -679,6 +679,12 @@ namespace ET
             {
                 return null;
             }
+            
+            // 如果有IGetComponent接口，则触发GetComponentSystem
+            if (component is IGetComponent)
+            {
+                EventSystem.Instance.GetComponent(component);
+            }
 
             return component;
         }
