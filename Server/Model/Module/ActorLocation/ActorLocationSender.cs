@@ -3,7 +3,7 @@
 namespace ET
 {
     // 知道对方的Id，使用这个类发actor消息
-    public class ActorLocationSender: Entity
+    public class ActorLocationSender: Entity, IAwake, IDestroy
     {
         public long ActorId;
 

@@ -218,25 +218,29 @@ namespace ET
 
             Type type = component.GetType();
 
-            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
-            if (oneTypeSystems == null)
+            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);;
+            if (component is ILoad)
             {
-                return;
+                if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
+                {
+                    this.loaders.Enqueue(component.InstanceId);
+                }
             }
 
-            if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
+            if (component is IUpdate)
             {
-                this.loaders.Enqueue(component.InstanceId);
+                if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
+                {
+                    this.updates.Enqueue(component.InstanceId);
+                }
             }
 
-            if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
+            if (component is ILateUpdate)
             {
-                this.updates.Enqueue(component.InstanceId);
-            }
-
-            if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
-            {
-                this.lateUpdates.Enqueue(component.InstanceId);
+                if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
+                {
+                    this.lateUpdates.Enqueue(component.InstanceId);
+                }
             }
         }
 
@@ -275,6 +279,33 @@ namespace ET
                 try
                 {
                     deserializeSystem.Run(component);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
+        // GetComponentSystem
+        public void GetComponent(Entity component)
+        {
+            List<object> iGetSystem = this.typeSystems.GetSystems(component.GetType(), typeof (IGetComponentSystem));
+            if (iGetSystem == null)
+            {
+                return;
+            }
+
+            foreach (IGetComponentSystem getSystem in iGetSystem)
+            {
+                if (getSystem == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    getSystem.Run(component);
                 }
                 catch (Exception e)
                 {

@@ -45,7 +45,7 @@ namespace ET
         }
     }
 
-    public class ResourcesLoaderComponent: Entity
+    public class ResourcesLoaderComponent: Entity, IAwake, IDestroy
     {
         public HashSet<string> LoadedResource = new HashSet<string>();
 

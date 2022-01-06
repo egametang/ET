@@ -2,6 +2,10 @@
 
 namespace ET
 {
+	public interface IDeserialize
+	{
+	}
+	
 	public interface IDeserializeSystem: ISystemType
 	{
 		void Run(object o);
@@ -13,7 +17,7 @@ namespace ET
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	[ObjectSystem]
-	public abstract class DeserializeSystem<T> : IDeserializeSystem
+	public abstract class DeserializeSystem<T> : IDeserializeSystem where T: IDeserialize
 	{
 		public void Run(object o)
 		{

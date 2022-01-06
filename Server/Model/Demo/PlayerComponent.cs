@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ET
 {
-	public class PlayerComponent : Entity
+	public class PlayerComponent : Entity, IAwake, IDestroy
 	{
 		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
 		

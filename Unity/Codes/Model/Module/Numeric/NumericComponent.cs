@@ -24,7 +24,7 @@ namespace ET
 		}
 	}
 
-	public class NumericComponent: Entity, ITransfer
+	public class NumericComponent: Entity, IAwake, ITransfer
 	{
 		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
 		public Dictionary<int, long> NumericDic = new Dictionary<int, long>();

@@ -26,7 +26,7 @@ namespace ET
         }
     }
     
-    public class CoroutineLockQueueType: Entity
+    public class CoroutineLockQueueType: Entity, IAwake, IDestroy
     {
         public Dictionary<long, CoroutineLockQueue> dictionary;
 

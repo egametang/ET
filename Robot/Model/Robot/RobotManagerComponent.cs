@@ -1,6 +1,6 @@
 namespace ET
 {
-    public class RobotManagerComponent: Entity
+    public class RobotManagerComponent: Entity, IAwake
     {
         
     }

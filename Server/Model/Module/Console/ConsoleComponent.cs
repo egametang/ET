@@ -14,7 +14,7 @@ namespace ET
         public const string Robot = "Robot";
     }
 
-    public class ConsoleComponent: Entity
+    public class ConsoleComponent: Entity, IAwake, ILoad
     {
         public CancellationTokenSource CancellationTokenSource;
         public Dictionary<string, IConsoleHandler> Handlers = new Dictionary<string, IConsoleHandler>();

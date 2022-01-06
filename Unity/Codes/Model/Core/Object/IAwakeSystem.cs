@@ -2,6 +2,26 @@ using System;
 
 namespace ET
 {
+    public interface IAwake
+    {
+    }
+
+    public interface IAwake<A>
+    {
+    }
+	
+    public interface IAwake<A, B>
+    {
+    }
+	
+    public interface IAwake<A, B, C>
+    {
+    }
+	
+    public interface IAwake<A, B, C, D>
+    {
+    }
+    
     public interface IAwakeSystem: ISystemType
     {
         void Run(object o);
@@ -28,7 +48,7 @@ namespace ET
     }
 
     [ObjectSystem]
-    public abstract class AwakeSystem<T> : IAwakeSystem
+    public abstract class AwakeSystem<T> : IAwakeSystem where T: IAwake
     {
         public Type Type()
         {
@@ -49,7 +69,7 @@ namespace ET
     }
     
     [ObjectSystem]
-    public abstract class AwakeSystem<T, A> : IAwakeSystem<A>
+    public abstract class AwakeSystem<T, A> : IAwakeSystem<A> where T: IAwake<A>
     {
         public Type Type()
         {
@@ -70,7 +90,7 @@ namespace ET
     }
 
     [ObjectSystem]
-    public abstract class AwakeSystem<T, A, B> : IAwakeSystem<A, B>
+    public abstract class AwakeSystem<T, A, B> : IAwakeSystem<A, B> where T: IAwake<A, B>
     {
         public Type Type()
         {
@@ -91,7 +111,7 @@ namespace ET
     }
 
     [ObjectSystem]
-    public abstract class AwakeSystem<T, A, B, C> : IAwakeSystem<A, B, C>
+    public abstract class AwakeSystem<T, A, B, C> : IAwakeSystem<A, B, C> where T: IAwake<A, B, C>
     {
         public Type Type()
         {
@@ -112,7 +132,7 @@ namespace ET
     }
     
     [ObjectSystem]
-    public abstract class AwakeSystem<T, A, B, C, D> : IAwakeSystem<A, B, C, D>
+    public abstract class AwakeSystem<T, A, B, C, D> : IAwakeSystem<A, B, C, D> where T: IAwake<A, B, C, D>
     {
         public Type Type()
         {

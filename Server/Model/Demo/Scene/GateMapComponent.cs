@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class GateMapComponent: Entity
+    public class GateMapComponent: Entity, IAwake
     {
         public Scene Scene;
     }

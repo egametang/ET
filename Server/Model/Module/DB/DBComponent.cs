@@ -7,7 +7,7 @@ namespace ET
 	/// <summary>
 	/// 用来缓存数据
 	/// </summary>
-	public class DBComponent : Entity
+	public class DBComponent : Entity, IAwake<string, string>, IDestroy
 	{
 		public static DBComponent Instance;
 		

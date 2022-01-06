@@ -14,7 +14,7 @@ namespace ET
 		}
 	}
 	
-	public sealed class UI: Entity
+	public sealed class UI: Entity, IAwake<string, GameObject>
 	{
 		public GameObject GameObject;
 		

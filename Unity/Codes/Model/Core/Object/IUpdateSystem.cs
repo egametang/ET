@@ -2,13 +2,17 @@
 
 namespace ET
 {
+	public interface IUpdate
+	{
+	}
+	
 	public interface IUpdateSystem: ISystemType
 	{
 		void Run(object o);
 	}
 
 	[ObjectSystem]
-	public abstract class UpdateSystem<T> : IUpdateSystem
+	public abstract class UpdateSystem<T> : IUpdateSystem where T: IUpdate
 	{
 		public void Run(object o)
 		{

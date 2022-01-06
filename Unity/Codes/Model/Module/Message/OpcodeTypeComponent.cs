@@ -22,7 +22,7 @@ namespace ET
         }
     }
 
-    public class OpcodeTypeComponent: Entity
+    public class OpcodeTypeComponent: Entity, IAwake, IDestroy
     {
         public static OpcodeTypeComponent Instance;
         

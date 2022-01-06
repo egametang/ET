@@ -33,7 +33,7 @@ namespace ET
         }
     }
 
-    public class ABInfo: Entity
+    public class ABInfo: Entity, IAwake<string, AssetBundle>, IDestroy
     {
         public string Name { get; set; }
 
@@ -127,7 +127,7 @@ namespace ET
         }
     }
 
-    public class ResourcesComponent: Entity
+    public class ResourcesComponent: Entity, IAwake
     {
         public static ResourcesComponent Instance { get; set; }
 

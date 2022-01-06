@@ -8,12 +8,9 @@
             // 可以订阅这个事件中创建Loading界面
             Game.EventSystem.Publish(new EventType.SceneChangeStart() {ZoneScene = zoneScene});
             
-            Log.Debug($"11111111111111111111111111111111111111111111111111a1");
             CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
-            Log.Debug($"11111111111111111111111111111111111111111111111111a2");
             currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
             Scene currentScene = SceneFactory.CreateCurrentScene(sceneInstanceId, zoneScene.Zone, sceneName, currentScenesComponent);
-            Log.Debug($"11111111111111111111111111111111111111111111111111a3");
             UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
 
             // 等待CreateMyUnit的消息
