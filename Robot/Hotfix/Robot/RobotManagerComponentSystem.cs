@@ -10,7 +10,7 @@ namespace ET
             Scene zoneScene = null;
             try
             {
-                zoneScene = await SceneFactory.CreateZoneScene(zone, "Robot", self);
+                zoneScene = SceneFactory.CreateZoneScene(zone, "Robot", self);
                 await LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
                 await EnterMapHelper.EnterMapAsync(zoneScene);
                 Log.Debug($"create robot ok: {zone}");

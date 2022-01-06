@@ -4,9 +4,9 @@ namespace ET
 {
     public static class UnitFactory
     {
-        public static Unit Create(Entity domain, UnitInfo unitInfo)
+        public static Unit Create(Scene currentScene, UnitInfo unitInfo)
         {
-	        UnitComponent unitComponent = domain.GetComponent<UnitComponent>();
+	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
 	        unitComponent.Add(unit);
 	        

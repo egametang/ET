@@ -11,12 +11,11 @@ message ObjectQueryResponse // IActorResponse
 	Entity entity = 1;
 }
 
-/// <summary>
-/// 传送unit
-/// </summary>
-//ResponseType M2M_TrasferUnitResponse
-message M2M_TrasferUnitRequest // IActorRequest
+
+//ResponseType M2M_UnitTransferResponse
+message M2M_UnitTransferRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	Unit Unit = 1;
+	int32 RpcId = 1;
+	Unit Unit = 2;
+	repeated Entity Entitys = 3;
 }

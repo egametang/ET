@@ -25,7 +25,9 @@ namespace ET
 
             Game.Scene.AddComponent<AIDispatcherComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
-            Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+            
+            Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+            
             await Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
         }
     }

@@ -72,8 +72,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_BitConverter_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Helper\NetworkHelper.cs" />
      <Compile Include="Assets\Mono\Core\DoubleMap.cs" />
-     <Compile Include="Assets\Mono\Module\NetworkTCP\WChannel.cs" />
-     <Compile Include="Assets\Mono\Module\NetworkTCP\WService.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\Init.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t3.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_V.cs" />
@@ -152,6 +150,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ComponentView_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\IDisposableAdapter.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_NetworkHelper_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\WChannel.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ErrorCore_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\UILayerScript.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding__t2.cs" />
@@ -276,6 +275,7 @@
      <Compile Include="Assets\Mono\MonoBehaviour\ComponentView.cs" />
      <Compile Include="Assets\Mono\Core\Options.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_AssetBundle_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\WService.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\CanvasConfig.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Resources_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_SortedDictionary_2_Int64_List_1_ILTypeInst.cs" />

@@ -8,6 +8,17 @@ namespace ET
         {
         }
 
+        public struct SceneChangeStart
+        {
+            public Scene ZoneScene;
+        }
+        
+        
+        public struct SceneChangeFinish
+        {
+            public Scene ZoneScene;
+        }
+
         public struct ChangePosition
         {
             public Unit Unit;
@@ -28,6 +39,11 @@ namespace ET
         public struct AfterCreateZoneScene
         {
             public Scene ZoneScene;
+        }
+        
+        public struct AfterCreateCurrentScene
+        {
+            public Scene CurrentScene;
         }
         
         public struct AfterCreateLoginScene

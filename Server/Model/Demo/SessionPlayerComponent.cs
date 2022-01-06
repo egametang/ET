@@ -2,6 +2,6 @@
 {
 	public class SessionPlayerComponent : Entity
 	{
-		public Player Player;
+		public long PlayerId;
 	}
 }
