@@ -288,9 +288,9 @@ namespace ET
         }
         
         // GetComponentSystem
-        public void GetComponent(Entity component)
+        public void GetComponent(Entity entity, Entity component)
         {
-            List<object> iGetSystem = this.typeSystems.GetSystems(component.GetType(), typeof (IGetComponentSystem));
+            List<object> iGetSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
             if (iGetSystem == null)
             {
                 return;
@@ -305,7 +305,34 @@ namespace ET
 
                 try
                 {
-                    getSystem.Run(component);
+                    getSystem.Run(entity, component);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
+        // AddComponentSystem
+        public void AddComponent(Entity entity, Entity component)
+        {
+            List<object> iAddSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
+            if (iAddSystem == null)
+            {
+                return;
+            }
+
+            foreach (IAddComponentSystem addComponentSystem in iAddSystem)
+            {
+                if (addComponentSystem == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    addComponentSystem.Run(entity, component);
                 }
                 catch (Exception e)
                 {

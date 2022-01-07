@@ -290,7 +290,7 @@ namespace ET
             self.StartPos = Vector3.zero;
             self.BeginTime = 0;
             self.NeedTime = 0;
-            TimerComponent.Instance.Remove(ref self.MoveTimer);
+            TimerComponent.Instance?.Remove(ref self.MoveTimer);
             self.Targets.Clear();
             self.Speed = 0;
             self.N = 0;

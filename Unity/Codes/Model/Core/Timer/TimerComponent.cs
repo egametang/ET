@@ -74,7 +74,16 @@ namespace ET
         }
     }
 
-    public class TimerComponent: Entity, IAwake, IUpdate, ILoad
+    [ObjectSystem]
+    public class TimerComponentDestroySystem: DestroySystem<TimerComponent>
+    {
+        public override void Destroy(TimerComponent self)
+        {
+            TimerComponent.Instance = null;
+        }
+    }
+
+    public class TimerComponent: Entity, IAwake, IUpdate, ILoad, IDestroy
     {
         public static TimerComponent Instance
         {
