@@ -118,10 +118,11 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
-2. [养不大](https://www.taptap.com/app/71064)  
-3. 天天躲猫猫2（ios2019春节下载排行19）  
-4. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
-5. [五星麻将](https://github.com/wufanjoin/fivestar)  
+2. [魔法点点2](https://www.taptap.com/app/227804)  
+3. [养不大](https://www.taptap.com/app/71064)  
+4. 天天躲猫猫2（ios2019春节下载排行19）  
+5. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+6. [五星麻将](https://github.com/wufanjoin/fivestar)  
 
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
@@ -131,6 +132,7 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 
 
 视频教程：  
+[字母哥ET6.0教程](https://edu.uwa4d.com/course-intro/1/375)   
 [肉饼老师主讲](http://www.taikr.com/my/course/972)  
 [官剑铭主讲](https://edu.manew.com/course/796)  
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
