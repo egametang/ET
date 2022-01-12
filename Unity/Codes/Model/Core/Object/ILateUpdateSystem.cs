@@ -2,13 +2,17 @@
 
 namespace ET
 {
+	public interface ILateUpdate
+	{
+	}
+	
 	public interface ILateUpdateSystem: ISystemType
 	{
 		void Run(object o);
 	}
 
 	[ObjectSystem]
-	public abstract class LateUpdateSystem<T> : ILateUpdateSystem
+	public abstract class LateUpdateSystem<T> : ILateUpdateSystem where T: ILateUpdate
 	{
 		public void Run(object o)
 		{

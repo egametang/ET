@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class RobotCaseComponent: Entity
+    public class RobotCaseComponent: Entity, IAwake, IDestroy
     {
         public static RobotCaseComponent Instance;
         public Dictionary<int, RobotCase> RobotCases = new Dictionary<int, RobotCase>();

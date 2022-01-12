@@ -26,7 +26,7 @@ namespace ET
         public int Time;
     }
     
-    public class CoroutineLockQueue: Entity
+    public class CoroutineLockQueue: Entity, IAwake, IDestroy
     {
         public Queue<CoroutineLockInfo> queue = new Queue<CoroutineLockInfo>();
 

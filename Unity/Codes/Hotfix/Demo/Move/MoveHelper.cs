@@ -9,7 +9,7 @@ namespace ET
         public static async ETTask<int> MoveToAsync(this Unit unit, Vector3 targetPos, ETCancellationToken cancellationToken = null)
         {
             C2M_PathfindingResult msg = new C2M_PathfindingResult() {X = targetPos.x, Y = targetPos.y, Z = targetPos.z};
-            unit.Domain.GetComponent<SessionComponent>().Session.Send(msg);
+            unit.ZoneScene().GetComponent<SessionComponent>().Session.Send(msg);
 
             ObjectWait objectWait = unit.GetComponent<ObjectWait>();
             

@@ -478,7 +478,10 @@ namespace ET
             }
 
             // 触发Destroy事件
-            EventSystem.Instance.Destroy(this);
+            if (this is IDestroy)
+            {
+                EventSystem.Instance.Destroy(this);
+            }
 
             this.domain = null;
 
@@ -655,6 +658,12 @@ namespace ET
                 return default;
             }
 
+            // 如果有IGetComponent接口，则触发GetComponentSystem
+            if (this is IGetComponent)
+            {
+                EventSystem.Instance.GetComponent(this, component);
+            }
+
             return (K) component;
         }
 
@@ -669,6 +678,12 @@ namespace ET
             if (!this.components.TryGetValue(type, out component))
             {
                 return null;
+            }
+            
+            // 如果有IGetComponent接口，则触发GetComponentSystem
+            if (this is IGetComponent)
+            {
+                EventSystem.Instance.GetComponent(this, component);
             }
 
             return component;
@@ -701,6 +716,11 @@ namespace ET
             }
 
             component.ComponentParent = this;
+
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component;
         }
 
@@ -715,10 +735,15 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component;
         }
 
-        public K AddComponent<K>(bool isFromPool = false) where K : Entity, new()
+        public K AddComponent<K>(bool isFromPool = false) where K : Entity, IAwake, new()
         {
             Type type = typeof (K);
             if (this.components != null && this.components.ContainsKey(type))
@@ -730,10 +755,15 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
 
-        public K AddComponent<K, P1>(P1 p1, bool isFromPool = false) where K : Entity, new()
+        public K AddComponent<K, P1>(P1 p1, bool isFromPool = false) where K : Entity, IAwake<P1>, new()
         {
             Type type = typeof (K);
             if (this.components != null && this.components.ContainsKey(type))
@@ -745,10 +775,15 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
 
-        public K AddComponent<K, P1, P2>(P1 p1, P2 p2, bool isFromPool = false) where K : Entity, new()
+        public K AddComponent<K, P1, P2>(P1 p1, P2 p2, bool isFromPool = false) where K : Entity, IAwake<P1, P2>, new()
         {
             Type type = typeof (K);
             if (this.components != null && this.components.ContainsKey(type))
@@ -760,10 +795,15 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1, p2);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
 
-        public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3, bool isFromPool = false) where K : Entity, new()
+        public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3, bool isFromPool = false) where K : Entity, IAwake<P1, P2, P3>, new()
         {
             Type type = typeof (K);
             if (this.components != null && this.components.ContainsKey(type))
@@ -775,6 +815,11 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1, p2, p3);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
         
@@ -784,7 +829,7 @@ namespace ET
             return entity;
         }
 
-        public T AddChild<T>(bool isFromPool = false) where T : Entity
+        public T AddChild<T>(bool isFromPool = false) where T : Entity, IAwake
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -795,7 +840,7 @@ namespace ET
             return component;
         }
 
-        public T AddChild<T, A>(A a, bool isFromPool = false) where T : Entity
+        public T AddChild<T, A>(A a, bool isFromPool = false) where T : Entity, IAwake<A>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -806,7 +851,7 @@ namespace ET
             return component;
         }
 
-        public T AddChild<T, A, B>(A a, B b, bool isFromPool = false) where T : Entity
+        public T AddChild<T, A, B>(A a, B b, bool isFromPool = false) where T : Entity, IAwake<A, B>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -817,7 +862,7 @@ namespace ET
             return component;
         }
 
-        public T AddChild<T, A, B, C>(A a, B b, C c, bool isFromPool = false) where T : Entity
+        public T AddChild<T, A, B, C>(A a, B b, C c, bool isFromPool = false) where T : Entity, IAwake<A, B, C>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -828,7 +873,7 @@ namespace ET
             return component;
         }
 
-        public T AddChild<T, A, B, C, D>(A a, B b, C c, D d, bool isFromPool = false) where T : Entity
+        public T AddChild<T, A, B, C, D>(A a, B b, C c, D d, bool isFromPool = false) where T : Entity, IAwake<A, B, C, D>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -839,7 +884,7 @@ namespace ET
             return component;
         }
 
-        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity, new()
+        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity, IAwake, new()
         {
             Type type = typeof (T);
             T component = Entity.Create(type, isFromPool) as T;
@@ -849,7 +894,7 @@ namespace ET
             return component;
         }
 
-        public T AddChildWithId<T, A>(long id, A a, bool isFromPool = false) where T : Entity
+        public T AddChildWithId<T, A>(long id, A a, bool isFromPool = false) where T : Entity, IAwake<A>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -860,7 +905,7 @@ namespace ET
             return component;
         }
 
-        public T AddChildWithId<T, A, B>(long id, A a, B b, bool isFromPool = false) where T : Entity
+        public T AddChildWithId<T, A, B>(long id, A a, B b, bool isFromPool = false) where T : Entity, IAwake<A, B>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
@@ -871,7 +916,7 @@ namespace ET
             return component;
         }
 
-        public T AddChildWithId<T, A, B, C>(long id, A a, B b, C c, bool isFromPool = false) where T : Entity
+        public T AddChildWithId<T, A, B, C>(long id, A a, B b, C c, bool isFromPool = false) where T : Entity, IAwake<A, B, C>
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);

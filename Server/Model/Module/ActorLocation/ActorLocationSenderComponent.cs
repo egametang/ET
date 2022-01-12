@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class ActorLocationSenderComponent: Entity
+    public class ActorLocationSenderComponent: Entity, IAwake, IDestroy
     {
         public static long TIMEOUT_TIME = 60 * 1000;
 

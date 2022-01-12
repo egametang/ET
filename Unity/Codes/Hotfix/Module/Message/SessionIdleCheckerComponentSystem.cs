@@ -32,7 +32,7 @@ namespace ET
     {
         public override void Destroy(SessionIdleCheckerComponent self)
         {
-            TimerComponent.Instance.Remove(ref self.RepeatedTimer);
+            TimerComponent.Instance?.Remove(ref self.RepeatedTimer);
         }
     }
 

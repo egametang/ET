@@ -8,7 +8,7 @@
 		}
 	}
 
-	public class UnitGateComponent : Entity, ISerializeToEntity
+	public class UnitGateComponent : Entity, IAwake<long>, ITransfer
 	{
 		public long GateSessionActorId;
 

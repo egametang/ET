@@ -19,24 +19,6 @@ namespace ET
 
 	}
 
-	[Message(InnerOpcode.M2M_TrasferUnitResponse)]
-	[ProtoContract]
-	public partial class M2M_TrasferUnitResponse: Object, IActorResponse
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(91)]
-		public int Error { get; set; }
-
-		[ProtoMember(92)]
-		public string Message { get; set; }
-
-		[ProtoMember(1)]
-		public long InstanceId { get; set; }
-
-	}
-
 	[ResponseType(nameof(A2M_Reload))]
 	[Message(InnerOpcode.M2A_Reload)]
 	[ProtoContract]
@@ -316,38 +298,21 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(M2G_CreateUnit))]
-	[Message(InnerOpcode.G2M_CreateUnit)]
+	[Message(InnerOpcode.M2M_UnitTransferResponse)]
 	[ProtoContract]
-	public partial class G2M_CreateUnit: Object, IActorRequest
+	public partial class M2M_UnitTransferResponse: Object, IActorResponse
 	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
 		[ProtoMember(1)]
-		public long PlayerId { get; set; }
+		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
-		public long GateSessionId { get; set; }
-
-	}
-
-	[Message(InnerOpcode.M2G_CreateUnit)]
-	[ProtoContract]
-	public partial class M2G_CreateUnit: Object, IActorResponse
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(91)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-// 所有的unit
-		[ProtoMember(1)]
-		public long MyId { get; set; }
+		[ProtoMember(4)]
+		public long NewInstanceId { get; set; }
 
 	}
 

@@ -33,7 +33,7 @@ namespace ET
         }
     }
     
-    public class CoroutineLock: Entity
+    public class CoroutineLock: Entity, IAwake<int, long, int>, IDestroy
     {
         public int coroutineLockType;
         public long key;

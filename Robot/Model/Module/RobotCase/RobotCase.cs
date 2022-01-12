@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class RobotCase: Entity
+    public class RobotCase: Entity, IAwake
     {
         public ETCancellationToken CancellationToken;
         public string CommandLine;

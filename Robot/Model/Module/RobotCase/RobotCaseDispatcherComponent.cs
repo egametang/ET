@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class RobotCaseDispatcherComponent: Entity
+    public class RobotCaseDispatcherComponent: Entity, IAwake, ILoad
     {
         public static RobotCaseDispatcherComponent Instance;
         

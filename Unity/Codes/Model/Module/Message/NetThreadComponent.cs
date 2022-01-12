@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ET
 {
-    public class NetThreadComponent: Entity
+    public class NetThreadComponent: Entity, IAwake, ILateUpdate, IDestroy
     {
         public static NetThreadComponent Instance;
         

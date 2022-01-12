@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class NavmeshComponent: Entity
+    public class NavmeshComponent: Entity, IAwake<Func<string, byte[]>>
     {
         public static NavmeshComponent Instance;
         

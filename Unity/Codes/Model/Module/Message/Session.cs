@@ -15,7 +15,7 @@ namespace ET
         }
     }
 
-    public sealed class Session: Entity
+    public sealed class Session: Entity, IAwake<AService>
     {
         private readonly struct RpcInfo
         {

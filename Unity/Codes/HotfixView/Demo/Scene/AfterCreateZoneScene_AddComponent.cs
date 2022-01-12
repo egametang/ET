@@ -7,6 +7,7 @@ namespace ET
             Scene zoneScene = args.ZoneScene;
             zoneScene.AddComponent<UIEventComponent>();
             zoneScene.AddComponent<UIComponent>();
+            zoneScene.AddComponent<ResourcesLoaderComponent>();
             await ETTask.CompletedTask;
         }
     }

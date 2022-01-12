@@ -2,13 +2,18 @@
 
 namespace ET
 {
+	public interface IDestroy
+	{
+		
+	}
+	
 	public interface IDestroySystem: ISystemType
 	{
 		void Run(object o);
 	}
 
 	[ObjectSystem]
-	public abstract class DestroySystem<T> : IDestroySystem
+	public abstract class DestroySystem<T> : IDestroySystem where T: IDestroy
 	{
 		public void Run(object o)
 		{

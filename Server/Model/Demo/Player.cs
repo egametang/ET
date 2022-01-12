@@ -9,7 +9,7 @@
 		}
 	}
 
-	public sealed class Player : Entity
+	public sealed class Player : Entity, IAwake<string>
 	{
 		public string Account { get; private set; }
 		

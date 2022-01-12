@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
-    public class AOIEntity: Entity
+    public class AOIEntity: Entity, IAwake<int, Vector3>, IDestroy
     {
         public Unit Unit => this.GetParent<Unit>();
 

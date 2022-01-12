@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class Cell: Entity
+    public class Cell: Entity, IAwake, IDestroy
     {
         // 处在这个cell的单位
         public Dictionary<long, AOIEntity> AOIUnits = new Dictionary<long, AOIEntity>();

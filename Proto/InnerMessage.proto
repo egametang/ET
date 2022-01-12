@@ -9,15 +9,6 @@ message ObjectQueryRequest // IActorRequest
 	int64 InstanceId = 2;
 }
 
-message M2M_TrasferUnitResponse // IActorResponse
-{
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-
-	int64 InstanceId = 1;
-}
-
 //ResponseType A2M_Reload
 message M2A_Reload // IActorRequest
 {
@@ -151,22 +142,12 @@ message G2R_GetLoginKey // IActorResponse
 	int64 GateId = 2;
 }
 
-//ResponseType M2G_CreateUnit
-message G2M_CreateUnit // IActorRequest
+message M2M_UnitTransferResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int64 PlayerId = 1;
-	int64 GateSessionId = 2;
-}
-
-message M2G_CreateUnit // IActorResponse
-{
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-
-	// 所有的unit
-	int64 MyId = 1;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 NewInstanceId = 4;
 }
 
 message G2M_SessionDisconnect // IActorLocationMessage

@@ -2,7 +2,7 @@
 
 namespace ET
 {
-	public class GateSessionKeyComponent : Entity
+	public class GateSessionKeyComponent : Entity, IAwake
 	{
 		private readonly Dictionary<long, string> sessionKey = new Dictionary<long, string>();
 		

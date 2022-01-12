@@ -33,16 +33,16 @@ message Actor_TransferResponse // IActorLocationResponse
 //ResponseType G2C_EnterMap
 message C2G_EnterMap // IRequest
 {
-	int32 RpcId = 90;
+	int32 RpcId = 1;
 }
 
 message G2C_EnterMap // IResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-	// 自己unit
-	int64 MyId = 1;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	// 自己unitId
+	int64 MyId = 4;
 }
 
 message MoveInfo
@@ -76,8 +76,18 @@ message UnitInfo
 
 message M2C_CreateUnits // IActorMessage
 {
-	int32 RpcId = 90;
 	repeated UnitInfo Units = 2;
+}
+
+message M2C_CreateMyUnit // IActorMessage
+{
+	UnitInfo Unit = 1;
+}
+
+message M2C_StartSceneChange // IActorMessage
+{
+	int64 SceneInstanceId = 1;
+	string SceneName = 2;	
 }
 
 message M2C_RemoveUnits // IActorMessage
@@ -215,3 +225,17 @@ message M2C_TestRobotCase // IActorLocationResponse
 	string Message = 92;
 	int32 N = 1;
 }
+
+//ResponseType M2C_TransferMap
+message C2M_TransferMap // IActorLocationRequest
+{
+	int32 RpcId = 1;
+}
+
+message M2C_TransferMap // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+ 

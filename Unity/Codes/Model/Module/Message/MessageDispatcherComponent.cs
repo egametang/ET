@@ -5,7 +5,7 @@ namespace ET
     /// <summary>
     /// 消息分发组件
     /// </summary>
-    public class MessageDispatcherComponent: Entity
+    public class MessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
     {
         public static MessageDispatcherComponent Instance
         {

@@ -67,7 +67,7 @@ namespace ET
 	[ProtoContract]
 	public partial class C2G_EnterMap: Object, IRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
 	}
@@ -76,17 +76,17 @@ namespace ET
 	[ProtoContract]
 	public partial class G2C_EnterMap: Object, IResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-// 自己unit
-		[ProtoMember(1)]
+// 自己unitId
+		[ProtoMember(4)]
 		public long MyId { get; set; }
 
 	}
@@ -167,11 +167,29 @@ namespace ET
 	[ProtoContract]
 	public partial class M2C_CreateUnits: Object, IActorMessage
 	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
 		[ProtoMember(2)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
+
+	}
+
+	[Message(OuterOpcode.M2C_CreateMyUnit)]
+	[ProtoContract]
+	public partial class M2C_CreateMyUnit: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public UnitInfo Unit { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_StartSceneChange)]
+	[ProtoContract]
+	public partial class M2C_StartSceneChange: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public long SceneInstanceId { get; set; }
+
+		[ProtoMember(2)]
+		public string SceneName { get; set; }
 
 	}
 
@@ -447,6 +465,31 @@ namespace ET
 
 		[ProtoMember(1)]
 		public int N { get; set; }
+
+	}
+
+	[ResponseType(nameof(M2C_TransferMap))]
+	[Message(OuterOpcode.C2M_TransferMap)]
+	[ProtoContract]
+	public partial class C2M_TransferMap: Object, IActorLocationRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_TransferMap)]
+	[ProtoContract]
+	public partial class M2C_TransferMap: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
 
 	}
 
