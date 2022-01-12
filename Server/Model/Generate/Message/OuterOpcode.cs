@@ -30,5 +30,7 @@ namespace ET
 		 public const ushort G2C_TestHotfixMessage = 10027;
 		 public const ushort C2M_TestRobotCase = 10028;
 		 public const ushort M2C_TestRobotCase = 10029;
+		 public const ushort C2M_TransferMap = 10030;
+		 public const ushort M2C_TransferMap = 10031;
 	}
 }

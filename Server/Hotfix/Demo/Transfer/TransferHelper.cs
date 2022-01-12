@@ -25,6 +25,7 @@
             await LocationProxyComponent.Instance.Lock(unit.Id, unit.InstanceId);
             M2M_UnitTransferResponse response = await ActorMessageSenderComponent.Instance.Call(sceneInstanceId, request) as M2M_UnitTransferResponse;
             await LocationProxyComponent.Instance.UnLock(unit.Id, oldInstanceId, response.NewInstanceId);
+            unit.Dispose();
         }
     }
 }
