@@ -17,6 +17,7 @@ namespace ET
         public struct SceneChangeFinish
         {
             public Scene ZoneScene;
+            public Scene CurrentScene;
         }
 
         public struct ChangePosition
