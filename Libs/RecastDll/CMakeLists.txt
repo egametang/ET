@@ -1,31 +1,82 @@
-file(GLOB SOURCES *.cpp ../Detour/Source/*.cpp ../DetourCrowd/Source/*.cpp ../DetourTileCache/Source/*.cpp ../Recast/Source/*.cpp)
-add_library(RecastDll SHARED ${SOURCES})
+cmake_minimum_required(VERSION 3.22)
 
-include_directories(../DebugUtils/Include)
-include_directories(../Detour/Include)
-include_directories(../DetourCrowd/Include)
-include_directories(../DetourTileCache/Include)
-include_directories(../Recast/Include)
-include_directories(.)
+if ( WIN32 AND NOT CYGWIN AND NOT ( CMAKE_SYSTEM_NAME STREQUAL "WindowsStore" ) )
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT" CACHE STRING "")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd" CACHE STRING "")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT" CACHE STRING "")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd" CACHE STRING "")
+endif ()
+
+if ( IOS )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fembed-bitcode")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fembed-bitcode")
+endif ()
 
 
-set(RecastDll_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Include")
+project(RecastDll)
 
-target_include_directories(RecastDll PUBLIC
-    "$<BUILD_INTERFACE:${RecastDll_INCLUDE_DIR}>"
+find_path(RecastDll_PROJECT_DIR NAMES SConstruct
+    PATHS
+    ${CMAKE_SOURCE_DIR}
+    NO_DEFAULT_PATH
 )
 
-install(TARGETS RecastDll
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        COMPONENT library
-        )
+MARK_AS_ADVANCED(RecastDll_PROJECT_DIR)
 
-file(GLOB INCLUDES Include/*.h)
+# 配置cpp文件
+file(GLOB RECASTDLL_SOURCES 
+	Source/*.cpp
+	../Detour/Source/*.cpp 
+	../DetourCrowd/Source/*.cpp 
+	../DetourTileCache/Source/*.cpp 
+	../Recast/Source/*.cpp
+)
 
-install(FILES ${INCLUDES} DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/recastnavigation)
-if(MSVC)
-    install(FILES "$<TARGET_FILE_DIR:RecastDll>/RecastDll-d.pdb" CONFIGURATIONS "Debug" DESTINATION "lib")
-endif()
+# 配置头文件
+include_directories(
+	Include
+	../DebugUtils/Include
+	../Detour/Include
+	../DetourCrowd/Include
+	../DetourTileCache/Include
+	../Recast/Include
+)
+
+macro(source_group_by_dir proj_dir source_files)
+    if(MSVC OR APPLE)
+        get_filename_component(sgbd_cur_dir ${proj_dir} ABSOLUTE)
+        foreach(sgbd_file ${${source_files}})
+            get_filename_component(sgbd_abs_file ${sgbd_file} ABSOLUTE)
+            file(RELATIVE_PATH sgbd_fpath ${sgbd_cur_dir} ${sgbd_abs_file})
+            string(REGEX REPLACE "\(.*\)/.*" \\1 sgbd_group_name ${sgbd_fpath})
+            string(COMPARE EQUAL ${sgbd_fpath} ${sgbd_group_name} sgbd_nogroup)
+            string(REPLACE "/" "\\" sgbd_group_name ${sgbd_group_name})
+            if(sgbd_nogroup)
+                set(sgbd_group_name "\\")
+            endif(sgbd_nogroup)
+            source_group(${sgbd_group_name} FILES ${sgbd_file})
+        endforeach(sgbd_file)
+    endif(MSVC OR APPLE)
+endmacro(source_group_by_dir)
+
+source_group_by_dir(${CMAKE_CURRENT_SOURCE_DIR} RECASTDLL_SOURCES)
+
+if (APPLE)
+    if (IOS)
+        set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)")
+        add_library(RecastDll STATIC ${RECASTDLL_SOURCES})
+    else ()
+        set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_32_64_BIT)")
+        add_library(RecastDll MODULE ${RECASTDLL_SOURCES})
+        set_target_properties ( kcp PROPERTIES BUNDLE TRUE )
+        #set_target_properties ( kcp PROPERTIES FRAMEWORK TRUE )
+        #set_target_properties ( kcp PROPERTIES MACOSX_RPATH TRUE )
+    endif ()
+else ( )
+    add_library(RecastDll SHARED ${RECASTDLL_SOURCES})
+endif ( )
+
+if ( WIN32 AND NOT CYGWIN )
+    target_compile_definitions (RecastDll PRIVATE DLL_EXPORTS)
+endif ( )
+
