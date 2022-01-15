@@ -18,7 +18,7 @@
         }
     }
 
-    public class ModeContex: Entity
+    public class ModeContex: Entity, IAwake, IDestroy
     {
         public string Mode = "";
     }

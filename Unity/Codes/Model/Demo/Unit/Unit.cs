@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class Unit: Entity
+    public class Unit: Entity, IAwake<int>
     {
         public int ConfigId; //配置表id
 
@@ -18,8 +18,9 @@ namespace ET
             get => this.position;
             set
             {
+                Vector3 oldPos = this.position;
                 this.position = value;
-                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this }).Coroutine();
+                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
             }
         }
 
@@ -37,7 +38,7 @@ namespace ET
             set
             {
                 this.rotation = value;
-                Game.EventSystem.Publish(new EventType.ChangeRotation() {Unit = this}).Coroutine();
+                Game.EventSystem.Publish(new EventType.ChangeRotation() {Unit = this});
             }
         }
     }

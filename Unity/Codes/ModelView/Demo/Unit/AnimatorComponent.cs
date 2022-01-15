@@ -10,7 +10,7 @@ namespace ET
 		Run,
 	}
 
-	public class AnimatorComponent : Entity
+	public class AnimatorComponent : Entity, IAwake, IUpdate, IDestroy
 	{
 		public Dictionary<string, AnimationClip> animationClips = new Dictionary<string, AnimationClip>();
 		public HashSet<string> Parameter = new HashSet<string>();

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ET
 {
-    public class WatcherComponent: Entity
+    public class WatcherComponent: Entity, IAwake, IDestroy
     {
         public static WatcherComponent Instance { get; set; }
 

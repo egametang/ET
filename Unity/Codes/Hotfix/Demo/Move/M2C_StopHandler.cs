@@ -7,8 +7,7 @@ namespace ET
 	{
 		protected override async ETTask Run(Session session, M2C_Stop message)
 		{
-			Unit unit = session.Domain.GetComponent<UnitComponent>().Get(message.Id);
-			
+			Unit unit = session.DomainScene().CurrentScene().GetComponent<UnitComponent>().Get(message.Id);
 			if (unit == null)
 			{
 				return;

@@ -12,7 +12,7 @@ namespace ET
 		}
 	}
 	
-	public class UnityWebRequestAsync : Entity
+	public class UnityWebRequestAsync : Entity, IUpdate
 	{
 		public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
 		

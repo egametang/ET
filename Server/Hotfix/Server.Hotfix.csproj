@@ -36,6 +36,10 @@
       <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Recast\**\*.cs">
+      <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Hotfix\Module\Message\**\*.cs">
       <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

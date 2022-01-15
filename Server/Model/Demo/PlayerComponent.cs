@@ -3,26 +3,9 @@ using System.Linq;
 
 namespace ET
 {
-	public class PlayerComponentSystem : AwakeSystem<PlayerComponent>
+	public class PlayerComponent : Entity, IAwake, IDestroy
 	{
-		public override void Awake(PlayerComponent self)
-		{
-			self.Awake();
-		}
-	}
-	
-	public class PlayerComponent : Entity
-	{
-		public static PlayerComponent Instance { get; private set; }
-
-		public Player MyPlayer;
-		
 		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
-
-		public void Awake()
-		{
-			Instance = this;
-		}
 		
 		public void Add(Player player)
 		{
@@ -51,23 +34,6 @@ namespace ET
 		public Player[] GetAll()
 		{
 			return this.idPlayers.Values.ToArray();
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			
-			base.Dispose();
-
-			foreach (Player player in this.idPlayers.Values)
-			{
-				player.Dispose();
-			}
-
-			Instance = null;
 		}
 	}
 }

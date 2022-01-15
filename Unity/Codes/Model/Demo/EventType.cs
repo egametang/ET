@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
     namespace EventType
     {
@@ -6,9 +8,22 @@
         {
         }
 
+        public struct SceneChangeStart
+        {
+            public Scene ZoneScene;
+        }
+        
+        
+        public struct SceneChangeFinish
+        {
+            public Scene ZoneScene;
+            public Scene CurrentScene;
+        }
+
         public struct ChangePosition
         {
             public Unit Unit;
+            public Vector3 OldPos;
         }
 
         public struct ChangeRotation
@@ -25,6 +40,11 @@
         public struct AfterCreateZoneScene
         {
             public Scene ZoneScene;
+        }
+        
+        public struct AfterCreateCurrentScene
+        {
+            public Scene CurrentScene;
         }
         
         public struct AfterCreateLoginScene
@@ -70,6 +90,10 @@
         public struct MoveStop
         {
             public Unit Unit;
+        }
+
+        public struct UnitEnterSightRange
+        {
         }
     }
 }

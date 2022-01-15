@@ -83,6 +83,10 @@
             <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Include="..\..\Unity\Codes\Model\Module\Recast\**\*.cs">
+            <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Unity\Codes\Model\Demo\**\*.cs">
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

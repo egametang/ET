@@ -34,7 +34,7 @@ namespace ET
     {
         public override void Destroy(AIComponent self)
         {
-            TimerComponent.Instance.Remove(ref self.Timer);
+            TimerComponent.Instance?.Remove(ref self.Timer);
             self.CancellationToken?.Cancel();
             self.CancellationToken = null;
             self.Current = 0;

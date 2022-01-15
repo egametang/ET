@@ -1,14 +1,12 @@
-﻿
-using Vector3 = UnityEngine.Vector3;
-
-namespace ET
+﻿namespace ET
 {
 	[MessageHandler]
 	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>
 	{
 		protected override async ETTask Run(Session session, M2C_CreateUnits message)
-		{	
-			UnitComponent unitComponent = session.Domain.GetComponent<UnitComponent>();
+		{
+			Scene currentScene = session.DomainScene().CurrentScene();
+			UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)
 			{
@@ -16,9 +14,8 @@ namespace ET
 				{
 					continue;
 				}
-				Unit unit = UnitFactory.Create(session.Domain, unitInfo);
+				Unit unit = UnitFactory.Create(currentScene, unitInfo);
 			}
-
 			await ETTask.CompletedTask;
 		}
 	}

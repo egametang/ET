@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class ZoneSceneFlagComponent: Entity
+    public class ZoneSceneFlagComponent: Entity, IAwake, IDestroy
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
-	public class SessionPlayerComponent : Entity
+	public class SessionPlayerComponent : Entity, IAwake, IDestroy
 	{
-		public Player Player;
+		public long PlayerId;
 	}
 }

@@ -11,16 +11,17 @@ namespace ET
             ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 
             self.enterMap = rc.Get<GameObject>("EnterMap");
-            self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap(); });
+            self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
             self.text = rc.Get<GameObject>("Text").GetComponent<Text>();
         }
     }
 
     public static class UILobbyComponentSystem
     {
-        public static void EnterMap(this UILobbyComponent self)
+        public static async ETTask EnterMap(this UILobbyComponent self)
         {
-            EnterMapHelper.EnterMapAsync(self.ZoneScene()).Coroutine();
+            await EnterMapHelper.EnterMapAsync(self.ZoneScene());
+            await UIHelper.Remove(self.ZoneScene(), UIType.UILobby);
         }
     }
 }

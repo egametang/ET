@@ -167,7 +167,7 @@ namespace ET
         }
     }
 
-    public class CoroutineLockComponent: Entity
+    public class CoroutineLockComponent: Entity, IAwake, IUpdate, IDestroy
     {
         public static CoroutineLockComponent Instance;
 

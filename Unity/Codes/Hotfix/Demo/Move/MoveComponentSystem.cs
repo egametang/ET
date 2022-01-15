@@ -96,7 +96,7 @@ namespace ET
             ETTask<bool> tcs = ETTask<bool>.Create(true);
             self.Callback = (ret) => { tcs.SetResult(ret); };
 
-            Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()}).Coroutine();
+            Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()});
             
             self.StartMove();
             
@@ -118,7 +118,7 @@ namespace ET
 
             if (moveRet)
             {
-                Game.EventSystem.Publish(new EventType.MoveStop(){Unit = self.GetParent<Unit>()}).Coroutine();
+                Game.EventSystem.Publish(new EventType.MoveStop(){Unit = self.GetParent<Unit>()});
             }
             return moveRet;
         }
@@ -290,7 +290,7 @@ namespace ET
             self.StartPos = Vector3.zero;
             self.BeginTime = 0;
             self.NeedTime = 0;
-            TimerComponent.Instance.Remove(ref self.MoveTimer);
+            TimerComponent.Instance?.Remove(ref self.MoveTimer);
             self.Targets.Clear();
             self.Speed = 0;
             self.N = 0;

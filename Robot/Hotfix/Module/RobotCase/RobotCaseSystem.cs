@@ -64,7 +64,7 @@ namespace ET
             Scene zoneScene = null;
             try
             {
-                zoneScene = await SceneFactory.CreateZoneScene(zone, name, self);
+                zoneScene = SceneFactory.CreateZoneScene(zone, name, self);
                 await LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
                 await EnterMapHelper.EnterMapAsync(zoneScene);
                 Log.Debug($"create robot ok: {zone}");
@@ -84,7 +84,7 @@ namespace ET
 
             try
             {
-                zoneScene = await SceneFactory.CreateZoneScene(zone, $"Robot_{zone}", self);
+                zoneScene = SceneFactory.CreateZoneScene(zone, $"Robot_{zone}", self);
                 await LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
                 await EnterMapHelper.EnterMapAsync(zoneScene);
                 Log.Debug($"create robot ok: {zone}");

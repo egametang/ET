@@ -18,7 +18,7 @@ namespace ET
         {
             Scene zoneScene = aiComponent.DomainScene();
 
-            Unit myUnit = zoneScene.GetComponent<UnitComponent>().MyUnit;
+            Unit myUnit = UnitHelper.GetMyUnitFromZoneScene(zoneScene);
             if (myUnit == null)
             {
                 return;

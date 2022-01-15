@@ -12,7 +12,7 @@ namespace ET
         }
     }
 
-    public class LockInfo: Entity
+    public class LockInfo: Entity, IAwake<long, CoroutineLock>
     {
         public long LockInstanceId;
 
@@ -32,7 +32,7 @@ namespace ET
         }
     }
 
-    public class LocationComponent: Entity
+    public class LocationComponent: Entity, IAwake
     {
         public readonly Dictionary<long, long> locations = new Dictionary<long, long>();
 

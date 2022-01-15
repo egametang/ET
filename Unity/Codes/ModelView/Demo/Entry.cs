@@ -16,7 +16,7 @@ namespace ET
 				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
 
 				
-				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
+				Game.EventSystem.Publish(new EventType.AppStart());
 			}
 			catch (Exception e)
 			{

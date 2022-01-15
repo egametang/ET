@@ -25,24 +25,32 @@ namespace ET
 
         public static void SerializeTo(ushort opcode, object obj, MemoryStream memoryStream)
         {
-            if (opcode < OpcodeRangeDefine.PbMaxOpcode)
+            try
             {
-                ProtobufHelper.ToStream(obj, memoryStream);
-                return;
+                if (opcode < OpcodeRangeDefine.PbMaxOpcode)
+                {
+                    ProtobufHelper.ToStream(obj, memoryStream);
+                    return;
+                }
+
+                if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
+                {
+                    string s = JsonHelper.ToJson(obj);
+                    byte[] bytes = s.ToUtf8();
+                    memoryStream.Write(bytes, 0, bytes.Length);
+                    return;
+                }
+#if NOT_UNITY
+                MongoHelper.ToStream(obj, memoryStream);
+#else
+                throw new Exception($"client no message: {opcode}");
+#endif
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"SerializeTo error: {opcode}", e);
             }
 
-            if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
-            {
-                string s = JsonHelper.ToJson(obj);
-                byte[] bytes = s.ToUtf8();
-                memoryStream.Write(bytes, 0, bytes.Length);
-                return;
-            }
-#if NOT_UNITY
-            MongoHelper.ToStream(obj, memoryStream);
-#else
-            throw new Exception($"client no message: {opcode}");
-#endif
         }
 
         public static MemoryStream GetStream(int count = 0)

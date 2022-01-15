@@ -136,6 +136,7 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodBuilder.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbException.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ImplicitFields.cs" />
+     <Compile Include="Assets\ThirdParty\ShareLib\Recast\Recast.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Intepreter\OpCodes\OpCodeREnum.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\EmbeddedResource.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\Resource.cs" />

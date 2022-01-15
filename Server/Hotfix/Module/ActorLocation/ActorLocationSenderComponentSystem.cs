@@ -159,7 +159,6 @@ namespace ET
                     IActorRequest iActorRequest = (IActorRequest)memoryStream.ToActorMessage();
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
-
                 IActorResponse response = await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, rpcId, memoryStream, false);
                 if (actorLocationSender.InstanceId != instanceId)
                 {

@@ -1,22 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Options;
-
-namespace ET
+﻿namespace ET
 {
-	public class UnitComponent: Entity
+	public class UnitComponent: Entity, IAwake, IDestroy
 	{
-		[BsonElement]
-		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-		public readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
-		
-		public int Count
-		{
-			get
-			{
-				return this.idUnits.Count;
-			}
-		}
 	}
 }

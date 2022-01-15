@@ -218,25 +218,29 @@ namespace ET
 
             Type type = component.GetType();
 
-            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
-            if (oneTypeSystems == null)
+            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);;
+            if (component is ILoad)
             {
-                return;
+                if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
+                {
+                    this.loaders.Enqueue(component.InstanceId);
+                }
             }
 
-            if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
+            if (component is IUpdate)
             {
-                this.loaders.Enqueue(component.InstanceId);
+                if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
+                {
+                    this.updates.Enqueue(component.InstanceId);
+                }
             }
 
-            if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
+            if (component is ILateUpdate)
             {
-                this.updates.Enqueue(component.InstanceId);
-            }
-
-            if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
-            {
-                this.lateUpdates.Enqueue(component.InstanceId);
+                if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
+                {
+                    this.lateUpdates.Enqueue(component.InstanceId);
+                }
             }
         }
 
@@ -275,6 +279,60 @@ namespace ET
                 try
                 {
                     deserializeSystem.Run(component);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
+        // GetComponentSystem
+        public void GetComponent(Entity entity, Entity component)
+        {
+            List<object> iGetSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
+            if (iGetSystem == null)
+            {
+                return;
+            }
+
+            foreach (IGetComponentSystem getSystem in iGetSystem)
+            {
+                if (getSystem == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    getSystem.Run(entity, component);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
+        // AddComponentSystem
+        public void AddComponent(Entity entity, Entity component)
+        {
+            List<object> iAddSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
+            if (iAddSystem == null)
+            {
+                return;
+            }
+
+            foreach (IAddComponentSystem addComponentSystem in iAddSystem)
+            {
+                if (addComponentSystem == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    addComponentSystem.Run(entity, component);
                 }
                 catch (Exception e)
                 {
@@ -559,10 +617,10 @@ namespace ET
             ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
         }
 
-        public async ETTask Publish<T>(T a) where T : struct
+        public async ETTask PublishAsync<T>(T a) where T : struct
         {
             List<object> iEvents;
-            if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
+            if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
             {
                 return;
             }
@@ -588,6 +646,25 @@ namespace ET
                 {
                     Log.Error(e);
                 }
+            }
+        }
+
+        public void Publish<T>(T a) where T : struct
+        {
+            List<object> iEvents;
+            if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
+            {
+                return;
+            }
+
+            foreach (object obj in iEvents)
+            {
+                if (!(obj is AEvent<T> aEvent))
+                {
+                    Log.Error($"event error: {obj.GetType().Name}");
+                    continue;
+                }
+                aEvent.Handle(a).Coroutine();
             }
         }
 

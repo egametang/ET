@@ -26,6 +26,14 @@
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Unit\UnitType.cs">
+      <Link>Demo\Unit\UnitType.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Codes\Model\Module\Recast\**\*.cs">
+      <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Demo\SessionStreamDispatcherType.cs">
       <Link>Demo\SessionStreamDispatcherType.cs</Link>
     </Compile>

@@ -35,7 +35,7 @@ namespace ET
         }
     }
     
-    public class TimerAction: Entity
+    public class TimerAction: Entity, IAwake, IAwake<TimerClass, long, int, object>, IDestroy
     {
         public TimerClass TimerClass;
 
@@ -74,7 +74,16 @@ namespace ET
         }
     }
 
-    public class TimerComponent: Entity
+    [ObjectSystem]
+    public class TimerComponentDestroySystem: DestroySystem<TimerComponent>
+    {
+        public override void Destroy(TimerComponent self)
+        {
+            TimerComponent.Instance = null;
+        }
+    }
+
+    public class TimerComponent: Entity, IAwake, IUpdate, ILoad, IDestroy
     {
         public static TimerComponent Instance
         {

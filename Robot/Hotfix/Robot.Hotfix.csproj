@@ -67,12 +67,20 @@
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Include="..\..\Unity\Codes\Hotfix\Core\**\*.cs">
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Unity\Codes\Hotfix\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
         <Compile Include="..\..\Unity\Codes\Hotfix\Module\Ping\**\*.cs">
             <Link>Module\Ping\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Recast\**\*.cs">
+            <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
         <Compile Include="..\..\Server\Hotfix\Module\Console\**\*.cs">

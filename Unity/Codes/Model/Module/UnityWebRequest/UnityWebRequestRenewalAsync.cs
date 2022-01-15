@@ -17,7 +17,7 @@ namespace ET
     /// <summary>
     /// 断点续传实现
     /// </summary>
-    public class UnityWebRequestRenewalAsync: Entity
+    public class UnityWebRequestRenewalAsync: Entity, IUpdate
     {
         public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
 

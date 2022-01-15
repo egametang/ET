@@ -11,7 +11,7 @@ namespace ET
             await ConfigComponent.Instance.LoadAsync();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
-            
+
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
@@ -28,6 +28,8 @@ namespace ET
             Game.Scene.AddComponent<NumericWatcherComponent>();
             
             Game.Scene.AddComponent<NetThreadComponent>();
+            
+            Game.Scene.AddComponent<NavmeshComponent, Func<string, byte[]>>(RecastFileReader.Read);
 
             switch (Game.Options.AppType)
             {

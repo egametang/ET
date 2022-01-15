@@ -6,7 +6,7 @@ namespace ET
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
-    public class ActorMessageDispatcherComponent: Entity
+    public class ActorMessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
     {
         public static ActorMessageDispatcherComponent Instance;
 
