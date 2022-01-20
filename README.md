@@ -4,6 +4,8 @@
 
 # [ET论坛](https://et-framework.cn)  
 
+# [ET代码商店](https://github.com/egametang/ET/tree/master/Store)  
+
 # [ET6.0视频教程上线](https://edu.uwa4d.com/course-intro/1/375)   
 
 # 重大注意事项：
