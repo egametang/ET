@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.unity.ide.rider": "3.0.7",
-    "com.unity.ide.visualstudio": "2.0.11",
+    "com.unity.ide.visualstudio": "2.0.12",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.2",
     "com.unity.ugui": "1.0.0",
