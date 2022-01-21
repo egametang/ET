@@ -12,7 +12,7 @@
 # Major Notes.
 1. Hotfix with HotfixView is pure logic, do not have any fields in the class, otherwise the hotfix will be lost  
 2. ETTask and either call Coroutine or await, open the error list window in VS, do not use these two will be reported as a problem, although neither await nor Coroutine, if you can compile through, but will lose the exception, very dangerous  
-3. do not use any dummy functions, use logical distribution instead  
+3. do not use any virtual functions, use logical distribution instead  
 4. Please do not use any inheritance, except for Entity inheritance, use components instead.  
 
 
