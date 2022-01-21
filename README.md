@@ -17,13 +17,13 @@
 
 
 # ET6 has huge changes compared with ET5, and it can be said that Phoenix has become Yifei. 6.0 has the following amazing features
-1. client-side logic full hot update (based on ILRuntime), no part that can not be changed  
+1. client-side logic code full hot update (based on ILRuntime) on ios, no part that can not be changed  
 2. client and server can be hot reload, development without restarting the client and server can modify the logic code, development is extremely convenient  
-2. robot framework, ET6 client-side logic and performance separation, robot program directly share the use of client-side logic layer code to do pressure testing, only a very small amount of code to make the robot, easy to pressure test the server  
-3. test case framework, using the client's logic layer code to write unit tests, each unit test is a complete game environment, without all kinds of nasty mock  
-4 AI framework, more convenient than the behavior tree, write AI than writing UI is still simple  
-5. the new server-side architecture, extremely beautiful  
-6. intranet and extranet kcp network, strong performance, with soft routing module, can prevent all kinds of network attacks  
+3. robot framework, ET6 client-side logic and performance separation, robot program directly share the use of client-side logic layer code to do pressure testing, only a very small amount of code to make the robot, easy to pressure test the server  
+4. test case framework, using the client's logic layer code to write unit tests, each unit test is a complete game environment, without all kinds of nasty mock  
+5. AI framework, more convenient than the behavior tree, write AI than writing UI is still simple  
+6. the new server-side architecture, extremely beautiful  
+7. intranet and extranet kcp network, strong performance, with soft routing module, can prevent all kinds of network attacks  
 
 # ET development of commercial mmo project thousand ancient wind flow successfully online, 64 core 128G memory single service single physical machine 1.5W online (the actual online planning for ecological restrictions for a single service 6000 people online at the same time, 6000 people then cpu consumption is about 30%). In order to stack line number normal, online run is Debug version, if you use Release version to open optimization, performance can also double, to reach a single physical machine 3W online! On-line for 5 months is very stable. Thousand ancient wind flow using the ET framework developed from scratch, it took two years, this development speed can be said that no one can be its right. The successful launch of Thousand Ancient Winds proves that ET has the ability to develop any large game, development speed, development efficiency are breathtaking! The client server technology used in Thousand Ancient Winds and Currents: 1.  
 1. dynamic copies and sub-lines, on-demand allocation, recycling after use  
@@ -32,7 +32,7 @@
 4. cross-services copies, cross-services battlefield  
 5. front and back-end integration, the use of client-side code to develop server pressure testing robot, four 24-core machine easily simulate 1W people to do the task  
 6. a variety of ai design, the use of ET's new development of ai framework, so that ai development is as simple as writing ui  
-7 test case framework, most of the important system, the thousand ancient wind flow are written test cases, different from the test cases on the market, each thousand ancient wind flow test cases are a complete game environment, for the protocol level, do not need to engage in a variety of interfaces to mock. write up very fast.  
+7. test case framework, most of the important system, the thousand ancient wind flow are written test cases, different from the test cases on the market, each thousand ancient wind flow test cases are a complete game environment, for the protocol level, do not need to engage in a variety of interfaces to mock. write up very fast.  
 8. aoi implementation of the nine-gong grid, dynamic adjustment of the players seen to reduce the server load  
 9. anti-attack, a thousand ancient wind flow developed a soft route function, even if the attack can only attack to the soft route, once attacked, the player client found a few seconds no response, you can dynamically switch to other soft routes, the user almost no perception. The whole process of client network connection does not open, no loss of data.  
 10. there are many, many more, here will not be verbose  
@@ -84,7 +84,7 @@ Unity can export scene data to the server side to do recast pathfinding. Very co
 This can print out any data in the process, greatly simplifying the difficulty of finding problems on the server side, open the repl method, enter repl directly in the console to enter repl mode  
 ### 13. Provide client-side bot framework support  
 A few lines of code to create a robot to log into the game. Robot pressure testing is a breeze, the robot is exactly the same as the normal player, use the robot to do a good pressure test before going online, greatly reducing the chance of crashing online   
-### 14.AI framework  
+### 14. AI framework  
 ET's AI framework makes AI writing even easier than UI.     
 ### 15. Test case framework  
 Unlike the test cases on the market, ET's test cases are a complete game environment, for the protocol level, no need to engage in a variety of interfaces to mock. write up very quickly    
