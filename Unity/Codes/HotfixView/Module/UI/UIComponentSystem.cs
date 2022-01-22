@@ -7,9 +7,9 @@ namespace ET
 	/// </summary>
 	public static class UIComponentSystem
 	{
-		public static async ETTask<UI> Create(this UIComponent self, string uiType)
+		public static async ETTask<UI> Create(this UIComponent self, string uiType, UILayer uiLayer)
 		{
-			UI ui = await UIEventComponent.Instance.OnCreate(self, uiType);
+			UI ui = await UIEventComponent.Instance.OnCreate(self, uiType, uiLayer);
 			self.UIs.Add(uiType, ui);
 			return ui;
 		}

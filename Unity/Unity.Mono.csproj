@@ -543,6 +543,9 @@
      <Reference Include="ICSharpCode.SharpZipLib">
      <HintPath>C:/Source/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
      </Reference>
+     <Reference Include="ICSharpCode.NRefactory">
+     <HintPath>C:/Source/ET/Unity/Library/PackageCache/com.unity.render-pipelines.core@10.8.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
+     </Reference>
      <Reference Include="mscorlib">
      <HintPath>C:/Apps/Unity/2020.3.26f1c1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
      </Reference>

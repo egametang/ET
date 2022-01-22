@@ -25,7 +25,6 @@ namespace ET
 		public void Awake(string name, GameObject gameObject)
 		{
 			this.nameChildren.Clear();
-			gameObject.AddComponent<ComponentView>().Component = this;
 			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
 			this.Name = name;
 			this.GameObject = gameObject;

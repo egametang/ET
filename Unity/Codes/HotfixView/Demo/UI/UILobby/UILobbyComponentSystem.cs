@@ -12,7 +12,6 @@ namespace ET
 
             self.enterMap = rc.Get<GameObject>("EnterMap");
             self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
-            self.text = rc.Get<GameObject>("Text").GetComponent<Text>();
         }
     }
 
