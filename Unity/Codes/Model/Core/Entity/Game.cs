@@ -38,6 +38,7 @@ namespace ET
             ThreadSynchronizationContext.Update();
             TimeInfo.Update();
             EventSystem.Update();
+            MonoPool.Instance.Update();
         }
         
         public static void LateUpdate()
