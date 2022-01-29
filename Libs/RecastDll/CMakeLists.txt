@@ -26,20 +26,20 @@ MARK_AS_ADVANCED(RecastDll_PROJECT_DIR)
 # 配置cpp文件
 file(GLOB RECASTDLL_SOURCES 
 	Source/*.cpp
-	../Detour/Source/*.cpp 
-	../DetourCrowd/Source/*.cpp 
-	../DetourTileCache/Source/*.cpp 
-	../Recast/Source/*.cpp
+	Detour/Source/*.cpp 
+	DetourCrowd/Source/*.cpp 
+	DetourTileCache/Source/*.cpp 
+	Recast/Source/*.cpp
 )
 
 # 配置头文件
 include_directories(
 	Include
-	../DebugUtils/Include
-	../Detour/Include
-	../DetourCrowd/Include
-	../DetourTileCache/Include
-	../Recast/Include
+	DebugUtils/Include
+	Detour/Include
+	DetourCrowd/Include
+	DetourTileCache/Include
+	Recast/Include
 )
 
 macro(source_group_by_dir proj_dir source_files)
@@ -66,11 +66,8 @@ if (APPLE)
         set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)")
         add_library(RecastDll STATIC ${RECASTDLL_SOURCES})
     else ()
-        set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_32_64_BIT)")
-        add_library(RecastDll MODULE ${RECASTDLL_SOURCES})
-        set_target_properties ( kcp PROPERTIES BUNDLE TRUE )
-        #set_target_properties ( kcp PROPERTIES FRAMEWORK TRUE )
-        #set_target_properties ( kcp PROPERTIES MACOSX_RPATH TRUE )
+        set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_64_BIT)")
+        add_library(RecastDll SHARED ${RECASTDLL_SOURCES})
     endif ()
 else ( )
     add_library(RecastDll SHARED ${RECASTDLL_SOURCES})

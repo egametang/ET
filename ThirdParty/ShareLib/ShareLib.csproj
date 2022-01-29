@@ -15,6 +15,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Include="..\..\Unity\Assets\Plugins\MacOS\libRecastDll.dylib">
+        <Link>libRecastDll.dylib</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
       <Content Include="..\..\Unity\Assets\Plugins\x86_64\RecastDll.dll">
           <Link>RecastDll.dll</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
