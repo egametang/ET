@@ -7,8 +7,6 @@ using Object = UnityEngine.Object;
 
 //自定义ReferenceCollector类在界面中的显示与功能
 [CustomEditor(typeof (ReferenceCollector))]
-//没有该属性的编辑器在选中多个物体时会提示“Multi-object editing not supported”
-[CanEditMultipleObjects]
 public class ReferenceCollectorEditor: Editor
 {
     //输入在textfield中的字符串
