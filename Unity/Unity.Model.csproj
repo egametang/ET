@@ -603,4 +603,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+    <Message Text="Build Unity.sln"/>
+    <Exec Command="dotnet build Unity.sln"/>
+  </Target>
 </Project>
