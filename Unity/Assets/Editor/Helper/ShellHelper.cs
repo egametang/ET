@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ET
 {
@@ -42,7 +44,7 @@ namespace ET
                     }
                 }
 
-                start.Arguments += (" \"" + cmd + " \"");
+                start.Arguments += (" \"" + cmd + "\"");
                 start.CreateNoWindow = true;
                 start.ErrorDialog = true;
                 start.UseShellExecute = false;
@@ -63,16 +65,25 @@ namespace ET
                     start.StandardErrorEncoding = System.Text.Encoding.UTF8;
                 }
 
-                p = Process.Start(start);
-                p.ErrorDataReceived += delegate(object sender, DataReceivedEventArgs e) { UnityEngine.Debug.LogError(e.Data); };
-                p.OutputDataReceived += delegate(object sender, DataReceivedEventArgs e) { UnityEngine.Debug.LogError(e.Data); };
-                p.Exited += delegate(object sender, System.EventArgs e) { UnityEngine.Debug.LogError(e.ToString()); };
+                bool isFinish = false;
 
-                bool hasError = false;
+                Barrier barrier = new Barrier(2);
+                
+                // 放到新线程启动进程，主线程循环读标准输出，直到进程结束
+                Task.Run(() =>
+                {
+                    p = Process.Start(start);
+                    barrier.RemoveParticipant();
+                    p.WaitForExit();
+                    isFinish = true;
+                });
+                
+                // 这里要等待进程启动才能往下走，否则p将为null
+                barrier.SignalAndWait();
                 do
                 {
                     string line = p.StandardOutput.ReadLine();
-                    if (line == null)
+                    if (string.IsNullOrEmpty(line))
                     {
                         break;
                     }
@@ -81,8 +92,9 @@ namespace ET
 
                     UnityEngine.Debug.Log(line);
                 }
-                while (true);
+                while (!isFinish);
 
+                bool hasError = false;
                 while (true)
                 {
                     string error = p.StandardError.ReadLine();
@@ -95,6 +107,7 @@ namespace ET
                     UnityEngine.Debug.LogError(error);
                 }
 
+                
                 p.Close();
                 if (hasError)
                 {

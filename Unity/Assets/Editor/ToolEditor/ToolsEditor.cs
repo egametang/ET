@@ -10,9 +10,9 @@ namespace ET
 #if UNITY_EDITOR_OSX
             const string tools = "./Tools";
 #else
-            const string tools = "./Tools.exe";
+            const string tools = ".\\Tools.exe";
 #endif
-            ShellHelper.Run($"{tools} --AppType=ExcelExporter", "../Bin/");
+            ShellHelper.Run($"{tools} --AppType=ExcelExporter --Console=1", "../Bin/");
         }
         
         [MenuItem("Tools/Proto2CS")]
@@ -21,9 +21,9 @@ namespace ET
 #if UNITY_EDITOR_OSX
             const string tools = "./Tools";
 #else
-            const string tools = "./Tools.exe";
+            const string tools = ".\\Tools.exe";
 #endif
-            ShellHelper.Run($"{tools} --AppType=Proto2CS", "../Bin/");
+            ShellHelper.Run($"{tools} --AppType=Proto2CS --Console=1", "../Bin/");
         }
     }
 }
