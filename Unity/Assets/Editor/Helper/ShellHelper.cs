@@ -21,6 +21,8 @@ namespace ET
             }
         }
 
+        private static volatile bool isFinish;
+        
         public static void Run(string cmd, string workDirectory, List<string> environmentVars = null)
         {
             Process p = null;
@@ -65,7 +67,7 @@ namespace ET
                     start.StandardErrorEncoding = System.Text.Encoding.UTF8;
                 }
 
-                bool isFinish = false;
+                
 
                 Barrier barrier = new Barrier(2);
                 
