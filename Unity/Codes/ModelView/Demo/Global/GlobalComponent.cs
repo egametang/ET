@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ET
 {
+    /// <summary>
+    /// 全局组件
+    /// </summary>
     public class GlobalComponent: Entity, IAwake
     {
         public static GlobalComponent Instance;

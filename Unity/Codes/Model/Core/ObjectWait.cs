@@ -42,6 +42,7 @@ namespace ET
         }
     }
 
+    //物体等待
     public class ObjectWait: Entity, IAwake, IDestroy
     {
         public interface IDestroyRun

@@ -22,6 +22,9 @@ namespace ET
         }
     }
 
+    /// <summary>
+    /// 操作码类型 组件
+    /// </summary>
     public class OpcodeTypeComponent: Entity, IAwake, IDestroy
     {
         public static OpcodeTypeComponent Instance;
