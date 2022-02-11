@@ -225,3 +225,17 @@ message M2C_TestRobotCase // IActorLocationResponse
 	string Message = 92;
 	int32 N = 1;
 }
+
+//ResponseType M2C_TransferMap
+message C2M_TransferMap // IActorLocationRequest
+{
+	int32 RpcId = 1;
+}
+
+message M2C_TransferMap // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+ 

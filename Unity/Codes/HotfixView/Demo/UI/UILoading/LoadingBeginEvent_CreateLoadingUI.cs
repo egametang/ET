@@ -6,7 +6,7 @@ namespace ET
     {
         protected override async ETTask Run(EventType.LoadingBegin args)
         {
-            await UIHelper.Create(args.Scene, UIType.UILoading);
+            await UIHelper.Create(args.Scene, UIType.UILoading, UILayer.Mid);
         }
     }
 }

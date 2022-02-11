@@ -103,11 +103,11 @@ namespace ET
                 ExportExcelProtobuf(ConfigType.c);
                 ExportExcelProtobuf(ConfigType.s);
                 
-                Console.WriteLine("导表成功!");
+                Log.Console("Export Excel Sucess!");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Console(e.ToString());
             }
         }
 

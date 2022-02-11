@@ -14,7 +14,6 @@ namespace ET
                 {
                     Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 1001);
                     unit.AddComponent<MoveComponent>();
-                    unit.AddComponent<PathfindingComponent, string>("solo");
                     unit.Position = new Vector3(-10, 0, -10);
 			
                     NumericComponent numericComponent = unit.AddComponent<NumericComponent>();

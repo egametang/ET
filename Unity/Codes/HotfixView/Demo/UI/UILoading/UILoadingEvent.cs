@@ -6,7 +6,7 @@ namespace ET
 	[UIEvent(UIType.UILoading)]
     public class UILoadingEvent: AUIEvent
     {
-        public override async ETTask<UI> OnCreate(UIComponent uiComponent)
+        public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
         {
 	        try
 	        {

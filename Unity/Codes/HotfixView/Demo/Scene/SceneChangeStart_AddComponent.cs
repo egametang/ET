@@ -4,12 +4,10 @@ namespace ET
     {
         protected override async ETTask Run(EventType.SceneChangeStart args)
         {
-            await ETTask.CompletedTask;
-
-            Scene zoneScene = args.ZoneScene;
+            Scene currentScene = args.ZoneScene.CurrentScene();
             
             // 加载场景资源
-            await ResourcesComponent.Instance.LoadBundleAsync("map.unity3d");
+            await ResourcesComponent.Instance.LoadBundleAsync($"{currentScene.Name}.unity3d");
             // 切换到map场景
 
             SceneChangeComponent sceneChangeComponent = null;
@@ -17,7 +15,7 @@ namespace ET
             {
                 sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>();
                 {
-                    await sceneChangeComponent.ChangeSceneAsync("Map");
+                    await sceneChangeComponent.ChangeSceneAsync(currentScene.Name);
                 }
             }
             finally
@@ -26,7 +24,7 @@ namespace ET
             }
 			
 
-            args.ZoneScene.AddComponent<OperaComponent>();
+            currentScene.AddComponent<OperaComponent>();
         }
     }
 }
