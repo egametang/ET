@@ -1,6 +1,6 @@
-﻿namespace ET.Computer
+﻿namespace ET
 {
-    public class Computer
+    public class Computer : Entity ,IAwake,IUpdate,IDestroy
     {
         
     }

@@ -1,7 +1,10 @@
-﻿namespace ET.Demo
+﻿namespace ET
 {
-    public class EventType
+    namespace EventType
     {
-        
+        public struct CreateUnitView
+        {
+            public UnityEngine.GameObject Unit;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class MonitorsComponent
+    public class MonitorsComponent : Entity,IAwake
     {
         
     }

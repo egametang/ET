@@ -4,11 +4,11 @@
     [Event]
     public class UnitEnterSightRange_NotifyClient: AEvent<EventType.UnitEnterSightRange>
     {
-        protected override async ETTask Run(EventType.UnitEnterSightRange args)
+        protected override async ETTask Run(EventType.UnitEnterSightRange arg)
         {
             await ETTask.CompletedTask;
-            AOIEntity a = args.A;
-            AOIEntity b = args.B;
+            AOIEntity a = arg.A;
+            AOIEntity b = arg.B;
             if (a.Id == b.Id)
             {
                 return;

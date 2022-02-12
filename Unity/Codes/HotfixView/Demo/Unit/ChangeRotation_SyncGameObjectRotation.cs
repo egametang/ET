@@ -4,15 +4,15 @@ namespace ET
 {
     public class ChangeRotation_SyncGameObjectRotation: AEvent<EventType.ChangeRotation>
     {
-        protected override async ETTask Run(EventType.ChangeRotation args)
+        protected override async ETTask Run(EventType.ChangeRotation arg)
         {
-            GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
+            GameObjectComponent gameObjectComponent = arg.Unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {
                 return;
             }
             Transform transform = gameObjectComponent.GameObject.transform;
-            transform.rotation = args.Unit.Rotation;
+            transform.rotation = arg.Unit.Rotation;
             await ETTask.CompletedTask;
         }
     }

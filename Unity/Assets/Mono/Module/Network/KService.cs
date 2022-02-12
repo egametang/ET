@@ -19,8 +19,8 @@ namespace ET
 
     public enum ServiceType
     {
-        Outer,
-        Inner,
+        Outer, //外面的
+        Inner, //内部的
     }
 
     public sealed class KService: AService

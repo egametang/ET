@@ -2,7 +2,7 @@ namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        protected override async ETTask Run(EventType.AppStart args)
+        protected override async ETTask Run(EventType.AppStart arg)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
@@ -25,6 +25,9 @@ namespace ET
 
             Game.Scene.AddComponent<AIDispatcherComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
+            
+            //上面为我们的树的最高节点 Game.Scene 挂在全局的基础组件
+            //-------------------------------
             
             //创建了一个ZoneScene
             Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);

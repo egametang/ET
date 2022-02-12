@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class PCCaseComponent
+    public class PCCaseComponent :Entity,IAwake
     {
         
     }

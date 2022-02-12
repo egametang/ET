@@ -44,5 +44,38 @@ namespace ET
 	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
             return unit;
         }
+        
+        public static Unit CreatePlayer(Scene currentScene, UnitInfo unitInfo)
+        {
+	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
+	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
+	        unit.UnitType = UnitType.Player;
+	        unit.AddComponent<MoveComponent>();
+	        
+	        unitComponent.Add(unit);
+	        
+	        unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
+	        unit.Forward = new Vector3(unitInfo.ForwardX, unitInfo.ForwardY, unitInfo.ForwardZ);
+	        
+	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
+	        return unit;
+        }
+        
+        public static Unit CreateMonster(Scene currentScene, UnitInfo unitInfo)
+        {
+	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
+	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
+	        unit.UnitType = UnitType.Monster;
+	        unit.AddComponent<MoveComponent>();
+	        unit.AddComponent<XunLuoPathComponent>();
+	        
+	        unitComponent.Add(unit);
+	        
+	        unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
+	        unit.Forward = new Vector3(unitInfo.ForwardX, unitInfo.ForwardY, unitInfo.ForwardZ);
+	        
+	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
+	        return unit;
+        }
     }
 }

@@ -5,11 +5,11 @@ namespace ET
     [Event]
     public class ChangePosition_NotifyAOI: AEvent<EventType.ChangePosition>
     {
-        protected override async ETTask Run(EventType.ChangePosition args)
+        protected override async ETTask Run(EventType.ChangePosition arg)
         {
             await ETTask.CompletedTask;
-            Vector3 oldPos = args.OldPos;
-            Unit unit = args.Unit;
+            Vector3 oldPos = arg.OldPos;
+            Unit unit = arg.Unit;
             int oldCellX = (int) (oldPos.x * 1000) / AOIManagerComponent.CellSize;
             int oldCellY = (int) (oldPos.z * 1000) / AOIManagerComponent.CellSize;
             int newCellX = (int) (unit.Position.x * 1000) / AOIManagerComponent.CellSize;

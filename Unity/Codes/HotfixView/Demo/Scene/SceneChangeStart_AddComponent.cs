@@ -2,9 +2,9 @@ namespace ET
 {
     public class SceneChangeStart_AddComponent: AEvent<EventType.SceneChangeStart>
     {
-        protected override async ETTask Run(EventType.SceneChangeStart args)
+        protected override async ETTask Run(EventType.SceneChangeStart arg)
         {
-            Scene currentScene = args.ZoneScene.CurrentScene();
+            Scene currentScene = arg.ZoneScene.CurrentScene();
             
             // 加载场景资源
             await ResourcesComponent.Instance.LoadBundleAsync($"{currentScene.Name}.unity3d");
