@@ -6,6 +6,8 @@ message C2M_TestRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	string request = 1;
+	repeated int64 key = 92;
+	repeated int64 value = 93;
 }
 
 message M2C_TestResponse // IActorLocationResponse
@@ -239,3 +241,56 @@ message M2C_TransferMap // IActorLocationResponse
 	string Message = 92;
 }
  
+//ResponseType R2C_LoginTest
+message C2R_LoginTest // IRequest
+{ 
+   int32 RpcId = 90;
+   string Account = 1;
+   string Password = 2;
+}
+
+message R2C_LoginTest // IResponse
+{
+   int32 RpcId = 90;
+   int32 Error = 91;
+   string Message = 92;
+   string GateAddress = 1;
+   string key = 2;
+   bool CanLogin = 3;
+}
+
+message C2R_SayHello // IMessage
+{
+   string Content = 1;
+}
+
+message R2C_SayGooBye //IMessage
+{
+   string Content = 1;
+}
+
+//ResponseType M2C_TestActorLocationResponse
+message C2M_TestActorLocationReqeust // IActorLocationRequest
+{
+    int32 RpcId = 90;
+	string Content = 1;
+}
+
+message M2C_TestActorLocationResponse // IActorLocationResponse
+{   
+     int32 RpcId = 90;
+	 int32 Error = 91;
+	 string Message = 92;
+	 string Content = 1;
+}
+
+message C2M_TestActorLocationMessage //IActorLocationMessage
+{
+    int32 RpcId = 90;
+	string Content = 1;
+}
+
+message M2C_TestActorLocationMessage //IActorMessage
+{
+    string Content = 1;
+}

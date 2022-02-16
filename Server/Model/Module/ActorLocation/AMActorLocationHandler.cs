@@ -5,7 +5,7 @@ namespace ET
     [ActorMessageHandler]
     public abstract class AMActorLocationHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorLocationMessage
     {
-        protected abstract ETTask Run(E entity, Message message);
+        protected abstract ETTask Run(E unit, Message message);
 
         public async ETTask Handle(Entity entity, object actorMessage, Action<IActorResponse> reply)
         {

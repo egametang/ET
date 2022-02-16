@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ET
 {
@@ -10,6 +9,11 @@ namespace ET
 		{
 			await UIHelper.Create(arg.ZoneScene, UIType.UILogin, UILayer.Mid);
 
+			ETCancellationToken cancellationToken = new ETCancellationToken();
+			MoveToAsync(Vector3.zero, cancellationToken).Coroutine();
+			
+			cancellationToken.Cancel();
+			
 			/*var result = await Task.Run(() =>
 			{
 				Log.Debug("开始");
@@ -32,5 +36,19 @@ namespace ET
 			Log.Debug("111111");*/
 		}
 
+		private async ETTask MoveToAsync(Vector3 pos,ETCancellationToken cancellationToken)
+		{
+			Log.Debug("角色开始移动");
+
+			bool result = await TimerComponent.Instance.WaitAsync(3000, cancellationToken);
+			if (result)
+			{
+				Log.Debug("Move Over! ! !");
+			}
+			else
+			{
+				Log.Debug("Move Stop! ! !");
+			}
+		}
 	}
 }
