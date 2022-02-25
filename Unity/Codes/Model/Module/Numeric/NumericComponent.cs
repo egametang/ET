@@ -9,7 +9,7 @@ namespace ET
 		public struct NumbericChange
 		{
 			public Entity Parent;
-			public NumericType NumericType;
+			public int NumericType;
 			public long Old;
 			public long New;
 		}
@@ -34,26 +34,11 @@ namespace ET
 			// 这里初始化base值
 		}
 
-		public float GetAsFloat(NumericType numericType)
-		{
-			return (float)GetByKey((int)numericType) / 10000;
-		}
-		
 		public float GetAsFloat(int numericType)
 		{
 			return (float)GetByKey(numericType) / 10000;
 		}
 
-		public int GetAsInt(NumericType numericType)
-		{
-			return (int)GetByKey((int)numericType);
-		}
-		
-		public long GetAsLong(NumericType numericType)
-		{
-			return GetByKey((int)numericType);
-		}
-		
 		public int GetAsInt(int numericType)
 		{
 			return (int)GetByKey(numericType);
@@ -64,36 +49,36 @@ namespace ET
 			return GetByKey(numericType);
 		}
 
-		public void Set(NumericType nt, float value)
+		public void Set(int nt, float value)
 		{
 			this[nt] = (int) (value * 10000);
 		}
 
-		public void Set(NumericType nt, int value)
+		public void Set(int nt, int value)
 		{
 			this[nt] = value;
 		}
 		
-		public void Set(NumericType nt, long value)
+		public void Set(int nt, long value)
 		{
 			this[nt] = value;
 		}
 
-		public long this[NumericType numericType]
+		public long this[int numericType]
 		{
 			get
 			{
-				return this.GetByKey((int) numericType);
+				return this.GetByKey(numericType);
 			}
 			set
 			{
-				long v = this.GetByKey((int) numericType);
+				long v = this.GetByKey(numericType);
 				if (v == value)
 				{
 					return;
 				}
 
-				NumericDic[(int)numericType] = value;
+				NumericDic[numericType] = value;
 
 				Update(numericType);
 			}
@@ -106,7 +91,7 @@ namespace ET
 			return value;
 		}
 
-		public void Update(NumericType numericType)
+		public void Update(int numericType)
 		{
 			if (numericType < NumericType.Max)
 			{
@@ -127,7 +112,7 @@ namespace ET
 			Game.EventSystem.Publish(new EventType.NumbericChange()
 			{
 				Parent = this.Parent, 
-				NumericType = (NumericType) final,
+				NumericType = final,
 				Old = old,
 				New = result
 			});
