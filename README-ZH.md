@@ -4,9 +4,11 @@
 
 # [ET论坛](https://et-framework.cn)  
 
-# [ET代码商店](https://github.com/egametang/ET/tree/master/Store)  
+# [ET商店](https://github.com/egametang/ET/tree/master/Store)  
 
 # [ET6.0视频教程上线](https://edu.uwa4d.com/course-intro/1/375)   
+
+# [运行指南](https://github.com/egametang/ET/blob/master/Book/1.1%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
 
 # 重大注意事项：
 1. Hotfix跟HotfixView是纯逻辑的，类中不要带有任何字段，否则热更就会丢失  
@@ -96,8 +98,6 @@ d.提供一个同步工具
 
 ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝大部分大型游戏需求。使用这套框架，客户端开发者就可以自己完成双端开发，节省大量人力物力，节省大量沟通时间。  
 
-使用方法：  
-[运行指南](https://github.com/egametang/ET/blob/master/Book/1.1%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
   
 相关网站:  
 [ET论坛](https://et-framework.cn)  

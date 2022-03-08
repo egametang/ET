@@ -59,10 +59,7 @@ namespace ET
 			{
 				return;
 			}
-			
-			// 开始新的accept
-			this.AcceptAsync();
-			
+
 			if (socketError != SocketError.Success)
 			{
 				Log.Error($"accept error {socketError}");
@@ -81,7 +78,10 @@ namespace ET
 			catch (Exception exception)
 			{
 				Log.Error(exception);
-			}			
+			}		
+			
+			// 开始新的accept
+			this.AcceptAsync();
 		}
 		
 

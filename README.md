@@ -5,9 +5,11 @@
 
 # [ET Forum](https://et-framework.cn)  
 
-# [ET Code Store](https://github.com/egametang/ET/tree/master/Store)  
+# [ET Store](https://github.com/egametang/ET/tree/master/Store)  
 
 # [ET6.0 video tutorial online](https://edu.uwa4d.com/course-intro/1/375)   
+
+# [Run Guide](https://github.com/egametang/ET/blob/master/Book/1.1RunGuide.md)  
 
 # Major Notes.
 1. Hotfix with HotfixView is pure logic, do not have any fields in the class, otherwise the hotfix will be lost  
@@ -97,9 +99,6 @@ c.Unify the use of Mongodb bson serialization, messages and configuration files 
 d. Provide a synchronization tool  
 
 ET framework is a powerful and flexible distributed server-side architecture that can fully meet the needs of most large games. Use this framework, the client developer can complete their own dual-ended development, saving a lot of manpower and resources, saving a lot of communication time.  
-
-Usage.  
-[Run Guide](https://github.com/egametang/ET/blob/master/Book/1.1RunGuide.md)  
   
 Related websites :  
 [ET Forum](https://et-framework.cn)  
