@@ -314,9 +314,9 @@ namespace ET
 
             void CancelAction()
             {
-                if (this.Remove(timerId))
+                if (this.Remove(timerId)) //把当前创建的timer 移除掉
                 {
-                    tcs.SetResult(false);
+                    tcs.SetResult(false);  //并且直接返回结果 false
                 }
             }
 

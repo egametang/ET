@@ -22,6 +22,7 @@ namespace ET
 			var uiEvents = Game.EventSystem.GetTypes(typeof (UIEventAttribute));
 			foreach (Type type in uiEvents)
 			{
+				//type是否实现了typeof(UIEventAttribute),false为是否基础
 				object[] attrs = type.GetCustomAttributes(typeof(UIEventAttribute), false);
 				if (attrs.Length == 0)
 				{
@@ -30,6 +31,8 @@ namespace ET
 
 				UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
 				AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
+				
+				//把UIEventAttribute中的UIType作为Key, 已经查找到的符合要求的Type作为value
 				self.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
 			}
 		}

@@ -78,7 +78,7 @@ namespace ET
 		[ProtoMember(5)]
 		public string Desc { get; set; }
 		[ProtoMember(6)]
-		public int Position { get; set; }
+		public int[] Position { get; set; }
 		[ProtoMember(7)]
 		public int Height { get; set; }
 		[ProtoMember(8)]

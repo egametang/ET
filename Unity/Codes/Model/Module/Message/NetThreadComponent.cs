@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace ET
 {
+    /// <summary>
+    /// 网线组件
+    /// </summary>
     public class NetThreadComponent: Entity, IAwake, ILateUpdate, IDestroy
     {
         public static NetThreadComponent Instance;

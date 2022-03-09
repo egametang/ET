@@ -29,6 +29,8 @@ namespace ET
 				ConstValue.LoginAddress, 
 				self.account.GetComponent<InputField>().text, 
 				self.password.GetComponent<InputField>().text).Coroutine();
+
+			//LoginHelper.LoginTest(self.DomainScene(), ConstValue.LoginAddress).Coroutine();
 		}
 	}
 }

@@ -12,6 +12,8 @@ namespace ET
         public static EventSystem EventSystem => EventSystem.Instance;
 
         private static Scene scene;
+        
+        //最高层级的Scene 树的根节点
         public static Scene Scene
         {
             get

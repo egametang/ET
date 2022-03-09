@@ -4,9 +4,9 @@ namespace ET
 {
 	public class LoginFinish_CreateLobbyUI: AEvent<EventType.LoginFinish>
 	{
-		protected override async ETTask Run(EventType.LoginFinish args)
+		protected override async ETTask Run(EventType.LoginFinish arg)
 		{
-			await UIHelper.Create(args.ZoneScene, UIType.UILobby, UILayer.Mid);
+			await UIHelper.Create(arg.ZoneScene, UIType.UILobby, UILayer.Mid);
 		}
 	}
 }

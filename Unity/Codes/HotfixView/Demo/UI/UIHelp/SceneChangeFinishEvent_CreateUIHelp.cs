@@ -2,9 +2,9 @@
 {
     public class SceneChangeFinishEvent_CreateUIHelp : AEvent<EventType.SceneChangeFinish>
     {
-        protected override async ETTask Run(EventType.SceneChangeFinish args)
+        protected override async ETTask Run(EventType.SceneChangeFinish arg)
         {
-            await UIHelper.Create(args.CurrentScene, UIType.UIHelp, UILayer.Mid);
+            await UIHelper.Create(arg.CurrentScene, UIType.UIHelp, UILayer.Mid);
         }
     }
 }

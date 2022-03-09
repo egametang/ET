@@ -167,6 +167,7 @@ namespace ET
         }
     }
 
+    //协同程序锁 组件
     public class CoroutineLockComponent: Entity, IAwake, IUpdate, IDestroy
     {
         public static CoroutineLockComponent Instance;

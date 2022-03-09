@@ -15,7 +15,7 @@ namespace ET
 			return typeof (A);
 		}
 
-		protected abstract ETTask Run(A a);
+		protected abstract ETTask Run(A arg);
 
 		public async ETTask Handle(A a)
 		{

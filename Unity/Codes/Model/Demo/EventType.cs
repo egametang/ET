@@ -95,5 +95,10 @@ namespace ET
         public struct UnitEnterSightRange
         {
         }
+
+        public struct InstallConmputer
+        {
+            public Computer Computer;
+        }
     }
 }

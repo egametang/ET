@@ -6,38 +6,37 @@ using System.Text;
 
 namespace ET
 {
-    using OneTypeSystems = UnOrderMultiMap<Type, object>;
-
     public sealed class EventSystem: IDisposable
     {
         private class TypeSystems
         {
-            private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new Dictionary<Type, OneTypeSystems>();
+            //key为 ISystemType接口类型继承者的<T>泛型类型  value=
+            private readonly Dictionary<Type, UnOrderMultiMap<Type, object>> typeSystemsMap = new Dictionary<Type, UnOrderMultiMap<Type, object>>();
 
-            public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
+            public UnOrderMultiMap<Type, object> GetOrCreateOneTypeSystems(Type type)
             {
-                OneTypeSystems systems = null;
+                UnOrderMultiMap<Type, object> systems = null;
                 this.typeSystemsMap.TryGetValue(type, out systems);
                 if (systems != null)
                 {
                     return systems;
                 }
 
-                systems = new OneTypeSystems();
+                systems = new UnOrderMultiMap<Type, object>();
                 this.typeSystemsMap.Add(type, systems);
                 return systems;
             }
 
-            public OneTypeSystems GetOneTypeSystems(Type type)
+            public UnOrderMultiMap<Type, object> GetOneTypeSystems(Type type)
             {
-                OneTypeSystems systems = null;
+                UnOrderMultiMap<Type, object> systems = null;
                 this.typeSystemsMap.TryGetValue(type, out systems);
                 return systems;
             }
 
             public List<object> GetSystems(Type type, Type systemType)
             {
-                OneTypeSystems oneTypeSystems = null;
+                UnOrderMultiMap<Type, object> oneTypeSystems = null;
                 if (!this.typeSystemsMap.TryGetValue(type, out oneTypeSystems))
                 {
                     return null;
@@ -71,11 +70,11 @@ namespace ET
 
         private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
-        private readonly Dictionary<string, Type> allTypes = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> allTypes = new Dictionary<string, Type>(); //已经解析所有的运行类型
+ 
+        private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>(); //key=baseAttributeType  value=HashSet<Type>指定的哈希集合
 
-        private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
-
-        private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
+        private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>(); //key=AEvent<A> A的类型  value=具体需要处理的事件类集合
 
         private TypeSystems typeSystems = new TypeSystems();
 
@@ -102,6 +101,8 @@ namespace ET
                     continue;
                 }
 
+                //判断当前类型 是否标记有 BaseAttribute属性的类型
+                //如果有代表 我们就需要这些类型
                 if (type.IsSubclassOf(typeof (BaseAttribute)))
                 {
                     attributeTypes.Add(type);
@@ -111,6 +112,10 @@ namespace ET
             return attributeTypes;
         }
 
+        //总结一下Add方法干了什么事情
+        //解析了自定义属性 BaseAttribute 得到了types
+        //解析了ObjectSystemAttribute 也就是我们的所有的生命周期流程管理类
+        //解析了EventAttribute 得到了我们需要分发的事件管理类
         public void Add(Type[] addTypes)
         {
             this.allTypes.Clear();
@@ -129,13 +134,15 @@ namespace ET
                     {
                         continue;
                     }
-
+ 
+                    // type 是否为 baseAttributeType 派生下来的类型 
                     object[] objects = type.GetCustomAttributes(baseAttributeType, true);
                     if (objects.Length == 0)
                     {
                         continue;
                     }
 
+                    //如果type是baseAttributeType 派生下来的类型,添加进入属性的哈希集合
                     this.types.Add(baseAttributeType, type);
                 }
             }
@@ -148,7 +155,8 @@ namespace ET
 
                 if (obj is ISystemType iSystemType)
                 {
-                    OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+                    //通过iSystemType 得到一个无序的集合列表
+                    UnOrderMultiMap<Type, object> oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                     oneTypeSystems.Add(iSystemType.SystemType(), obj);
                 }
             }
@@ -162,6 +170,7 @@ namespace ET
                     throw new Exception($"type not is AEvent: {obj.GetType().Name}");
                 }
 
+                //GetEventType方法 其实是获取到泛型T 的指定类型
                 Type eventType = obj.GetEventType();
                 if (!this.allEvents.ContainsKey(eventType))
                 {
@@ -218,7 +227,7 @@ namespace ET
 
             Type type = component.GetType();
 
-            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);;
+            UnOrderMultiMap<Type, object> oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);;
             if (component is ILoad)
             {
                 if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))

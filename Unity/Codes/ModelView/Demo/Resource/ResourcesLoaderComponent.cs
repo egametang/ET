@@ -50,6 +50,8 @@ namespace ET
         }
     }
     
+    //资源缓存器组件
+    //主要负责资源的缓存 如果已经存在的资源就无须加载了 可以直接使用 不存在的资源需要加载
     public class ResourcesLoaderComponent: Entity, IAwake, IDestroy
     {
         public HashSet<string> LoadedResource = new HashSet<string>();

@@ -5,7 +5,7 @@ namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        protected override async ETTask Run(EventType.AppStart args)
+        protected override async ETTask Run(EventType.AppStart arg)
         {
             Game.Scene.AddComponent<ConfigComponent>();
             await ConfigComponent.Instance.LoadAsync();
@@ -30,6 +30,12 @@ namespace ET
             Game.Scene.AddComponent<NetThreadComponent>();
             
             Game.Scene.AddComponent<NavmeshComponent, Func<string, byte[]>>(RecastFileReader.Read);
+            
+            //测试代码
+            /*Computer computer =  Game.Scene.AddChild<Computer>();
+            computer.AddComponent<PCCaseComponent>();
+            computer.AddComponent<MonitorsComponent>();
+            computer.StartComputer();*/
 
             switch (Game.Options.AppType)
             {
@@ -37,8 +43,12 @@ namespace ET
                 {
                     Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerInner);
 
+<<<<<<< HEAD
                     Log.Debug("测试提交");
                     
+=======
+                    //读表配置 创建我们的所有的服务器ZonScene
+>>>>>>> 4d365dcd80333cd12c413eacccda08883e5d84d0
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {

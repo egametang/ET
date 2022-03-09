@@ -2,6 +2,9 @@
 
 namespace ET
 {
+    /// <summary>
+    /// 模型消息发送 组件
+    /// </summary>
     public class ActorMessageSenderComponent: Entity, IAwake, IDestroy
     {
         public static long TIMEOUT_TIME = 40 * 1000;
