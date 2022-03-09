@@ -28,7 +28,7 @@ namespace ET
             
             //上面为我们的树的最高节点 Game.Scene 挂在全局的基础组件
             //-------------------------------
-            
+
             //创建了一个ZoneScene
             Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
             
