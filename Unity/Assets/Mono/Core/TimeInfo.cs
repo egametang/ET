@@ -49,7 +49,7 @@ namespace ET
         // 线程安全
         public long ClientNow()
         {
-            return (DateTime.Now.Ticks - this.dt1970.Ticks) / 10000;
+            return (DateTime.UtcNow.Ticks - this.dt1970.Ticks) / 10000;
         }
         
         public long ServerNow()

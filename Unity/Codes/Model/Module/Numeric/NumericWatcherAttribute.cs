@@ -2,9 +2,9 @@
 {
 	public class NumericWatcherAttribute : BaseAttribute
 	{
-		public NumericType NumericType { get; }
+		public int NumericType { get; }
 
-		public NumericWatcherAttribute(NumericType type)
+		public NumericWatcherAttribute(int type)
 		{
 			this.NumericType = type;
 		}

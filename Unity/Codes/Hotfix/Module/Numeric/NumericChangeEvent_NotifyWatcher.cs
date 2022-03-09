@@ -5,7 +5,11 @@
 	{
 		protected override async ETTask Run(EventType.NumbericChange arg)
 		{
+<<<<<<< HEAD
 			NumericWatcherComponent.Instance.Run(arg.NumericType, arg.Parent.Id, arg.New);
+=======
+			NumericWatcherComponent.Instance.Run(args);
+>>>>>>> master
 			await ETTask.CompletedTask;
 		}
 	}
