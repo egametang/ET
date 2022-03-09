@@ -649,13 +649,13 @@
      <HintPath>C:/Program Files/Unity Editor/2020.3.28f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
      </Reference>
      <Reference Include="CommandLine">
-     <HintPath>E:/Unity Project/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
+     <HintPath>E:/Unity Project/ET Project/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
      </Reference>
      <Reference Include="ICSharpCode.NRefactory">
-     <HintPath>E:/Unity Project/ET/Unity/Library/PackageCache/com.unity.render-pipelines.core@10.8.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
+     <HintPath>E:/Unity Project/ET Project/ET/Unity/Library/PackageCache/com.unity.render-pipelines.core@10.8.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
      </Reference>
      <Reference Include="ICSharpCode.SharpZipLib">
-     <HintPath>E:/Unity Project/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+     <HintPath>E:/Unity Project/ET Project/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
      </Reference>
      <Reference Include="mscorlib">
      <HintPath>C:/Program Files/Unity Editor/2020.3.28f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -1006,10 +1006,10 @@
      <HintPath>C:/Program Files/Unity Editor/2020.3.28f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XPath.XDocument.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.UI">
-     <HintPath>E:/Unity Project/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+     <HintPath>E:/Unity Project/ET Project/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.UI">
-     <HintPath>E:/Unity Project/ET/Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+     <HintPath>E:/Unity Project/ET Project/ET/Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>
