@@ -394,12 +394,23 @@ namespace ET
 			}
 
 			MemoryStream memoryStream = kcpWaitPacket.MemoryStream;
-			int count = (int) (memoryStream.Length - memoryStream.Position);
 			
-			if (this.Service.ServiceType == ServiceType.Inner)
+			switch (this.Service.ServiceType)
 			{
-				memoryStream.GetBuffer().WriteTo(0, kcpWaitPacket.ActorId);
+				case ServiceType.Inner:
+				{
+					memoryStream.GetBuffer().WriteTo(0, kcpWaitPacket.ActorId);
+					break;
+				}
+				case ServiceType.Outer:
+				{
+					// 外网不需要发送actorId，跳过
+					memoryStream.Seek(Packet.ActorIdLength, SeekOrigin.Begin);
+					break;
+				}
 			}
+			
+			int count = (int) (memoryStream.Length - memoryStream.Position);
 
 			// 超出maxPacketSize需要分片
 			if (count <= maxPacketSize)

@@ -165,33 +165,17 @@ namespace ET
 
         public void Reply(IResponse message)
         {
-            this.Send(message);
+            this.Send(0, message);
         }
 
         public void Send(IMessage message)
         {
-            switch (this.AService.ServiceType)
-            {
-                case ServiceType.Inner:
-                {
-                    (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(0, message);
-                    OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
-                    this.Send(0, stream);
-                    break;
-                }
-                case ServiceType.Outer:
-                {
-                    (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(message);
-                    OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
-                    this.Send(0, stream);
-                    break;
-                }
-            }
+            this.Send(0, message);
         }
         
         public void Send(long actorId, IMessage message)
         {
-            (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(actorId, message);
+            (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(message);
             OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
             this.Send(actorId, stream);
         }
