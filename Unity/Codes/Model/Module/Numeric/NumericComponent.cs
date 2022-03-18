@@ -64,6 +64,17 @@ namespace ET
 			this[nt] = value;
 		}
 
+		public void SetNoEvent(int numericType, long value)
+		{
+			this.NumericDic[numericType] = value;
+
+			if (numericType >= NumericType.Max)
+			{
+				this.Update(numericType);
+			}
+		}
+		
+		
 		public long this[int numericType]
 		{
 			get
@@ -72,15 +83,27 @@ namespace ET
 			}
 			set
 			{
-				long v = this.GetByKey(numericType);
-				if (v == value)
+				long oldValue = this.GetByKey(numericType);
+				if (oldValue == value)
 				{
 					return;
 				}
 
 				NumericDic[numericType] = value;
 
-				Update(numericType);
+				if (numericType >= NumericType.Max)
+				{
+					Update(numericType);
+					return;
+				}
+				
+				Game.EventSystem.Publish(new EventType.NumbericChange()
+				{
+					Parent = this.Parent, 
+					NumericType = numericType,
+					Old = oldValue,
+					New = value
+				});
 			}
 		}
 
@@ -93,10 +116,7 @@ namespace ET
 
 		public void Update(int numericType)
 		{
-			if (numericType < NumericType.Max)
-			{
-				return;
-			}
+			
 			int final = (int) numericType / 10;
 			int bas = final * 10 + 1; 
 			int add = final * 10 + 2;
@@ -108,14 +128,7 @@ namespace ET
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
 			long old = this.GetByKey(final);
 			long result = (long)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f);
-			this.NumericDic[final] = result;
-			Game.EventSystem.Publish(new EventType.NumbericChange()
-			{
-				Parent = this.Parent, 
-				NumericType = final,
-				Old = old,
-				New = result
-			});
+			this[final] = result;
 		}
 	}
 }
