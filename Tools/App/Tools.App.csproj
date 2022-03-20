@@ -37,7 +37,7 @@
             <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Server\Model\Base\**\*.cs">
+        <Compile Include="..\..\Apps\Model\Base\**\*.cs">
             <Link>Base\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -53,10 +53,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
       <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Apps" />
     </ItemGroup>
     
     <ItemGroup>

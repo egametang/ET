@@ -1,8 +1,8 @@
-namespace ET
+namespace ET.Client
 {
-    public class AppStart_Init: AEvent<EventType.AppStart>
+    public class AppStart_Init: AEvent<ET.EventType.AppStart>
     {
-        protected override async ETTask Run(EventType.AppStart args)
+        protected override async ETTask Run(ET.EventType.AppStart args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
@@ -10,7 +10,7 @@ namespace ET
             // 加载配置
             Game.Scene.AddComponent<ResourcesComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("config.unity3d");
-            Game.Scene.AddComponent<ConfigComponent>();
+            Game.Scene.AddComponent<ConfigComponent>().ConfigLoader = new ConfigLoader();
             ConfigComponent.Instance.Load();
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             
@@ -26,7 +26,7 @@ namespace ET
             Game.Scene.AddComponent<AIDispatcherComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
             
-            Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+            Scene zoneScene = Client.SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
             
             await Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
         }

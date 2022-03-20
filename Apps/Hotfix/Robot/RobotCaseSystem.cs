@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ET.Client
+namespace ET
 {
     public static class RobotCaseSystem
     {
@@ -64,9 +64,9 @@ namespace ET.Client
             Scene zoneScene = null;
             try
             {
-                zoneScene = SceneFactory.CreateZoneScene(zone, name, self);
-                await LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
-                await EnterMapHelper.EnterMapAsync(zoneScene);
+                zoneScene = Client.SceneFactory.CreateZoneScene(zone, name, self);
+                await Client.LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(zoneScene);
                 Log.Debug($"create robot ok: {zone}");
                 return zoneScene;
             }
@@ -84,9 +84,9 @@ namespace ET.Client
 
             try
             {
-                zoneScene = SceneFactory.CreateZoneScene(zone, $"Robot_{zone}", self);
-                await LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
-                await EnterMapHelper.EnterMapAsync(zoneScene);
+                zoneScene = Client.SceneFactory.CreateZoneScene(zone, $"Robot_{zone}", self);
+                await Client.LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(zoneScene);
                 Log.Debug($"create robot ok: {zone}");
                 return zoneScene;
             }
