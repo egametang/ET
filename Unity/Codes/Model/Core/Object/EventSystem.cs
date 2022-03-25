@@ -159,7 +159,7 @@ namespace ET
                 IEvent obj = Activator.CreateInstance(type) as IEvent;
                 if (obj == null)
                 {
-                    throw new Exception($"type not is AEvent: {obj.GetType().Name}");
+                    throw new Exception($"type not is AEvent: {type.Name}");
                 }
 
                 Type eventType = obj.GetEventType();
