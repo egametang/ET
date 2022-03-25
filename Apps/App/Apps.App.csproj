@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>8</LangVersion>
-    <AssemblyName>Server</AssemblyName>
+    <AssemblyName>Apps</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -28,10 +28,16 @@ namespace ET
             // 数值订阅组件
             Game.Scene.AddComponent<NumericWatcherComponent>();
             
-            Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
+
+            #region 机器人使用
+
+            Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
+
+            #endregion
+
             
             Game.Scene.AddComponent<NetThreadComponent>();
             
@@ -58,20 +64,6 @@ namespace ET
                     WatcherComponent watcherComponent = Game.Scene.AddComponent<WatcherComponent>();
                     watcherComponent.Start(Game.Options.CreateScenes);
                     Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"), SessionStreamDispatcherType.SessionStreamDispatcherServerInner);
-                    break;
-                }
-                case AppType.Robot:
-                {
-                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
-                    foreach (StartSceneConfig startConfig in processScenes)
-                    {
-                        await Server.SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name, startConfig.Type, startConfig);
-                    }
-            
-                    if (Game.Options.Console == 1)
-                    {
-                        Game.Scene.AddComponent<ConsoleComponent>();
-                    }
                     break;
                 }
                 case AppType.GameTool:

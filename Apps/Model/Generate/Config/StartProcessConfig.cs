@@ -75,8 +75,6 @@ namespace ET
 		public int MachineId { get; set; }
 		[ProtoMember(3)]
 		public int InnerPort { get; set; }
-		[ProtoMember(4)]
-		public string AppName { get; set; }
 
 	}
 }

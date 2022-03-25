@@ -41,9 +41,9 @@ namespace ET
         {
             StartProcessConfig startProcessConfig = StartProcessConfigCategory.Instance.Get(processId);
             const string exe = "dotnet";
-            string arguments = $"{startProcessConfig.AppName}.dll" + 
+            string arguments = $"Apps.dll" + 
                     $" --Process={startProcessConfig.Id}" +
-                    $" --AppType={startProcessConfig.AppName}" +  
+                    $" --AppType=Server" +  
                     $" --Develop={Game.Options.Develop}" +
                     $" --CreateScenes={createScenes}" +
                     $" --LogLevel={Game.Options.LogLevel}";
