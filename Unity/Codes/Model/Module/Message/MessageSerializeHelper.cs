@@ -68,36 +68,17 @@ namespace ET
             return stream;
         }
         
-        public static (ushort, MemoryStream) MessageToStream(object message, int count = 0)
+        public static (ushort, MemoryStream) MessageToStream(object message)
         {
-            MemoryStream stream = GetStream(Packet.OpcodeLength + count);
+            int headOffset = Packet.ActorIdLength;
+            MemoryStream stream = GetStream(headOffset + Packet.OpcodeLength);
 
             ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(message.GetType());
             
-            stream.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
-            stream.SetLength(Packet.OpcodeLength);
+            stream.Seek(headOffset + Packet.OpcodeLength, SeekOrigin.Begin);
+            stream.SetLength(headOffset + Packet.OpcodeLength);
             
-            stream.GetBuffer().WriteTo(0, opcode);
-            
-            MessageSerializeHelper.SerializeTo(opcode, message, stream);
-            
-            stream.Seek(0, SeekOrigin.Begin);
-            return (opcode, stream);
-        }
-        
-        public static (ushort, MemoryStream) MessageToStream(long actorId, object message, int count = 0)
-        {
-            int actorSize = sizeof (long);
-            MemoryStream stream = GetStream(actorSize + Packet.OpcodeLength + count);
-
-            ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(message.GetType());
-            
-            stream.Seek(actorSize + Packet.OpcodeLength, SeekOrigin.Begin);
-            stream.SetLength(actorSize + Packet.OpcodeLength);
-
-            // 写入actorId
-            stream.GetBuffer().WriteTo(0, actorId);
-            stream.GetBuffer().WriteTo(actorSize, opcode);
+            stream.GetBuffer().WriteTo(headOffset, opcode);
             
             MessageSerializeHelper.SerializeTo(opcode, message, stream);
             

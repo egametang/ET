@@ -139,6 +139,7 @@ namespace ET
 				}
 				case ServiceType.Outer:
 				{
+					stream.Seek(Packet.ActorIdLength, SeekOrigin.Begin); // 外网不需要actorId
 					ushort messageSize = (ushort) (stream.Length - stream.Position);
 
 					this.sendCache.WriteTo(0, messageSize);
