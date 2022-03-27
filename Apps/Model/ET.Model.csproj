@@ -3,6 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>8</LangVersion>
+    <AssemblyName>Model</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -89,8 +90,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
-    <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
-    <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
+    <ProjectReference Include="..\ThirdParty\ET.ThirdParty.csproj" />
   </ItemGroup>
 </Project>

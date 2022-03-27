@@ -25,7 +25,7 @@ namespace ET
     {
         private const string protoPath = ".";
         private const string clientMessagePath = "../Unity/Codes/Model/Generate/Message/";
-        private const string serverMessagePath = "../Server/Model/Generate/Message/";
+        private const string serverMessagePath = "../Apps/Model/Generate/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 

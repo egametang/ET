@@ -5,9 +5,10 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>false</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <AssemblyName>Tools</AssemblyName>
         <RootNamespace>ET</RootNamespace>
         <LangVersion>8</LangVersion>
+        <PackageId>ET.Tool</PackageId>
+        <AssemblyName>Tool</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -51,14 +52,13 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
-      <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
       <None Update="Template.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\ThirdParty\ET.ThirdParty.csproj" />
     </ItemGroup>
 
 </Project>

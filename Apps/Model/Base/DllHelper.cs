@@ -13,8 +13,8 @@ namespace ET
             assemblyLoadContext?.Unload();
             System.GC.Collect();
             assemblyLoadContext = new AssemblyLoadContext("Hotfix", true);
-            byte[] dllBytes = File.ReadAllBytes("./Apps.Hotfix.dll");
-            byte[] pdbBytes = File.ReadAllBytes("./Apps.Hotfix.pdb");
+            byte[] dllBytes = File.ReadAllBytes("./Hotfix.dll");
+            byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly assembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
             return assembly;
         }

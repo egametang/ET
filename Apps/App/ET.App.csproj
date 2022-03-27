@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>8</LangVersion>
-    <AssemblyName>Apps</AssemblyName>
+    <AssemblyName>App</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -32,6 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\Apps.Model.csproj" />
+    <ProjectReference Include="..\Model\ET.Model.csproj" />
   </ItemGroup>
 </Project>
