@@ -13,6 +13,20 @@ namespace ET
     {
         private const string CodeDir = "Assets/Bundles/Code/";
 
+        [MenuItem("Tools/Build/EnableAutoBuildCodeDebug _F1")]
+        public static void SetAutoBuildCode()
+        {
+            PlayerPrefs.SetInt("AutoBuild", 1);
+            ShowNotification("AutoBuildCode Enabled");
+        }
+        
+        [MenuItem("Tools/Build/DisableAutoBuildCodeDebug _F2")]
+        public static void CancelAutoBuildCode()
+        {
+            PlayerPrefs.DeleteKey("AutoBuild");
+            ShowNotification("AutoBuildCode Disabled");
+        }
+
         [MenuItem("Tools/Build/BuildCodeDebug _F5")]
         public static void BuildCodeDebug()
         {
@@ -179,6 +193,15 @@ namespace ET
             Debug.Log("set assetbundle success!");
             
             Debug.Log("build success!");
+            //反射获取当前Game视图，提示编译完成
+            ShowNotification("Build Code Success");
+        }
+
+        public static void ShowNotification(string tips)
+        {
+            var game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
+            game?.ShowNotification(new GUIContent($"{tips}"));
         }
     }
+    
 }
