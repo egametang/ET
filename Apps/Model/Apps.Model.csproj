@@ -90,6 +90,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThirdParty\ET.ThirdParty.csproj" />
+    <ProjectReference Include="..\ThirdParty\Apps.ThirdParty.csproj" />
   </ItemGroup>
 </Project>

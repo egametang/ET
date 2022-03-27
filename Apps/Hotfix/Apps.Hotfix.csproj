@@ -45,6 +45,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\ET.Model.csproj" />
+    <ProjectReference Include="..\Model\Apps.Model.csproj" />
   </ItemGroup>
 </Project>

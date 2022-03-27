@@ -21,15 +21,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Mono", "Unity\Unity.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.ThirdParty", "Unity\Unity.ThirdParty.csproj", "{D2AD5BE1-263A-9A30-AB0F-DC5B08044350}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.Model", "Apps\Model\ET.Model.csproj", "{1082AF19-6624-4CFA-92CD-F6AA2AE5B364}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Model", "Apps\Model\Apps.Model.csproj", "{1082AF19-6624-4CFA-92CD-F6AA2AE5B364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.Hotfix", "Apps\Hotfix\ET.Hotfix.csproj", "{492D9D9D-09FB-4757-B486-E56322605113}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Hotfix", "Apps\Hotfix\Apps.Hotfix.csproj", "{492D9D9D-09FB-4757-B486-E56322605113}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.App", "Apps\App\ET.App.csproj", "{B7A8A3FD-69EC-4156-8076-F33E98392601}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.App", "Apps\App\Apps.App.csproj", "{B7A8A3FD-69EC-4156-8076-F33E98392601}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.ThirdParty", "Apps\ThirdParty\ET.ThirdParty.csproj", "{E411076A-B800-457D-A36D-06EC716B2663}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.ThirdParty", "Apps\ThirdParty\Apps.ThirdParty.csproj", "{E411076A-B800-457D-A36D-06EC716B2663}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.Tool", "Apps\Tool\ET.Tool.csproj", "{21A2F73C-A935-42B7-A487-3962718CE29F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps.Tool", "Apps\Tool\Apps.Tool.csproj", "{21A2F73C-A935-42B7-A487-3962718CE29F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
