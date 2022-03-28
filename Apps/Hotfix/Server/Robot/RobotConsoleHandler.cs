@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace ET
+namespace ET.Server
 {
     [ConsoleHandler(ConsoleMode.Robot)]
     public class RobotConsoleHandler: IConsoleHandler

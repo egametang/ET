@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CommandLine;
 using NLog;
 
-namespace ET
+namespace ET.Server
 {
     [ConsoleHandler(ConsoleMode.CreateRobot)]
     public class CreateRobotConsoleHandler: IConsoleHandler

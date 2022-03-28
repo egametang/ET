@@ -1,6 +1,6 @@
 using System;
 
-namespace ET
+namespace ET.Server
 {
     [RobotCase(RobotCaseType.FirstCase)]
     public class RobotCase_FirstCase: IRobotCase

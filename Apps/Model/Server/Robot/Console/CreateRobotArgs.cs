@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace ET
+namespace ET.Server
 {
     public class CreateRobotArgs
     {

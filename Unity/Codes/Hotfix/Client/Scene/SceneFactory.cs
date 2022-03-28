@@ -4,7 +4,7 @@ namespace ET.Client
     {
         public static Scene CreateZoneScene(int zone, string name, Entity parent)
         {
-            Scene zoneScene = EntitySceneFactory.CreateScene(Game.IdGenerater.GenerateInstanceId(), zone, SceneType.Zone, name, parent);
+            Scene zoneScene = EntitySceneFactory.CreateScene(zone, SceneType.Zone, name, parent);
             zoneScene.AddComponent<ZoneSceneFlagComponent>();
             zoneScene.AddComponent<NetKcpComponent, int>(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter);
 			zoneScene.AddComponent<CurrentScenesComponent>();

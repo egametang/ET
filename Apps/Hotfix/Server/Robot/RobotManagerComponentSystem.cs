@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace ET
+namespace ET.Server
 {
     public static class RobotManagerComponentSystem
     {
