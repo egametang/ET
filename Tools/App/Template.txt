@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class (ConfigName)Category : ProtoObject
+    public partial class (ConfigName)Category : ProtoObject, IMerge
     {
         public static (ConfigName)Category Instance;
 		
@@ -22,6 +22,12 @@ namespace ET
         public (ConfigName)Category()
         {
             Instance = this;
+        }
+        
+        public void Merge(object o)
+        {
+            (ConfigName)Category s = o as (ConfigName)Category;
+            this.list.AddRange(s.list);
         }
 		
         public override void EndInit()

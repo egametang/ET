@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class UnitConfigCategory : ProtoObject
+    public partial class UnitConfigCategory : ProtoObject, IMerge
     {
         public static UnitConfigCategory Instance;
 		
@@ -22,6 +22,12 @@ namespace ET
         public UnitConfigCategory()
         {
             Instance = this;
+        }
+        
+        public void Merge(object o)
+        {
+            UnitConfigCategory s = o as UnitConfigCategory;
+            this.list.AddRange(s.list);
         }
 		
         public override void EndInit()
@@ -69,19 +75,26 @@ namespace ET
     [ProtoContract]
 	public partial class UnitConfig: ProtoObject, IConfig
 	{
+		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
+		/// <summary>Type</summary>
 		[ProtoMember(2)]
 		public int Type { get; set; }
-		[ProtoMember(4)]
+		/// <summary>名字</summary>
+		[ProtoMember(3)]
 		public string Name { get; set; }
-		[ProtoMember(5)]
+		/// <summary>描述</summary>
+		[ProtoMember(4)]
 		public string Desc { get; set; }
-		[ProtoMember(6)]
+		/// <summary>位置</summary>
+		[ProtoMember(5)]
 		public int Position { get; set; }
-		[ProtoMember(7)]
+		/// <summary>身高</summary>
+		[ProtoMember(6)]
 		public int Height { get; set; }
-		[ProtoMember(8)]
+		/// <summary>体重</summary>
+		[ProtoMember(7)]
 		public int Weight { get; set; }
 
 	}
