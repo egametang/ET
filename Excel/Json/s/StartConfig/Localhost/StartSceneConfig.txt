@@ -1,0 +1,9 @@
+{"list":[
+{"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":1,"SceneType":"Realm","Name":"Realm","OuterPort":10002},
+{"_t":"StartSceneConfig","_id":2,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate1","OuterPort":10003},
+{"_t":"StartSceneConfig","_id":3,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate2","OuterPort":10004},
+{"_t":"StartSceneConfig","_id":4,"Process":1,"Zone":1,"SceneType":"Location","Name":"Location","OuterPort":0},
+{"_t":"StartSceneConfig","_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map1","OuterPort":0},
+{"_t":"StartSceneConfig","_id":6,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map2","OuterPort":0},
+{"_t":"StartSceneConfig","_id":200,"Process":1,"Zone":2,"SceneType":"Robot","Name":"Robot01","OuterPort":0},
+]}

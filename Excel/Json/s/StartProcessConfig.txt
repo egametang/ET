@@ -1,0 +1,4 @@
+{"list":[
+{"_t":"StartProcessConfig","_id":1,"MachineId":1,"InnerPort":20001},
+{"_t":"StartProcessConfig","_id":2,"MachineId":1,"InnerPort":20002},
+]}
