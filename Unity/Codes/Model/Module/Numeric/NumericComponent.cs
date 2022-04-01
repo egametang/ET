@@ -6,7 +6,7 @@ namespace ET
 {
 	namespace EventType
 	{
-		public struct NumbericChange
+		public class NumbericChange
 		{
 			public Entity Parent;
 			public int NumericType;

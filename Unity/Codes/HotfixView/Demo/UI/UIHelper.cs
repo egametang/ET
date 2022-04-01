@@ -4,7 +4,8 @@
     {
         public static async ETTask<UI> Create(Scene scene, string uiType, UILayer uiLayer)
         {
-            return await scene.GetComponent<UIComponent>().Create(uiType, uiLayer);
+            UI ui = await scene.GetComponent<UIComponent>().Create(uiType, uiLayer);
+            return ui;
         }
         
         public static async ETTask Remove(Scene scene, string uiType)

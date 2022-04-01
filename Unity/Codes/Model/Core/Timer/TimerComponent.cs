@@ -295,7 +295,8 @@ namespace ET
 
         public async ETTask<bool> WaitFrameAsync(ETCancellationToken cancellationToken = null)
         {
-            return await WaitAsync(1, cancellationToken);
+            bool ret = await WaitAsync(1, cancellationToken);
+            return ret;
         }
 
         public async ETTask<bool> WaitAsync(long time, ETCancellationToken cancellationToken = null)

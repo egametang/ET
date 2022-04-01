@@ -4,95 +4,95 @@ namespace ET
 {
     namespace EventType
     {
-        public struct AppStart
+        public class AppStart
         {
         }
 
-        public struct SceneChangeStart
+        public class SceneChangeStart
         {
             public Scene ZoneScene;
         }
         
         
-        public struct SceneChangeFinish
+        public class SceneChangeFinish
         {
             public Scene ZoneScene;
             public Scene CurrentScene;
         }
 
-        public struct ChangePosition
+        public class ChangePosition
         {
             public Unit Unit;
             public Vector3 OldPos;
         }
 
-        public struct ChangeRotation
+        public class ChangeRotation
         {
             public Unit Unit;
         }
 
-        public struct PingChange
+        public class PingChange
         {
             public Scene ZoneScene;
             public long Ping;
         }
         
-        public struct AfterCreateZoneScene
+        public class AfterCreateZoneScene
         {
             public Scene ZoneScene;
         }
         
-        public struct AfterCreateCurrentScene
+        public class AfterCreateCurrentScene
         {
             public Scene CurrentScene;
         }
         
-        public struct AfterCreateLoginScene
+        public class AfterCreateLoginScene
         {
             public Scene LoginScene;
         }
 
-        public struct AppStartInitFinish
+        public class AppStartInitFinish
         {
             public Scene ZoneScene;
         }
 
-        public struct LoginFinish
+        public class LoginFinish
         {
             public Scene ZoneScene;
         }
 
-        public struct LoadingBegin
+        public class LoadingBegin
         {
             public Scene Scene;
         }
 
-        public struct LoadingFinish
+        public class LoadingFinish
         {
             public Scene Scene;
         }
 
-        public struct EnterMapFinish
+        public class EnterMapFinish
         {
             public Scene ZoneScene;
         }
 
-        public struct AfterUnitCreate
+        public class AfterUnitCreate
         {
             public Unit Unit;
         }
         
-        public struct MoveStart
+        public class MoveStart
         {
             public Unit Unit;
         }
 
-        public struct MoveStop
+        public class MoveStop
         {
             public Unit Unit;
         }
 
-        public struct UnitEnterSightRange
+        public class UnitEnterSightRange
         {
         }
     }

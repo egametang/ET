@@ -96,7 +96,12 @@ namespace ILRuntime.Runtime.Generated
             WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
 
             __intp.Free(ptr_of_this_method);
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
         }
 
         static StackObject* MoveNext_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)

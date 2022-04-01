@@ -8,7 +8,30 @@ namespace ET
 	}
 	
 	[Event]
-	public abstract class AEvent<A>: IEvent where A: struct
+	public abstract class AEvent<A>: IEvent where A: class
+	{
+		public Type GetEventType()
+		{
+			return typeof (A);
+		}
+
+		protected abstract void Run(A a);
+
+		public void Handle(A a)
+		{
+			try
+			{
+				Run(a);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+			}
+		}
+	}
+	
+	[Event]
+	public abstract class AEventAsync<A>: IEvent where A: struct
 	{
 		public Type GetEventType()
 		{

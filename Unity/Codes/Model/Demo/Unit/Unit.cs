@@ -20,7 +20,9 @@ namespace ET
             {
                 Vector3 oldPos = this.position;
                 this.position = value;
-                Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
+#if !NOT_UNITY
+                //Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
+                #endif
             }
         }
 

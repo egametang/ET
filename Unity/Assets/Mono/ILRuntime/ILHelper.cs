@@ -109,6 +109,9 @@ namespace ET
         {
             //注册自己写的适配器
             appdomain.RegisterCrossBindingAdaptor(new IAsyncStateMachineClassInheritanceAdaptor());
+            appdomain.RegisterValueTypeBinder(typeof(Vector2), new Vector2Binder());
+            appdomain.RegisterValueTypeBinder(typeof(Vector3), new Vector3Binder());
+            appdomain.RegisterValueTypeBinder(typeof(Quaternion), new QuaternionBinder());
         }
     }
 }
