@@ -482,7 +482,7 @@ namespace ILRuntime.Runtime.Intepreter
                     if (obj is ILTypeInstance)
                     {
                         ILTypeInstance ili = (ILTypeInstance)obj;
-                        if (ili.type.IsValueType)
+                        if (ili.type != null && ili.type.IsValueType)
                         {
                             intp.AllocValueType(esp, ili.type);
                             var dst = ILIntepreter.ResolveReference(esp);

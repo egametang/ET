@@ -660,7 +660,7 @@ namespace ET
             }
         }
 
-        public void Publish<T>(T a) where T : class
+        public void Publish<T>(T a) where T : struct
         {
             List<object> iEvents;
             if (!this.allEvents.TryGetValue(typeof (T), out iEvents))

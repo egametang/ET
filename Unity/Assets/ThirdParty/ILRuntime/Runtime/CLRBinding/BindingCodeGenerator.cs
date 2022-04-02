@@ -180,7 +180,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
         public static void GenerateBindingCode(ILRuntime.Runtime.Enviorment.AppDomain domain, string outputPath, 
-                                               List<Type> valueTypeBinders = null, List<Type> delegateTypes = null,
+                                               List<Type> valueTypeBinders = null, List<Type> delegateTypes = null, int maxGenericDepth = 10,
                                                params string[] excludeFiles)
         {
             if (domain == null)
@@ -188,7 +188,7 @@ namespace ILRuntime.Runtime.Generated
             if (!System.IO.Directory.Exists(outputPath))
                 System.IO.Directory.CreateDirectory(outputPath);
             Dictionary<Type, CLRBindingGenerateInfo> infos = new Dictionary<Type, CLRBindingGenerateInfo>(new ByReferenceKeyComparer<Type>());
-            CrawlAppdomain(domain, infos);
+            CrawlAppdomain(domain, infos, maxGenericDepth);
             string[] oldFiles = System.IO.Directory.GetFiles(outputPath, "*.cs");
             foreach (var i in oldFiles)
             {
@@ -410,13 +410,14 @@ namespace ILRuntime.Runtime.Generated
                 }
             }
         }
-        internal static void CrawlAppdomain(ILRuntime.Runtime.Enviorment.AppDomain domain, Dictionary<Type, CLRBindingGenerateInfo> infos)
+        internal static void CrawlAppdomain(ILRuntime.Runtime.Enviorment.AppDomain domain, Dictionary<Type, CLRBindingGenerateInfo> infos, int maxGenericDepth)
         {
             domain.SuppressStaticConstructor = true;
-            //Prewarm
-            PrewarmDomain(domain);
-            //Prewarm twice to ensure GenericMethods are prewarmed properly
-            PrewarmDomain(domain);
+            for(int i = 0; i < maxGenericDepth; i++)
+            {
+                //Prewarm 10 times to ensure GenericMethods are prewarmed properly
+                PrewarmDomain(domain);
+            }
             var arr = domain.LoadedTypes.Values.ToArray();
             foreach (var type in arr)
             {

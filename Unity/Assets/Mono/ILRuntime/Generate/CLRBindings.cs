@@ -34,13 +34,13 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_Int32_Binding.Register(app);
             ET_ETTask_1_ILTypeInstance_Binding.Register(app);
             ET_NetworkHelper_Binding.Register(app);
-            ET_ETTask_Binding.Register(app);
             ET_ListComponent_1_Vector3_Binding.Register(app);
             System_Collections_Generic_List_1_Single_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
             System_Collections_Generic_List_1_Vector3_Binding.Register(app);
             System_IDisposable_Binding.Register(app);
             UnityEngine_Quaternion_Binding.Register(app);
+            ET_ETTask_Binding.Register(app);
             ET_ETTaskCompleted_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Boolean_Binding.Register(app);
             System_Action_1_Boolean_Binding.Register(app);
@@ -147,7 +147,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
-            System_Collections_Generic_List_1_Object_Binding_Enumerator_Binding.Register(app);
             ET_ObjectHelper_Binding.Register(app);
             System_Text_StringBuilder_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Int32_Binding.Register(app);

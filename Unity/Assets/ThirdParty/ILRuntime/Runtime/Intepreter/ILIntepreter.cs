@@ -110,6 +110,7 @@ namespace ILRuntime.Runtime.Intepreter
         }
         internal StackObject* Execute(ILMethod method, StackObject* esp, out bool unhandledException)
         {
+            allowUnboundCLRMethod = domain.AllowUnboundCLRMethod;
 #if DEBUG
             if (method == null)
                 throw new NullReferenceException();
@@ -1926,10 +1927,7 @@ namespace ILRuntime.Runtime.Intepreter
                                         ExceptionHandler eh = null;
 
                                         int addr = (int)(ip - ptr);
-                                        var sql = from e in ehs
-                                                  where addr >= e.TryStart && addr <= e.TryEnd && (ip->TokenInteger < e.TryStart || ip->TokenInteger > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally
-                                                  select e;
-                                        eh = sql.FirstOrDefault();
+                                        eh = FindExceptionHandlerByBranchTarget(addr, ip->TokenInteger, ehs);
                                         if (eh != null)
                                         {
                                             finallyEndAddress = ip->TokenInteger;
@@ -4502,10 +4500,7 @@ namespace ILRuntime.Runtime.Intepreter
                                 lastCaughtEx = ex;
                                 esp = PushObject(esp, mStack, ex);
                                 unhandledException = false;
-                                var sql = from e in ehs
-                                          where addr >= e.TryStart && addr <= e.TryEnd && (eh.HandlerStart < e.TryStart || eh.HandlerStart > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally
-                                          select e;
-                                var eh2 = sql.FirstOrDefault();
+                                var eh2 = FindExceptionHandlerByBranchTarget(addr, eh.HandlerStart, ehs);
                                 if (eh2 != null)
                                 {
                                     finallyEndAddress = eh.HandlerStart;
@@ -4556,7 +4551,20 @@ namespace ILRuntime.Runtime.Intepreter
             //ClearStack
             return stack.PopFrame(ref frame, esp);
         }
-
+        ExceptionHandler FindExceptionHandlerByBranchTarget(int addr, int branchTarget, ExceptionHandler[] ehs)
+        {
+            ExceptionHandler eh = null;
+            for (int i = 0; i < ehs.Length; i++)
+            {
+                var e = ehs[i];
+                if (addr >= e.TryStart && addr <= e.TryEnd && (branchTarget < e.TryStart || branchTarget > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally)
+                {
+                    eh = e;
+                    break;
+                }
+            }
+            return eh;
+        }
         void PrepareRegisterCallStack(StackObject* esp, IList<object> mStack, ILMethod method)
         {
             var pCnt = method.HasThis ? method.ParameterCount + 1 : method.ParameterCount;

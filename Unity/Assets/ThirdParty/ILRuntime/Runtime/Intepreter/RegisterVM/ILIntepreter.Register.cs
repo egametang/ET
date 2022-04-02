@@ -2752,10 +2752,7 @@ namespace ILRuntime.Runtime.Intepreter
                                         ExceptionHandler eh = null;
 
                                         int addr = (int)(ip - ptr);
-                                        var sql = from e in ehs
-                                                  where addr >= e.TryStart && addr <= e.TryEnd && (ip->Operand < e.TryStart || ip->Operand > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally
-                                                  select e;
-                                        eh = sql.FirstOrDefault();
+                                        eh = FindExceptionHandlerByBranchTarget(addr, ip->Operand, ehs);
                                         if (eh != null)
                                         {
                                             finallyEndAddress = ip->Operand;
@@ -5108,10 +5105,7 @@ namespace ILRuntime.Runtime.Intepreter
                                 short exReg = (short)(paramCnt + locCnt);
                                 AssignToRegister(ref info, exReg, ex);
                                 unhandledException = false;
-                                var sql = from e in ehs
-                                          where addr >= e.TryStart && addr <= e.TryEnd && (eh.HandlerStart < e.TryStart || eh.HandlerStart > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally
-                                          select e;
-                                var eh2 = sql.FirstOrDefault();
+                                var eh2 = FindExceptionHandlerByBranchTarget(addr, eh.HandlerStart, ehs);
                                 if (eh2 != null)
                                 {
                                     finallyEndAddress = eh.HandlerStart;

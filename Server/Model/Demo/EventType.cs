@@ -4,38 +4,38 @@ namespace ET
 {
 	namespace EventType
 	{
-		public class AppStart
+		public struct AppStart
 		{
 		}
 		
-		public class ChangePosition
+		public struct ChangePosition
 		{
 			public Unit Unit;
 			public Vector3 OldPos;
 		}
 
-		public class ChangeRotation
+		public struct ChangeRotation
 		{
 			public Unit Unit;
 		}
 
-		public class MoveStart
+		public struct MoveStart
 		{
 			public Unit Unit;
 		}
 
-		public class MoveStop
+		public struct MoveStop
 		{
 			public Unit Unit;
 		}
 
-		public class UnitEnterSightRange
+		public struct UnitEnterSightRange
 		{
 			public AOIEntity A;
 			public AOIEntity B;
 		}
 
-		public class UnitLeaveSightRange
+		public struct UnitLeaveSightRange
 		{
 			public AOIEntity A;
 			public AOIEntity B;
