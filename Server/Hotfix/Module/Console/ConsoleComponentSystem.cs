@@ -31,7 +31,7 @@ namespace ET
         {
             self.Handlers.Clear();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
+            List<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
 
             foreach (Type type in types)
             {

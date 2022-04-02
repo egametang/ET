@@ -28,7 +28,7 @@ namespace ET
         {
             self.Dictionary.Clear();
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof(RobotCaseAttribute));
+            List<Type> types = Game.EventSystem.GetTypes(typeof(RobotCaseAttribute));
 
             foreach (Type type in types)
             {

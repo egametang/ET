@@ -59,7 +59,7 @@ namespace ET
         {
             self.dispatcher = new Dictionary<string, IHttpHandler>();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
+            List<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
 
             SceneType sceneType = self.GetParent<Scene>().SceneType;
 

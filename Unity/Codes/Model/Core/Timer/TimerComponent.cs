@@ -111,7 +111,7 @@ namespace ET
         {
             this.timerActions = new ITimer[TimeTypeMax];
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
+            List<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
 
             foreach (Type type in types)
             {
@@ -150,23 +150,23 @@ namespace ET
                 return;
             }
 
-            foreach (KeyValuePair<long, List<long>> kv in this.TimeId)
+            this.TimeId.ForEach((k, v) => 
             {
-                long k = kv.Key;
                 if (k > timeNow)
                 {
                     minTime = k;
-                    break;
+                    return;
                 }
-
                 this.timeOutTime.Enqueue(k);
-            }
+            });
 
             while (this.timeOutTime.Count > 0)
             {
                 long time = this.timeOutTime.Dequeue();
-                foreach (long timerId in this.TimeId[time])
+                var list = this.TimeId[time];
+                for (int i = 0; i < list.Count; ++i)
                 {
+                    long timerId = list[i];
                     this.timeOutTimerIds.Enqueue(timerId);
                 }
 

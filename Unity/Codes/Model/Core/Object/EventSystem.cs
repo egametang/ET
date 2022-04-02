@@ -73,7 +73,7 @@ namespace ET
 
         private readonly Dictionary<string, Type> allTypes = new Dictionary<string, Type>();
 
-        private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
+        private readonly UnOrderMultiMap<Type, Type> types = new UnOrderMultiMap<Type, Type>();
 
         private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
 
@@ -184,13 +184,8 @@ namespace ET
             this.Add(addTypes.ToArray());
         }
 
-        public HashSet<Type> GetTypes(Type systemAttributeType)
+        public List<Type> GetTypes(Type systemAttributeType)
         {
-            if (!this.types.ContainsKey(systemAttributeType))
-            {
-                return new HashSet<Type>();
-            }
-
             return this.types[systemAttributeType];
         }
 
@@ -663,11 +658,11 @@ namespace ET
         public void Publish<T>(T a) where T : struct
         {
             List<object> iEvents;
-            if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
+            if (!this.allEvents.TryGetValue(a.GetType(), out iEvents))
             {
                 return;
             }
-
+            
             for (int i = 0; i < iEvents.Count; ++i)
             {
                 object obj = iEvents[i];
