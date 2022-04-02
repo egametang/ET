@@ -22,18 +22,15 @@ namespace ILRuntime.Runtime.Generated
             MethodBase method;
             Type[] args;
             Type type = typeof(ET.MultiMap<System.Int64, System.Int64>);
-            args = new Type[]{typeof(System.Action<System.Int64, System.Collections.Generic.List<System.Int64>>)};
-            method = type.GetMethod("ForEach", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, ForEach_0);
             args = new Type[]{typeof(System.Int64)};
             method = type.GetMethod("get_Item", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_Item_1);
+            app.RegisterCLRMethodRedirection(method, get_Item_0);
             args = new Type[]{typeof(System.Int64)};
             method = type.GetMethod("Remove", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Remove_2);
+            app.RegisterCLRMethodRedirection(method, Remove_1);
             args = new Type[]{typeof(System.Int64), typeof(System.Int64)};
             method = type.GetMethod("Add", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Add_3);
+            app.RegisterCLRMethodRedirection(method, Add_2);
 
             args = new Type[]{};
             method = type.GetConstructor(flag, null, args, null);
@@ -42,26 +39,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* ForEach_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Action<System.Int64, System.Collections.Generic.List<System.Int64>> @action = (System.Action<System.Int64, System.Collections.Generic.List<System.Int64>>)typeof(System.Action<System.Int64, System.Collections.Generic.List<System.Int64>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.MultiMap<System.Int64, System.Int64> instance_of_this_method = (ET.MultiMap<System.Int64, System.Int64>)typeof(ET.MultiMap<System.Int64, System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.ForEach(@action);
-
-            return __ret;
-        }
-
-        static StackObject* get_Item_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_Item_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -79,7 +57,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* Remove_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Remove_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -99,7 +77,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* Add_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Add_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

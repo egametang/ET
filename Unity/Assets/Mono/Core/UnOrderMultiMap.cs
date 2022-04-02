@@ -90,14 +90,6 @@ namespace ET
 			}
 		}
 		
-		public void ForEach(Action<T, List<K>> action)
-		{
-			foreach (var kv in this)
-			{
-				action(kv.Key, kv.Value);
-			}
-		}
-
 		public K GetOne(T t)
 		{
 			List<K> list;

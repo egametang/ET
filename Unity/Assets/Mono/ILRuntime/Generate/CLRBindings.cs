@@ -174,8 +174,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Queue_1_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int64_List_1_ILTypeInstance_Binding.Register(app);
             System_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
-            System_Collections_Generic_SortedDictionary_2_Int64_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_Int64_List_1_ILTypeInstance_Binding.Register(app);
             ET_MultiMap_2_Int64_ILTypeInstance_Binding.Register(app);
             System_IO_Stream_Binding.Register(app);
             ET_ByteHelper_Binding.Register(app);
