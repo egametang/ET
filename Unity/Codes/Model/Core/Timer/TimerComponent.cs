@@ -109,6 +109,17 @@ namespace ET
 
         public void Awake()
         {
+            this.foreachAction = (k, v) =>
+            {
+                if (k > this.timeNow)
+                {
+                    minTime = k;
+                    return;
+                }
+
+                this.timeOutTime.Enqueue(k);
+            };
+            
             this.timerActions = new ITimer[TimeTypeMax];
 
             List<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
@@ -136,6 +147,9 @@ namespace ET
             }
         }
 
+        private long timeNow;
+        private Action<long, List<long>> foreachAction;
+
         public void Update()
         {
             if (this.TimeId.Count == 0)
@@ -143,22 +157,14 @@ namespace ET
                 return;
             }
 
-            long timeNow = TimeHelper.ServerNow();
+            timeNow = TimeHelper.ServerNow();
 
             if (timeNow < this.minTime)
             {
                 return;
             }
 
-            this.TimeId.ForEach((k, v) => 
-            {
-                if (k > timeNow)
-                {
-                    minTime = k;
-                    return;
-                }
-                this.timeOutTime.Enqueue(k);
-            });
+            this.TimeId.ForEach(foreachAction);
 
             while (this.timeOutTime.Count > 0)
             {

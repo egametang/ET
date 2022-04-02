@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_UnOrderMultiMapSet_2_Type_Type_Binding
+    unsafe class ET_UnOrderMultiMap_2_Type_Type_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.UnOrderMultiMapSet<System.Type, System.Type>);
+            Type type = typeof(ET.UnOrderMultiMap<System.Type, System.Type>);
             args = new Type[]{typeof(System.Type), typeof(System.Type)};
             method = type.GetMethod("Add", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Add_0);
@@ -51,7 +51,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ET.UnOrderMultiMapSet<System.Type, System.Type> instance_of_this_method = (ET.UnOrderMultiMapSet<System.Type, System.Type>)typeof(ET.UnOrderMultiMapSet<System.Type, System.Type>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.UnOrderMultiMap<System.Type, System.Type> instance_of_this_method = (ET.UnOrderMultiMap<System.Type, System.Type>)typeof(ET.UnOrderMultiMap<System.Type, System.Type>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Add(@t, @k);
@@ -70,7 +70,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.UnOrderMultiMapSet<System.Type, System.Type> instance_of_this_method = (ET.UnOrderMultiMapSet<System.Type, System.Type>)typeof(ET.UnOrderMultiMapSet<System.Type, System.Type>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.UnOrderMultiMap<System.Type, System.Type> instance_of_this_method = (ET.UnOrderMultiMap<System.Type, System.Type>)typeof(ET.UnOrderMultiMap<System.Type, System.Type>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method[t];
@@ -84,7 +84,7 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
-            var result_of_this_method = new ET.UnOrderMultiMapSet<System.Type, System.Type>();
+            var result_of_this_method = new ET.UnOrderMultiMap<System.Type, System.Type>();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
