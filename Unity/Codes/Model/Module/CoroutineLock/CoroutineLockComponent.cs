@@ -17,15 +17,16 @@ namespace ET
                 self.list.Add(coroutineLockQueueType);
             }
 
-            self.foreachAction = (k, v) =>
+            self.foreachFunc = (k, v) =>
             {
                 if (k > self.timeNow)
                 {
                     self.minTime = k;
-                    return;
+                    return false;
                 }
 
                 self.timeOutIds.Enqueue(k);
+                return true;
             };
         }
     }
@@ -75,7 +76,7 @@ namespace ET
                 return;
             }
 
-            self.timers.ForEach(self.foreachAction);
+            self.timers.ForEachFunc(self.foreachFunc);
             
             self.timerOutTimer.Clear();
             
@@ -183,6 +184,6 @@ namespace ET
         public long idGenerator;
         public long minTime;
         public long timeNow;
-        public Action<long, List<CoroutineLockTimer>> foreachAction;
+        public Func<long, List<CoroutineLockTimer>, bool> foreachFunc;
     }
 }

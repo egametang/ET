@@ -109,15 +109,16 @@ namespace ET
 
         public void Awake()
         {
-            this.foreachAction = (k, v) =>
+            this.foreachFunc = (k, v) =>
             {
                 if (k > this.timeNow)
                 {
                     minTime = k;
-                    return;
+                    return false;
                 }
 
                 this.timeOutTime.Enqueue(k);
+                return true;
             };
             
             this.timerActions = new ITimer[TimeTypeMax];
@@ -148,7 +149,7 @@ namespace ET
         }
 
         private long timeNow;
-        private Action<long, List<long>> foreachAction;
+        private Func<long, List<long>, bool> foreachFunc;
 
         public void Update()
         {
@@ -164,7 +165,7 @@ namespace ET
                 return;
             }
 
-            this.TimeId.ForEach(foreachAction);
+            this.TimeId.ForEachFunc(this.foreachFunc);
 
             while (this.timeOutTime.Count > 0)
             {

@@ -48,6 +48,17 @@ namespace ET
             }
         }
         
+        public void ForEachFunc(Func<T, List<K>, bool> func)
+        {
+            foreach (var kv in this)
+            {
+                if (!func(kv.Key, kv.Value))
+                {
+                    break;
+                }
+            }
+        }
+        
         public new bool Remove(T t)
         {
             List<K> list;
