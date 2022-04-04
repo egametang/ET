@@ -120,25 +120,45 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
 
             childTypeSymbol = context.SemanticModel.GetSymbolInfo(childTypeSyntax).Symbol;
         }
+        // addChild为非泛型调用
         else
         {
-            // addChild为非泛型调用
-            IdentifierNameSyntax? identifierSyntax = invocationExpressionSyntax.ChildNodes().OfType<ArgumentListSyntax>().First().ChildNodes()
-                    .OfType<ArgumentSyntax>().First().ChildNodes().OfType<IdentifierNameSyntax>().First();
-            if (identifierSyntax == null)
+            var firstArgumentSyntax = invocationExpressionSyntax.ChildNodes().OfType<ArgumentListSyntax>().First().ChildNodes()
+                    .OfType<ArgumentSyntax>().First().ChildNodes().First();
+            if (firstArgumentSyntax==null)
             {
-                throw new Exception("identifierSyntax==null");
+                throw new Exception("firstArgumentSyntax==null");
             }
-
-            ISymbol? childSymbol = context.SemanticModel.GetSymbolInfo(identifierSyntax).Symbol;
-
-            if (childSymbol is ILocalSymbol childLocalSymbol)
+            
+            ISymbol? firstArgumentSymbol =  context.SemanticModel.GetSymbolInfo(firstArgumentSyntax).Symbol;
+            
+            if (firstArgumentSymbol is ILocalSymbol childLocalSymbol)
             {
                 childTypeSymbol = childLocalSymbol.Type;
-            }
-            else if (childSymbol is IParameterSymbol childParamaterSymbol)
+            }else if (firstArgumentSymbol is IParameterSymbol childParamaterSymbol)
             {
                 childTypeSymbol = childParamaterSymbol.Type;
+            }else if (firstArgumentSymbol is IMethodSymbol methodSymbol)
+            {
+                childTypeSymbol = methodSymbol.ReturnType;
+            }else if (firstArgumentSymbol is IFieldSymbol fieldSymbol)
+            {
+                childTypeSymbol = fieldSymbol.Type;
+            }else if (firstArgumentSymbol is IPropertySymbol propertySymbol)
+            {
+                childTypeSymbol = propertySymbol.Type;
+            }
+            else if(firstArgumentSymbol!=null)
+            {
+                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), firstArgumentSymbol.Name, parentTypeSymbol.Name);
+                context.ReportDiagnostic(diagnostic);
+                return;
+            }
+            else
+            {
+                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), firstArgumentSyntax.GetText(), parentTypeSymbol.Name);
+                context.ReportDiagnostic(diagnostic);
+                return;
             }
         }
 
@@ -155,7 +175,9 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
                 return;
             }
         }
-        Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), childTypeSymbol.Name, parentTypeSymbol.Name);
-        context.ReportDiagnostic(diagnostic);
+        {
+            Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), childTypeSymbol.Name, parentTypeSymbol.Name);
+            context.ReportDiagnostic(diagnostic);
+        }
     }
 }
