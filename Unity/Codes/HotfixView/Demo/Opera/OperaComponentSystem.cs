@@ -25,7 +25,7 @@ namespace ET
     {
         public static void Update(this OperaComponent self)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (InputHelper.GetMouseButtonDown(1))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -39,7 +39,8 @@ namespace ET
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            // KeyCode.R
+            if (InputHelper.GetKeyDown(114))
             {
                 CodeLoader.Instance.LoadLogic();
                 Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
@@ -47,7 +48,8 @@ namespace ET
                 Log.Debug("hot reload success!");
             }
             
-            if (Input.GetKeyDown(KeyCode.T))
+            // KeyCode.T
+            if (InputHelper.GetKeyDown(116))
             {
                 C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
                 self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
