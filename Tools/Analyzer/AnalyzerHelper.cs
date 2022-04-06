@@ -1,18 +1,20 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace ET.Analyzer;
-
-public static class AnalyzerHelper
+namespace ET.Analyzer
 {
-    public static T? GetFirstChild<T>(this SyntaxNode syntaxNode) where T: SyntaxNode
+    public static class AnalyzerHelper
     {
-        foreach (var childNode in syntaxNode.ChildNodes())
+        public static T? GetFirstChild<T>(this SyntaxNode syntaxNode) where T: SyntaxNode
         {
-            if (childNode.GetType()==typeof(T))
+            foreach (var childNode in syntaxNode.ChildNodes())
             {
-                return childNode as T;
+                if (childNode.GetType()==typeof(T))
+                {
+                    return childNode as T;
+                }
             }
+            return null;
         }
-        return null;
     }
 }
+

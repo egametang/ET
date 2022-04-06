@@ -1,12 +1,15 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace ET.Analyzer;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
+namespace ET.Analyzer
+{
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class AddChildTypeAnalyzer: DiagnosticAnalyzer
 {
     private const string Title = "AddChild方法类型约束错误";
@@ -37,7 +40,8 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
 
     private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
     {
-        if (context.Node is not MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+        
+        if (!(context.Node is MemberAccessExpressionSyntax memberAccessExpressionSyntax))
         {
             return;
         }
@@ -47,8 +51,8 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
         {
             return;
         }
-        if (memberAccessExpressionSyntax.Parent is not InvocationExpressionSyntax invocationExpressionSyntax ||
-            context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is not IMethodSymbol addChildMethodSymbol)
+        if (!(memberAccessExpressionSyntax.Parent is InvocationExpressionSyntax invocationExpressionSyntax) ||
+            !(context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol addChildMethodSymbol))
         {
             return;
         }
@@ -91,7 +95,7 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
         {
             if (attributeData.AttributeClass?.Name == "ChildTypeAttribute")
             {
-                if (attributeData.ConstructorArguments[0].Value is not INamedTypeSymbol availableChildTypeSymbol)
+                if (!(attributeData.ConstructorArguments[0].Value is INamedTypeSymbol availableChildTypeSymbol))
                 {
                     continue;
                 }
@@ -195,3 +199,5 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
         }
     }
 }
+}
+
