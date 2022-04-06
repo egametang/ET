@@ -99,6 +99,8 @@ namespace ET
         private readonly Queue<long> timeOutTime = new Queue<long>();
 
         private readonly Queue<long> timeOutTimerIds = new Queue<long>();
+        
+        private readonly Queue<long> everyFrameTimer = new Queue<long>();
 
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
@@ -159,6 +161,24 @@ namespace ET
             }
 
             timeNow = TimeHelper.ServerNow();
+
+
+            #region 每帧执行的timer，不用foreach TimeId，减少GC
+
+            int count = this.everyFrameTimer.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                long timerId = this.everyFrameTimer.Dequeue();
+                TimerAction timerAction = this.GetChild<TimerAction>(timerId);
+                if (timerAction == null)
+                {
+                    continue;
+                }
+                Run(timerAction);
+            }
+
+            #endregion
+
 
             if (timeNow < this.minTime)
             {
@@ -236,6 +256,11 @@ namespace ET
         
         private void AddTimer(long tillTime, TimerAction timer)
         {
+            if (timer.TimerClass == TimerClass.RepeatedTimer && timer.Time == 0)
+            {
+                this.everyFrameTimer.Enqueue(timer.Id);
+                return;
+            }
             this.TimeId.Add(tillTime, timer.Id);
             if (tillTime < this.minTime)
             {
@@ -268,7 +293,6 @@ namespace ET
 
         public async ETTask<bool> WaitTillAsync(long tillTime, ETCancellationToken cancellationToken = null)
         {
-            long timeNow = TimeHelper.ServerNow();
             if (timeNow >= tillTime)
             {
                 return true;
@@ -360,7 +384,7 @@ namespace ET
 #if NOT_UNITY
 			return NewRepeatedTimerInner(100, type, args);
 #else
-            return NewRepeatedTimerInner(1, type, args);
+            return NewRepeatedTimerInner(0, type, args);
 #endif
         }
 
@@ -371,18 +395,25 @@ namespace ET
         {
 #if NOT_UNITY
 			if (time < 100)
-			{
+			{ 
 				throw new Exception($"repeated timer < 100, timerType: time: {time}");
 			}
 #endif
             long tillTime = TimeHelper.ServerNow() + time;
             TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.RepeatedTimer, time, type, args, true);
+
+            // 每帧执行的不用加到timerId中，防止遍历
             this.AddTimer(tillTime, timer);
             return timer.Id;
         }
 
         public long NewRepeatedTimer(long time, int type, object args)
         {
+            if (time < 100)
+            {
+                Log.Error($"time too small: {time}");
+                return 0;
+            }
             return NewRepeatedTimerInner(time, type, args);
         }
     }
