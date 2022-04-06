@@ -654,7 +654,7 @@ namespace ET
                 }
             }
         }
-
+        
         public void Publish<T>(T a) where T : struct
         {
             List<object> iEvents;
@@ -673,6 +673,24 @@ namespace ET
                 }
                 aEvent.Handle(a);
             }
+        }
+
+        // ILRuntime消除GC使用，服务端不需要用这个
+        public void PublishClass<T>(T a) where T : DisposeObject
+        {
+            List<object> iEvents;
+            if (!this.allEvents.TryGetValue(a.GetType(), out iEvents))
+            {
+                return;
+            }
+            
+            for (int i = 0; i < iEvents.Count; ++i)
+            {
+                object obj = iEvents[i];
+                IEventClass aEvent = (IEventClass) obj;
+                aEvent.Handle(a);
+            }
+            a.Dispose();
         }
 
         public override string ToString()
