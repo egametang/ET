@@ -53,6 +53,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(HttpComponent))]
     public static class HttpComponentSystem
     {
         public static void Load(this HttpComponent self)

@@ -42,6 +42,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(ActorMessageSenderComponent))]
     public static class ActorMessageSenderComponentSystem
     {
         public static void Run(ActorMessageSender self, IActorResponse response)

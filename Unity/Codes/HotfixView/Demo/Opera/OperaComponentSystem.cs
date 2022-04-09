@@ -21,6 +21,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(OperaComponent))]
     public static class OperaComponentSystem
     {
         public static void Update(this OperaComponent self)

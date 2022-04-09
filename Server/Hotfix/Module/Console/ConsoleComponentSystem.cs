@@ -25,6 +25,8 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(ConsoleComponent))]
+    [FriendClass(typeof(ModeContex))]
     public static class ConsoleComponentSystem
     {
         public static void Load(this ConsoleComponent self)

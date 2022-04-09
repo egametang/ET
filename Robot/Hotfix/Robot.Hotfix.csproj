@@ -21,6 +21,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
       <ProjectReference Include="..\Model\Robot.Model.csproj" />
     </ItemGroup>
     

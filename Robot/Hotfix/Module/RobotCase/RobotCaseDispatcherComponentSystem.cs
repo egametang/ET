@@ -22,6 +22,8 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(RobotCaseDispatcherComponent))]
+    [FriendClass(typeof(RobotCase))]
     public static class RobotCaseDispatcherComponentSystem
     {
         public static void Load(this RobotCaseDispatcherComponent self)

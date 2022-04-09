@@ -34,6 +34,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(NetThreadComponent))]
     public static class NetThreadComponentSystem
     {
 

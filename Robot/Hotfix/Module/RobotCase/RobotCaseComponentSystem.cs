@@ -21,6 +21,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(RobotCaseComponent))]
     public static class RobotCaseComponentSystem
     {
         public static int GetN(this RobotCaseComponent self)

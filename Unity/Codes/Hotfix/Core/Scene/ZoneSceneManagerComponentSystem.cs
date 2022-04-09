@@ -20,6 +20,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(ZoneSceneManagerComponent))]
     public static class ZoneSceneManagerComponentSystem
     {
         public static Scene ZoneScene(this Entity entity)

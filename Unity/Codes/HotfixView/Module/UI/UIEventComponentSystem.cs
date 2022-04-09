@@ -38,6 +38,7 @@ namespace ET
 	/// <summary>
 	/// 管理所有UI GameObject 以及UI事件
 	/// </summary>
+	[FriendClass(typeof(UIEventComponent))]
 	public static class UIEventComponentSystem
 	{
 		public static async ETTask<UI> OnCreate(this UIEventComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)

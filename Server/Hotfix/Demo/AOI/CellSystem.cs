@@ -16,6 +16,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(Cell))]
     public static class CellSystem
     {
         public static void Add(this Cell self, AOIEntity aoiEntity)
