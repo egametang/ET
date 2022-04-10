@@ -586,6 +586,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+      <Project>{d1f2986b-b296-4a2d-8f12-be9f470014c3}</Project>
+      <Name>Analyzer</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Mono.csproj">
       <Project>{5910fa29-5797-199c-985b-fc9fc473328e}</Project>
       <Name>Unity.Mono</Name>

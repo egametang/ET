@@ -103,6 +103,27 @@ namespace ET.Analyzer
             }
             return false;
         }
+
+        /// <summary>
+        /// 判断指定的程序集是否需要分析
+        /// </summary>
+        public static bool IsAssemblyNeedAnalyze(string? assemblyName,  params string[] analyzeAssemblyNames)
+        {
+            if (assemblyName==null)
+            {
+                return false;
+            }
+            foreach (var analyzeAssemblyName in analyzeAssemblyNames)
+            {
+                if (assemblyName==analyzeAssemblyName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        
     }
 }
 

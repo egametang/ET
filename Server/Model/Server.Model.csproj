@@ -115,5 +115,6 @@
     <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
     <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
     <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
+    <ProjectReference Include="..\..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
             new DiagnosticDescriptor(DiagnosticIds.AddChildTypeAnalyzerRuleId,
                 Title,
                 MessageFormat,
-                DiagnosticCategories.Stateless,
+                DiagnosticCategories.Hotfix,
                 DiagnosticSeverity.Error,
                 true,
                 Description);
@@ -33,6 +33,10 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
 
     public override void Initialize(AnalysisContext context)
     {
+        if (!AnalyzerGlobalSetting.EnableAnalyzer)
+        {
+            return;
+        }
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();
         context.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
@@ -40,6 +44,10 @@ public class AddChildTypeAnalyzer: DiagnosticAnalyzer
 
     private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
     {
+        if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName,AnalyzeAssembly.AllHotfix))
+        {
+            return;
+        }
         
         if (!(context.Node is MemberAccessExpressionSyntax memberAccessExpressionSyntax))
         {

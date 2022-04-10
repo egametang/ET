@@ -29,7 +29,7 @@ namespace ET.Analyzer
         internal static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityFiledAccessAnalyzerRuleId,
             Title,
             MessageFormat,
-            DiagnosticCategories.Stateless,
+            DiagnosticCategories.Hotfix,
             DiagnosticSeverity.Error, true, Description);
         
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -37,6 +37,10 @@ namespace ET.Analyzer
         
         public override void Initialize(AnalysisContext context)
         {
+            if (!AnalyzerGlobalSetting.EnableAnalyzer)
+            {
+                return;
+            }
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
             context.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
@@ -44,6 +48,11 @@ namespace ET.Analyzer
 
         private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
+            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName,AnalyzeAssembly.AllHotfix))
+            {
+                return;
+            }
+            
             if (!(context.Node is MemberAccessExpressionSyntax memberAccessExpressionSyntax))
             {
                 return;
