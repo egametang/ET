@@ -2,6 +2,9 @@
 
 namespace ET
 {
+    [FriendClass(typeof(AOIManagerComponent))]
+    [FriendClass(typeof(AOIEntity))]
+    [FriendClass(typeof(Cell))]
     public static class AOIManagerComponentSystem
     {
         public static void Add(this AOIManagerComponent self, AOIEntity aoiEntity, float x, float y)

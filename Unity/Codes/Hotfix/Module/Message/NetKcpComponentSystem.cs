@@ -4,6 +4,7 @@ using System.Net;
 
 namespace ET
 {
+    [FriendClass(typeof(NetThreadComponent))]
     [ObjectSystem]
     public class NetKcpComponentAwakeSystem: AwakeSystem<NetKcpComponent, int>
     {
@@ -19,6 +20,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(NetThreadComponent))]
     [ObjectSystem]
     public class NetKcpComponentAwake1System: AwakeSystem<NetKcpComponent, IPEndPoint, int>
     {
@@ -45,6 +47,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(NetKcpComponent))]
     public static class NetKcpComponentSystem
     {
         public static void OnRead(this NetKcpComponent self, long channelId, MemoryStream memoryStream)

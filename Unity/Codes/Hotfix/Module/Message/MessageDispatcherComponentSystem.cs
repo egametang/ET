@@ -35,6 +35,7 @@ namespace ET
     /// <summary>
     /// 消息分发组件
     /// </summary>
+    [FriendClass(typeof(MessageDispatcherComponent))]
     public static class MessageDispatcherComponentHelper
     {
         public static void Load(this MessageDispatcherComponent self)

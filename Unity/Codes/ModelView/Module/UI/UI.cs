@@ -16,7 +16,7 @@ namespace ET
 	
 	public sealed class UI: Entity, IAwake<string, GameObject>
 	{
-		public GameObject GameObject;
+		public GameObject GameObject { get; set; }
 		
 		public string Name { get; private set; }
 

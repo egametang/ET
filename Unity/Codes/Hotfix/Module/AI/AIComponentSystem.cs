@@ -41,6 +41,8 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(AIComponent))]
+    [FriendClass(typeof(AIDispatcherComponent))]
     public static class AIComponentSystem
     {
         public static void Check(this AIComponent self)

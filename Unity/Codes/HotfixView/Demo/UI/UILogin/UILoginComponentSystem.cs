@@ -20,6 +20,7 @@ namespace ET
 		}
 	}
 	
+	[FriendClass(typeof(UILoginComponent))]
 	public static class UILoginComponentSystem
 	{
 		public static void OnLogin(this UILoginComponent self)

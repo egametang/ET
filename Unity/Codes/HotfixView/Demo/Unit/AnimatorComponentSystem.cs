@@ -32,6 +32,7 @@ namespace ET
 		}
 	}
 
+	[FriendClass(typeof(AnimatorComponent))]
 	public static class AnimatorComponentSystem
 	{
 		public static void Awake(this AnimatorComponent self)

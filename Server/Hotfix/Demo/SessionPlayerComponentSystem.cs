@@ -2,6 +2,7 @@
 
 namespace ET
 {
+	[FriendClass(typeof(SessionPlayerComponent))]
 	public static class SessionPlayerComponentSystem
 	{
 		public class SessionPlayerComponentDestroySystem: DestroySystem<SessionPlayerComponent>

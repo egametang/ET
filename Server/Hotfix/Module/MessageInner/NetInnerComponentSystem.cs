@@ -6,6 +6,7 @@ using System.Threading;
 
 namespace ET
 {
+    [FriendClass(typeof(NetThreadComponent))]
     [ObjectSystem]
     public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent, int>
     {
@@ -22,6 +23,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(NetThreadComponent))]
     [ObjectSystem]
     public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint, int>
     {
@@ -49,6 +51,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(NetInnerComponent))]
     public static class NetInnerComponentSystem
     {
         public static void OnRead(this NetInnerComponent self, long channelId, MemoryStream memoryStream)

@@ -589,6 +589,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+      <Project>{d1f2986b-b296-4a2d-8f12-be9f470014c3}</Project>
+      <Name>Analyzer</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Hotfix.csproj">
       <Project>{52f66610-896a-c4d1-9881-1a19df7ab80e}</Project>
       <Name>Unity.Hotfix</Name>

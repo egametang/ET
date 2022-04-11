@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    [FriendClass(typeof(UnitGateComponent))]
     public static class MessageHelper
     {
         public static void Broadcast(Unit unit, IActorMessage message)

@@ -13,6 +13,6 @@ namespace ET
 		
 		public Dictionary<string, AUIEvent> UIEvents = new Dictionary<string, AUIEvent>();
 		
-		public Dictionary<int, Transform> UILayers = new Dictionary<int, Transform>();
+		public Dictionary<int, Transform> UILayers { get; set;}= new Dictionary<int, Transform>();
 	}
 }

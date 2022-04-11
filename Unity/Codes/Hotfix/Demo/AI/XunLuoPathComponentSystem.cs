@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [FriendClass(typeof(XunLuoPathComponent))]
     public static class XunLuoPathComponentSystem
     {
         public static Vector3 GetCurrent(this XunLuoPathComponent self)

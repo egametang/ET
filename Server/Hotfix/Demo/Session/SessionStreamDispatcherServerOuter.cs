@@ -3,6 +3,7 @@ using System.IO;
 
 namespace ET
 {
+    [FriendClass(typeof(SessionPlayerComponent))]
     [SessionStreamDispatcher(SessionStreamDispatcherType.SessionStreamDispatcherServerOuter)]
     public class SessionStreamDispatcherServerOuter: ISessionStreamDispatcher
     {

@@ -46,6 +46,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(MoveComponent))]
     public static class MoveComponentSystem
     {
         public static bool IsArrived(this MoveComponent self)

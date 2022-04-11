@@ -32,6 +32,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(SessionStreamDispatcher))]
     public static class SessionStreamDispatcherSystem
     {
         public static void Load(this SessionStreamDispatcher self)
