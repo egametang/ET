@@ -14,9 +14,9 @@ namespace ET.Analyzer
     {
         private const string Title = "实体字段访问错误";
         
-        public const string MessageFormat = "实体: {0} 字段: {1} 只能在实体类生命周期组件或友元类(含有FriendClassAttribute)中访问";
+        private const string MessageFormat = "实体: {0} 字段: {1} 只能在实体类生命周期组件或友元类(含有FriendClassAttribute)中访问";
         
-        private const string Description = "请使用实体类属性或方法访问其他实体字段";
+        private const string Description = "请使用实体类属性或方法访问其他实体字段.";
         
         private const string EntityType = "ET.Entity";
         
@@ -26,7 +26,7 @@ namespace ET.Analyzer
 
         private const string FriendClassAttribute = "ET.FriendClassAttribute";
 
-        internal static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityFiledAccessAnalyzerRuleId,
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityFiledAccessAnalyzerRuleId,
             Title,
             MessageFormat,
             DiagnosticCategories.Hotfix,

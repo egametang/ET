@@ -5,6 +5,6 @@
         /// <summary>
         /// 是否开启项目的所有分析器
         /// </summary>
-        public static bool EnableAnalyzer = false;
+        public static bool EnableAnalyzer = true;
     }
 }

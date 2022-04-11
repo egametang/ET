@@ -11,13 +11,13 @@ namespace ET.Analyzer
     {
         private const string Title = "实体类限制多层继承";
         
-        public const string MessageFormat = "类: {0} 不能继承Entiy的子类 请直接继承Entity";
+        private const string MessageFormat = "类: {0} 不能继承Entiy的子类 请直接继承Entity";
         
-        private const string Description = "实体类限制多层继承";
+        private const string Description = "实体类限制多层继承.";
 
         private const string EntityType = "ET.Entity";
         
-        internal static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityClassDeclarationAnalyzerRuleId,
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityClassDeclarationAnalyzerRuleId,
             Title,
             MessageFormat,
             DiagnosticCategories.All,
