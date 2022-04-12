@@ -147,7 +147,7 @@ namespace ET.Analyzer
                     continue;
                 }
 
-                if (attributeData.ConstructorArguments[0].Value is INamedTypeSymbol namedTypeSymbol==false)
+                if (!(attributeData.ConstructorArguments[0].Value is INamedTypeSymbol namedTypeSymbol))
                 {
                     continue;
                 }
