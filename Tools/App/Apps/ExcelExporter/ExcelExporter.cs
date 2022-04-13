@@ -556,7 +556,10 @@ namespace ET
                 case "int[]":
                 case "int32[]":
                 case "long[]":
-                    return $"[{value}]";
+                    {
+                        value = value.Replace("{", "").Replace("}", "");
+                        return $"[{value}]";
+                    }
                 case "string[]":
                 case "int[][]":
                     return $"[{value}]";
@@ -567,12 +570,14 @@ namespace ET
                 case "long":
                 case "float":
                 case "double":
-                    if (value == "")
                     {
-                        return "0";
+                        value = value.Replace("{", "").Replace("}", "");
+                        if (value == "")
+                        {
+                            return "0";
+                        }
+                        return value;
                     }
-
-                    return value;
                 case "string":
                     return $"\"{value}\"";
                 case "AttrConfig":
