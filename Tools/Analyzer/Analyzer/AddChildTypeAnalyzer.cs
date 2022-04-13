@@ -18,7 +18,7 @@ namespace ET.Analyzer
 
         private const string Description = "请使用被允许的ChildType 或添加该类型至ChildType.";
 
-        private static readonly string[] AddChildMethods = new[] { "AddChild", "AddChildWithId" };
+        private static readonly string[] AddChildMethods = { "AddChild", "AddChildWithId" };
 
         private static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.AddChildTypeAnalyzerRuleId,
@@ -56,7 +56,7 @@ namespace ET.Analyzer
             }
 
             // 筛选出 AddChild函数syntax
-            var methodName = memberAccessExpressionSyntax.Name.Identifier.Text;
+            string methodName = memberAccessExpressionSyntax.Name.Identifier.Text;
             if (!AddChildMethods.Contains(methodName))
             {
                 return;
@@ -68,7 +68,7 @@ namespace ET.Analyzer
                 return;
             }
 
-            var identifierSyntax = memberAccessExpressionSyntax.GetFirstChild<IdentifierNameSyntax>();
+            IdentifierNameSyntax? identifierSyntax = memberAccessExpressionSyntax.GetFirstChild<IdentifierNameSyntax>();
             if (identifierSyntax == null)
             {
                 return;
@@ -149,7 +149,7 @@ namespace ET.Analyzer
             // addChild为非泛型调用
             else
             {
-                var firstArgumentSyntax = invocationExpressionSyntax.GetFirstChild<ArgumentListSyntax>()?.GetFirstChild<ArgumentSyntax>()
+                SyntaxNode? firstArgumentSyntax = invocationExpressionSyntax.GetFirstChild<ArgumentListSyntax>()?.GetFirstChild<ArgumentSyntax>()
                         ?.ChildNodes().First();
                 if (firstArgumentSyntax == null)
                 {

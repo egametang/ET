@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class ConfigLoader: IConfigLoader
+       public class ConfigLoader: IConfigLoader
     {
         public void GetAllConfigBytes(Dictionary<string, byte[]> output)
         {

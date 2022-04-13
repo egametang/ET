@@ -8,6 +8,10 @@
 
         public const string EntityClassDeclarationAnalyzerRuleId = "ET00003";
 
+        public const string HotfixProjectFieldDeclarationAnalyzerRuleId = "ET00004";
+
+        public const string ClassDeclarationInHotfixAnalyzerRuleId = "ET00005";
+
     }
 }
 
