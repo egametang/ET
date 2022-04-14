@@ -155,14 +155,6 @@ namespace ET
 
         public void Update()
         {
-            if (this.TimeId.Count == 0)
-            {
-                return;
-            }
-
-            timeNow = TimeHelper.ServerNow();
-
-
             #region 每帧执行的timer，不用foreach TimeId，减少GC
 
             int count = this.everyFrameTimer.Count;
@@ -178,7 +170,13 @@ namespace ET
             }
 
             #endregion
+            
+            if (this.TimeId.Count == 0)
+            {
+                return;
+            }
 
+            timeNow = TimeHelper.ServerNow();
 
             if (timeNow < this.minTime)
             {
