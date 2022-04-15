@@ -4,19 +4,19 @@ using UnityEngine;
 
 namespace ET
 {
-	[ObjectSystem]
-	public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
-	{
-		public override void Awake(UI self, string name, GameObject gameObject)
-		{
-
-			self.Awake(name, gameObject);
-		}
-	}
-	
 	public sealed class UI: Entity, IAwake<string, GameObject>
 	{
-		public GameObject GameObject;
+		[ObjectSystem]
+		public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
+		{
+			public override void Awake(UI self, string name, GameObject gameObject)
+			{
+
+				self.Awake(name, gameObject);
+			}
+		}
+		
+		public GameObject GameObject { get; set; }
 		
 		public string Name { get; private set; }
 

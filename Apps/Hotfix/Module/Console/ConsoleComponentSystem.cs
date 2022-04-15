@@ -5,28 +5,30 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class ConsoleComponentAwakeSystem: AwakeSystem<ConsoleComponent>
-    {
-        public override void Awake(ConsoleComponent self)
-        {
-            self.Load();
-            
-            self.Start().Coroutine();
-        }
-    }
-
-    [ObjectSystem]
-    public class ConsoleComponentLoadSystem: LoadSystem<ConsoleComponent>
-    {
-        public override void Load(ConsoleComponent self)
-        {
-            self.Load();
-        }
-    }
-
+    [FriendClass(typeof(ConsoleComponent))]
+    [FriendClass(typeof(ModeContex))]
     public static class ConsoleComponentSystem
     {
+        [ObjectSystem]
+        public class ConsoleComponentAwakeSystem: AwakeSystem<ConsoleComponent>
+        {
+            public override void Awake(ConsoleComponent self)
+            {
+                self.Load();
+            
+                self.Start().Coroutine();
+            }
+        }
+
+        [ObjectSystem]
+        public class ConsoleComponentLoadSystem: LoadSystem<ConsoleComponent>
+        {
+            public override void Load(ConsoleComponent self)
+            {
+                self.Load();
+            }
+        }
+        
         public static void Load(this ConsoleComponent self)
         {
             self.Handlers.Clear();

@@ -3,40 +3,41 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class MessageDispatcherComponentAwakeSystem: AwakeSystem<MessageDispatcherComponent>
-    {
-        public override void Awake(MessageDispatcherComponent self)
-        {
-            MessageDispatcherComponent.Instance = self;
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class MessageDispatcherComponentLoadSystem: LoadSystem<MessageDispatcherComponent>
-    {
-        public override void Load(MessageDispatcherComponent self)
-        {
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
-    {
-        public override void Destroy(MessageDispatcherComponent self)
-        {
-            MessageDispatcherComponent.Instance = null;
-            self.Handlers.Clear();
-        }
-    }
-
     /// <summary>
     /// 消息分发组件
     /// </summary>
+    [FriendClass(typeof(MessageDispatcherComponent))]
     public static class MessageDispatcherComponentHelper
     {
+        [ObjectSystem]
+        public class MessageDispatcherComponentAwakeSystem: AwakeSystem<MessageDispatcherComponent>
+        {
+            public override void Awake(MessageDispatcherComponent self)
+            {
+                MessageDispatcherComponent.Instance = self;
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class MessageDispatcherComponentLoadSystem: LoadSystem<MessageDispatcherComponent>
+        {
+            public override void Load(MessageDispatcherComponent self)
+            {
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
+        {
+            public override void Destroy(MessageDispatcherComponent self)
+            {
+                MessageDispatcherComponent.Instance = null;
+                self.Handlers.Clear();
+            }
+        }
+        
         public static void Load(this MessageDispatcherComponent self)
         {
             self.Handlers.Clear();

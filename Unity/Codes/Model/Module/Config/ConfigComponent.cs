@@ -8,7 +8,7 @@ namespace ET
     /// </summary>
     public class ConfigComponent: Entity, IAwake, IDestroy
     {
-        public IConfigLoader ConfigLoader;
+        public IConfigLoader ConfigLoader { get; set; }
         
         public static ConfigComponent Instance;
 		

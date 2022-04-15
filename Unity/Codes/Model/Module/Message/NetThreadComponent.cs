@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
 
 namespace ET
 {
@@ -13,7 +10,7 @@ namespace ET
         public const int recvMaxIdleTime = 60000;
         public const int sendMaxIdleTime = 60000;
 
-        public ThreadSynchronizationContext ThreadSynchronizationContext;
+        public ThreadSynchronizationContext ThreadSynchronizationContext { get; set; }
         
         public HashSet<AService> Services = new HashSet<AService>();
     }

@@ -2,38 +2,39 @@
 
 namespace ET
 {
-    public class SceneChangeComponentUpdateSystem: UpdateSystem<SceneChangeComponent>
-    {
-        public override void Update(SceneChangeComponent self)
-        {
-            if (!self.loadMapOperation.isDone)
-            {
-                return;
-            }
-
-            if (self.tcs == null)
-            {
-                return;
-            }
-            
-            ETTask tcs = self.tcs;
-            self.tcs = null;
-            tcs.SetResult();
-        }
-    }
-	
-    
-    public class SceneChangeComponentDestroySystem: DestroySystem<SceneChangeComponent>
-    {
-        public override void Destroy(SceneChangeComponent self)
-        {
-            self.loadMapOperation = null;
-            self.tcs = null;
-        }
-    }
-
+    [FriendClass(typeof(SceneChangeComponent))]
     public static class SceneChangeComponentSystem
     {
+        public class SceneChangeComponentUpdateSystem: UpdateSystem<SceneChangeComponent>
+        {
+            public override void Update(SceneChangeComponent self)
+            {
+                if (!self.loadMapOperation.isDone)
+                {
+                    return;
+                }
+
+                if (self.tcs == null)
+                {
+                    return;
+                }
+            
+                ETTask tcs = self.tcs;
+                self.tcs = null;
+                tcs.SetResult();
+            }
+        }
+	
+    
+        public class SceneChangeComponentDestroySystem: DestroySystem<SceneChangeComponent>
+        {
+            public override void Destroy(SceneChangeComponent self)
+            {
+                self.loadMapOperation = null;
+                self.tcs = null;
+            }
+        }
+        
         public static async ETTask ChangeSceneAsync(this SceneChangeComponent self, string sceneName)
         {
             self.tcs = ETTask.Create(true);

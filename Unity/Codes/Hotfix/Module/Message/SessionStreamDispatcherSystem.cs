@@ -4,36 +4,37 @@ using System.IO;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class SessionStreamDispatcherAwakeSystem: AwakeSystem<SessionStreamDispatcher>
-    {
-        public override void Awake(SessionStreamDispatcher self)
-        {
-            SessionStreamDispatcher.Instance = self;
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class SessionStreamDispatcherLoadSystem: LoadSystem<SessionStreamDispatcher>
-    {
-        public override void Load(SessionStreamDispatcher self)
-        {
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class SessionStreamDispatcherDestroySystem: DestroySystem<SessionStreamDispatcher>
-    {
-        public override void Destroy(SessionStreamDispatcher self)
-        {
-            SessionStreamDispatcher.Instance = null;
-        }
-    }
-    
+    [FriendClass(typeof(SessionStreamDispatcher))]
     public static class SessionStreamDispatcherSystem
     {
+        [ObjectSystem]
+        public class SessionStreamDispatcherAwakeSystem: AwakeSystem<SessionStreamDispatcher>
+        {
+            public override void Awake(SessionStreamDispatcher self)
+            {
+                SessionStreamDispatcher.Instance = self;
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class SessionStreamDispatcherLoadSystem: LoadSystem<SessionStreamDispatcher>
+        {
+            public override void Load(SessionStreamDispatcher self)
+            {
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class SessionStreamDispatcherDestroySystem: DestroySystem<SessionStreamDispatcher>
+        {
+            public override void Destroy(SessionStreamDispatcher self)
+            {
+                SessionStreamDispatcher.Instance = null;
+            }
+        }
+        
         public static void Load(this SessionStreamDispatcher self)
         {
             self.Dispatchers = new ISessionStreamDispatcher[100];

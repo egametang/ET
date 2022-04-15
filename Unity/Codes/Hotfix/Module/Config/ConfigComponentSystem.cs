@@ -4,26 +4,27 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-	[ObjectSystem]
-    public class ConfigAwakeSystem : AwakeSystem<ConfigComponent>
-    {
-        public override void Awake(ConfigComponent self)
-        {
-	        ConfigComponent.Instance = self;
-        }
-    }
-    
-    [ObjectSystem]
-    public class ConfigDestroySystem : DestroySystem<ConfigComponent>
-    {
-	    public override void Destroy(ConfigComponent self)
-	    {
-		    ConfigComponent.Instance = null;
-	    }
-    }
-    
-    public static class ConfigComponentSystem
+	[FriendClass(typeof(ConfigComponent))]
+	public static class ConfigComponentSystem
 	{
+		[ObjectSystem]
+		public class ConfigAwakeSystem : AwakeSystem<ConfigComponent>
+		{
+			public override void Awake(ConfigComponent self)
+			{
+				ConfigComponent.Instance = self;
+			}
+		}
+    
+		[ObjectSystem]
+		public class ConfigDestroySystem : DestroySystem<ConfigComponent>
+		{
+			public override void Destroy(ConfigComponent self)
+			{
+				ConfigComponent.Instance = null;
+			}
+		}
+		
 		public static void LoadOneConfig(this ConfigComponent self, Type configType)
 		{
 			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(configType.FullName);

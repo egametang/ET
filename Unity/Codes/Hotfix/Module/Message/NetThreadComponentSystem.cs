@@ -3,40 +3,40 @@ using System.Threading;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class NetThreadComponentAwakeSystem: AwakeSystem<NetThreadComponent>
-    {
-        public override void Awake(NetThreadComponent self)
-        {
-            NetThreadComponent.Instance = self;
-            
-            self.ThreadSynchronizationContext = ThreadSynchronizationContext.Instance;
-        }
-    }
-
-    [ObjectSystem]
-    public class NetThreadComponentUpdateSystem: LateUpdateSystem<NetThreadComponent>
-    {
-        public override void LateUpdate(NetThreadComponent self)
-        {
-            foreach (AService service in self.Services)
-            {
-                service.Update();
-            }
-        }
-    }
-    
-    [ObjectSystem]
-    public class NetThreadComponentDestroySystem: DestroySystem<NetThreadComponent>
-    {
-        public override void Destroy(NetThreadComponent self)
-        {
-            self.Stop();
-        }
-    }
-    
+    [FriendClass(typeof(NetThreadComponent))]
     public static class NetThreadComponentSystem
     {
+        [ObjectSystem]
+        public class NetThreadComponentAwakeSystem: AwakeSystem<NetThreadComponent>
+        {
+            public override void Awake(NetThreadComponent self)
+            {
+                NetThreadComponent.Instance = self;
+            
+                self.ThreadSynchronizationContext = ThreadSynchronizationContext.Instance;
+            }
+        }
+
+        [ObjectSystem]
+        public class NetThreadComponentUpdateSystem: LateUpdateSystem<NetThreadComponent>
+        {
+            public override void LateUpdate(NetThreadComponent self)
+            {
+                foreach (AService service in self.Services)
+                {
+                    service.Update();
+                }
+            }
+        }
+    
+        [ObjectSystem]
+        public class NetThreadComponentDestroySystem: DestroySystem<NetThreadComponent>
+        {
+            public override void Destroy(NetThreadComponent self)
+            {
+                self.Stop();
+            }
+        }
 
         public static void Stop(this NetThreadComponent self)
         {

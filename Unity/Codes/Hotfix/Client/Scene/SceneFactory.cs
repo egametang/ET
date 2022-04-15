@@ -9,7 +9,7 @@ namespace ET.Client
             zoneScene.AddComponent<NetKcpComponent, int>(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter);
 			zoneScene.AddComponent<CurrentScenesComponent>();
             zoneScene.AddComponent<ObjectWait>();
-            zoneScene.AddComponent<Client.PlayerComponent>();
+            zoneScene.AddComponent<PlayerComponent>();
             
             Game.EventSystem.Publish(new EventType.AfterCreateZoneScene() {ZoneScene = zoneScene});
             return zoneScene;

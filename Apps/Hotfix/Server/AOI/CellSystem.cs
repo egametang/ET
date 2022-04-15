@@ -3,21 +3,22 @@ using System.Text;
 
 namespace ET.Server
 {
-    [ObjectSystem]
-    public class CellDestroySystem: DestroySystem<Cell>
-    {
-        public override void Destroy(Cell self)
-        {
-            self.AOIUnits.Clear();
-
-            self.SubsEnterEntities.Clear();
-
-            self.SubsLeaveEntities.Clear();
-        }
-    }
-
+    [FriendClass(typeof(Cell))]
     public static class CellSystem
     {
+        [ObjectSystem]
+        public class CellDestroySystem: DestroySystem<Cell>
+        {
+            public override void Destroy(Cell self)
+            {
+                self.AOIUnits.Clear();
+
+                self.SubsEnterEntities.Clear();
+
+                self.SubsLeaveEntities.Clear();
+            }
+        }
+        
         public static void Add(this Cell self, AOIEntity aoiEntity)
         {
             self.AOIUnits.Add(aoiEntity.Id, aoiEntity);

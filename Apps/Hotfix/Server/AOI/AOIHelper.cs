@@ -2,6 +2,7 @@
 
 namespace ET.Server
 {
+    [FriendClass(typeof(AOIEntity))]
     public static class AOIHelper
     {
         public static long CreateCellId(int x, int y)

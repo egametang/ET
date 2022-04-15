@@ -4,57 +4,58 @@ using System.Net;
 
 namespace ET
 {
-    public class HttpComponentAwakeSystem : AwakeSystem<HttpComponent, string>
-    {
-        public override void Awake(HttpComponent self, string address)
-        {
-            try
-            {
-                self.Load();
-                
-                self.Listener = new HttpListener();
-
-                foreach (string s in address.Split(';'))
-                {
-                    if (s.Trim() == "")
-                    {
-                        continue;
-                    }
-                    self.Listener.Prefixes.Add(s);
-                }
-
-                self.Listener.Start();
-
-                self.Accept().Coroutine();
-            }
-            catch (HttpListenerException e)
-            {
-                throw new Exception($"请现在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
-            }
-        }
-    }
-
-    [ObjectSystem]
-    public class HttpComponentLoadSystem: LoadSystem<HttpComponent>
-    {
-        public override void Load(HttpComponent self)
-        {
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class HttpComponentDestroySystem: DestroySystem<HttpComponent>
-    {
-        public override void Destroy(HttpComponent self)
-        {
-            self.Listener.Stop();
-            self.Listener.Close();
-        }
-    }
-    
+    [FriendClass(typeof(HttpComponent))]
     public static class HttpComponentSystem
     {
+        public class HttpComponentAwakeSystem : AwakeSystem<HttpComponent, string>
+        {
+            public override void Awake(HttpComponent self, string address)
+            {
+                try
+                {
+                    self.Load();
+                
+                    self.Listener = new HttpListener();
+
+                    foreach (string s in address.Split(';'))
+                    {
+                        if (s.Trim() == "")
+                        {
+                            continue;
+                        }
+                        self.Listener.Prefixes.Add(s);
+                    }
+
+                    self.Listener.Start();
+
+                    self.Accept().Coroutine();
+                }
+                catch (HttpListenerException e)
+                {
+                    throw new Exception($"请现在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
+                }
+            }
+        }
+
+        [ObjectSystem]
+        public class HttpComponentLoadSystem: LoadSystem<HttpComponent>
+        {
+            public override void Load(HttpComponent self)
+            {
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class HttpComponentDestroySystem: DestroySystem<HttpComponent>
+        {
+            public override void Destroy(HttpComponent self)
+            {
+                self.Listener.Stop();
+                self.Listener.Close();
+            }
+        }
+        
         public static void Load(this HttpComponent self)
         {
             self.dispatcher = new Dictionary<string, IHttpHandler>();

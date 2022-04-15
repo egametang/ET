@@ -6,6 +6,6 @@
     public class MailBoxComponent: Entity, IAwake, IAwake<MailboxType>
     {
         // Mailbox的类型
-        public MailboxType MailboxType;
+        public MailboxType MailboxType { get; set; }
     }
 }

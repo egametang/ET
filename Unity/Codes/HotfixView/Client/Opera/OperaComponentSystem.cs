@@ -3,26 +3,27 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [ObjectSystem]
-    public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>
-    {
-        public override void Awake(OperaComponent self)
-        {
-            self.mapMask = LayerMask.GetMask("Map");
-        }
-    }
-
-    [ObjectSystem]
-    public class OperaComponentUpdateSystem : UpdateSystem<OperaComponent>
-    {
-        public override void Update(OperaComponent self)
-        {
-            self.Update();
-        }
-    }
-    
+    [FriendClass(typeof(OperaComponent))]
     public static class OperaComponentSystem
     {
+        [ObjectSystem]
+        public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>
+        {
+            public override void Awake(OperaComponent self)
+            {
+                self.mapMask = LayerMask.GetMask("Map");
+            }
+        }
+
+        [ObjectSystem]
+        public class OperaComponentUpdateSystem : UpdateSystem<OperaComponent>
+        {
+            public override void Update(OperaComponent self)
+            {
+                self.Update();
+            }
+        }
+        
         public static void Update(this OperaComponent self)
         {
             if (Input.GetMouseButtonDown(1))

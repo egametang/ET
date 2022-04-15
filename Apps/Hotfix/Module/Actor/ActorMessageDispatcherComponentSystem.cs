@@ -2,40 +2,41 @@
 
 namespace ET
 {
-    [ObjectSystem]
-    public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
-    {
-        public override void Awake(ActorMessageDispatcherComponent self)
-        {
-            ActorMessageDispatcherComponent.Instance = self;
-            self.Awake();
-        }
-    }
-
-    [ObjectSystem]
-    public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
-    {
-        public override void Load(ActorMessageDispatcherComponent self)
-        {
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
-    {
-        public override void Destroy(ActorMessageDispatcherComponent self)
-        {
-            self.ActorMessageHandlers.Clear();
-            ActorMessageDispatcherComponent.Instance = null;
-        }
-    }
-
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
+    [FriendClass(typeof(ActorMessageDispatcherComponent))]
     public static class ActorMessageDispatcherComponentHelper
     {
+        [ObjectSystem]
+        public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
+        {
+            public override void Awake(ActorMessageDispatcherComponent self)
+            {
+                ActorMessageDispatcherComponent.Instance = self;
+                self.Awake();
+            }
+        }
+
+        [ObjectSystem]
+        public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
+        {
+            public override void Load(ActorMessageDispatcherComponent self)
+            {
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
+        {
+            public override void Destroy(ActorMessageDispatcherComponent self)
+            {
+                self.ActorMessageHandlers.Clear();
+                ActorMessageDispatcherComponent.Instance = null;
+            }
+        }
+        
         public static void Awake(this ActorMessageDispatcherComponent self)
         {
             self.Load();

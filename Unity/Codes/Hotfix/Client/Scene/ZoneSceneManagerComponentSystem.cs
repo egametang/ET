@@ -2,26 +2,27 @@
 
 namespace ET.Client
 {
-    [ObjectSystem]
-    public class ZoneSceneManagerComponentAwakeSystem: AwakeSystem<ZoneSceneManagerComponent>
-    {
-        public override void Awake(ZoneSceneManagerComponent self)
-        {
-            ZoneSceneManagerComponent.Instance = self;
-        }
-    }
-
-    [ObjectSystem]
-    public class ZoneSceneManagerComponentDestroySystem: DestroySystem<ZoneSceneManagerComponent>
-    {
-        public override void Destroy(ZoneSceneManagerComponent self)
-        {
-            self.ZoneScenes.Clear();
-        }
-    }
-
+    [FriendClass(typeof(ZoneSceneManagerComponent))]
     public static class ZoneSceneManagerComponentSystem
     {
+        [ObjectSystem]
+        public class ZoneSceneManagerComponentAwakeSystem: AwakeSystem<ZoneSceneManagerComponent>
+        {
+            public override void Awake(ZoneSceneManagerComponent self)
+            {
+                ZoneSceneManagerComponent.Instance = self;
+            }
+        }
+
+        [ObjectSystem]
+        public class ZoneSceneManagerComponentDestroySystem: DestroySystem<ZoneSceneManagerComponent>
+        {
+            public override void Destroy(ZoneSceneManagerComponent self)
+            {
+                self.ZoneScenes.Clear();
+            }
+        }
+        
         public static Scene ZoneScene(this Entity entity)
         {
             return ZoneSceneManagerComponent.Instance.Get(entity.DomainZone());

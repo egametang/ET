@@ -3,37 +3,38 @@ using UnityEngine;
 
 namespace ET
 {
-	[ObjectSystem]
-	public class AnimatorComponentAwakeSystem : AwakeSystem<AnimatorComponent>
-	{
-		public override void Awake(AnimatorComponent self)
-		{
-			self.Awake();
-		}
-	}
-
-	[ObjectSystem]
-	public class AnimatorComponentUpdateSystem : UpdateSystem<AnimatorComponent>
-	{
-		public override void Update(AnimatorComponent self)
-		{
-			self.Update();
-		}
-	}
-	
-	[ObjectSystem]
-	public class AnimatorComponentDestroySystem : DestroySystem<AnimatorComponent>
-	{
-		public override void Destroy(AnimatorComponent self)
-		{
-			self.animationClips = null;
-			self.Parameter = null;
-			self.Animator = null;
-		}
-	}
-
+	[FriendClass(typeof(AnimatorComponent))]
 	public static class AnimatorComponentSystem
 	{
+		[ObjectSystem]
+		public class AnimatorComponentAwakeSystem : AwakeSystem<AnimatorComponent>
+		{
+			public override void Awake(AnimatorComponent self)
+			{
+				self.Awake();
+			}
+		}
+
+		[ObjectSystem]
+		public class AnimatorComponentUpdateSystem : UpdateSystem<AnimatorComponent>
+		{
+			public override void Update(AnimatorComponent self)
+			{
+				self.Update();
+			}
+		}
+	
+		[ObjectSystem]
+		public class AnimatorComponentDestroySystem : DestroySystem<AnimatorComponent>
+		{
+			public override void Destroy(AnimatorComponent self)
+			{
+				self.animationClips = null;
+				self.Parameter = null;
+				self.Animator = null;
+			}
+		}
+		
 		public static void Awake(this AnimatorComponent self)
 		{
 			Animator animator = self.Parent.GetComponent<GameObjectComponent>().GameObject.GetComponent<Animator>();

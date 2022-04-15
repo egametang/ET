@@ -2,6 +2,6 @@
 {
     public class GateMapComponent: Entity, IAwake
     {
-        public Scene Scene;
+        public Scene Scene { get; set; }
     }
 }

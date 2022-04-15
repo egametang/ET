@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace ET
 {

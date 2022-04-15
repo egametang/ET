@@ -10,7 +10,7 @@
 
 	public class UnitGateComponent : Entity, IAwake<long>, ITransfer
 	{
-		public long GateSessionActorId;
+		public long GateSessionActorId { get; private set; }
 
 		public void Awake(long gateSessionId)
 		{

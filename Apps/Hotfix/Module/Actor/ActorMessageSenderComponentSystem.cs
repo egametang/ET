@@ -3,47 +3,48 @@ using System.IO;
 
 namespace ET
 {
-    [Timer(TimerType.ActorMessageSenderChecker)]
-    public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
-    {
-        public override void Run(ActorMessageSenderComponent self)
-        {
-            try
-            {
-                self.Check();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
-            }
-        }
-    }
-    
-    [ObjectSystem]
-    public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
-    {
-        public override void Awake(ActorMessageSenderComponent self)
-        {
-            ActorMessageSenderComponent.Instance = self;
-
-            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerType.ActorMessageSenderChecker, self);
-        }
-    }
-
-    [ObjectSystem]
-    public class ActorMessageSenderComponentDestroySystem: DestroySystem<ActorMessageSenderComponent>
-    {
-        public override void Destroy(ActorMessageSenderComponent self)
-        {
-            ActorMessageSenderComponent.Instance = null;
-            TimerComponent.Instance.Remove(ref self.TimeoutCheckTimer);
-            self.TimeoutCheckTimer = 0;
-            self.TimeoutActorMessageSenders.Clear();
-        }
-    }
-
+    [FriendClass(typeof(ActorMessageSenderComponent))]
     public static class ActorMessageSenderComponentSystem
     {
+        [Timer(TimerType.ActorMessageSenderChecker)]
+        public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
+        {
+            public override void Run(ActorMessageSenderComponent self)
+            {
+                try
+                {
+                    self.Check();
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"move timer error: {self.Id}\n{e}");
+                }
+            }
+        }
+    
+        [ObjectSystem]
+        public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
+        {
+            public override void Awake(ActorMessageSenderComponent self)
+            {
+                ActorMessageSenderComponent.Instance = self;
+
+                self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerType.ActorMessageSenderChecker, self);
+            }
+        }
+
+        [ObjectSystem]
+        public class ActorMessageSenderComponentDestroySystem: DestroySystem<ActorMessageSenderComponent>
+        {
+            public override void Destroy(ActorMessageSenderComponent self)
+            {
+                ActorMessageSenderComponent.Instance = null;
+                TimerComponent.Instance.Remove(ref self.TimeoutCheckTimer);
+                self.TimeoutCheckTimer = 0;
+                self.TimeoutActorMessageSenders.Clear();
+            }
+        }
+        
         public static void Run(ActorMessageSender self, IActorResponse response)
         {
             if (response.Error == ErrorCore.ERR_ActorTimeout)

@@ -3,27 +3,29 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class RobotCaseDispatcherComponentAwakeSystem: AwakeSystem<RobotCaseDispatcherComponent>
-    {
-        public override void Awake(RobotCaseDispatcherComponent self)
-        {
-            RobotCaseDispatcherComponent.Instance = self;
-            self.Load();
-        }
-    }
-
-    [ObjectSystem]
-    public class RobotCaseDispatcherComponentLoadSystem: LoadSystem<RobotCaseDispatcherComponent>
-    {
-        public override void Load(RobotCaseDispatcherComponent self)
-        {
-            self.Load();
-        }
-    }
-    
+    [FriendClass(typeof(RobotCaseDispatcherComponent))]
+    [FriendClass(typeof(RobotCase))]
     public static class RobotCaseDispatcherComponentSystem
     {
+        [ObjectSystem]
+        public class RobotCaseDispatcherComponentAwakeSystem: AwakeSystem<RobotCaseDispatcherComponent>
+        {
+            public override void Awake(RobotCaseDispatcherComponent self)
+            {
+                RobotCaseDispatcherComponent.Instance = self;
+                self.Load();
+            }
+        }
+
+        [ObjectSystem]
+        public class RobotCaseDispatcherComponentLoadSystem: LoadSystem<RobotCaseDispatcherComponent>
+        {
+            public override void Load(RobotCaseDispatcherComponent self)
+            {
+                self.Load();
+            }
+        }
+        
         public static void Load(this RobotCaseDispatcherComponent self)
         {
             self.Dictionary.Clear();

@@ -44,6 +44,7 @@ namespace ET
             string arguments = $"Apps.dll" + 
                     $" --Process={startProcessConfig.Id}" +
                     $" --AppType=Server" +  
+                    $" --StartConfig={Game.Options.StartConfig}" +
                     $" --Develop={Game.Options.Develop}" +
                     $" --CreateScenes={createScenes}" +
                     $" --LogLevel={Game.Options.LogLevel}";

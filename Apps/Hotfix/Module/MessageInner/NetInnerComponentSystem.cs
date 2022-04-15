@@ -1,56 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Net;
-using System.Threading;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent, int>
-    {
-        public override void Awake(NetInnerComponent self, int sessionStreamDispatcherType)
-        {
-            NetInnerComponent.Instance = self;
-            self.SessionStreamDispatcherType = sessionStreamDispatcherType;
-            
-            self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Inner);
-            self.Service.ErrorCallback += self.OnError;
-            self.Service.ReadCallback += self.OnRead;
-
-            NetThreadComponent.Instance.Add(self.Service);
-        }
-    }
-
-    [ObjectSystem]
-    public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint, int>
-    {
-        public override void Awake(NetInnerComponent self, IPEndPoint address, int sessionStreamDispatcherType)
-        {
-            NetInnerComponent.Instance = self;
-            self.SessionStreamDispatcherType = sessionStreamDispatcherType;
-
-            self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Inner);
-            self.Service.ErrorCallback += self.OnError;
-            self.Service.ReadCallback += self.OnRead;
-            self.Service.AcceptCallback += self.OnAccept;
-
-            NetThreadComponent.Instance.Add(self.Service);
-        }
-    }
-
-    [ObjectSystem]
-    public class NetInnerComponentDestroySystem: DestroySystem<NetInnerComponent>
-    {
-        public override void Destroy(NetInnerComponent self)
-        {
-            NetThreadComponent.Instance.Remove(self.Service);
-            self.Service.Destroy();
-        }
-    }
-
+    [FriendClass(typeof(NetInnerComponent))]
+    [FriendClass(typeof(NetThreadComponent))]
     public static class NetInnerComponentSystem
     {
+        [ObjectSystem]
+        public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent, int>
+        {
+            public override void Awake(NetInnerComponent self, int sessionStreamDispatcherType)
+            {
+                NetInnerComponent.Instance = self;
+                self.SessionStreamDispatcherType = sessionStreamDispatcherType;
+            
+                self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Inner);
+                self.Service.ErrorCallback += self.OnError;
+                self.Service.ReadCallback += self.OnRead;
+
+                NetThreadComponent.Instance.Add(self.Service);
+            }
+        }
+
+        [ObjectSystem]
+        public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint, int>
+        {
+            public override void Awake(NetInnerComponent self, IPEndPoint address, int sessionStreamDispatcherType)
+            {
+                NetInnerComponent.Instance = self;
+                self.SessionStreamDispatcherType = sessionStreamDispatcherType;
+
+                self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Inner);
+                self.Service.ErrorCallback += self.OnError;
+                self.Service.ReadCallback += self.OnRead;
+                self.Service.AcceptCallback += self.OnAccept;
+
+                NetThreadComponent.Instance.Add(self.Service);
+            }
+        }
+
+        [ObjectSystem]
+        public class NetInnerComponentDestroySystem: DestroySystem<NetInnerComponent>
+        {
+            public override void Destroy(NetInnerComponent self)
+            {
+                NetThreadComponent.Instance.Remove(self.Service);
+                self.Service.Destroy();
+            }
+        }
+
+        
         public static void OnRead(this NetInnerComponent self, long channelId, MemoryStream memoryStream)
         {
             Session session = self.GetChild<Session>(channelId);

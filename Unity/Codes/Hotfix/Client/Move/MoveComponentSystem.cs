@@ -4,50 +4,51 @@ using UnityEngine;
 
 namespace ET
 {
-    [Timer(TimerType.MoveTimer)]
-    public class MoveTimer: ATimer<MoveComponent>
-    {
-        public override void Run(MoveComponent self)
-        {
-            try
-            {
-                self.MoveForward(false);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
-            }
-        }
-    }
-    
-    [ObjectSystem]
-    public class MoveComponentDestroySystem: DestroySystem<MoveComponent>
-    {
-        public override void Destroy(MoveComponent self)
-        {
-            self.Clear();
-        }
-    }
-
-    [ObjectSystem]
-    public class MoveComponentAwakeSystem: AwakeSystem<MoveComponent>
-    {
-        public override void Awake(MoveComponent self)
-        {
-            self.StartTime = 0;
-            self.StartPos = Vector3.zero;
-            self.NeedTime = 0;
-            self.MoveTimer = 0;
-            self.Callback = null;
-            self.Targets.Clear();
-            self.Speed = 0;
-            self.N = 0;
-            self.TurnTime = 0;
-        }
-    }
-
+    [FriendClass(typeof(MoveComponent))]
     public static class MoveComponentSystem
     {
+        [Timer(TimerType.MoveTimer)]
+        public class MoveTimer: ATimer<MoveComponent>
+        {
+            public override void Run(MoveComponent self)
+            {
+                try
+                {
+                    self.MoveForward(false);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"move timer error: {self.Id}\n{e}");
+                }
+            }
+        }
+    
+        [ObjectSystem]
+        public class MoveComponentDestroySystem: DestroySystem<MoveComponent>
+        {
+            public override void Destroy(MoveComponent self)
+            {
+                self.Clear();
+            }
+        }
+
+        [ObjectSystem]
+        public class MoveComponentAwakeSystem: AwakeSystem<MoveComponent>
+        {
+            public override void Awake(MoveComponent self)
+            {
+                self.StartTime = 0;
+                self.StartPos = Vector3.zero;
+                self.NeedTime = 0;
+                self.MoveTimer = 0;
+                self.Callback = null;
+                self.Targets.Clear();
+                self.Speed = 0;
+                self.N = 0;
+                self.TurnTime = 0;
+            }
+        }
+        
         public static bool IsArrived(this MoveComponent self)
         {
             return self.Targets.Count == 0;

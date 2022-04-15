@@ -2,6 +2,6 @@
 {
     public class PlayerComponent: Entity, IAwake
     {
-        public long MyId;
+        public long MyId { get; set; }
     }
 }

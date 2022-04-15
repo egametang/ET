@@ -14,7 +14,7 @@
 				{
 					continue;
 				}
-				Unit unit = Client.UnitFactory.Create(currentScene, unitInfo);
+				Unit unit = UnitFactory.Create(currentScene, unitInfo);
 			}
 			await ETTask.CompletedTask;
 		}

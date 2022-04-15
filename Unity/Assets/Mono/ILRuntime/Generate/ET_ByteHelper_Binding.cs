@@ -28,9 +28,6 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.Byte[]), typeof(System.Int32), typeof(System.UInt16)};
             method = type.GetMethod("WriteTo", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, WriteTo_1);
-            args = new Type[]{typeof(System.Byte[]), typeof(System.Int32), typeof(System.Int64)};
-            method = type.GetMethod("WriteTo", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, WriteTo_2);
 
 
         }
@@ -66,28 +63,6 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             System.UInt16 @num = (ushort)ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Int32 @offset = ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Byte[] @bytes = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-
-            ET.ByteHelper.WriteTo(@bytes, @offset, @num);
-
-            return __ret;
-        }
-
-        static StackObject* WriteTo_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Int64 @num = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Int32 @offset = ptr_of_this_method->Value;
