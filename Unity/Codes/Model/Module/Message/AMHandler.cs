@@ -5,7 +5,7 @@ namespace ET
     [MessageHandler]
     public abstract class AMHandler<Message>: IMHandler where Message : class
     {
-        protected abstract ETTask Run(Session session, Message message);
+        protected abstract void Run(Session session, Message message);
 
         public void Handle(Session session, object msg)
         {
@@ -22,7 +22,7 @@ namespace ET
                 return;
             }
 
-            this.Run(session, message).Coroutine();
+            this.Run(session, message);
         }
 
         public Type GetMessageType()

@@ -1,7 +1,6 @@
-﻿﻿using System.Collections.Generic;
-
-namespace ET
+﻿namespace ET
 {
+    [ChildType(typeof(ActorLocationSender))]
     public class ActorLocationSenderComponent: Entity, IAwake, IDestroy
     {
         public static long TIMEOUT_TIME = 60 * 1000;

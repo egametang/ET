@@ -6,7 +6,7 @@ namespace ET
 	[MessageHandler]
 	public class M2C_PathfindingResultHandler : AMHandler<M2C_PathfindingResult>
 	{
-		protected override async ETTask Run(Session session, M2C_PathfindingResult message)
+		protected override void Run(Session session, M2C_PathfindingResult message)
 		{
 			Unit unit = session.DomainScene().CurrentScene().GetComponent<UnitComponent>().Get(message.Id);
 
@@ -19,7 +19,7 @@ namespace ET
 					list.Add(new Vector3(message.Xs[i], message.Ys[i], message.Zs[i]));
 				}
 
-				await unit.GetComponent<MoveComponent>().MoveToAsync(list, speed);
+				unit.GetComponent<MoveComponent>().MoveToAsync(list, speed).Coroutine();
 			}
 		}
 	}
