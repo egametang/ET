@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -57,47 +56,23 @@ namespace ET.Analyzer
 
             // 筛选出 AddChild函数syntax
             string methodName = memberAccessExpressionSyntax.Name.Identifier.Text;
+
             if (!AddChildMethods.Contains(methodName))
             {
                 return;
             }
 
-            if (!(memberAccessExpressionSyntax.Parent is InvocationExpressionSyntax invocationExpressionSyntax) ||
+            if (!(memberAccessExpressionSyntax?.Parent is InvocationExpressionSyntax invocationExpressionSyntax) ||
                 !(context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol addChildMethodSymbol))
             {
                 return;
             }
 
-            IdentifierNameSyntax? identifierSyntax = memberAccessExpressionSyntax.GetFirstChild<IdentifierNameSyntax>();
-            if (identifierSyntax == null)
+            // 获取AddChild函数的调用者类型
+            ITypeSymbol? parentTypeSymbol = memberAccessExpressionSyntax.GetMemberAccessSyntaxParentType(context.SemanticModel);
+            if (parentTypeSymbol==null)
             {
                 return;
-            }
-
-            ISymbol? identifierSymbol = context.SemanticModel.GetSymbolInfo(identifierSyntax).Symbol;
-            if (identifierSymbol == null)
-            {
-                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
-                context.ReportDiagnostic(diagnostic);
-                throw new Exception("identifierSymbol == null");
-            }
-
-            // 获取父级实体类型
-            ITypeSymbol? parentTypeSymbol = null;
-
-            if (identifierSymbol is ILocalSymbol localSymbol)
-            {
-                parentTypeSymbol = localSymbol.Type;
-            }
-            else if (identifierSymbol is IParameterSymbol parameterSymbol)
-            {
-                parentTypeSymbol = parameterSymbol.Type;
-            }
-            else
-            {
-                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
-                context.ReportDiagnostic(diagnostic);
-                throw new Exception("componentTypeSymbol==null");
             }
 
             // 获取实体类 ChildType标签的约束类型
@@ -144,7 +119,7 @@ namespace ET.Analyzer
                 {
                     Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
                     context.ReportDiagnostic(diagnostic);
-                    throw new Exception("firstArgumentSyntax==null");
+                    return;
                 }
 
                 ISymbol? firstArgumentSymbol = context.SemanticModel.GetSymbolInfo(firstArgumentSyntax).Symbol;
@@ -187,9 +162,7 @@ namespace ET.Analyzer
 
             if (childTypeSymbol == null)
             {
-                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name?.Identifier.GetLocation());
-                context.ReportDiagnostic(diagnostic);
-                throw new Exception("childTypeSymbol==null");
+                return;
             }
 
             if (availableChildTypeSymbol == null)
