@@ -101,29 +101,18 @@ namespace ET.Analyzer
             }
 
             // 获取实体类 ChildType标签的约束类型
-            List<INamedTypeSymbol>? availableChildTypeSymbols = null;
+            INamedTypeSymbol? availableChildTypeSymbol = null;
             foreach (AttributeData? attributeData in parentTypeSymbol.GetAttributes())
             {
                 if (attributeData.AttributeClass?.Name == "ChildTypeAttribute")
                 {
-                    if (!(attributeData.ConstructorArguments[0].Value is INamedTypeSymbol availableChildTypeSymbol))
+                    if (!(attributeData.ConstructorArguments[0].Value is INamedTypeSymbol s))
                     {
                         continue;
                     }
 
-                    if (availableChildTypeSymbols == null)
-                    {
-                        availableChildTypeSymbols = new List<INamedTypeSymbol>();
-                    }
-
-                    availableChildTypeSymbols.Add(availableChildTypeSymbol);
+                    availableChildTypeSymbol = s;
                 }
-            }
-
-            // 没有ChildType标签的不做约束
-            if (availableChildTypeSymbols == null)
-            {
-                return;
             }
 
             // 获取 child实体类型
@@ -203,13 +192,18 @@ namespace ET.Analyzer
                 throw new Exception("childTypeSymbol==null");
             }
 
-            // 判断child类型是否属于约束类型
-            foreach (INamedTypeSymbol? availableChildTypeSymbol in availableChildTypeSymbols)
+            if (availableChildTypeSymbol == null)
             {
-                if (availableChildTypeSymbol?.ToString() == childTypeSymbol.ToString())
-                {
-                    return;
-                }
+                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), childTypeSymbol?.Name,
+                    parentTypeSymbol?.Name);
+                context.ReportDiagnostic(diagnostic);
+                return;
+            }
+
+            // 判断child类型是否属于约束类型
+            if (availableChildTypeSymbol.ToString() == childTypeSymbol.ToString())
+            {
+                return;
             }
 
             {

@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace ET
 {
+	[ChildType(typeof(Player))]
 	public class PlayerComponent : Entity, IAwake, IDestroy
 	{
 		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
