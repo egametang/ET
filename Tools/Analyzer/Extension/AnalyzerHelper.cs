@@ -25,6 +25,16 @@ namespace ET.Analyzer
             return null;
         }
 
+        public static SyntaxNode? GetFirstChild(this SyntaxNode syntaxNode)
+        {
+            var childNodes = syntaxNode.ChildNodes();
+            if (childNodes.Count()>0)
+            {
+                return childNodes.First();
+            }
+            return null;
+        }
+
         /// <summary>
         ///     获取语法树节点的子节点中最后一个指定类型节点
         /// </summary>
@@ -152,6 +162,52 @@ namespace ET.Analyzer
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 获取 成员访问语法节点的父级类型
+        /// </summary>
+        public static ITypeSymbol? GetMemberAccessSyntaxParentType(this MemberAccessExpressionSyntax memberAccessExpressionSyntax, SemanticModel semanticModel)
+        {
+            SyntaxNode? firstChildSyntaxNode = memberAccessExpressionSyntax.GetFirstChild();
+            if (firstChildSyntaxNode == null)
+            {
+                return null;
+            }
+            
+            ISymbol? firstChildSymbol = semanticModel.GetSymbolInfo(firstChildSyntaxNode).Symbol;
+            if (firstChildSymbol == null)
+            {
+                return null;
+            }
+
+            if (firstChildSymbol is ILocalSymbol localSymbol)
+            {
+                return localSymbol.Type;
+            }
+            else if (firstChildSymbol is IParameterSymbol parameterSymbol)
+            {
+                return parameterSymbol.Type;
+            }
+            else if (firstChildSymbol is IPropertySymbol propertySymbol)
+            {
+                return propertySymbol.Type;
+            }
+            else if (firstChildSymbol is IMethodSymbol methodSymbol)
+            {
+                return methodSymbol.ReturnType;
+            }
+            else if (firstChildSymbol is IFieldSymbol fieldSymbol)
+            {
+                return fieldSymbol.Type;
+            }else if (firstChildSymbol is IEventSymbol eventSymbol)
+            {
+                return eventSymbol.Type;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
