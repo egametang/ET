@@ -85,10 +85,12 @@ namespace ET.Analyzer
 
             // 获取实体类 ChildType标签的约束类型
             INamedTypeSymbol? availableChildTypeSymbol = null;
+            bool hasChildTypeAttribute = false;
             foreach (AttributeData? attributeData in parentTypeSymbol.GetAttributes())
             {
                 if (attributeData.AttributeClass?.Name == "ChildTypeAttribute")
                 {
+                    hasChildTypeAttribute = true;
                     if (!(attributeData.ConstructorArguments[0].Value is INamedTypeSymbol s))
                     {
                         continue;
@@ -98,7 +100,10 @@ namespace ET.Analyzer
                 }
             }
             
-            
+            if (hasChildTypeAttribute &&(availableChildTypeSymbol==null))
+            {
+                return;
+            }
 
             // 获取 child实体类型
             ISymbol? childTypeSymbol = null;
@@ -175,6 +180,7 @@ namespace ET.Analyzer
                 return;
             }
 
+            
             // 判断child类型是否属于约束类型
             if (availableChildTypeSymbol?.ToString() == childTypeSymbol.ToString())
             {
