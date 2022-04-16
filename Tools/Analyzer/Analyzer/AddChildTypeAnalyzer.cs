@@ -18,6 +18,8 @@ namespace ET.Analyzer
         private const string Description = "请使用被允许的ChildType 或添加该类型至ChildType.";
 
         private static readonly string[] AddChildMethods = { "AddChild", "AddChildWithId" };
+        
+        private const string EntityType = "ET.Entity";
 
         private static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.AddChildTypeAnalyzerRuleId,
@@ -75,6 +77,12 @@ namespace ET.Analyzer
                 return;
             }
 
+            // 只检查Entity的子类
+            if (parentTypeSymbol.BaseType?.ToString()!= EntityType)
+            {
+                return;
+            }
+
             // 获取实体类 ChildType标签的约束类型
             INamedTypeSymbol? availableChildTypeSymbol = null;
             foreach (AttributeData? attributeData in parentTypeSymbol.GetAttributes())
@@ -88,6 +96,12 @@ namespace ET.Analyzer
 
                     availableChildTypeSymbol = s;
                 }
+            }
+            
+            // 未加ChildType标签的 忽略检查
+            if (availableChildTypeSymbol == null)
+            {
+                return;
             }
 
             // 获取 child实体类型
@@ -165,13 +179,7 @@ namespace ET.Analyzer
                 return;
             }
 
-            if (availableChildTypeSymbol == null)
-            {
-                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), childTypeSymbol?.Name,
-                    parentTypeSymbol?.Name);
-                context.ReportDiagnostic(diagnostic);
-                return;
-            }
+            
 
             // 判断child类型是否属于约束类型
             if (availableChildTypeSymbol.ToString() == childTypeSymbol.ToString())
