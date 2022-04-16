@@ -98,11 +98,7 @@ namespace ET.Analyzer
                 }
             }
             
-            // 未加ChildType标签的 忽略检查
-            if (availableChildTypeSymbol == null)
-            {
-                return;
-            }
+            
 
             // 获取 child实体类型
             ISymbol? childTypeSymbol = null;
@@ -179,10 +175,8 @@ namespace ET.Analyzer
                 return;
             }
 
-            
-
             // 判断child类型是否属于约束类型
-            if (availableChildTypeSymbol.ToString() == childTypeSymbol.ToString())
+            if (availableChildTypeSymbol?.ToString() == childTypeSymbol.ToString())
             {
                 return;
             }
