@@ -1,42 +1,30 @@
 ﻿#if !NO_RUNTIME
 using System;
+using System.Reflection;
 using ProtoBuf.Meta;
-#if FEAT_IKVM
-using Type = IKVM.Reflection.Type;
-using IKVM.Reflection;
-#else
-
-#endif
-
 
 namespace ProtoBuf.Serializers
 {
     sealed class DefaultValueDecorator : ProtoDecoratorBase
     {
+        public override Type ExpectedType => Tail.ExpectedType;
 
-        public override Type ExpectedType { get { return Tail.ExpectedType; } }
-        public override bool RequiresOldValue { get { return Tail.RequiresOldValue; } }
-        public override bool ReturnsValue { get { return Tail.ReturnsValue; } }
+        public override bool RequiresOldValue => Tail.RequiresOldValue;
+
+        public override bool ReturnsValue => Tail.ReturnsValue;
+
         private readonly object defaultValue;
         public DefaultValueDecorator(TypeModel model, object defaultValue, IProtoSerializer tail) : base(tail)
         {
-            if (defaultValue == null) throw new ArgumentNullException("defaultValue");
+            if (defaultValue == null) throw new ArgumentNullException(nameof(defaultValue));
             Type type = model.MapType(defaultValue.GetType());
-            if (type != tail.ExpectedType
-#if FEAT_IKVM // in IKVM, we'll have the default value as an underlying type
-                && !(tail.ExpectedType.IsEnum && type == tail.ExpectedType.GetEnumUnderlyingType())
-#endif
-                )
+            if (type != tail.ExpectedType)
             {
-                //ILRuntime enum 转int需要忽略
-                if (!Helpers.IsEnum(tail.ExpectedType) && !(tail.ExpectedType is ILRuntime.Reflection.ILRuntimeType))
-                {
-                    throw new ArgumentException("Default value is of incorrect type", "defaultValue");
-                }
+                throw new ArgumentException("Default value is of incorrect type", "defaultValue");
             }
             this.defaultValue = defaultValue;
         }
-#if !FEAT_IKVM
+
         public override void Write(object value, ProtoWriter dest)
         {
             if (!object.Equals(value, defaultValue))
@@ -44,11 +32,11 @@ namespace ProtoBuf.Serializers
                 Tail.Write(value, dest);
             }
         }
+
         public override object Read(object value, ProtoReader source)
         {
             return Tail.Read(value, source);
         }
-#endif
 
 #if FEAT_COMPILER
         protected override void EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
@@ -96,7 +84,7 @@ namespace ProtoBuf.Serializers
                     if (method == null || !method.IsPublic || !method.IsStatic) method = null;
 #else
                     MethodInfo method = type.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static,
-                        null, new Type[] { type, type}, null);
+                        null, new Type[] { type, type }, null);
 #endif
                     if (method == null || method.ReturnType != ctx.MapType(typeof(bool)))
                     {
@@ -250,13 +238,8 @@ namespace ProtoBuf.Serializers
                     }
                 case ProtoTypeCode.DateTime:
                     {
-#if FX11
-                        ctx.LoadValue(((DateTime)defaultValue).ToFileTime());
-                        ctx.EmitCall(typeof(DateTime).GetMethod("FromFileTime"));                      
-#else
                         ctx.LoadValue(((DateTime)defaultValue).ToBinary());
                         ctx.EmitCall(ctx.MapType(typeof(DateTime)).GetMethod("FromBinary"));
-#endif
 
                         EmitBeq(ctx, label, expected);
                         break;
@@ -265,11 +248,12 @@ namespace ProtoBuf.Serializers
                     throw new NotSupportedException("Type cannot be represented as a default value: " + expected.FullName);
             }
         }
+
         protected override void EmitRead(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
         {
             Tail.EmitRead(ctx, valueFrom);
         }
 #endif
-            }
+    }
 }
 #endif

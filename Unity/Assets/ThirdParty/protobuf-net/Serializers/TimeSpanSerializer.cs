@@ -1,37 +1,23 @@
 ﻿#if !NO_RUNTIME
 using System;
 
-#if FEAT_IKVM
-using Type = IKVM.Reflection.Type;
-using IKVM.Reflection;
-#else
-
-#endif
-
-
-
 namespace ProtoBuf.Serializers
 {
     sealed class TimeSpanSerializer : IProtoSerializer
     {
-#if FEAT_IKVM
-        readonly Type expectedType;
-#else
         static readonly Type expectedType = typeof(TimeSpan);
-#endif
         private readonly bool wellKnown;
         public TimeSpanSerializer(DataFormat dataFormat, ProtoBuf.Meta.TypeModel model)
         {
-#if FEAT_IKVM
-            expectedType = model.MapType(typeof(TimeSpan));
-#endif
+
             wellKnown = dataFormat == DataFormat.WellKnown;
         }
         public Type ExpectedType => expectedType;
 
         bool IProtoSerializer.RequiresOldValue => false;
+
         bool IProtoSerializer.ReturnsValue => true;
-#if !FEAT_IKVM
+
         public object Read(object value, ProtoReader source)
         {
             if (wellKnown)
@@ -44,6 +30,7 @@ namespace ProtoBuf.Serializers
                 return BclHelpers.ReadTimeSpan(source);
             }
         }
+
         public void Write(object value, ProtoWriter dest)
         {
             if (wellKnown)
@@ -55,7 +42,7 @@ namespace ProtoBuf.Serializers
                 BclHelpers.WriteTimeSpan((TimeSpan)value, dest);
             }
         }
-#endif
+
 #if FEAT_COMPILER
         void IProtoSerializer.EmitWrite(Compiler.CompilerContext ctx, Compiler.Local valueFrom)
         {

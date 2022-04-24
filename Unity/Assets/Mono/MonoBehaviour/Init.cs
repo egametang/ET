@@ -29,8 +29,6 @@ namespace ET
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			DontDestroyOnLoad(gameObject);
-			
-			LitJson.UnityTypeBindings.Register();
 
 			ETTask.ExceptionHandler += Log.Error;
 

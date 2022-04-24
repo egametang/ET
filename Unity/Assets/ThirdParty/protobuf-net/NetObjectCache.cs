@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProtoBuf.Meta;
 
 namespace ProtoBuf
@@ -8,15 +9,7 @@ namespace ProtoBuf
         internal const int Root = 0;
         private MutableList underlyingList;
 
-        private MutableList List
-        {
-            get
-            {
-                if (underlyingList == null) underlyingList = new MutableList();
-                return underlyingList;
-            }
-        }
-
+        private MutableList List => underlyingList ?? (underlyingList = new MutableList());
 
         internal object GetKeyedObject(int key)
         {
@@ -45,7 +38,7 @@ namespace ProtoBuf
         {
             if (key-- == Root)
             {
-                if (value == null) throw new ArgumentNullException("value");
+                if (value == null) throw new ArgumentNullException(nameof(value));
                 if (rootObject != null && ((object)rootObject != (object)value)) throw new ProtoException("The root object cannot be reassigned");
                 rootObject = value;
             }
@@ -59,7 +52,7 @@ namespace ProtoBuf
                     {
                         list[key] = value;
                     }
-                    else if (!ReferenceEquals(oldVal, value) )
+                    else if (!ReferenceEquals(oldVal, value))
                     {
                         throw new ProtoException("Reference-tracked objects cannot change reference");
                     } // otherwise was the same; nothing to do
@@ -74,7 +67,7 @@ namespace ProtoBuf
         private object rootObject;
         internal int AddObjectKey(object value, out bool existing)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             if ((object)value == (object)rootObject) // (object) here is no-op, but should be
             {                                        // preserved even if this was typed - needs ref-check
@@ -86,44 +79,14 @@ namespace ProtoBuf
             BasicList list = List;
             int index;
 
-#if NO_GENERICS
-            
-            if(s == null)
-            {
-                if (objectKeys == null)
-                {
-                    objectKeys = new ReferenceHashtable();
-                    index = -1;
-                }
-                else
-                {
-                    object tmp = objectKeys[value];
-                    index = tmp == null ? -1 : (int) tmp;
-                }
-            }
-            else
-            {
-                if (stringKeys == null)
-                {
-                    stringKeys = new Hashtable();
-                    index = -1;
-                }
-                else
-                {
-                    object tmp = stringKeys[s];
-                    index = tmp == null ? -1 : (int) tmp;
-                }
-            }
-#else
-
-            if(s == null)
+            if (s == null)
             {
 #if CF || PORTABLE // CF has very limited proper object ref-tracking; so instead, we'll search it the hard way
                 index = list.IndexOfReference(value);
 #else
-                if (objectKeys == null) 
+                if (objectKeys == null)
                 {
-                    objectKeys = new System.Collections.Generic.Dictionary<object, int>(ReferenceComparer.Default);
+                    objectKeys = new Dictionary<object, int>(ReferenceComparer.Default);
                     index = -1;
                 }
                 else
@@ -136,15 +99,14 @@ namespace ProtoBuf
             {
                 if (stringKeys == null)
                 {
-                    stringKeys = new System.Collections.Generic.Dictionary<string, int>();
+                    stringKeys = new Dictionary<string, int>();
                     index = -1;
-                } 
+                }
                 else
                 {
                     if (!stringKeys.TryGetValue(s, out index)) index = -1;
                 }
             }
-#endif
 
             if (!(existing = index >= 0))
             {
@@ -175,7 +137,7 @@ namespace ProtoBuf
             }
             else
             {
-                if(underlyingList != null)
+                if (underlyingList != null)
                 {
                     for (int i = trapStartIndex; i < underlyingList.Count; i++)
                     {
@@ -183,52 +145,35 @@ namespace ProtoBuf
                                                 // not the next item is null, it will never
                                                 // need to be checked again
 
-                        if(underlyingList[i] == null)
+                        if (underlyingList[i] == null)
                         {
-                            underlyingList[i] = value;    
+                            underlyingList[i] = value;
                             break;
                         }
                     }
                 }
             }
         }
-#if NO_GENERICS
-        private ReferenceHashtable objectKeys;
-        private System.Collections.Hashtable stringKeys;
-        private class ReferenceHashtable : System.Collections.Hashtable
-        {
-            protected override int GetHash(object key)
-            {
-                return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(key);
-            }
-            protected override bool KeyEquals(object item, object key)
-            {
-                return item == key;
-            }
-        }   
-#else
 
-        private System.Collections.Generic.Dictionary<string, int> stringKeys;
+        private Dictionary<string, int> stringKeys;
 
 #if !CF && !PORTABLE // CF lacks the ability to get a robust reference-based hash-code, so we'll do it the harder way instead
         private System.Collections.Generic.Dictionary<object, int> objectKeys;
-        private sealed class ReferenceComparer : System.Collections.Generic.IEqualityComparer<object>
+        private sealed class ReferenceComparer : IEqualityComparer<object>
         {
             public readonly static ReferenceComparer Default = new ReferenceComparer();
-            private ReferenceComparer() {}
+            private ReferenceComparer() { }
 
-            bool System.Collections.Generic.IEqualityComparer<object>.Equals(object x, object y)
+            bool IEqualityComparer<object>.Equals(object x, object y)
             {
                 return x == y; // ref equality
             }
 
-            int System.Collections.Generic.IEqualityComparer<object>.GetHashCode(object obj)
+            int IEqualityComparer<object>.GetHashCode(object obj)
             {
                 return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
             }
         }
-#endif
-
 #endif
 
         internal void Clear()

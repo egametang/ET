@@ -166,9 +166,6 @@
  <Reference Include="UnityEngine.TerrainPhysicsModule">
  <HintPath>./Temp/bin/Debug/UnityEngine.TerrainPhysicsModule.dll</HintPath>
  </Reference>
- <Reference Include="UnityEngine.TextCoreModule">
- <HintPath>./Temp/bin/Debug/UnityEngine.TextCoreModule.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.TextRenderingModule">
  <HintPath>./Temp/bin/Debug/UnityEngine.TextRenderingModule.dll</HintPath>
  </Reference>

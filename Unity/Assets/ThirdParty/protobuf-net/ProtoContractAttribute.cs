@@ -12,8 +12,7 @@ namespace ProtoBuf
         /// <summary>
         /// Gets or sets the defined name of the type.
         /// </summary>
-        public string Name { get { return name; } set { name = value; } }
-        private string name;
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the fist offset to use with implicit field tags;
@@ -48,15 +47,12 @@ namespace ProtoBuf
             set { SetFlag(OPTIONS_IgnoreListHandling, value); }
         }
 
-
         /// <summary>
         /// Gets or sets the mechanism used to automatically infer field tags
         /// for members. This option should be used in advanced scenarios only.
         /// Please review the important notes against the ImplicitFields enumeration.
         /// </summary>
-        public ImplicitFields ImplicitFields { get { return implicitFields; } set { implicitFields = value; } }
-        private ImplicitFields implicitFields;
-
+        public ImplicitFields ImplicitFields { get; set; }
 
         /// <summary>
         /// Enables/disables automatic tag generation based on the existing name / order
@@ -70,7 +66,8 @@ namespace ProtoBuf
         public bool InferTagFromName
         {
             get { return HasFlag(OPTIONS_InferTagFromName); }
-            set {
+            set
+            {
                 SetFlag(OPTIONS_InferTagFromName, value);
                 SetFlag(OPTIONS_InferTagFromNameHasValue, true);
             }
@@ -84,8 +81,6 @@ namespace ProtoBuf
             get { return HasFlag(OPTIONS_InferTagFromNameHasValue); }
         }
 
-        private int dataMemberOffset;
-
         /// <summary>
         /// Specifies an offset to apply to [DataMember(Order=...)] markers;
         /// this is useful when working with mex-generated classes that have
@@ -93,12 +88,7 @@ namespace ProtoBuf
         /// 
         /// This value is added to the Order of each member.
         /// </summary>
-        public int DataMemberOffset
-        {
-            get { return dataMemberOffset; }
-            set { dataMemberOffset = value; }
-        }
-
+        public int DataMemberOffset { get; set; }
 
         /// <summary>
         /// If true, the constructor for the type is bypassed during deserialization, meaning any field initializers
@@ -117,7 +107,8 @@ namespace ProtoBuf
         public bool AsReferenceDefault
         {
             get { return HasFlag(OPTIONS_AsReferenceDefault); }
-            set {
+            set
+            {
                 SetFlag(OPTIONS_AsReferenceDefault, value);
             }
         }
@@ -161,11 +152,17 @@ namespace ProtoBuf
         public bool EnumPassthru
         {
             get { return HasFlag(OPTIONS_EnumPassthru); }
-            set {
+            set
+            {
                 SetFlag(OPTIONS_EnumPassthru, value);
                 SetFlag(OPTIONS_EnumPassthruHasValue, true);
             }
         }
+
+        /// <summary>
+        /// Allows to define a surrogate type used for serialization/deserialization purpose.
+        /// </summary>
+        public Type Surrogate { get; set; }
 
         /// <summary>
         /// Has a EnumPassthru value been explicitly set?

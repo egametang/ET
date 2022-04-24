@@ -1,6 +1,9 @@
 ﻿#if !NO_RUNTIME
 #if PORTABLE
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace ProtoBuf.Serializers
@@ -21,10 +24,28 @@ namespace ProtoBuf.Serializers
         {
             expectedType = type;
 
-            absoluteUriProperty = expectedType.GetProperty("AbsoluteUri");
+#if PROFILE259
+			absoluteUriProperty = expectedType.GetRuntimeProperty("AbsoluteUri");
+	        IEnumerable<ConstructorInfo> constructors = expectedType.GetTypeInfo().DeclaredConstructors;
+	        typeConstructor = null;
+			foreach(ConstructorInfo constructor in constructors)
+			{
+				ParameterInfo[] parameters = constructor.GetParameters();
+				ParameterInfo parameterFirst = parameters.FirstOrDefault();
+				Type stringType = typeof(string);
+				if (parameterFirst != null && 
+					parameterFirst.ParameterType == stringType)
+				{
+					typeConstructor = constructor;
+					break;
+				}
+	        }
+#else
+			absoluteUriProperty = expectedType.GetProperty("AbsoluteUri");
             typeConstructor = expectedType.GetConstructor(new Type[] { typeof(string) });
-        }
-        public override Type ExpectedType { get { return expectedType; } }
+#endif
+		}
+		public override Type ExpectedType { get { return expectedType; } }
         public override bool RequiresOldValue { get { return false; } }
         public override bool ReturnsValue { get { return true; } }
         
@@ -62,7 +83,7 @@ namespace ProtoBuf.Serializers
             ctx.MarkLabel(@end);
             
         }
-#endif 
+#endif
     }
 }
 #endif

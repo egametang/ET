@@ -7,4 +7,3 @@
         public const string All = "ETAllProjectAnalyzers";
     }
 }
-

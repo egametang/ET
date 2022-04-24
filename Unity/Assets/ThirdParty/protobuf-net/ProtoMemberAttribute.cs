@@ -1,11 +1,5 @@
 ﻿using System;
-
-#if FEAT_IKVM
-using Type = IKVM.Reflection.Type;
-using IKVM.Reflection;
-#else
 using System.Reflection;
-#endif
 
 namespace ProtoBuf
 {
@@ -19,15 +13,13 @@ namespace ProtoBuf
         AllowMultiple = false, Inherited = true)]
     public class ProtoMemberAttribute : Attribute
         , IComparable
-#if !NO_GENERICS
         , IComparable<ProtoMemberAttribute>
-#endif
 
     {
         /// <summary>
         /// Compare with another ProtoMemberAttribute for sorting purposes
         /// </summary>
-        public int CompareTo(object other) { return CompareTo(other as ProtoMemberAttribute); }
+        public int CompareTo(object other) => CompareTo(other as ProtoMemberAttribute);
         /// <summary>
         /// Compare with another ProtoMemberAttribute for sorting purposes
         /// </summary>
@@ -49,7 +41,7 @@ namespace ProtoBuf
 
         internal ProtoMemberAttribute(int tag, bool forced)
         {
-            if (tag <= 0 && !forced) throw new ArgumentOutOfRangeException("tag");
+            if (tag <= 0 && !forced) throw new ArgumentOutOfRangeException(nameof(tag));
             this.tag = tag;
         }
 
@@ -68,7 +60,7 @@ namespace ProtoBuf
         /// Gets or sets the data-format to be used when encoding this value.
         /// </summary>
         public DataFormat DataFormat { get { return dataFormat; } set { dataFormat = value; } }
-        private DataFormat dataFormat; 
+        private DataFormat dataFormat;
 
         /// <summary>
         /// Gets the unique tag used to identify this member within the type.
@@ -77,16 +69,14 @@ namespace ProtoBuf
         private int tag;
         internal void Rebase(int tag) { this.tag = tag; }
 
-
-		public string TypeName { get { return typeName; } set { typeName = value; } }
-		private string typeName;
-
         /// <summary>
         /// Gets or sets a value indicating whether this member is mandatory.
         /// </summary>
-        public bool IsRequired {
+        public bool IsRequired
+        {
             get { return (options & MemberSerializationOptions.Required) == MemberSerializationOptions.Required; }
-            set {
+            set
+            {
                 if (value) options |= MemberSerializationOptions.Required;
                 else options &= ~MemberSerializationOptions.Required;
             }
@@ -98,8 +88,9 @@ namespace ProtoBuf
         /// </summary>
         public bool IsPacked
         {
-            get { return (options & MemberSerializationOptions.Packed) == MemberSerializationOptions.Packed;}
-            set {
+            get { return (options & MemberSerializationOptions.Packed) == MemberSerializationOptions.Packed; }
+            set
+            {
                 if (value) options |= MemberSerializationOptions.Packed;
                 else options &= ~MemberSerializationOptions.Packed;
             }
@@ -137,7 +128,8 @@ namespace ProtoBuf
         internal bool AsReferenceHasValue
         {
             get { return (options & MemberSerializationOptions.AsReferenceHasValue) == MemberSerializationOptions.AsReferenceHasValue; }
-            set {
+            set
+            {
                 if (value) options |= MemberSerializationOptions.AsReferenceHasValue;
                 else options &= ~MemberSerializationOptions.AsReferenceHasValue;
             }
@@ -162,7 +154,7 @@ namespace ProtoBuf
         public MemberSerializationOptions Options { get { return options; } set { options = value; } }
         private MemberSerializationOptions options;
 
-        
+
     }
 
     /// <summary>
@@ -224,14 +216,13 @@ namespace ProtoBuf
             : base(tag)
         {
 #if !NO_RUNTIME
-            if (Helpers.IsNullOrEmpty(memberName)) throw new ArgumentNullException("memberName");
+            if (string.IsNullOrEmpty(memberName)) throw new ArgumentNullException(nameof(memberName));
 #endif
-            this.memberName = memberName;
+            this.MemberName = memberName;
         }
         /// <summary>
         /// The name of the member to be serialized.
         /// </summary>
-        public string MemberName { get { return memberName; } }
-        private readonly string memberName;
+        public string MemberName { get; private set; }
     }
 }

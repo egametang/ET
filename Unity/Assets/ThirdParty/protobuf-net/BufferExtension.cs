@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace ProtoBuf
 {
@@ -8,7 +9,6 @@ namespace ProtoBuf
     public sealed class BufferExtension : IExtension, IExtensionResettable
     {
         private byte[] buffer;
-
 
         void IExtensionResettable.Reset()
         {
@@ -43,9 +43,9 @@ namespace ProtoBuf
                         // note: Array.Resize not available on CF
                         int offset = buffer.Length;
                         byte[] tmp = new byte[offset + len];
-                        Helpers.BlockCopy(buffer, 0, tmp, 0, offset);
+                        Buffer.BlockCopy(buffer, 0, tmp, 0, offset);
 
-#if PORTABLE || WINRT // no GetBuffer() - fine, we'll use Read instead
+#if PORTABLE // no GetBuffer() - fine, we'll use Read instead
                         int bytesRead;
                         long oldPos = ms.Position;
                         ms.Position = 0;
@@ -57,7 +57,7 @@ namespace ProtoBuf
                         if(len != 0) throw new EndOfStreamException();
                         ms.Position = oldPos;
 #else
-                        Helpers.BlockCopy(Helpers.GetBuffer(ms), 0, tmp, offset, len);
+                        Buffer.BlockCopy(Helpers.GetBuffer(ms), 0, tmp, offset, len);
 #endif
                         buffer = tmp;
                     }

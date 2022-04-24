@@ -4,6 +4,7 @@ using System;
 using ProtoBuf.Compiler;
 #endif
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ProtoBuf.Serializers
 {
@@ -31,12 +32,16 @@ namespace ProtoBuf.Serializers
 
             AppendToCollection = !overwriteList;
         }
-		#if FEAT_COMPILER
+
         private static readonly MethodInfo indexerSet = GetIndexerSetter();
 
         private static MethodInfo GetIndexerSetter()
         {
-            foreach(var prop in typeof(TDictionary).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+#if PROFILE259
+			foreach(var prop in typeof(TDictionary).GetRuntimeProperties())
+#else
+            foreach (var prop in typeof(TDictionary).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+#endif
             {
                 if (prop.Name != "Item") continue;
                 if (prop.PropertyType != typeof(TValue)) continue;
@@ -45,13 +50,18 @@ namespace ProtoBuf.Serializers
                 if (args == null || args.Length != 1) continue;
 
                 if (args[0].ParameterType != typeof(TKey)) continue;
-
+#if PROFILE259
+				var method = prop.SetMethod;
+#else
                 var method = prop.GetSetMethod(true);
-                if (method != null) return method;
+#endif
+                if (method != null)
+                {
+                    return method;
+                }
             }
             throw new InvalidOperationException("Unable to resolve indexer for map");
         }
-		#endif
 
         private static readonly TKey DefaultKey = (typeof(TKey) == typeof(string)) ? (TKey)(object)"" : default(TKey);
         private static readonly TValue DefaultValue = (typeof(TValue) == typeof(string)) ? (TValue)(object)"" : default(TValue);
@@ -108,7 +118,8 @@ namespace ProtoBuf.Serializers
                 ProtoWriter.EndSubItem(token, dest);
             }
         }
-		#if FEAT_COMPILER
+
+#if FEAT_COMPILER
         protected override void EmitWrite(CompilerContext ctx, Local valueFrom)
         {
             Type itemType = typeof(KeyValuePair<TKey, TValue>);
@@ -282,6 +293,6 @@ namespace ProtoBuf.Serializers
                 }
             }
         }
-		#endif
+#endif
     }
 }
