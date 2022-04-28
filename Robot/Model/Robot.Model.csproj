@@ -31,6 +31,9 @@
         <Compile Include="..\..\Server\Model\Base\StructBsonSerialize.cs">
           <Link>Base\StructBsonSerialize.cs</Link>
         </Compile>
+        <Compile Include="..\..\Server\Model\Config\ConfigLoader.cs">
+          <Link>Config\ConfigLoader.cs</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
@@ -119,6 +122,7 @@
       <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
       <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
       <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
+      <ProjectReference Include="..\..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

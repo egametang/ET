@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace ET
@@ -15,6 +16,18 @@ namespace ET
                 CoroutineLockQueueType coroutineLockQueueType = self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator);
                 self.list.Add(coroutineLockQueueType);
             }
+
+            self.foreachFunc = (k, v) =>
+            {
+                if (k > self.timeNow)
+                {
+                    self.minTime = k;
+                    return false;
+                }
+
+                self.timeOutIds.Enqueue(k);
+                return true;
+            };
         }
     }
 
@@ -56,32 +69,24 @@ namespace ET
                 return;
             }
 
-            long timeNow = TimeHelper.ClientFrameTime();
+            self.timeNow = TimeHelper.ClientFrameTime();
 
-            if (timeNow < self.minTime)
+            if (self.timeNow < self.minTime)
             {
                 return;
             }
 
-            foreach (KeyValuePair<long, List<CoroutineLockTimer>> kv in self.timers)
-            {
-                long k = kv.Key;
-                if (k > timeNow)
-                {
-                    self.minTime = k;
-                    break;
-                }
-
-                self.timeOutIds.Enqueue(k);
-            }
+            self.timers.ForEachFunc(self.foreachFunc);
             
             self.timerOutTimer.Clear();
             
             while (self.timeOutIds.Count > 0)
             {
                 long time = self.timeOutIds.Dequeue();
-                foreach (CoroutineLockTimer coroutineLockTimer in self.timers[time])
+                var list = self.timers[time];
+                for (int i = 0; i < list.Count; ++i)
                 {
+                    CoroutineLockTimer coroutineLockTimer = list[i];
                     self.timerOutTimer.Enqueue(coroutineLockTimer);
                 }
                 self.timers.Remove(time);
@@ -178,5 +183,7 @@ namespace ET
         public Queue<CoroutineLockTimer> timerOutTimer = new Queue<CoroutineLockTimer>();
         public long idGenerator;
         public long minTime;
+        public long timeNow;
+        public Func<long, List<CoroutineLockTimer>, bool> foreachFunc;
     }
 }

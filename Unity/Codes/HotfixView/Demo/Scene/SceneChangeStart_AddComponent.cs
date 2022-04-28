@@ -2,7 +2,12 @@ namespace ET
 {
     public class SceneChangeStart_AddComponent: AEvent<EventType.SceneChangeStart>
     {
-        protected override async ETTask Run(EventType.SceneChangeStart args)
+        protected override void Run(EventType.SceneChangeStart args)
+        {
+            RunAsync(args).Coroutine();
+        }
+        
+        private async ETTask RunAsync(EventType.SceneChangeStart args)
         {
             Scene currentScene = args.ZoneScene.CurrentScene();
             

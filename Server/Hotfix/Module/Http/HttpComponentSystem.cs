@@ -53,13 +53,14 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(HttpComponent))]
     public static class HttpComponentSystem
     {
         public static void Load(this HttpComponent self)
         {
             self.dispatcher = new Dictionary<string, IHttpHandler>();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
+            List<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
 
             SceneType sceneType = self.GetParent<Scene>().SceneType;
 

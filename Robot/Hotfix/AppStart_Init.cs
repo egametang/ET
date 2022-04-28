@@ -2,7 +2,12 @@ namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        protected override async ETTask Run(EventType.AppStart args)
+        protected override void Run(EventType.AppStart args)
+        {
+            RunAsync(args).Coroutine();
+        }
+        
+        private async ETTask RunAsync(EventType.AppStart args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
@@ -19,6 +24,7 @@ namespace ET
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
+            Game.Scene.AddComponent<NumericWatcherComponent>();
             
             var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
             foreach (StartSceneConfig startConfig in processScenes)

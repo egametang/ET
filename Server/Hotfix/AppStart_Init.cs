@@ -5,7 +5,12 @@ namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        protected override async ETTask Run(EventType.AppStart args)
+        protected override void Run(EventType.AppStart args)
+        {
+            RunAsync(args).Coroutine();
+        }
+        
+        private async ETTask RunAsync(EventType.AppStart args)
         {
             Game.Scene.AddComponent<ConfigComponent>();
             await ConfigComponent.Instance.LoadAsync();

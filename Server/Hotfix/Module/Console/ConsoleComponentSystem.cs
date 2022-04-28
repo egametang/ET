@@ -25,13 +25,15 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(ConsoleComponent))]
+    [FriendClass(typeof(ModeContex))]
     public static class ConsoleComponentSystem
     {
         public static void Load(this ConsoleComponent self)
         {
             self.Handlers.Clear();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
+            List<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
 
             foreach (Type type in types)
             {

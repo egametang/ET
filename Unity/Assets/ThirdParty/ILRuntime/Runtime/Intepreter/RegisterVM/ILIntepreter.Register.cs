@@ -21,6 +21,7 @@ namespace ILRuntime.Runtime.Intepreter
         public int LocalManagedBase;
         public StackObject* StackBase;
         public StackObject* RegisterStart;
+        public StackObject* StackRegisterStart;
         public StackObject* RegisterEnd;
         public IList<object> ManagedStack;
     }
@@ -149,6 +150,7 @@ namespace ILRuntime.Runtime.Intepreter
             info.LocalManagedBase = locBase;
             info.FrameManagedBase = frame.ManagedStackBase;
             info.RegisterStart = r;
+            info.StackRegisterStart = stackRegStart + locCnt;
             info.ManagedStack = mStack;
 
             object obj;
@@ -2752,10 +2754,7 @@ namespace ILRuntime.Runtime.Intepreter
                                         ExceptionHandler eh = null;
 
                                         int addr = (int)(ip - ptr);
-                                        var sql = from e in ehs
-                                                  where addr >= e.TryStart && addr <= e.TryEnd && (ip->Operand < e.TryStart || ip->Operand > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally
-                                                  select e;
-                                        eh = sql.FirstOrDefault();
+                                        eh = FindExceptionHandlerByBranchTarget(addr, ip->Operand, ehs);
                                         if (eh != null)
                                         {
                                             finallyEndAddress = ip->Operand;
@@ -2805,22 +2804,29 @@ namespace ILRuntime.Runtime.Intepreter
                                         {
                                             intVal = m.HasThis ? m.ParameterCount + 1 : m.ParameterCount;
                                             intVal = intVal - Math.Max((intVal - RegisterVM.JITCompiler.CallRegisterParamCount), 0);
-                                            for (int i = 0; i < intVal; i++)
+                                            if (intVal > 0)
                                             {
-                                                switch (i)
+                                                reg1 = (r + ip->Register2);
+                                                CopyToStack(esp, reg1, mStack);
+                                                if (useRegister && reg1->ObjectType < ObjectTypes.Object)
                                                 {
-                                                    case 0:
-                                                        reg1 = (r + ip->Register2);
-                                                        break;
-                                                    case 1:
-                                                        reg1 = (r + ip->Register3);
-                                                        break;
-                                                    case 2:
-                                                        reg1 = (r + ip->Register4);
-                                                        break;
-                                                    default:
-                                                        throw new NotSupportedException();
+                                                    mStack.Add(null);
                                                 }
+                                                esp++;
+                                            }
+                                            if (intVal > 1)
+                                            {
+                                                reg1 = (r + ip->Register3);
+                                                CopyToStack(esp, reg1, mStack);
+                                                if (useRegister && reg1->ObjectType < ObjectTypes.Object)
+                                                {
+                                                    mStack.Add(null);
+                                                }
+                                                esp++;
+                                            }
+                                            if (intVal > 2)
+                                            {
+                                                reg1 = (r + ip->Register4);
                                                 CopyToStack(esp, reg1, mStack);
                                                 if (useRegister && reg1->ObjectType < ObjectTypes.Object)
                                                 {
@@ -2883,6 +2889,23 @@ namespace ILRuntime.Runtime.Intepreter
                                                 var instance = StackObject.ToObject((esp - (cm.ParameterCount + 1)), domain, mStack);
                                                 if (instance is IDelegateAdapter)
                                                 {
+                                                    if (cm.IsDelegateDynamicInvoke)
+                                                    {
+                                                        objRef = esp - 1;
+                                                        object[] objArr = StackObject.ToObject(objRef, domain, mStack) as object[];
+                                                        Free(objRef);
+                                                        if (objArr != null)
+                                                        {
+                                                            if (objArr.Length != cm.ParameterCount)
+                                                                throw new ArgumentException(string.Format("{0}.{1} has {2} arguments, but got {3}", cm.DeclearingType.FullName, cm.Name, cm.ParameterCount, objArr.Length));
+                                                            esp = objRef;
+                                                            for (intVal = 0; intVal < objArr.Length; intVal++)
+                                                            {
+                                                                esp = PushObject(esp, mStack, objArr[intVal], cm.Parameters[intVal] == domain.ObjectType);
+                                                            }
+                                                        }
+                                                    }
+
                                                     esp = ((IDelegateAdapter)instance).ILInvoke(this, esp, mStack);
                                                     processed = true;
                                                 }
@@ -2968,11 +2991,13 @@ namespace ILRuntime.Runtime.Intepreter
 
                                         if (obj != null)
                                         {
+                                            ILTypeInstance instance = null;
                                             if (obj is ILTypeInstance)
-                                            {
-                                                ILTypeInstance instance = obj as ILTypeInstance;
+                                                instance = obj as ILTypeInstance;
+                                            else if (obj is CrossBindingAdaptorType)
+                                                instance = (obj as CrossBindingAdaptorType).ILInstance;
+                                            if (instance != null)
                                                 instance.AssignFromStack((int)ip->OperandLong, reg2, AppDomain, mStack);
-                                            }
                                             else
                                             {
                                                 var t = obj.GetType();
@@ -3071,11 +3096,13 @@ namespace ILRuntime.Runtime.Intepreter
                                         obj = RetriveObject(objRef, mStack);
                                         if (obj != null)
                                         {
+                                            ILTypeInstance instance = null;
                                             if (obj is ILTypeInstance)
-                                            {
-                                                ILTypeInstance instance = obj as ILTypeInstance;
+                                                instance = obj as ILTypeInstance;
+                                            else if (obj is CrossBindingAdaptorType)
+                                                instance = (obj as CrossBindingAdaptorType).ILInstance;
+                                            if (instance != null)
                                                 instance.CopyToRegister((int)ip->OperandLong, ref info, ip->Register1);//Check #345
-                                            }
                                             else
                                             {
                                                 //var t = obj.GetType();
@@ -3214,45 +3241,18 @@ namespace ILRuntime.Runtime.Intepreter
                             case OpCodeREnum.Newobj:
                                 {
                                     IMethod m = domain.GetMethod(ip->Operand2);
-                                    if (m != null)
-                                    {
-                                        intVal = m.ParameterCount;
-                                        intVal = intVal - Math.Max((intVal - RegisterVM.JITCompiler.CallRegisterParamCount), 0);
-                                        for (int i = 0; i < intVal; i++)
-                                        {
-                                            switch (i)
-                                            {
-                                                case 0:
-                                                    reg1 = (r + ip->Register2);
-                                                    break;
-                                                case 1:
-                                                    reg1 = (r + ip->Register3);
-                                                    break;
-                                                case 2:
-                                                    reg1 = (r + ip->Register4);
-                                                    break;
-                                                default:
-                                                    throw new NotSupportedException();
-                                            }
-                                            CopyToStack(esp, reg1, mStack);
-                                            esp++;
-                                        }
-                                    }
                                     if (m is ILMethod)
                                     {
                                         type = m.DeclearingType as ILType;
                                         if (type.IsDelegate)
                                         {
-                                            objRef = GetObjectAndResolveReference(esp - 1 - 1);
-                                            var mi = (IMethod)mStack[(esp - 1)->Value];
+                                            objRef = GetObjectAndResolveReference(r + ip->Register2);
+                                            var mi = (IMethod)mStack[(r + ip->Register3)->Value];
                                             object ins;
                                             if (objRef->ObjectType == ObjectTypes.Null)
                                                 ins = null;
                                             else
                                                 ins = mStack[objRef->Value];
-                                            Free(esp - 1);
-                                            Free(esp - 1 - 1);
-                                            esp = esp - 1 - 1;
                                             object dele;
                                             var ilMethod = mi as ILMethod;
                                             if (ilMethod != null)
@@ -3290,7 +3290,33 @@ namespace ILRuntime.Runtime.Intepreter
                                         }
                                         else
                                         {
-                                            reg1 = esp - m.ParameterCount;
+                                            intVal = m.ParameterCount;
+                                            intVal = intVal - Math.Max((intVal - RegisterVM.JITCompiler.CallRegisterParamCount), 0);
+
+                                            if (intVal < m.ParameterCount)
+                                            {
+                                                if (intVal > 0)
+                                                {
+                                                    reg1 = (r + ip->Register2);
+                                                    CopyToStack(esp, reg1, mStack);
+                                                    esp++;
+                                                }
+                                                if (intVal > 1)
+                                                {
+                                                    reg1 = (r + ip->Register3);
+                                                    CopyToStack(esp, reg1, mStack);
+                                                    esp++;
+                                                }
+                                                if (intVal > 2)
+                                                {
+                                                    reg1 = (r + ip->Register4);
+                                                    CopyToStack(esp, reg1, mStack);
+                                                    esp++;
+                                                }
+                                                reg1 = esp - m.ParameterCount;
+                                            }
+                                            else
+                                                reg1 = esp;
                                             obj = null;
                                             bool isValueType = type.IsValueType;
                                             bool useRegister = ((ILMethod)m).ShouldUseRegisterVM;
@@ -3314,14 +3340,50 @@ namespace ILRuntime.Runtime.Intepreter
                                                 objRef = PushObject(esp, mStack, obj);//this parameter for constructor
                                             }
                                             esp = objRef;
-                                            for (int i = 0; i < m.ParameterCount; i++)
+                                            if (intVal < m.ParameterCount)
                                             {
-                                                CopyToStack(esp, reg1 + i, mStack);
-                                                if (esp->ObjectType < ObjectTypes.Object && useRegister)
+                                                for (int i = 0; i < m.ParameterCount; i++)
                                                 {
-                                                    mStack.Add(null);
+                                                    CopyToStack(esp, reg1 + i, mStack);
+                                                    if (esp->ObjectType < ObjectTypes.Object && useRegister)
+                                                    {
+                                                        mStack.Add(null);
+                                                    }
+                                                    esp++;
                                                 }
-                                                esp++;
+                                            }
+                                            else
+                                            {
+                                                if (intVal > 0)
+                                                {
+                                                    reg2 = (r + ip->Register2);
+                                                    CopyToStack(esp, reg2, mStack);
+                                                    if (esp->ObjectType < ObjectTypes.Object && useRegister)
+                                                    {
+                                                        mStack.Add(null);
+                                                    }
+                                                    esp++;
+                                                }
+                                                if (intVal > 1)
+                                                {
+                                                    reg2 = (r + ip->Register3);
+                                                    CopyToStack(esp, reg2, mStack);
+                                                    if (esp->ObjectType < ObjectTypes.Object && useRegister)
+                                                    {
+                                                        mStack.Add(null);
+                                                    }
+                                                    esp++;
+                                                }
+                                                if (intVal > 2)
+                                                {
+                                                    reg2 = (r + ip->Register4);
+                                                    CopyToStack(esp, reg2, mStack);
+                                                    if (esp->ObjectType < ObjectTypes.Object && useRegister)
+                                                    {
+                                                        mStack.Add(null);
+                                                    }
+                                                    esp++;
+                                                }
                                             }
                                             if (useRegister)
                                                 esp = ExecuteR(((ILMethod)m), esp, out unhandledException);
@@ -3358,16 +3420,13 @@ namespace ILRuntime.Runtime.Intepreter
                                         {
                                             if (cm.DeclearingType.IsDelegate)
                                             {
-                                                objRef = GetObjectAndResolveReference(esp - 1 - 1);
-                                                var mi = (IMethod)mStack[(esp - 1)->Value];
+                                                objRef = GetObjectAndResolveReference(r + ip->Register2);
+                                                var mi = (IMethod)mStack[(r + ip->Register3)->Value];
                                                 object ins;
                                                 if (objRef->ObjectType == ObjectTypes.Null)
                                                     ins = null;
                                                 else
                                                     ins = mStack[objRef->Value];
-                                                Free(esp - 1);
-                                                Free(esp - 1 - 1);
-                                                esp = esp - 1 - 1;
                                                 object dele;
                                                 var ilMethod = mi as ILMethod;
                                                 if (ilMethod != null)
@@ -3384,6 +3443,27 @@ namespace ILRuntime.Runtime.Intepreter
                                             }
                                             else
                                             {
+                                                intVal = m.ParameterCount;
+                                                intVal = intVal - Math.Max((intVal - RegisterVM.JITCompiler.CallRegisterParamCount), 0);
+
+                                                if (intVal > 0)
+                                                {
+                                                    reg1 = (r + ip->Register2);
+                                                    CopyToStack(esp, reg1, mStack);
+                                                    esp++;
+                                                }
+                                                if (intVal > 1)
+                                                {
+                                                    reg1 = (r + ip->Register3);
+                                                    CopyToStack(esp, reg1, mStack);
+                                                    esp++;
+                                                }
+                                                if (intVal > 2)
+                                                {
+                                                    reg1 = (r + ip->Register4);
+                                                    CopyToStack(esp, reg1, mStack);
+                                                    esp++;
+                                                }
                                                 var redirect = cm.Redirection;
                                                 if (redirect != null)
                                                     esp = redirect(this, esp, mStack, cm, true);
@@ -3955,11 +4035,17 @@ namespace ILRuntime.Runtime.Intepreter
                                                 throw new TypeLoadException();
                                         }
                                         else
-                                            throw new NullReferenceException();
+                                        {
+                                            //Nothing to do with null
+                                        }
                                     }
                                     else if (objRef->ObjectType < ObjectTypes.StackObjectReference)
                                     {
                                         //Nothing to do with primitive types
+                                    }
+                                    else if (objRef->ObjectType == ObjectTypes.ValueTypeObjectReference)
+                                    {
+                                        //Nothing to do with ValueTypeReference
                                     }
                                     else
                                         throw new InvalidCastException();
@@ -4175,6 +4261,57 @@ namespace ILRuntime.Runtime.Intepreter
                                             }
                                         }
                                     }
+                                }
+                                break;
+
+                            case OpCodeREnum.Castclass:
+                                {
+                                    reg2 = (r + ip->Register2);
+                                    type = domain.GetType(ip->Operand);
+                                    if (type != null)
+                                    {
+                                        objRef = GetObjectAndResolveReference(reg2);
+                                        if (objRef->ObjectType <= ObjectTypes.Double)
+                                        {
+                                            throw new NotImplementedException();
+                                        }
+                                        else
+                                        {
+                                            obj = RetriveObject(objRef, mStack);
+
+                                            if (obj != null)
+                                            {
+                                                if (obj is ILTypeInstance)
+                                                {
+                                                    if (((ILTypeInstance)obj).CanAssignTo(type))
+                                                    {
+                                                        AssignToRegister(ref info, ip->Register1, obj);
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new InvalidCastException(string.Format("Cannot Cast {0} to {1}", ((ILTypeInstance)obj).Type.FullName, type.FullName));
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (type.TypeForCLR.IsAssignableFrom(obj.GetType()))
+                                                    {
+                                                        AssignToRegister(ref info, ip->Register1, obj, true);
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new InvalidCastException(string.Format("Cannot Cast {0} to {1}", obj.GetType().FullName, type.FullName));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                WriteNull(ref info, ip->Register1);
+                                            }
+                                        }
+                                    }
+                                    else
+                                        throw new NullReferenceException();
                                 }
                                 break;
                             case OpCodeREnum.Isinst:
@@ -5079,7 +5216,7 @@ namespace ILRuntime.Runtime.Intepreter
                                     ILRuntimeException ire = (ILRuntimeException)ex;
                                     var inner = ire.InnerException;
                                     inner.Data["ThisInfo"] = ire.ThisInfo;
-                                    inner.Data["StackTrace"] = ire.StackTrace;
+                                    inner.Data["StackTrace"] = inner.Data.Contains("StackTrace") ? string.Format("{0}\n--- End of stack trace from previous location ---\n{1}", ire.StackTrace, inner.Data["StackTrace"]) : ire.StackTrace;
                                     inner.Data["LocalInfo"] = ire.LocalInfo;
                                     ex = inner;
                                 }
@@ -5090,7 +5227,7 @@ namespace ILRuntime.Runtime.Intepreter
                                         ex.Data["ThisInfo"] = debugger.GetThisInfo(this);
                                     else
                                         ex.Data["ThisInfo"] = "";
-                                    ex.Data["StackTrace"] = debugger.GetStackTrace(this);
+                                    ex.Data["StackTrace"] = ex.Data.Contains("StackTrace") ? string.Format("{0}\n--- End of stack trace from previous location ---\n{1}", debugger.GetStackTrace(this), ex.Data["StackTrace"]) : debugger.GetStackTrace(this);
                                     ex.Data["LocalInfo"] = debugger.GetLocalVariableInfo(this);
                                 }
                                 //Clear call stack
@@ -5108,10 +5245,7 @@ namespace ILRuntime.Runtime.Intepreter
                                 short exReg = (short)(paramCnt + locCnt);
                                 AssignToRegister(ref info, exReg, ex);
                                 unhandledException = false;
-                                var sql = from e in ehs
-                                          where addr >= e.TryStart && addr <= e.TryEnd && (eh.HandlerStart < e.TryStart || eh.HandlerStart > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally
-                                          select e;
-                                var eh2 = sql.FirstOrDefault();
+                                var eh2 = FindExceptionHandlerByBranchTarget(addr, eh.HandlerStart, ehs);
                                 if (eh2 != null)
                                 {
                                     finallyEndAddress = eh.HandlerStart;
@@ -5217,7 +5351,7 @@ namespace ILRuntime.Runtime.Intepreter
                                 if (v->ObjectType == ObjectTypes.ValueTypeObjectReference)
                                 {
                                     var dst = *(StackObject**)&v->Value;
-                                    if (dst->Value != st.GetHashCode())
+                                    if (dst->Value != st.TypeIndex)
                                     {
                                         stack.FreeRegisterValueType(v);
                                         stack.AllocValueType(v, st, true);
@@ -5245,7 +5379,7 @@ namespace ILRuntime.Runtime.Intepreter
                                 if (v->ObjectType == ObjectTypes.ValueTypeObjectReference)
                                 {
                                     var dst = *(StackObject**)&v->Value;
-                                    if (dst->Value != st.GetHashCode())
+                                    if (dst->Value != st.TypeIndex)
                                     {
                                         stack.FreeRegisterValueType(v);
                                         stack.AllocValueType(v, st, true);
@@ -5290,12 +5424,13 @@ namespace ILRuntime.Runtime.Intepreter
                             if (st != null && st.IsValueType)
                             {
                                 var dst = *(StackObject**)&v->Value;
-                                if (dst->Value != st.GetHashCode())
+                                if (dst->Value != st.TypeIndex)
                                 {
                                     stack.FreeRegisterValueType(v);
                                     stack.AllocValueType(v, st, true);
+                                    dst = *(StackObject**)&v->Value;
                                 }
-                                ((ILTypeInstance)obj).CopyValueTypeToStack(dst, mStackSrc);
+                                ((ILTypeInstance)obj).CopyValueTypeToStack(dst, mStack);
                             }
                             else
                             {
@@ -5313,12 +5448,13 @@ namespace ILRuntime.Runtime.Intepreter
                                 if (binder != null)
                                 {
                                     var dst = *(StackObject**)&v->Value;
-                                    if (dst->Value != st.GetHashCode())
+                                    if (dst->Value != st.TypeIndex)
                                     {
                                         stack.FreeRegisterValueType(v);
                                         stack.AllocValueType(v, st, true);
+                                        dst = *(StackObject**)&v->Value;
                                     }
-                                    binder.CopyValueTypeToStack(obj, dst, mStackSrc);
+                                    binder.CopyValueTypeToStack(obj, dst, mStack);
                                 }
                                 else
                                 {
@@ -5338,7 +5474,8 @@ namespace ILRuntime.Runtime.Intepreter
                     else
                     {
                         *v = *val;
-                        mStack[idx] = CheckAndCloneValueType(mStackSrc[v->Value], domain);
+                        bool isLocal = v >= info.RegisterStart && v < info.StackRegisterStart;
+                        mStack[idx] = isLocal ? CheckAndCloneValueType(mStackSrc[v->Value], domain) : mStackSrc[v->Value];
                         v->Value = idx;
                     }
                     break;
@@ -5346,7 +5483,7 @@ namespace ILRuntime.Runtime.Intepreter
                     if (v->ObjectType == ObjectTypes.ValueTypeObjectReference)
                     {
                         bool noCheck = false;
-                        if(!CanCopyStackValueType(val,v))
+                        if (!CanCopyStackValueType(val, v))
                         {
                             var dst = *(StackObject**)&val->Value;
                             var ct = domain.GetTypeByIndex(dst->Value);

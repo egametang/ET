@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class StartMachineConfigCategory : ProtoObject
+    public partial class StartMachineConfigCategory : ProtoObject, IMerge
     {
         public static StartMachineConfigCategory Instance;
 		
@@ -22,6 +22,12 @@ namespace ET
         public StartMachineConfigCategory()
         {
             Instance = this;
+        }
+        
+        public void Merge(object o)
+        {
+            StartMachineConfigCategory s = o as StartMachineConfigCategory;
+            this.list.AddRange(s.list);
         }
 		
         public override void EndInit()
@@ -69,12 +75,16 @@ namespace ET
     [ProtoContract]
 	public partial class StartMachineConfig: ProtoObject, IConfig
 	{
+		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
+		/// <summary>内网地址</summary>
 		[ProtoMember(2)]
 		public string InnerIP { get; set; }
+		/// <summary>外网地址</summary>
 		[ProtoMember(3)]
 		public string OuterIP { get; set; }
+		/// <summary>守护进程端口</summary>
 		[ProtoMember(4)]
 		public string WatcherPort { get; set; }
 

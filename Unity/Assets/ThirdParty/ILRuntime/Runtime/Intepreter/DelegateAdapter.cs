@@ -939,7 +939,7 @@ namespace ILRuntime.Runtime.Intepreter
             if (method.HasThis)
                 esp = ILIntepreter.PushObject(esp, mStack, instance);
             int paramCnt = method.ParameterCount;
-            if (method.IsExtend)
+            if (method.IsExtend && instance != null)
             {
                 esp = ILIntepreter.PushObject(esp, mStack, instance);
                 paramCnt--;
@@ -973,7 +973,7 @@ namespace ILRuntime.Runtime.Intepreter
         unsafe StackObject* ClearStack(ILIntepreter intp, StackObject* esp, StackObject* ebp, IList<object> mStack)
         {
             int paramCnt = method.ParameterCount;
-            if (method.IsExtend)//如果是拓展方法，退一位
+            if (method.IsExtend && instance != null)//如果是拓展方法，退一位
             {
                 paramCnt--;
             }
@@ -1108,24 +1108,13 @@ namespace ILRuntime.Runtime.Intepreter
                 {
                     if (im.ParameterCount == method_count && ret_type == method.ReturnType)
                     {
-                            
-                            for (int i = 0; i < im.ParameterCount; i++)
-                            {
-                                var index = method.IsExtend ? i + 1 : i;
-                                if (type.IsGenericInstance)
-                                {
-                                    if (method.Parameters[index] != type.GenericArguments[i].Value)
-                                    {
-                                        return false;
-                                    }
-                                }
-                                else
-                                {
-                                    if (im.Parameters[i] != method.Parameters[index])
-                                        return false;
-                                }
-                              
-                            }
+
+                        for (int i = 0; i < im.ParameterCount; i++)
+                        {
+                            var index = method.IsExtend ? i + 1 : i;
+                            if (im.Parameters[i] != method.Parameters[index] && (!(im is CLRMethod) || (im.Parameters[i].TypeForCLR != method.Parameters[index].TypeForCLR)))
+                                return false;
+                        }
 
                         return true;
                     }

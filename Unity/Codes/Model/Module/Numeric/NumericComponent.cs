@@ -6,8 +6,10 @@ namespace ET
 {
 	namespace EventType
 	{
-		public struct NumbericChange
+		public class NumbericChange: DisposeObject
 		{
+			public static readonly NumbericChange Instance = new NumbericChange();
+			
 			public Entity Parent;
 			public int NumericType;
 			public long Old;
@@ -101,13 +103,12 @@ namespace ET
 
 			if (isPublicEvent)
 			{
-				Game.EventSystem.Publish(new EventType.NumbericChange()
-				{
-					Parent = this.Parent, 
-					NumericType = numericType,
-					Old = oldValue,
-					New = value
-				});
+				EventType.NumbericChange args = EventType.NumbericChange.Instance;
+				args.Parent = this.Parent;
+				args.NumericType = numericType;
+				args.Old = oldValue;
+				args.New = value;
+				Game.EventSystem.PublishClass(args);
 			}
 		}
 		

@@ -34,6 +34,7 @@ namespace ET
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
+    [FriendClass(typeof(ActorMessageDispatcherComponent))]
     public static class ActorMessageDispatcherComponentHelper
     {
         public static void Awake(this ActorMessageDispatcherComponent self)

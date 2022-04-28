@@ -33,6 +33,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(AIDispatcherComponent))]
     public static class AIDispatcherComponentSystem
     {
         public static void Load(this AIDispatcherComponent self)

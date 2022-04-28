@@ -68,7 +68,13 @@ namespace ET
             appdomain.DelegateManager.RegisterFunctionDelegate<int, int, int>();//Linq
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, List<int>>, bool>();
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, int>, KeyValuePair<int, int>, int>();
-            
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, System.Collections.Generic.List<System.Int64>>();
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
+            appdomain.DelegateManager.RegisterFunctionDelegate<System.Int64, System.Collections.Generic.List<System.Int64>, System.Boolean>();
+            appdomain.DelegateManager.RegisterFunctionDelegate<System.Int64, System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>, System.Boolean>();
+
+            appdomain.DelegateManager.RegisterMethodDelegate<ET.AService>();
+
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
             {
                 return new UnityEngine.Events.UnityAction(() =>
@@ -90,8 +96,9 @@ namespace ET
             
             //注册Json的CLR
             LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
+            
             //注册ProtoBuf的CLR
-            PType.RegisterILRuntimeCLRRedirection(appdomain);
+            PType.RegisterILRuntime(appdomain, typeFullName => CodeLoader.Instance.GetHotfixType(typeFullName));
            
             
             ////////////////////////////////////
@@ -109,6 +116,9 @@ namespace ET
         {
             //注册自己写的适配器
             appdomain.RegisterCrossBindingAdaptor(new IAsyncStateMachineClassInheritanceAdaptor());
+            appdomain.RegisterValueTypeBinder(typeof(Vector2), new Vector2Binder());
+            appdomain.RegisterValueTypeBinder(typeof(Vector3), new Vector3Binder());
+            appdomain.RegisterValueTypeBinder(typeof(Quaternion), new QuaternionBinder());
         }
     }
 }

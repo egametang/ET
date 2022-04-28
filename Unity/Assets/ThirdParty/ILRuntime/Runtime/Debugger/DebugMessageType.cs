@@ -15,6 +15,8 @@ namespace ILRuntime.Runtime.Debugger
         SCThreadStarted,
         SCThreadEnded,
         SCBreakpointHit,
+        CSSetBreakpointEnabled,
+        CSSetBreakpointCondition,
         CSDeleteBreakpoint,
         CSExecute,
         CSStep,

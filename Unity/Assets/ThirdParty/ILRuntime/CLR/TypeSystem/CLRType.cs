@@ -104,7 +104,7 @@ namespace ILRuntime.CLR.TypeSystem
             isPrimitive = clrType.IsPrimitive;
             isEnum = clrType.IsEnum;
             isValueType = clrType.IsValueType;
-            isDelegate = clrType.BaseType == typeof(MulticastDelegate);
+            isDelegate = clrType.BaseType == typeof(MulticastDelegate) || clrType == typeof(Delegate);
             if (isPrimitive)
             {
                 var t = TypeForCLR;

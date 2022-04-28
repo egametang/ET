@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -12,7 +13,8 @@ namespace ET
             this.TryGetValue(t, out list);
             if (list == null)
             {
-                list = new List<K>();
+                list = MonoPool.Instance.Fetch(typeof (List<K>)) as List<K>;
+                list.Clear();
                 this.Add(t, list);
             }
             list.Add(k);
@@ -33,7 +35,24 @@ namespace ET
             if (list.Count == 0)
             {
                 this.Remove(t);
+                MonoPool.Instance.Recycle(list);
             }
+            return true;
+        }
+
+        public new bool Remove(T t)
+        {
+            List<K> list;
+            this.TryGetValue(t, out list);
+            if (list == null)
+            {
+                return false;
+            }
+
+            base.Remove(t);
+            
+            list.Clear();
+            MonoPool.Instance.Recycle(list);
             return true;
         }
 

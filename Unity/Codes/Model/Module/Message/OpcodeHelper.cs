@@ -32,6 +32,11 @@ namespace ET
 
         public static void LogMsg(int zone, ushort opcode, object message)
         {
+            if (Game.Options.Develop == 0)
+            {
+                return;
+            }
+            
             if (!IsNeedLogMessage(opcode))
             {
                 return;
@@ -42,6 +47,11 @@ namespace ET
         
         public static void LogMsg(ushort opcode, long actorId, object message)
         {
+            if (Game.Options.Develop == 0)
+            {
+                return;
+            }
+            
             if (!IsNeedLogMessage(opcode))
             {
                 return;

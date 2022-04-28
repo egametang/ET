@@ -43,7 +43,8 @@ namespace ET
             const string exe = "dotnet";
             string arguments = $"{startProcessConfig.AppName}.dll" + 
                     $" --Process={startProcessConfig.Id}" +
-                    $" --AppType={startProcessConfig.AppName}" +  
+                    $" --AppType={startProcessConfig.AppName}" +
+                    $" --StartConfig={Game.Options.StartConfig}" +
                     $" --Develop={Game.Options.Develop}" +
                     $" --CreateScenes={createScenes}" +
                     $" --LogLevel={Game.Options.LogLevel}";

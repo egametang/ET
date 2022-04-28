@@ -3,6 +3,7 @@ using System.IO;
 
 namespace ET
 {
+    [FriendClass(typeof(MailBoxComponent))]
     public static class InnerMessageDispatcherHelper
     {
         public static void HandleIActorResponse(ushort opcode, long actorId, IActorResponse iActorResponse)

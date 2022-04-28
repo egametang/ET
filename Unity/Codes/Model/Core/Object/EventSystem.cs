@@ -73,7 +73,7 @@ namespace ET
 
         private readonly Dictionary<string, Type> allTypes = new Dictionary<string, Type>();
 
-        private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
+        private readonly UnOrderMultiMap<Type, Type> types = new UnOrderMultiMap<Type, Type>();
 
         private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
 
@@ -92,11 +92,12 @@ namespace ET
         {
         }
 
-        private static List<Type> GetBaseAttributes(Type[] addTypes)
+        private List<Type> GetBaseAttributes()
         {
             List<Type> attributeTypes = new List<Type>();
-            foreach (Type type in addTypes)
+            foreach (var kv in this.allTypes)
             {
+                Type type = kv.Value;
                 if (type.IsAbstract)
                 {
                     continue;
@@ -111,20 +112,21 @@ namespace ET
             return attributeTypes;
         }
 
-        public void Add(Type[] addTypes)
+        public void Add(Dictionary<string, Type> addTypes)
         {
             this.allTypes.Clear();
-            foreach (Type addType in addTypes)
+            foreach (var kv in addTypes)
             {
-                this.allTypes[addType.FullName] = addType;
+                this.allTypes[kv.Key] = kv.Value;
             }
 
             this.types.Clear();
-            List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
+            List<Type> baseAttributeTypes = GetBaseAttributes();
             foreach (Type baseAttributeType in baseAttributeTypes)
             {
-                foreach (Type type in addTypes)
+                foreach (var kv in this.allTypes)
                 {
+                    Type type = kv.Value;
                     if (type.IsAbstract)
                     {
                         continue;
@@ -156,19 +158,17 @@ namespace ET
             this.allEvents.Clear();
             foreach (Type type in types[typeof (EventAttribute)])
             {
-                IEvent obj = Activator.CreateInstance(type) as IEvent;
-                if (obj == null)
+                IEvent iEvent = Activator.CreateInstance(type) as IEvent;
+                if (iEvent != null)
                 {
-                    throw new Exception($"type not is AEvent: {obj.GetType().Name}");
-                }
+                    Type eventType = iEvent.GetEventType();
+                    if (!this.allEvents.ContainsKey(eventType))
+                    {
+                        this.allEvents.Add(eventType, new List<object>());
+                    }
 
-                Type eventType = obj.GetEventType();
-                if (!this.allEvents.ContainsKey(eventType))
-                {
-                    this.allEvents.Add(eventType, new List<object>());
+                    this.allEvents[eventType].Add(iEvent);
                 }
-
-                this.allEvents[eventType].Add(obj);
             }
         }
 
@@ -176,23 +176,21 @@ namespace ET
         {
             this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
 
-            List<Type> addTypes = new List<Type>();
+            Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
 
             foreach (Assembly ass in this.assemblies.Values)
             {
-                addTypes.AddRange(ass.GetTypes());
+                foreach (Type type in ass.GetTypes())
+                {
+                    dictionary[type.FullName] = type;
+                }
             }
-
-            this.Add(addTypes.ToArray());
+            
+            this.Add(dictionary);
         }
 
-        public HashSet<Type> GetTypes(Type systemAttributeType)
+        public List<Type> GetTypes(Type systemAttributeType)
         {
-            if (!this.types.ContainsKey(systemAttributeType))
-            {
-                return new HashSet<Type>();
-            }
-
             return this.types[systemAttributeType];
         }
 
@@ -269,8 +267,9 @@ namespace ET
                 return;
             }
 
-            foreach (IDeserializeSystem deserializeSystem in iDeserializeSystems)
+            for (int i = 0; i < iDeserializeSystems.Count; ++i)
             {
+                IDeserializeSystem deserializeSystem = iDeserializeSystems[i] as IDeserializeSystem;
                 if (deserializeSystem == null)
                 {
                     continue;
@@ -296,8 +295,9 @@ namespace ET
                 return;
             }
 
-            foreach (IGetComponentSystem getSystem in iGetSystem)
+            for (int i = 0; i < iGetSystem.Count; ++i)
             {
+                IGetComponentSystem getSystem = iGetSystem[i] as IGetComponentSystem;
                 if (getSystem == null)
                 {
                     continue;
@@ -323,8 +323,9 @@ namespace ET
                 return;
             }
 
-            foreach (IAddComponentSystem addComponentSystem in iAddSystem)
+            for (int i = 0; i < iAddSystem.Count; ++i)
             {
+                IAddComponentSystem addComponentSystem = iAddSystem[i] as IAddComponentSystem;
                 if (addComponentSystem == null)
                 {
                     continue;
@@ -349,8 +350,9 @@ namespace ET
                 return;
             }
 
-            foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
+            for (int i = 0; i < iAwakeSystems.Count; ++i)
             {
+                IAwakeSystem aAwakeSystem = iAwakeSystems[i] as IAwakeSystem;
                 if (aAwakeSystem == null)
                 {
                     continue;
@@ -375,8 +377,9 @@ namespace ET
                 return;
             }
 
-            foreach (IAwakeSystem<P1> aAwakeSystem in iAwakeSystems)
+            for (int i = 0; i < iAwakeSystems.Count; ++i)
             {
+                IAwakeSystem<P1> aAwakeSystem = iAwakeSystems[i] as IAwakeSystem<P1>;
                 if (aAwakeSystem == null)
                 {
                     continue;
@@ -401,8 +404,9 @@ namespace ET
                 return;
             }
 
-            foreach (IAwakeSystem<P1, P2> aAwakeSystem in iAwakeSystems)
+            for (int i = 0; i < iAwakeSystems.Count; ++i)
             {
+                IAwakeSystem<P1, P2> aAwakeSystem = iAwakeSystems[i] as IAwakeSystem<P1, P2>;
                 if (aAwakeSystem == null)
                 {
                     continue;
@@ -427,8 +431,9 @@ namespace ET
                 return;
             }
 
-            foreach (IAwakeSystem<P1, P2, P3> aAwakeSystem in iAwakeSystems)
+            for (int i = 0; i < iAwakeSystems.Count; ++i)
             {
+                IAwakeSystem<P1, P2, P3> aAwakeSystem = iAwakeSystems[i] as IAwakeSystem<P1, P2, P3>;
                 if (aAwakeSystem == null)
                 {
                     continue;
@@ -453,8 +458,9 @@ namespace ET
                 return;
             }
 
-            foreach (IAwakeSystem<P1, P2, P3, P4> aAwakeSystem in iAwakeSystems)
+            for (int i = 0; i < iAwakeSystems.Count; ++i)
             {
+                IAwakeSystem<P1, P2, P3, P4> aAwakeSystem = iAwakeSystems[i] as IAwakeSystem<P1, P2, P3, P4>;
                 if (aAwakeSystem == null)
                 {
                     continue;
@@ -495,8 +501,9 @@ namespace ET
 
                 this.loaders2.Enqueue(instanceId);
 
-                foreach (ILoadSystem iLoadSystem in iLoadSystems)
+                for (int i = 0; i < iLoadSystems.Count; ++i)
                 {
+                    ILoadSystem iLoadSystem = iLoadSystems[i] as ILoadSystem;
                     try
                     {
                         iLoadSystem.Run(component);
@@ -519,8 +526,9 @@ namespace ET
                 return;
             }
 
-            foreach (IDestroySystem iDestroySystem in iDestroySystems)
+            for (int i = 0; i < iDestroySystems.Count; ++i)
             {
+                IDestroySystem iDestroySystem = iDestroySystems[i] as IDestroySystem;
                 if (iDestroySystem == null)
                 {
                     continue;
@@ -561,8 +569,9 @@ namespace ET
 
                 this.updates2.Enqueue(instanceId);
 
-                foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
+                for (int i = 0; i < iUpdateSystems.Count; ++i)
                 {
+                    IUpdateSystem iUpdateSystem = iUpdateSystems[i] as IUpdateSystem;
                     try
                     {
                         iUpdateSystem.Run(component);
@@ -601,8 +610,9 @@ namespace ET
 
                 this.lateUpdates2.Enqueue(instanceId);
 
-                foreach (ILateUpdateSystem iLateUpdateSystem in iLateUpdateSystems)
+                for (int i = 0; i < iLateUpdateSystems.Count; ++i)
                 {
+                    ILateUpdateSystem iLateUpdateSystem = iLateUpdateSystems[i] as ILateUpdateSystem;
                     try
                     {
                         iLateUpdateSystem.Run(component);
@@ -627,9 +637,10 @@ namespace ET
 
             using (ListComponent<ETTask> list = ListComponent<ETTask>.Create())
             {
-                foreach (object obj in iEvents)
+                for (int i = 0; i < iEvents.Count; ++i)
                 {
-                    if (!(obj is AEvent<T> aEvent))
+                    object obj = iEvents[i];
+                    if (!(obj is AEventAsync<T> aEvent))
                     {
                         Log.Error($"event error: {obj.GetType().Name}");
                         continue;
@@ -648,24 +659,43 @@ namespace ET
                 }
             }
         }
-
+        
         public void Publish<T>(T a) where T : struct
         {
             List<object> iEvents;
-            if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
+            if (!this.allEvents.TryGetValue(a.GetType(), out iEvents))
             {
                 return;
             }
-
-            foreach (object obj in iEvents)
+            
+            for (int i = 0; i < iEvents.Count; ++i)
             {
+                object obj = iEvents[i];
                 if (!(obj is AEvent<T> aEvent))
                 {
                     Log.Error($"event error: {obj.GetType().Name}");
                     continue;
                 }
-                aEvent.Handle(a).Coroutine();
+                aEvent.Handle(a);
             }
+        }
+
+        // ILRuntime消除GC使用，服务端不需要用这个
+        public void PublishClass<T>(T a) where T : DisposeObject
+        {
+            List<object> iEvents;
+            if (!this.allEvents.TryGetValue(a.GetType(), out iEvents))
+            {
+                return;
+            }
+            
+            for (int i = 0; i < iEvents.Count; ++i)
+            {
+                object obj = iEvents[i];
+                IEventClass aEvent = (IEventClass) obj;
+                aEvent.Handle(a);
+            }
+            a.Dispose();
         }
 
         public override string ToString()

@@ -22,13 +22,15 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(RobotCaseDispatcherComponent))]
+    [FriendClass(typeof(RobotCase))]
     public static class RobotCaseDispatcherComponentSystem
     {
         public static void Load(this RobotCaseDispatcherComponent self)
         {
             self.Dictionary.Clear();
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof(RobotCaseAttribute));
+            List<Type> types = Game.EventSystem.GetTypes(typeof(RobotCaseAttribute));
 
             foreach (Type type in types)
             {

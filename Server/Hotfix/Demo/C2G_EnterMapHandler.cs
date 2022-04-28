@@ -3,6 +3,7 @@
 
 namespace ET
 {
+	[FriendClass(typeof(GateMapComponent))]
 	[MessageHandler]
 	public class C2G_EnterMapHandler : AMRpcHandler<C2G_EnterMap, G2C_EnterMap>
 	{

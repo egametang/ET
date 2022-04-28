@@ -3,12 +3,12 @@
 namespace ET
 {
     [Event]
-    public class ChangePosition_NotifyAOI: AEvent<EventType.ChangePosition>
+    public class ChangePosition_NotifyAOI: AEventClass<EventType.ChangePosition>
     {
-        protected override async ETTask Run(EventType.ChangePosition args)
+        protected override void Run(object changePosition)
         {
-            await ETTask.CompletedTask;
-            Vector3 oldPos = args.OldPos;
+            EventType.ChangePosition args = changePosition as EventType.ChangePosition;
+            Vector3 oldPos = args.OldPos.Value;
             Unit unit = args.Unit;
             int oldCellX = (int) (oldPos.x * 1000) / AOIManagerComponent.CellSize;
             int oldCellY = (int) (oldPos.z * 1000) / AOIManagerComponent.CellSize;

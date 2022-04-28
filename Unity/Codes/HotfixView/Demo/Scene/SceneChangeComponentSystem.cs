@@ -32,6 +32,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(SceneChangeComponent))]
     public static class SceneChangeComponentSystem
     {
         public static async ETTask ChangeSceneAsync(this SceneChangeComponent self, string sceneName)

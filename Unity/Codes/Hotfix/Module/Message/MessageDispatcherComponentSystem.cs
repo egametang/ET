@@ -35,13 +35,14 @@ namespace ET
     /// <summary>
     /// 消息分发组件
     /// </summary>
+    [FriendClass(typeof(MessageDispatcherComponent))]
     public static class MessageDispatcherComponentHelper
     {
         public static void Load(this MessageDispatcherComponent self)
         {
             self.Handlers.Clear();
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof (MessageHandlerAttribute));
+            List<Type> types = Game.EventSystem.GetTypes(typeof (MessageHandlerAttribute));
 
             foreach (Type type in types)
             {

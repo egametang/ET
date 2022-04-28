@@ -9,12 +9,14 @@ namespace ILRuntime.Runtime.Intepreter
 {
     public class ILRuntimeException : Exception
     {
+        string message;
         string stackTrace;
         string thisInfo, localInfo;
         internal ILRuntimeException(string message, ILIntepreter intepreter, CLR.Method.ILMethod method, Exception innerException = null)
             : base(message, innerException)
         
         {
+            this.message = message;
             var ds = intepreter.AppDomain.DebugService;
             if (innerException is ILRuntimeException)
             {
@@ -26,15 +28,30 @@ namespace ILRuntime.Runtime.Intepreter
             else
             {
                 stackTrace = ds.GetStackTrace(intepreter);
-                if (method.HasThis)
-                    thisInfo = ds.GetThisInfo(intepreter);
-                else
-                    thisInfo = "";
-                localInfo = ds.GetLocalVariableInfo(intepreter);
+                try
+                {
+                    if (method.HasThis)
+                        thisInfo = ds.GetThisInfo(intepreter);
+                    else
+                        thisInfo = "";
+                    localInfo = ds.GetLocalVariableInfo(intepreter);
+                }
+                catch
+                {
+
+                }
             }
 
             if (ds.OnILRuntimeException != null) {
                 ds.OnILRuntimeException(ToString());
+            }
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return message + "\n" + stackTrace;
             }
         }
 
@@ -62,7 +79,7 @@ namespace ILRuntime.Runtime.Intepreter
         public override string ToString()
         {
             StringBuilder message = new StringBuilder();
-            message.AppendLine(Message);
+            message.AppendLine(this.message);
             if (!string.IsNullOrEmpty(ThisInfo))
             {
                 message.AppendLine("this:");
@@ -70,7 +87,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
             message.AppendLine("Local Variables:");
             message.AppendLine(LocalInfo);
-            message.AppendLine(StackTrace);
+            message.AppendLine(stackTrace);
             if (InnerException != null)
                 message.AppendLine(InnerException.ToString());
             return message.ToString();

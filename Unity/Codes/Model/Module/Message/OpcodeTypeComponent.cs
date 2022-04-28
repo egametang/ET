@@ -39,7 +39,7 @@ namespace ET
             this.typeOpcodes.Clear();
             this.requestResponse.Clear();
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof (MessageAttribute));
+            List<Type> types = Game.EventSystem.GetTypes(typeof (MessageAttribute));
             foreach (Type type in types)
             {
                 object[] attrs = type.GetCustomAttributes(typeof (MessageAttribute), false);

@@ -32,13 +32,14 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(SessionStreamDispatcher))]
     public static class SessionStreamDispatcherSystem
     {
         public static void Load(this SessionStreamDispatcher self)
         {
             self.Dispatchers = new ISessionStreamDispatcher[100];
             
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof (SessionStreamDispatcherAttribute));
+            List<Type> types = Game.EventSystem.GetTypes(typeof (SessionStreamDispatcherAttribute));
 
             foreach (Type type in types)
             {

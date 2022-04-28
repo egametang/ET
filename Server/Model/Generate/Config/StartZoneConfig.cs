@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class StartZoneConfigCategory : ProtoObject
+    public partial class StartZoneConfigCategory : ProtoObject, IMerge
     {
         public static StartZoneConfigCategory Instance;
 		
@@ -22,6 +22,12 @@ namespace ET
         public StartZoneConfigCategory()
         {
             Instance = this;
+        }
+        
+        public void Merge(object o)
+        {
+            StartZoneConfigCategory s = o as StartZoneConfigCategory;
+            this.list.AddRange(s.list);
         }
 		
         public override void EndInit()
@@ -69,10 +75,13 @@ namespace ET
     [ProtoContract]
 	public partial class StartZoneConfig: ProtoObject, IConfig
 	{
+		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
+		/// <summary>数据库地址</summary>
 		[ProtoMember(2)]
 		public string DBConnection { get; set; }
+		/// <summary>数据库名</summary>
 		[ProtoMember(3)]
 		public string DBName { get; set; }
 

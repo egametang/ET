@@ -7,13 +7,16 @@ using System.Net.Sockets;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Debugger.Protocol;
+using System.IO;
+using System.Net;
 
 namespace ILRuntime.Runtime.Debugger
 {
 #pragma warning disable
     public class DebuggerServer
     {
-        public const int Version = 2;
+        public const int Version = 4;
+        private static readonly int currentProcessId = System.Diagnostics.Process.GetCurrentProcess().Id;
         TcpListener listener;
         //HashSet<Session<T>> clients = new HashSet<Session<T>>();
         bool isUp = false;
@@ -30,31 +33,64 @@ namespace ILRuntime.Runtime.Debugger
         /// 服务器监听的端口
         /// </summary>
         public int Port { get { return port; } set { this.port = value; } }
+        EndPoint boardcastEndPoint;
 
         public DebugSocket Client { get { return clientSocket; } }
 
         public bool IsAttached { get { return clientSocket != null && !clientSocket.Disconnected; } }
 
+        //private static bool IsOSX => Application.platform == RuntimePlatform.OSXEditor;
+        //private static bool IsWindows => !IsOSX && Path.DirectorySeparatorChar == '\\' && Environment.NewLine == "\r\n";
+        private Socket udpSocket; // 用于广播本地信息(计算机名，进程名，TcpListener监听端口等)的udp socket
         public DebuggerServer(DebugService ds)
         {
             this.ds = ds;
             bw = new System.IO.BinaryWriter(sendStream);
+            bwForUdp = new System.IO.BinaryWriter(sendStreamForUdp);
         }
 
-        public virtual bool Start()
+        private int tcpListenerPort;
+        public virtual string Start(bool boardcastDebuggerInfo)
         {
             shutdown = false;
             mainLoop = new Thread(new ThreadStart(this.NetworkLoop));
             mainLoop.Start();
 
-            this.listener = new TcpListener(port);
+            boardcastEndPoint = new IPEndPoint(IPAddress.Broadcast, port);
+            if (boardcastDebuggerInfo)
+            {
+                tcpListenerPort = port + System.Diagnostics.Process.GetCurrentProcess().Id;
+                if (tcpListenerPort > 65535)
+                    tcpListenerPort = tcpListenerPort % (65535 - 1024) + 1024;
+            }
+            else
+                tcpListenerPort = port;
+            this.listener = new TcpListener(IPAddress.Any, tcpListenerPort);
             try { listener.Start(); }
             catch
             {
-                return false;
+                return $"ILRuntime Debugger Error: Unable to use network port {tcpListenerPort}.";
             }
             isUp = true;
-            return true;
+
+            if (boardcastDebuggerInfo)
+            {
+                var _udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _udpSocket.EnableBroadcast = true;
+                _udpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ExclusiveAddressUse, false);
+                _udpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                udpSocket = _udpSocket;
+            }
+
+            return null;
+        }
+
+        byte[] stringBuffer = new byte[1024];
+        void WriteUTF8String(BinaryWriter bw, string val)
+        {
+            var length = Encoding.UTF8.GetBytes(val, 0, Math.Min(val.Length, 256), stringBuffer, 0);
+            bw.Write((short)length);
+            bw.Write(stringBuffer, 0, length);
         }
 
         public virtual void Stop()
@@ -66,12 +102,45 @@ namespace ILRuntime.Runtime.Debugger
             mainLoop = null;
             if (clientSocket != null)
                 clientSocket.Close();
+
+            if (udpSocket != null)
+            {
+                var _socket = udpSocket;
+                udpSocket = null;
+                _socket.Close();
+            }
         }
 
+        System.IO.MemoryStream sendStreamForUdp = new System.IO.MemoryStream(64 * 1024);
+        System.IO.BinaryWriter bwForUdp;
+        DateTime udpSendTime = DateTime.MinValue;
+        public static Func<string> GetProjectNameFunction;
         void NetworkLoop()
         {
             while (!shutdown)
             {
+                try
+                {
+                    if (udpSocket != null && clientSocket == null)
+                    {
+                        var now = DateTime.Now;
+                        if ((now - udpSendTime).TotalSeconds >= 0.5)
+                        {
+                            sendStreamForUdp.Position = 0;
+                            WriteUTF8String(bwForUdp, GetProjectNameFunction != null ? GetProjectNameFunction() : "");
+                            WriteUTF8String(bwForUdp, System.Environment.MachineName != null ? System.Environment.MachineName : "");
+                            bwForUdp.Write(currentProcessId);
+                            bwForUdp.Write(tcpListenerPort);
+                            udpSocket.SendTo(sendStreamForUdp.GetBuffer(), (int)sendStreamForUdp.Position, SocketFlags.None, boardcastEndPoint);
+                            udpSendTime = now;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
                 try
                 {
                     // let new clients (max 10) connect
@@ -89,7 +158,7 @@ namespace ILRuntime.Runtime.Debugger
                 }
                 catch (Exception)
                 {
-                    
+
                 }
             }
         }
@@ -97,7 +166,7 @@ namespace ILRuntime.Runtime.Debugger
         void CreateNewSession(TcpListener listener)
         {
             Socket sock = listener.AcceptSocket();
-            clientSocket = new DebugSocket(sock);           
+            clientSocket = new DebugSocket(sock);
             clientSocket.OnReciveMessage = OnReceive;
             clientSocket.OnClose = OnClose;
             ClientConnected();
@@ -133,11 +202,37 @@ namespace ILRuntime.Runtime.Debugger
                         CSBindBreakpoint msg = new Protocol.CSBindBreakpoint();
                         msg.BreakpointHashCode = br.ReadInt32();
                         msg.IsLambda = br.ReadBoolean();
-                        msg.TypeName = br.ReadString();
+                        msg.NamespaceName = br.ReadString();
+                        var typeName = br.ReadString();
+                        msg.TypeName = String.IsNullOrWhiteSpace(msg.NamespaceName) ? typeName : msg.NamespaceName + "." + typeName;
                         msg.MethodName = br.ReadString();
                         msg.StartLine = br.ReadInt32();
                         msg.EndLine = br.ReadInt32();
+                        msg.Enabled = br.ReadBoolean();
+                        msg.Condition = new BreakpointCondition();
+                        msg.Condition.Style = (BreakpointConditionStyle)br.ReadByte();
+                        if (msg.Condition.Style != BreakpointConditionStyle.None)
+                            msg.Condition.Expression = br.ReadString();
+                        msg.UsingInfos = new UsingInfo[br.ReadInt32() + 1];
+                        msg.UsingInfos[0] = new UsingInfo() { Alias = null, Name = msg.NamespaceName }; //当前命名空间具有最高优先级 
+                        for (int i = 1; i < msg.UsingInfos.Length; i++)
+                        {
+                            msg.UsingInfos[i] = new UsingInfo() { Alias = br.ReadString(), Name = br.ReadString() };
+                        }
                         TryBindBreakpoint(msg);
+                    }
+                    break;
+                case DebugMessageType.CSSetBreakpointEnabled:
+                    {
+                        ds.SetBreakpointEnabled(br.ReadInt32(), br.ReadBoolean());
+                    }
+                    break;
+                case DebugMessageType.CSSetBreakpointCondition:
+                    {
+                        int bpHash = br.ReadInt32();
+                        BreakpointConditionStyle style = (BreakpointConditionStyle)br.ReadByte();
+                        string expression = style != BreakpointConditionStyle.None ? br.ReadString() : null;
+                        ds.SetBreakpointCondition(bpHash, style, expression);
                     }
                     break;
                 case DebugMessageType.CSDeleteBreakpoint:
@@ -166,12 +261,13 @@ namespace ILRuntime.Runtime.Debugger
                     {
                         CSResolveVariable msg = new CSResolveVariable();
                         msg.ThreadHashCode = br.ReadInt32();
+                        msg.FrameIndex = br.ReadInt32();
                         msg.Variable = ReadVariableReference(br);
                         VariableInfo info;
                         try
                         {
                             object res;
-                            info = ds.ResolveVariable(msg.ThreadHashCode, msg.Variable, out res);
+                            info = ds.ResolveVariable(msg.ThreadHashCode, msg.FrameIndex, msg.Variable, out res);
                         }
                         catch (Exception ex)
                         {
@@ -185,6 +281,7 @@ namespace ILRuntime.Runtime.Debugger
                     {
                         CSResolveIndexer msg = new CSResolveIndexer();
                         msg.ThreadHashCode = br.ReadInt32();
+                        msg.FrameIndex = br.ReadInt32();
                         msg.Body = ReadVariableReference(br);
                         msg.Index = ReadVariableReference(br);
 
@@ -192,9 +289,9 @@ namespace ILRuntime.Runtime.Debugger
                         try
                         {
                             object res;
-                            info = ds.ResolveIndexAccess(msg.ThreadHashCode, msg.Body, msg.Index, out res);
+                            info = ds.ResolveIndexAccess(msg.ThreadHashCode, msg.FrameIndex, new VariableReference { Parent = msg.Body, Parameters = new VariableReference[1] { msg.Index } }, out res);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             info = VariableInfo.GetException(ex);
                         }
@@ -205,14 +302,15 @@ namespace ILRuntime.Runtime.Debugger
                 case DebugMessageType.CSEnumChildren:
                     {
                         int thId = br.ReadInt32();
+                        int frameId = br.ReadInt32();
                         var parent = ReadVariableReference(br);
 
                         VariableInfo[] info = null;
                         try
                         {
-                            info = ds.EnumChildren(thId, parent);
+                            info = ds.EnumChildren(thId, frameId, parent);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             info = new VariableInfo[] { VariableInfo.GetException(ex) };
                         }
@@ -237,7 +335,7 @@ namespace ILRuntime.Runtime.Debugger
                 res.Parent = ReadVariableReference(br);
                 int cnt = br.ReadInt32();
                 res.Parameters = new VariableReference[cnt];
-                for(int i = 0; i < cnt; i++)
+                for (int i = 0; i < cnt; i++)
                 {
                     res.Parameters[i] = ReadVariableReference(br);
                 }
@@ -266,7 +364,7 @@ namespace ILRuntime.Runtime.Debugger
                 clientSocket.Send(type, sendStream.GetBuffer(), (int)sendStream.Position);
         }
 
-        bool CheckCompilerGeneratedStateMachine(ILMethod ilm, Enviorment.AppDomain domain,int startLine, out ILMethod found)
+        bool CheckCompilerGeneratedStateMachine(ILMethod ilm, Enviorment.AppDomain domain, int startLine, out ILMethod found)
         {
             var mDef = ilm.Definition;
             Mono.Cecil.CustomAttribute ca = null;
@@ -339,7 +437,7 @@ namespace ILRuntime.Runtime.Debugger
                 }
                 if (found != null)
                 {
-                    ds.SetBreakPoint(found.GetHashCode(), msg.BreakpointHashCode, msg.StartLine);
+                    ds.SetBreakPoint(found.GetHashCode(), msg.BreakpointHashCode, msg.StartLine, msg.Enabled, msg.Condition, msg.UsingInfos);
                     res.Result = BindBreakpointResults.OK;
                 }
                 else
@@ -387,7 +485,7 @@ namespace ILRuntime.Runtime.Debugger
                                         found = ilm;
                                         break;
                                     }
-                                    else if(CheckCompilerGeneratedStateMachine(ilm, domain, msg.StartLine, out found))
+                                    else if (CheckCompilerGeneratedStateMachine(ilm, domain, msg.StartLine, out found))
                                     {
                                         break;
                                     }
@@ -396,7 +494,7 @@ namespace ILRuntime.Runtime.Debugger
                         }
                         if (found != null)
                         {
-                            ds.SetBreakPoint(found.GetHashCode(), msg.BreakpointHashCode, msg.StartLine);
+                            ds.SetBreakPoint(found.GetHashCode(), msg.BreakpointHashCode, msg.StartLine, msg.Enabled, msg.Condition, msg.UsingInfos);
                             res.Result = BindBreakpointResults.OK;
                         }
                         else
@@ -425,12 +523,13 @@ namespace ILRuntime.Runtime.Debugger
             DoSend(DebugMessageType.SCBindBreakpointResult);
         }
 
-        internal void SendSCBreakpointHit(int intpHash, int bpHash, KeyValuePair<int, StackFrameInfo[]>[] info)
+        internal void SendSCBreakpointHit(int intpHash, int bpHash, KeyValuePair<int, StackFrameInfo[]>[] info, string error = "")
         {
             sendStream.Position = 0;
             bw.Write(bpHash);
             bw.Write(intpHash);
             WriteStackFrames(info);
+            bw.Write(error);
             DoSend(DebugMessageType.SCBreakpointHit);
         }
 
@@ -480,12 +579,13 @@ namespace ILRuntime.Runtime.Debugger
                 bw.Write(i.Value.Length);
                 foreach (var j in i.Value)
                 {
-                    bw.Write(j.MethodName);
-                    bw.Write(j.DocumentName);
+                    WriteString(j.MethodName);
+                    WriteString(j.DocumentName);
                     bw.Write(j.StartLine);
                     bw.Write(j.StartColumn);
                     bw.Write(j.EndLine);
                     bw.Write(j.EndColumn);
+                    bw.Write(j.ArgumentCount);
                     bw.Write(j.LocalVariables.Length);
                     foreach (var k in j.LocalVariables)
                     {
@@ -495,15 +595,20 @@ namespace ILRuntime.Runtime.Debugger
             }
         }
 
+        void WriteString(string val)
+        {
+            bw.Write(val != null ? val : "");
+        }
+
         void WriteVariableInfo(VariableInfo k)
         {
             bw.Write(k.Address);
             bw.Write((byte)k.Type);
             bw.Write(k.Offset);
-            bw.Write(k.Name);
-            bw.Write(k.Value);
+            WriteString(k.Name);
+            WriteString(k.Value);
             bw.Write((byte)k.ValueType);
-            bw.Write(k.TypeName);
+            WriteString(k.TypeName);
             bw.Write(k.Expandable);
             bw.Write(k.IsPrivate);
             bw.Write(k.IsProtected);
@@ -526,7 +631,7 @@ namespace ILRuntime.Runtime.Debugger
         public void NotifyModuleLoaded(string modulename)
         {
             sendStream.Position = 0;
-            bw.Write(modulename);
+            WriteString(modulename);
             DoSend(DebugMessageType.SCModuleLoaded);
         }
     }
