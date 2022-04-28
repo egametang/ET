@@ -279,6 +279,14 @@ namespace ILRuntime.CLR.TypeSystem
             }
         }
 
+        internal List<ILType> GenericInstances
+        {
+            get
+            {
+                return genericInstances;
+            }
+        }
+
         /// <summary>
         /// 初始化IL类型
         /// </summary>
@@ -993,27 +1001,30 @@ namespace ILRuntime.CLR.TypeSystem
             }
             return null;
         }
-
-        public IMethod GetConstructor ( List<IType> param )
+        public IMethod GetConstructor(List<IType> param)
         {
-            if ( constructors == null )
-                InitializeMethods ();
-            foreach ( var i in constructors )
+            return GetConstructor(param, true);
+        }
+        public IMethod GetConstructor(List<IType> param, bool exactMatch = true)
+        {
+            if (constructors == null)
+                InitializeMethods();
+            foreach (var i in constructors)
             {
-                if ( i.ParameterCount == param.Count )
+                if (i.ParameterCount == param.Count)
                 {
                     bool match = true;
 
-                    for ( int j = 0; j < param.Count; j++ )
+                    for (int j = 0; j < param.Count; j++)
                     {
-                        if ( param [ j ] != i.Parameters [ j ] )
+                        if ((exactMatch && param[j] != i.Parameters[j]) || !i.Parameters[j].CanAssignTo(param[j]))
                         {
                             match = false;
                             break;
                         }
                     }
 
-                    if ( match )
+                    if (match)
                         return i;
                 }
             }
@@ -1079,6 +1090,7 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 fieldTypes = new IType [ 0 ];
                 fieldDefinitions = new FieldDefinition [ 0 ];
+                return;
             }
             fieldTypes = new IType [ definition.Fields.Count ];
             fieldDefinitions = new FieldDefinition [ definition.Fields.Count ];
@@ -1217,25 +1229,25 @@ namespace ILRuntime.CLR.TypeSystem
             return res;
         }
 
-        public ILTypeInstance Instantiate ( object [] args )
+        public ILTypeInstance Instantiate(object[] args)
         {
-            var res = new ILTypeInstance ( this );
-            var argsTypes = new List<IType> ( args.Length );
-            foreach ( var o in args )
+            var res = new ILTypeInstance(this);
+            var argsTypes = new List<IType>(args.Length);
+            foreach (var o in args)
             {
-                if ( o is ILTypeInstance )
+                if (o is ILTypeInstance)
                 {
-                    argsTypes.Add ( ( ( ILTypeInstance ) o ).Type );
+                    argsTypes.Add(((ILTypeInstance)o).Type);
                 }
                 else
                 {
-                    argsTypes.Add ( appdomain.GetType ( o.GetType () ) );
+                    argsTypes.Add(appdomain.GetType(o.GetType()));
                 }
             }
-            var m = GetConstructor ( argsTypes );
-            if ( m != null )
+            var m = GetConstructor(argsTypes, false);
+            if (m != null)
             {
-                appdomain.Invoke ( m, res, args );
+                appdomain.Invoke(m, res, args);
             }
 
             return res;
