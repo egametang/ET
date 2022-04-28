@@ -131,6 +131,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Type_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_KeyValuePair_2_String_Type_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_List_1_Type_Binding.Register(app);
             ET_UnOrderMultiMap_2_Type_Type_Binding.Register(app);
             ET_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
