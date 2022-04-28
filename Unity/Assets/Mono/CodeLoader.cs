@@ -17,14 +17,38 @@ namespace ET
 
 		private Assembly assembly;
 
-		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
-		
 		private Type[] allTypes;
 		
 		public CodeMode CodeMode { get; set; }
+		
+		private readonly Dictionary<string, Type> monoTypes = new Dictionary<string, Type>();
+		
+		private readonly Dictionary<string, Type> ilruntimeTypes = new Dictionary<string, Type>();
+		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 
 		private CodeLoader()
 		{
+			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+			foreach (Assembly ass in assemblies)
+			{
+				foreach (Type type in ass.GetTypes())
+				{
+					this.monoTypes[type.FullName] = type;
+					this.monoTypes[type.AssemblyQualifiedName] = type;
+				}
+			}
+		}
+		
+		public Type GetMonoType(string fullName)
+		{
+			this.monoTypes.TryGetValue(fullName, out Type type);
+			return type;
+		}
+		
+		public Type GetILRuntimeType(string fullName)
+		{
+			this.ilruntimeTypes.TryGetValue(fullName, out Type type);
+			return type;
 		}
 
 		public void Dispose()
@@ -65,9 +89,14 @@ namespace ET
 					MemoryStream pdbStream = new MemoryStream(pdbBytes);
 					appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
 
-					ILHelper.InitILRuntime(appDomain);
-
 					this.allTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
+					foreach (var type in this.allTypes)
+					{
+						this.ilruntimeTypes[type.FullName] = type;
+					}
+					
+					ILHelper.InitILRuntime(appDomain);
+					
 					IStaticMethod start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
 					start.Run();
 					break;
