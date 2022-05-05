@@ -46,70 +46,97 @@ namespace ET
         public int Type;
     }
 
-    [ObjectSystem]
-    public class TimerComponentAwakeSystem: AwakeSystem<TimerComponent>
+    [FriendClass(typeof(TimerAction))]
+    [FriendClass(typeof(TimerComponent))]
+    public static class TimerComponentSystem
     {
-        public override void Awake(TimerComponent self)
+        [ObjectSystem]
+        public class TimerComponentAwakeSystem: AwakeSystem<TimerComponent>
         {
-            TimerComponent.Instance = self;
-            self.Awake();
+            public override void Awake(TimerComponent self)
+            {
+                TimerComponent.Instance = self;
+                self.Init();
+            }
         }
-    }
 
-    [ObjectSystem]
-    public class TimerComponentUpdateSystem: UpdateSystem<TimerComponent>
-    {
-        public override void Update(TimerComponent self)
+        [ObjectSystem]
+        public class TimerComponentUpdateSystem: UpdateSystem<TimerComponent>
         {
-            self.Update();
+            public override void Update(TimerComponent self)
+            {
+                if (self.TimeId.Count == 0)
+                {
+                    return;
+                }
+
+                long timeNow = TimeHelper.ServerNow();
+
+                if (timeNow < self.minTime)
+                {
+                    return;
+                }
+
+                foreach (KeyValuePair<long, List<long>> kv in self.TimeId)
+                {
+                    long k = kv.Key;
+                    if (k > timeNow)
+                    {
+                        self.minTime = k;
+                        break;
+                    }
+
+                    self.timeOutTime.Enqueue(k);
+                }
+
+                while (self.timeOutTime.Count > 0)
+                {
+                    long time = self.timeOutTime.Dequeue();
+                    var list = self.TimeId[time];
+                    for (int i = 0; i < list.Count; ++i)
+                    {
+                        long timerId = list[i];
+                        self.timeOutTimerIds.Enqueue(timerId);
+                    }
+
+                    self.TimeId.Remove(time);
+                }
+
+                while (self.timeOutTimerIds.Count > 0)
+                {
+                    long timerId = self.timeOutTimerIds.Dequeue();
+
+                    TimerAction timerAction = self.GetChild<TimerAction>(timerId);
+                    if (timerAction == null)
+                    {
+                        continue;
+                    }
+                    self.Run(timerAction);
+                }
+            }
         }
-    }
     
-    [ObjectSystem]
-    public class TimerComponentLoadSystem: LoadSystem<TimerComponent>
-    {
-        public override void Load(TimerComponent self)
+        [ObjectSystem]
+        public class TimerComponentLoadSystem: LoadSystem<TimerComponent>
         {
-            self.Awake();
-        }
-    }
-
-    [ObjectSystem]
-    public class TimerComponentDestroySystem: DestroySystem<TimerComponent>
-    {
-        public override void Destroy(TimerComponent self)
-        {
-            TimerComponent.Instance = null;
-        }
-    }
-
-    public class TimerComponent: Entity, IAwake, IUpdate, ILoad, IDestroy
-    {
-        public static TimerComponent Instance
-        {
-            get;
-            set;
+            public override void Load(TimerComponent self)
+            {
+                self.Init();
+            }
         }
 
-        /// <summary>
-        /// key: time, value: timer id
-        /// </summary>
-        private readonly MultiMap<long, long> TimeId = new MultiMap<long, long>();
-
-        private readonly Queue<long> timeOutTime = new Queue<long>();
-
-        private readonly Queue<long> timeOutTimerIds = new Queue<long>();
-
-        // 记录最小时间，不用每次都去MultiMap取第一个值
-        private long minTime;
-
-        private const int TimeTypeMax = 10000;
-
-        private ITimer[] timerActions;
-
-        public void Awake()
+        [ObjectSystem]
+        public class TimerComponentDestroySystem: DestroySystem<TimerComponent>
         {
-            this.timerActions = new ITimer[TimeTypeMax];
+            public override void Destroy(TimerComponent self)
+            {
+                TimerComponent.Instance = null;
+            }
+        }
+
+        private static void Init(this TimerComponent self)
+        {
+            self.timerActions = new ITimer[TimerComponent.TimeTypeMax];
 
             HashSet<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
 
@@ -131,69 +158,19 @@ namespace ET
                 foreach (object attr in attrs)
                 {
                     TimerAttribute timerAttribute = attr as TimerAttribute;
-                    this.timerActions[timerAttribute.Type] = iTimer;
+                    self.timerActions[timerAttribute.Type] = iTimer;
                 }
             }
         }
 
-        public void Update()
-        {
-            if (this.TimeId.Count == 0)
-            {
-                return;
-            }
-
-            long timeNow = TimeHelper.ServerNow();
-
-            if (timeNow < this.minTime)
-            {
-                return;
-            }
-
-            foreach (KeyValuePair<long, List<long>> kv in this.TimeId)
-            {
-                long k = kv.Key;
-                if (k > timeNow)
-                {
-                    minTime = k;
-                    break;
-                }
-
-                this.timeOutTime.Enqueue(k);
-            }
-
-            while (this.timeOutTime.Count > 0)
-            {
-                long time = this.timeOutTime.Dequeue();
-                foreach (long timerId in this.TimeId[time])
-                {
-                    this.timeOutTimerIds.Enqueue(timerId);
-                }
-
-                this.TimeId.Remove(time);
-            }
-
-            while (this.timeOutTimerIds.Count > 0)
-            {
-                long timerId = this.timeOutTimerIds.Dequeue();
-
-                TimerAction timerAction = this.GetChild<TimerAction>(timerId);
-                if (timerAction == null)
-                {
-                    continue;
-                }
-                Run(timerAction);
-            }
-        }
-
-        private void Run(TimerAction timerAction)
+        private static void Run(this TimerComponent self, TimerAction timerAction)
         {
             switch (timerAction.TimerClass)
             {
                 case TimerClass.OnceTimer:
                 {
                     int type = timerAction.Type;
-                    ITimer timer = this.timerActions[type];
+                    ITimer timer = self.timerActions[type];
                     if (timer == null)
                     {
                         Log.Error($"not found timer action: {type}");
@@ -205,7 +182,7 @@ namespace ET
                 case TimerClass.OnceWaitTimer:
                 {
                     ETTask<bool> tcs = timerAction.Object as ETTask<bool>;
-                    this.Remove(timerAction.Id);
+                    self.Remove(timerAction.Id);
                     tcs.SetResult(true);
                     break;
                 }
@@ -213,9 +190,9 @@ namespace ET
                 {
                     int type = timerAction.Type;
                     long tillTime = TimeHelper.ServerNow() + timerAction.Time;
-                    this.AddTimer(tillTime, timerAction);
+                    self.AddTimer(tillTime, timerAction);
 
-                    ITimer timer = this.timerActions[type];
+                    ITimer timer = self.timerActions[type];
                     if (timer == null)
                     {
                         Log.Error($"not found timer action: {type}");
@@ -227,30 +204,35 @@ namespace ET
             }
         }
         
-        private void AddTimer(long tillTime, TimerAction timer)
+        private static void AddTimer(this TimerComponent self, long tillTime, TimerAction timer)
         {
-            this.TimeId.Add(tillTime, timer.Id);
-            if (tillTime < this.minTime)
+            if (timer.TimerClass == TimerClass.RepeatedTimer && timer.Time == 0)
             {
-                this.minTime = tillTime;
+                self.everyFrameTimer.Enqueue(timer.Id);
+                return;
+            }
+            self.TimeId.Add(tillTime, timer.Id);
+            if (tillTime < self.minTime)
+            {
+                self.minTime = tillTime;
             }
         }
 
-        public bool Remove(ref long id)
+        public static bool Remove(this TimerComponent self, ref long id)
         {
             long i = id;
             id = 0;
-            return this.Remove(i);
+            return self.Remove(i);
         }
         
-        private bool Remove(long id)
+        private static bool Remove(this TimerComponent self, long id)
         {
             if (id == 0)
             {
                 return false;
             }
 
-            TimerAction timerAction = this.GetChild<TimerAction>(id);
+            TimerAction timerAction = self.GetChild<TimerAction>(id);
             if (timerAction == null)
             {
                 return false;
@@ -259,7 +241,7 @@ namespace ET
             return true;
         }
 
-        public async ETTask<bool> WaitTillAsync(long tillTime, ETCancellationToken cancellationToken = null)
+        public static async ETTask<bool> WaitTillAsync(this TimerComponent self, long tillTime, ETCancellationToken cancellationToken = null)
         {
             long timeNow = TimeHelper.ServerNow();
             if (timeNow >= tillTime)
@@ -268,13 +250,13 @@ namespace ET
             }
 
             ETTask<bool> tcs = ETTask<bool>.Create(true);
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceWaitTimer, tillTime - timeNow, 0, tcs, true);
-            this.AddTimer(tillTime, timer);
+            TimerAction timer = self.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceWaitTimer, tillTime - timeNow, 0, tcs, true);
+            self.AddTimer(tillTime, timer);
             long timerId = timer.Id;
 
             void CancelAction()
             {
-                if (this.Remove(timerId))
+                if (self.Remove(timerId))
                 {
                     tcs.SetResult(false);
                 }
@@ -293,12 +275,13 @@ namespace ET
             return ret;
         }
 
-        public async ETTask<bool> WaitFrameAsync(ETCancellationToken cancellationToken = null)
+        public static async ETTask<bool> WaitFrameAsync(this TimerComponent self, ETCancellationToken cancellationToken = null)
         {
-            return await WaitAsync(1, cancellationToken);
+            bool ret = await self.WaitAsync(1, cancellationToken);
+            return ret;
         }
 
-        public async ETTask<bool> WaitAsync(long time, ETCancellationToken cancellationToken = null)
+        public static async ETTask<bool> WaitAsync(this TimerComponent self, long time, ETCancellationToken cancellationToken = null)
         {
             if (time == 0)
             {
@@ -308,13 +291,13 @@ namespace ET
 
             ETTask<bool> tcs = ETTask<bool>.Create(true);
             
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceWaitTimer, time, 0, tcs, true);
-            this.AddTimer(tillTime, timer);
+            TimerAction timer = self.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceWaitTimer, time, 0, tcs, true);
+            self.AddTimer(tillTime, timer);
             long timerId = timer.Id;
 
             void CancelAction()
             {
-                if (this.Remove(timerId))
+                if (self.Remove(timerId))
                 {
                     tcs.SetResult(false);
                 }
@@ -336,46 +319,82 @@ namespace ET
         // 用这个优点是可以热更，缺点是回调式的写法，逻辑不连贯。WaitTillAsync不能热更，优点是逻辑连贯。
         // wait时间短并且逻辑需要连贯的建议WaitTillAsync
         // wait时间长不需要逻辑连贯的建议用NewOnceTimer
-        public long NewOnceTimer(long tillTime, int type, object args)
+        public static long NewOnceTimer(this TimerComponent self, long tillTime, int type, object args)
         {
             if (tillTime < TimeHelper.ServerNow())
             {
                 Log.Warning($"new once time too small: {tillTime}");
             }
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceTimer, tillTime, type, args, true);
-            this.AddTimer(tillTime, timer);
+            TimerAction timer = self.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.OnceTimer, tillTime, type, args, true);
+            self.AddTimer(tillTime, timer);
             return timer.Id;
         }
 
-        public long NewFrameTimer(int type, object args)
+        public static long NewFrameTimer(this TimerComponent self, int type, object args)
         {
 #if NOT_UNITY
-			return NewRepeatedTimerInner(100, type, args);
+			return self.NewRepeatedTimerInner(100, type, args);
 #else
-            return NewRepeatedTimerInner(1, type, args);
+            return self.NewRepeatedTimerInner(0, type, args);
 #endif
         }
 
         /// <summary>
         /// 创建一个RepeatedTimer
         /// </summary>
-        private long NewRepeatedTimerInner(long time, int type, object args)
+        private static long NewRepeatedTimerInner(this TimerComponent self, long time, int type, object args)
         {
 #if NOT_UNITY
 			if (time < 100)
-			{
+			{ 
 				throw new Exception($"repeated timer < 100, timerType: time: {time}");
 			}
 #endif
             long tillTime = TimeHelper.ServerNow() + time;
-            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.RepeatedTimer, time, type, args, true);
-            this.AddTimer(tillTime, timer);
+            TimerAction timer = self.AddChild<TimerAction, TimerClass, long, int, object>(TimerClass.RepeatedTimer, time, type, args, true);
+
+            // 每帧执行的不用加到timerId中，防止遍历
+            self.AddTimer(tillTime, timer);
             return timer.Id;
         }
 
-        public long NewRepeatedTimer(long time, int type, object args)
+        public static long NewRepeatedTimer(this TimerComponent self, long time, int type, object args)
         {
-            return NewRepeatedTimerInner(time, type, args);
+            if (time < 100)
+            {
+                Log.Error($"time too small: {time}");
+                return 0;
+            }
+            return self.NewRepeatedTimerInner(time, type, args);
         }
+    }
+
+    
+
+    public class TimerComponent: Entity, IAwake, IUpdate, ILoad, IDestroy
+    {
+        public static TimerComponent Instance
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// key: time, value: timer id
+        /// </summary>
+        public readonly MultiMap<long, long> TimeId = new MultiMap<long, long>();
+
+        public readonly Queue<long> timeOutTime = new Queue<long>();
+
+        public readonly Queue<long> timeOutTimerIds = new Queue<long>();
+        
+        public readonly Queue<long> everyFrameTimer = new Queue<long>();
+
+        // 记录最小时间，不用每次都去MultiMap取第一个值
+        public long minTime;
+
+        public const int TimeTypeMax = 10000;
+
+        public ITimer[] timerActions;
     }
 }

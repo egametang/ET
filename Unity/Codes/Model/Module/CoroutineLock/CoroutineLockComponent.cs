@@ -1,110 +1,116 @@
+using System;
 using System.Collections.Generic;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class CoroutineLockComponentAwakeSystem: AwakeSystem<CoroutineLockComponent>
-    {
-        public override void Awake(CoroutineLockComponent self)
-        {
-            CoroutineLockComponent.Instance = self;
-            
-            self.list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);
-            for (int i = 0; i < CoroutineLockType.Max; ++i)
-            {
-                CoroutineLockQueueType coroutineLockQueueType = self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator);
-                self.list.Add(coroutineLockQueueType);
-            }
-        }
-    }
-
-    [ObjectSystem]
-    public class CoroutineLockComponentDestroySystem: DestroySystem<CoroutineLockComponent>
-    {
-        public override void Destroy(CoroutineLockComponent self)
-        {
-            self.list.Clear();
-            self.nextFrameRun.Clear();
-            self.timers.Clear();
-            self.timeOutIds.Clear();
-            self.timerOutTimer.Clear();
-            self.idGenerator = 0;
-            self.minTime = 0;
-        }
-    }
-
-    public class CoroutineLockComponentUpdateSystem: UpdateSystem<CoroutineLockComponent>
-    {
-        public override void Update(CoroutineLockComponent self)
-        {
-            // 检测超时的CoroutineLock
-            TimeoutCheck(self);
-            
-            // 循环过程中会有对象继续加入队列
-            while(self.nextFrameRun.Count > 0)
-            {
-                (int coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
-                self.Notify(coroutineLockType, key, count);
-            }
-        }
-
-        private void TimeoutCheck(CoroutineLockComponent self)
-        {
-            // 超时的锁
-            if (self.timers.Count == 0)
-            {
-                return;
-            }
-
-            long timeNow = TimeHelper.ClientFrameTime();
-
-            if (timeNow < self.minTime)
-            {
-                return;
-            }
-
-            foreach (KeyValuePair<long, List<CoroutineLockTimer>> kv in self.timers)
-            {
-                long k = kv.Key;
-                if (k > timeNow)
-                {
-                    self.minTime = k;
-                    break;
-                }
-
-                self.timeOutIds.Enqueue(k);
-            }
-            
-            self.timerOutTimer.Clear();
-            
-            while (self.timeOutIds.Count > 0)
-            {
-                long time = self.timeOutIds.Dequeue();
-                foreach (CoroutineLockTimer coroutineLockTimer in self.timers[time])
-                {
-                    self.timerOutTimer.Enqueue(coroutineLockTimer);
-                }
-                self.timers.Remove(time);
-            }
-            
-            while (self.timerOutTimer.Count > 0)
-            {
-                CoroutineLockTimer coroutineLockTimer = self.timerOutTimer.Dequeue();
-                if (coroutineLockTimer.CoroutineLockInstanceId != coroutineLockTimer.CoroutineLock.InstanceId)
-                {
-                    continue;
-                }
-
-                CoroutineLock coroutineLock = coroutineLockTimer.CoroutineLock;
-                // 超时直接调用下一个锁
-                self.RunNextCoroutine(coroutineLock.coroutineLockType, coroutineLock.key, coroutineLock.level + 1);
-                coroutineLock.coroutineLockType = CoroutineLockType.None; // 上面调用了下一个, dispose不再调用
-            }
-        }
-    }
-
+    [FriendClass(typeof (CoroutineLockComponent))]
     public static class CoroutineLockComponentSystem
     {
+        [ObjectSystem]
+        public class CoroutineLockComponentAwakeSystem: AwakeSystem<CoroutineLockComponent>
+        {
+            public override void Awake(CoroutineLockComponent self)
+            {
+                CoroutineLockComponent.Instance = self;
+
+                self.list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);
+                for (int i = 0; i < CoroutineLockType.Max; ++i)
+                {
+                    CoroutineLockQueueType coroutineLockQueueType = self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator);
+                    self.list.Add(coroutineLockQueueType);
+                }
+            }
+        }
+
+        [ObjectSystem]
+        public class CoroutineLockComponentDestroySystem: DestroySystem<CoroutineLockComponent>
+        {
+            public override void Destroy(CoroutineLockComponent self)
+            {
+                self.list.Clear();
+                self.nextFrameRun.Clear();
+                self.timers.Clear();
+                self.timeOutIds.Clear();
+                self.timerOutTimer.Clear();
+                self.idGenerator = 0;
+                self.minTime = 0;
+            }
+        }
+
+        [FriendClass(typeof (CoroutineLock))]
+        public class CoroutineLockComponentUpdateSystem: UpdateSystem<CoroutineLockComponent>
+        {
+            public override void Update(CoroutineLockComponent self)
+            {
+                // 检测超时的CoroutineLock
+                TimeoutCheck(self);
+
+                // 循环过程中会有对象继续加入队列
+                while (self.nextFrameRun.Count > 0)
+                {
+                    (int coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
+                    self.Notify(coroutineLockType, key, count);
+                }
+            }
+
+            private void TimeoutCheck(CoroutineLockComponent self)
+            {
+                // 超时的锁
+                if (self.timers.Count == 0)
+                {
+                    return;
+                }
+
+                long timeNow = TimeHelper.ClientFrameTime();
+
+                if (timeNow < self.minTime)
+                {
+                    return;
+                }
+
+                foreach (KeyValuePair<long, List<CoroutineLockTimer>> kv in self.timers)
+                {
+                    long k = kv.Key;
+                    if (k > timeNow)
+                    {
+                        self.minTime = k;
+                        break;
+                    }
+
+                    self.timeOutIds.Enqueue(k);
+                }
+            
+                self.timerOutTimer.Clear();
+
+                while (self.timeOutIds.Count > 0)
+                {
+                    long time = self.timeOutIds.Dequeue();
+                    var list = self.timers[time];
+                    for (int i = 0; i < list.Count; ++i)
+                    {
+                        CoroutineLockTimer coroutineLockTimer = list[i];
+                        self.timerOutTimer.Enqueue(coroutineLockTimer);
+                    }
+
+                    self.timers.Remove(time);
+                }
+
+                while (self.timerOutTimer.Count > 0)
+                {
+                    CoroutineLockTimer coroutineLockTimer = self.timerOutTimer.Dequeue();
+                    if (coroutineLockTimer.CoroutineLockInstanceId != coroutineLockTimer.CoroutineLock.InstanceId)
+                    {
+                        continue;
+                    }
+
+                    CoroutineLock coroutineLock = coroutineLockTimer.CoroutineLock;
+                    // 超时直接调用下一个锁
+                    self.RunNextCoroutine(coroutineLock.coroutineLockType, coroutineLock.key, coroutineLock.level + 1);
+                    coroutineLock.coroutineLockType = CoroutineLockType.None; // 上面调用了下一个, dispose不再调用
+                }
+            }
+        }
+
         public static void RunNextCoroutine(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
         {
             // 一个协程队列一帧处理超过100个,说明比较多了,打个warning,检查一下是否够正常
@@ -148,7 +154,7 @@ namespace ET
             return coroutineLock;
         }
 
-        public static void Notify(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
+        private static void Notify(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
         {
             CoroutineLockQueueType coroutineLockQueueType = self.list[coroutineLockType];
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))

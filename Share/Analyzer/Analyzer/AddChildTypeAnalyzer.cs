@@ -18,7 +18,7 @@ namespace ET.Analyzer
         private const string Description = "请使用被允许的ChildType 或添加该类型至ChildType.";
 
         private static readonly string[] AddChildMethods = { "AddChild", "AddChildWithId" };
-
+        
         private const string EntityType = "ET.Entity";
 
         private static readonly DiagnosticDescriptor Rule =
@@ -72,13 +72,13 @@ namespace ET.Analyzer
 
             // 获取AddChild函数的调用者类型
             ITypeSymbol? parentTypeSymbol = memberAccessExpressionSyntax.GetMemberAccessSyntaxParentType(context.SemanticModel);
-            if (parentTypeSymbol == null)
+            if (parentTypeSymbol==null)
             {
                 return;
             }
 
             // 只检查Entity的子类
-            if (parentTypeSymbol.BaseType?.ToString() != EntityType)
+            if (parentTypeSymbol.BaseType?.ToString()!= EntityType)
             {
                 return;
             }
@@ -99,8 +99,8 @@ namespace ET.Analyzer
                     availableChildTypeSymbol = s;
                 }
             }
-
-            if (hasChildTypeAttribute && availableChildTypeSymbol == null)
+            
+            if (hasChildTypeAttribute &&(availableChildTypeSymbol==null))
             {
                 return;
             }
@@ -180,6 +180,7 @@ namespace ET.Analyzer
                 return;
             }
 
+            
             // 判断child类型是否属于约束类型
             if (availableChildTypeSymbol?.ToString() == childTypeSymbol.ToString())
             {

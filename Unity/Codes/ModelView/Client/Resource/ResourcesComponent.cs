@@ -7,29 +7,43 @@ using UnityEngine;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class ABInfoAwakeSystem: AwakeSystem<ABInfo, string, AssetBundle>
+    [FriendClass(typeof(ABInfo))]
+    public static class ABInfoSystem
     {
-        public override void Awake(ABInfo self, string abName, AssetBundle a)
+        [ObjectSystem]
+        public class ABInfoAwakeSystem: AwakeSystem<ABInfo, string, AssetBundle>
         {
-            self.AssetBundle = a;
-            self.Name = abName;
-            self.RefCount = 1;
-            self.AlreadyLoadAssets = false;
+            public override void Awake(ABInfo self, string abName, AssetBundle a)
+            {
+                self.AssetBundle = a;
+                self.Name = abName;
+                self.RefCount = 1;
+                self.AlreadyLoadAssets = false;
+            }
         }
-    }
 
-    [ObjectSystem]
-    public class ABInfoDestroySystem: DestroySystem<ABInfo>
-    {
-        public override void Destroy(ABInfo self)
+        [ObjectSystem]
+        public class ABInfoDestroySystem: DestroySystem<ABInfo>
         {
-            //Log.Debug($"desdroy assetbundle: {this.Name}");
+            public override void Destroy(ABInfo self)
+            {
+                //Log.Debug($"desdroy assetbundle: {self.Name}");
 
-            self.RefCount = 0;
-            self.Name = "";
-            self.AlreadyLoadAssets = false;
-            self.AssetBundle = null;
+                self.RefCount = 0;
+                self.Name = "";
+                self.AlreadyLoadAssets = false;
+                self.AssetBundle = null;
+            }
+        }
+        
+        public static void Destroy(this ABInfo self, bool unload = true)
+        {
+            if (self.AssetBundle != null)
+            {
+                self.AssetBundle.Unload(unload);
+            }
+
+            self.Dispose();
         }
     }
 
@@ -42,19 +56,10 @@ namespace ET
         public AssetBundle AssetBundle;
 
         public bool AlreadyLoadAssets;
-
-        public void Destroy(bool unload = true)
-        {
-            if (this.AssetBundle != null)
-            {
-                this.AssetBundle.Unload(unload);
-            }
-
-            this.Dispose();
-        }
     }
 
     // 用于字符串转换，减少GC
+    [FriendClass(typeof(ResourcesComponent))]
     public static class AssetBundleHelper
     {
         public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
@@ -118,70 +123,51 @@ namespace ET
         }
     }
 
-    [ObjectSystem]
-    public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
+
+
+    [FriendClass(typeof(ABInfo))]
+    [FriendClass(typeof(ResourcesComponent))]
+    public static class ResourcesComponentSystem
     {
-        public override void Awake(ResourcesComponent self)
+        [ObjectSystem]
+        public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
         {
-            self.Awake();
-        }
-    }
-
-    public class ResourcesComponent: Entity, IAwake
-    {
-        public static ResourcesComponent Instance { get; set; }
-
-        private AssetBundleManifest AssetBundleManifestObject { get; set; }
-
-        public Dictionary<int, string> IntToStringDict = new Dictionary<int, string>();
-
-        public Dictionary<string, string> StringToABDict = new Dictionary<string, string>();
-
-        public Dictionary<string, string> BundleNameToLowerDict = new Dictionary<string, string>() { { "StreamingAssets", "StreamingAssets" } };
-
-        private readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache =
-                new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
-
-        private readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
-
-        public void Awake()
-        {
-            Instance = this;
-
-            if (Define.IsAsync)
+            public override void Awake(ResourcesComponent self)
             {
-                LoadOneBundle("StreamingAssets");
-                AssetBundleManifestObject = (AssetBundleManifest)GetAsset("StreamingAssets", "AssetBundleManifest");
+                ResourcesComponent.Instance = self;
+
+                if (Define.IsAsync)
+                {
+                    self.LoadOneBundle("StreamingAssets");
+                    self.AssetBundleManifestObject = (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
+                }
+            }
+        }
+        
+        [ObjectSystem]
+        public class ResourcesComponentDestroySystem: DestroySystem<ResourcesComponent>
+        {
+            public override void Destroy(ResourcesComponent self)
+            {
+                ResourcesComponent.Instance = null;
+
+                foreach (var abInfo in self.bundles)
+                {
+                    abInfo.Value.Destroy();
+                }
+
+                self.bundles.Clear();
+                self.resourceCache.Clear();
+                self.IntToStringDict.Clear();
+                self.StringToABDict.Clear();
+                self.BundleNameToLowerDict.Clear();
             }
         }
 
-        public override void Dispose()
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-
-            base.Dispose();
-
-            Instance = null;
-
-            foreach (var abInfo in this.bundles)
-            {
-                abInfo.Value.Destroy();
-            }
-
-            this.bundles.Clear();
-            this.resourceCache.Clear();
-            this.IntToStringDict.Clear();
-            this.StringToABDict.Clear();
-            this.BundleNameToLowerDict.Clear();
-        }
-
-        private string[] GetDependencies(string assetBundleName)
+        private static string[] GetDependencies(this ResourcesComponent self, string assetBundleName)
         {
             string[] dependencies = Array.Empty<string>();
-            if (DependenciesCache.TryGetValue(assetBundleName, out dependencies))
+            if (self.DependenciesCache.TryGetValue(assetBundleName, out dependencies))
             {
                 return dependencies;
             }
@@ -195,26 +181,26 @@ namespace ET
             }
             else
             {
-                dependencies = this.AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+                dependencies = self.AssetBundleManifestObject.GetAllDependencies(assetBundleName);
             }
 
-            DependenciesCache.Add(assetBundleName, dependencies);
+            self.DependenciesCache.Add(assetBundleName, dependencies);
             return dependencies;
         }
 
-        private string[] GetSortedDependencies(string assetBundleName)
+        private static string[] GetSortedDependencies(this ResourcesComponent self, string assetBundleName)
         {
             var info = new Dictionary<string, int>();
             var parents = new List<string>();
-            CollectDependencies(parents, assetBundleName, info);
+            self.CollectDependencies(parents, assetBundleName, info);
             string[] ss = info.OrderBy(x => x.Value).Select(x => x.Key).ToArray();
             return ss;
         }
 
-        private void CollectDependencies(List<string> parents, string assetBundleName, Dictionary<string, int> info)
+        private static void CollectDependencies(this ResourcesComponent self, List<string> parents, string assetBundleName, Dictionary<string, int> info)
         {
             parents.Add(assetBundleName);
-            string[] deps = GetDependencies(assetBundleName);
+            string[] deps = self.GetDependencies(assetBundleName);
             foreach (string parent in parents)
             {
                 if (!info.ContainsKey(parent))
@@ -232,24 +218,23 @@ namespace ET
                     throw new Exception($"包有循环依赖，请重新标记: {assetBundleName} {dep}");
                 }
 
-                CollectDependencies(parents, dep, info);
+                self.CollectDependencies(parents, dep, info);
             }
 
             parents.RemoveAt(parents.Count - 1);
         }
 
-        // 缓存包依赖，不用每次计算
-        private readonly Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
 
-        public bool Contains(string bundleName)
+
+        public static bool Contains(this ResourcesComponent self, string bundleName)
         {
-            return this.bundles.ContainsKey(bundleName);
+            return self.bundles.ContainsKey(bundleName);
         }
 
-        public Dictionary<string, UnityEngine.Object> GetBundleAll(string bundleName)
+        public static Dictionary<string, UnityEngine.Object> GetBundleAll(this ResourcesComponent self, string bundleName)
         {
             Dictionary<string, UnityEngine.Object> dict;
-            if (!this.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
+            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
             {
                 throw new Exception($"not found asset: {bundleName}");
             }
@@ -257,10 +242,10 @@ namespace ET
             return dict;
         }
 
-        public UnityEngine.Object GetAsset(string bundleName, string prefab)
+        public static UnityEngine.Object GetAsset(this ResourcesComponent self, string bundleName, string prefab)
         {
             Dictionary<string, UnityEngine.Object> dict;
-            if (!this.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
+            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
             {
                 throw new Exception($"not found asset: {bundleName} {prefab}");
             }
@@ -275,11 +260,11 @@ namespace ET
         }
 
         // 一帧卸载一个包，避免卡死
-        public async ETTask UnloadBundleAsync(string assetBundleName, bool unload = true)
+        public static async ETTask UnloadBundleAsync(this ResourcesComponent self, string assetBundleName, bool unload = true)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
 
-            string[] dependencies = GetSortedDependencies(assetBundleName);
+            string[] dependencies = self.GetSortedDependencies(assetBundleName);
 
             //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
             foreach (string dependency in dependencies)
@@ -288,7 +273,7 @@ namespace ET
                 try
                 {
                     coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode());
-                    this.UnloadOneBundle(dependency, unload);
+                    self.UnloadOneBundle(dependency, unload);
                     await TimerComponent.Instance.WaitFrameAsync();
                 }
                 finally
@@ -300,27 +285,27 @@ namespace ET
         }
 
         // 只允许场景设置unload为false
-        public void UnloadBundle(string assetBundleName, bool unload = true)
+        public static void UnloadBundle(this ResourcesComponent self, string assetBundleName, bool unload = true)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
 
-            string[] dependencies = GetSortedDependencies(assetBundleName);
+            string[] dependencies = self.GetSortedDependencies(assetBundleName);
 
             //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
             foreach (string dependency in dependencies)
             {
-                this.UnloadOneBundle(dependency, unload);
+                self.UnloadOneBundle(dependency, unload);
             }
 
             //Log.Debug($"-----------dep unload finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
         }
 
-        private void UnloadOneBundle(string assetBundleName, bool unload = true)
+        private static void UnloadOneBundle(this ResourcesComponent self, string assetBundleName, bool unload = true)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
 
             ABInfo abInfo;
-            if (!this.bundles.TryGetValue(assetBundleName, out abInfo))
+            if (!self.bundles.TryGetValue(assetBundleName, out abInfo))
             {
                 return;
             }
@@ -335,10 +320,10 @@ namespace ET
             }
 
             //Log.Debug($"---------------truly unload one bundle {assetBundleName} refcount: {abInfo.RefCount}");
-            this.bundles.Remove(assetBundleName);
-            this.resourceCache.Remove(assetBundleName);
+            self.bundles.Remove(assetBundleName);
+            self.resourceCache.Remove(assetBundleName);
             abInfo.Destroy(unload);
-            // Log.Debug($"cache count: {this.cacheDictionary.Count}");
+            // Log.Debug($"cache count: {self.cacheDictionary.Count}");
         }
 
         /// <summary>
@@ -346,11 +331,11 @@ namespace ET
         /// </summary>
         /// <param name="assetBundleName"></param>
         /// <returns></returns>
-        public void LoadBundle(string assetBundleName)
+        public static void LoadBundle(this ResourcesComponent self, string assetBundleName)
         {
             assetBundleName = assetBundleName.ToLower();
 
-            string[] dependencies = GetSortedDependencies(assetBundleName);
+            string[] dependencies = self.GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
             foreach (string dependency in dependencies)
             {
@@ -359,29 +344,29 @@ namespace ET
                     continue;
                 }
 
-                this.LoadOneBundle(dependency);
+                self.LoadOneBundle(dependency);
             }
 
             //Log.Debug($"-----------dep load finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
         }
 
-        private void AddResource(string bundleName, string assetName, UnityEngine.Object resource)
+        private static void AddResource(this ResourcesComponent self, string bundleName, string assetName, UnityEngine.Object resource)
         {
             Dictionary<string, UnityEngine.Object> dict;
-            if (!this.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
+            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
             {
                 dict = new Dictionary<string, UnityEngine.Object>();
-                this.resourceCache[bundleName] = dict;
+                self.resourceCache[bundleName] = dict;
             }
 
             dict[assetName] = resource;
         }
 
-        private void LoadOneBundle(string assetBundleName)
+        private static void LoadOneBundle(this ResourcesComponent self, string assetBundleName)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
             ABInfo abInfo;
-            if (this.bundles.TryGetValue(assetBundleName, out abInfo))
+            if (self.bundles.TryGetValue(assetBundleName, out abInfo))
             {
                 ++abInfo.RefCount;
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
@@ -398,13 +383,13 @@ namespace ET
                     {
                         string assetName = Path.GetFileNameWithoutExtension(s);
                         UnityEngine.Object resource = Define.LoadAssetAtPath(s);
-                        AddResource(assetBundleName, assetName, resource);
+                        self.AddResource(assetBundleName, assetName, resource);
                     }
 
                     if (realPath.Length > 0)
                     {
-                        abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
-                        this.bundles[assetBundleName] = abInfo;
+                        abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
+                        self.bundles[assetBundleName] = abInfo;
                         //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                     }
                     else
@@ -441,12 +426,12 @@ namespace ET
                 var assets = assetBundle.LoadAllAssets();
                 foreach (UnityEngine.Object asset in assets)
                 {
-                    AddResource(assetBundleName, asset.name, asset);
+                    self.AddResource(assetBundleName, asset.name, asset);
                 }
             }
 
-            abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
-            this.bundles[assetBundleName] = abInfo;
+            abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
+            self.bundles[assetBundleName] = abInfo;
 
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
         }
@@ -454,11 +439,11 @@ namespace ET
         /// <summary>
         /// 异步加载assetbundle, 加载ab包分两部分，第一部分是从硬盘加载，第二部分加载all assets。两者不能同时并发
         /// </summary>
-        public async ETTask LoadBundleAsync(string assetBundleName)
+        public static async ETTask LoadBundleAsync(this ResourcesComponent self, string assetBundleName)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
 
-            string[] dependencies = GetSortedDependencies(assetBundleName);
+            string[] dependencies = self.GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load async start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 
             using (ListComponent<ABInfo> abInfos = ListComponent<ABInfo>.Create())
@@ -469,7 +454,7 @@ namespace ET
                     try
                     {
                         coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
-                        ABInfo abInfo = await this.LoadOneBundleAsync(dependency);
+                        ABInfo abInfo = await self.LoadOneBundleAsync(dependency);
                         if (abInfo == null || abInfo.RefCount > 1)
                         {
                             return;
@@ -496,18 +481,18 @@ namespace ET
                     tasks.Clear();
                     foreach (ABInfo abInfo in abInfos)
                     {
-                        tasks.Add(LoadOneBundleAllAssets(abInfo));
+                        tasks.Add(self.LoadOneBundleAllAssets(abInfo));
                     }
                     await ETTaskHelper.WaitAll(tasks);
                 }
             }
         }
 
-        private async ETTask<ABInfo> LoadOneBundleAsync(string assetBundleName)
+        private static async ETTask<ABInfo> LoadOneBundleAsync(this ResourcesComponent self, string assetBundleName)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
             ABInfo abInfo;
-            if (this.bundles.TryGetValue(assetBundleName, out abInfo))
+            if (self.bundles.TryGetValue(assetBundleName, out abInfo))
             {
                 ++abInfo.RefCount;
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
@@ -525,13 +510,13 @@ namespace ET
                     {
                         string assetName = Path.GetFileNameWithoutExtension(s);
                         UnityEngine.Object resource = Define.LoadAssetAtPath(s);
-                        AddResource(assetBundleName, assetName, resource);
+                        self.AddResource(assetBundleName, assetName, resource);
                     }
 
                     if (realPath.Length > 0)
                     {
-                        abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
-                        this.bundles[assetBundleName] = abInfo;
+                        abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
+                        self.bundles[assetBundleName] = abInfo;
                         //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                     }
                     else
@@ -564,14 +549,14 @@ namespace ET
                 Log.Warning($"assets bundle not found: {assetBundleName}");
                 return null;
             }
-            abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
-            this.bundles[assetBundleName] = abInfo;
+            abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
+            self.bundles[assetBundleName] = abInfo;
             return abInfo;
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
         }
 
         // 加载ab包中的all assets
-        private async ETTask LoadOneBundleAllAssets(ABInfo abInfo)
+        private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
             CoroutineLock coroutineLock = null;
             try
@@ -590,7 +575,7 @@ namespace ET
 
                     foreach (UnityEngine.Object asset in assets)
                     {
-                        AddResource(abInfo.Name, asset.name, asset);
+                        self.AddResource(abInfo.Name, asset.name, asset);
                     }
                 }
 
@@ -602,15 +587,36 @@ namespace ET
             }
         }
 
-        public string DebugString()
+        public static string DebugString(this ResourcesComponent self)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (ABInfo abInfo in this.bundles.Values)
+            foreach (ABInfo abInfo in self.bundles.Values)
             {
                 sb.Append($"{abInfo.Name}:{abInfo.RefCount}\n");
             }
 
             return sb.ToString();
         }
+    }
+    
+    public class ResourcesComponent: Entity, IAwake, IDestroy
+    {
+        public static ResourcesComponent Instance { get; set; }
+
+        public AssetBundleManifest AssetBundleManifestObject { get; set; }
+
+        public Dictionary<int, string> IntToStringDict = new Dictionary<int, string>();
+
+        public Dictionary<string, string> StringToABDict = new Dictionary<string, string>();
+
+        public Dictionary<string, string> BundleNameToLowerDict = new Dictionary<string, string>() { { "StreamingAssets", "StreamingAssets" } };
+
+        public readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache =
+                new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
+
+        public readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
+        
+        // 缓存包依赖，不用每次计算
+        public readonly Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
     }
 }

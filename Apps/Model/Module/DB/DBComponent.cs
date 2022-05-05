@@ -11,15 +11,5 @@ namespace ET
 
         public MongoClient mongoClient;
         public IMongoDatabase database;
-
-        public IMongoCollection<T> GetCollection<T>(string collection = null)
-        {
-            return this.database.GetCollection<T>(collection ?? typeof (T).Name);
-        }
-
-        public IMongoCollection<Entity> GetCollection(string name)
-        {
-            return this.database.GetCollection<Entity>(name);
-        }
     }
 }

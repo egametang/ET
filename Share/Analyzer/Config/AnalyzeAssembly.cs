@@ -4,7 +4,7 @@
     {
         public const string ServerModel = "Model";
 
-        public const string SerVerHotfix = "Hotfix";
+        public const string ServerHotfix = "Hotfix";
 
         public const string UnityModel = "Unity.Model";
 
@@ -14,10 +14,10 @@
 
         public const string UnityHotfixView = "Unity.HotfixView";
 
-        public static readonly string[] AllHotfix = { SerVerHotfix, UnityHotfix, UnityHotfixView };
+        public static readonly string[] AllHotfix = { ServerHotfix, UnityHotfix, UnityHotfixView };
 
         public static readonly string[] AllModel = { ServerModel, UnityModel, UnityModelView };
 
-        public static readonly string[] All = { ServerModel, SerVerHotfix, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView };
+        public static readonly string[] All = { ServerModel, ServerHotfix, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView };
     }
 }

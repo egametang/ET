@@ -1,89 +1,83 @@
 ﻿using System.Collections.Generic;
-
 using UnityEngine;
 
 namespace ET
 {
-	public sealed class UI: Entity, IAwake<string, GameObject>
-	{
-		[ObjectSystem]
-		public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
-		{
-			public override void Awake(UI self, string name, GameObject gameObject)
-			{
-
-				self.Awake(name, gameObject);
-			}
-		}
+    [FriendClass(typeof(UI))]
+    public static class UISystem
+    {
+        [ObjectSystem]
+        public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
+        {
+            public override void Awake(UI self, string name, GameObject gameObject)
+            {
+                self.nameChildren.Clear();
+                gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
+                self.Name = name;
+                self.GameObject = gameObject;
+            }
+        }
 		
-		public GameObject GameObject { get; set; }
-		
-		public string Name { get; private set; }
-
-		public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
-		
-		public void Awake(string name, GameObject gameObject)
-		{
-			this.nameChildren.Clear();
-			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
-			this.Name = name;
-			this.GameObject = gameObject;
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
+        [ObjectSystem]
+        public class UIDestroySystem : DestroySystem<UI>
+        {
+            public override void Destroy(UI self)
+            {
+                foreach (UI ui in self.nameChildren.Values)
+                {
+                    ui.Dispose();
+                }
 			
-			base.Dispose();
+                UnityEngine.Object.Destroy(self.GameObject);
+                self.nameChildren.Clear();
+            }
+        }
 
-			foreach (UI ui in this.nameChildren.Values)
-			{
-				ui.Dispose();
-			}
-			
-			UnityEngine.Object.Destroy(this.GameObject);
-			this.nameChildren.Clear();
-		}
+        public static void SetAsFirstSibling(this UI self)
+        {
+            self.GameObject.transform.SetAsFirstSibling();
+        }
 
-		public void SetAsFirstSibling()
-		{
-			this.GameObject.transform.SetAsFirstSibling();
-		}
+        public static void Add(this UI self, UI ui)
+        {
+            self.nameChildren.Add(ui.Name, ui);
+        }
 
-		public void Add(UI ui)
-		{
-			this.nameChildren.Add(ui.Name, ui);
-		}
+        public static void Remove(this UI self, string name)
+        {
+            UI ui;
+            if (!self.nameChildren.TryGetValue(name, out ui))
+            {
+                return;
+            }
+            self.nameChildren.Remove(name);
+            ui.Dispose();
+        }
 
-		public void Remove(string name)
-		{
-			UI ui;
-			if (!this.nameChildren.TryGetValue(name, out ui))
-			{
-				return;
-			}
-			this.nameChildren.Remove(name);
-			ui.Dispose();
-		}
+        public static UI Get(this UI self, string name)
+        {
+            UI child;
+            if (self.nameChildren.TryGetValue(name, out child))
+            {
+                return child;
+            }
+            GameObject childGameObject = self.GameObject.transform.Find(name)?.gameObject;
+            if (childGameObject == null)
+            {
+                return null;
+            }
+            child = self.AddChild<UI, string, GameObject>(name, childGameObject);
+            self.Add(child);
+            return child;
+        }
+    }
+	
+    public sealed class UI: Entity, IAwake<string, GameObject>, IDestroy
+    {
+        public GameObject GameObject { get; set; }
+		
+        public string Name { get; set; }
 
-		public UI Get(string name)
-		{
-			UI child;
-			if (this.nameChildren.TryGetValue(name, out child))
-			{
-				return child;
-			}
-			GameObject childGameObject = this.GameObject.transform.Find(name)?.gameObject;
-			if (childGameObject == null)
-			{
-				return null;
-			}
-			child = this.AddChild<UI, string, GameObject>(name, childGameObject);
-			this.Add(child);
-			return child;
-		}
-	}
+        public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
+    }
 }
