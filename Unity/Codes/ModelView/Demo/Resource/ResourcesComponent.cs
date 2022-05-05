@@ -55,6 +55,7 @@ namespace ET
     }
 
     // 用于字符串转换，减少GC
+    [FriendClass(typeof(ResourcesComponent))]
     public static class AssetBundleHelper
     {
         public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
@@ -127,6 +128,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(ABInfo))]
     public class ResourcesComponent: Entity, IAwake
     {
         public static ResourcesComponent Instance { get; set; }
@@ -153,6 +155,7 @@ namespace ET
                 LoadOneBundle("StreamingAssets");
                 AssetBundleManifestObject = (AssetBundleManifest)GetAsset("StreamingAssets", "AssetBundleManifest");
             }
+            
         }
 
         public override void Dispose()
