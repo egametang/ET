@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     [UIEvent(UIType.UILobby)]
     public class UILobbyEvent: AUIEvent

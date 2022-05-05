@@ -2,11 +2,11 @@ using System;
 using System.Net;
 using ET.Client;
 
-namespace ET
+namespace ET.Server
 {
-    public class AppStart_Init: AEvent<EventType.AppStart>
+    public class AppStart_Init: AEvent<ET.EventType.AppStart>
     {
-        protected override async ETTask Run(EventType.AppStart args)
+        protected override async ETTask Run(ET.EventType.AppStart args)
         {
             Game.Scene.AddComponent<ConfigComponent>().ConfigLoader = new ConfigLoader();
             await ConfigComponent.Instance.LoadAsync();

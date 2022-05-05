@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
 	[FriendClass(typeof(CameraComponent))]
 	public static class CameraComponentSystem

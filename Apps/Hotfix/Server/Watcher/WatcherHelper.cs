@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 
-namespace ET
+namespace ET.Server
 {
     public static class WatcherHelper
     {

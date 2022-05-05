@@ -43,6 +43,10 @@
     <Compile Include="..\..\Unity\Codes\Hotfix\Client\**\*.cs">
       <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
+
+    <Compile Include="..\..\Unity\Codes\Hotfix\Share\**\*.cs">
+      <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Apps.Model.csproj" />

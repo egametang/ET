@@ -1,4 +1,4 @@
-﻿namespace ET
+﻿namespace ET.Client
 {
     // 可以用来管理多个客户端场景，比如大世界会加载多块场景
     public class CurrentScenesComponent: Entity, IAwake

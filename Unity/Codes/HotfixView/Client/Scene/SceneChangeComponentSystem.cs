@@ -1,6 +1,6 @@
 ﻿using UnityEngine.SceneManagement;
 
-namespace ET
+namespace ET.Client
 {
     [FriendClass(typeof(SceneChangeComponent))]
     public static class SceneChangeComponentSystem

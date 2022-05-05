@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     public class ChangePosition_SyncGameObjectPos: AEvent<EventType.ChangePosition>
     {

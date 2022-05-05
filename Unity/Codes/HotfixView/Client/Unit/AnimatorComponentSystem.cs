@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
 	[FriendClass(typeof(AnimatorComponent))]
 	public static class AnimatorComponentSystem

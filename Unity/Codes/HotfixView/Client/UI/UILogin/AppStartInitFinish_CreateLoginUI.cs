@@ -1,6 +1,6 @@
 ﻿
 
-namespace ET
+namespace ET.Client
 {
 	public class AppStartInitFinish_CreateLoginUI: AEvent<EventType.AppStartInitFinish>
 	{

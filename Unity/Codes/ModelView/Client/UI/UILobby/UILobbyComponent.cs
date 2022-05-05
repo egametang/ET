@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ET
+namespace ET.Client
 {
 	public class UILobbyComponent : Entity, IAwake
 	{

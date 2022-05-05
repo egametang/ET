@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
 	public class OperaComponent: Entity, IAwake, IUpdate
     {

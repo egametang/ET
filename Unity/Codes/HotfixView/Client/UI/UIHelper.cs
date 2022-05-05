@@ -1,4 +1,4 @@
-﻿namespace ET
+﻿namespace ET.Client
 {
     public static class UIHelper
     {

@@ -1,4 +1,4 @@
-﻿namespace ET
+﻿namespace ET.Client
 {
     public class SceneChangeFinishEvent_CreateUIHelp : AEvent<EventType.SceneChangeFinish>
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace ET
+namespace ET.Client
 {
 	public class LoginFinish_CreateLobbyUI: AEvent<EventType.LoginFinish>
 	{

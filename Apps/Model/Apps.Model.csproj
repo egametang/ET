@@ -50,8 +50,6 @@
     
     <Compile Remove="Libs\**" />
     
-    <Compile Remove="..\..\Unity\Codes\Model\Share\**" />
-    
   </ItemGroup>
   <ItemGroup>
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace ET
+namespace ET.Client
 {
 	public class UILoadingComponent : Entity, IAwake
 	{

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     public class XunLuoPathComponent: Entity, IAwake
     {

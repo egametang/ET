@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 
-namespace ET
+namespace ET.Server
 {
     [FriendClass(typeof(WatcherComponent))]
     public static class WatcherComponentSystem

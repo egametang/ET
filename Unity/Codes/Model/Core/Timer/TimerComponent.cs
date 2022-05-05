@@ -206,11 +206,6 @@ namespace ET
         
         private static void AddTimer(this TimerComponent self, long tillTime, TimerAction timer)
         {
-            if (timer.TimerClass == TimerClass.RepeatedTimer && timer.Time == 0)
-            {
-                self.everyFrameTimer.Enqueue(timer.Id);
-                return;
-            }
             self.TimeId.Add(tillTime, timer.Id);
             if (tillTime < self.minTime)
             {

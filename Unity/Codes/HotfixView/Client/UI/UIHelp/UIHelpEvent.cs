@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
 	[UIEvent(UIType.UIHelp)]
     public class UIHelpEvent: AUIEvent

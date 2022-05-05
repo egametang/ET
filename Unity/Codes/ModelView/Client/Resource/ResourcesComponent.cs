@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     [FriendClass(typeof(ABInfo))]
     public static class ABInfoSystem

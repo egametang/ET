@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     public class SceneChangeComponent: Entity, IAwake, IUpdate, IDestroy
     {

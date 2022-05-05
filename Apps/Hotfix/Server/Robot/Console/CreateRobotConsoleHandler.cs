@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using CommandLine;
-using NLog;
 
 namespace ET.Server
 {

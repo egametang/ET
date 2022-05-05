@@ -1,4 +1,4 @@
-namespace ET
+namespace ET.Client
 {
     public class AfterCreateCurrentScene_AddComponent: AEvent<EventType.AfterCreateCurrentScene>
     {

@@ -1,4 +1,4 @@
-namespace ET.Client
+namespace ET
 {
     [ObjectSystem]
     public class UnitSystem: AwakeSystem<Unit, int>

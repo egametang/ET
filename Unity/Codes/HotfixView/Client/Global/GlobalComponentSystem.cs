@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     [ObjectSystem]
     public class GlobalComponentAwakeSystem: AwakeSystem<GlobalComponent>

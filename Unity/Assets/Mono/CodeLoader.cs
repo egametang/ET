@@ -40,7 +40,7 @@ namespace ET
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					this.allTypes = assembly.GetTypes();
-					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
+					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
 				}
@@ -51,7 +51,7 @@ namespace ET
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					this.LoadLogic();
-					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
+					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
 				}

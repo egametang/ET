@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ET
+namespace ET.Client
 {
     [FriendClass(typeof(ResourcesLoaderComponent))]
     public static class ResourcesLoaderComponentSystem

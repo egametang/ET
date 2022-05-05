@@ -1,4 +1,4 @@
-namespace ET
+namespace ET.Client
 {
     [ObjectSystem]
     public class ConfigComponent_SetConfigLoader_Awake: AwakeSystem<ConfigComponent>

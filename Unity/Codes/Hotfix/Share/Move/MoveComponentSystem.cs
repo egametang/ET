@@ -196,8 +196,6 @@ namespace ET
 
         private static void StartMove(this MoveComponent self)
         {
-            Unit unit = self.GetParent<Unit>();
-            
             self.BeginTime = TimeHelper.ClientNow();
             self.StartTime = self.BeginTime;
             self.SetNextTarget();

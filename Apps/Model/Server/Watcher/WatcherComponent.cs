@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ET
+namespace ET.Server
 {
     public class WatcherComponent: Entity, IAwake, IDestroy
     {

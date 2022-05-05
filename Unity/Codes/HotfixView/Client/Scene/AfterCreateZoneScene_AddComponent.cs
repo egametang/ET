@@ -1,4 +1,4 @@
-namespace ET
+namespace ET.Client
 {
     public class AfterCreateZoneScene_AddComponent: AEvent<EventType.AfterCreateZoneScene>
     {
