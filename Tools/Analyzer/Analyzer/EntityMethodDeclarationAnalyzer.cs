@@ -40,7 +40,7 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            //context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
+            context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
         }
 
         private void Analyzer(SymbolAnalysisContext context)

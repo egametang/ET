@@ -1,89 +1,83 @@
 ﻿using System.Collections.Generic;
-
 using UnityEngine;
 
 namespace ET
 {
-	[ObjectSystem]
-	public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
+	[FriendClass(typeof(UI))]
+	public static class UISystem
 	{
-		public override void Awake(UI self, string name, GameObject gameObject)
+		[ObjectSystem]
+		public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
 		{
-
-			self.Awake(name, gameObject);
-		}
-	}
-	
-	public sealed class UI: Entity, IAwake<string, GameObject>
-	{
-		public GameObject GameObject { get; set; }
-		
-		public string Name { get; private set; }
-
-		public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
-		
-		public void Awake(string name, GameObject gameObject)
-		{
-			this.nameChildren.Clear();
-			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
-			this.Name = name;
-			this.GameObject = gameObject;
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
+			public override void Awake(UI self, string name, GameObject gameObject)
 			{
-				return;
+				self.nameChildren.Clear();
+				gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
+				self.Name = name;
+				self.GameObject = gameObject;
 			}
-			
-			base.Dispose();
-
-			foreach (UI ui in this.nameChildren.Values)
+		}
+		
+		[ObjectSystem]
+		public class UIDestroySystem : DestroySystem<UI>
+		{
+			public override void Destroy(UI self)
 			{
-				ui.Dispose();
-			}
+				foreach (UI ui in self.nameChildren.Values)
+				{
+					ui.Dispose();
+				}
 			
-			UnityEngine.Object.Destroy(this.GameObject);
-			this.nameChildren.Clear();
+				UnityEngine.Object.Destroy(self.GameObject);
+				self.nameChildren.Clear();
+			}
 		}
 
-		public void SetAsFirstSibling()
+		public static void SetAsFirstSibling(this UI self)
 		{
-			this.GameObject.transform.SetAsFirstSibling();
+			self.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public void Add(UI ui)
+		public static void Add(this UI self, UI ui)
 		{
-			this.nameChildren.Add(ui.Name, ui);
+			self.nameChildren.Add(ui.Name, ui);
 		}
 
-		public void Remove(string name)
+		public static void Remove(this UI self, string name)
 		{
 			UI ui;
-			if (!this.nameChildren.TryGetValue(name, out ui))
+			if (!self.nameChildren.TryGetValue(name, out ui))
 			{
 				return;
 			}
-			this.nameChildren.Remove(name);
+			self.nameChildren.Remove(name);
 			ui.Dispose();
 		}
 
-		public UI Get(string name)
+		public static UI Get(this UI self, string name)
 		{
 			UI child;
-			if (this.nameChildren.TryGetValue(name, out child))
+			if (self.nameChildren.TryGetValue(name, out child))
 			{
 				return child;
 			}
-			GameObject childGameObject = this.GameObject.transform.Find(name)?.gameObject;
+			GameObject childGameObject = self.GameObject.transform.Find(name)?.gameObject;
 			if (childGameObject == null)
 			{
 				return null;
 			}
-			child = this.AddChild<UI, string, GameObject>(name, childGameObject);
-			this.Add(child);
+			child = self.AddChild<UI, string, GameObject>(name, childGameObject);
+			self.Add(child);
 			return child;
 		}
+	}
+	
+	public sealed class UI: Entity, IAwake<string, GameObject>, IDestroy
+	{
+		public GameObject GameObject { get; set; }
+		
+		public string Name { get; set; }
+
+		public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
 	}
 }
