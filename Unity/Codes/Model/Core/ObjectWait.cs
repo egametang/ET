@@ -21,35 +21,36 @@ namespace ET
         }
     }
 
-    [ObjectSystem]
-    public class ObjectWaitAwakeSystem: AwakeSystem<ObjectWait>
+    [FriendClass(typeof(ObjectWait))]
+    public static class ObjectWaitSystem
     {
-        public override void Awake(ObjectWait self)
+        [ObjectSystem]
+        public class ObjectWaitAwakeSystem: AwakeSystem<ObjectWait>
         {
-            self.tcss.Clear();
-        }
-    }
-
-    [ObjectSystem]
-    public class ObjectWaitDestroySystem: DestroySystem<ObjectWait>
-    {
-        public override void Destroy(ObjectWait self)
-        {
-            foreach (object v in self.tcss.Values.ToArray())
+            public override void Awake(ObjectWait self)
             {
-                ((ObjectWait.IDestroyRun) v).SetResult();
+                self.tcss.Clear();
             }
         }
-    }
 
-    public class ObjectWait: Entity, IAwake, IDestroy
-    {
-        public interface IDestroyRun
+        [ObjectSystem]
+        public class ObjectWaitDestroySystem: DestroySystem<ObjectWait>
+        {
+            public override void Destroy(ObjectWait self)
+            {
+                foreach (object v in self.tcss.Values.ToArray())
+                {
+                    ((IDestroyRun) v).SetResult();
+                }
+            }
+        }
+
+        private interface IDestroyRun
         {
             void SetResult();
         }
 
-        public class ResultCallback<K>: IDestroyRun where K : struct, IWaitType
+        private class ResultCallback<K>: IDestroyRun where K : struct, IWaitType
         {
             private ETTask<K> tcs;
 
@@ -82,18 +83,16 @@ namespace ET
                 t.SetResult(new K() { Error = WaitTypeError.Destroy });
             }
         }
-
-        public Dictionary<Type, object> tcss = new Dictionary<Type, object>();
-
-        public async ETTask<T> Wait<T>(ETCancellationToken cancellationToken = null) where T : struct, IWaitType
+        
+        public static async ETTask<T> Wait<T>(this ObjectWait self, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
         {
             ResultCallback<T> tcs = new ResultCallback<T>();
             Type type = typeof (T);
-            this.tcss.Add(type, tcs);
+            self.tcss.Add(type, tcs);
 
             void CancelAction()
             {
-                this.Notify(new T() { Error = WaitTypeError.Cancel });
+                self.Notify(new T() { Error = WaitTypeError.Cancel });
             }
 
             T ret;
@@ -109,7 +108,7 @@ namespace ET
             return ret;
         }
 
-        public async ETTask<T> Wait<T>(int timeout, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
+        public static async ETTask<T> Wait<T>(this ObjectWait self, int timeout, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
         {
             ResultCallback<T> tcs = new ResultCallback<T>();
             async ETTask WaitTimeout()
@@ -123,16 +122,16 @@ namespace ET
                 {
                     return;
                 }
-                Notify(new T() { Error = WaitTypeError.Timeout });
+                self.Notify(new T() { Error = WaitTypeError.Timeout });
             }
             
             WaitTimeout().Coroutine();
             
-            this.tcss.Add(typeof (T), tcs);
+            self.tcss.Add(typeof (T), tcs);
             
             void CancelAction()
             {
-                Notify(new T() { Error = WaitTypeError.Cancel });
+                self.Notify(new T() { Error = WaitTypeError.Cancel });
             }
             
             T ret;
@@ -148,16 +147,21 @@ namespace ET
             return ret;
         }
 
-        public void Notify<T>(T obj) where T : struct, IWaitType
+        public static void Notify<T>(this ObjectWait self, T obj) where T : struct, IWaitType
         {
             Type type = typeof (T);
-            if (!this.tcss.TryGetValue(type, out object tcs))
+            if (!self.tcss.TryGetValue(type, out object tcs))
             {
                 return;
             }
 
-            this.tcss.Remove(type);
+            self.tcss.Remove(type);
             ((ResultCallback<T>) tcs).SetResult(obj);
         }
+    }
+
+    public class ObjectWait: Entity, IAwake, IDestroy
+    {
+        public Dictionary<Type, object> tcss = new Dictionary<Type, object>();
     }
 }
