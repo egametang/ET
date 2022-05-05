@@ -46,7 +46,7 @@ namespace ET.Analyzer
 
         private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllHotfix))
+            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.All))
             {
                 return;
             }
@@ -96,6 +96,12 @@ namespace ET.Analyzer
                 return;
             }
 
+            // 允许类内部访问字段
+            if (accessFieldClassSymbol.ToString()== filedSymbol.ContainingType.ToString() )
+            {
+                return;
+            }
+            
             //判断是否在实体类生命周期System中
             if (this.CheckIsEntityLifecycleSystem(accessFieldClassSymbol, filedSymbol.ContainingType))
             {
