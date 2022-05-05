@@ -1,52 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class CoroutineLockQueueTypeAwakeSystem: AwakeSystem<CoroutineLockQueueType>
+    [FriendClass(typeof(CoroutineLockQueueType))]
+    public static class CoroutineLockQueueTypeSystem
     {
-        public override void Awake(CoroutineLockQueueType self)
+        [ObjectSystem]
+        public class CoroutineLockQueueTypeAwakeSystem: AwakeSystem<CoroutineLockQueueType>
         {
-            if (self.dictionary == null)
+            public override void Awake(CoroutineLockQueueType self)
             {
-                self.dictionary = new Dictionary<long, CoroutineLockQueue>();
+                if (self.dictionary == null)
+                {
+                    self.dictionary = new Dictionary<long, CoroutineLockQueue>();
+                }
+
+                self.dictionary.Clear();
             }
-
-            self.dictionary.Clear();
         }
-    }
 
-    [ObjectSystem]
-    public class CoroutineLockQueueTypeDestroySystem: DestroySystem<CoroutineLockQueueType>
-    {
-        public override void Destroy(CoroutineLockQueueType self)
+        [ObjectSystem]
+        public class CoroutineLockQueueTypeDestroySystem: DestroySystem<CoroutineLockQueueType>
         {
-            self.dictionary.Clear();
+            public override void Destroy(CoroutineLockQueueType self)
+            {
+                self.dictionary.Clear();
+            }
+        }
+        
+        public static bool TryGetValue(this CoroutineLockQueueType self, long key, out CoroutineLockQueue value)
+        {
+            return self.dictionary.TryGetValue(key, out value);
+        }
+
+        public static void Remove(this CoroutineLockQueueType self, long key)
+        {
+            if (self.dictionary.TryGetValue(key, out CoroutineLockQueue value))
+            {
+                value.Dispose();
+            }
+            self.dictionary.Remove(key);
+        }
+        
+        public static void Add(this CoroutineLockQueueType self, long key, CoroutineLockQueue value)
+        {
+            self.dictionary.Add(key, value);
         }
     }
     
     public class CoroutineLockQueueType: Entity, IAwake, IDestroy
     {
         public Dictionary<long, CoroutineLockQueue> dictionary;
-
-        public bool TryGetValue(long key, out CoroutineLockQueue value)
-        {
-            return this.dictionary.TryGetValue(key, out value);
-        }
-
-        public void Remove(long key)
-        {
-            if (this.dictionary.TryGetValue(key, out CoroutineLockQueue value))
-            {
-                value.Dispose();
-            }
-            this.dictionary.Remove(key);
-        }
-        
-        public void Add(long key, CoroutineLockQueue value)
-        {
-            this.dictionary.Add(key, value);
-        }
     }
 }

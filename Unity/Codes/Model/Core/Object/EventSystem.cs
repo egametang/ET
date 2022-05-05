@@ -92,11 +92,12 @@ namespace ET
         {
         }
 
-        private static List<Type> GetBaseAttributes(Type[] addTypes)
+        private List<Type> GetBaseAttributes()
         {
             List<Type> attributeTypes = new List<Type>();
-            foreach (Type type in addTypes)
+            foreach (var kv in this.allTypes)
             {
+                Type type = kv.Value;
                 if (type.IsAbstract)
                 {
                     continue;
@@ -111,20 +112,21 @@ namespace ET
             return attributeTypes;
         }
 
-        public void Add(Type[] addTypes)
+        public void Add(Dictionary<string, Type> addTypes)
         {
             this.allTypes.Clear();
-            foreach (Type addType in addTypes)
+            foreach (var kv in addTypes)
             {
-                this.allTypes[addType.FullName] = addType;
+                this.allTypes[kv.Key] = kv.Value;
             }
 
             this.types.Clear();
-            List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
+            List<Type> baseAttributeTypes = GetBaseAttributes();
             foreach (Type baseAttributeType in baseAttributeTypes)
             {
-                foreach (Type type in addTypes)
+                foreach (var kv in this.allTypes)
                 {
+                    Type type = kv.Value;
                     if (type.IsAbstract)
                     {
                         continue;
@@ -174,14 +176,17 @@ namespace ET
         {
             this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
 
-            List<Type> addTypes = new List<Type>();
+            Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
 
             foreach (Assembly ass in this.assemblies.Values)
             {
-                addTypes.AddRange(ass.GetTypes());
+                foreach (Type type in ass.GetTypes())
+                {
+                    dictionary[type.FullName] = type;
+                }
             }
-
-            this.Add(addTypes.ToArray());
+            
+            this.Add(dictionary);
         }
 
         public List<Type> GetTypes(Type systemAttributeType)

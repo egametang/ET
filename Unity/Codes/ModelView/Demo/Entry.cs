@@ -13,7 +13,7 @@ namespace ET
 				CodeLoader.Instance.OnApplicationQuit += Game.Close;
 				
 				
-				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
+				Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
 
 				
 				Game.EventSystem.Publish(new EventType.AppStart());

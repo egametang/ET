@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine.Networking;
+
+namespace ET
 {
 	public static class Define
 	{

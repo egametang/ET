@@ -96,8 +96,9 @@ namespace ET
             
             //注册Json的CLR
             LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
+            
             //注册ProtoBuf的CLR
-            PType.RegisterILRuntimeCLRRedirection(appdomain);
+            PType.RegisterILRuntime(appdomain, typeFullName => CodeLoader.Instance.GetHotfixType(typeFullName));
            
             
             ////////////////////////////////////

@@ -44,7 +44,7 @@ namespace ET
             if (InputHelper.GetKeyDown(114))
             {
                 CodeLoader.Instance.LoadLogic();
-                Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
+                Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
                 Game.EventSystem.Load();
                 Log.Debug("hot reload success!");
             }

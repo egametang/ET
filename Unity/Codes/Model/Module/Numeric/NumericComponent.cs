@@ -16,95 +16,65 @@ namespace ET
 			public long New;
 		}
 	}
-	
-	[ObjectSystem]
-	public class NumericComponentAwakeSystem : AwakeSystem<NumericComponent>
+
+	[FriendClass(typeof(NumericComponent))]
+	public static class NumericComponentSystem
 	{
-		public override void Awake(NumericComponent self)
+		public static float GetAsFloat(this NumericComponent self, int numericType)
 		{
-			self.Awake();
-		}
-	}
-
-	public class NumericComponent: Entity, IAwake, ITransfer
-	{
-		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-		public Dictionary<int, long> NumericDic = new Dictionary<int, long>();
-
-		public void Awake()
-		{
-			// 这里初始化base值
+			return (float)self.GetByKey(numericType) / 10000;
 		}
 
-		public float GetAsFloat(int numericType)
+		public static int GetAsInt(this NumericComponent self, int numericType)
 		{
-			return (float)GetByKey(numericType) / 10000;
-		}
-
-		public int GetAsInt(int numericType)
-		{
-			return (int)GetByKey(numericType);
+			return (int)self.GetByKey(numericType);
 		}
 		
-		public long GetAsLong(int numericType)
+		public static long GetAsLong(this NumericComponent self, int numericType)
 		{
-			return GetByKey(numericType);
+			return self.GetByKey(numericType);
 		}
 
-		public void Set(int nt, float value)
+		public static void Set(this NumericComponent self, int nt, float value)
 		{
-			this[nt] = (int) (value * 10000);
+			self[nt] = (int) (value * 10000);
 		}
 
-		public void Set(int nt, int value)
+		public static void Set(this NumericComponent self, int nt, int value)
 		{
-			this[nt] = value;
+			self[nt] = value;
 		}
 		
-		public void Set(int nt, long value)
+		public static void Set(this NumericComponent self, int nt, long value)
 		{
-			this[nt] = value;
+			self[nt] = value;
 		}
 
-		public void SetNoEvent(int numericType, long value)
+		public static void SetNoEvent(this NumericComponent self, int numericType, long value)
 		{
-			this.Insert(numericType,value,false);
+			self.Insert(numericType,value,false);
 		}
 		
-		
-		public long this[int numericType]
+		public static void Insert(this NumericComponent self, int numericType, long value,bool isPublicEvent = true)
 		{
-			get
-			{
-				return this.GetByKey(numericType);
-			}
-			set
-			{
-				
-				this.Insert(numericType,value);
-			}
-		}
-		
-		private void Insert(int numericType, long value,bool isPublicEvent = true)
-		{
-			long oldValue = this.GetByKey(numericType);
+			long oldValue = self.GetByKey(numericType);
 			if (oldValue == value)
 			{
 				return;
 			}
 
-			NumericDic[numericType] = value;
+			self.NumericDic[numericType] = value;
 
 			if (numericType >= NumericType.Max)
 			{
-				Update(numericType,isPublicEvent);
+				self.Update(numericType,isPublicEvent);
 				return;
 			}
 
 			if (isPublicEvent)
 			{
 				EventType.NumbericChange args = EventType.NumbericChange.Instance;
-				args.Parent = this.Parent;
+				args.Parent = self.Parent;
 				args.NumericType = numericType;
 				args.Old = oldValue;
 				args.New = value;
@@ -112,14 +82,14 @@ namespace ET
 			}
 		}
 		
-		private long GetByKey(int key)
+		public static long GetByKey(this NumericComponent self, int key)
 		{
 			long value = 0;
-			this.NumericDic.TryGetValue(key, out value);
+			self.NumericDic.TryGetValue(key, out value);
 			return value;
 		}
 
-		public void Update(int numericType,bool isPublicEvent)
+		public static void Update(this NumericComponent self, int numericType,bool isPublicEvent)
 		{
 			int final = (int) numericType / 10;
 			int bas = final * 10 + 1; 
@@ -130,8 +100,27 @@ namespace ET
 
 			// 一个数值可能会多种情况影响，比如速度,加个buff可能增加速度绝对值100，也有些buff增加10%速度，所以一个值可以由5个值进行控制其最终结果
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
-			long result = (long)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f);
-			this.Insert(final,result,isPublicEvent);
+			long result = (long)(((self.GetByKey(bas) + self.GetByKey(add)) * (100 + self.GetAsFloat(pct)) / 100f + self.GetByKey(finalAdd)) * (100 + self.GetAsFloat(finalPct)) / 100f);
+			self.Insert(final,result,isPublicEvent);
+		}
+	}
+	
+
+	public class NumericComponent: Entity, IAwake, ITransfer
+	{
+		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+		public Dictionary<int, long> NumericDic = new Dictionary<int, long>();
+
+		public long this[int numericType]
+		{
+			get
+			{
+				return this.GetByKey(numericType);
+			}
+			set
+			{
+				this.Insert(numericType,value);
+			}
 		}
 	}
 }
