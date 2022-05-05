@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using ET.Client;
 
 namespace ET.Server
 {
