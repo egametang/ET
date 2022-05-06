@@ -14,25 +14,25 @@ namespace ET
             
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\Hotfix\\HotfixProjectAuto.cs\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\Hotfix\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\HotfixView\\HotfixViewProjectAuto.cs\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\HotfixView\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\Model\\ModelProjectAuto.cs\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\Model\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Model\\Unity.Model.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\ModelView\\ModelViewProjectAuto.cs\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\ModelView\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
             }
             

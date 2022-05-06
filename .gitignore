@@ -59,3 +59,7 @@ Server/.DS_Store
 /Excel/~$*.xlsx
 /.vscode
 /Unity/.vsconfig
+Unity/Unity.Hotfix.csproj
+Unity/Unity.HotfixView.csproj
+Unity/Unity.Model.csproj
+Unity/Unity.ModelView.csproj
