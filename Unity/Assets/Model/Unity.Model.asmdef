@@ -1,0 +1,19 @@
+{
+    "name": "Unity.Model",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1aa3e8589868c80499255710874679c0",
+        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
