@@ -15,6 +15,10 @@ namespace ET
         public const byte ACK = 2;
         public const byte FIN = 3;
         public const byte MSG = 4;
+        public const byte RouterReconnectSYN = 5;
+        public const byte RouterReconnectACK = 6;
+        public const byte RouterSYN = 7;
+        public const byte RouterACK = 8;
     }
 
     public enum ServiceType
@@ -222,6 +226,62 @@ namespace ET
                     switch (flag)
                     {
 #if NOT_UNITY
+                        case KcpProtocalType.RouterReconnectSYN:
+                        {
+                            // 长度!=5，不是RouterReconnectSYN消息
+                            if (messageLength != 13)
+                            {
+                                break;
+                            }
+
+                            string realAddress = null;
+                            remoteConn = BitConverter.ToUInt32(this.cache, 1);
+                            localConn = BitConverter.ToUInt32(this.cache, 5);
+                            uint connectId = BitConverter.ToUInt32(this.cache, 9);
+
+                            this.localConnChannels.TryGetValue(localConn, out kChannel);
+                            if (kChannel == null)
+                            {
+                                Log.Warning($"kchannel reconnect not found channel: {localConn} {remoteConn} {realAddress}");
+                                break;
+                            }
+
+                            // 这里必须校验localConn，客户端重连，localConn一定是一样的
+                            if (localConn != kChannel.LocalConn)
+                            {
+                                Log.Warning($"kchannel reconnect localconn error: {kChannel.Id} {localConn} {remoteConn} {realAddress} {kChannel.LocalConn}");
+                                break;
+                            }
+
+                            if (remoteConn != kChannel.RemoteConn)
+                            {
+                                Log.Warning($"kchannel reconnect remoteconn error: {kChannel.Id} {localConn} {remoteConn} {realAddress} {kChannel.RemoteConn}");
+                                break;
+                            }
+
+                            // 重连的时候router地址变化, 这个不能放到msg中，必须经过严格的验证才能切换
+                            if (!Equals(kChannel.RemoteAddress, this.ipEndPoint))
+                            {
+                                kChannel.RemoteAddress = this.CloneAddress();
+                            }
+
+                            try
+                            {
+                                byte[] buffer = this.cache;
+                                buffer.WriteTo(0, KcpProtocalType.RouterReconnectACK);
+                                buffer.WriteTo(1, kChannel.LocalConn);
+                                buffer.WriteTo(5, kChannel.RemoteConn);
+                                buffer.WriteTo(9, connectId);
+                                this.socket.SendTo(buffer, 0, 13, SocketFlags.None, this.ipEndPoint);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.Error(e);
+                                kChannel.OnError(ErrorCore.ERR_SocketCantSend);
+                            }
+
+                            break;
+                        }
                         case KcpProtocalType.SYN: // accept
                         {
                             // 长度!=5，不是SYN消息

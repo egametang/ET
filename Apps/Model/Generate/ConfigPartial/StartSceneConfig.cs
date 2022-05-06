@@ -13,6 +13,10 @@ namespace ET
         public Dictionary<long, Dictionary<string, StartSceneConfig>> ZoneScenesByName = new Dictionary<long, Dictionary<string, StartSceneConfig>>();
 
         public StartSceneConfig LocationConfig;
+
+        public List<StartSceneConfig> Realms = new List<StartSceneConfig>();
+        
+        public List<StartSceneConfig> Routers = new List<StartSceneConfig>();
         
         public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
         
@@ -40,6 +44,9 @@ namespace ET
                 
                 switch (startSceneConfig.Type)
                 {
+                    case SceneType.Realm:
+                        this.Realms.Add(startSceneConfig);
+                        break;
                     case SceneType.Gate:
                         this.Gates.Add(startSceneConfig.Zone, startSceneConfig);
                         break;
@@ -48,6 +55,9 @@ namespace ET
                         break;
                     case SceneType.Robot:
                         this.Robots.Add(startSceneConfig);
+                        break;
+                    case SceneType.Router:
+                        this.Routers.Add(startSceneConfig);
                         break;
                 }
             }

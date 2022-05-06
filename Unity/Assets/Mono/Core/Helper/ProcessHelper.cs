@@ -8,7 +8,7 @@ namespace ET
 {
     public static class ProcessHelper
     {
-        public static Process Run(string exe, string arguments, string workingDirectory = ".")
+        public static Process Run(string exe, string arguments, string workingDirectory = ".", bool waitExit = false)
         {
             //Log.Debug($"Process Run exe:{exe} ,arguments:{arguments} ,workingDirectory:{workingDirectory}");
             try
@@ -22,6 +22,16 @@ namespace ET
                     redirectStandardError = false;
                     useShellExecute = true;
                 }
+                
+                if (waitExit)
+                {
+                    redirectStandardOutput = true;
+                    redirectStandardError = true;
+                    useShellExecute = false;
+                }
+                
+                //Log.Debug($"1111111111111111111111111aaaa: {redirectStandardError} {redirectStandardOutput} {useShellExecute}");
+                
                 ProcessStartInfo info = new ProcessStartInfo
                 {
                     FileName = exe,
@@ -34,8 +44,11 @@ namespace ET
                 };
 
                 Process process = Process.Start(info);
-                
-                WaitExitAsync(process);
+
+                if (waitExit)
+                {
+                    WaitExitAsync(process).Coroutine();
+                }
 
                 return process;
             }
@@ -45,7 +58,7 @@ namespace ET
             }
         }
         
-        private static async void WaitExitAsync(Process process)
+        private static async ETTask WaitExitAsync(Process process)
         {
             await process.WaitForExitAsync();
 #if NOT_UNITY

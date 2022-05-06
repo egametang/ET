@@ -14,7 +14,7 @@ namespace ET
             {
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
-                self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
+                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
                 self.Service.ErrorCallback += (channelId, error) => self.OnError(channelId, error);
                 self.Service.ReadCallback += (channelId, Memory) => self.OnRead(channelId, Memory);
 
@@ -29,7 +29,7 @@ namespace ET
             {
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
-                self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Outer);
+                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Outer);
                 self.Service.ErrorCallback += (channelId, error) => self.OnError(channelId, error);
                 self.Service.ReadCallback += (channelId, Memory) => self.OnRead(channelId, Memory);
                 self.Service.AcceptCallback += (channelId, IPAddress) => self.OnAccept(channelId, IPAddress);
@@ -98,6 +98,17 @@ namespace ET
             session.AddComponent<SessionIdleCheckerComponent, int>(NetThreadComponent.checkInteral);
             
             self.Service.GetOrCreate(session.Id, realIPEndPoint);
+
+            return session;
+        }
+        
+        public static Session Create(this NetKcpComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
+        {
+            long channelId = self.Service.CreateConnectChannelId(localConn);
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.Service);
+            session.RemoteAddress = realIPEndPoint;
+            session.AddComponent<SessionIdleCheckerComponent, int>(NetThreadComponent.checkInteral);
+            self.Service.GetOrCreate(session.Id, routerIPEndPoint);
 
             return session;
         }

@@ -4,7 +4,7 @@ namespace ET.Client
 {
     public static class LoginHelper
     {
-        public static async ETTask Login(Scene zoneScene, string address, string account, string password)
+        public static async ETTask Login(Scene zoneScene, string account, string password)
         {
             try
             {
@@ -13,7 +13,17 @@ namespace ET.Client
                 Session session = null;
                 try
                 {
-                    session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
+                    zoneScene.RemoveComponent<RouterAddressComponent>();
+                    // 获取路由跟realmDispatcher地址
+                    RouterAddressComponent routerAddressComponent = zoneScene.GetComponent<RouterAddressComponent>();
+                    if (routerAddressComponent == null)
+                    {
+                        routerAddressComponent = zoneScene.AddComponent<RouterAddressComponent, string>(ConstValue.RouterHttpAddress);
+                        await routerAddressComponent.Init();
+                    }
+                    string realmAddress = routerAddressComponent.GetRealmAddress(account);
+                    
+                    session = await RouterHelper.CreateRouterSession(zoneScene, realmAddress);
                     {
                         r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = account, Password = password });
                     }
@@ -24,8 +34,7 @@ namespace ET.Client
                 }
 
                 // 创建一个gate Session,并且保存到SessionComponent中
-                Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLogin.Address));
-                gateSession.AddComponent<PingComponent>();
+                Session gateSession = await RouterHelper.CreateRouterSession(zoneScene, r2CLogin.Address);
                 zoneScene.AddComponent<SessionComponent>().Session = gateSession;
 				
                 G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(

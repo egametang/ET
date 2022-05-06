@@ -3,6 +3,30 @@ using ProtoBuf;
 using System.Collections.Generic;
 namespace ET
 {
+	[Message(OuterOpcode.HttpGetRouterResponse)]
+	[ProtoContract]
+	public partial class HttpGetRouterResponse: Object
+	{
+		[ProtoMember(1)]
+		public List<string> Realms = new List<string>();
+
+		[ProtoMember(2)]
+		public List<string> Routers = new List<string>();
+
+	}
+
+	[Message(OuterOpcode.RouterSync)]
+	[ProtoContract]
+	public partial class RouterSync: Object
+	{
+		[ProtoMember(1)]
+		public uint ConnectId { get; set; }
+
+		[ProtoMember(2)]
+		public string Address { get; set; }
+
+	}
+
 	[ResponseType(nameof(M2C_TestResponse))]
 	[Message(OuterOpcode.C2M_TestRequest)]
 	[ProtoContract]

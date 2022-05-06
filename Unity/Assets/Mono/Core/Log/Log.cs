@@ -20,6 +20,10 @@ namespace ET
 
         private static bool CheckLogLevel(int level)
         {
+            if (Options.Instance == null)
+            {
+                return true;
+            }
             return Options.Instance.LogLevel <= level;
         }
         

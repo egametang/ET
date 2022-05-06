@@ -38,7 +38,7 @@ namespace ET
 				Log.ILog = new NLogger(Game.Options.AppType.ToString());
 				LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
-				Log.Info($"apps start........................ {Game.Scene.Id}");
+				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Game.Options)} ");
 
 				Game.EventSystem.Publish(new EventType.AppStart());
 				

@@ -145,7 +145,7 @@ namespace ET
 
     public sealed class Session: Entity, IAwake<AService>, IDestroy
     {
-        public AService AService;
+        public AService AService { get; set; }
         
         public static int RpcId
         {

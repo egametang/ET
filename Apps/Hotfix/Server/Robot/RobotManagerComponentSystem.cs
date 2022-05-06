@@ -11,7 +11,7 @@ namespace ET.Server
             try
             {
                 zoneScene = Client.SceneFactory.CreateZoneScene(zone, "Robot", self);
-                await Client.LoginHelper.Login(zoneScene, ConstValue.LoginAddress, zone.ToString(), zone.ToString());
+                await Client.LoginHelper.Login(zoneScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(zoneScene);
                 Log.Debug($"create robot ok: {zone}");
                 return zoneScene;

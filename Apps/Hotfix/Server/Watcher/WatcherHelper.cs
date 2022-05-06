@@ -41,13 +41,14 @@ namespace ET.Server
         {
             StartProcessConfig startProcessConfig = StartProcessConfigCategory.Instance.Get(processId);
             const string exe = "dotnet";
-            string arguments = $"Apps.dll" + 
+            string arguments = $"App.dll" + 
                     $" --Process={startProcessConfig.Id}" +
                     $" --AppType=Server" +  
                     $" --StartConfig={Game.Options.StartConfig}" +
                     $" --Develop={Game.Options.Develop}" +
                     $" --CreateScenes={createScenes}" +
-                    $" --LogLevel={Game.Options.LogLevel}";
+                    $" --LogLevel={Game.Options.LogLevel}" +
+                    $" --Console={Game.Options.Console}";
             Log.Debug($"{exe} {arguments}");
             Process process = ProcessHelper.Run(exe, arguments);
             return process;

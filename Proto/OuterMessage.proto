@@ -1,6 +1,18 @@
 syntax = "proto3";
 package ET;
 
+message HttpGetRouterResponse
+{
+	repeated string Realms = 1;
+	repeated string Routers = 2;
+}
+
+message RouterSync
+{
+	uint32 ConnectId = 1;
+	string Address = 2;
+}
+
 //ResponseType M2C_TestResponse
 message C2M_TestRequest // IActorLocationRequest
 {
