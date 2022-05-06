@@ -54,6 +54,8 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
             appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Type, ILRuntime.Runtime.Intepreter.ILTypeInstance>();
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, ILRuntime.Runtime.Intepreter.ILTypeInstance>();
             
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();

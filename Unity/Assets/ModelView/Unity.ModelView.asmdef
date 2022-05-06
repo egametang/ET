@@ -1,0 +1,20 @@
+{
+    "name": "Unity.ModelView",
+    "rootNamespace": "ET",
+    "references": [
+        "Unity.Model",
+        "Unity.Mono",
+        "Unity.ThirdParty"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

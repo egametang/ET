@@ -1,0 +1,20 @@
+{
+    "name": "Unity.Hotfix",
+    "rootNamespace": "ET",
+    "references": [
+        "Unity.Model",
+        "Unity.ThirdParty",
+        "Unity.Mono"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
