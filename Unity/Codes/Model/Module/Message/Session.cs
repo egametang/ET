@@ -6,109 +6,65 @@ using System.Net;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class SessionAwakeSystem: AwakeSystem<Session, AService>
+    public readonly struct RpcInfo
     {
-        public override void Awake(Session self, AService aService)
+        public readonly IRequest Request;
+        public readonly ETTask<IResponse> Tcs;
+
+        public RpcInfo(IRequest request)
         {
-            self.Awake(aService);
+            this.Request = request;
+            this.Tcs = ETTask<IResponse>.Create(true);
         }
     }
-
-    public sealed class Session: Entity, IAwake<AService>
+    
+    [FriendClass(typeof(Session))]
+    public static class SessionSystem
     {
-        private readonly struct RpcInfo
+        [ObjectSystem]
+        public class SessionAwakeSystem: AwakeSystem<Session, AService>
         {
-            public readonly IRequest Request;
-            public readonly ETTask<IResponse> Tcs;
-
-            public RpcInfo(IRequest request)
+            public override void Awake(Session self, AService aService)
             {
-                this.Request = request;
-                this.Tcs = ETTask<IResponse>.Create(true);
+                self.AService = aService;
+                long timeNow = TimeHelper.ClientNow();
+                self.LastRecvTime = timeNow;
+                self.LastSendTime = timeNow;
+
+                self.requestCallbacks.Clear();
+            
+                Log.Info($"session create: zone: {self.DomainZone()} id: {self.Id} {timeNow} ");
             }
         }
-
-        public AService AService;
         
-        private static int RpcId
+        [ObjectSystem]
+        public class SessionDestroySystem: DestroySystem<Session>
         {
-            get;
-            set;
-        }
-
-        private readonly Dictionary<int, RpcInfo> requestCallbacks = new Dictionary<int, RpcInfo>();
-        
-        public long LastRecvTime
-        {
-            get;
-            set;
-        }
-
-        public long LastSendTime
-        {
-            get;
-            set;
-        }
-
-        public int Error
-        {
-            get;
-            set;
-        }
-
-        public void Awake(AService aService)
-        {
-            this.AService = aService;
-            long timeNow = TimeHelper.ClientNow();
-            this.LastRecvTime = timeNow;
-            this.LastSendTime = timeNow;
-
-            this.requestCallbacks.Clear();
+            public override void Destroy(Session self)
+            {
+                self.AService.RemoveChannel(self.Id);
             
-            Log.Info($"session create: zone: {this.DomainZone()} id: {this.Id} {timeNow} ");
-        }
+                foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
+                {
+                    responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
+                }
 
-        public override void Dispose()
+                Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
+            
+                self.requestCallbacks.Clear();
+            }
+        }
+        
+        public static void OnRead(this Session self, ushort opcode, IResponse response)
         {
-            if (this.IsDisposed)
+            OpcodeHelper.LogMsg(self.DomainZone(), opcode, response);
+            
+            if (!self.requestCallbacks.TryGetValue(response.RpcId, out var action))
             {
                 return;
             }
 
-            int zone = this.DomainZone();
-            long id = this.Id;
-
-            base.Dispose();
-
-            this.AService.RemoveChannel(this.Id);
-            
-            foreach (RpcInfo responseCallback in this.requestCallbacks.Values.ToArray())
-            {
-                responseCallback.Tcs.SetException(new RpcException(this.Error, $"session dispose: {id} {this.RemoteAddress}"));
-            }
-
-            Log.Info($"session dispose: {this.RemoteAddress} zone: {zone} id: {id} ErrorCode: {this.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
-
-            this.requestCallbacks.Clear();
-        }
-
-        public IPEndPoint RemoteAddress
-        {
-            get;
-            set;
-        }
-
-        public void OnRead(ushort opcode, IResponse response)
-        {
-            OpcodeHelper.LogMsg(this.DomainZone(), opcode, response);
-            
-            if (!this.requestCallbacks.TryGetValue(response.RpcId, out var action))
-            {
-                return;
-            }
-
-            this.requestCallbacks.Remove(response.RpcId);
+            self.requestCallbacks.Remove(response.RpcId);
             if (ErrorCore.IsRpcNeedThrowException(response.Error))
             {
                 action.Tcs.SetException(new Exception($"Rpc error, request: {action.Request} response: {response}"));
@@ -117,23 +73,23 @@ namespace ET
             action.Tcs.SetResult(response);
         }
         
-        public async ETTask<IResponse> Call(IRequest request, ETCancellationToken cancellationToken)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
         {
-            int rpcId = ++RpcId;
+            int rpcId = ++Session.RpcId;
             RpcInfo rpcInfo = new RpcInfo(request);
-            this.requestCallbacks[rpcId] = rpcInfo;
+            self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
 
-            this.Send(request);
+            self.Send(request);
             
             void CancelAction()
             {
-                if (!this.requestCallbacks.TryGetValue(rpcId, out RpcInfo action))
+                if (!self.requestCallbacks.TryGetValue(rpcId, out RpcInfo action))
                 {
                     return;
                 }
 
-                this.requestCallbacks.Remove(rpcId);
+                self.requestCallbacks.Remove(rpcId);
                 Type responseType = OpcodeTypeComponent.Instance.GetResponseType(action.Request.GetType());
                 IResponse response = (IResponse) Activator.CreateInstance(responseType);
                 response.Error = ErrorCore.ERR_Cancel;
@@ -153,37 +109,74 @@ namespace ET
             return ret;
         }
 
-        public async ETTask<IResponse> Call(IRequest request)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request)
         {
-            int rpcId = ++RpcId;
+            int rpcId = ++Session.RpcId;
             RpcInfo rpcInfo = new RpcInfo(request);
-            this.requestCallbacks[rpcId] = rpcInfo;
+            self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
-            this.Send(request);
+            self.Send(request);
             return await rpcInfo.Tcs;
         }
 
-        public void Reply(IResponse message)
+        public static void Reply(this Session self, IResponse message)
         {
-            this.Send(0, message);
+            self.Send(0, message);
         }
 
-        public void Send(IMessage message)
+        public static void Send(this Session self, IMessage message)
         {
-            this.Send(0, message);
+            self.Send(0, message);
         }
         
-        public void Send(long actorId, IMessage message)
+        public static void Send(this Session self, long actorId, IMessage message)
         {
             (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(message);
-            OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
-            this.Send(actorId, stream);
+            OpcodeHelper.LogMsg(self.DomainZone(), opcode, message);
+            self.Send(actorId, stream);
         }
         
-        public void Send(long actorId, MemoryStream memoryStream)
+        public static void Send(this Session self, long actorId, MemoryStream memoryStream)
         {
-            this.LastSendTime = TimeHelper.ClientNow();
-            this.AService.SendStream(this.Id, actorId, memoryStream);
+            self.LastSendTime = TimeHelper.ClientNow();
+            self.AService.SendStream(self.Id, actorId, memoryStream);
+        }
+    }
+
+    public sealed class Session: Entity, IAwake<AService>, IDestroy
+    {
+        public AService AService;
+        
+        public static int RpcId
+        {
+            get;
+            set;
+        }
+
+        public readonly Dictionary<int, RpcInfo> requestCallbacks = new Dictionary<int, RpcInfo>();
+        
+        public long LastRecvTime
+        {
+            get;
+            set;
+        }
+
+        public long LastSendTime
+        {
+            get;
+            set;
+        }
+
+        public int Error
+        {
+            get;
+            set;
+        }
+
+        public IPEndPoint RemoteAddress
+        {
+            get;
+            set;
         }
     }
 }

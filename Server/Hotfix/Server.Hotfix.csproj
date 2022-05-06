@@ -25,11 +25,8 @@
     <Compile Include="..\..\Unity\Codes\Hotfix\Module\Config\ConfigComponentSystem.cs">
       <Link>Module\Config\ConfigComponentSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs">
-      <Link>Module\Numeric\NumericChangeEvent_NotifyWatcher.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
-      <Link>Module\Numeric\NumericWatcher_Hp_ShowUI.cs</Link>
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\**\*.cs">
+      <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
     <Compile Include="..\..\Unity\Codes\Hotfix\Module\AI\**\*.cs">
