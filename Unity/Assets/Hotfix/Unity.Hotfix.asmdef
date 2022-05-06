@@ -1,10 +1,10 @@
 {
     "name": "Unity.Hotfix",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
-        "GUID:61be00357cd206e42a4338fff3f5d273",
-        "GUID:1aa3e8589868c80499255710874679c0",
-        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4"
+        "Unity.Model",
+        "Unity.ThirdParty",
+        "Unity.Mono"
     ],
     "includePlatforms": [
         "Editor"

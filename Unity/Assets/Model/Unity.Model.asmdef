@@ -1,9 +1,9 @@
 {
     "name": "Unity.Model",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
-        "GUID:1aa3e8589868c80499255710874679c0",
-        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4"
+        "Unity.ThirdParty",
+        "Unity.Mono"
     ],
     "includePlatforms": [
         "Editor"

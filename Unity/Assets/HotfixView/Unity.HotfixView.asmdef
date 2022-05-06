@@ -1,12 +1,12 @@
 {
     "name": "Unity.HotfixView",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
-        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4",
-        "GUID:1aa3e8589868c80499255710874679c0",
-        "GUID:61be00357cd206e42a4338fff3f5d273",
-        "GUID:dd49a6aee98625147b438c1f3cc12621",
-        "GUID:1c9695a401c816a4f8fa3550926b6cfc"
+        "Unity.Mono",
+        "Unity.ThirdParty",
+        "Unity.Model",
+        "Unity.Hotfix",
+        "Unity.ModelView"
     ],
     "includePlatforms": [
         "Editor"
