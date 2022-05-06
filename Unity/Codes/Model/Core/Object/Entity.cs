@@ -272,40 +272,68 @@ namespace ET
                     // 反序列化出来的需要设置父子关系
                     if (this.componentsDB != null)
                     {
+#if NOT_UNITY
                         foreach (Entity component in this.componentsDB)
                         {
                             component.IsComponent = true;
                             this.Components.Add(component.GetType(), component);
                             component.parent = this;
                         }
+#else
+                        this.componentsDB.Foreach((component =>
+                        {
+                            component.IsComponent = true;
+                            this.Components.Add(component.GetType(), component);
+                            component.parent = this;
+                        }));
+#endif
+                        
+
                     }
 
                     if (this.childrenDB != null)
                     {
+#if NOT_UNITY
                         foreach (Entity child in this.childrenDB)
                         {
                             child.IsComponent = false;
                             this.Children.Add(child.Id, child);
                             child.parent = this;
                         }
+#else
+                        this.childrenDB.Foreach((child =>
+                        {
+                            child.IsComponent = false;
+                            this.Children.Add(child.Id, child);
+                            child.parent = this;
+                        }));
+#endif
                     }
                 }
 
                 // 递归设置孩子的Domain
                 if (this.children != null)
                 {
+#if NOT_UNITY
                     foreach (Entity entity in this.children.Values)
                     {
                         entity.Domain = this.domain;
                     }
+#else
+                    this.children.Foreach((_, entity) => {entity.Domain = this.domain;});
+#endif
                 }
 
                 if (this.components != null)
                 {
+#if NOT_UNITY
                     foreach (Entity component in this.components.Values)
                     {
                         component.Domain = this.domain;
                     }
+#else
+                    this.components.Foreach((_, component) => { component.Domain = this.domain;});
+#endif
                 }
 
                 if (!this.IsCreated)
@@ -432,10 +460,14 @@ namespace ET
             // 清理Component
             if (this.components != null)
             {
+#if NOT_UNITY
                 foreach (KeyValuePair<Type, Entity> kv in this.components)
                 {
                     kv.Value.Dispose();
                 }
+#else
+                this.components.Foreach((_, entity) => {entity.Dispose();});
+#endif
 
                 this.components.Clear();
                 MonoPool.Instance.Recycle(this.components);
@@ -456,10 +488,14 @@ namespace ET
             // 清理Children
             if (this.children != null)
             {
+#if NOT_UNITY
                 foreach (Entity child in this.children.Values)
                 {
                     child.Dispose();
                 }
+#else
+                this.children.Foreach((_, child) => {child.Dispose();});
+#endif
 
                 this.children.Clear();
                 MonoPool.Instance.Recycle(this.children);
