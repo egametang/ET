@@ -114,7 +114,9 @@ namespace ET.Analyzer
                 return;
             }
 
-            Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax.GetLocation(), filedSymbol.ContainingType.Name,
+            var builder = ImmutableDictionary.CreateBuilder<string, string?>();
+            builder.Add("FriendClassType",filedSymbol.ContainingType.ToString());
+            Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax.GetLocation(), builder.ToImmutable(),filedSymbol.ContainingType.ToString(),
                 filedSymbol.Name);
             context.ReportDiagnostic(diagnostic);
         }
