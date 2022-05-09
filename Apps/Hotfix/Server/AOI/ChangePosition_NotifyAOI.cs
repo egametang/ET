@@ -2,20 +2,11 @@
 
 namespace ET.Server
 {
-    [Event]
-    public class ChangePosition_NotifyAOI: AEvent<ET.EventType.ChangePosition>
+    [Event(SceneType.Map)]
+    public class ChangePosition_NotifyAOI: AEvent<Unit, ET.EventType.ChangePosition>
     {
-        protected override async ETTask Run(ET.EventType.ChangePosition args)
+        protected override async ETTask Run(Unit unit, ET.EventType.ChangePosition args)
         {
-            Unit unit = args.Unit;
-
-            // 机器人也有Unit，机器人的Unit在Current Scene
-            
-            if (unit.DomainScene().SceneType != SceneType.Map)
-            {
-                return;
-            }
-            
             Vector3 oldPos = args.OldPos;
             
             int oldCellX = (int) (oldPos.x * 1000) / AOIManagerComponent.CellSize;

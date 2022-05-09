@@ -9,7 +9,6 @@ namespace ET
 	{
 		public struct NumbericChange
 		{
-			public Entity Parent;
 			public int NumericType;
 			public long Old;
 			public long New;
@@ -72,7 +71,7 @@ namespace ET
 
 			if (isPublicEvent)
 			{
-				Game.EventSystem.Publish(new NumbericChange() {New = value, Old = oldValue, Parent = self.Parent, NumericType = numericType});
+				Game.EventSystem.Publish(self.GetParent<Unit>(), new NumbericChange() {New = value, Old = oldValue, NumericType = numericType});
 			}
 		}
 		

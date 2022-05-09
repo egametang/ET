@@ -1,13 +1,12 @@
 ﻿namespace ET.Server
 {
     // 进入视野通知
-    [Event]
-    public class UnitEnterSightRange_NotifyClient: AEvent<EventType.UnitEnterSightRange>
+    [Event(SceneType.Map)]
+    public class UnitEnterSightRange_NotifyClient: AEvent<AOIEntity, EventType.UnitEnterSightRange>
     {
-        protected override async ETTask Run(EventType.UnitEnterSightRange args)
+        protected override async ETTask Run(AOIEntity a, EventType.UnitEnterSightRange args)
         {
             await ETTask.CompletedTask;
-            AOIEntity a = args.A;
             AOIEntity b = args.B;
             if (a.Id == b.Id)
             {
@@ -22,7 +21,7 @@
 
             Unit ub = b.GetParent<Unit>();
 
-            Server.UnitHelper.NoticeUnitAdd(ua, ub);
+            UnitHelper.NoticeUnitAdd(ua, ub);
         }
     }
 }

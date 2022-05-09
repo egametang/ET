@@ -1,10 +1,11 @@
 ﻿namespace ET.Client
 {
-    public class SceneChangeFinishEvent_CreateUIHelp : AEvent<EventType.SceneChangeFinish>
+    [Event(SceneType.Current)]
+    public class SceneChangeFinishEvent_CreateUIHelp : AEvent<Scene, EventType.SceneChangeFinish>
     {
-        protected override async ETTask Run(EventType.SceneChangeFinish args)
+        protected override async ETTask Run(Scene scene, EventType.SceneChangeFinish args)
         {
-            await UIHelper.Create(args.CurrentScene, UIType.UIHelp, UILayer.Mid);
+            await UIHelper.Create(scene, UIType.UIHelp, UILayer.Mid);
         }
     }
 }

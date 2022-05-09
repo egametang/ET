@@ -1,12 +1,12 @@
 ﻿namespace ET
 {
 	/// <summary>
-	/// 监视hp数值变化，改变血条值
+	/// 客户端监视hp数值变化，改变血条值
 	/// </summary>
-	[NumericWatcher(NumericType.Hp)]
+	[NumericWatcher(SceneType.Current, NumericType.Hp)]
 	public class NumericWatcher_Hp_ShowUI : INumericWatcher
 	{
-		public void Run(EventType.NumbericChange args)
+		public void Run(Unit unit, EventType.NumbericChange args)
 		{
 		}
 	}

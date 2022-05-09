@@ -42,7 +42,7 @@ namespace ET.Client
 
                 Log.Debug("登陆gate成功!");
 
-                await Game.EventSystem.PublishAsync(new EventType.LoginFinish() {ZoneScene = zoneScene});
+                await Game.EventSystem.PublishAsync(zoneScene, new EventType.LoginFinish());
             }
             catch (Exception e)
             {

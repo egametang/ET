@@ -16,7 +16,7 @@ namespace ET.Client
 				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
 
 				
-				Game.EventSystem.Publish(new EventType.AppStart());
+				Game.EventSystem.Publish(Game.Scene, new EventType.AppStart());
 			}
 			catch (Exception e)
 			{

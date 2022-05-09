@@ -1,10 +1,11 @@
 ﻿namespace ET.Client
 {
-    public class LoadingFinishEvent_RemoveLoadingUI : AEvent<EventType.LoadingFinish>
+    [Event(SceneType.Zone)]
+    public class LoadingFinishEvent_RemoveLoadingUI : AEvent<Scene, EventType.LoadingFinish>
     {
-        protected override async ETTask Run(EventType.LoadingFinish args)
+        protected override async ETTask Run(Scene scene, EventType.LoadingFinish args)
         {
-            await UIHelper.Create(args.Scene, UIType.UILoading, UILayer.Mid);
+            await UIHelper.Create(scene, UIType.UILoading, UILayer.Mid);
         }
     }
 }

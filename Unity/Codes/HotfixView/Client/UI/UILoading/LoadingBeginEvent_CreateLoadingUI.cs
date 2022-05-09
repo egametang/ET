@@ -2,11 +2,12 @@
 
 namespace ET.Client
 {
-    public class LoadingBeginEvent_CreateLoadingUI : AEvent<EventType.LoadingBegin>
+    [Event(SceneType.Zone)]
+    public class LoadingBeginEvent_CreateLoadingUI : AEvent<Scene, EventType.LoadingBegin>
     {
-        protected override async ETTask Run(EventType.LoadingBegin args)
+        protected override async ETTask Run(Scene scene, EventType.LoadingBegin args)
         {
-            await UIHelper.Create(args.Scene, UIType.UILoading, UILayer.Mid);
+            await UIHelper.Create(scene, UIType.UILoading, UILayer.Mid);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace ET.Client
 
 	        unit.AddComponent<XunLuoPathComponent>();
 	        
-	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
+	        Game.EventSystem.Publish(unit, new EventType.AfterUnitCreate());
             return unit;
         }
     }

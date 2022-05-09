@@ -27,7 +27,7 @@ namespace ET
 
         private static void Init(this NumericWatcherComponent self)
         {
-            self.allWatchers = new Dictionary<int, List<INumericWatcher>>();
+            self.allWatchers = new Dictionary<int, List<NumericWatcherInfo>>();
 
             HashSet<Type> types = Game.EventSystem.GetTypes(typeof(NumericWatcherAttribute));
             foreach (Type type in types)
@@ -38,26 +38,45 @@ namespace ET
                 {
                     NumericWatcherAttribute numericWatcherAttribute = (NumericWatcherAttribute)attr;
                     INumericWatcher obj = (INumericWatcher)Activator.CreateInstance(type);
+                    NumericWatcherInfo numericWatcherInfo = new NumericWatcherInfo(numericWatcherAttribute.SceneType, obj);
                     if (!self.allWatchers.ContainsKey(numericWatcherAttribute.NumericType))
                     {
-                        self.allWatchers.Add(numericWatcherAttribute.NumericType, new List<INumericWatcher>());
+                        self.allWatchers.Add(numericWatcherAttribute.NumericType, new List<NumericWatcherInfo>());
                     }
-                    self.allWatchers[numericWatcherAttribute.NumericType].Add(obj);
+                    self.allWatchers[numericWatcherAttribute.NumericType].Add(numericWatcherInfo);
                 }
             }
         }
 
-        public static void Run(this NumericWatcherComponent self, EventType.NumbericChange args)
+        public static void Run(this NumericWatcherComponent self, Unit unit, EventType.NumbericChange args)
         {
-            List<INumericWatcher> list;
+            List<NumericWatcherInfo> list;
             if (!self.allWatchers.TryGetValue(args.NumericType, out list))
             {
                 return;
             }
-            foreach (INumericWatcher numericWatcher in list)
+
+            SceneType unitDomainSceneType = unit.DomainScene().SceneType;
+            foreach (NumericWatcherInfo numericWatcher in list)
             {
-                numericWatcher.Run(args);
+                if (numericWatcher.SceneType != unitDomainSceneType)
+                {
+                    continue;
+                }
+                numericWatcher.INumericWatcher.Run(unit, args);
             }
+        }
+    }
+
+    public class NumericWatcherInfo
+    {
+        public SceneType SceneType { get; }
+        public INumericWatcher INumericWatcher { get; }
+
+        public NumericWatcherInfo(SceneType sceneType, INumericWatcher numericWatcher)
+        {
+            this.SceneType = sceneType;
+            this.INumericWatcher = numericWatcher;
         }
     }
     
@@ -69,6 +88,6 @@ namespace ET
     {
         public static NumericWatcherComponent Instance { get; set; }
 		
-        public Dictionary<int, List<INumericWatcher>> allWatchers;
+        public Dictionary<int, List<NumericWatcherInfo>> allWatchers;
     }
 }

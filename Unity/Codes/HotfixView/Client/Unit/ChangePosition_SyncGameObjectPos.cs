@@ -2,17 +2,18 @@
 
 namespace ET.Client
 {
-    public class ChangePosition_SyncGameObjectPos: AEvent<EventType.ChangePosition>
+    [Event(SceneType.Current)]
+    public class ChangePosition_SyncGameObjectPos: AEvent<Unit, EventType.ChangePosition>
     {
-        protected override async ETTask Run(EventType.ChangePosition args)
+        protected override async ETTask Run(Unit unit, EventType.ChangePosition args)
         {
-            GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
+            GameObjectComponent gameObjectComponent = unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {
                 return;
             }
             Transform transform = gameObjectComponent.GameObject.transform;
-            transform.position = args.Unit.Position;
+            transform.position = unit.Position;
             await ETTask.CompletedTask;
         }
     }

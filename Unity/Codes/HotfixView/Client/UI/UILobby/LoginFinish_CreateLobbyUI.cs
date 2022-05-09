@@ -1,12 +1,11 @@
-﻿
-
-namespace ET.Client
+﻿namespace ET.Client
 {
-	public class LoginFinish_CreateLobbyUI: AEvent<EventType.LoginFinish>
+	[Event(SceneType.Zone)]
+	public class LoginFinish_CreateLobbyUI: AEvent<Scene, EventType.LoginFinish>
 	{
-		protected override async ETTask Run(EventType.LoginFinish args)
+		protected override async ETTask Run(Scene scene, EventType.LoginFinish args)
 		{
-			await UIHelper.Create(args.ZoneScene, UIType.UILobby, UILayer.Mid);
+			await UIHelper.Create(scene, UIType.UILobby, UILayer.Mid);
 		}
 	}
 }

@@ -2,17 +2,18 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    public class ChangeRotation_SyncGameObjectRotation: AEvent<EventType.ChangeRotation>
+    [Event(SceneType.Current)]
+    public class ChangeRotation_SyncGameObjectRotation: AEvent<Unit, EventType.ChangeRotation>
     {
-        protected override async ETTask Run(EventType.ChangeRotation args)
+        protected override async ETTask Run(Unit unit, EventType.ChangeRotation args)
         {
-            GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
+            GameObjectComponent gameObjectComponent = unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {
                 return;
             }
             Transform transform = gameObjectComponent.GameObject.transform;
-            transform.rotation = args.Unit.Rotation;
+            transform.rotation = unit.Rotation;
             await ETTask.CompletedTask;
         }
     }

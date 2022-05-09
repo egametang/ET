@@ -40,7 +40,7 @@ namespace ET
 				
 				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Game.Options)} ");
 
-				Game.EventSystem.Publish(new EventType.AppStart());
+				Game.EventSystem.Publish(Game.Scene, new EventType.AppStart());
 				
 				while (true)
 				{

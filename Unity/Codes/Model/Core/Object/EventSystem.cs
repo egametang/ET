@@ -12,7 +12,7 @@ namespace ET
     {
         private class TypeSystems
         {
-            private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new Dictionary<Type, OneTypeSystems>();
+            private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
 
             public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
             {
@@ -52,6 +52,19 @@ namespace ET
             }
         }
 
+        private class EventInfo
+        {
+            public IEvent IEvent { get; }
+            
+            public SceneType SceneType {get; }
+
+            public EventInfo(IEvent iEvent, SceneType sceneType)
+            {
+                this.IEvent = iEvent;
+                this.SceneType = sceneType;
+            }
+        }
+
         private static EventSystem instance;
 
         public static EventSystem Instance
@@ -67,26 +80,26 @@ namespace ET
             }
         }
 
-        private readonly Dictionary<long, Entity> allEntities = new Dictionary<long, Entity>();
+        private readonly Dictionary<long, Entity> allEntities = new();
 
-        private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
+        private readonly Dictionary<string, Assembly> assemblies = new();
 
-        private readonly Dictionary<string, Type> allTypes = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> allTypes = new();
 
-        private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
+        private readonly UnOrderMultiMapSet<Type, Type> types = new();
 
-        private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
+        private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
 
-        private TypeSystems typeSystems = new TypeSystems();
+        private TypeSystems typeSystems = new();
 
-        private Queue<long> updates = new Queue<long>();
-        private Queue<long> updates2 = new Queue<long>();
+        private Queue<long> updates = new();
+        private Queue<long> updates2 = new();
 
-        private Queue<long> loaders = new Queue<long>();
-        private Queue<long> loaders2 = new Queue<long>();
+        private Queue<long> loaders = new();
+        private Queue<long> loaders2 = new();
 
-        private Queue<long> lateUpdates = new Queue<long>();
-        private Queue<long> lateUpdates2 = new Queue<long>();
+        private Queue<long> lateUpdates = new();
+        private Queue<long> lateUpdates2 = new();
 
         private EventSystem()
         {
@@ -161,14 +174,22 @@ namespace ET
                 {
                     throw new Exception($"type not is AEvent: {type.Name}");
                 }
-
-                Type eventType = obj.GetEventType();
-                if (!this.allEvents.ContainsKey(eventType))
+                
+                object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
+                foreach (object attr in attrs)
                 {
-                    this.allEvents.Add(eventType, new List<object>());
-                }
+                    EventAttribute eventAttribute = attr as EventAttribute;
 
-                this.allEvents[eventType].Add(obj);
+                    Type eventType = obj.GetEventType();
+
+                    EventInfo eventInfo = new(obj, eventAttribute.SceneType);
+
+                    if (!this.allEvents.ContainsKey(eventType))
+                    {
+                        this.allEvents.Add(eventType, new List<EventInfo>());
+                    }
+                    this.allEvents[eventType].Add(eventInfo);
+                }
             }
         }
 
@@ -617,9 +638,9 @@ namespace ET
             ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
         }
 
-        public async ETTask PublishAsync<T>(T a) where T : struct
+        public async ETTask PublishAsync<E, T>(E entity, T a) where E: Entity where T : struct
         {
-            List<object> iEvents;
+            List<EventInfo> iEvents;
             if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
             {
                 return;
@@ -627,15 +648,20 @@ namespace ET
 
             using (ListComponent<ETTask> list = ListComponent<ETTask>.Create())
             {
-                foreach (object obj in iEvents)
+                foreach (EventInfo eventInfo in iEvents)
                 {
-                    if (!(obj is AEvent<T> aEvent))
+                    if (entity.DomainScene().SceneType != eventInfo.SceneType)
                     {
-                        Log.Error($"event error: {obj.GetType().Name}");
+                        continue;
+                    }
+                    
+                    if (!(eventInfo.IEvent is AEvent<E, T> aEvent))
+                    {
+                        Log.Error($"event error: {eventInfo.IEvent.GetType().Name}");
                         continue;
                     }
 
-                    list.Add(aEvent.Handle(a));
+                    list.Add(aEvent.Handle(entity, a));
                 }
 
                 try
@@ -649,28 +675,36 @@ namespace ET
             }
         }
 
-        public void Publish<T>(T a) where T : struct
+        public void Publish<E, T>(E entity, T a) where E: Entity where T : struct
         {
-            List<object> iEvents;
+            List<EventInfo> iEvents;
             if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
             {
                 return;
             }
 
-            foreach (object obj in iEvents)
+            SceneType sceneType = entity.DomainScene().SceneType;
+            foreach (EventInfo eventInfo in iEvents)
             {
-                if (!(obj is AEvent<T> aEvent))
+                if (sceneType != eventInfo.SceneType)
                 {
-                    Log.Error($"event error: {obj.GetType().Name}");
                     continue;
                 }
-                aEvent.Handle(a).Coroutine();
+
+                
+                if (!(eventInfo.IEvent is AEvent<E, T> aEvent))
+                {
+                    Log.Error($"event error: {eventInfo.IEvent.GetType().Name}");
+                    continue;
+                }
+                
+                aEvent.Handle(entity, a).Coroutine();
             }
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             HashSet<Type> noParent = new HashSet<Type>();
             Dictionary<Type, int> typeCount = new Dictionary<Type, int>();
 

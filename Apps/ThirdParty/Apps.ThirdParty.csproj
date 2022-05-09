@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>disable</Nullable>
-        <LangVersion>8</LangVersion>
+        <LangVersion>9</LangVersion>
         <RootNamespace>ETTask</RootNamespace>
         <AssemblyName>ThirdParty</AssemblyName>
     </PropertyGroup>

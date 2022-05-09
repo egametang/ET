@@ -2,9 +2,10 @@
 
 namespace ET.Client
 {
-    public class AfterUnitCreate_CreateUnitView: AEvent<EventType.AfterUnitCreate>
+    [Event(SceneType.Current)]
+    public class AfterUnitCreate_CreateUnitView: AEvent<Unit, EventType.AfterUnitCreate>
     {
-        protected override async ETTask Run(EventType.AfterUnitCreate args)
+        protected override async ETTask Run(Unit unit, EventType.AfterUnitCreate args)
         {
             // Unit View层
             // 这里可以改成异步加载，demo就不搞了
@@ -12,9 +13,9 @@ namespace ET.Client
             GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 	        
             GameObject go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);
-            go.transform.position = args.Unit.Position;
-            args.Unit.AddComponent<GameObjectComponent>().GameObject = go;
-            args.Unit.AddComponent<AnimatorComponent>();
+            go.transform.position = unit.Position;
+            unit.AddComponent<GameObjectComponent>().GameObject = go;
+            unit.AddComponent<AnimatorComponent>();
             await ETTask.CompletedTask;
         }
     }

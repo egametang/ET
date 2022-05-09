@@ -1,8 +1,9 @@
 namespace ET.Client
 {
-    public class AppStart_Init: AEvent<ET.EventType.AppStart>
+    [Event(SceneType.Process)]
+    public class AppStart_Init: AEvent<Scene, EventType.AppStart>
     {
-        protected override async ETTask Run(ET.EventType.AppStart args)
+        protected override async ETTask Run(Scene scene, EventType.AppStart args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
@@ -28,7 +29,7 @@ namespace ET.Client
             
             Scene zoneScene = Client.SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
             
-            await Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
+            await Game.EventSystem.PublishAsync(zoneScene, new EventType.AppStartInitFinish());
         }
     }
 }

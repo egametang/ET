@@ -1,12 +1,11 @@
-﻿
-
-namespace ET.Client
+﻿namespace ET.Client
 {
-	public class LoginFinish_RemoveLoginUI: AEvent<EventType.LoginFinish>
+	[Event(SceneType.Zone)]
+	public class LoginFinish_RemoveLoginUI: AEvent<Scene, EventType.LoginFinish>
 	{
-		protected override async ETTask Run(EventType.LoginFinish args)
+		protected override async ETTask Run(Scene scene, EventType.LoginFinish args)
 		{
-			await UIHelper.Remove(args.ZoneScene, UIType.UILogin);
+			await UIHelper.Remove(scene, UIType.UILogin);
 		}
 	}
 }
