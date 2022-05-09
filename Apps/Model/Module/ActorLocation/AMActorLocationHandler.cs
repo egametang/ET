@@ -2,7 +2,6 @@
 
 namespace ET
 {
-    [ActorMessageHandler]
     public abstract class AMActorLocationHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorLocationMessage
     {
         protected abstract ETTask Run(E entity, Message message);

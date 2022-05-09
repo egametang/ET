@@ -2,6 +2,18 @@
 
 namespace ET
 {
+    public class MessageDispatcherInfo
+    {
+        public SceneType SceneType { get; }
+        public IMHandler IMHandler { get; }
+
+        public MessageDispatcherInfo(SceneType sceneType, IMHandler imHandler)
+        {
+            this.SceneType = sceneType;
+            this.IMHandler = imHandler;
+        }
+    }
+    
     /// <summary>
     /// 消息分发组件
     /// </summary>
@@ -13,6 +25,6 @@ namespace ET
             set;
         }
 
-        public readonly Dictionary<ushort, List<IMHandler>> Handlers = new Dictionary<ushort, List<IMHandler>>();
+        public readonly Dictionary<ushort, List<MessageDispatcherInfo>> Handlers = new();
     }
 }

@@ -37,8 +37,8 @@ namespace ET
                 self.Handlers.Clear();
             }
         }
-        
-        public static void Load(this MessageDispatcherComponent self)
+
+        private static void Load(this MessageDispatcherComponent self)
         {
             self.Handlers.Clear();
 
@@ -53,23 +53,32 @@ namespace ET
                     continue;
                 }
 
-                Type messageType = iMHandler.GetMessageType();
-                ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(messageType);
-                if (opcode == 0)
+                object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+                
+                foreach (object attr in attrs)
                 {
-                    Log.Error($"消息opcode为0: {messageType.Name}");
-                    continue;
-                }
+                    MessageHandlerAttribute messageHandlerAttribute = attr as MessageHandlerAttribute;
+                    
+                    Type messageType = iMHandler.GetMessageType();
+                    
+                    ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(messageType);
+                    if (opcode == 0)
+                    {
+                        Log.Error($"消息opcode为0: {messageType.Name}");
+                        continue;
+                    }
 
-                self.RegisterHandler(opcode, iMHandler);
+                    MessageDispatcherInfo messageDispatcherInfo = new (messageHandlerAttribute.SceneType, iMHandler);
+                    self.RegisterHandler(opcode, messageDispatcherInfo);
+                }
             }
         }
 
-        public static void RegisterHandler(this MessageDispatcherComponent self, ushort opcode, IMHandler handler)
+        private static void RegisterHandler(this MessageDispatcherComponent self, ushort opcode, MessageDispatcherInfo handler)
         {
             if (!self.Handlers.ContainsKey(opcode))
             {
-                self.Handlers.Add(opcode, new List<IMHandler>());
+                self.Handlers.Add(opcode, new List<MessageDispatcherInfo>());
             }
 
             self.Handlers[opcode].Add(handler);
@@ -77,18 +86,24 @@ namespace ET
 
         public static void Handle(this MessageDispatcherComponent self, Session session, ushort opcode, object message)
         {
-            List<IMHandler> actions;
+            List<MessageDispatcherInfo> actions;
             if (!self.Handlers.TryGetValue(opcode, out actions))
             {
                 Log.Error($"消息没有处理: {opcode} {message}");
                 return;
             }
 
-            foreach (IMHandler ev in actions)
+            SceneType sceneType = session.DomainScene().SceneType;
+            foreach (MessageDispatcherInfo ev in actions)
             {
+                if (ev.SceneType != sceneType)
+                {
+                    continue;
+                }
+                
                 try
                 {
-                    ev.Handle(session, message);
+                    ev.IMHandler.Handle(session, message);
                 }
                 catch (Exception e)
                 {

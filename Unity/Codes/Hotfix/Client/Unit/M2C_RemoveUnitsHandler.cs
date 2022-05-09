@@ -1,6 +1,6 @@
 ﻿namespace ET.Client
 {
-	[MessageHandler]
+	[MessageHandler(SceneType.Zone)]
 	public class M2C_RemoveUnitsHandler : AMHandler<M2C_RemoveUnits>
 	{
 		protected override async ETTask Run(Session session, M2C_RemoveUnits message)

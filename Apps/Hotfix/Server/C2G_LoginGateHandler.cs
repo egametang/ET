@@ -3,7 +3,7 @@
 
 namespace ET.Server
 {
-	[MessageHandler]
+	[MessageHandler(SceneType.Gate)]
 	public class C2G_LoginGateHandler : AMRpcHandler<C2G_LoginGate, G2C_LoginGate>
 	{
 		protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response, Action reply)

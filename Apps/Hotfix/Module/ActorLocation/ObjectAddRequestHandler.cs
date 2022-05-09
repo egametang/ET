@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    [ActorMessageHandler]
+    [ActorMessageHandler(SceneType.Location)]
     public class ObjectAddRequestHandler: AMActorRpcHandler<Scene, ObjectAddRequest, ObjectAddResponse>
     {
         protected override async ETTask Run(Scene scene, ObjectAddRequest request, ObjectAddResponse response, Action reply)

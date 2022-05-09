@@ -2,7 +2,6 @@
 
 namespace ET
 {
-    [ActorMessageHandler]
     public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : class, IActorRequest where Response : class, IActorResponse
     {
         protected abstract ETTask Run(E unit, Request request, Response response, Action reply);

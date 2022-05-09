@@ -4,7 +4,7 @@ using System.Net;
 
 namespace ET.Server
 {
-	[MessageHandler]
+	[MessageHandler(SceneType.Realm)]
 	public class C2R_LoginHandler : AMRpcHandler<C2R_Login, R2C_Login>
 	{
 		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response, Action reply)

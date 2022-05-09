@@ -136,7 +136,7 @@ namespace ET.Server
                     enter.BeSeeUnits.Add(self.Id, self);
                 }
             }
-            Game.EventSystem.Publish(self.Unit, new EventType.UnitEnterSightRange() { B = enter });
+            Game.EventSystem.Publish(self, new EventType.UnitEnterSightRange() { B = enter });
         }
 
         // leave离开self视野

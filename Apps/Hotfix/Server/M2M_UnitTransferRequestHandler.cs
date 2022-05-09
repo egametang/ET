@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET.Server
 {
-	[ActorMessageHandler]
+	[ActorMessageHandler(SceneType.Map)]
 	public class M2M_UnitTransferRequestHandler : AMActorRpcHandler<Scene, M2M_UnitTransferRequest, M2M_UnitTransferResponse>
 	{
 		protected override async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response, Action reply)
