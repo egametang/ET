@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <_TargetFrameworkDirectories>non_empty_path_generated_by_unity.rider.package</_TargetFrameworkDirectories>
     <_FullFrameworkReferenceAssemblyPaths>non_empty_path_generated_by_unity.rider.package</_FullFrameworkReferenceAssemblyPaths>
     <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
@@ -12,7 +12,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>ET</RootNamespace>
-    <ProjectGuid>{9498BFB4-D9F5-C441-13E3-3F26F7700E29}</ProjectGuid>
+    <ProjectGuid>{9498bfb4-d9f5-c441-13e3-3f26f7700e29}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -25,21 +25,13 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Temp\Bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;</DefineConstants>
+    <OutputPath>Temp\Bin\Debug\Unity.Model\</OutputPath>
+    <DefineConstants>UNITY_2021_2_12;UNITY_2021_2;UNITY_2021;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;USE_SEARCH_TABLE;USE_SEARCH_MODULE;USE_PROPERTY_DATABASE;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;NET_UNITY_4_8;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;NETSTANDARD2_0;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>Temp\Bin\Release\</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169,0649</NoWarn>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -49,550 +41,904 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Codes\Model\**\*.cs" />
     <Reference Include="UnityEngine">
-      <HintPath>./Temp/bin/Debug/UnityEngine.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.AIModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ARModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ARModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AndroidJNIModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.AndroidJNIModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AndroidJNIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DSPGraphModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.DSPGraphModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.DSPGraphModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GIModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.GIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GridModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.GridModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HotReloadModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.HotReloadModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.InputModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.LocalizationModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.LocalizationModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.NVIDIAModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.NVIDIAModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ProfilerModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ProfilerModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StreamingModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.StreamingModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.StreamingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubstanceModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.SubstanceModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.SubstanceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubsystemsModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.SubsystemsModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.SubsystemsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TLSModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.TLSModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TLSModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreTextEngineModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UIModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsNativeModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsNativeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UmbraModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UmbraModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityCurlModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityCurlModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityTestProtocolModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityTestProtocolModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VFXModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.VFXModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.VFXModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VRModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.VRModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.VRModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VirtualTexturingModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.VirtualTexturingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.WindModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>./Temp/bin/Debug/UnityEngine.XRModule.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.CoreModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.DeviceSimulatorModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.DeviceSimulatorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.DiagnosticsModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.DiagnosticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.GraphViewModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.GraphViewModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.PackageManagerUIModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.PackageManagerUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.QuickSearchModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.QuickSearchModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.SceneTemplateModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.SceneTemplateModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TextCoreFontEngineModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.TextCoreFontEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TextCoreTextEngineModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.TextCoreTextEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UIBuilderModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIBuilderModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UIElementsModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UIElementsSamplesModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsSamplesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UIServiceModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIServiceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UnityConnectModule">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\PackageCache\com.unity.burst@1.6.4\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Mdb">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\PackageCache\com.unity.burst@1.6.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="CommandLine">
-      <HintPath>./Temp/bin/Debug/CommandLine.dll</HintPath>
+      <HintPath>C:\Source\ET_Branch\Unity\Assets\Plugins\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Pdb">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\PackageCache\com.unity.burst@1.6.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\PackageCache\com.unity.burst@1.6.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Rocks">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\PackageCache\com.unity.burst@1.6.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>./Temp/bin/Debug/ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>C:\Source\ET_Branch\Unity\Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
-      <HintPath>./Temp/bin/Debug/mscorlib.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>./Temp/bin/Debug/System.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>./Temp/bin/Debug/System.Core.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Serialization.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml">
-      <HintPath>./Temp/bin/Debug/System.Xml.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <HintPath>./Temp/bin/Debug/System.Xml.Linq.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Xml.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics">
-      <HintPath>./Temp/bin/Debug/System.Numerics.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics.Vectors">
-      <HintPath>./Temp/bin/Debug/System.Numerics.Vectors.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
-      <HintPath>./Temp/bin/Debug/System.Net.Http.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
-      <HintPath>./Temp/bin/Debug/Microsoft.CSharp.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Microsoft.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Data">
-      <HintPath>./Temp/bin/Debug/System.Data.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Win32.Primitives">
-      <HintPath>./Temp/bin/Debug/Microsoft.Win32.Primitives.dll</HintPath>
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
-    <Reference Include="netstandard">
-      <HintPath>./Temp/bin/Debug/netstandard.dll</HintPath>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.DataAnnotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration.Install">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Configuration.Install.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.DataSetExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OracleClient">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.OracleClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Services.Client">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Services">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Data.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Deployment">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Design">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Tracing">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Diagnostics.Tracing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.DirectoryServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices.Protocols">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.DirectoryServices.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Design">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Drawing.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Dynamic">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.EnterpriseServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Selectors">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.IdentityModel.Selectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.IO.Compression.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Json">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Json.Microsoft">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Json.Microsoft.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Messaging">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Observable.Aliases">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Observable.Aliases.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Providers">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Runtime.Remoting">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Runtime.Remoting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Forms">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Context">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Reflection.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Runtime.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.DurableInstancing">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Runtime.DurableInstancing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Runtime.Remoting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Runtime.Serialization.Formatters.Soap.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Activation">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ServiceModel.Activation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Discovery">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ServiceModel.Discovery.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Routing">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ServiceModel.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ServiceModel.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ServiceProcess.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Dataflow">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Transactions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.ApplicationServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.DynamicData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Extensions.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.SelfHost">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Http.SelfHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mobile">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.RegularExpressions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.RegularExpressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Windows.Forms.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.Activities">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Workflow.Activities.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.ComponentModel">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Workflow.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.Runtime">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Workflow.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Serialization">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.Xml.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.AppContext">
-      <HintPath>./Temp/bin/Debug/System.AppContext.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.AppContext.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Concurrent">
-      <HintPath>./Temp/bin/Debug/System.Collections.Concurrent.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Collections.Concurrent.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections">
-      <HintPath>./Temp/bin/Debug/System.Collections.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Collections.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.NonGeneric">
-      <HintPath>./Temp/bin/Debug/System.Collections.NonGeneric.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Collections.NonGeneric.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Specialized">
-      <HintPath>./Temp/bin/Debug/System.Collections.Specialized.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Collections.Specialized.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Annotations">
-      <HintPath>./Temp/bin/Debug/System.ComponentModel.Annotations.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel">
-      <HintPath>./Temp/bin/Debug/System.ComponentModel.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ComponentModel.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.EventBasedAsync">
-      <HintPath>./Temp/bin/Debug/System.ComponentModel.EventBasedAsync.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ComponentModel.EventBasedAsync.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>./Temp/bin/Debug/System.ComponentModel.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ComponentModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.TypeConverter">
-      <HintPath>./Temp/bin/Debug/System.ComponentModel.TypeConverter.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ComponentModel.TypeConverter.dll</HintPath>
     </Reference>
     <Reference Include="System.Console">
-      <HintPath>./Temp/bin/Debug/System.Console.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Console.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Common">
-      <HintPath>./Temp/bin/Debug/System.Data.Common.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Contracts">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.Contracts.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Debug">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.Debug.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.Debug.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.FileVersionInfo">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.FileVersionInfo.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.FileVersionInfo.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Process">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.Process.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.Process.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.StackTrace">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.StackTrace.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.StackTrace.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.TextWriterTraceListener">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.TextWriterTraceListener.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.TextWriterTraceListener.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Tools">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.Tools.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.Tools.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.TraceSource">
-      <HintPath>./Temp/bin/Debug/System.Diagnostics.TraceSource.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Diagnostics.TraceSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Primitives">
-      <HintPath>./Temp/bin/Debug/System.Drawing.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Drawing.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Dynamic.Runtime">
-      <HintPath>./Temp/bin/Debug/System.Dynamic.Runtime.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Dynamic.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Calendars">
-      <HintPath>./Temp/bin/Debug/System.Globalization.Calendars.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Globalization.Calendars.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization">
-      <HintPath>./Temp/bin/Debug/System.Globalization.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Globalization.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Extensions">
-      <HintPath>./Temp/bin/Debug/System.Globalization.Extensions.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Globalization.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.ZipFile">
-      <HintPath>./Temp/bin/Debug/System.IO.Compression.ZipFile.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.Compression.ZipFile.dll</HintPath>
     </Reference>
     <Reference Include="System.IO">
-      <HintPath>./Temp/bin/Debug/System.IO.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem">
-      <HintPath>./Temp/bin/Debug/System.IO.FileSystem.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.DriveInfo">
-      <HintPath>./Temp/bin/Debug/System.IO.FileSystem.DriveInfo.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.FileSystem.DriveInfo.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.Primitives">
-      <HintPath>./Temp/bin/Debug/System.IO.FileSystem.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.FileSystem.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.Watcher">
-      <HintPath>./Temp/bin/Debug/System.IO.FileSystem.Watcher.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.FileSystem.Watcher.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.IsolatedStorage">
-      <HintPath>./Temp/bin/Debug/System.IO.IsolatedStorage.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.IsolatedStorage.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.MemoryMappedFiles">
-      <HintPath>./Temp/bin/Debug/System.IO.MemoryMappedFiles.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.MemoryMappedFiles.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Pipes">
-      <HintPath>./Temp/bin/Debug/System.IO.Pipes.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.Pipes.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.UnmanagedMemoryStream">
-      <HintPath>./Temp/bin/Debug/System.IO.UnmanagedMemoryStream.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.IO.UnmanagedMemoryStream.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq">
-      <HintPath>./Temp/bin/Debug/System.Linq.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Expressions">
-      <HintPath>./Temp/bin/Debug/System.Linq.Expressions.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Linq.Expressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Parallel">
-      <HintPath>./Temp/bin/Debug/System.Linq.Parallel.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Linq.Parallel.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Queryable">
-      <HintPath>./Temp/bin/Debug/System.Linq.Queryable.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Linq.Queryable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Rtc">
-      <HintPath>./Temp/bin/Debug/System.Net.Http.Rtc.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.Http.Rtc.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.NameResolution">
-      <HintPath>./Temp/bin/Debug/System.Net.NameResolution.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.NameResolution.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.NetworkInformation">
-      <HintPath>./Temp/bin/Debug/System.Net.NetworkInformation.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.NetworkInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Ping">
-      <HintPath>./Temp/bin/Debug/System.Net.Ping.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.Ping.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Primitives">
-      <HintPath>./Temp/bin/Debug/System.Net.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Requests">
-      <HintPath>./Temp/bin/Debug/System.Net.Requests.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.Requests.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Security">
-      <HintPath>./Temp/bin/Debug/System.Net.Security.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.Security.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Sockets">
-      <HintPath>./Temp/bin/Debug/System.Net.Sockets.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.Sockets.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebHeaderCollection">
-      <HintPath>./Temp/bin/Debug/System.Net.WebHeaderCollection.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.WebHeaderCollection.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebSockets.Client">
-      <HintPath>./Temp/bin/Debug/System.Net.WebSockets.Client.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.WebSockets.Client.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebSockets">
-      <HintPath>./Temp/bin/Debug/System.Net.WebSockets.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Net.WebSockets.dll</HintPath>
     </Reference>
     <Reference Include="System.ObjectModel">
-      <HintPath>./Temp/bin/Debug/System.ObjectModel.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.DispatchProxy">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.DispatchProxy.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection">
-      <HintPath>./Temp/bin/Debug/System.Reflection.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Emit">
-      <HintPath>./Temp/bin/Debug/System.Reflection.Emit.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.Emit.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Emit.ILGeneration">
-      <HintPath>./Temp/bin/Debug/System.Reflection.Emit.ILGeneration.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.Emit.ILGeneration.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Emit.Lightweight">
-      <HintPath>./Temp/bin/Debug/System.Reflection.Emit.Lightweight.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.Emit.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Extensions">
-      <HintPath>./Temp/bin/Debug/System.Reflection.Extensions.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Primitives">
-      <HintPath>./Temp/bin/Debug/System.Reflection.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Reflection.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.Reader">
-      <HintPath>./Temp/bin/Debug/System.Resources.Reader.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Resources.Reader.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.ResourceManager">
-      <HintPath>./Temp/bin/Debug/System.Resources.ResourceManager.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Resources.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.Writer">
-      <HintPath>./Temp/bin/Debug/System.Resources.Writer.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Resources.Writer.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.VisualC">
-      <HintPath>./Temp/bin/Debug/System.Runtime.CompilerServices.VisualC.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.CompilerServices.VisualC.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime">
-      <HintPath>./Temp/bin/Debug/System.Runtime.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Extensions">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Extensions.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Handles">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Handles.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Handles.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices">
-      <HintPath>./Temp/bin/Debug/System.Runtime.InteropServices.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
-      <HintPath>./Temp/bin/Debug/System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
-      <HintPath>./Temp/bin/Debug/System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Numerics">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Numerics.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Formatters">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Serialization.Formatters.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Serialization.Formatters.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Json">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Serialization.Json.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Primitives">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Serialization.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Serialization.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Xml">
-      <HintPath>./Temp/bin/Debug/System.Runtime.Serialization.Xml.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.Serialization.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Claims">
-      <HintPath>./Temp/bin/Debug/System.Security.Claims.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Claims.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Algorithms">
-      <HintPath>./Temp/bin/Debug/System.Security.Cryptography.Algorithms.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Cryptography.Algorithms.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Csp">
-      <HintPath>./Temp/bin/Debug/System.Security.Cryptography.Csp.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Cryptography.Csp.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Encoding">
-      <HintPath>./Temp/bin/Debug/System.Security.Cryptography.Encoding.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Cryptography.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Primitives">
-      <HintPath>./Temp/bin/Debug/System.Security.Cryptography.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Cryptography.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.X509Certificates">
-      <HintPath>./Temp/bin/Debug/System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Principal">
-      <HintPath>./Temp/bin/Debug/System.Security.Principal.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.Principal.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.SecureString">
-      <HintPath>./Temp/bin/Debug/System.Security.SecureString.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Security.SecureString.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Duplex">
-      <HintPath>./Temp/bin/Debug/System.ServiceModel.Duplex.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ServiceModel.Duplex.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Http">
-      <HintPath>./Temp/bin/Debug/System.ServiceModel.Http.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ServiceModel.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.NetTcp">
-      <HintPath>./Temp/bin/Debug/System.ServiceModel.NetTcp.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ServiceModel.NetTcp.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Primitives">
-      <HintPath>./Temp/bin/Debug/System.ServiceModel.Primitives.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ServiceModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Security">
-      <HintPath>./Temp/bin/Debug/System.ServiceModel.Security.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ServiceModel.Security.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding">
-      <HintPath>./Temp/bin/Debug/System.Text.Encoding.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Text.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding.Extensions">
-      <HintPath>./Temp/bin/Debug/System.Text.Encoding.Extensions.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Text.Encoding.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.RegularExpressions">
-      <HintPath>./Temp/bin/Debug/System.Text.RegularExpressions.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Text.RegularExpressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
-      <HintPath>./Temp/bin/Debug/System.Threading.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Overlapped">
-      <HintPath>./Temp/bin/Debug/System.Threading.Overlapped.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.Overlapped.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks">
-      <HintPath>./Temp/bin/Debug/System.Threading.Tasks.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Parallel">
-      <HintPath>./Temp/bin/Debug/System.Threading.Tasks.Parallel.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.Tasks.Parallel.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Thread">
-      <HintPath>./Temp/bin/Debug/System.Threading.Thread.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.Thread.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.ThreadPool">
-      <HintPath>./Temp/bin/Debug/System.Threading.ThreadPool.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.ThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Timer">
-      <HintPath>./Temp/bin/Debug/System.Threading.Timer.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Threading.Timer.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple">
-      <HintPath>./Temp/bin/Debug/System.ValueTuple.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.ReaderWriter">
-      <HintPath>./Temp/bin/Debug/System.Xml.ReaderWriter.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XDocument">
-      <HintPath>./Temp/bin/Debug/System.Xml.XDocument.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XmlDocument">
-      <HintPath>./Temp/bin/Debug/System.Xml.XmlDocument.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XmlDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XmlSerializer">
-      <HintPath>./Temp/bin/Debug/System.Xml.XmlSerializer.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XmlSerializer.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath">
-      <HintPath>./Temp/bin/Debug/System.Xml.XPath.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XPath.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath.XDocument">
-      <HintPath>./Temp/bin/Debug/System.Xml.XPath.XDocument.dll</HintPath>
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>C:\Apps\Unity\Unity 2021.2.12f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>./Temp/bin/Debug/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:\Source\ET_Branch\Unity\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TestRunner">
+      <HintPath>C:\Source\ET_Branch\Unity\Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.Mono.csproj">
-      <Project>{5910fa29-5797-199c-985b-fc9fc473328e}</Project>
-      <Name>Unity.Mono</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.ThirdParty.csproj">
       <Project>{d2ad5be1-263a-9a30-ab0f-dc5b08044350}</Project>
       <Name>Unity.ThirdParty</Name>
     </ProjectReference>
-
-    <ProjectReference Include="..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="Unity.Mono.csproj">
+      <Project>{5910fa29-5797-199c-985b-fc9fc473328e}</Project>
+      <Name>Unity.Mono</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
@@ -602,4 +948,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Compile Include="Codes\Model\**\*.cs" />
+    <ProjectReference Include="..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+      <Project>{d1f2986b-b296-4a2d-8f12-be9f470014c3}</Project>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
