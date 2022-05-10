@@ -16,13 +16,20 @@ namespace ET
             {
                 self.OuterSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 self.OuterSocket.Bind(outerAddress);
-                self.OuterSocket.SendBufferSize = 16 * Kcp.OneM;
-                self.OuterSocket.ReceiveBufferSize = 16 * Kcp.OneM;
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    self.OuterSocket.SendBufferSize = 16 * Kcp.OneM;
+                    self.OuterSocket.ReceiveBufferSize = 16 * Kcp.OneM;
+                }
 
                 self.InnerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 self.InnerSocket.Bind(new IPEndPoint(IPAddress.Parse(innerIP), 0));
-                self.InnerSocket.SendBufferSize = 16 * Kcp.OneM;
-                self.InnerSocket.ReceiveBufferSize = 16 * Kcp.OneM;
+
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    self.InnerSocket.SendBufferSize = 16 * Kcp.OneM;
+                    self.InnerSocket.ReceiveBufferSize = 16 * Kcp.OneM;
+                }
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
@@ -323,6 +330,9 @@ namespace ET
                         Log.Warning($"kcp router syn ip is diff3: {kcpRouter.SyncIpEndPoint.Address} {ipEndPoint.Address}");
                         break;
                     }
+                    
+                    // 发了syn过来，那么RouterSyn就成功了，可以删除ConnectId
+                    self.ConnectIdNodes.Remove(kcpRouter.ConnectId);
 
                     kcpRouter.LastRecvOuterTime = timeNow;
                     kcpRouter.OuterIpEndPoint = self.CloneAddress();
@@ -498,7 +508,7 @@ namespace ET
                         Log.Warning($"kcp router ack not found outer nodes: {outerConn} {innerConn}");
                         break;
                     }
-
+                    
                     kcpRouterNode.Status = RouterStatus.Msg;
 
                     kcpRouterNode.InnerConn = innerConn;
