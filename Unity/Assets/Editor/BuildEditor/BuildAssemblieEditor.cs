@@ -102,12 +102,13 @@ namespace ET
                 }
             }
 
+            if (!Directory.Exists(Define.BuildOutputDir))
+                Directory.CreateDirectory(Define.BuildOutputDir);
+
             string dllPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll");
             string pdbPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb");
             File.Delete(dllPath);
             File.Delete(pdbPath);
-
-            Directory.CreateDirectory(Define.BuildOutputDir);
 
             AssemblyBuilder assemblyBuilder = new AssemblyBuilder(dllPath, scripts.ToArray());
             
@@ -148,6 +149,8 @@ namespace ET
 
                 if (errorCount > 0)
                 {
+					if (PlayerPrefs.GetInt("AutoBuild") == 1)//如果开启了自动编译要Cancel掉，否则会死循环
+						CancelAutoBuildCode();
                     for (int i = 0; i < compilerMessages.Length; i++)
                     {
                         if (compilerMessages[i].type == CompilerMessageType.Error)
