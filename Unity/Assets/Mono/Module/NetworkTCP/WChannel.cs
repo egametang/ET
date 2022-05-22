@@ -88,8 +88,8 @@ namespace ET
 
         public void Send(MemoryStream stream)
         {
-            byte[] bytes = new byte[stream.Length];
-            Array.Copy(stream.GetBuffer(), bytes, bytes.Length);
+            byte[] bytes = new byte[stream.Length - stream.Position];
+            Array.Copy(stream.GetBuffer(), stream.Position, bytes, 0, bytes.Length);
             this.queue.Enqueue(bytes);
 
             if (this.isConnected)
