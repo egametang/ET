@@ -1,6 +1,6 @@
 {
     "name": "Unity.Mono",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty"
     ],
