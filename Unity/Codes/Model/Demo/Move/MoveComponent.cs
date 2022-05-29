@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ComponentOf(typeof(Unit))]
     public class MoveComponent: Entity, IAwake, IDestroy
     {
         public Vector3 PreTarget

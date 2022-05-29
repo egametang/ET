@@ -14,6 +14,10 @@
 
         public const string EntityMethodDeclarationAnalyzerRuleId = "ET00006";
 
+        public const string AddComponentAnalyzerRuleId = "ET00007";
+        
+        
+
     }
 }
 

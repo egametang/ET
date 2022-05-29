@@ -160,6 +160,7 @@ namespace ET
         }
     }
 
+    [ComponentOf]
     public class ObjectWait: Entity, IAwake, IDestroy
     {
         public Dictionary<Type, object> tcss = new Dictionary<Type, object>();
