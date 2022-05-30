@@ -9,20 +9,20 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace ET.Analyzer
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddComponentAnalyzer:DiagnosticAnalyzer
+    public class EntityComponentAnalyzer:DiagnosticAnalyzer
     {
-        private const string Title = "AddComponent方法类型约束错误";
+        private const string Title = "实体类添加或获取组件类型错误";
 
-        private const string MessageFormat = "Type: {0} 不允许作为实体: {1} 的AddComponent函数参数类型! 若要允许该类型作为参数,请使用ParentTypeAttribute对组件实体类进行标记";
+        private const string MessageFormat = "组件类型: {0} 不允许作为实体: {1} 的组件类型! 若要允许该类型作为参数,请使用ParentTypeAttribute对组件类标记父级实体类型";
 
-        private const string Description = "AddComponent方法类型约束错误.";
+        private const string Description = "实体类添加或获取组件类型错误.";
 
-        private const string AddComponentMethod = "AddComponent";
+        private static readonly string[] ComponentMethod = {"AddComponent","GetComponent"};
         
         private const string EntityType = "ET.Entity";
         
         private static readonly DiagnosticDescriptor Rule =
-                new DiagnosticDescriptor(DiagnosticIds.AddComponentAnalyzerRuleId,
+                new DiagnosticDescriptor(DiagnosticIds.EntityComponentAnalyzerRuleId,
                     Title,
                     MessageFormat,
                     DiagnosticCategories.Hotfix,
@@ -56,10 +56,10 @@ namespace ET.Analyzer
                 return;
             }
             
-            // 筛选出 AddComponent函数syntax
+            // 筛选出 Component函数syntax
             string methodName = memberAccessExpressionSyntax.Name.Identifier.Text;
 
-            if (methodName!=AddComponentMethod)
+            if (!ComponentMethod.Contains(methodName))
             {
                 return;
             }
@@ -70,7 +70,7 @@ namespace ET.Analyzer
                 return;
             }
             
-            // 获取AddComponent函数的调用者类型
+            // 获取AComponent函数的调用者类型
             ITypeSymbol? parentTypeSymbol = memberAccessExpressionSyntax.GetMemberAccessSyntaxParentType(context.SemanticModel);
             if (parentTypeSymbol==null)
             {
@@ -88,7 +88,7 @@ namespace ET.Analyzer
             // 获取 component实体类型
             ISymbol? componentTypeSymbol = null;
             
-            // addComponent为泛型调用
+            // Component为泛型调用
             if (addComponentMethodSymbol.IsGenericMethod)
             {
                 GenericNameSyntax? genericNameSyntax = memberAccessExpressionSyntax?.GetFirstChild<GenericNameSyntax>();
@@ -106,7 +106,7 @@ namespace ET.Analyzer
 
                 componentTypeSymbol = context.SemanticModel.GetSymbolInfo(componentTypeSyntax).Symbol;
             }
-            //addComponent为非泛型调用
+            //Component为非泛型调用
             else
             {
                 SyntaxNode? firstArgumentSyntax = invocationExpressionSyntax.GetFirstChild<ArgumentListSyntax>()?.GetFirstChild<ArgumentSyntax>()
