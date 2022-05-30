@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class RobotCaseDispatcherComponent: Entity, IAwake, ILoad
     {
         public static RobotCaseDispatcherComponent Instance;

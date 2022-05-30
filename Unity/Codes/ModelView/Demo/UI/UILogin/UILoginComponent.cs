@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+	[ComponentOf(typeof(UI))]
 	public class UILoginComponent: Entity, IAwake
 	{
 		public GameObject account;
