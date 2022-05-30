@@ -114,7 +114,7 @@ namespace ET.Analyzer
 
                 TypeArgumentListSyntax? typeArgumentList = genericNameSyntax?.GetFirstChild<TypeArgumentListSyntax>();
 
-                IdentifierNameSyntax? childTypeSyntax = typeArgumentList?.GetFirstChild<IdentifierNameSyntax>();
+                var childTypeSyntax = typeArgumentList?.Arguments.First();
 
                 if (childTypeSyntax == null)
                 {
@@ -180,6 +180,11 @@ namespace ET.Analyzer
                 return;
             }
 
+            // 忽略 child类型为泛型类型
+            if (childTypeSymbol is ITypeParameterSymbol typeParameterSymbol)
+            {
+                return;
+            }
             
             // 判断child类型是否属于约束类型
             if (availableChildTypeSymbol?.ToString() == childTypeSymbol.ToString())
