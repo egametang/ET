@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class ActorMessageSenderComponent: Entity, IAwake, IDestroy
     {
         public static long TIMEOUT_TIME = 40 * 1000;

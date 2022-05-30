@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    [ComponentOf(typeof(Scene))]
     public class GlobalComponent: Entity, IAwake
     {
         public static GlobalComponent Instance;

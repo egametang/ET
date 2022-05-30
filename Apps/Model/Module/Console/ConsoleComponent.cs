@@ -14,6 +14,7 @@ namespace ET
         public const string Robot = "Robot";
     }
 
+    [ComponentOf(typeof(Scene))]
     public class ConsoleComponent: Entity, IAwake, ILoad
     {
         public CancellationTokenSource CancellationTokenSource;

@@ -6,6 +6,7 @@ namespace ET
     /// <summary>
     /// http请求分发器
     /// </summary>
+    [ComponentOf(typeof(Scene))]
     public class HttpComponent: Entity, IAwake<string>, IDestroy, ILoad
     {
         public HttpListener Listener;

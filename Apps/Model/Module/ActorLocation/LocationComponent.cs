@@ -10,6 +10,7 @@ namespace ET
     }
 
     [ChildType(typeof(LockInfo))]
+    [ComponentOf(typeof(Scene))]
     public class LocationComponent: Entity, IAwake
     {
         public readonly Dictionary<long, long> locations = new Dictionary<long, long>();

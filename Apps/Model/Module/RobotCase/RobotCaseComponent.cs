@@ -3,6 +3,7 @@
 namespace ET
 {
     [ChildType(typeof(RobotCase))]
+    [ComponentOf(typeof(Scene))]
     public class RobotCaseComponent: Entity, IAwake, IDestroy
     {
         public static RobotCaseComponent Instance;

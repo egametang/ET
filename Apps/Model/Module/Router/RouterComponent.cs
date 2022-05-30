@@ -6,6 +6,7 @@ using System.Net.Sockets;
 namespace ET
 {
     [ChildType(typeof(RouterNode))]
+    [ComponentOf(typeof(Scene))]
     public class RouterComponent: Entity, IAwake<IPEndPoint, string>, IDestroy, IUpdate
     {
         public Socket OuterSocket;

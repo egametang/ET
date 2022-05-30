@@ -3,6 +3,7 @@
 namespace ET
 {
     [ChildType(typeof(Session))]
+    [ComponentOf(typeof(Scene))]
     public class NetKcpComponent: Entity, IAwake<int>, IAwake<IPEndPoint, int>, IDestroy
     {
         public AService Service;

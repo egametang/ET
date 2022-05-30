@@ -18,6 +18,7 @@
         }
     }
 
+    [ComponentOf(typeof(ConsoleComponent))]
     public class ModeContex: Entity, IAwake, IDestroy
     {
         public string Mode = "";

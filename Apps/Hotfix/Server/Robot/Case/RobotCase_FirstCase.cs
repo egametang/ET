@@ -14,12 +14,12 @@ namespace ET.Server
 
             foreach (Scene robotScene in robots)
             {
-                M2C_TestRobotCase response = await robotScene.GetComponent<Client.SessionComponent>().Session.Call(new C2M_TestRobotCase() {N = robotScene.Zone}) as M2C_TestRobotCase;
-                if (response.N != robotScene.Zone)
-                {
-                    // 跟预期不一致就抛异常，外层会catch住在控制台上打印
-                    throw new Exception($"robot case: {RobotCaseType.FirstCase} run fail!");
-                }
+                //M2C_TestRobotCase response = await robotScene.GetComponent<Client.SessionComponent>().Session.Call(new C2M_TestRobotCase() {N = robotScene.Zone}) as M2C_TestRobotCase;
+                //if (response.N != robotScene.Zone)
+                //{
+                //    // 跟预期不一致就抛异常，外层会catch住在控制台上打印
+                //    throw new Exception($"robot case: {RobotCaseType.FirstCase} run fail!");
+                //}
             }
         }
     }
