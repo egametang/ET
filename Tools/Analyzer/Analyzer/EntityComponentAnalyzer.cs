@@ -109,7 +109,6 @@ namespace ET.Analyzer
             //Component为非泛型调用
             else
             {
-
                 SyntaxNode? firstArgumentSyntax = invocationExpressionSyntax.GetFirstChild<ArgumentListSyntax>()?.GetFirstChild<ArgumentSyntax>()
                         ?.ChildNodes().First();
                 if (firstArgumentSyntax == null)
@@ -149,6 +148,10 @@ namespace ET.Analyzer
                 }else if (firstArgumentSymbol is INamedTypeSymbol namedTypeSymbol)
                 {
                     componentTypeSymbol = namedTypeSymbol;
+                }else if (firstArgumentSymbol is ITypeParameterSymbol)
+                {
+                    // 忽略typeof(T)参数类型
+                    return;
                 }
                 else if (firstArgumentSymbol != null)
                 {
