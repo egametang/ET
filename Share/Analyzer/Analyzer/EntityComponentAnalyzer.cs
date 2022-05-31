@@ -95,8 +95,8 @@ namespace ET.Analyzer
 
                 TypeArgumentListSyntax? typeArgumentList = genericNameSyntax?.GetFirstChild<TypeArgumentListSyntax>();
 
-                IdentifierNameSyntax? componentTypeSyntax = typeArgumentList?.GetFirstChild<IdentifierNameSyntax>();
-
+                var componentTypeSyntax = typeArgumentList?.Arguments.First();
+                
                 if (componentTypeSyntax == null)
                 {
                     Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
@@ -161,6 +161,12 @@ namespace ET.Analyzer
                 return;
             }
 
+            // 忽略 component类型为泛型类型
+            if (componentTypeSymbol is ITypeParameterSymbol typeParameterSymbol)
+            {
+                return;
+            }
+            
             // 组件类型为Entity时 忽略检查
             if (componentTypeSymbol.ToString()== EntityType)
             {
