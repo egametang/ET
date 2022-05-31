@@ -209,5 +209,21 @@ namespace ET.Analyzer
                 return null;
             }
         }
+
+        /// <summary>
+        /// 获取最近的指定类型祖先节点
+        /// </summary>
+        public static T? GetNeareastAncestor<T>(this SyntaxNode syntaxNode) where T:SyntaxNode
+        {
+            
+            foreach (var ancestorNode in syntaxNode.Ancestors())
+            {
+                if (ancestorNode is T Tancestor)
+                {
+                    return Tancestor;
+                }
+            }
+            return null ;
+        }
     }
 }
