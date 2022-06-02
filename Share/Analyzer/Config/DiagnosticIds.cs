@@ -15,5 +15,9 @@
         public const string EntityMethodDeclarationAnalyzerRuleId = "ET00006";
 
         public const string EntityComponentAnalyzerRuleId = "ET00007";
+        
+        public const string ETTaskInSyncMethodAnalyzerRuleId = "ET0008";
+        
+        public const string ETTaskInAsyncMethodAnalyzerRuleId = "ET0009";
     }
 }

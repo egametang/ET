@@ -13,7 +13,7 @@ namespace ET.Analyzer
     {
         private const string Title = "实体类添加或获取组件类型错误";
 
-        private const string MessageFormat = "组件类型: {0} 不允许作为实体: {1} 的组件类型! 若要允许该类型作为参数,请使用ComponentOfAttribute对组件类标记父级实体类型";
+        private const string MessageFormat = "组件类型: {0} 不允许作为实体: {1} 的组件类型! 若要允许该类型作为参数,请使用ParentTypeAttribute对组件类标记父级实体类型";
 
         private const string Description = "实体类添加或获取组件类型错误.";
 
@@ -109,6 +109,7 @@ namespace ET.Analyzer
             //Component为非泛型调用
             else
             {
+
                 SyntaxNode? firstArgumentSyntax = invocationExpressionSyntax.GetFirstChild<ArgumentListSyntax>()?.GetFirstChild<ArgumentSyntax>()
                         ?.ChildNodes().First();
                 if (firstArgumentSyntax == null)
@@ -116,6 +117,12 @@ namespace ET.Analyzer
                     Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
                     context.ReportDiagnostic(diagnostic);
                     return;
+                }
+
+                // 参数为typeOf时 提取Type类型
+                if (firstArgumentSyntax is TypeOfExpressionSyntax typeOfExpressionSyntax)
+                {
+                    firstArgumentSyntax = typeOfExpressionSyntax.Type;
                 }
 
                 ISymbol? firstArgumentSymbol = context.SemanticModel.GetSymbolInfo(firstArgumentSyntax).Symbol;
@@ -139,6 +146,9 @@ namespace ET.Analyzer
                 else if (firstArgumentSymbol is IPropertySymbol propertySymbol)
                 {
                     componentTypeSymbol = propertySymbol.Type;
+                }else if (firstArgumentSymbol is INamedTypeSymbol namedTypeSymbol)
+                {
+                    componentTypeSymbol = namedTypeSymbol;
                 }
                 else if (firstArgumentSymbol != null)
                 {
@@ -167,6 +177,12 @@ namespace ET.Analyzer
                 return;
             }
             
+            // 忽略 Type参数
+            if (componentTypeSymbol.ToString()=="System.Type")
+            {
+                return;
+            }
+
             // 组件类型为Entity时 忽略检查
             if (componentTypeSymbol.ToString()== EntityType)
             {
