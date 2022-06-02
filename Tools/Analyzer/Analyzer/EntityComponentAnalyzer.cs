@@ -13,7 +13,7 @@ namespace ET.Analyzer
     {
         private const string Title = "实体类添加或获取组件类型错误";
 
-        private const string MessageFormat = "组件类型: {0} 不允许作为实体: {1} 的组件类型! 若要允许该类型作为参数,请使用ParentTypeAttribute对组件类标记父级实体类型";
+        private const string MessageFormat = "组件类型: {0} 不允许作为实体: {1} 的组件类型! 若要允许该类型作为参数,请使用ComponentOfAttribute对组件类标记父级实体类型";
 
         private const string Description = "实体类添加或获取组件类型错误.";
 
