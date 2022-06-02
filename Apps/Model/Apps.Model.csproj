@@ -48,7 +48,7 @@
             <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Remove="Libs\**"/>
+        <Compile Remove="Libs\**" />
 
     </ItemGroup>
     <ItemGroup>
@@ -88,7 +88,7 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\ThirdParty\Apps.ThirdParty.csproj"/>
-        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\ThirdParty\Apps.ThirdParty.csproj" />
+        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>

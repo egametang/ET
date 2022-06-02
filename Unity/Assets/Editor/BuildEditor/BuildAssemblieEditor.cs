@@ -91,6 +91,10 @@ namespace ET
 
         private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
         {
+            if (!Directory.Exists(Define.BuildOutputDir))
+            {
+                Directory.CreateDirectory(Define.BuildOutputDir);
+            }
             List<string> scripts = new List<string>();
             for (int i = 0; i < CodeDirectorys.Length; i++)
             {

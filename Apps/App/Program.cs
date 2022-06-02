@@ -25,7 +25,7 @@ namespace ET
 				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
 				
 				ProtobufHelper.Init();
-				MongoRegister.Init();
+				MongoHelper.Register(Game.EventSystem.GetTypes());
 				
 				// 命令行参数
 				Options options = null;

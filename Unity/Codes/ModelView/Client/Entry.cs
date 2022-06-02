@@ -14,8 +14,9 @@ namespace ET.Client
 				
 				
 				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
-
 				
+				MongoHelper.Register(Game.EventSystem.GetTypes());
+
 				Game.EventSystem.Publish(Game.Scene, new EventType.AppStart());
 			}
 			catch (Exception e)

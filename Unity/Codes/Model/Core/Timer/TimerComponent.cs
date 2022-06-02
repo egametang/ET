@@ -327,7 +327,7 @@ namespace ET
 
         public static long NewFrameTimer(this TimerComponent self, int type, object args)
         {
-#if NOT_UNITY
+#if SERVER
 			return self.NewRepeatedTimerInner(100, type, args);
 #else
             return self.NewRepeatedTimerInner(0, type, args);
@@ -339,7 +339,7 @@ namespace ET
         /// </summary>
         private static long NewRepeatedTimerInner(this TimerComponent self, long time, int type, object args)
         {
-#if NOT_UNITY
+#if SERVER
 			if (time < 100)
 			{ 
 				throw new Exception($"repeated timer < 100, timerType: time: {time}");

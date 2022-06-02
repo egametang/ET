@@ -225,7 +225,6 @@ namespace ET
                     KChannel kChannel = null;
                     switch (flag)
                     {
-#if NOT_UNITY
                         case KcpProtocalType.RouterReconnectSYN:
                         {
                             // 长度!=5，不是RouterReconnectSYN消息
@@ -354,7 +353,6 @@ namespace ET
 
                             break;
                         }
-#endif
                         case KcpProtocalType.ACK: // connect返回
                             // 长度!=9，不是connect消息
                             if (messageLength != 9)

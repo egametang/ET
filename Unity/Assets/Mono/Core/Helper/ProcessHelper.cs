@@ -61,7 +61,7 @@ namespace ET
         private static async ETTask WaitExitAsync(Process process)
         {
             await process.WaitForExitAsync();
-#if NOT_UNITY
+#if !NOT_UNITY
             Log.Info($"process exit, exitcode: {process.ExitCode} {process.StandardOutput.ReadToEnd()} {process.StandardError.ReadToEnd()}");
 #endif
         }

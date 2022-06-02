@@ -15,7 +15,6 @@ namespace ET.Server
                 opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
                 Type type = null;
                 object message = null;
-#if SERVER   
 
                 // 内网收到外网消息，有可能是gateUnit消息，还有可能是gate广播消息
                 if (OpcodeTypeComponent.Instance.IsOutrActorMessage(opcode))
@@ -42,9 +41,7 @@ namespace ET.Server
                         return;
                     }
                 }
-#endif
-                        
-                        
+
                 type = OpcodeTypeComponent.Instance.GetType(opcode);
                 message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
 
