@@ -14,14 +14,14 @@
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DefineConstants>TRACE;NOT_UNITY</DefineConstants>
+      <DefineConstants>TRACE;NOT_UNITY;APPS</DefineConstants>
       <OutputPath>..\..\Bin\</OutputPath>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DefineConstants>TRACE;NOT_UNITY</DefineConstants>
+      <DefineConstants>TRACE;NOT_UNITY;APPS</DefineConstants>
       <OutputPath>..\..\Bin\</OutputPath>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

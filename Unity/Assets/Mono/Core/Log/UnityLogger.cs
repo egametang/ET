@@ -1,4 +1,4 @@
-﻿#if !NOT_UNITY
+﻿#if UNITY
 using System;
 
 namespace ET

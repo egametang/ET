@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 
-#if NOT_UNITY
+#if APPS
 using NLog;
 #endif
 

@@ -1,4 +1,4 @@
-﻿#if NOT_UNITY
+﻿#if APPS
 using NLog;
 
 namespace ET
