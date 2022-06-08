@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-	[MessageHandler(SceneType.Zone)]
+	[MessageHandler(SceneType.Client)]
 	public class M2C_StopHandler : AMHandler<M2C_Stop>
 	{
 		protected override async ETTask Run(Session session, M2C_Stop message)

@@ -7,18 +7,18 @@ namespace ET.Server
     {
         public static async ETTask<Scene> NewRobot(this RobotManagerComponent self, int zone)
         {
-            Scene zoneScene = null;
+            Scene clientScene = null;
             try
             {
-                zoneScene = Client.SceneFactory.CreateZoneScene(zone, "Robot", self);
-                await Client.LoginHelper.Login(zoneScene, zone.ToString(), zone.ToString());
-                await Client.EnterMapHelper.EnterMapAsync(zoneScene);
+                clientScene = Client.SceneFactory.CreateClientScene(zone, "Robot", self);
+                await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
-                return zoneScene;
+                return clientScene;
             }
             catch (Exception e)
             {
-                zoneScene?.Dispose();
+                clientScene?.Dispose();
                 throw new Exception($"RobotSceneManagerComponent create robot fail, zone: {zone}", e);
             }
         }

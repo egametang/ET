@@ -20,16 +20,16 @@ namespace ET.Client
             
             Game.Scene.AddComponent<NetThreadComponent>();
             Game.Scene.AddComponent<SessionStreamDispatcher>();
-            Game.Scene.AddComponent<ZoneSceneManagerComponent>();
+            Game.Scene.AddComponent<ClientSceneManagerComponent>();
             
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<NumericWatcherComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
             
-            Scene zoneScene = Client.SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+            Scene clientScene = Client.SceneFactory.CreateClientScene(1, "Game", Game.Scene);
             
-            await Game.EventSystem.PublishAsync(zoneScene, new EventType.AppStartInitFinish());
+            await Game.EventSystem.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }
     }
 }

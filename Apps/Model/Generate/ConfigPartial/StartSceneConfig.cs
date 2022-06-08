@@ -10,7 +10,7 @@ namespace ET
         
         public MultiMap<int, StartSceneConfig> ProcessScenes = new MultiMap<int, StartSceneConfig>();
         
-        public Dictionary<long, Dictionary<string, StartSceneConfig>> ZoneScenesByName = new Dictionary<long, Dictionary<string, StartSceneConfig>>();
+        public Dictionary<long, Dictionary<string, StartSceneConfig>> ClientScenesByName = new Dictionary<long, Dictionary<string, StartSceneConfig>>();
 
         public StartSceneConfig LocationConfig;
 
@@ -27,7 +27,7 @@ namespace ET
         
         public StartSceneConfig GetBySceneName(int zone, string name)
         {
-            return this.ZoneScenesByName[zone][name];
+            return this.ClientScenesByName[zone][name];
         }
         
         public override void AfterEndInit()
@@ -36,11 +36,11 @@ namespace ET
             {
                 this.ProcessScenes.Add(startSceneConfig.Process, startSceneConfig);
                 
-                if (!this.ZoneScenesByName.ContainsKey(startSceneConfig.Zone))
+                if (!this.ClientScenesByName.ContainsKey(startSceneConfig.Zone))
                 {
-                    this.ZoneScenesByName.Add(startSceneConfig.Zone, new Dictionary<string, StartSceneConfig>());
+                    this.ClientScenesByName.Add(startSceneConfig.Zone, new Dictionary<string, StartSceneConfig>());
                 }
-                this.ZoneScenesByName[startSceneConfig.Zone].Add(startSceneConfig.Name, startSceneConfig);
+                this.ClientScenesByName[startSceneConfig.Zone].Add(startSceneConfig.Name, startSceneConfig);
                 
                 switch (startSceneConfig.Type)
                 {

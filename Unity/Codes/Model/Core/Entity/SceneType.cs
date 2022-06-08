@@ -11,12 +11,10 @@
 		Map = 6,
 		Router = 7,
 		RouterManager = 8,
+		Robot = 9,
 
 		// 客户端Model层
-		Client = 30,
-		Zone = 31,
-		Login = 32,
-		Robot = 33,
+		Client = 31,
 		Current = 34,
 	}
 }

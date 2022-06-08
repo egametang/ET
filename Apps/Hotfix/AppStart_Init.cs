@@ -32,7 +32,7 @@ namespace ET.Server
 
             #region 机器人使用
 
-            Game.Scene.AddComponent<ZoneSceneManagerComponent>();
+            Game.Scene.AddComponent<ClientSceneManagerComponent>();
             Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
 

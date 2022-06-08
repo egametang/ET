@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
-	[MessageHandler(SceneType.Zone)]
+	[MessageHandler(SceneType.Client)]
 	public class M2C_PathfindingResultHandler : AMHandler<M2C_PathfindingResult>
 	{
 		protected override async ETTask Run(Session session, M2C_PathfindingResult message)

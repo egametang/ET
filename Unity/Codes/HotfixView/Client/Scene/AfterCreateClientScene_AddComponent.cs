@@ -1,9 +1,9 @@
 namespace ET.Client
 {
-    [Event(SceneType.Zone)]
-    public class AfterCreateZoneScene_AddComponent: AEvent<Scene, EventType.AfterCreateZoneScene>
+    [Event(SceneType.Client)]
+    public class AfterCreateClientScene_AddComponent: AEvent<Scene, EventType.AfterCreateClientScene>
     {
-        protected override async ETTask Run(Scene scene, EventType.AfterCreateZoneScene args)
+        protected override async ETTask Run(Scene scene, EventType.AfterCreateClientScene args)
         {
             scene.AddComponent<UIEventComponent>();
             scene.AddComponent<UIComponent>();

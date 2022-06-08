@@ -2,17 +2,17 @@ namespace ET.Client
 {
     public static class SceneFactory
     {
-        public static Scene CreateZoneScene(int zone, string name, Entity parent)
+        public static Scene CreateClientScene(int zone, string name, Entity parent)
         {
-            Scene zoneScene = EntitySceneFactory.CreateScene(zone, SceneType.Zone, name, parent);
-            zoneScene.AddComponent<ZoneSceneFlagComponent>();
-            zoneScene.AddComponent<NetKcpComponent, int>(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter);
-			zoneScene.AddComponent<CurrentScenesComponent>();
-            zoneScene.AddComponent<ObjectWait>();
-            zoneScene.AddComponent<PlayerComponent>();
+            Scene clientScene = EntitySceneFactory.CreateScene(zone, SceneType.Client, name, parent);
+            clientScene.AddComponent<ClientSceneFlagComponent>();
+            clientScene.AddComponent<NetKcpComponent, int>(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter);
+			clientScene.AddComponent<CurrentScenesComponent>();
+            clientScene.AddComponent<ObjectWait>();
+            clientScene.AddComponent<PlayerComponent>();
             
-            Game.EventSystem.Publish(zoneScene, new EventType.AfterCreateZoneScene());
-            return zoneScene;
+            Game.EventSystem.Publish(clientScene, new EventType.AfterCreateClientScene());
+            return clientScene;
         }
         
         public static Scene CreateCurrentScene(long id, int zone, string name, CurrentScenesComponent currentScenesComponent)

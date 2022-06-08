@@ -39,7 +39,7 @@ namespace ET
             public long Ping;
         }
         
-        public struct AfterCreateZoneScene
+        public struct AfterCreateClientScene
         {
         }
         

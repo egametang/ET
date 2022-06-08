@@ -36,7 +36,7 @@ namespace ET.Client
                     self.frameClickMap.X = self.ClickPoint.x;
                     self.frameClickMap.Y = self.ClickPoint.y;
                     self.frameClickMap.Z = self.ClickPoint.z;
-                    self.ZoneScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
+                    self.ClientScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
                 }
             }
 
@@ -51,7 +51,7 @@ namespace ET.Client
             if (Input.GetKeyDown(KeyCode.T))
             {
                 C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
-                self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
+                self.ClientScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
             }
         }
     }

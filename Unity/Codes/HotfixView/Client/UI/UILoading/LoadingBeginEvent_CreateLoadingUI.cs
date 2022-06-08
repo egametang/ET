@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-    [Event(SceneType.Zone)]
+    [Event(SceneType.Client)]
     public class LoadingBeginEvent_CreateLoadingUI : AEvent<Scene, EventType.LoadingBegin>
     {
         protected override async ETTask Run(Scene scene, EventType.LoadingBegin args)

@@ -7,34 +7,34 @@ namespace ET.Client
     public static class RouterHelper
     {
         // 注册router
-        public static async ETTask<Session> CreateRouterSession(Scene zoneScene, string address)
+        public static async ETTask<Session> CreateRouterSession(Scene clientScene, string address)
         {
-            (uint recvLocalConn, string routerAddress) = await GetRouterAddress(zoneScene, address, 0, 0);
+            (uint recvLocalConn, string routerAddress) = await GetRouterAddress(clientScene, address, 0, 0);
 
             if (recvLocalConn == 0)
             {
-                throw new Exception($"get router fail: {zoneScene.Id} {address}");
+                throw new Exception($"get router fail: {clientScene.Id} {address}");
             }
             
             Log.Info($"get router: {recvLocalConn} {routerAddress}");
 
-            Session routerSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(routerAddress), NetworkHelper.ToIPEndPoint(address), recvLocalConn);
+            Session routerSession = clientScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(routerAddress), NetworkHelper.ToIPEndPoint(address), recvLocalConn);
             routerSession.AddComponent<PingComponent>();
             routerSession.AddComponent<RouterCheckComponent>();
             
             return routerSession;
         }
         
-        public static async ETTask<(uint, string)> GetRouterAddress(Scene zoneScene, string address, uint localConn, uint remoteConn)
+        public static async ETTask<(uint, string)> GetRouterAddress(Scene clientScene, string address, uint localConn, uint remoteConn)
         {
-            Log.Info($"start get router address: {zoneScene.Id} {address} {localConn} {remoteConn}");
+            Log.Info($"start get router address: {clientScene.Id} {address} {localConn} {remoteConn}");
             //return (RandomHelper.RandUInt32(), address);
-            RouterAddressComponent routerAddressComponent = zoneScene.GetComponent<RouterAddressComponent>();
+            RouterAddressComponent routerAddressComponent = clientScene.GetComponent<RouterAddressComponent>();
             string routerInfo = routerAddressComponent.GetAddress();
             
             uint recvLocalConn = await Connect(NetworkHelper.ToIPEndPoint(routerInfo), address, localConn, remoteConn);
             
-            Log.Info($"finish get router address: {zoneScene.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
+            Log.Info($"finish get router address: {clientScene.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
             return (recvLocalConn, routerInfo);
         }
 

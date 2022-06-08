@@ -2,10 +2,10 @@
 {
     public static class UnitHelper
     {
-        public static Unit GetMyUnitFromZoneScene(Scene zoneScene)
+        public static Unit GetMyUnitFromClientScene(Scene clientScene)
         {
-            PlayerComponent playerComponent = zoneScene.GetComponent<PlayerComponent>();
-            Scene currentScene = zoneScene.GetComponent<CurrentScenesComponent>().Scene;
+            PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
+            Scene currentScene = clientScene.GetComponent<CurrentScenesComponent>().Scene;
             return currentScene.GetComponent<UnitComponent>().Get(playerComponent.MyId);
         }
         

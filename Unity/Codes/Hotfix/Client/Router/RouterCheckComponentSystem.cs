@@ -54,16 +54,16 @@ namespace ET.Client
                     remoteConn = kChannel.RemoteConn;
 
                     string realAddress = self.GetParent<Session>().RemoteAddress.ToString();
-                    Log.Info($"get recvLocalConn start: {self.ZoneScene().Id} {realAddress} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn start: {self.ClientScene().Id} {realAddress} {localConn} {remoteConn}");
 
-                    (uint recvLocalConn, string routerAddress) = await RouterHelper.GetRouterAddress(self.ZoneScene(), realAddress, localConn, remoteConn);
+                    (uint recvLocalConn, string routerAddress) = await RouterHelper.GetRouterAddress(self.ClientScene(), realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
-                        Log.Error($"get recvLocalConn fail: {self.ZoneScene().Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
+                        Log.Error($"get recvLocalConn fail: {self.ClientScene().Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
                         continue;
                     }
                     
-                    Log.Info($"get recvLocalConn ok: {self.ZoneScene().Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn ok: {self.ClientScene().Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
                     
                     session.LastRecvTime = TimeHelper.ClientNow();
                     

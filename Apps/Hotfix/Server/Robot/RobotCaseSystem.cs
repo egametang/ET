@@ -61,18 +61,18 @@ namespace ET.Server
 
         public static async ETTask<Scene> NewRobot(this RobotCase self, int zone, string name)
         {
-            Scene zoneScene = null;
+            Scene clientScene = null;
             try
             {
-                zoneScene = Client.SceneFactory.CreateZoneScene(zone, name, self);
-                await Client.LoginHelper.Login(zoneScene, zone.ToString(), zone.ToString());
-                await Client.EnterMapHelper.EnterMapAsync(zoneScene);
+                clientScene = Client.SceneFactory.CreateClientScene(zone, name, self);
+                await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
-                return zoneScene;
+                return clientScene;
             }
             catch (Exception e)
             {
-                zoneScene?.Dispose();
+                clientScene?.Dispose();
                 throw new Exception($"RobotCase create robot fail, zone: {zone}", e);
             }
         }
@@ -80,19 +80,19 @@ namespace ET.Server
         private static async ETTask<Scene> NewRobot(this RobotCase self)
         {
             int zone = self.GetParent<RobotCaseComponent>().GetN();
-            Scene zoneScene = null;
+            Scene clientScene = null;
 
             try
             {
-                zoneScene = Client.SceneFactory.CreateZoneScene(zone, $"Robot_{zone}", self);
-                await Client.LoginHelper.Login(zoneScene, zone.ToString(), zone.ToString());
-                await Client.EnterMapHelper.EnterMapAsync(zoneScene);
+                clientScene = Client.SceneFactory.CreateClientScene(zone, $"Robot_{zone}", self);
+                await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
-                return zoneScene;
+                return clientScene;
             }
             catch (Exception e)
             {
-                zoneScene?.Dispose();
+                clientScene?.Dispose();
                 throw new Exception($"RobotCase create robot fail, zone: {zone}", e);
             }
         }
