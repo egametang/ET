@@ -97,7 +97,8 @@ namespace ET
             return response;
         }
     }
-
+    
+    [ComponentOf(typeof(Scene))]
     public class OpcodeTypeComponent: Entity, IAwake, IDestroy
     {
         public static OpcodeTypeComponent Instance;

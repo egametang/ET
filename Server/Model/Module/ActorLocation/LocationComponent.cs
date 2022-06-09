@@ -9,6 +9,7 @@ namespace ET
         public CoroutineLock CoroutineLock;
     }
 
+    [ComponentOf(typeof(Scene))]
     [ChildType(typeof(LockInfo))]
     public class LocationComponent: Entity, IAwake
     {

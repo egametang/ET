@@ -80,6 +80,7 @@ namespace ET
         }
     }
     
+    [ComponentOf(typeof(Scene))]
     public class ResourcesLoaderComponent: Entity, IAwake, IDestroy
     {
         public HashSet<string> LoadedResource = new HashSet<string>();

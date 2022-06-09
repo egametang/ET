@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ComponentOf(typeof(Unit))]
     public class AOIEntity: Entity, IAwake<int, Vector3>, IDestroy
     {
         public Unit Unit => this.GetParent<Unit>();

@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     [ChildType(typeof(Cell))]
     public class AOIManagerComponent: Entity, IAwake
     {
