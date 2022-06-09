@@ -366,6 +366,7 @@ namespace ET
 
     
     [ComponentOf(typeof(Scene))]
+    [ChildType(typeof(TimerAction))]
     public class TimerComponent: Entity, IAwake, IUpdate, ILoad, IDestroy
     {
         public static TimerComponent Instance

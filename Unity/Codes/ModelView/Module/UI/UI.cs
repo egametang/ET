@@ -72,6 +72,7 @@ namespace ET
         }
     }
 	
+    [ChildType(typeof(UI))]
     public sealed class UI: Entity, IAwake<string, GameObject>, IDestroy
     {
         public GameObject GameObject { get; set; }

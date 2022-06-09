@@ -600,6 +600,7 @@ namespace ET.Client
     }
     
     [ComponentOf(typeof(Scene))]
+    [ChildType(typeof(ABInfo))]
     public class ResourcesComponent: Entity, IAwake, IDestroy
     {
         public static ResourcesComponent Instance { get; set; }

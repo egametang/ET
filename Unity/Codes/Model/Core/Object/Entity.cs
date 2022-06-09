@@ -576,6 +576,22 @@ namespace ET
             this.children.TryGetValue(id, out Entity child);
             return child as K;
         }
+        
+        public void RemoveChild(long id)
+        {
+            if (this.children == null)
+            {
+                return;
+            }
+
+            if (!this.children.TryGetValue(id, out Entity child))
+            {
+                return;
+            }
+            
+            this.children.Remove(id);
+            child.Dispose();
+        }
 
         public void RemoveComponent<K>() where K : Entity
         {
