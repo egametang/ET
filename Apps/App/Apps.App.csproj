@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
-    <LangVersion>9</LangVersion>
+    <LangVersion>10</LangVersion>
     <AssemblyName>App</AssemblyName>
   </PropertyGroup>
 

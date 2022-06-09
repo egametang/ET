@@ -20,7 +20,7 @@ namespace ET
         {
             if (self.coroutineLockType != CoroutineLockType.None)
             {
-                CoroutineLockComponent.Instance.RunNextCoroutine(self.coroutineLockType, self.key, self.level + 1);
+                self.Parent.Parent.GetParent<CoroutineLockComponent>().RunNextCoroutine(self.coroutineLockType, self.key, self.level + 1);
             }
             else
             {
