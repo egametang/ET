@@ -1,5 +1,7 @@
 <Project>
   <PropertyGroup>
     <LangVersion>10.0</LangVersion>
+    <NoWarn>0169,0649,3021</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>
