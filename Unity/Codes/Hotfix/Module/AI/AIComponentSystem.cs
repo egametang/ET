@@ -6,10 +6,10 @@ namespace ET
     [FriendClass(typeof(AIDispatcherComponent))]
     public static class AIComponentSystem
     {
-        [Timer(TimerType.AITimer)]
+        [Callback(TimerType.AITimer)]
         public class AITimer: ATimer<AIComponent>
         {
-            public override void Run(AIComponent self)
+            protected override void Run(AIComponent self)
             {
                 try
                 {

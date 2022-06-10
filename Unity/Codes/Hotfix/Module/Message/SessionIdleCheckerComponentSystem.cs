@@ -2,10 +2,10 @@ using System;
 
 namespace ET
 {
-    [Timer(TimerType.SessionIdleChecker)]
+    [Callback(TimerType.SessionIdleChecker)]
     public class SessionIdleChecker: ATimer<SessionIdleCheckerComponent>
     {
-        public override void Run(SessionIdleCheckerComponent self)
+        protected override void Run(SessionIdleCheckerComponent self)
         {
             try
             {

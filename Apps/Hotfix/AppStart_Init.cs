@@ -16,7 +16,6 @@ namespace ET.Server
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
-            Game.Scene.AddComponent<SessionStreamDispatcher>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
             // 发送普通actor消息
             Game.Scene.AddComponent<ActorMessageSenderComponent>();

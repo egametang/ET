@@ -3,10 +3,10 @@ using System.IO;
 
 namespace ET.Server
 {
-    [SessionStreamDispatcher(SessionStreamDispatcherType.SessionStreamDispatcherServerInner)]
-    public class SessionStreamDispatcherServerInner: ISessionStreamDispatcher
+    [Callback(SessionStreamDispatcherType.SessionStreamDispatcherServerInner)]
+    public class SessionStreamDispatcherServerInner: IAction<Session, MemoryStream>
     {
-        public void Dispatch(Session session, MemoryStream memoryStream)
+        public void Handle(Session session, MemoryStream memoryStream)
         {
             ushort opcode = 0;
             try

@@ -6,10 +6,10 @@ namespace ET
     [FriendClass(typeof(ActorMessageSenderComponent))]
     public static class ActorMessageSenderComponentSystem
     {
-        [Timer(TimerType.ActorMessageSenderChecker)]
+        [Callback(TimerType.ActorMessageSenderChecker)]
         public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
         {
-            public override void Run(ActorMessageSenderComponent self)
+            protected override void Run(ActorMessageSenderComponent self)
             {
                 try
                 {

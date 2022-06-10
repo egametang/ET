@@ -3,10 +3,10 @@ using System.IO;
 
 namespace ET
 {
-    [Timer(TimerType.ActorLocationSenderChecker)]
+    [Callback(TimerType.ActorLocationSenderChecker)]
     public class ActorLocationSenderChecker: ATimer<ActorLocationSenderComponent>
     {
-        public override void Run(ActorLocationSenderComponent self)
+        protected override void Run(ActorLocationSenderComponent self)
         {
             try
             {

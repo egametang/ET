@@ -19,7 +19,6 @@ namespace ET.Client
             Game.Scene.AddComponent<MessageDispatcherComponent>();
             
             Game.Scene.AddComponent<NetThreadComponent>();
-            Game.Scene.AddComponent<SessionStreamDispatcher>();
             Game.Scene.AddComponent<ClientSceneManagerComponent>();
             
             Game.Scene.AddComponent<GlobalComponent>();

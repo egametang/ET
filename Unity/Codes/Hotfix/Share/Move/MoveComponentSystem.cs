@@ -7,10 +7,10 @@ namespace ET
     [FriendClass(typeof(MoveComponent))]
     public static class MoveComponentSystem
     {
-        [Timer(TimerType.MoveTimer)]
+        [Callback(TimerType.MoveTimer)]
         public class MoveTimer: ATimer<MoveComponent>
         {
-            public override void Run(MoveComponent self)
+            protected override void Run(MoveComponent self)
             {
                 try
                 {

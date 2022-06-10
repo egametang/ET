@@ -57,7 +57,8 @@ namespace ET
             }
 
             session.LastRecvTime = TimeHelper.ClientNow();
-            SessionStreamDispatcher.Instance.Dispatch(self.SessionStreamDispatcherType, session, memoryStream);
+
+            Game.EventSystem.Callback(self.SessionStreamDispatcherType, session, memoryStream);
         }
 
         public static void OnError(this NetKcpComponent self, long channelId, int error)

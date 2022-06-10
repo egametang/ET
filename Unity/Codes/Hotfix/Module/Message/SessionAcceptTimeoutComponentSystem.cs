@@ -2,10 +2,10 @@
 
 namespace ET
 {
-    [Timer(TimerType.SessionAcceptTimeout)]
+    [Callback(TimerType.SessionAcceptTimeout)]
     public class SessionAcceptTimeout: ATimer<SessionAcceptTimeoutComponent>
     {
-        public override void Run(SessionAcceptTimeoutComponent self)
+        protected override void Run(SessionAcceptTimeoutComponent self)
         {
             try
             {

@@ -56,7 +56,6 @@ namespace ET
             public override void Awake(TimerComponent self)
             {
                 TimerComponent.Instance = self;
-                self.Init();
             }
         }
 
@@ -117,49 +116,11 @@ namespace ET
         }
     
         [ObjectSystem]
-        public class TimerComponentLoadSystem: LoadSystem<TimerComponent>
-        {
-            public override void Load(TimerComponent self)
-            {
-                self.Init();
-            }
-        }
-
-        [ObjectSystem]
         public class TimerComponentDestroySystem: DestroySystem<TimerComponent>
         {
             public override void Destroy(TimerComponent self)
             {
                 TimerComponent.Instance = null;
-            }
-        }
-
-        private static void Init(this TimerComponent self)
-        {
-            self.timerActions = new ITimer[TimerComponent.TimeTypeMax];
-
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof (TimerAttribute));
-
-            foreach (Type type in types)
-            {
-                ITimer iTimer = Activator.CreateInstance(type) as ITimer;
-                if (iTimer == null)
-                {
-                    Log.Error($"Timer Action {type.Name} 需要继承 ITimer");
-                    continue;
-                }
-                
-                object[] attrs = type.GetCustomAttributes(typeof(TimerAttribute), false);
-                if (attrs.Length == 0)
-                {
-                    continue;
-                }
-
-                foreach (object attr in attrs)
-                {
-                    TimerAttribute timerAttribute = attr as TimerAttribute;
-                    self.timerActions[timerAttribute.Type] = iTimer;
-                }
             }
         }
 
@@ -170,13 +131,7 @@ namespace ET
                 case TimerClass.OnceTimer:
                 {
                     int type = timerAction.Type;
-                    ITimer timer = self.timerActions[type];
-                    if (timer == null)
-                    {
-                        Log.Error($"not found timer action: {type}");
-                        return;
-                    }
-                    timer.Handle(timerAction.Object);
+                    Game.EventSystem.Callback(type, timerAction.Object);
                     break;
                 }
                 case TimerClass.OnceWaitTimer:
@@ -191,14 +146,7 @@ namespace ET
                     int type = timerAction.Type;
                     long tillTime = TimeHelper.ServerNow() + timerAction.Time;
                     self.AddTimer(tillTime, timerAction);
-
-                    ITimer timer = self.timerActions[type];
-                    if (timer == null)
-                    {
-                        Log.Error($"not found timer action: {type}");
-                        return;
-                    }
-                    timer.Handle(timerAction.Object);
+                    Game.EventSystem.Callback(type, timerAction.Object);
                     break;
                 }
             }
@@ -388,9 +336,5 @@ namespace ET
 
         // 记录最小时间，不用每次都去MultiMap取第一个值
         public long minTime;
-
-        public const int TimeTypeMax = 10000;
-
-        public ITimer[] timerActions;
     }
 }

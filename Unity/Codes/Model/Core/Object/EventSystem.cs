@@ -89,6 +89,8 @@ namespace ET
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
 
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
+        
+        private object[] allCallbacks;
 
         private TypeSystems typeSystems = new();
 
@@ -189,6 +191,28 @@ namespace ET
                         this.allEvents.Add(eventType, new List<EventInfo>());
                     }
                     this.allEvents[eventType].Add(eventInfo);
+                }
+            }
+
+            this.allCallbacks = new object[10000];
+            foreach (Type type in types[typeof (CallbackAttribute)])
+            {
+                object obj = Activator.CreateInstance(type);
+                if (obj == null)
+                {
+                    throw new Exception($"type not is AEvent: {type.Name}");
+                }
+                
+                object[] attrs = type.GetCustomAttributes(typeof(CallbackAttribute), false);
+                foreach (object attr in attrs)
+                {
+                    CallbackAttribute callbackAttribute = attr as CallbackAttribute;
+
+                    if (this.allCallbacks[callbackAttribute.Type] != null)
+                    {
+                        throw new Exception($"action type duplicate: {callbackAttribute.Type}");
+                    }
+                    this.allCallbacks[callbackAttribute.Type] = obj;
                 }
             }
         }
@@ -700,6 +724,56 @@ namespace ET
                 
                 aEvent.Handle(entity, a).Coroutine();
             }
+        }
+        
+        public void Callback(int type)
+        {
+            (this.allCallbacks[type] as IAction).Handle();
+        }
+
+        public void Callback<A>(int type, A a)
+        {
+            (this.allCallbacks[type] as IAction<A>).Handle(a);
+        }
+        
+        public void Callback<A, B>(int type, A a, B b)
+        {
+            (this.allCallbacks[type] as IAction<A, B>).Handle(a, b);
+        }
+        
+        public void Callback<A, B, C>(int type, A a, B b, C c)
+        {
+            (this.allCallbacks[type] as IAction<A, B, C>).Handle(a, b, c);
+        }
+        
+        public void Callback<A, B, C, D>(int type, A a, B b, C c, D d)
+        {
+            (this.allCallbacks[type] as IAction<A, B, C, D>).Handle(a, b, c, d);
+        }
+        
+        public T Callback<T>(int type)
+        {
+            return (this.allCallbacks[type] as IFunc<T>).Handle();
+        }
+
+        public T Callback<T, A>(int type, A a)
+        {
+            return (this.allCallbacks[type] as IFunc<T, A>).Handle(a);
+        }
+        
+        public T Callback<T, A, B>(int type, A a, B b)
+        {
+            return (this.allCallbacks[type] as IFunc<T, A, B>).Handle(a, b);
+        }
+        
+        public T Callback<T, A, B, C>(int type, A a, B b, C c)
+        {
+            return (this.allCallbacks[type] as IFunc<T, A, B, C>).Handle(a, b, c);
+        }
+        
+        public T Callback<T, A, B, C, D>(int type, A a, B b, C c, D d)
+        {
+            return (this.allCallbacks[type] as IFunc<T, A, B, C, D>).Handle(a, b, c, d);
         }
 
         public override string ToString()

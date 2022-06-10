@@ -3,10 +3,10 @@ using System.IO;
 
 namespace ET.Client
 {
-    [SessionStreamDispatcher(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter)]
-    public class SessionStreamDispatcherClientOuter: ISessionStreamDispatcher
+    [Callback(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter)]
+    public class SessionStreamDispatcherClientOuter: IAction<Session, MemoryStream>
     {
-        public void Dispatch(Session session, MemoryStream memoryStream)
+        public void Handle(Session session, MemoryStream memoryStream)
         {
             ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
             Type type = OpcodeTypeComponent.Instance.GetType(opcode);
