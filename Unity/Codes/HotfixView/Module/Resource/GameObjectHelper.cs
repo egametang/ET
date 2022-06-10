@@ -18,7 +18,7 @@ namespace ET
         }
         public static T GetComponentFormRC<T>(this GameObject gameObject, string key) where T : Component
         {
-            return gameObject.GetComponent<ReferenceCollector>().GetComponentFormRC<T>(key);
+            return gameObject.GetComponent<ReferenceCollector>().GetComponentFromRC<T>(key);
         }
     }
 }

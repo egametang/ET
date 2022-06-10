@@ -124,7 +124,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		}
 		return dictGo as T;
 	}
-	public T GetComponentFormRC<T>(string key) where T : Component
+	public T GetComponentFromRC<T>(string key) where T : Component
 	{
 		var gob = Get<GameObject>(key);
 		if (gob == null)
