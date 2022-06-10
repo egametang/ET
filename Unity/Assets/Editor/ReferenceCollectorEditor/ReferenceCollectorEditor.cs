@@ -103,7 +103,7 @@ public class ReferenceCollectorEditor: Editor
 			GUILayout.BeginHorizontal();
             //这里的知识点在ReferenceCollector中有说
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("key");
-            EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
+			property.stringValue = EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
             property.objectReferenceValue = EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
 			if (GUILayout.Button("X"))
