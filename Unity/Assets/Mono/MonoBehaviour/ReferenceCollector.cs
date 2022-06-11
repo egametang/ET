@@ -124,21 +124,6 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		}
 		return dictGo as T;
 	}
-	public T GetComponentFromRC<T>(string key) where T : Component
-	{
-		var gob = Get<GameObject>(key);
-		if (gob == null)
-		{
-			Debug.LogWarning($"{name}找不到物体{key}");
-			return null;
-		}
-		var com = gob.GetComponent<T>();
-		if (com == null)
-		{
-			Debug.LogWarning($"{name}的{key}物体找不到{typeof(T).Name}组件");
-		}
-		return com;
-	}
 
 	public Object GetObject(string key)
 	{

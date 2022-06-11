@@ -18,7 +18,18 @@ namespace ET
         }
         public static T GetComponentFormRC<T>(this GameObject gameObject, string key) where T : Component
         {
-            return gameObject.GetComponent<ReferenceCollector>().GetComponentFromRC<T>(key);
+            var gob = gameObject.Get<GameObject>(key);
+            if (gob == null)
+            {
+                Debug.LogWarning($"{gameObject.name}找不到物体{key}");
+                return null;
+            }
+            var com = gob.GetComponent<T>();
+            if (com == null)
+            {
+                Debug.LogWarning($"{gameObject.name}的{key}物体找不到{typeof(T).Name}组件");
+            }
+            return com;
         }
     }
 }
