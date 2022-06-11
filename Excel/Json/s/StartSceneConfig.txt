@@ -6,4 +6,9 @@
 {"_t":"StartSceneConfig","_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map1","OuterPort":0},
 {"_t":"StartSceneConfig","_id":6,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map2","OuterPort":0},
 {"_t":"StartSceneConfig","_id":200,"Process":1,"Zone":2,"SceneType":"Robot","Name":"Robot01","OuterPort":0},
+{"_t":"StartSceneConfig","_id":300,"Process":1,"Zone":3,"SceneType":"RouterManager","Name":"RouterManager","OuterPort":10300},
+{"_t":"StartSceneConfig","_id":301,"Process":1,"Zone":3,"SceneType":"Router","Name":"Router01","OuterPort":10301},
+{"_t":"StartSceneConfig","_id":302,"Process":1,"Zone":3,"SceneType":"Router","Name":"Router02","OuterPort":10302},
+{"_t":"StartSceneConfig","_id":303,"Process":1,"Zone":3,"SceneType":"Router","Name":"Router03","OuterPort":10303},
+{"_t":"StartSceneConfig","_id":304,"Process":1,"Zone":3,"SceneType":"Router","Name":"Router04","OuterPort":10304},
 ]}
