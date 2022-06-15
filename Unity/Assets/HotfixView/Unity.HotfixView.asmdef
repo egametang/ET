@@ -6,7 +6,8 @@
         "Unity.ThirdParty",
         "Unity.Model",
         "Unity.Hotfix",
-        "Unity.ModelView"
+        "Unity.ModelView",
+        "Unity.Core"
     ],
     "includePlatforms": [
         "Editor"

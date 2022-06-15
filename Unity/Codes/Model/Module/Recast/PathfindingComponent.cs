@@ -8,7 +8,7 @@ namespace ET
     [ComponentOf(typeof(Unit))]
     public class PathfindingComponent: Entity, IAwake<string>, IDestroy
     {
-        public static int FindRandomNavPosMaxRadius = 15000;  // 随机找寻路点的最大半径
+        public const int FindRandomNavPosMaxRadius = 15000;  // 随机找寻路点的最大半径
         
         public static float[] extents = {15, 10, 15};
         

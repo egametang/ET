@@ -5,12 +5,11 @@ namespace ET
     [FriendClass(typeof(NavmeshComponent))]
     public static class NavmeshComponentSystem
     {
-        public class AwakeSystem: AwakeSystem<NavmeshComponent, Func<string, byte[]>>
+        public class AwakeSystem: AwakeSystem<NavmeshComponent>
         {
-            public override void Awake(NavmeshComponent self, Func<string, byte[]> loader)
+            public override void Awake(NavmeshComponent self)
             {
                 NavmeshComponent.Instance = self;
-                self.Loader = loader;
             }
         }
         
@@ -22,7 +21,7 @@ namespace ET
                 return ptr;
             }
 
-            byte[] buffer = self.Loader(name);
+            byte[] buffer = Game.EventSystem.Callback<string, byte[]>(CallbackType.RecastFileLoader, name);
             if (buffer.Length == 0)
             {
                 throw new Exception($"no nav data: {name}");

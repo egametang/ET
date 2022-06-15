@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace ET
+namespace ET.Client
 {
     [ComponentOf(typeof(Scene))]
     public class RouterAddressComponent: Entity, IAwake<string>

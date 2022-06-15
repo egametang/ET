@@ -6,7 +6,7 @@ namespace ET.Client
         {
             Scene clientScene = EntitySceneFactory.CreateScene(zone, SceneType.Client, name, parent);
             clientScene.AddComponent<ClientSceneFlagComponent>();
-            clientScene.AddComponent<NetKcpComponent, int>(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter);
+            clientScene.AddComponent<NetKcpComponent, int>(CallbackType.SessionStreamDispatcherClientOuter);
 			clientScene.AddComponent<CurrentScenesComponent>();
             clientScene.AddComponent<ObjectWait>();
             clientScene.AddComponent<PlayerComponent>();

@@ -16,8 +16,6 @@ namespace ET
 
 		private Assembly assembly;
 		
-		private Type[] allTypes;
-		
 		public CodeMode CodeMode { get; set; }
 
 		private CodeLoader()
@@ -39,7 +37,11 @@ namespace ET
 					byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
-					this.allTypes = assembly.GetTypes();
+
+					Game.EventSystem.Add(typeof(Game).Assembly);
+					Game.EventSystem.Add(this.assembly);
+					Game.EventSystem.LoadAllAssembliesType();
+					
 					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
@@ -58,9 +60,8 @@ namespace ET
 			}
 		}
 
-		// 热重载调用下面三个方法
+		// 热重载调用下面两个方法
 		// CodeLoader.Instance.LoadLogic();
-		// Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
 		// Game.EventSystem.Load();
 		public void LoadLogic()
 		{
@@ -82,15 +83,11 @@ namespace ET
 
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
 			
-			List<Type> listType = new List<Type>();
-			listType.AddRange(this.assembly.GetTypes());
-			listType.AddRange(hotfixAssembly.GetTypes());
-			this.allTypes = listType.ToArray();
-		}
-
-		public Type[] GetTypes()
-		{
-			return this.allTypes;
+			Game.EventSystem.Add(typeof(Game).Assembly);
+			Game.EventSystem.Add(this.assembly);
+			Game.EventSystem.Add(hotfixAssembly);
+			
+			Game.EventSystem.LoadAllAssembliesType();
 		}
 	}
 }

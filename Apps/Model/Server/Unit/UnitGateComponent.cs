@@ -1,4 +1,4 @@
-﻿namespace ET
+﻿namespace ET.Server
 {
     [ComponentOf(typeof(Unit))]
     public class UnitGateComponent : Entity, IAwake<long>, ITransfer

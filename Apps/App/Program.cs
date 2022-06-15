@@ -20,9 +20,11 @@ namespace ET
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			try
-			{		
+			{	
 				Game.EventSystem.Add(typeof(Game).Assembly);
+				Game.EventSystem.Add(typeof(Unit).Assembly);
 				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
+				Game.EventSystem.LoadAllAssembliesType();
 				
 				ProtobufHelper.Init();
 				MongoHelper.Register(Game.EventSystem.GetTypes());
@@ -35,7 +37,7 @@ namespace ET
 
 				Options.Instance = options;
 
-				Log.ILog = new NLogger(Game.Options.AppType.ToString());
+				Game.ILog = new NLogger(Game.Options.AppType.ToString());
 				LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
 				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Game.Options)} ");

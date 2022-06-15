@@ -31,7 +31,7 @@ namespace ET
 
 			ETTask.ExceptionHandler += Log.Error;
 
-			Log.ILog = new UnityLogger();
+			Game.ILog = new UnityLogger();
 
 			Options.Instance = new Options();
 

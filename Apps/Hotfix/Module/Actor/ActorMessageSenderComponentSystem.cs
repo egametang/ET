@@ -6,7 +6,7 @@ namespace ET
     [FriendClass(typeof(ActorMessageSenderComponent))]
     public static class ActorMessageSenderComponentSystem
     {
-        [Callback(TimerType.ActorMessageSenderChecker)]
+        [Callback(CallbackType.ActorMessageSenderChecker)]
         public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
         {
             protected override void Run(ActorMessageSenderComponent self)
@@ -29,7 +29,7 @@ namespace ET
             {
                 ActorMessageSenderComponent.Instance = self;
 
-                self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerType.ActorMessageSenderChecker, self);
+                self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, CallbackType.ActorMessageSenderChecker, self);
             }
         }
 

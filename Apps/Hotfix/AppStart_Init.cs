@@ -1,14 +1,14 @@
 using System;
 using System.Net;
 
-namespace ET.Server
+namespace ET
 {
     [Event(SceneType.Process)]
-    public class AppStart_Init: AEvent<Scene, ET.EventType.AppStart>
+    public class AppStart_Init: AEvent<Scene, EventType.AppStart>
     {
-        protected override async ETTask Run(Scene scene, ET.EventType.AppStart args)
+        protected override async ETTask Run(Scene scene, EventType.AppStart args)
         {
-            Game.Scene.AddComponent<ConfigComponent>().ConfigLoader = new ConfigLoader();
+            Game.Scene.AddComponent<ConfigComponent>();
             await ConfigComponent.Instance.LoadAsync();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
@@ -31,7 +31,7 @@ namespace ET.Server
 
             #region 机器人使用
 
-            Game.Scene.AddComponent<ClientSceneManagerComponent>();
+            Game.Scene.AddComponent<Client.ClientSceneManagerComponent>();
             Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
 
@@ -40,13 +40,13 @@ namespace ET.Server
             
             Game.Scene.AddComponent<NetThreadComponent>();
             
-            Game.Scene.AddComponent<NavmeshComponent, Func<string, byte[]>>(Server.RecastFileReader.Read);
+            Game.Scene.AddComponent<NavmeshComponent>();
 
             switch (Game.Options.AppType)
             {
                 case AppType.Server:
                 {
-                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerInner);
+                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, CallbackType.SessionStreamDispatcherServerInner);
 
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
@@ -62,7 +62,7 @@ namespace ET.Server
                     StartMachineConfig startMachineConfig = WatcherHelper.GetThisMachineConfig();
                     WatcherComponent watcherComponent = Game.Scene.AddComponent<WatcherComponent>();
                     watcherComponent.Start(Game.Options.CreateScenes);
-                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"), SessionStreamDispatcherType.SessionStreamDispatcherServerInner);
+                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"), CallbackType.SessionStreamDispatcherServerInner);
                     break;
                 }
                 case AppType.GameTool:

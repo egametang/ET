@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    public class ConfigLoader: IConfigLoader
+    [Callback(CallbackType.GetAllConfigBytes)]
+    public class GetAllConfigBytes: IAction<Dictionary<string, byte[]>>
     {
-        public void GetAllConfigBytes(Dictionary<string, byte[]> output)
+        public void Handle(Dictionary<string, byte[]> output)
         {
             Dictionary<string, UnityEngine.Object> keys = ResourcesComponent.Instance.GetBundleAll("config.unity3d");
 
@@ -16,8 +17,12 @@ namespace ET.Client
                 output[key] = v.bytes;
             }
         }
-
-        public byte[] GetOneConfigBytes(string configName)
+    }
+    
+    [Callback(CallbackType.GetOneConfigBytes)]
+    public class GetOneConfigBytes: IFunc<string, byte[]>
+    {
+        public byte[] Handle(string configName)
         {
             TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
             return v.bytes;

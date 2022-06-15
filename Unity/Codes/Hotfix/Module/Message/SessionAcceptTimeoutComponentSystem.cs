@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    [Callback(TimerType.SessionAcceptTimeout)]
+    [Callback(CallbackType.SessionAcceptTimeout)]
     public class SessionAcceptTimeout: ATimer<SessionAcceptTimeoutComponent>
     {
         protected override void Run(SessionAcceptTimeoutComponent self)
@@ -23,7 +23,7 @@ namespace ET
     {
         public override void Awake(SessionAcceptTimeoutComponent self)
         {
-            self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 5000, TimerType.SessionAcceptTimeout, self);
+            self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 5000, CallbackType.SessionAcceptTimeout, self);
         }
     }
 

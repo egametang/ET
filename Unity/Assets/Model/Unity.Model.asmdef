@@ -3,7 +3,8 @@
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
-        "Unity.Mono"
+        "Unity.Mono",
+        "Unity.Core"
     ],
     "includePlatforms": [
         "Editor"

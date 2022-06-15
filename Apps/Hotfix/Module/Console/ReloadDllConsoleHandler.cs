@@ -11,6 +11,7 @@ namespace ET
                     contex.Parent.RemoveComponent<ModeContex>();
                     
                     Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
+                    Game.EventSystem.LoadAllAssembliesType();
                     Game.EventSystem.Load();
                     break;
             }

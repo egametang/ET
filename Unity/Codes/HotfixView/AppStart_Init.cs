@@ -11,7 +11,7 @@ namespace ET.Client
             // 加载配置
             Game.Scene.AddComponent<ResourcesComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("config.unity3d");
-            Game.Scene.AddComponent<ConfigComponent>().ConfigLoader = new ConfigLoader();
+            Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.Instance.Load();
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             
