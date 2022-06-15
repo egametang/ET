@@ -23,9 +23,7 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs">
-            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
+
 
         <Compile Include="..\..\Unity\Codes\Model\Module\Recast\**\*.cs">
             <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
@@ -38,6 +36,14 @@
 
         <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Codes\Model\Module\ObjectWait\**\*.cs">
+            <Link>Module\ObjectWait\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Codes\Model\Module\Timer\**\*.cs">
+            <Link>Module\Timer\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
         <Compile Include="..\..\Unity\Codes\Model\Module\AI\**\*.cs">
@@ -80,7 +86,7 @@
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Codes\Model\Client\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Client\**\*.cs"> 
             <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Share\**\*.cs">
@@ -88,6 +94,7 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Core\Apps.Core.csproj" />
         <ProjectReference Include="..\ThirdParty\Apps.ThirdParty.csproj" />
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>

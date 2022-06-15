@@ -20,9 +20,11 @@ namespace ET
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			try
-			{		
+			{	
 				Game.EventSystem.Add(typeof(Game).Assembly);
+				Game.EventSystem.Add(typeof(Unit).Assembly);
 				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
+				Game.EventSystem.LoadAllAssembliesType();
 				
 				ProtobufHelper.Init();
 				MongoHelper.Register(Game.EventSystem.GetTypes());

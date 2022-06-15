@@ -58,6 +58,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Core\Apps.Core.csproj" />
       <ProjectReference Include="..\ThirdParty\Apps.ThirdParty.csproj" />
     </ItemGroup>
 

@@ -1,12 +1,12 @@
 using System;
 using System.Net;
 
-namespace ET.Server
+namespace ET
 {
     [Event(SceneType.Process)]
-    public class AppStart_Init: AEvent<Scene, ET.EventType.AppStart>
+    public class AppStart_Init: AEvent<Scene, EventType.AppStart>
     {
-        protected override async ETTask Run(Scene scene, ET.EventType.AppStart args)
+        protected override async ETTask Run(Scene scene, EventType.AppStart args)
         {
             Game.Scene.AddComponent<ConfigComponent>().ConfigLoader = new ConfigLoader();
             await ConfigComponent.Instance.LoadAsync();

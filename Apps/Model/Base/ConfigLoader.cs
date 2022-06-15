@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace ET.Server
+namespace ET
 {
     public class ConfigLoader: IConfigLoader
     {

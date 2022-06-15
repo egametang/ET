@@ -12,9 +12,6 @@ namespace ET.Client
 				CodeLoader.Instance.LateUpdate += Game.LateUpdate;
 				CodeLoader.Instance.OnApplicationQuit += Game.Close;
 				
-				
-				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
-				
 				MongoHelper.Register(Game.EventSystem.GetTypes());
 
 				Game.EventSystem.Publish(Game.Scene, new EventType.AppStart());
