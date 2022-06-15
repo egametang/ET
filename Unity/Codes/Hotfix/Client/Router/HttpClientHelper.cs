@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 
-namespace ET
+namespace ET.Client
 {
     public static class HttpClientHelper
     {

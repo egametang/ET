@@ -200,7 +200,7 @@ namespace ET
                 object obj = Activator.CreateInstance(type);
                 if (obj == null)
                 {
-                    throw new Exception($"type not is AEvent: {type.Name}");
+                    throw new Exception($"type not is callback: {type.Name}");
                 }
                 
                 object[] attrs = type.GetCustomAttributes(typeof(CallbackAttribute), false);
@@ -761,24 +761,24 @@ namespace ET
             return (this.allCallbacks[type] as IFunc<T>).Handle();
         }
 
-        public T Callback<T, A>(int type, A a)
+        public T Callback<A, T>(int type, A a)
         {
-            return (this.allCallbacks[type] as IFunc<T, A>).Handle(a);
+            return (this.allCallbacks[type] as IFunc<A, T>).Handle(a);
         }
         
-        public T Callback<T, A, B>(int type, A a, B b)
+        public T Callback<A, B, T>(int type, A a, B b)
         {
-            return (this.allCallbacks[type] as IFunc<T, A, B>).Handle(a, b);
+            return (this.allCallbacks[type] as IFunc<A, B, T>).Handle(a, b);
         }
         
-        public T Callback<T, A, B, C>(int type, A a, B b, C c)
+        public T Callback<A, B, C, T>(int type, A a, B b, C c)
         {
-            return (this.allCallbacks[type] as IFunc<T, A, B, C>).Handle(a, b, c);
+            return (this.allCallbacks[type] as IFunc<A, B, C, T>).Handle(a, b, c);
         }
         
-        public T Callback<T, A, B, C, D>(int type, A a, B b, C c, D d)
+        public T Callback<A, B, C, D, T>(int type, A a, B b, C c, D d)
         {
-            return (this.allCallbacks[type] as IFunc<T, A, B, C, D>).Handle(a, b, c, d);
+            return (this.allCallbacks[type] as IFunc<A, B, C, D, T>).Handle(a, b, c, d);
         }
 
         public override string ToString()

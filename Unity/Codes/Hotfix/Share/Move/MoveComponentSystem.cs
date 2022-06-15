@@ -7,7 +7,7 @@ namespace ET
     [FriendClass(typeof(MoveComponent))]
     public static class MoveComponentSystem
     {
-        [Callback(TimerType.MoveTimer)]
+        [Callback(CallbackType.MoveTimer)]
         public class MoveTimer: ATimer<MoveComponent>
         {
             protected override void Run(MoveComponent self)
@@ -200,7 +200,7 @@ namespace ET
             self.StartTime = self.BeginTime;
             self.SetNextTarget();
 
-            self.MoveTimer = TimerComponent.Instance.NewFrameTimer(TimerType.MoveTimer, self);
+            self.MoveTimer = TimerComponent.Instance.NewFrameTimer(CallbackType.MoveTimer, self);
         }
 
         private static void SetNextTarget(this MoveComponent self)

@@ -52,7 +52,7 @@
      <Compile Include="Assets\Core\Object\IAwakeSystem.cs" />
      <Compile Include="Assets\Core\HashSetComponent.cs" />
      <Compile Include="Assets\Core\ThreadSynchronizationContext.cs" />
-     <Compile Include="Assets\Core\Scene\SceneHelper.cs" />
+     <Compile Include="Assets\Core\Entity\SceneHelper.cs" />
      <Compile Include="Assets\Core\Network\RpcException.cs" />
      <Compile Include="Assets\Core\Entity\Scene.cs" />
      <Compile Include="Assets\Core\Object\Entity.cs" />
@@ -66,7 +66,6 @@
      <Compile Include="Assets\Core\JsonHelper.cs" />
      <Compile Include="Assets\Core\Object\IdGenerater.cs" />
      <Compile Include="Assets\Core\Helper\MD5Helper.cs" />
-     <Compile Include="Assets\Core\Scene\ClientSceneManagerComponent.cs" />
      <Compile Include="Assets\Core\Network\AService.cs" />
      <Compile Include="Assets\Core\Helper\ObjectHelper.cs" />
      <Compile Include="Assets\Core\Object\Object.cs" />
@@ -82,7 +81,6 @@
      <Compile Include="Assets\Core\QueueDictionary.cs" />
      <Compile Include="Assets\Core\Object\FriendClassAttribute.cs" />
      <Compile Include="Assets\Core\Object\ILoadSystem.cs" />
-     <Compile Include="Assets\Core\Scene\ClientSceneFlagComponent.cs" />
      <Compile Include="Assets\Core\Entity\Game.cs" />
      <Compile Include="Assets\Core\Object\ICallback.cs" />
      <Compile Include="Assets\Core\Object\ObjectPool.cs" />

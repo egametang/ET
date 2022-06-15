@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ET.Client
 {
-    [Callback(SessionStreamDispatcherType.SessionStreamDispatcherClientOuter)]
+    [Callback(CallbackType.SessionStreamDispatcherClientOuter)]
     public class SessionStreamDispatcherClientOuter: IAction<Session, MemoryStream>
     {
         public void Handle(Session session, MemoryStream memoryStream)

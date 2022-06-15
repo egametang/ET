@@ -3,9 +3,10 @@ using System.IO;
 
 namespace ET
 {
-    public class ConfigLoader: IConfigLoader
+    [Callback(CallbackType.GetAllConfigBytes)]
+    public class GetAllConfigBytes: IAction<Dictionary<string, byte[]>>
     {
-        public void GetAllConfigBytes(Dictionary<string, byte[]> output)
+        public void Handle(Dictionary<string, byte[]> output)
         {
             foreach (string file in Directory.GetFiles($"../Config", "*.bytes"))
             {
@@ -17,8 +18,12 @@ namespace ET
             output["StartSceneConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartSceneConfigCategory.bytes");
             output["StartZoneConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartZoneConfigCategory.bytes");
         }
-        
-        public byte[] GetOneConfigBytes(string configName)
+    }
+    
+    [Callback(CallbackType.GetOneConfigBytes)]
+    public class GetOneConfigBytes: IFunc<string, byte[]>
+    {
+        public byte[] Handle(string configName)
         {
             byte[] configBytes = File.ReadAllBytes($"../Config/{configName}.bytes");
             return configBytes;

@@ -42,7 +42,7 @@
             <Link>Module\ObjectWait\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Codes\Model\Module\Timer\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Timer\**\*.cs"> 
             <Link>Module\Timer\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -54,12 +54,7 @@
             <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Remove="Libs\**" />
-
-    </ItemGroup>
-    <ItemGroup>
-
-        <Compile Include="..\..\Unity\Codes\Model\Module\Actor\**\*.cs">
+        <Compile Include="..\..\Unity\Codes\Model\Module\Actor\**\*.cs"> 
             <Link>Module\Actor\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 

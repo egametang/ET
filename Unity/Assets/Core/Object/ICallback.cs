@@ -6,47 +6,47 @@
         public void Handle();
     }
 
-    public interface IAction<A>
+    public interface IAction<in A>
     {
         public void Handle(A a);
     }
 
-    public interface IAction<A, B>
+    public interface IAction<in A, in B>
     {
         public void Handle(A a, B b);
     }
 
-    public interface IAction<A, B, C>
+    public interface IAction<in A, in B, in C>
     {
         public void Handle(A a, B b, C c);
     }
 
-    public interface IAction<A, B, C, D>
+    public interface IAction<in A, in B, in C, in D>
     {
         public void Handle(A a, B b, C c, D d);
     }
 
-    public interface IFunc<T>
+    public interface IFunc<out T>
     {
         public T Handle();
     }
 
-    public interface IFunc<T, A>
+    public interface IFunc<in A, out T>
     {
         public T Handle(A a);
     }
 
-    public interface IFunc<T, A, B>
+    public interface IFunc<in A, in B, out T>
     {
         public T Handle(A a, B b);
     }
 
-    public interface IFunc<T, A, B, C>
+    public interface IFunc<in A, in B, in C, out T>
     {
         public T Handle(A a, B b, C c);
     }
 
-    public interface IFunc<T, A, B, C, D>
+    public interface IFunc<in A, in B, in C, in D, out T>
     {
         public T Handle(A a, B b, C c, D d);
     }

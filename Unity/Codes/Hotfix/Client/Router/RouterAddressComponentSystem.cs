@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 
-namespace ET
+namespace ET.Client
 {
     [FriendClass(typeof(RouterAddressComponent))]
     public static class RouterAddressComponentSystem

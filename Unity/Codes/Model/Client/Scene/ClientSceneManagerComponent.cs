@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ET
+namespace ET.Client
 {
     [ComponentOf(typeof(Scene))]
     public class ClientSceneManagerComponent: Entity, IAwake, IDestroy

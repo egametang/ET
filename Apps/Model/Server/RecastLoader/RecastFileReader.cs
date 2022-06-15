@@ -2,9 +2,10 @@
 
 namespace ET.Server
 {
-    public static class RecastFileReader
+    [Callback(CallbackType.RecastFileLoader)]
+    public class RecastFileReader: IFunc<string, byte[]>
     {
-        public static byte[] Read(string name)
+        public byte[] Handle(string name)
         {
             return File.ReadAllBytes(Path.Combine("../Config/Recast", name));
         }
