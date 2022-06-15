@@ -33,6 +33,8 @@ namespace ET
 
         public static List<Action> FrameFinishCallback = new List<Action>();
 
+        public static ILog ILog { get; set; }
+
         public static void Update()
         {
             ThreadSynchronizationContext.Update();

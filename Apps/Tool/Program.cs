@@ -34,7 +34,7 @@ namespace ET
 
                 Options.Instance = options;
 
-                Log.ILog = new NLogger(Game.Options.AppType.ToString());
+                Game.ILog = new NLogger(Game.Options.AppType.ToString());
                 LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
                 Log.Info($"server start........................ {Game.Scene.Id}");

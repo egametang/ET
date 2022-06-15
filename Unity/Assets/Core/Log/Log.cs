@@ -1,18 +1,10 @@
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Net;
-
-#if APPS
-using NLog;
-#endif
 
 namespace ET
 {
     public static class Log
     {
-        public static ILog ILog { get; set; }
-        
         private const int TraceLevel = 1;
         private const int DebugLevel = 2;
         private const int InfoLevel = 3;
@@ -34,7 +26,7 @@ namespace ET
                 return;
             }
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{msg}\n{st}");
+            Game.ILog.Trace($"{msg}\n{st}");
         }
 
         public static void Debug(string msg)
@@ -43,7 +35,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Debug(msg);
+            Game.ILog.Debug(msg);
         }
 
         public static void Info(string msg)
@@ -52,7 +44,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Info(msg);
+            Game.ILog.Info(msg);
         }
 
         public static void TraceInfo(string msg)
@@ -62,7 +54,7 @@ namespace ET
                 return;
             }
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{msg}\n{st}");
+            Game.ILog.Trace($"{msg}\n{st}");
         }
 
         public static void Warning(string msg)
@@ -72,24 +64,24 @@ namespace ET
                 return;
             }
 
-            ILog.Warning(msg);
+            Game.ILog.Warning(msg);
         }
 
         public static void Error(string msg)
         {
             StackTrace st = new StackTrace(1, true);
-            ILog.Error($"{msg}\n{st}");
+            Game.ILog.Error($"{msg}\n{st}");
         }
 
         public static void Error(Exception e)
         {
             if (e.Data.Contains("StackTrace"))
             {
-                ILog.Error($"{e.Data["StackTrace"]}\n{e}");
+                Game.ILog.Error($"{e.Data["StackTrace"]}\n{e}");
                 return;
             }
             string str = e.ToString();
-            ILog.Error(str);
+            Game.ILog.Error(str);
         }
 
         public static void Trace(string message, params object[] args)
@@ -99,7 +91,7 @@ namespace ET
                 return;
             }
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{string.Format(message, args)}\n{st}");
+            Game.ILog.Trace($"{string.Format(message, args)}\n{st}");
         }
 
         public static void Warning(string message, params object[] args)
@@ -108,7 +100,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Warning(string.Format(message, args));
+            Game.ILog.Warning(string.Format(message, args));
         }
 
         public static void Info(string message, params object[] args)
@@ -117,7 +109,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Info(string.Format(message, args));
+            Game.ILog.Info(string.Format(message, args));
         }
 
         public static void Debug(string message, params object[] args)
@@ -126,7 +118,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Debug(string.Format(message, args));
+            Game.ILog.Debug(string.Format(message, args));
 
         }
 
@@ -134,7 +126,7 @@ namespace ET
         {
             StackTrace st = new StackTrace(1, true);
             string s = string.Format(message, args) + '\n' + st;
-            ILog.Error(s);
+            Game.ILog.Error(s);
         }
         
         public static void Console(string message)
@@ -143,7 +135,7 @@ namespace ET
             {
                 System.Console.WriteLine(message);
             }
-            ILog.Debug(message);
+            Game.ILog.Debug(message);
         }
         
         public static void Console(string message, params object[] args)
@@ -153,7 +145,7 @@ namespace ET
             {
                 System.Console.WriteLine(s);
             }
-            ILog.Debug(s);
+            Game.ILog.Debug(s);
         }
     }
 }
