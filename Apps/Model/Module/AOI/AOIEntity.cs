@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace ET.Server
+namespace ET
 {
     [ComponentOf(typeof(Unit))]
     public class AOIEntity: Entity, IAwake<int, Vector3>, IDestroy

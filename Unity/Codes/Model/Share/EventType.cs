@@ -7,30 +7,12 @@ namespace ET
         public struct AppStart
         {
         }
-		
-        public struct MoveStart
-        {
-        }
 
-        public struct MoveStop
-        {
-        }
-        
         public struct SceneChangeStart
         {
         }
         
-        
         public struct SceneChangeFinish
-        {
-        }
-
-        public struct ChangePosition
-        {
-            public Vector3 OldPos;
-        }
-
-        public struct ChangeRotation
         {
         }
 

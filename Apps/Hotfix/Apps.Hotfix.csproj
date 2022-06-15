@@ -40,6 +40,14 @@
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Move\**\*.cs">
+            <Link>Module\Move\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Unit\**\*.cs">
+            <Link>Module\Unit\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Unity\Codes\Hotfix\Client\**\*.cs">
             <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

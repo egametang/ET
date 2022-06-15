@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace ET.Server
+namespace ET
 {
     [FriendClass(typeof(AOIEntity))]
     [FriendClass(typeof(Cell))]
