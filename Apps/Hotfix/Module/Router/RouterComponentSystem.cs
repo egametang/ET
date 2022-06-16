@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace ET
 {
-    [FriendClass(typeof (RouterComponent))]
-    [FriendClass(typeof (RouterNode))]
+    [FriendOf(typeof (RouterComponent))]
+    [FriendOf(typeof (RouterNode))]
     public static class RouterComponentSystem
     {
         [ObjectSystem]

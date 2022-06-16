@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClass(typeof(UI))]
+    [FriendOf(typeof(UI))]
     public static class UISystem
     {
         [ObjectSystem]

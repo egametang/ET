@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
-	[FriendClass(typeof(UILoginComponent))]
+	[FriendOf(typeof(UILoginComponent))]
 	public static class UILoginComponentSystem
 	{
 		[ObjectSystem]

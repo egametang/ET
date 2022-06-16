@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ET.Client
 {
-    [FriendClass(typeof(ResourcesLoaderComponent))]
+    [FriendOf(typeof(ResourcesLoaderComponent))]
     public static class ResourcesLoaderComponentSystem
     {
         [ObjectSystem]

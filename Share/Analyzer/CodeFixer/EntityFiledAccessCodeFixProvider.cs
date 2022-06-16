@@ -26,8 +26,8 @@ namespace ET.Analyzer
             Diagnostic diagnostic = context.Diagnostics.First();
 
             Microsoft.CodeAnalysis.Text.TextSpan diagnosticSpan = diagnostic.Location.SourceSpan;
-            // 获取diagnostic 传递来的 FriendClassType 值
-            diagnostic.Properties.TryGetValue("FriendClassType", out string? frienClassType);
+            // 获取diagnostic 传递来的 FriendOfType 值
+            diagnostic.Properties.TryGetValue("FriendOfType", out string? frienClassType);
             if (frienClassType==null)
             {
                 return;
@@ -36,8 +36,8 @@ namespace ET.Analyzer
             ClassDeclarationSyntax? classDeclaration = root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<ClassDeclarationSyntax>().First();
             // 构造Code Action
             CodeAction action = CodeAction.Create(
-                "Add FriendClass Attribute",
-                c => AddFriendClassAttributeAsync(context.Document, classDeclaration,frienClassType, c),
+                "Add FriendOf Attribute",
+                c => AddFriendOfAttributeAsync(context.Document, classDeclaration,frienClassType, c),
                 equivalenceKey: nameof(EntityFiledAccessCodeFixProvider));
 
             // 注册codeFix Code Action
@@ -45,13 +45,13 @@ namespace ET.Analyzer
         }
 
 
-        private static async Task<Document> AddFriendClassAttributeAsync(Document document, ClassDeclarationSyntax? classDeclaration, string friendClassType, CancellationToken cancellationToken)
+        private static async Task<Document> AddFriendOfAttributeAsync(Document document, ClassDeclarationSyntax? classDeclaration, string friendOfType, CancellationToken cancellationToken)
         {
-            // 构造FriendClassAttribute 语法节点
-            AttributeArgumentSyntax attributeArgument = SyntaxFactory.AttributeArgument(SyntaxFactory.TypeOfExpression(SyntaxFactory.ParseTypeName(friendClassType)));
-            AttributeSyntax attributeSyntax = SyntaxFactory.Attribute(SyntaxFactory.IdentifierName("FriendClassAttribute"))
+            // 构造FriendOfAttribute 语法节点
+            AttributeArgumentSyntax attributeArgument = SyntaxFactory.AttributeArgument(SyntaxFactory.TypeOfExpression(SyntaxFactory.ParseTypeName(friendOfType)));
+            AttributeSyntax attributeSyntax = SyntaxFactory.Attribute(SyntaxFactory.IdentifierName("FriendOfAttribute"))
                     .WithArgumentList(SyntaxFactory.AttributeArgumentList(SyntaxFactory.SingletonSeparatedList(attributeArgument)));
-            // 构造添加构造FriendClassAttribute 得AttributeList语法节点
+            // 构造添加构造FriendOfAttribute 得AttributeList语法节点
             SyntaxList<AttributeListSyntax>? attributes = classDeclaration?.AttributeLists.Add(
                 SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(attributeSyntax)).NormalizeWhitespace());
 

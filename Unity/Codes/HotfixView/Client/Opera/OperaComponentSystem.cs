@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [FriendClass(typeof(OperaComponent))]
+    [FriendOf(typeof(OperaComponent))]
     public static class OperaComponentSystem
     {
         [ObjectSystem]

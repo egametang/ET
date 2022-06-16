@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ET
 {
-    [FriendClass(typeof(Cell))]
+    [FriendOf(typeof(Cell))]
     public static class CellSystem
     {
         [ObjectSystem]

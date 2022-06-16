@@ -2,9 +2,9 @@
 {
     public static class AnalyzeAssembly
     {
-        public const string AppsModel = "Apps.Model";
+        public const string AppsModel = "Model";
 
-        public const string AppsHotfix = "Apps.Hotfix";
+        public const string AppsHotfix = "Hotfix";
 
         public const string UnityModel = "Unity.Model";
 

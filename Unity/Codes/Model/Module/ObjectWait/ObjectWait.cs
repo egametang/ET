@@ -21,7 +21,7 @@ namespace ET
         }
     }
 
-    [FriendClass(typeof(ObjectWait))]
+    [FriendOf(typeof(ObjectWait))]
     public static class ObjectWaitSystem
     {
         [ObjectSystem]

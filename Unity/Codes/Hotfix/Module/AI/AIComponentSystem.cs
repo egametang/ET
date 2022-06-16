@@ -2,8 +2,8 @@ using System;
 
 namespace ET
 {
-    [FriendClass(typeof(AIComponent))]
-    [FriendClass(typeof(AIDispatcherComponent))]
+    [FriendOf(typeof(AIComponent))]
+    [FriendOf(typeof(AIDispatcherComponent))]
     public static class AIComponentSystem
     {
         [Callback(CallbackType.AITimer)]

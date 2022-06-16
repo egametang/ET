@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    [FriendClass(typeof(DBManagerComponent))]
+    [FriendOf(typeof(DBManagerComponent))]
     public static class DBManagerComponentSystem
     {
         [ObjectSystem]

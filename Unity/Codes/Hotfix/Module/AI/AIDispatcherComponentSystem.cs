@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    [FriendClass(typeof(AIDispatcherComponent))]
+    [FriendOf(typeof(AIDispatcherComponent))]
     public static class AIDispatcherComponentSystem
     {
         [ObjectSystem]

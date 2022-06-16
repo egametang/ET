@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [FriendClass(typeof (CoroutineLockComponent))]
+    [FriendOf(typeof (CoroutineLockComponent))]
     public static class CoroutineLockComponentSystem
     {
         [ObjectSystem]
@@ -38,7 +38,7 @@ namespace ET
             }
         }
 
-        [FriendClass(typeof (CoroutineLock))]
+        [FriendOf(typeof (CoroutineLock))]
         public class CoroutineLockComponentUpdateSystem: UpdateSystem<CoroutineLockComponent>
         {
             public override void Update(CoroutineLockComponent self)

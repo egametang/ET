@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [FriendClass(typeof(NumericWatcherComponent))]
+    [FriendOf(typeof(NumericWatcherComponent))]
     public static class NumericWatcherComponentSystem
     {
         [ObjectSystem]

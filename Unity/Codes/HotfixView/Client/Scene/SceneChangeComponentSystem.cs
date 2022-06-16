@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-    [FriendClass(typeof(SceneChangeComponent))]
+    [FriendOf(typeof(SceneChangeComponent))]
     public static class SceneChangeComponentSystem
     {
         public class SceneChangeComponentUpdateSystem: UpdateSystem<SceneChangeComponent>

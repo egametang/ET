@@ -1,6 +1,6 @@
 ﻿namespace ET.Server
 {
-    [FriendClass(typeof(Player))]
+    [FriendOf(typeof(Player))]
     public static class PlayerSystem
     {
         [ObjectSystem]

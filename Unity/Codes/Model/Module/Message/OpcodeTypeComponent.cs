@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [FriendClass(typeof(OpcodeTypeComponent))]
+    [FriendOf(typeof(OpcodeTypeComponent))]
     public static class OpcodeTypeComponentSystem
     {
         [ObjectSystem]

@@ -18,7 +18,7 @@ namespace ET
         }
     }
     
-    [FriendClass(typeof(Session))]
+    [FriendOf(typeof(Session))]
     public static class SessionSystem
     {
         [ObjectSystem]

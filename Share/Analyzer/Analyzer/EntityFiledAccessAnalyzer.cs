@@ -12,7 +12,7 @@ namespace ET.Analyzer
     {
         private const string Title = "实体字段访问错误";
 
-        private const string MessageFormat = "实体: {0} 字段: {1} 只能在实体类生命周期组件或友元类(含有FriendClassAttribute)中访问";
+        private const string MessageFormat = "实体: {0} 字段: {1} 只能在实体类生命周期组件或友元类(含有FriendOfAttribute)中访问";
 
         private const string Description = "请使用实体类属性或方法访问其他实体字段.";
 
@@ -22,7 +22,7 @@ namespace ET.Analyzer
 
         private const string ISystemType = "ET.ISystemType";
 
-        private const string FriendClassAttribute = "ET.FriendClassAttribute";
+        private const string FriendOfAttribute = "ET.FriendOfAttribute";
 
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityFiledAccessAnalyzerRuleId,
             Title,
@@ -109,13 +109,13 @@ namespace ET.Analyzer
             }
 
             //判断是否在实体类的友元类中
-            if (this.CheckIsEntityFriendClass(accessFieldClassSymbol, filedSymbol.ContainingType))
+            if (this.CheckIsEntityFriendOf(accessFieldClassSymbol, filedSymbol.ContainingType))
             {
                 return;
             }
 
             var builder = ImmutableDictionary.CreateBuilder<string, string?>();
-            builder.Add("FriendClassType",filedSymbol.ContainingType.ToString());
+            builder.Add("FriendOfType",filedSymbol.ContainingType.ToString());
             Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax.GetLocation(), builder.ToImmutable(),filedSymbol.ContainingType.ToString(),
                 filedSymbol.Name);
             context.ReportDiagnostic(diagnostic);
@@ -148,12 +148,12 @@ namespace ET.Analyzer
             return false;
         }
 
-        private bool CheckIsEntityFriendClass(INamedTypeSymbol accessFieldTypeSymbol, INamedTypeSymbol entityTypeSymbol)
+        private bool CheckIsEntityFriendOf(INamedTypeSymbol accessFieldTypeSymbol, INamedTypeSymbol entityTypeSymbol)
         {
             var attributes = accessFieldTypeSymbol.GetAttributes();
             foreach (AttributeData? attributeData in attributes)
             {
-                if (attributeData.AttributeClass?.ToString() != FriendClassAttribute)
+                if (attributeData.AttributeClass?.ToString() != FriendOfAttribute)
                 {
                     continue;
                 }

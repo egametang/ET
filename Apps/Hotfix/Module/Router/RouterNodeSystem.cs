@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [FriendClass(typeof(RouterNode))]
+    [FriendOf(typeof(RouterNode))]
     public static class RouterNodeSystem
     {
         [ObjectSystem]

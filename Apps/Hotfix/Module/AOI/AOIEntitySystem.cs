@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClass(typeof(AOIEntity))]
-    [FriendClass(typeof(Cell))]
+    [FriendOf(typeof(AOIEntity))]
+    [FriendOf(typeof(Cell))]
     public static class AOIEntitySystem
     {
         [ObjectSystem]

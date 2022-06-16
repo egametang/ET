@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace ET.Client
 {
-    [FriendClass(typeof(RouterAddressComponent))]
+    [FriendOf(typeof(RouterAddressComponent))]
     public static class RouterAddressComponentSystem
     {
         public class RouterAddressComponentAwakeSystem: AwakeSystem<RouterAddressComponent, string>

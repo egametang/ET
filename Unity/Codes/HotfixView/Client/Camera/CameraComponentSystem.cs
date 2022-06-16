@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-	[FriendClass(typeof(CameraComponent))]
+	[FriendOf(typeof(CameraComponent))]
 	public static class CameraComponentSystem
 	{
 		[ObjectSystem]
