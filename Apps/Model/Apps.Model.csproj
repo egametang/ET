@@ -44,4 +44,7 @@
         <ProjectReference Include="..\ThirdParty\Apps.ThirdParty.csproj" />
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Server\Map" />
+    </ItemGroup>
 </Project>

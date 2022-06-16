@@ -30,7 +30,7 @@
         </Compile>
 
         <Compile Include="..\..\Unity\Codes\Hotfix\Share\**\*.cs">
-            <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
+            <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link> 
         </Compile>
     </ItemGroup>
     <ItemGroup>
