@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using CommandLine;
 using NLog;
@@ -20,9 +21,11 @@ namespace ET
             SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
             try
-            {		
-                Game.EventSystem.Add(typeof(Game).Assembly);
-				
+            {
+                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly);
+                    
+                Game.EventSystem.Add(types);
+                
                 ProtobufHelper.Init();
                 MongoHelper.Register(Game.EventSystem.GetTypes());
 				

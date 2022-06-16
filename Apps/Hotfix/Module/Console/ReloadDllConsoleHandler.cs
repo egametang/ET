@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace ET
 {
     [ConsoleHandler(ConsoleMode.ReloadDll)]
@@ -10,8 +13,10 @@ namespace ET
                 case ConsoleMode.ReloadDll:
                     contex.Parent.RemoveComponent<ModeContex>();
                     
-                    Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
-                    Game.EventSystem.LoadAllAssembliesType();
+                    Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Unit).Assembly, DllHelper.GetHotfixAssembly());
+                    
+                    Game.EventSystem.Add(types);
+                    
                     Game.EventSystem.Load();
                     break;
             }

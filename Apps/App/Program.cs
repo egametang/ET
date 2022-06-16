@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using CommandLine;
 using NLog;
@@ -21,10 +22,9 @@ namespace ET
 			
 			try
 			{	
-				Game.EventSystem.Add(typeof(Game).Assembly);
-				Game.EventSystem.Add(typeof(Unit).Assembly);
-				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
-				Game.EventSystem.LoadAllAssembliesType();
+				Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Unit).Assembly, DllHelper.GetHotfixAssembly());
+                    
+				Game.EventSystem.Add(types);
 				
 				ProtobufHelper.Init();
 				MongoHelper.Register(Game.EventSystem.GetTypes());
