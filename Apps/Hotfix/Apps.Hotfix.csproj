@@ -20,32 +20,9 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\**\*.cs">
-            <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
 
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\AI\**\*.cs">
-            <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Config\**\*.cs">
-            <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Recast\**\*.cs">
-            <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Message\**\*.cs">
-            <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Move\**\*.cs">
-            <Link>Module\Move\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Unit\**\*.cs">
-            <Link>Module\Unit\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\**\*.cs">
+            <Link>Module\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
         <Compile Include="..\..\Unity\Codes\Hotfix\Client\**\*.cs">
