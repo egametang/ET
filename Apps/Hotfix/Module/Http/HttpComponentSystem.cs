@@ -4,7 +4,7 @@ using System.Net;
 
 namespace ET
 {
-    [FriendClass(typeof(HttpComponent))]
+    [FriendOf(typeof(HttpComponent))]
     public static class HttpComponentSystem
     {
         public class HttpComponentAwakeSystem : AwakeSystem<HttpComponent, string>

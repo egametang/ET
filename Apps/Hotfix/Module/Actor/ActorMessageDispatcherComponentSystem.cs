@@ -6,7 +6,7 @@ namespace ET
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
-    [FriendClass(typeof(ActorMessageDispatcherComponent))]
+    [FriendOf(typeof(ActorMessageDispatcherComponent))]
     public static class ActorMessageDispatcherComponentHelper
     {
         [ObjectSystem]

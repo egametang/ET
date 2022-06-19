@@ -7,7 +7,7 @@ namespace ET
 	/// <summary>
 	/// 管理所有UI GameObject 以及UI事件
 	/// </summary>
-	[FriendClass(typeof(UIEventComponent))]
+	[FriendOf(typeof(UIEventComponent))]
 	public static class UIEventComponentSystem
 	{
 		[ObjectSystem]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [FriendClass(typeof(RobotCaseComponent))]
+    [FriendOf(typeof(RobotCaseComponent))]
     public static class RobotCaseComponentSystem
     {
         [ObjectSystem]

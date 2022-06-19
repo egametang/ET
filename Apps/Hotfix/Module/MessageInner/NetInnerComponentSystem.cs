@@ -3,8 +3,8 @@ using System.Net;
 
 namespace ET
 {
-    [FriendClass(typeof(NetInnerComponent))]
-    [FriendClass(typeof(NetThreadComponent))]
+    [FriendOf(typeof(NetInnerComponent))]
+    [FriendOf(typeof(NetThreadComponent))]
     public static class NetInnerComponentSystem
     {
         [ObjectSystem]

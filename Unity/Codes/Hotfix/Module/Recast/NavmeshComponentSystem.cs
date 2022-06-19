@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    [FriendClass(typeof(NavmeshComponent))]
+    [FriendOf(typeof(NavmeshComponent))]
     public static class NavmeshComponentSystem
     {
         public class AwakeSystem: AwakeSystem<NavmeshComponent>

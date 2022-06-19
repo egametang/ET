@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    [FriendClass(typeof(ConsoleComponent))]
-    [FriendClass(typeof(ModeContex))]
+    [FriendOf(typeof(ConsoleComponent))]
+    [FriendOf(typeof(ModeContex))]
     public static class ConsoleComponentSystem
     {
         [ObjectSystem]

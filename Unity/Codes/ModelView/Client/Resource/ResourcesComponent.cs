@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [FriendClass(typeof(ABInfo))]
+    [FriendOf(typeof(ABInfo))]
     public static class ABInfoSystem
     {
         [ObjectSystem]
@@ -59,7 +59,7 @@ namespace ET.Client
     }
 
     // 用于字符串转换，减少GC
-    [FriendClass(typeof(ResourcesComponent))]
+    [FriendOf(typeof(ResourcesComponent))]
     public static class AssetBundleHelper
     {
         public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
@@ -125,8 +125,8 @@ namespace ET.Client
 
 
 
-    [FriendClass(typeof(ABInfo))]
-    [FriendClass(typeof(ResourcesComponent))]
+    [FriendOf(typeof(ABInfo))]
+    [FriendOf(typeof(ResourcesComponent))]
     public static class ResourcesComponentSystem
     {
         [ObjectSystem]

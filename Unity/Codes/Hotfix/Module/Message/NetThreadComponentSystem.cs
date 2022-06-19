@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace ET
 {
-    [FriendClass(typeof(NetThreadComponent))]
+    [FriendOf(typeof(NetThreadComponent))]
     public static class NetThreadComponentSystem
     {
         [ObjectSystem]

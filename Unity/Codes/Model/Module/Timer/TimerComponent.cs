@@ -46,8 +46,8 @@ namespace ET
         public int Type;
     }
 
-    [FriendClass(typeof(TimerAction))]
-    [FriendClass(typeof(TimerComponent))]
+    [FriendOf(typeof(TimerAction))]
+    [FriendOf(typeof(TimerComponent))]
     public static class TimerComponentSystem
     {
         [ObjectSystem]

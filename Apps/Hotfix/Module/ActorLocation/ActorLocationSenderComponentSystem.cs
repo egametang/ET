@@ -42,8 +42,8 @@ namespace ET
         }
     }
 
-    [FriendClass(typeof(ActorLocationSenderComponent))]
-    [FriendClass(typeof(ActorLocationSender))]
+    [FriendOf(typeof(ActorLocationSenderComponent))]
+    [FriendOf(typeof(ActorLocationSender))]
     public static class ActorLocationSenderComponentSystem
     {
         public static void Check(this ActorLocationSenderComponent self)

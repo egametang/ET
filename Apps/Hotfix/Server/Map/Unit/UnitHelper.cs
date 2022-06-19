@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace ET.Server
 {
-    [FriendClass(typeof(MoveComponent))]
-    [FriendClass(typeof(NumericComponent))]
+    [FriendOf(typeof(MoveComponent))]
+    [FriendOf(typeof(NumericComponent))]
     public static class UnitHelper
     {
         public static UnitInfo CreateUnitInfo(Unit unit)

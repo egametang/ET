@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClass(typeof(MoveComponent))]
+    [FriendOf(typeof(MoveComponent))]
     public static class MoveComponentSystem
     {
         [Callback(CallbackType.MoveTimer)]

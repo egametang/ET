@@ -8,7 +8,7 @@ namespace ET
         public int Time;
     }
 
-    [FriendClass(typeof(CoroutineLockQueue))]
+    [FriendOf(typeof(CoroutineLockQueue))]
     public static class CoroutineLockQueueSystem
     {
         [ObjectSystem]

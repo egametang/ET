@@ -5,7 +5,7 @@ namespace ET
 	/// <summary>
 	/// 管理Scene上的UI
 	/// </summary>
-	[FriendClass(typeof(UIComponent))]
+	[FriendOf(typeof(UIComponent))]
 	public static class UIComponentSystem
 	{
 		public static async ETTask<UI> Create(this UIComponent self, string uiType, UILayer uiLayer)

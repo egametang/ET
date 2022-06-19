@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-	[FriendClass(typeof(ConfigComponent))]
+	[FriendOf(typeof(ConfigComponent))]
 	public static class ConfigComponentSystem
 	{
 		[ObjectSystem]

@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-    [FriendClass(typeof(ClientSceneManagerComponent))]
+    [FriendOf(typeof(ClientSceneManagerComponent))]
     public static class ClientSceneManagerComponentSystem
     {
         [ObjectSystem]

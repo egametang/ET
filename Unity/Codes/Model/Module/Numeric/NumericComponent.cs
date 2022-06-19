@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
-    [FriendClass(typeof (NumericComponent))]
+    [FriendOf(typeof (NumericComponent))]
     public static class NumericComponentSystem
     {
         public static float GetAsFloat(this NumericComponent self, int numericType)

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [FriendClass(typeof(RobotCaseDispatcherComponent))]
-    [FriendClass(typeof(RobotCase))]
+    [FriendOf(typeof(RobotCaseDispatcherComponent))]
+    [FriendOf(typeof(RobotCase))]
     public static class RobotCaseDispatcherComponentSystem
     {
         [ObjectSystem]

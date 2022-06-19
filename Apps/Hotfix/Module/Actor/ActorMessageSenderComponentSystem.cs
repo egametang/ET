@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ET
 {
-    [FriendClass(typeof(ActorMessageSenderComponent))]
+    [FriendOf(typeof(ActorMessageSenderComponent))]
     public static class ActorMessageSenderComponentSystem
     {
         [Callback(CallbackType.ActorMessageSenderChecker)]

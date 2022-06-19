@@ -4,7 +4,7 @@ using System.Net;
 
 namespace ET
 {
-    [FriendClass(typeof(NetKcpComponent))]
+    [FriendOf(typeof(NetKcpComponent))]
     public static class NetKcpComponentSystem
     {
         [ObjectSystem]

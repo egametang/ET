@@ -38,9 +38,9 @@ namespace ET
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 
-					Game.EventSystem.Add(typeof(Game).Assembly);
-					Game.EventSystem.Add(this.assembly);
-					Game.EventSystem.LoadAllAssembliesType();
+
+					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly);
+					Game.EventSystem.Add(types);
 					
 					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
@@ -83,11 +83,9 @@ namespace ET
 
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
 			
-			Game.EventSystem.Add(typeof(Game).Assembly);
-			Game.EventSystem.Add(this.assembly);
-			Game.EventSystem.Add(hotfixAssembly);
+			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly, hotfixAssembly);
 			
-			Game.EventSystem.LoadAllAssembliesType();
+			Game.EventSystem.Add(types);
 		}
 	}
 }

@@ -82,8 +82,6 @@ namespace ET
 
         private readonly Dictionary<long, Entity> allEntities = new();
 
-        private readonly Dictionary<string, Assembly> assemblies = new();
-
         private readonly Dictionary<string, Type> allTypes = new();
 
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
@@ -215,25 +213,6 @@ namespace ET
                     this.allCallbacks[callbackAttribute.Type] = obj;
                 }
             }
-        }
-
-        public void Add(Assembly assembly)
-        {
-            this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
-        }
-
-        public void LoadAllAssembliesType()
-        {
-            Dictionary<string, Type> addTypes = new Dictionary<string, Type>();
-
-            foreach (Assembly ass in this.assemblies.Values)
-            {
-                foreach (Type type in ass.GetTypes())
-                {
-                    addTypes[type.FullName] = type;
-                }
-            }
-            this.Add(addTypes);
         }
 
         public HashSet<Type> GetTypes(Type systemAttributeType)

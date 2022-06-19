@@ -4,11 +4,11 @@ namespace ET
 {
     
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class FriendClassAttribute : Attribute
+    public class FriendOfAttribute : Attribute
     {
         public Type Type;
         
-        public FriendClassAttribute(Type type)
+        public FriendOfAttribute(Type type)
         {
             this.Type = type;
         }

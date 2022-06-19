@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClass(typeof(PathfindingComponent))]
+    [FriendOf(typeof(PathfindingComponent))]
     public static class PathfindingComponentSystem
     {
         [ObjectSystem]

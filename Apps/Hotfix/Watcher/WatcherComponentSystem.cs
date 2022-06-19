@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ET
 {
-    [FriendClass(typeof(WatcherComponent))]
+    [FriendOf(typeof(WatcherComponent))]
     public static class WatcherComponentSystem
     {
         public class WatcherComponentAwakeSystem: AwakeSystem<WatcherComponent>

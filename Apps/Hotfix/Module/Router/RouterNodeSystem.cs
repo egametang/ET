@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
-    [FriendClass(typeof(RouterNode))]
-    public static class RouterSystem
+    [FriendOf(typeof(RouterNode))]
+    public static class RouterNodeSystem
     {
         [ObjectSystem]
         public class RouterNodeAwakeSystem: AwakeSystem<RouterNode>

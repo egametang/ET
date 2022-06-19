@@ -20,8 +20,8 @@
         }
     }
     
-    [FriendClass(typeof(LocationComponent))]
-    [FriendClass(typeof(LockInfo))]
+    [FriendOf(typeof(LocationComponent))]
+    [FriendOf(typeof(LockInfo))]
     public static class LocationComponentSystem
     {
         public static async ETTask Add(this LocationComponent self, long key, long instanceId)
