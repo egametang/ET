@@ -94,6 +94,9 @@ namespace ET
         {
             try
             {
+                //防止编译时裁剪掉protobuf
+                ProtoBuf.WireType.Fixed64.ToString();
+                
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
