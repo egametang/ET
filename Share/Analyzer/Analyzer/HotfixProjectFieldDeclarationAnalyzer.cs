@@ -47,24 +47,30 @@ namespace ET.Analyzer
 
             foreach (ISymbol? memberSymbol in namedTypeSymbol.GetMembers())
             {
-                // 筛选出字段成员
-                if (!(memberSymbol is IFieldSymbol fieldSymbol))
+                // 筛选出属性成员
+                if (memberSymbol is IPropertySymbol propertySymbol)
                 {
-                    return;
+                    ReportDiagnostic(propertySymbol);
+                    continue;
                 }
 
-                // 允许声明Const字段
-                if (fieldSymbol.IsConst)
+                // 筛选出非Const字段成员
+                if (memberSymbol is IFieldSymbol fieldSymbol && !fieldSymbol.IsConst)
                 {
-                    return;
+                    ReportDiagnostic(fieldSymbol);
                 }
+            }
 
-                foreach (SyntaxReference? declaringSyntaxReference in fieldSymbol.DeclaringSyntaxReferences)
+            void ReportDiagnostic(ISymbol symbol)
+            {
+                foreach (SyntaxReference? declaringSyntaxReference in symbol.DeclaringSyntaxReferences)
                 {
-                    Diagnostic diagnostic = Diagnostic.Create(Rule, declaringSyntaxReference.GetSyntax()?.GetLocation(), fieldSymbol.Name);
+                    Diagnostic diagnostic = Diagnostic.Create(Rule, declaringSyntaxReference.GetSyntax()?.GetLocation(), symbol.Name);
                     context.ReportDiagnostic(diagnostic);
                 }
             }
         }
+
+        
     }
 }
