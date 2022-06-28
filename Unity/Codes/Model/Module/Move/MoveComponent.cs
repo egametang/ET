@@ -58,7 +58,7 @@ namespace ET
 
         public float Speed; // m/s
 
-        public Action<bool> Callback;
+        public ETTask<bool> tcs;
 
         public List<Vector3> Targets = new List<Vector3>();
 
