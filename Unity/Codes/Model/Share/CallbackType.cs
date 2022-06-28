@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+    [UniqueId(1,10000)]
     public static class CallbackType
     {
         public const int SessionStreamDispatcherClientOuter = 1;

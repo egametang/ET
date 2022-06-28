@@ -37,4 +37,40 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+
+    public static class UniqueIdRangeAnaluzerRule
+    {
+        private const string Title = "唯一Id字段数值区间约束";
+
+        private const string MessageFormat = "类: {0} Id字段: {1}的值： {2} 不在约束的区间内, 请修改";
+
+        private const string Description = "唯一Id字段数值区间约束.";
+        
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.UniqueIdRangeAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class UniqueIdDuplicateAnalyzerRule
+    {
+        private const string Title = "唯一Id字段禁止重复";
+
+        private const string MessageFormat = "类: {0} Id字段: {1}的值： {2} 与其他Id字段值重复, 请修改";
+
+        private const string Description = "唯一Id字段禁止重复.";
+        
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.UniqueIdDuplicateAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

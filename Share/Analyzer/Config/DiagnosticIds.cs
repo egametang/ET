@@ -19,5 +19,12 @@
         public const string ETTaskInSyncMethodAnalyzerRuleId = "ET0008";
         
         public const string ETTaskInAsyncMethodAnalyzerRuleId = "ET0009";
+
+        public const string DelegateAnalyzerRuleId = "ET0010";
+
+        public const string UniqueIdRangeAnalyzerRuleId = "ET0011";
+        
+        public const string UniqueIdDuplicateAnalyzerRuleId = "ET0012";
+        
     }
 }
