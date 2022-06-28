@@ -41,7 +41,7 @@ namespace ET
                 self.StartPos = Vector3.zero;
                 self.NeedTime = 0;
                 self.MoveTimer = 0;
-                self.Callback = null;
+                self.tcs = null;
                 self.Targets.Clear();
                 self.Speed = 0;
                 self.N = 0;
@@ -68,17 +68,16 @@ namespace ET
             
             Unit unit = self.GetParent<Unit>();
 
-            using (ListComponent<Vector3> path = ListComponent<Vector3>.Create())
-            {
-                self.MoveForward(true);
+            using ListComponent<Vector3> path = ListComponent<Vector3>.Create();
+            
+            self.MoveForward(true);
                 
-                path.Add(unit.Position); // 第一个是Unit的pos
-                for (int i = self.N; i < self.Targets.Count; ++i)
-                {
-                    path.Add(self.Targets[i]);
-                }
-                self.MoveToAsync(path, speed).Coroutine();
+            path.Add(unit.Position); // 第一个是Unit的pos
+            for (int i = self.N; i < self.Targets.Count; ++i)
+            {
+                path.Add(self.Targets[i]);
             }
+            self.MoveToAsync(path, speed).Coroutine();
             return true;
         }
 
@@ -94,8 +93,7 @@ namespace ET
             self.IsTurnHorizontal = true;
             self.TurnTime = turnTime;
             self.Speed = speed;
-            ETTask<bool> tcs = ETTask<bool>.Create(true);
-            self.Callback = (ret) => { tcs.SetResult(ret); };
+            self.tcs = ETTask<bool>.Create(true);
 
             Game.EventSystem.Publish(self.GetParent<Unit>(), new EventType.MoveStart());
             
@@ -110,7 +108,7 @@ namespace ET
             try
             {
                 cancellationToken?.Add(CancelAction);
-                moveRet = await tcs;
+                moveRet = await self.tcs;
             }
             finally
             {
@@ -182,11 +180,10 @@ namespace ET
                     unit.Position = self.NextTarget;
                     unit.Rotation = self.To;
 
-                    Action<bool> callback = self.Callback;
-                    self.Callback = null;
-
+                    var tcs = self.tcs;
+                    self.tcs = null;
                     self.Clear();
-                    callback?.Invoke(!needCancel);
+                    tcs?.SetResult(!needCancel);
                     return;
                 }
 
@@ -296,11 +293,11 @@ namespace ET
             self.TurnTime = 0;
             self.IsTurnHorizontal = false;
 
-            if (self.Callback != null)
+            if (self.tcs != null)
             {
-                Action<bool> callback = self.Callback;
-                self.Callback = null;
-                callback.Invoke(false);
+                var tcs = self.tcs;
+                self.tcs = null;
+                tcs.SetResult(false);
             }
         }
     }

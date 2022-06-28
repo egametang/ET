@@ -13,7 +13,7 @@
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' "> 
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <DefineConstants>TRACE;APPS</DefineConstants>
       <OutputPath>..\..\Bin\</OutputPath>
