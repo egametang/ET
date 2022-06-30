@@ -1,0 +1,953 @@
+// System.Reflection.AssemblyName
+>icalls/mscorlib/System.Reflection/AssemblyName.h
+System.Reflection.AssemblyName::GetNativeName(System.IntPtr) mscorlib::System::Reflection::AssemblyName::GetNativeName
+System.Reflection.AssemblyName::ParseAssemblyName(System.IntPtr,Mono.MonoAssemblyName&,System.Boolean&,System.Boolean&) mscorlib::System::Reflection::AssemblyName::ParseAssemblyName
+System.Reflection.AssemblyName::get_public_token(System.Byte*,System.Byte*,System.Int32) mscorlib::System::Reflection::AssemblyName::get_public_token
+
+// System.AppDomain
+>icalls/mscorlib/System/AppDomain.h
+System.AppDomain::createDomain(System.String,System.AppDomainSetup) mscorlib::System::AppDomain::createDomain
+System.AppDomain::getCurDomain() mscorlib::System::AppDomain::getCurDomain
+System.AppDomain::getRootDomain() mscorlib::System::AppDomain::getRootDomain
+System.AppDomain::InternalSetDomain(System.AppDomain) mscorlib::System::AppDomain::InternalSetDomain
+System.AppDomain::InternalSetDomainByID(System.Int32) mscorlib::System::AppDomain::InternalSetDomainByID
+System.AppDomain::getSetup() mscorlib::System::AppDomain::getSetup
+System.AppDomain::InternalIsFinalizingForUnload(System.Int32) mscorlib::System::AppDomain::InternalIsFinalizingForUnload
+System.AppDomain::ExecuteAssembly(System.Reflection.Assembly,System.String[]) mscorlib::System::AppDomain::ExecuteAssembly
+System.AppDomain::GetData(System.String) mscorlib::System::AppDomain::GetData
+System.AppDomain::LoadAssembly(System.String,System.Security.Policy.Evidence,System.Boolean,System.Threading.StackCrawlMark&) mscorlib::System::AppDomain::LoadAssembly
+System.AppDomain::LoadAssemblyRaw(System.Byte[],System.Byte[],System.Security.Policy.Evidence,System.Boolean) mscorlib::System::AppDomain::LoadAssemblyRaw
+System.AppDomain::GetAssemblies(System.Boolean) mscorlib::System::AppDomain::GetAssemblies
+System.AppDomain::InternalGetContext() mscorlib::System::AppDomain::InternalGetContext
+System.AppDomain::InternalGetDefaultContext() mscorlib::System::AppDomain::InternalGetDefaultContext
+System.AppDomain::InternalSetContext(System.Runtime.Remoting.Contexts.Context) mscorlib::System::AppDomain::InternalSetContext
+System.AppDomain::getFriendlyName() mscorlib::System::AppDomain::getFriendlyName
+System.AppDomain::InternalGetProcessGuid(System.String) mscorlib::System::AppDomain::InternalGetProcessGuid
+System.AppDomain::DoUnhandledException(System.Exception) mscorlib::System::AppDomain::DoUnhandledException
+System.AppDomain::InternalPopDomainRef() mscorlib::System::AppDomain::InternalPopDomainRef
+System.AppDomain::InternalPushDomainRef(System.AppDomain) mscorlib::System::AppDomain::InternalPushDomainRef
+System.AppDomain::InternalPushDomainRefByID(System.Int32) mscorlib::System::AppDomain::InternalPushDomainRefByID
+System.AppDomain::InternalUnload(System.Int32) mscorlib::System::AppDomain::InternalUnload
+System.AppDomain::SetData(System.String,System.Object) mscorlib::System::AppDomain::SetData
+
+// System.Array
+>icalls/mscorlib/System/Array.h
+System.Array::CreateInstanceImpl(System.Type,System.Int32[],System.Int32[]) mscorlib::System::Array::CreateInstanceImpl
+System.Array::FastCopy(System.Array,System.Int32,System.Array,System.Int32,System.Int32) mscorlib::System::Array::FastCopy
+System.Array::GetLength(System.Int32) mscorlib::System::Array::GetLength
+System.Array::GetLowerBound(System.Int32) mscorlib::System::Array::GetLowerBound
+System.Array::GetRank() mscorlib::System::Array::GetRank
+System.Array::GetValue(System.Int32[]) mscorlib::System::Array::GetValue
+System.Array::GetValueImpl(System.Int32) mscorlib::System::Array::GetValueImpl
+System.Array::ClearInternal(System.Array,System.Int32,System.Int32) mscorlib::System::Array::ClearInternal
+System.Array::SetValue(System.Object,System.Int32[]) mscorlib::System::Array::SetValue
+System.Array::SetValueImpl(System.Object,System.Int32) mscorlib::System::Array::SetValueImpl
+
+// System.MonoCustomAttrs
+>icalls/mscorlib/System/MonoCustomAttrs.h
+System.MonoCustomAttrs::GetCustomAttributesInternal(System.Reflection.ICustomAttributeProvider,System.Type,System.Boolean) mscorlib::System::MonoCustomAttrs::GetCustomAttributesInternal
+System.MonoCustomAttrs::IsDefinedInternal(System.Reflection.ICustomAttributeProvider,System.Type) mscorlib::System::MonoCustomAttrs::IsDefinedInternal
+System.MonoCustomAttrs::GetCustomAttributesDataInternal(System.Reflection.ICustomAttributeProvider) mscorlib::System::MonoCustomAttrs::GetCustomAttributesDataInternal
+
+// Mono.Security.Cryptography.KeyPairPersistence
+>icalls/mscorlib/Mono.Security.Cryptography/KeyPairPersistence.h
+Mono.Security.Cryptography.KeyPairPersistence::_CanSecure(System.Char*) mscorlib::Mono::Security::Cryptography::KeyPairPersistence::_CanSecure
+Mono.Security.Cryptography.KeyPairPersistence::_IsMachineProtected(System.Char*) mscorlib::Mono::Security::Cryptography::KeyPairPersistence::_IsMachineProtected
+Mono.Security.Cryptography.KeyPairPersistence::_IsUserProtected(System.Char*) mscorlib::Mono::Security::Cryptography::KeyPairPersistence::_IsUserProtected
+Mono.Security.Cryptography.KeyPairPersistence::_ProtectMachine(System.Char*) mscorlib::Mono::Security::Cryptography::KeyPairPersistence::_ProtectMachine
+Mono.Security.Cryptography.KeyPairPersistence::_ProtectUser(System.Char*) mscorlib::Mono::Security::Cryptography::KeyPairPersistence::_ProtectUser
+
+// Mono.Unity.UnityTls
+>icalls/mscorlib/Mono.Unity/UnityTls.h
+Mono.Unity.UnityTls::GetUnityTlsInterface() mscorlib::Mono::Unity::UnityTls::GetUnityTlsInterface
+
+// System.Buffer
+>icalls/mscorlib/System/Buffer.h
+System.Buffer::InternalBlockCopy(System.Array,System.Int32,System.Array,System.Int32,System.Int32) mscorlib::System::Buffer::InternalBlockCopy
+System.Buffer::_ByteLength(System.Array) mscorlib::System::Buffer::_ByteLength
+System.Buffer::InternalMemcpy(System.Byte*,System.Byte*,System.Int32) mscorlib::System::Buffer::InternalMemcpy
+
+// System.CLRConfig
+>icalls/mscorlib/System/CLRConfig.h
+System.CLRConfig::CheckThrowUnobservedTaskExceptions() mscorlib::System::CLRConfig::CheckThrowUnobservedTaskExceptions
+
+// System.Exception
+>icalls/mscorlib/System/Exception.h
+System.Exception::ReportUnhandledException(System.Exception) mscorlib::System::Exception::ReportUnhandledException
+
+// System.ConsoleDriver
+>icalls/mscorlib/System/ConsoleDriver.h
+System.ConsoleDriver::Isatty(System.IntPtr) mscorlib::System::ConsoleDriver::Isatty
+System.ConsoleDriver::SetBreak(System.Boolean) mscorlib::System::ConsoleDriver::SetBreak
+System.ConsoleDriver::SetEcho(System.Boolean) mscorlib::System::ConsoleDriver::SetEcho
+System.ConsoleDriver::TtySetup(System.String,System.String,System.Byte[]&,System.Int32*&) mscorlib::System::ConsoleDriver::TtySetup
+System.ConsoleDriver::InternalKeyAvailable(System.Int32) mscorlib::System::ConsoleDriver::InternalKeyAvailable
+
+// System.Diagnostics.Debugger
+>icalls/mscorlib/System.Diagnostics/Debugger.h
+System.Diagnostics.Debugger::IsAttached_internal() mscorlib::System::Diagnostics::Debugger::IsAttached_internal
+System.Diagnostics.Debugger::IsLogging() mscorlib::System::Diagnostics::Debugger::IsLogging
+System.Diagnostics.Debugger::Log_icall(System.Int32,System.String&,System.String&) mscorlib::System::Diagnostics::Debugger::Log_icall
+
+// System.Diagnostics.StackFrame
+>icalls/mscorlib/System.Diagnostics/StackFrame.h
+System.Diagnostics.StackFrame::get_frame_info(System.Int32,System.Boolean,System.Reflection.MethodBase&,System.Int32&,System.Int32&,System.String&,System.Int32&,System.Int32&) mscorlib::System::Diagnostics::StackFrame::get_frame_info
+
+// System.Enum
+>icalls/mscorlib/System/Enum.h
+System.Enum::GetEnumValuesAndNames(System.RuntimeType,System.UInt64[]&,System.String[]&) mscorlib::System::Enum::GetEnumValuesAndNames
+System.Enum::InternalHasFlag(System.Enum) mscorlib::System::Enum::InternalHasFlag
+System.Enum::get_hashcode() mscorlib::System::Enum::get_hashcode
+System.Enum::InternalCompareTo(System.Object,System.Object) mscorlib::System::Enum::InternalCompareTo
+System.Enum::get_value() mscorlib::System::Enum::get_value
+System.Enum::InternalBoxEnum(System.RuntimeType,System.Int64) mscorlib::System::Enum::InternalBoxEnum
+System.Enum::InternalGetUnderlyingType(System.RuntimeType) mscorlib::System::Enum::InternalGetUnderlyingType
+
+// System.Environment
+>icalls/mscorlib/System/Environment.h
+System.Environment::get_HasShutdownStarted() mscorlib::System::Environment::get_HasShutdownStarted
+System.Environment::GetIs64BitOperatingSystem() mscorlib::System::Environment::GetIs64BitOperatingSystem
+System.Environment::get_ExitCode() mscorlib::System::Environment::get_ExitCode
+System.Environment::get_ProcessorCount() mscorlib::System::Environment::get_ProcessorCount
+System.Environment::get_TickCount() mscorlib::System::Environment::get_TickCount
+System.Environment::GetPageSize() mscorlib::System::Environment::GetPageSize
+System.Environment::get_Platform() mscorlib::System::Environment::get_Platform
+System.Environment::get_bundled_machine_config() mscorlib::System::Environment::get_bundled_machine_config
+System.Environment::get_MachineName() mscorlib::System::Environment::get_MachineName
+System.Environment::get_UserName() mscorlib::System::Environment::get_UserName
+System.Environment::GetMachineConfigPath() mscorlib::System::Environment::GetMachineConfigPath
+System.Environment::GetNewLine() mscorlib::System::Environment::GetNewLine
+System.Environment::GetOSVersionString() mscorlib::System::Environment::GetOSVersionString
+System.Environment::GetWindowsFolderPath(System.Int32) mscorlib::System::Environment::GetWindowsFolderPath
+System.Environment::internalGetEnvironmentVariable_native(System.IntPtr) mscorlib::System::Environment::internalGetEnvironmentVariable_native
+System.Environment::internalGetHome() mscorlib::System::Environment::internalGetHome
+System.Environment::GetCommandLineArgs() mscorlib::System::Environment::GetCommandLineArgs
+System.Environment::GetEnvironmentVariableNames() mscorlib::System::Environment::GetEnvironmentVariableNames
+System.Environment::GetLogicalDrivesInternal() mscorlib::System::Environment::GetLogicalDrivesInternal
+System.Environment::Exit(System.Int32) mscorlib::System::Environment::Exit
+System.Environment::FailFast(System.String,System.Exception,System.String) mscorlib::System::Environment::FailFast
+System.Environment::InternalSetEnvironmentVariable(System.Char*,System.Int32,System.Char*,System.Int32) mscorlib::System::Environment::InternalSetEnvironmentVariable
+System.Environment::set_ExitCode(System.Int32) mscorlib::System::Environment::set_ExitCode
+
+// System.Globalization.CalendarData
+>icalls/mscorlib/System.Globalization/CalendarData.h
+System.Globalization.CalendarData::fill_calendar_data(System.String,System.Int32) mscorlib::System::Globalization::CalendarData::fill_calendar_data
+
+// System.Globalization.CultureInfo
+>icalls/mscorlib/System.Globalization/CultureInfo.h
+System.Globalization.CultureInfo::construct_internal_locale_from_lcid(System.Int32) mscorlib::System::Globalization::CultureInfo::construct_internal_locale_from_lcid
+System.Globalization.CultureInfo::construct_internal_locale_from_name(System.String) mscorlib::System::Globalization::CultureInfo::construct_internal_locale_from_name
+System.Globalization.CultureInfo::internal_get_cultures(System.Boolean,System.Boolean,System.Boolean) mscorlib::System::Globalization::CultureInfo::internal_get_cultures
+System.Globalization.CultureInfo::get_current_locale_name() mscorlib::System::Globalization::CultureInfo::get_current_locale_name
+
+// System.Globalization.RegionInfo
+>icalls/mscorlib/System.Globalization/RegionInfo.h
+System.Globalization.RegionInfo::construct_internal_region_from_name(System.String) mscorlib::System::Globalization::RegionInfo::construct_internal_region_from_name
+
+// System.IO.DriveInfo
+>icalls/mscorlib/System.IO/DriveInfo.h
+System.IO.DriveInfo::GetDiskFreeSpaceInternal(System.Char*,System.Int32,System.UInt64&,System.UInt64&,System.UInt64&,System.IO.MonoIOError&) mscorlib::System::IO::DriveInfo::GetDiskFreeSpaceInternal
+System.IO.DriveInfo::GetDriveFormatInternal(System.Char*,System.Int32) mscorlib::System::IO::DriveInfo::GetDriveFormatInternal
+System.IO.DriveInfo::GetDriveTypeInternal(System.Char*,System.Int32) mscorlib::System::IO::DriveInfo::GetDriveTypeInternal
+
+// System.IO.FileSystemWatcher
+>icalls/System/System.IO/FileSystemWatcher.h
+System.IO.FileSystemWatcher::InternalSupportsFSW() System::System::IO::FileSystemWatcher::InternalSupportsFSW
+
+// System.IO.MonoIO
+>icalls/mscorlib/System.IO/MonoIO.h
+System.IO.MonoIO::Cancel_internal(System.IntPtr,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Cancel_internal
+System.IO.MonoIO::Close(System.IntPtr,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Close
+System.IO.MonoIO::CopyFile(System.Char*,System.Char*,System.Boolean,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::CopyFile
+System.IO.MonoIO::CreateDirectory(System.Char*,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::CreateDirectory
+System.IO.MonoIO::CreatePipe(System.IntPtr&,System.IntPtr&,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::CreatePipe
+System.IO.MonoIO::DeleteFile(System.Char*,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::DeleteFile
+System.IO.MonoIO::DuplicateHandle(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr&,System.Int32,System.Int32,System.Int32,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::DuplicateHandle
+System.IO.MonoIO::FindCloseFile(System.IntPtr) mscorlib::System::IO::MonoIO::FindCloseFile
+System.IO.MonoIO::FindNextFile(System.IntPtr,System.String&,System.Int32&,System.Int32&) mscorlib::System::IO::MonoIO::FindNextFile
+System.IO.MonoIO::Flush(System.IntPtr,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Flush
+System.IO.MonoIO::GetFileStat(System.Char*,System.IO.MonoIOStat&,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::GetFileStat
+System.IO.MonoIO::MoveFile(System.Char*,System.Char*,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::MoveFile
+System.IO.MonoIO::RemapPath(System.String,System.String&) mscorlib::System::IO::MonoIO::RemapPath
+System.IO.MonoIO::RemoveDirectory(System.Char*,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::RemoveDirectory
+System.IO.MonoIO::ReplaceFile(System.Char*,System.Char*,System.Char*,System.Boolean,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::ReplaceFile
+System.IO.MonoIO::SetCurrentDirectory(System.Char*,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::SetCurrentDirectory
+System.IO.MonoIO::SetFileAttributes(System.Char*,System.IO.FileAttributes,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::SetFileAttributes
+System.IO.MonoIO::SetFileTime(System.IntPtr,System.Int64,System.Int64,System.Int64,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::SetFileTime
+System.IO.MonoIO::SetLength(System.IntPtr,System.Int64,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::SetLength
+System.IO.MonoIO::get_AltDirectorySeparatorChar() mscorlib::System::IO::MonoIO::get_AltDirectorySeparatorChar
+System.IO.MonoIO::get_DirectorySeparatorChar() mscorlib::System::IO::MonoIO::get_DirectorySeparatorChar
+System.IO.MonoIO::get_PathSeparator() mscorlib::System::IO::MonoIO::get_PathSeparator
+System.IO.MonoIO::get_VolumeSeparatorChar() mscorlib::System::IO::MonoIO::get_VolumeSeparatorChar
+System.IO.MonoIO::Read(System.IntPtr,System.Byte[],System.Int32,System.Int32,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Read
+System.IO.MonoIO::Write(System.IntPtr,System.Byte[],System.Int32,System.Int32,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Write
+System.IO.MonoIO::GetLength(System.IntPtr,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::GetLength
+System.IO.MonoIO::Seek(System.IntPtr,System.Int64,System.IO.SeekOrigin,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Seek
+System.IO.MonoIO::FindFirstFile(System.Char*,System.String&,System.Int32&,System.Int32&) mscorlib::System::IO::MonoIO::FindFirstFile
+System.IO.MonoIO::get_ConsoleError() mscorlib::System::IO::MonoIO::get_ConsoleError
+System.IO.MonoIO::get_ConsoleInput() mscorlib::System::IO::MonoIO::get_ConsoleInput
+System.IO.MonoIO::get_ConsoleOutput() mscorlib::System::IO::MonoIO::get_ConsoleOutput
+System.IO.MonoIO::Open(System.Char*,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.IO.FileOptions,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Open
+System.IO.MonoIO::GetFileAttributes(System.Char*,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::GetFileAttributes
+System.IO.MonoIO::GetFileType(System.IntPtr,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::GetFileType
+System.IO.MonoIO::GetCurrentDirectory(System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::GetCurrentDirectory
+System.IO.MonoIO::DumpHandles() mscorlib::System::IO::MonoIO::DumpHandles
+System.IO.MonoIO::Lock(System.IntPtr,System.Int64,System.Int64,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Lock
+System.IO.MonoIO::Unlock(System.IntPtr,System.Int64,System.Int64,System.IO.MonoIOError&) mscorlib::System::IO::MonoIO::Unlock
+
+// System.Reflection.RuntimeAssembly
+>icalls/mscorlib/System.Reflection/RuntimeAssembly.h
+System.Reflection.RuntimeAssembly::get_global_assembly_cache() mscorlib::System::Reflection::RuntimeAssembly::get_global_assembly_cache
+System.Reflection.RuntimeAssembly::get_ReflectionOnly() mscorlib::System::Reflection::RuntimeAssembly::get_ReflectionOnly
+System.Reflection.RuntimeAssembly::GetAotIdInternal(System.Byte[]) mscorlib::System::Reflection::RuntimeAssembly::GetAotIdInternal
+System.Reflection.RuntimeAssembly::GetManifestResourceInfoInternal(System.String,System.Reflection.ManifestResourceInfo) mscorlib::System::Reflection::RuntimeAssembly::GetManifestResourceInfoInternal
+System.Reflection.RuntimeAssembly::GetManifestResourceInternal(System.String,System.Int32&,System.Reflection.Module&) mscorlib::System::Reflection::RuntimeAssembly::GetManifestResourceInternal
+System.Reflection.RuntimeAssembly::GetFilesInternal(System.String,System.Boolean) mscorlib::System::Reflection::RuntimeAssembly::GetFilesInternal
+System.Reflection.RuntimeAssembly::get_EntryPoint() mscorlib::System::Reflection::RuntimeAssembly::get_EntryPoint
+System.Reflection.RuntimeAssembly::GetManifestModuleInternal() mscorlib::System::Reflection::RuntimeAssembly::GetManifestModuleInternal
+System.Reflection.RuntimeAssembly::GetModulesInternal() mscorlib::System::Reflection::RuntimeAssembly::GetModulesInternal
+System.Reflection.RuntimeAssembly::get_code_base(System.Reflection.Assembly,System.Boolean) mscorlib::System::Reflection::RuntimeAssembly::get_code_base
+System.Reflection.RuntimeAssembly::get_fullname(System.Reflection.Assembly) mscorlib::System::Reflection::RuntimeAssembly::get_fullname
+System.Reflection.RuntimeAssembly::get_location() mscorlib::System::Reflection::RuntimeAssembly::get_location
+System.Reflection.RuntimeAssembly::InternalImageRuntimeVersion(System.Reflection.Assembly) mscorlib::System::Reflection::RuntimeAssembly::InternalImageRuntimeVersion
+System.Reflection.RuntimeAssembly::GetManifestResourceNames() mscorlib::System::Reflection::RuntimeAssembly::GetManifestResourceNames
+
+// System.Reflection.RuntimeMethodInfo
+>icalls/mscorlib/System.Reflection/RuntimeMethodInfo.h
+System.Reflection.RuntimeMethodInfo::get_IsGenericMethod() mscorlib::System::Reflection::RuntimeMethodInfo::get_IsGenericMethod
+System.Reflection.RuntimeMethodInfo::get_IsGenericMethodDefinition() mscorlib::System::Reflection::RuntimeMethodInfo::get_IsGenericMethodDefinition
+System.Reflection.RuntimeMethodInfo::get_metadata_token(System.Reflection.RuntimeMethodInfo) mscorlib::System::Reflection::RuntimeMethodInfo::get_metadata_token
+System.Reflection.RuntimeMethodInfo::InternalInvoke(System.Object,System.Object[],System.Exception&) mscorlib::System::Reflection::RuntimeMethodInfo::InternalInvoke
+System.Reflection.RuntimeMethodInfo::GetMethodFromHandleInternalType_native(System.IntPtr,System.IntPtr,System.Boolean) mscorlib::System::Reflection::RuntimeMethodInfo::GetMethodFromHandleInternalType_native
+System.Reflection.RuntimeMethodInfo::GetMethodBodyInternal(System.IntPtr) mscorlib::System::Reflection::RuntimeMethodInfo::GetMethodBodyInternal
+System.Reflection.RuntimeMethodInfo::GetGenericMethodDefinition_impl() mscorlib::System::Reflection::RuntimeMethodInfo::GetGenericMethodDefinition_impl
+System.Reflection.RuntimeMethodInfo::MakeGenericMethod_impl(System.Type[]) mscorlib::System::Reflection::RuntimeMethodInfo::MakeGenericMethod_impl
+System.Reflection.RuntimeMethodInfo::get_base_method(System.Reflection.RuntimeMethodInfo,System.Boolean) mscorlib::System::Reflection::RuntimeMethodInfo::get_base_method
+System.Reflection.RuntimeMethodInfo::get_name(System.Reflection.MethodBase) mscorlib::System::Reflection::RuntimeMethodInfo::get_name
+System.Reflection.RuntimeMethodInfo::GetGenericArguments() mscorlib::System::Reflection::RuntimeMethodInfo::GetGenericArguments
+System.Reflection.RuntimeMethodInfo::GetPInvoke(System.Reflection.PInvokeAttributes&,System.String&,System.String&) mscorlib::System::Reflection::RuntimeMethodInfo::GetPInvoke
+
+// System.Runtime.CompilerServices.RuntimeHelpers
+>icalls/mscorlib/System.Runtime.CompilerServices/RuntimeHelpers.h
+System.Runtime.CompilerServices.RuntimeHelpers::SufficientExecutionStack() mscorlib::System::Runtime::CompilerServices::RuntimeHelpers::SufficientExecutionStack
+System.Runtime.CompilerServices.RuntimeHelpers::get_OffsetToStringData() mscorlib::System::Runtime::CompilerServices::RuntimeHelpers::get_OffsetToStringData
+System.Runtime.CompilerServices.RuntimeHelpers::GetObjectValue(System.Object) mscorlib::System::Runtime::CompilerServices::RuntimeHelpers::GetObjectValue
+System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.IntPtr) mscorlib::System::Runtime::CompilerServices::RuntimeHelpers::InitializeArray
+System.Runtime.CompilerServices.RuntimeHelpers::RunClassConstructor(System.IntPtr) mscorlib::System::Runtime::CompilerServices::RuntimeHelpers::RunClassConstructor
+System.Runtime.CompilerServices.RuntimeHelpers::RunModuleConstructor(System.IntPtr) mscorlib::System::Runtime::CompilerServices::RuntimeHelpers::RunModuleConstructor
+
+// System.Runtime.InteropServices.GCHandle
+>icalls/mscorlib/System.Runtime.InteropServices/GCHandle.h
+System.Runtime.InteropServices.GCHandle::CheckCurrentDomain(System.IntPtr) mscorlib::System::Runtime::InteropServices::GCHandle::CheckCurrentDomain
+System.Runtime.InteropServices.GCHandle::GetAddrOfPinnedObject(System.IntPtr) mscorlib::System::Runtime::InteropServices::GCHandle::GetAddrOfPinnedObject
+System.Runtime.InteropServices.GCHandle::GetTargetHandle(System.Object,System.IntPtr,System.Runtime.InteropServices.GCHandleType) mscorlib::System::Runtime::InteropServices::GCHandle::GetTargetHandle
+System.Runtime.InteropServices.GCHandle::GetTarget(System.IntPtr) mscorlib::System::Runtime::InteropServices::GCHandle::GetTarget
+System.Runtime.InteropServices.GCHandle::FreeHandle(System.IntPtr) mscorlib::System::Runtime::InteropServices::GCHandle::FreeHandle
+
+// System.RuntimeTypeHandle
+>icalls/mscorlib/System/RuntimeTypeHandle.h
+System.RuntimeTypeHandle::HasInstantiation(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::HasInstantiation
+System.RuntimeTypeHandle::HasReferences(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::HasReferences
+System.RuntimeTypeHandle::is_subclass_of(System.IntPtr,System.IntPtr) mscorlib::System::RuntimeTypeHandle::is_subclass_of
+System.RuntimeTypeHandle::IsByRefLike(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::IsByRefLike
+System.RuntimeTypeHandle::IsComObject(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::IsComObject
+System.RuntimeTypeHandle::IsGenericTypeDefinition(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::IsGenericTypeDefinition
+System.RuntimeTypeHandle::IsGenericVariable(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::IsGenericVariable
+System.RuntimeTypeHandle::IsInstanceOfType(System.RuntimeType,System.Object) mscorlib::System::RuntimeTypeHandle::IsInstanceOfType
+System.RuntimeTypeHandle::type_is_assignable_from(System.Type,System.Type) mscorlib::System::RuntimeTypeHandle::type_is_assignable_from
+System.RuntimeTypeHandle::GetArrayRank(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetArrayRank
+System.RuntimeTypeHandle::GetMetadataToken(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetMetadataToken
+System.RuntimeTypeHandle::GetGenericParameterInfo(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetGenericParameterInfo
+System.RuntimeTypeHandle::GetCorElementType(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetCorElementType
+System.RuntimeTypeHandle::GetAssembly(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetAssembly
+System.RuntimeTypeHandle::GetModule(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetModule
+System.RuntimeTypeHandle::GetAttributes(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetAttributes
+System.RuntimeTypeHandle::GetBaseType(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetBaseType
+System.RuntimeTypeHandle::GetElementType(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetElementType
+System.RuntimeTypeHandle::internal_from_name(System.String,System.Threading.StackCrawlMark&,System.Reflection.Assembly,System.Boolean,System.Boolean,System.Boolean) mscorlib::System::RuntimeTypeHandle::internal_from_name
+System.RuntimeTypeHandle::GetGenericTypeDefinition_impl(System.RuntimeType) mscorlib::System::RuntimeTypeHandle::GetGenericTypeDefinition_impl
+
+// System.Security.Cryptography.RNGCryptoServiceProvider
+>icalls/mscorlib/System.Security.Cryptography/RNGCryptoServiceProvider.h
+System.Security.Cryptography.RNGCryptoServiceProvider::RngOpen() mscorlib::System::Security::Cryptography::RNGCryptoServiceProvider::RngOpen
+System.Security.Cryptography.RNGCryptoServiceProvider::RngGetBytes(System.IntPtr,System.Byte*,System.IntPtr) mscorlib::System::Security::Cryptography::RNGCryptoServiceProvider::RngGetBytes
+System.Security.Cryptography.RNGCryptoServiceProvider::RngInitialize(System.Byte*,System.IntPtr) mscorlib::System::Security::Cryptography::RNGCryptoServiceProvider::RngInitialize
+System.Security.Cryptography.RNGCryptoServiceProvider::RngClose(System.IntPtr) mscorlib::System::Security::Cryptography::RNGCryptoServiceProvider::RngClose
+
+// System.Security.Policy.Evidence
+>icalls/mscorlib/System.Security.Policy/Evidence.h
+System.Security.Policy.Evidence::IsAuthenticodePresent(System.Reflection.Assembly) mscorlib::System::Security::Policy::Evidence::IsAuthenticodePresent
+
+// System.Security.Principal.WindowsImpersonationContext
+>icalls/mscorlib/System.Security.Principal/WindowsImpersonationContext.h
+System.Security.Principal.WindowsImpersonationContext::CloseToken(System.IntPtr) mscorlib::System::Security::Principal::WindowsImpersonationContext::CloseToken
+System.Security.Principal.WindowsImpersonationContext::RevertToSelf() mscorlib::System::Security::Principal::WindowsImpersonationContext::RevertToSelf
+System.Security.Principal.WindowsImpersonationContext::SetCurrentToken(System.IntPtr) mscorlib::System::Security::Principal::WindowsImpersonationContext::SetCurrentToken
+System.Security.Principal.WindowsImpersonationContext::DuplicateToken(System.IntPtr) mscorlib::System::Security::Principal::WindowsImpersonationContext::DuplicateToken
+
+// System.Security.Principal.WindowsPrincipal
+>icalls/mscorlib/System.Security.Principal/WindowsPrincipal.h
+System.Security.Principal.WindowsPrincipal::IsMemberOfGroupId(System.IntPtr,System.IntPtr) mscorlib::System::Security::Principal::WindowsPrincipal::IsMemberOfGroupId
+System.Security.Principal.WindowsPrincipal::IsMemberOfGroupName(System.IntPtr,System.IntPtr) mscorlib::System::Security::Principal::WindowsPrincipal::IsMemberOfGroupName
+
+// System.Threading.Monitor
+>icalls/mscorlib/System.Threading/Monitor.h
+System.Threading.Monitor::Monitor_test_owner(System.Object) mscorlib::System::Threading::Monitor::Monitor_test_owner
+System.Threading.Monitor::Monitor_test_synchronised(System.Object) mscorlib::System::Threading::Monitor::Monitor_test_synchronised
+System.Threading.Monitor::Monitor_wait(System.Object,System.Int32) mscorlib::System::Threading::Monitor::Monitor_wait
+System.Threading.Monitor::Enter(System.Object) mscorlib::System::Threading::Monitor::Enter
+System.Threading.Monitor::Exit(System.Object) mscorlib::System::Threading::Monitor::Exit
+System.Threading.Monitor::Monitor_pulse(System.Object) mscorlib::System::Threading::Monitor::Monitor_pulse
+System.Threading.Monitor::Monitor_pulse_all(System.Object) mscorlib::System::Threading::Monitor::Monitor_pulse_all
+System.Threading.Monitor::try_enter_with_atomic_var(System.Object,System.Int32,System.Boolean&) mscorlib::System::Threading::Monitor::try_enter_with_atomic_var
+
+// System.Threading.Mutex
+>icalls/mscorlib/System.Threading/Mutex.h
+System.Threading.Mutex::ReleaseMutex_internal(System.IntPtr) mscorlib::System::Threading::Mutex::ReleaseMutex_internal
+System.Threading.Mutex::CreateMutex_icall(System.Boolean,System.Char*,System.Int32,System.Boolean&) mscorlib::System::Threading::Mutex::CreateMutex_icall
+System.Threading.Mutex::OpenMutex_icall(System.Char*,System.Int32,System.Security.AccessControl.MutexRights,System.IO.MonoIOError&) mscorlib::System::Threading::Mutex::OpenMutex_icall
+
+// System.Threading.NativeEventCalls
+>icalls/mscorlib/System.Threading/NativeEventCalls.h
+System.Threading.NativeEventCalls::ResetEvent_internal(System.IntPtr) mscorlib::System::Threading::NativeEventCalls::ResetEvent_internal
+System.Threading.NativeEventCalls::SetEvent_internal(System.IntPtr) mscorlib::System::Threading::NativeEventCalls::SetEvent_internal
+System.Threading.NativeEventCalls::CreateEvent_icall(System.Boolean,System.Boolean,System.Char*,System.Int32,System.Int32&) mscorlib::System::Threading::NativeEventCalls::CreateEvent_icall
+System.Threading.NativeEventCalls::CloseEvent_internal(System.IntPtr) mscorlib::System::Threading::NativeEventCalls::CloseEvent_internal
+
+// System.Threading.OSSpecificSynchronizationContext
+>icalls/mscorlib/System.Threading/OSSpecificSynchronizationContext.h
+System.Threading.OSSpecificSynchronizationContext::GetOSContext() mscorlib::System::Threading::OSSpecificSynchronizationContext::GetOSContext
+System.Threading.OSSpecificSynchronizationContext::PostInternal(System.Object,System.IntPtr,System.IntPtr) mscorlib::System::Threading::OSSpecificSynchronizationContext::PostInternal
+
+// System.Threading.Thread
+>icalls/mscorlib/System.Threading/Thread.h
+System.Threading.Thread::JoinInternal(System.Int32) mscorlib::System::Threading::Thread::JoinInternal
+System.Threading.Thread::Thread_internal(System.MulticastDelegate) mscorlib::System::Threading::Thread::Thread_internal
+System.Threading.Thread::YieldInternal() mscorlib::System::Threading::Thread::YieldInternal
+System.Threading.Thread::ByteArrayToCurrentDomain(System.Byte[]) mscorlib::System::Threading::Thread::ByteArrayToCurrentDomain
+System.Threading.Thread::ByteArrayToRootDomain(System.Byte[]) mscorlib::System::Threading::Thread::ByteArrayToRootDomain
+System.Threading.Thread::VolatileRead(System.Byte&) mscorlib::System::Threading::Thread::VolatileRead_1
+System.Threading.Thread::VolatileRead(System.Double&) mscorlib::System::Threading::Thread::VolatileRead_Double
+System.Threading.Thread::VolatileRead(System.Int16&) mscorlib::System::Threading::Thread::VolatileRead_2
+System.Threading.Thread::VolatileRead(System.Int32&) mscorlib::System::Threading::Thread::VolatileRead_4
+System.Threading.Thread::VolatileRead(System.Int64&) mscorlib::System::Threading::Thread::VolatileRead_8
+System.Threading.Thread::VolatileRead(System.IntPtr&) mscorlib::System::Threading::Thread::VolatileRead_IntPtr
+System.Threading.Thread::VolatileRead(System.Object&) mscorlib::System::Threading::Thread::VolatileRead_Object
+System.Threading.Thread::VolatileRead(System.SByte&) mscorlib::System::Threading::Thread::VolatileRead_1
+System.Threading.Thread::VolatileRead(System.Single&) mscorlib::System::Threading::Thread::VolatileRead_Float
+System.Threading.Thread::VolatileRead(System.UInt16&) mscorlib::System::Threading::Thread::VolatileRead_2
+System.Threading.Thread::VolatileRead(System.UInt32&) mscorlib::System::Threading::Thread::VolatileRead_4
+System.Threading.Thread::VolatileRead(System.UInt64&) mscorlib::System::Threading::Thread::VolatileRead_8
+System.Threading.Thread::VolatileRead(System.UIntPtr&) mscorlib::System::Threading::Thread::VolatileRead_IntPtr
+System.Threading.Thread::GetDomainID() mscorlib::System::Threading::Thread::GetDomainID
+System.Threading.Thread::GetPriorityNative() mscorlib::System::Threading::Thread::GetPriorityNative
+System.Threading.Thread::SystemMaxStackStize() mscorlib::System::Threading::Thread::SystemMaxStackStize
+System.Threading.Thread::GetAbortExceptionState() mscorlib::System::Threading::Thread::GetAbortExceptionState
+System.Threading.Thread::GetName_internal(System.Threading.InternalThread) mscorlib::System::Threading::Thread::GetName_internal
+System.Threading.Thread::GetState(System.Threading.InternalThread) mscorlib::System::Threading::Thread::GetState
+System.Threading.Thread::Abort_internal(System.Threading.InternalThread,System.Object) mscorlib::System::Threading::Thread::Abort_internal
+System.Threading.Thread::ClrState(System.Threading.InternalThread,System.Threading.ThreadState) mscorlib::System::Threading::Thread::ClrState
+System.Threading.Thread::ConstructInternalThread() mscorlib::System::Threading::Thread::ConstructInternalThread
+System.Threading.Thread::GetCurrentThread_icall(System.Threading.Thread&) mscorlib::System::Threading::Thread::GetCurrentThread_icall
+System.Threading.Thread::GetStackTraces(System.Threading.Thread[]&,System.Object[]&) mscorlib::System::Threading::Thread::GetStackTraces
+System.Threading.Thread::InterruptInternal() mscorlib::System::Threading::Thread::InterruptInternal
+System.Threading.Thread::MemoryBarrier() mscorlib::System::Threading::Thread::MemoryBarrier
+System.Threading.Thread::ResetAbortNative() mscorlib::System::Threading::Thread::ResetAbortNative
+System.Threading.Thread::ResumeInternal() mscorlib::System::Threading::Thread::ResumeInternal
+System.Threading.Thread::SetName_icall(System.Threading.InternalThread,System.Char*,System.Int32) mscorlib::System::Threading::Thread::SetName_icall
+System.Threading.Thread::SetPriorityNative(System.Int32) mscorlib::System::Threading::Thread::SetPriorityNative
+System.Threading.Thread::SetState(System.Threading.InternalThread,System.Threading.ThreadState) mscorlib::System::Threading::Thread::SetState
+System.Threading.Thread::SleepInternal(System.Int32) mscorlib::System::Threading::Thread::SleepInternal
+System.Threading.Thread::SpinWait_nop() mscorlib::System::Threading::Thread::SpinWait_nop
+System.Threading.Thread::SuspendInternal() mscorlib::System::Threading::Thread::SuspendInternal
+System.Threading.Thread::VolatileWrite(System.Byte&,System.Byte) mscorlib::System::Threading::Thread::VolatileWrite_1
+System.Threading.Thread::VolatileWrite(System.Double&,System.Double) mscorlib::System::Threading::Thread::VolatileWrite_Double
+System.Threading.Thread::VolatileWrite(System.Int16&,System.Int16) mscorlib::System::Threading::Thread::VolatileWrite_2
+System.Threading.Thread::VolatileWrite(System.Int32&,System.Int32) mscorlib::System::Threading::Thread::VolatileWrite_4
+System.Threading.Thread::VolatileWrite(System.Int64&,System.Int64) mscorlib::System::Threading::Thread::VolatileWrite_8
+System.Threading.Thread::VolatileWrite(System.IntPtr&,System.IntPtr) mscorlib::System::Threading::Thread::VolatileWrite_IntPtr
+System.Threading.Thread::VolatileWrite(System.Object&,System.Object) mscorlib::System::Threading::Thread::VolatileWrite_Object
+System.Threading.Thread::VolatileWrite(System.SByte&,System.SByte) mscorlib::System::Threading::Thread::VolatileWrite_1
+System.Threading.Thread::VolatileWrite(System.Single&,System.Single) mscorlib::System::Threading::Thread::VolatileWrite_Float
+System.Threading.Thread::VolatileWrite(System.UInt16&,System.UInt16) mscorlib::System::Threading::Thread::VolatileWrite_2
+System.Threading.Thread::VolatileWrite(System.UInt32&,System.UInt32) mscorlib::System::Threading::Thread::VolatileWrite_4
+System.Threading.Thread::VolatileWrite(System.UInt64&,System.UInt64) mscorlib::System::Threading::Thread::VolatileWrite_8
+System.Threading.Thread::VolatileWrite(System.UIntPtr&,System.UIntPtr) mscorlib::System::Threading::Thread::VolatileWrite_IntPtr
+
+// System.Threading.ThreadPool
+>mono/ThreadPool/threadpool-ms.h
+// System.Threading.ThreadPool::BindIOCompletionCallbackNative(System.IntPtr) ves_icall_System_Threading_ThreadPool_BindIOCompletionCallbackNative
+// System.Threading.ThreadPool::IsThreadPoolHosted() ves_icall_System_Threading_ThreadPool_IsThreadPoolHosted
+System.Threading.ThreadPool::NotifyWorkItemComplete() ves_icall_System_Threading_ThreadPool_NotifyWorkItemComplete
+System.Threading.ThreadPool::PostQueuedCompletionStatus(System.Threading.NativeOverlapped*) ves_icall_System_Threading_ThreadPool_PostQueuedCompletionStatus
+System.Threading.ThreadPool::RequestWorkerThread() ves_icall_System_Threading_ThreadPool_RequestWorkerThread
+System.Threading.ThreadPool::SetMaxThreadsNative(System.Int32,System.Int32) ves_icall_System_Threading_ThreadPool_SetMaxThreadsNative
+System.Threading.ThreadPool::SetMinThreadsNative(System.Int32,System.Int32) ves_icall_System_Threading_ThreadPool_SetMinThreadsNative
+System.Threading.ThreadPool::GetAvailableThreadsNative(System.Int32&,System.Int32&) ves_icall_System_Threading_ThreadPool_GetAvailableThreadsNative
+System.Threading.ThreadPool::GetMaxThreadsNative(System.Int32&,System.Int32&) ves_icall_System_Threading_ThreadPool_GetMaxThreadsNative
+System.Threading.ThreadPool::GetMinThreadsNative(System.Int32&,System.Int32&) ves_icall_System_Threading_ThreadPool_GetMinThreadsNative
+System.Threading.ThreadPool::InitializeVMTp(System.Boolean&) ves_icall_System_Threading_ThreadPool_InitializeVMTp
+System.Threading.ThreadPool::NotifyWorkItemProgressNative() ves_icall_System_Threading_ThreadPool_NotifyWorkItemProgressNative
+System.Threading.ThreadPool::ReportThreadStatus(System.Boolean) ves_icall_System_Threading_ThreadPool_ReportThreadStatus
+System.Threading.ThreadPool::NotifyWorkItemQueued() ves_icall_System_Threading_ThreadPool_NotifyWorkItemQueued
+
+// System.ValueType
+>icalls/mscorlib/System/ValueType.h
+System.ValueType::InternalEquals(System.Object,System.Object,System.Object[]&) mscorlib::System::ValueType::InternalEquals
+System.ValueType::InternalGetHashCode(System.Object,System.Object[]&) mscorlib::System::ValueType::InternalGetHashCode
+
+// System.Globalization.CultureData
+>icalls/mscorlib/System.Globalization/CultureData.h
+System.Globalization.CultureData::fill_number_data(System.Int32,System.Globalization.CultureData/NumberFormatEntryManaged&) mscorlib::System::Globalization::CultureData::fill_number_data
+System.Globalization.CultureData::fill_culture_data(System.Int32) mscorlib::System::Globalization::CultureData::fill_culture_data
+
+// System.Reflection.RuntimeModule
+>icalls/mscorlib/System.Reflection/RuntimeModule.h
+System.Reflection.RuntimeModule::ResolveSignature(System.IntPtr,System.Int32,System.Reflection.ResolveTokenError&) mscorlib::System::Reflection::RuntimeModule::ResolveSignature
+System.Reflection.RuntimeModule::get_MetadataToken(System.Reflection.Module) mscorlib::System::Reflection::RuntimeModule::get_MetadataToken
+System.Reflection.RuntimeModule::GetMDStreamVersion(System.IntPtr) mscorlib::System::Reflection::RuntimeModule::GetMDStreamVersion
+System.Reflection.RuntimeModule::GetHINSTANCE(System.IntPtr) mscorlib::System::Reflection::RuntimeModule::GetHINSTANCE
+System.Reflection.RuntimeModule::ResolveFieldToken(System.IntPtr,System.Int32,System.IntPtr[],System.IntPtr[],System.Reflection.ResolveTokenError&) mscorlib::System::Reflection::RuntimeModule::ResolveFieldToken
+System.Reflection.RuntimeModule::ResolveMethodToken(System.IntPtr,System.Int32,System.IntPtr[],System.IntPtr[],System.Reflection.ResolveTokenError&) mscorlib::System::Reflection::RuntimeModule::ResolveMethodToken
+System.Reflection.RuntimeModule::ResolveTypeToken(System.IntPtr,System.Int32,System.IntPtr[],System.IntPtr[],System.Reflection.ResolveTokenError&) mscorlib::System::Reflection::RuntimeModule::ResolveTypeToken
+System.Reflection.RuntimeModule::ResolveMemberToken(System.IntPtr,System.Int32,System.IntPtr[],System.IntPtr[],System.Reflection.ResolveTokenError&) mscorlib::System::Reflection::RuntimeModule::ResolveMemberToken
+System.Reflection.RuntimeModule::ResolveStringToken(System.IntPtr,System.Int32,System.Reflection.ResolveTokenError&) mscorlib::System::Reflection::RuntimeModule::ResolveStringToken
+System.Reflection.RuntimeModule::GetGlobalType(System.IntPtr) mscorlib::System::Reflection::RuntimeModule::GetGlobalType
+System.Reflection.RuntimeModule::InternalGetTypes(System.IntPtr) mscorlib::System::Reflection::RuntimeModule::InternalGetTypes
+System.Reflection.RuntimeModule::GetGuidInternal(System.IntPtr,System.Byte[]) mscorlib::System::Reflection::RuntimeModule::GetGuidInternal
+System.Reflection.RuntimeModule::GetPEKind(System.IntPtr,System.Reflection.PortableExecutableKinds&,System.Reflection.ImageFileMachine&) mscorlib::System::Reflection::RuntimeModule::GetPEKind
+
+// System.Delegate
+>icalls/mscorlib/System/Delegate.h
+System.Delegate::CreateDelegate_internal(System.Type,System.Object,System.Reflection.MethodInfo,System.Boolean) mscorlib::System::Delegate::CreateDelegate_internal
+System.Delegate::AllocDelegateLike_internal(System.Delegate) mscorlib::System::Delegate::AllocDelegateLike_internal
+System.Delegate::GetVirtualMethod_internal() mscorlib::System::Delegate::GetVirtualMethod_internal
+
+// System.Runtime.InteropServices.Marshal
+>icalls/mscorlib/System.Runtime.InteropServices/Marshal.h
+System.Runtime.InteropServices.Marshal::AddRefInternal(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::AddRefInternal
+System.Runtime.InteropServices.Marshal::AllocCoTaskMem(System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::AllocCoTaskMem
+System.Runtime.InteropServices.Marshal::AllocHGlobal(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::AllocHGlobal
+System.Runtime.InteropServices.Marshal::copy_from_unmanaged_fixed(System.IntPtr,System.Int32,System.Array,System.Int32,System.Void*) mscorlib::System::Runtime::InteropServices::Marshal::copy_from_unmanaged_fixed
+System.Runtime.InteropServices.Marshal::copy_to_unmanaged_fixed(System.Array,System.Int32,System.IntPtr,System.Int32,System.Void*) mscorlib::System::Runtime::InteropServices::Marshal::copy_to_unmanaged_fixed
+System.Runtime.InteropServices.Marshal::DestroyStructure(System.IntPtr,System.Type) mscorlib::System::Runtime::InteropServices::Marshal::DestroyStructure
+System.Runtime.InteropServices.Marshal::FreeBSTR(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::FreeBSTR
+System.Runtime.InteropServices.Marshal::FreeCoTaskMem(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::FreeCoTaskMem
+System.Runtime.InteropServices.Marshal::FreeHGlobal(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::FreeHGlobal
+System.Runtime.InteropServices.Marshal::GetCCW(System.Object,System.Type) mscorlib::System::Runtime::InteropServices::Marshal::GetCCW
+System.Runtime.InteropServices.Marshal::GetComSlotForMethodInfoInternal(System.Reflection.MemberInfo) mscorlib::System::Runtime::InteropServices::Marshal::GetComSlotForMethodInfoInternal
+System.Runtime.InteropServices.Marshal::GetDelegateForFunctionPointerInternal(System.IntPtr,System.Type) mscorlib::System::Runtime::InteropServices::Marshal::GetDelegateForFunctionPointerInternal
+System.Runtime.InteropServices.Marshal::GetFunctionPointerForDelegateInternal(System.Delegate) mscorlib::System::Runtime::InteropServices::Marshal::GetFunctionPointerForDelegateInternal
+System.Runtime.InteropServices.Marshal::GetIDispatchForObjectInternal(System.Object) mscorlib::System::Runtime::InteropServices::Marshal::GetIDispatchForObjectInternal
+System.Runtime.InteropServices.Marshal::GetIUnknownForObjectInternal(System.Object) mscorlib::System::Runtime::InteropServices::Marshal::GetIUnknownForObjectInternal
+System.Runtime.InteropServices.Marshal::GetLastWin32Error() mscorlib::System::Runtime::InteropServices::Marshal::GetLastWin32Error
+System.Runtime.InteropServices.Marshal::SetLastWin32Error(System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::SetLastWin32Error
+System.Runtime.InteropServices.Marshal::GetObjectForCCW(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::GetObjectForCCW
+System.Runtime.InteropServices.Marshal::IsComObject(System.Object) mscorlib::System::Runtime::InteropServices::Marshal::IsComObject
+System.Runtime.InteropServices.Marshal::OffsetOf(System.Type,System.String) mscorlib::System::Runtime::InteropServices::Marshal::OffsetOf
+System.Runtime.InteropServices.Marshal::Prelink(System.Reflection.MethodInfo) mscorlib::System::Runtime::InteropServices::Marshal::Prelink
+System.Runtime.InteropServices.Marshal::PrelinkAll(System.Type) mscorlib::System::Runtime::InteropServices::Marshal::PrelinkAll
+System.Runtime.InteropServices.Marshal::PtrToStringAnsi(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStringAnsi_mscorlib_System_String_mscorlib_System_IntPtr
+System.Runtime.InteropServices.Marshal::PtrToStringAnsi(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStringAnsi_mscorlib_System_String_mscorlib_System_IntPtr_mscorlib_System_Int32
+System.Runtime.InteropServices.Marshal::PtrToStringBSTR(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStringBSTR
+System.Runtime.InteropServices.Marshal::PtrToStringUni(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStringUni_mscorlib_System_String_mscorlib_System_IntPtr
+System.Runtime.InteropServices.Marshal::PtrToStringUni(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStringUni_mscorlib_System_String_mscorlib_System_IntPtr_mscorlib_System_Int32
+System.Runtime.InteropServices.Marshal::PtrToStructure(System.IntPtr,System.Object) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStructureObject
+System.Runtime.InteropServices.Marshal::PtrToStructure(System.IntPtr,System.Type) mscorlib::System::Runtime::InteropServices::Marshal::PtrToStructure
+System.Runtime.InteropServices.Marshal::QueryInterfaceInternal(System.IntPtr,System.Guid&,System.IntPtr&) mscorlib::System::Runtime::InteropServices::Marshal::QueryInterfaceInternal
+System.Runtime.InteropServices.Marshal::ReadByte(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::ReadByte
+System.Runtime.InteropServices.Marshal::ReadInt16(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::ReadInt16
+System.Runtime.InteropServices.Marshal::ReadInt32(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::ReadInt32
+System.Runtime.InteropServices.Marshal::ReadInt64(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::ReadInt64
+System.Runtime.InteropServices.Marshal::ReadIntPtr(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::ReadIntPtr
+System.Runtime.InteropServices.Marshal::ReAllocCoTaskMem(System.IntPtr,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::ReAllocCoTaskMem
+System.Runtime.InteropServices.Marshal::ReAllocHGlobal(System.IntPtr,System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::ReAllocHGlobal
+System.Runtime.InteropServices.Marshal::ReleaseComObjectInternal(System.Object) mscorlib::System::Runtime::InteropServices::Marshal::ReleaseComObjectInternal
+System.Runtime.InteropServices.Marshal::ReleaseInternal(System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::ReleaseInternal
+System.Runtime.InteropServices.Marshal::SizeOf(System.Type) mscorlib::System::Runtime::InteropServices::Marshal::SizeOf
+System.Runtime.InteropServices.Marshal::StringToBSTR(System.String) mscorlib::System::Runtime::InteropServices::Marshal::StringToBSTR
+System.Runtime.InteropServices.Marshal::StringToHGlobalAnsi(System.Char*,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi
+System.Runtime.InteropServices.Marshal::StringToHGlobalUni(System.Char*,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::StringToHGlobalUni
+System.Runtime.InteropServices.Marshal::StructureToPtr(System.Object,System.IntPtr,System.Boolean) mscorlib::System::Runtime::InteropServices::Marshal::StructureToPtr
+System.Runtime.InteropServices.Marshal::UnsafeAddrOfPinnedArrayElement(System.Array,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::UnsafeAddrOfPinnedArrayElement
+System.Runtime.InteropServices.Marshal::WriteByte(System.IntPtr,System.Int32,System.Byte) mscorlib::System::Runtime::InteropServices::Marshal::WriteByte
+System.Runtime.InteropServices.Marshal::WriteInt16(System.IntPtr,System.Int32,System.Char) mscorlib::System::Runtime::InteropServices::Marshal::WriteInt16
+System.Runtime.InteropServices.Marshal::WriteInt16(System.IntPtr,System.Int32,System.Int16) mscorlib::System::Runtime::InteropServices::Marshal::WriteInt16
+System.Runtime.InteropServices.Marshal::WriteInt32(System.IntPtr,System.Int32,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::WriteInt32
+System.Runtime.InteropServices.Marshal::WriteInt64(System.IntPtr,System.Int32,System.Int64) mscorlib::System::Runtime::InteropServices::Marshal::WriteInt64
+System.Runtime.InteropServices.Marshal::WriteIntPtr(System.IntPtr,System.Int32,System.IntPtr) mscorlib::System::Runtime::InteropServices::Marshal::WriteIntPtr
+System.Runtime.InteropServices.Marshal::BufferToBSTR(System.Char*,System.Int32) mscorlib::System::Runtime::InteropServices::Marshal::BufferToBSTR
+System.Runtime.InteropServices.Marshal::GetHRForException_WinRT(System.Exception) mscorlib::System::Runtime::InteropServices::Marshal::GetHRForException_WinRT
+System.Runtime.InteropServices.Marshal::GetRawIUnknownForComObjectNoAddRef(System.Object) mscorlib::System::Runtime::InteropServices::Marshal::GetRawIUnknownForComObjectNoAddRef
+System.Runtime.InteropServices.Marshal::GetNativeActivationFactory(System.Type) mscorlib::System::Runtime::InteropServices::Marshal::GetNativeActivationFactory
+System.Runtime.InteropServices.Marshal::AllocCoTaskMemSize(System.UIntPtr) mscorlib::System::Runtime::InteropServices::Marshal::AllocCoTaskMemSize
+
+
+// System.Diagnostics.StackTrace
+>icalls/mscorlib/System.Diagnostics/StackTrace.h
+System.Diagnostics.StackTrace::get_trace(System.Exception,System.Int32,System.Boolean) mscorlib::System::Diagnostics::StackTrace::get_trace
+
+// System.Math
+>vm-utils/icalls/mscorlib/System/Math.h
+System.Math::Abs(System.Double) mscorlib::System::Math::Abs
+System.Math::Acos(System.Double) mscorlib::System::Math::Acos
+System.Math::Acosh(System.Double) mscorlib::System::Math::Acosh
+System.Math::Asin(System.Double) mscorlib::System::Math::Asin
+System.Math::Asinh(System.Double) mscorlib::System::Math::Asinh
+System.Math::Atan(System.Double) mscorlib::System::Math::Atan
+System.Math::Atan2(System.Double,System.Double) mscorlib::System::Math::Atan2
+System.Math::Atanh(System.Double) mscorlib::System::Math::Atanh
+System.Math::Cbrt(System.Double) mscorlib::System::Math::Cbrt
+System.Math::Ceiling(System.Double) mscorlib::System::Math::Ceiling
+System.Math::Cos(System.Double) mscorlib::System::Math::Cos
+System.Math::Cosh(System.Double) mscorlib::System::Math::Cosh
+System.Math::Exp(System.Double) mscorlib::System::Math::Exp
+System.Math::Floor(System.Double) mscorlib::System::Math::Floor
+System.Math::FMod(System.Double,System.Double) mscorlib::System::Math::FMod
+System.Math::Log(System.Double) mscorlib::System::Math::Log
+System.Math::Log10(System.Double) mscorlib::System::Math::Log10
+System.Math::ModF(System.Double,System.Double*) mscorlib::System::Math::ModF
+System.Math::Pow(System.Double,System.Double) mscorlib::System::Math::Pow
+System.Math::Round(System.Double) mscorlib::System::Math::Round
+System.Math::Sin(System.Double) mscorlib::System::Math::Sin
+System.Math::Sinh(System.Double) mscorlib::System::Math::Sinh
+System.Math::Sqrt(System.Double) mscorlib::System::Math::Sqrt
+System.Math::Tan(System.Double) mscorlib::System::Math::Tan
+System.Math::Tanh(System.Double) mscorlib::System::Math::Tanh
+System.Math::Abs(System.Single) mscorlib::System::Math::Abs
+
+// System.Threading.Interlocked
+>vm-utils/icalls/mscorlib/System.Threading/Interlocked.h
+System.Threading.Interlocked::CompareExchange(System.Double&,System.Double,System.Double) mscorlib::System::Threading::Interlocked::CompareExchangeDouble
+System.Threading.Interlocked::CompareExchange(System.Int32&,System.Int32,System.Int32) mscorlib::System::Threading::Interlocked::CompareExchange
+System.Threading.Interlocked::CompareExchange(System.Int32&,System.Int32,System.Int32,System.Boolean&) mscorlib::System::Threading::Interlocked::CompareExchange
+System.Threading.Interlocked::CompareExchange(System.Int64&,System.Int64,System.Int64) mscorlib::System::Threading::Interlocked::CompareExchange64
+System.Threading.Interlocked::CompareExchange(System.IntPtr&,System.IntPtr,System.IntPtr) mscorlib::System::Threading::Interlocked::CompareExchangeIntPtr
+System.Threading.Interlocked::CompareExchange(System.Single&,System.Single,System.Single) mscorlib::System::Threading::Interlocked::CompareExchangeSingle
+System.Threading.Interlocked::CompareExchange(System.Object&,System.Object&,System.Object&,System.Object&) mscorlib::System::Threading::Interlocked::CompareExchangeObject
+System.Threading.Interlocked::Exchange(System.Double&,System.Double) mscorlib::System::Threading::Interlocked::ExchangeDouble
+System.Threading.Interlocked::Exchange(System.Int32&,System.Int32) mscorlib::System::Threading::Interlocked::Exchange
+System.Threading.Interlocked::Exchange(System.Int64&,System.Int64) mscorlib::System::Threading::Interlocked::Exchange64
+System.Threading.Interlocked::Exchange(System.IntPtr&,System.IntPtr) mscorlib::System::Threading::Interlocked::ExchangeIntPtr
+System.Threading.Interlocked::Exchange(System.Single&,System.Single) mscorlib::System::Threading::Interlocked::ExchangeSingle
+System.Threading.Interlocked::Exchange(System.Object&,System.Object&,System.Object&) mscorlib::System::Threading::Interlocked::ExchangeObject
+System.Threading.Interlocked::Decrement(System.Int32&) mscorlib::System::Threading::Interlocked::Decrement
+System.Threading.Interlocked::Decrement(System.Int64&) mscorlib::System::Threading::Interlocked::Decrement64
+System.Threading.Interlocked::Increment(System.Int32&) mscorlib::System::Threading::Interlocked::Increment
+System.Threading.Interlocked::Increment(System.Int64&) mscorlib::System::Threading::Interlocked::Increment64
+System.Threading.Interlocked::Add(System.Int32&,System.Int32) mscorlib::System::Threading::Interlocked::Add
+System.Threading.Interlocked::Add(System.Int64&,System.Int64) mscorlib::System::Threading::Interlocked::Add64
+System.Threading.Interlocked::Read(System.Int64&) mscorlib::System::Threading::Interlocked::Read
+System.Threading.Interlocked::MemoryBarrierProcessWide() mscorlib::System::Threading::Interlocked::MemoryBarrierProcessWide
+
+// System.Threading.Volatile
+>icalls/mscorlib/System.Threading/Volatile.h
+System.Threading.Volatile::Read(System.Double&) mscorlib::System::Threading::Volatile::Read
+System.Threading.Volatile::Read(System.Int64&) mscorlib::System::Threading::Volatile::Read
+System.Threading.Volatile::Read(System.UInt64&) mscorlib::System::Threading::Volatile::Read
+System.Threading.Volatile::Write(System.Double&,System.Double) mscorlib::System::Threading::Volatile::Write
+System.Threading.Volatile::Write(System.Int64&,System.Int64) mscorlib::System::Threading::Volatile::Write
+System.Threading.Volatile::Write(System.UInt64&,System.UInt64) mscorlib::System::Threading::Volatile::Write
+
+// Microsoft.Win32.NativeMethods
+>icalls/mscorlib/Microsoft.Win32/NativeMethods.h
+Microsoft.Win32.NativeMethods::GetCurrentProcessId() mscorlib::Microsoft::Win32::NativeMethods::GetCurrentProcessId
+
+// Mono.Runtime
+>icalls/mscorlib/Mono/Runtime.h
+Mono.Runtime::CheckCrashReportLog_internal(System.IntPtr,System.Boolean) mscorlib::Mono::Runtime::CheckCrashReportLog_internal
+Mono.Runtime::DumpStateSingle_internal(System.UInt64&,System.UInt64&) mscorlib::Mono::Runtime::DumpStateSingle_internal
+Mono.Runtime::DumpStateTotal_internal(System.UInt64&,System.UInt64&) mscorlib::Mono::Runtime::DumpStateTotal_internal
+Mono.Runtime::ExceptionToState_internal(System.Exception,System.UInt64&,System.UInt64&) mscorlib::Mono::Runtime::ExceptionToState_internal
+Mono.Runtime::GetDisplayName() mscorlib::Mono::Runtime::GetDisplayName
+Mono.Runtime::GetNativeStackTrace(System.Exception) mscorlib::Mono::Runtime::GetNativeStackTrace
+Mono.Runtime::AnnotateMicrosoftTelemetry_internal(System.IntPtr,System.IntPtr) mscorlib::Mono::Runtime::AnnotateMicrosoftTelemetry_internal
+Mono.Runtime::EnableCrashReportLog_internal(System.IntPtr) mscorlib::Mono::Runtime::EnableCrashReportLog_internal
+Mono.Runtime::mono_runtime_cleanup_handlers() mscorlib::Mono::Runtime::mono_runtime_cleanup_handlers
+Mono.Runtime::mono_runtime_install_handlers() mscorlib::Mono::Runtime::mono_runtime_install_handlers
+Mono.Runtime::RegisterReportingForAllNativeLibs_internal() mscorlib::Mono::Runtime::RegisterReportingForAllNativeLibs_internal
+Mono.Runtime::RegisterReportingForNativeLib_internal(System.IntPtr,System.IntPtr) mscorlib::Mono::Runtime::RegisterReportingForNativeLib_internal
+
+// System.GC
+>icalls/mscorlib/System/GC.h
+System.GC::GetCollectionCount(System.Int32) mscorlib::System::GC::GetCollectionCount
+System.GC::GetGeneration(System.Object) mscorlib::System::GC::GetGeneration
+System.GC::GetMaxGeneration() mscorlib::System::GC::GetMaxGeneration
+System.GC::GetAllocatedBytesForCurrentThread() mscorlib::System::GC::GetAllocatedBytesForCurrentThread
+System.GC::GetTotalMemory(System.Boolean) mscorlib::System::GC::GetTotalMemory
+System.GC::get_ephemeron_tombstone() mscorlib::System::GC::get_ephemeron_tombstone
+System.GC::_ReRegisterForFinalize(System.Object) mscorlib::System::GC::_ReRegisterForFinalize
+System.GC::_SuppressFinalize(System.Object) mscorlib::System::GC::_SuppressFinalize
+System.GC::InternalCollect(System.Int32) mscorlib::System::GC::InternalCollect
+System.GC::RecordPressure(System.Int64) mscorlib::System::GC::RecordPressure
+System.GC::register_ephemeron_array(System.Runtime.CompilerServices.Ephemeron[]) mscorlib::System::GC::register_ephemeron_array
+System.GC::WaitForPendingFinalizers() mscorlib::System::GC::WaitForPendingFinalizers
+
+// System.Globalization.CompareInfo
+>icalls/mscorlib/System.Globalization/CompareInfo.h
+System.Globalization.CompareInfo::internal_compare_icall(System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions) mscorlib::System::Globalization::CompareInfo::internal_compare_icall
+System.Globalization.CompareInfo::internal_index_icall(System.Char*,System.Int32,System.Int32,System.Char*,System.Int32,System.Boolean) mscorlib::System::Globalization::CompareInfo::internal_index_icall
+
+// System.Object
+>icalls/mscorlib/System/Object.h
+System.Object::InternalGetHashCode(System.Object) mscorlib::System::Object::InternalGetHashCode
+System.Object::MemberwiseClone() mscorlib::System::Object::MemberwiseClone
+System.Object::GetType() mscorlib::System::Object::GetType
+
+// System.Reflection.MonoMethodInfo
+>icalls/mscorlib/System.Reflection/MonoMethodInfo.h
+System.Reflection.MonoMethodInfo::get_method_attributes(System.IntPtr) mscorlib::System::Reflection::MonoMethodInfo::get_method_attributes
+System.Reflection.MonoMethodInfo::get_parameter_info(System.IntPtr,System.Reflection.MemberInfo) mscorlib::System::Reflection::MonoMethodInfo::get_parameter_info
+System.Reflection.MonoMethodInfo::get_retval_marshal(System.IntPtr) mscorlib::System::Reflection::MonoMethodInfo::get_retval_marshal
+System.Reflection.MonoMethodInfo::get_method_info(System.IntPtr,System.Reflection.MonoMethodInfo&) mscorlib::System::Reflection::MonoMethodInfo::get_method_info
+
+// System.Reflection.RuntimeConstructorInfo
+>icalls/mscorlib/System.Reflection/RuntimeConstructorInfo.h
+System.Reflection.RuntimeConstructorInfo::get_metadata_token(System.Reflection.RuntimeConstructorInfo) mscorlib::System::Reflection::RuntimeConstructorInfo::get_metadata_token
+System.Reflection.RuntimeConstructorInfo::InternalInvoke(System.Object,System.Object[],System.Exception&) mscorlib::System::Reflection::RuntimeConstructorInfo::InternalInvoke
+
+// System.Reflection.RuntimeEventInfo
+>icalls/mscorlib/System.Reflection/RuntimeEventInfo.h
+System.Reflection.RuntimeEventInfo::get_metadata_token(System.Reflection.RuntimeEventInfo) mscorlib::System::Reflection::RuntimeEventInfo::get_metadata_token
+System.Reflection.RuntimeEventInfo::get_event_info(System.Reflection.RuntimeEventInfo,System.Reflection.MonoEventInfo&) mscorlib::System::Reflection::RuntimeEventInfo::get_event_info
+
+// System.Reflection.RuntimeFieldInfo
+>icalls/mscorlib/System.Reflection/RuntimeFieldInfo.h
+System.Reflection.RuntimeFieldInfo::get_metadata_token(System.Reflection.RuntimeFieldInfo) mscorlib::System::Reflection::RuntimeFieldInfo::get_metadata_token
+System.Reflection.RuntimeFieldInfo::GetFieldOffset() mscorlib::System::Reflection::RuntimeFieldInfo::GetFieldOffset
+System.Reflection.RuntimeFieldInfo::GetRawConstantValue() mscorlib::System::Reflection::RuntimeFieldInfo::GetRawConstantValue
+System.Reflection.RuntimeFieldInfo::GetValueInternal(System.Object) mscorlib::System::Reflection::RuntimeFieldInfo::GetValueInternal
+System.Reflection.RuntimeFieldInfo::UnsafeGetValue(System.Object) mscorlib::System::Reflection::RuntimeFieldInfo::UnsafeGetValue
+System.Reflection.RuntimeFieldInfo::GetParentType(System.Boolean) mscorlib::System::Reflection::RuntimeFieldInfo::GetParentType
+System.Reflection.RuntimeFieldInfo::ResolveType() mscorlib::System::Reflection::RuntimeFieldInfo::ResolveType
+System.Reflection.RuntimeFieldInfo::GetTypeModifiers(System.Boolean) mscorlib::System::Reflection::RuntimeFieldInfo::GetTypeModifiers
+System.Reflection.RuntimeFieldInfo::SetValueInternal(System.Reflection.FieldInfo,System.Object,System.Object) mscorlib::System::Reflection::RuntimeFieldInfo::SetValueInternal
+
+// System.Reflection.RuntimeParameterInfo
+>icalls/mscorlib/System.Reflection/RuntimeParameterInfo.h
+System.Reflection.RuntimeParameterInfo::GetMetadataToken() mscorlib::System::Reflection::RuntimeParameterInfo::GetMetadataToken
+System.Reflection.RuntimeParameterInfo::GetTypeModifiers(System.Type,System.Reflection.MemberInfo,System.Int32,System.Boolean) mscorlib::System::Reflection::RuntimeParameterInfo::GetTypeModifiers
+
+// System.Reflection.RuntimePropertyInfo
+>icalls/mscorlib/System.Reflection/RuntimePropertyInfo.h
+System.Reflection.RuntimePropertyInfo::get_metadata_token(System.Reflection.RuntimePropertyInfo) mscorlib::System::Reflection::RuntimePropertyInfo::get_metadata_token
+System.Reflection.RuntimePropertyInfo::get_default_value(System.Reflection.RuntimePropertyInfo) mscorlib::System::Reflection::RuntimePropertyInfo::get_default_value
+System.Reflection.RuntimePropertyInfo::internal_from_handle_type(System.IntPtr,System.IntPtr) mscorlib::System::Reflection::RuntimePropertyInfo::internal_from_handle_type
+System.Reflection.RuntimePropertyInfo::GetTypeModifiers(System.Reflection.RuntimePropertyInfo,System.Boolean) mscorlib::System::Reflection::RuntimePropertyInfo::GetTypeModifiers
+System.Reflection.RuntimePropertyInfo::get_property_info(System.Reflection.RuntimePropertyInfo,System.Reflection.MonoPropertyInfo&,System.Reflection.PInfo) mscorlib::System::Reflection::RuntimePropertyInfo::get_property_info
+
+// System.Runtime.Versioning.VersioningHelper
+>icalls/mscorlib/System.Runtime.Versioning/VersioningHelper.h
+System.Runtime.Versioning.VersioningHelper::GetRuntimeId() mscorlib::System::Runtime::Versioning::VersioningHelper::GetRuntimeId
+
+// System.RuntimeType
+>icalls/mscorlib/System/RuntimeType.h
+System.RuntimeType::GetGenericParameterPosition() mscorlib::System::RuntimeType::GetGenericParameterPosition
+System.RuntimeType::GetConstructors_native(System.Reflection.BindingFlags) mscorlib::System::RuntimeType::GetConstructors_native
+System.RuntimeType::GetEvents_native(System.IntPtr,System.RuntimeType/MemberListType) mscorlib::System::RuntimeType::GetEvents_native
+System.RuntimeType::GetFields_native(System.IntPtr,System.Reflection.BindingFlags,System.RuntimeType/MemberListType) mscorlib::System::RuntimeType::GetFields_native
+System.RuntimeType::GetMethodsByName_native(System.IntPtr,System.Reflection.BindingFlags,System.RuntimeType/MemberListType) mscorlib::System::RuntimeType::GetMethodsByName_native
+System.RuntimeType::GetNestedTypes_native(System.IntPtr,System.Reflection.BindingFlags,System.RuntimeType/MemberListType) mscorlib::System::RuntimeType::GetNestedTypes_native
+System.RuntimeType::GetPropertiesByName_native(System.IntPtr,System.Reflection.BindingFlags,System.RuntimeType/MemberListType) mscorlib::System::RuntimeType::GetPropertiesByName_native
+System.RuntimeType::CreateInstanceInternal(System.Type) mscorlib::System::RuntimeType::CreateInstanceInternal
+System.RuntimeType::GetCorrespondingInflatedConstructor(System.Reflection.ConstructorInfo) mscorlib::System::RuntimeType::GetCorrespondingInflatedConstructor
+System.RuntimeType::get_DeclaringMethod() mscorlib::System::RuntimeType::get_DeclaringMethod
+System.RuntimeType::GetCorrespondingInflatedMethod(System.Reflection.MethodInfo) mscorlib::System::RuntimeType::GetCorrespondingInflatedMethod
+System.RuntimeType::get_Name() mscorlib::System::RuntimeType::get_Name
+System.RuntimeType::get_Namespace() mscorlib::System::RuntimeType::get_Namespace
+System.RuntimeType::getFullName(System.Boolean,System.Boolean) mscorlib::System::RuntimeType::getFullName
+System.RuntimeType::get_DeclaringType() mscorlib::System::RuntimeType::get_DeclaringType
+System.RuntimeType::make_array_type(System.Int32) mscorlib::System::RuntimeType::make_array_type
+System.RuntimeType::make_byref_type() mscorlib::System::RuntimeType::make_byref_type
+System.RuntimeType::MakeGenericType(System.Type,System.Type[]) mscorlib::System::RuntimeType::MakeGenericType
+System.RuntimeType::MakePointerType(System.Type) mscorlib::System::RuntimeType::MakePointerType
+System.RuntimeType::GetGenericArgumentsInternal(System.Boolean) mscorlib::System::RuntimeType::GetGenericArgumentsInternal
+System.RuntimeType::GetInterfaces() mscorlib::System::RuntimeType::GetInterfaces
+System.RuntimeType::GetTypeCodeImplInternal(System.Type) mscorlib::System::RuntimeType::GetTypeCodeImplInternal
+System.RuntimeType::GetInterfaceMapData(System.Type,System.Type,System.Reflection.MethodInfo[]&,System.Reflection.MethodInfo[]&) mscorlib::System::RuntimeType::GetInterfaceMapData
+System.RuntimeType::GetPacking(System.Int32&,System.Int32&) mscorlib::System::RuntimeType::GetPacking
+System.RuntimeType::GetGUID(System.Type,System.Byte[]) mscorlib::System::RuntimeType::GetGUID
+
+// System.Threading.WaitHandle
+>icalls/mscorlib/System.Threading/WaitHandle.h
+System.Threading.WaitHandle::SignalAndWait_Internal(System.IntPtr,System.IntPtr,System.Int32) mscorlib::System::Threading::WaitHandle::SignalAndWait_Internal
+System.Threading.WaitHandle::Wait_internal(System.IntPtr*,System.Int32,System.Boolean,System.Int32) mscorlib::System::Threading::WaitHandle::Wait_internal
+
+// System.CurrentSystemTimeZone
+>icalls/mscorlib/System/CurrentSystemTimeZone.h
+System.CurrentSystemTimeZone::GetTimeZoneData(System.Int32,System.Int64[]&,System.String[]&,System.Boolean&) mscorlib::System::CurrentSystemTimeZone::GetTimeZoneData40
+
+// System.DateTime
+>icalls/mscorlib/System/DateTime.h
+System.DateTime::GetSystemTimeAsFileTime() mscorlib::System::DateTime::GetSystemTimeAsFileTime
+
+// System.Threading.Timer
+>icalls/mscorlib/System.Threading/Timer.h
+System.Threading.Timer::GetTimeMonotonic() mscorlib::System::Threading::Timer::GetTimeMonotonic
+
+// Mono.RuntimeClassHandle
+>icalls/mscorlib/Mono/RuntimeClassHandle.h
+Mono.RuntimeClassHandle::GetTypeFromClass(Mono.RuntimeStructs/MonoClass*) mscorlib::Mono::RuntimeClassHandle::GetTypeFromClass
+
+// Mono.SafeStringMarshal
+>icalls/mscorlib/Mono/SafeStringMarshal.h
+Mono.SafeStringMarshal::StringToUtf8_icall(System.String&) mscorlib::Mono::SafeStringMarshal::StringToUtf8_icall
+Mono.SafeStringMarshal::GFree(System.IntPtr) mscorlib::Mono::SafeStringMarshal::GFree
+
+// System.ArgIterator
+>icalls/mscorlib/System/ArgIterator.h
+System.ArgIterator::IntGetNextArgType() mscorlib::System::ArgIterator::IntGetNextArgType
+System.ArgIterator::IntGetNextArg(System.Void*) mscorlib::System::ArgIterator::IntGetNextArg
+System.ArgIterator::IntGetNextArgWithType(System.Void*,System.IntPtr) mscorlib::System::ArgIterator::IntGetNextArgWithType
+System.ArgIterator::Setup(System.IntPtr,System.IntPtr) mscorlib::System::ArgIterator::Setup
+
+// System.Reflection.Assembly
+>icalls/mscorlib/System.Reflection/Assembly.h
+System.Reflection.Assembly::InternalGetReferencedAssemblies(System.Reflection.Assembly) mscorlib::System::Reflection::Assembly::InternalGetReferencedAssemblies
+System.Reflection.Assembly::GetCallingAssembly() mscorlib::System::Reflection::Assembly::GetCallingAssembly
+System.Reflection.Assembly::GetEntryAssembly() mscorlib::System::Reflection::Assembly::GetEntryAssembly
+System.Reflection.Assembly::GetExecutingAssembly() mscorlib::System::Reflection::Assembly::GetExecutingAssembly
+System.Reflection.Assembly::load_with_partial_name(System.String,System.Security.Policy.Evidence) mscorlib::System::Reflection::Assembly::load_with_partial_name
+System.Reflection.Assembly::LoadFile_internal(System.String,System.Threading.StackCrawlMark&) mscorlib::System::Reflection::Assembly::LoadFile_internal
+System.Reflection.Assembly::LoadFrom(System.String,System.Boolean,System.Threading.StackCrawlMark&) mscorlib::System::Reflection::Assembly::LoadFrom
+System.Reflection.Assembly::InternalGetType(System.Reflection.Module,System.String,System.Boolean,System.Boolean) mscorlib::System::Reflection::Assembly::InternalGetType
+System.Reflection.Assembly::GetTypes(System.Boolean) mscorlib::System::Reflection::Assembly::GetTypes
+System.Reflection.Assembly::InternalGetAssemblyName(System.String,Mono.MonoAssemblyName&,System.String&) mscorlib::System::Reflection::Assembly::InternalGetAssemblyName
+
+// System.RuntimeMethodHandle
+>icalls/mscorlib/System/RuntimeMethodHandle.h
+System.RuntimeMethodHandle::GetFunctionPointer(System.IntPtr) mscorlib::System::RuntimeMethodHandle::GetFunctionPointer
+
+// System.Security.Principal.WindowsIdentity
+>icalls/mscorlib/System.Security.Principal/WindowsIdentity.h
+System.Security.Principal.WindowsIdentity::GetCurrentToken() mscorlib::System::Security::Principal::WindowsIdentity::GetCurrentToken
+System.Security.Principal.WindowsIdentity::GetUserToken(System.String) mscorlib::System::Security::Principal::WindowsIdentity::GetUserToken
+System.Security.Principal.WindowsIdentity::GetTokenName(System.IntPtr) mscorlib::System::Security::Principal::WindowsIdentity::GetTokenName
+System.Security.Principal.WindowsIdentity::_GetRoles(System.IntPtr) mscorlib::System::Security::Principal::WindowsIdentity::_GetRoles
+
+// System.Runtime.Remoting.Activation.ActivationServices
+>icalls/mscorlib/System.Runtime.Remoting.Activation/ActivationServices.h
+System.Runtime.Remoting.Activation.ActivationServices::AllocateUninitializedClassInstance(System.Type) mscorlib::System::Runtime::Remoting::Activation::ActivationServices::AllocateUninitializedClassInstance
+System.Runtime.Remoting.Activation.ActivationServices::EnableProxyActivation(System.Type,System.Boolean) mscorlib::System::Runtime::Remoting::Activation::ActivationServices::EnableProxyActivation
+
+// System.Runtime.Remoting.Messaging.AsyncResult
+>icalls/mscorlib/System.Runtime.Remoting.Messaging/AsyncResult.h
+System.Runtime.Remoting.Messaging.AsyncResult::Invoke() mscorlib::System::Runtime::Remoting::Messaging::AsyncResult::Invoke
+
+// System.Runtime.Remoting.Proxies.RealProxy
+>icalls/mscorlib/System.Runtime.Remoting.Proxies/RealProxy.h
+System.Runtime.Remoting.Proxies.RealProxy::InternalGetTransparentProxy(System.String) mscorlib::System::Runtime::Remoting::Proxies::RealProxy::InternalGetTransparentProxy
+System.Runtime.Remoting.Proxies.RealProxy::InternalGetProxyType(System.Object) mscorlib::System::Runtime::Remoting::Proxies::RealProxy::InternalGetProxyType
+
+// System.Runtime.Remoting.RemotingServices
+>icalls/mscorlib/System.Runtime.Remoting/RemotingServices.h
+System.Runtime.Remoting.RemotingServices::InternalExecute(System.Reflection.MethodBase,System.Object,System.Object[],System.Object[]&) mscorlib::System::Runtime::Remoting::RemotingServices::InternalExecute
+System.Runtime.Remoting.RemotingServices::GetVirtualMethod(System.Type,System.Reflection.MethodBase) mscorlib::System::Runtime::Remoting::RemotingServices::GetVirtualMethod
+
+// System.RuntimeFieldHandle
+>icalls/mscorlib/System/RuntimeFieldHandle.h
+System.RuntimeFieldHandle::GetValueDirect(System.Reflection.RuntimeFieldInfo,System.RuntimeType,System.Void*,System.RuntimeType) mscorlib::System::RuntimeFieldHandle::GetValueDirect
+System.RuntimeFieldHandle::SetValueDirect(System.Reflection.RuntimeFieldInfo,System.RuntimeType,System.Void*,System.Object,System.RuntimeType) mscorlib::System::RuntimeFieldHandle::SetValueDirect
+System.RuntimeFieldHandle::SetValueInternal(System.Reflection.FieldInfo,System.Object,System.Object) mscorlib::System::RuntimeFieldHandle::SetValueInternal
+
+// System.TypedReference
+>icalls/mscorlib/System/TypedReference.h
+System.TypedReference::InternalToObject(System.Void*) mscorlib::System::TypedReference::InternalToObject
+System.TypedReference::InternalMakeTypedReference(System.Void*,System.Object,System.IntPtr[],System.RuntimeType) mscorlib::System::TypedReference::InternalMakeTypedReference
+
+// System.Reflection.EventInfo
+>icalls/mscorlib/System.Reflection/EventInfo.h
+System.Reflection.EventInfo::internal_from_handle_type(System.IntPtr,System.IntPtr) mscorlib::System::Reflection::EventInfo::internal_from_handle_type
+
+// System.Reflection.FieldInfo
+>icalls/mscorlib/System.Reflection/FieldInfo.h
+System.Reflection.FieldInfo::internal_from_handle_type(System.IntPtr,System.IntPtr) mscorlib::System::Reflection::FieldInfo::internal_from_handle_type
+System.Reflection.FieldInfo::get_marshal_info() mscorlib::System::Reflection::FieldInfo::get_marshal_info
+
+// System.Reflection.MethodBase
+>icalls/mscorlib/System.Reflection/MethodBase.h
+System.Reflection.MethodBase::GetCurrentMethod() mscorlib::System::Reflection::MethodBase::GetCurrentMethod
+
+// System.MathF
+>vm-utils/icalls/mscorlib/System/MathF.h
+System.MathF::Pow(System.Single,System.Single) mscorlib::System::MathF::Pow
+
+// System.IO.Path
+>icalls/mscorlib/System.IO/Path.h
+System.IO.Path::get_temp_path() mscorlib::System::IO::Path::get_temp_path
+
+// System.Runtime.InteropServices.RuntimeInformation
+>icalls/mscorlib/System.Runtime.InteropServices/RuntimeInformation.h
+System.Runtime.InteropServices.RuntimeInformation::GetOSName() mscorlib::System::Runtime::InteropServices::RuntimeInformation::GetOSName
+System.Runtime.InteropServices.RuntimeInformation::GetRuntimeArchitecture() mscorlib::System::Runtime::InteropServices::RuntimeInformation::GetRuntimeArchitecture
+
+// System.String
+>icalls/mscorlib/System/String.h
+System.String::FastAllocateString(System.Int32) mscorlib::System::String::FastAllocateString
+System.String::InternalIntern(System.String) mscorlib::System::String::InternalIntern
+System.String::InternalIsInterned(System.String) mscorlib::System::String::InternalIsInterned
+System.String::.ctor(System.Char*) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.Char*,System.Int32,System.Int32) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.Char,System.Int32) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.Char[]) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.Char[],System.Int32,System.Int32) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.ReadOnlySpan`1<System.Char>) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.SByte*) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.SByte*,System.Int32,System.Int32) mscorlib::System::String::RedirectToCreateString
+System.String::.ctor(System.SByte*,System.Int32,System.Int32,System.Text.Encoding) mscorlib::System::String::RedirectToCreateString
+
+// System.Text.EncodingHelper
+>icalls/mscorlib/System.Text/EncodingHelper.h
+System.Text.EncodingHelper::InternalCodePage(System.Int32&) mscorlib::System::Text::EncodingHelper::InternalCodePage
+
+// System.Type
+>icalls/mscorlib/System/Type.h
+System.Type::internal_from_handle(System.IntPtr) mscorlib::System::Type::internal_from_handle
+
+// Mono.RuntimeGPtrArrayHandle
+>icalls/mscorlib/Mono/RuntimeGPtrArrayHandle.h
+Mono.RuntimeGPtrArrayHandle::GPtrArrayFree(Mono.RuntimeStructs/GPtrArray*) mscorlib::Mono::RuntimeGPtrArrayHandle::GPtrArrayFree
+
+// Mono.RuntimeMarshal
+>icalls/mscorlib/Mono/RuntimeMarshal.h
+Mono.RuntimeMarshal::FreeAssemblyName(Mono.MonoAssemblyName&,System.Boolean) mscorlib::Mono::RuntimeMarshal::FreeAssemblyName
+
+// System.NumberFormatter
+>icalls/mscorlib/System/NumberFormatter.h
+System.NumberFormatter::GetFormatterTables(System.UInt64*&,System.Int32*&,System.Char*&,System.Char*&,System.Int64*&,System.Int32*&) mscorlib::System::NumberFormatter::GetFormatterTables
+
+// System.Reflection.CustomAttributeData
+>icalls/mscorlib/System.Reflection/CustomAttributeData.h
+System.Reflection.CustomAttributeData::ResolveArgumentsInternal(System.Reflection.ConstructorInfo,System.Reflection.Assembly,System.IntPtr,System.UInt32,System.Object[]&,System.Object[]&) mscorlib::System::Reflection::CustomAttributeData::ResolveArgumentsInternal
+
+// System.Runtime.Remoting.Contexts.Context
+>icalls/mscorlib/System.Runtime.Remoting.Contexts/Context.h
+System.Runtime.Remoting.Contexts.Context::RegisterContext(System.Runtime.Remoting.Contexts.Context) mscorlib::System::Runtime::Remoting::Contexts::Context::RegisterContext
+System.Runtime.Remoting.Contexts.Context::ReleaseContext(System.Runtime.Remoting.Contexts.Context) mscorlib::System::Runtime::Remoting::Contexts::Context::ReleaseContext
+
+// System.Runtime.RuntimeImports
+>icalls/mscorlib/System.Runtime/RuntimeImports.h
+System.Runtime.RuntimeImports::_ecvt_s(System.Byte*,System.Int32,System.Double,System.Int32,System.Int32*,System.Int32*) mscorlib::System::Runtime::RuntimeImports::ecvt_s
+System.Runtime.RuntimeImports::Memmove(System.Byte*,System.Byte*,System.UInt32) mscorlib::System::Runtime::RuntimeImports::Memmove
+System.Runtime.RuntimeImports::Memmove_wbarrier(System.Byte*,System.Byte*,System.UInt32,System.IntPtr) mscorlib::System::Runtime::RuntimeImports::Memmove_wbarrier
+System.Runtime.RuntimeImports::ZeroMemory(System.Void*,System.UInt32) mscorlib::System::Runtime::RuntimeImports::ZeroMemory
+
+// System.Text.Normalization
+>icalls/mscorlib/System.Text/Normalization.h
+System.Text.Normalization::load_normalization_resource(System.IntPtr&,System.IntPtr&,System.IntPtr&,System.IntPtr&,System.IntPtr&,System.IntPtr&) mscorlib::System::Text::Normalization::load_normalization_resource
+
+// System.Threading.InternalThread
+>icalls/mscorlib/System.Threading/InternalThread.h
+System.Threading.InternalThread::Thread_free_internal() mscorlib::System::Threading::InternalThread::Thread_free_internal
+
+// Microsoft.Win32.NativeMethods
+>icalls/System/Microsoft.Win32/NativeMethods.h
+Microsoft.Win32.NativeMethods::CloseProcess(System.IntPtr) System::Microsoft::Win32::NativeMethods::CloseProcess
+Microsoft.Win32.NativeMethods::GetExitCodeProcess(System.IntPtr,System.Int32&) System::Microsoft::Win32::NativeMethods::GetExitCodeProcess
+Microsoft.Win32.NativeMethods::GetProcessTimes(System.IntPtr,System.Int64&,System.Int64&,System.Int64&,System.Int64&) System::Microsoft::Win32::NativeMethods::GetProcessTimes
+Microsoft.Win32.NativeMethods::GetProcessWorkingSetSize(System.IntPtr,System.IntPtr&,System.IntPtr&) System::Microsoft::Win32::NativeMethods::GetProcessWorkingSetSize
+Microsoft.Win32.NativeMethods::SetPriorityClass(System.IntPtr,System.Int32) System::Microsoft::Win32::NativeMethods::SetPriorityClass
+Microsoft.Win32.NativeMethods::SetProcessWorkingSetSize(System.IntPtr,System.IntPtr,System.IntPtr) System::Microsoft::Win32::NativeMethods::SetProcessWorkingSetSize
+Microsoft.Win32.NativeMethods::TerminateProcess(System.IntPtr,System.Int32) System::Microsoft::Win32::NativeMethods::TerminateProcess
+Microsoft.Win32.NativeMethods::GetCurrentProcessId() System::Microsoft::Win32::NativeMethods::GetCurrentProcessId
+Microsoft.Win32.NativeMethods::GetPriorityClass(System.IntPtr) System::Microsoft::Win32::NativeMethods::GetPriorityClass
+Microsoft.Win32.NativeMethods::WaitForInputIdle(System.IntPtr,System.Int32) System::Microsoft::Win32::NativeMethods::WaitForInputIdle
+Microsoft.Win32.NativeMethods::GetCurrentProcess() System::Microsoft::Win32::NativeMethods::GetCurrentProcess
+
+// Mono.Net.Security.MonoTlsProviderFactory
+>icalls/System/Mono.Net.Security/MonoTlsProviderFactory.h
+Mono.Net.Security.MonoTlsProviderFactory::IsBtlsSupported() System::Mono::Net::Security::MonoTlsProviderFactory::IsBtlsSupported
+
+// System.Diagnostics.Process
+>icalls/System/System.Diagnostics/Process.h
+System.Diagnostics.Process::CreateProcess_internal(System.Diagnostics.ProcessStartInfo,System.IntPtr,System.IntPtr,System.IntPtr,System.Diagnostics.Process/ProcInfo&) System::System::Diagnostics::Process::CreateProcess_internal
+System.Diagnostics.Process::ShellExecuteEx_internal(System.Diagnostics.ProcessStartInfo,System.Diagnostics.Process/ProcInfo&) System::System::Diagnostics::Process::ShellExecuteEx_internal
+System.Diagnostics.Process::GetModules_icall(System.IntPtr) System::System::Diagnostics::Process::GetModules_icall
+System.Diagnostics.Process::GetProcesses_internal() System::System::Diagnostics::Process::GetProcesses_internal
+System.Diagnostics.Process::GetProcessData(System.Int32,System.Int32,System.Int32&) System::System::Diagnostics::Process::GetProcessData
+System.Diagnostics.Process::GetProcess_internal(System.Int32) System::System::Diagnostics::Process::GetProcess_internal
+System.Diagnostics.Process::ProcessName_icall(System.IntPtr) System::System::Diagnostics::Process::ProcessName_icall
+System.Diagnostics.Process::MainWindowHandle_icall(System.Int32) System::System::Diagnostics::Process::MainWindowHandle_icall
+
+// System.Net.Dns
+>icalls/System/System.Net/Dns.h
+System.Net.Dns::GetHostByAddr_icall(System.String,System.String&,System.String[]&,System.String[]&,System.Int32) System::System::Net::Dns::GetHostByAddr_icall
+System.Net.Dns::GetHostByName_icall(System.String,System.String&,System.String[]&,System.String[]&,System.Int32) System::System::Net::Dns::GetHostByName_icall
+System.Net.Dns::GetHostName_icall(System.String&) System::System::Net::Dns::GetHostName_icall
+
+// System.Net.NetworkInformation.MacOsIPInterfaceProperties
+>icalls/System/System.Net.NetworkInformation/MacOsIPInterfaceProperties.h
+System.Net.NetworkInformation.MacOsIPInterfaceProperties::ParseRouteInfo_icall(System.String,System.String[]&) System::System::Net::NetworkInformation::MacOsIPInterfaceProperties::ParseRouteInfo_icall
+
+// System.Net.Sockets.Socket
+>icalls/System/System.Net.Sockets/Socket.h
+System.Net.Sockets.Socket::Duplicate_icall(System.IntPtr,System.Int32,System.IntPtr&,System.IO.MonoIOError&) System::System::Net::Sockets::Socket::Duplicate_icall
+System.Net.Sockets.Socket::IsProtocolSupported_internal(System.Net.NetworkInformation.NetworkInterfaceComponent) System::System::Net::Sockets::Socket::IsProtocolSupported_internal
+System.Net.Sockets.Socket::Poll_icall(System.IntPtr,System.Net.Sockets.SelectMode,System.Int32,System.Int32&) System::System::Net::Sockets::Socket::Poll_icall
+System.Net.Sockets.Socket::SendFile_icall(System.IntPtr,System.String,System.Byte[],System.Byte[],System.Net.Sockets.TransmitFileOptions,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::SendFile_icall
+System.Net.Sockets.Socket::SupportsPortReuse(System.Net.Sockets.ProtocolType) System::System::Net::Sockets::Socket::SupportsPortReuse
+System.Net.Sockets.Socket::Available_icall(System.IntPtr,System.Int32&) System::System::Net::Sockets::Socket::Available_icall
+System.Net.Sockets.Socket::IOControl_icall(System.IntPtr,System.Int32,System.Byte[],System.Byte[],System.Int32&) System::System::Net::Sockets::Socket::IOControl_icall
+System.Net.Sockets.Socket::Receive_array_icall(System.IntPtr,System.Net.Sockets.Socket/WSABUF*,System.Int32,System.Net.Sockets.SocketFlags,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::Receive_array_icall
+System.Net.Sockets.Socket::Receive_icall(System.IntPtr,System.Byte*,System.Int32,System.Net.Sockets.SocketFlags,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::Receive_icall
+System.Net.Sockets.Socket::ReceiveFrom_icall(System.IntPtr,System.Byte*,System.Int32,System.Net.Sockets.SocketFlags,System.Net.SocketAddress&,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::ReceiveFrom_icall
+System.Net.Sockets.Socket::Send_array_icall(System.IntPtr,System.Net.Sockets.Socket/WSABUF*,System.Int32,System.Net.Sockets.SocketFlags,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::Send_array_icall
+System.Net.Sockets.Socket::Send_icall(System.IntPtr,System.Byte*,System.Int32,System.Net.Sockets.SocketFlags,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::Send_icall
+System.Net.Sockets.Socket::SendTo_icall(System.IntPtr,System.Byte*,System.Int32,System.Net.Sockets.SocketFlags,System.Net.SocketAddress,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::SendTo_icall
+System.Net.Sockets.Socket::Accept_icall(System.IntPtr,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::Accept_icall
+System.Net.Sockets.Socket::Socket_icall(System.Net.Sockets.AddressFamily,System.Net.Sockets.SocketType,System.Net.Sockets.ProtocolType,System.Int32&) System::System::Net::Sockets::Socket::Socket_icall
+System.Net.Sockets.Socket::LocalEndPoint_icall(System.IntPtr,System.Int32,System.Int32&) System::System::Net::Sockets::Socket::LocalEndPoint_icall
+System.Net.Sockets.Socket::RemoteEndPoint_icall(System.IntPtr,System.Int32,System.Int32&) System::System::Net::Sockets::Socket::RemoteEndPoint_icall
+System.Net.Sockets.Socket::Bind_icall(System.IntPtr,System.Net.SocketAddress,System.Int32&) System::System::Net::Sockets::Socket::Bind_icall
+System.Net.Sockets.Socket::Blocking_icall(System.IntPtr,System.Boolean,System.Int32&) System::System::Net::Sockets::Socket::Blocking_icall
+System.Net.Sockets.Socket::cancel_blocking_socket_operation(System.Threading.Thread) System::System::Net::Sockets::Socket::cancel_blocking_socket_operation
+System.Net.Sockets.Socket::Close_icall(System.IntPtr,System.Int32&) System::System::Net::Sockets::Socket::Close_icall
+System.Net.Sockets.Socket::Connect_icall(System.IntPtr,System.Net.SocketAddress,System.Int32&,System.Boolean) System::System::Net::Sockets::Socket::Connect_icall
+System.Net.Sockets.Socket::Disconnect_icall(System.IntPtr,System.Boolean,System.Int32&) System::System::Net::Sockets::Socket::Disconnect_icall
+System.Net.Sockets.Socket::GetSocketOption_arr_icall(System.IntPtr,System.Net.Sockets.SocketOptionLevel,System.Net.Sockets.SocketOptionName,System.Byte[]&,System.Int32&) System::System::Net::Sockets::Socket::GetSocketOption_arr_icall
+System.Net.Sockets.Socket::GetSocketOption_obj_icall(System.IntPtr,System.Net.Sockets.SocketOptionLevel,System.Net.Sockets.SocketOptionName,System.Object&,System.Int32&) System::System::Net::Sockets::Socket::GetSocketOption_obj_icall
+System.Net.Sockets.Socket::Listen_icall(System.IntPtr,System.Int32,System.Int32&) System::System::Net::Sockets::Socket::Listen_icall
+System.Net.Sockets.Socket::Select_icall(System.Net.Sockets.Socket[]&,System.Int32,System.Int32&) System::System::Net::Sockets::Socket::Select_icall
+System.Net.Sockets.Socket::SetSocketOption_icall(System.IntPtr,System.Net.Sockets.SocketOptionLevel,System.Net.Sockets.SocketOptionName,System.Object,System.Byte[],System.Int32,System.Int32&) System::System::Net::Sockets::Socket::SetSocketOption_icall
+System.Net.Sockets.Socket::Shutdown_icall(System.IntPtr,System.Net.Sockets.SocketShutdown,System.Int32&) System::System::Net::Sockets::Socket::Shutdown_icall
+
+// System.Threading.Semaphore
+>icalls/System/System.Threading/Semaphore.h
+System.Threading.Semaphore::ReleaseSemaphore_internal(System.IntPtr,System.Int32,System.Int32&) System::System::Threading::Semaphore::ReleaseSemaphore_internal
+System.Threading.Semaphore::CreateSemaphore_icall(System.Int32,System.Int32,System.Char*,System.Int32,System.Int32&) System::System::Threading::Semaphore::CreateSemaphore_icall
+System.Threading.Semaphore::OpenSemaphore_icall(System.Char*,System.Int32,System.Security.AccessControl.SemaphoreRights,System.Int32&) System::System::Threading::Semaphore::OpenSemaphore_icall
+
+// System.Net.Sockets.SocketException
+>icalls/System/System.Net.Sockets/SocketException.h
+System.Net.Sockets.SocketException::WSAGetLastError_icall() System::System::Net::Sockets::SocketException::WSAGetLastError_icall
+
+// System.Diagnostics.Stopwatch
+>icalls/System/System.Diagnostics/Stopwatch.h
+System.Diagnostics.Stopwatch::GetTimestamp() System::System::Diagnostics::Stopwatch::GetTimestamp
+
+// System.Diagnostics.DefaultTraceListener
+>icalls/System/System.Diagnostics/DefaultTraceListener.h
+System.Diagnostics.DefaultTraceListener::WriteWindowsDebugString(System.Char*) System::System::Diagnostics::DefaultTraceListener::WriteWindowsDebugString
+
+// System.Diagnostics.FileVersionInfo
+>icalls/System/System.Diagnostics/FileVersionInfo.h
+System.Diagnostics.FileVersionInfo::GetVersionInfo_icall(System.Char*,System.Int32) System::System::Diagnostics::FileVersionInfo::GetVersionInfo_icall
+
+// System.IOSelector
+>mono/ThreadPool/threadpool-ms-io.h
+System.IOSelector::Add(System.IntPtr,System.IOSelectorJob) ves_icall_System_IOSelector_Add
+System.IOSelector::Remove(System.IntPtr) ves_icall_System_IOSelector_Remove
+
+// System.IO.MemoryMappedFiles.MemoryMapImpl
+>icalls/System.Core/System.IO.MemoryMappedFiles/MemoryMapImpl.h
+System.IO.MemoryMappedFiles.MemoryMapImpl::Unmap(System.IntPtr) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::Unmap
+System.IO.MemoryMappedFiles.MemoryMapImpl::MapInternal(System.IntPtr,System.Int64,System.Int64&,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IntPtr&,System.IntPtr&) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::MapInternal
+System.IO.MemoryMappedFiles.MemoryMapImpl::OpenFileInternal(System.Char*,System.Int32,System.IO.FileMode,System.Char*,System.Int32,System.Int64&,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.MemoryMappedFiles.MemoryMappedFileOptions,System.Int32&) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::OpenFileInternal
+System.IO.MemoryMappedFiles.MemoryMapImpl::OpenHandleInternal(System.IntPtr,System.Char*,System.Int32,System.Int64&,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.MemoryMappedFiles.MemoryMappedFileOptions,System.Int32&) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::OpenHandleInternal
+System.IO.MemoryMappedFiles.MemoryMapImpl::CloseMapping(System.IntPtr) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::CloseMapping
+System.IO.MemoryMappedFiles.MemoryMapImpl::ConfigureHandleInheritability(System.IntPtr,System.IO.HandleInheritability) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::ConfigureHandleInheritability
+System.IO.MemoryMappedFiles.MemoryMapImpl::Flush(System.IntPtr) System::Core::System::IO::MemoryMappedFiles::MemoryMapImpl::Flush
+
+// Interop/Sys
+>icalls/mscorlib/Interop.h
+Interop/Sys::DoubleToString(System.Double,System.Byte*,System.Byte*,System.Int32) mscorlib::Interop::Sys::DoubleToString

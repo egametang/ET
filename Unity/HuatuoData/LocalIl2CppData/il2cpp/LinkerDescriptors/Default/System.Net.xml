@@ -1,0 +1,6 @@
+<linker>
+	<!-- Don't reference anything other than System.Net in this file -->
+	<assembly fullname="System.Net">
+		<type fullname="System.Net.SocketAddress" preserve="fields"/>
+	</assembly>
+</linker>

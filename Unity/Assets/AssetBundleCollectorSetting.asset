@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185f6993d5150494d98da50e26cb1c25, type: 3}
+  m_Name: AssetBundleCollectorSetting
+  m_EditorClassIdentifier: 
+  EnableAddressable: 1
+  AutoCollectShaders: 1
+  ShadersBundleName: myshaders
+  Groups:
+  - GroupName: Code
+    GroupDesc: "\u4EE3\u7801\u70ED\u66F4\u65B0dll"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Res/Code
+      CollectorType: 0
+      AddressRuleName: AddressByGroupAndFileName
+      PackRuleName: PackRawFile
+      FilterRuleName: CollectAll
+      AssetTags: 
+  - GroupName: Config
+    GroupDesc: "\u914D\u7F6E\u8868"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Res/Config
+      CollectorType: 0
+      AddressRuleName: AddressByGroupAndFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectAll
+      AssetTags: ConfigList
+  - GroupName: UI
+    GroupDesc: "UI\u76F8\u5173"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Res/UI
+      CollectorType: 0
+      AddressRuleName: AddressByGroupAndFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectAll
+      AssetTags: 
+  - GroupName: Unit
+    GroupDesc: Unit
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Res/Unit
+      CollectorType: 0
+      AddressRuleName: AddressByGroupAndFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectAll
+      AssetTags: 
+  - GroupName: Scene
+    GroupDesc: "\u573A\u666F"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Res/Scene
+      CollectorType: 0
+      AddressRuleName: AddressByGroupAndFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectScene
+      AssetTags: 
+  - GroupName: LightingMap
+    GroupDesc: "\u5149\u7167\u6570\u636E"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Res/Scene/Map1
+      CollectorType: 0
+      AddressRuleName: AddressByCollectorAndFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectAll
+      AssetTags: 
+    - CollectPath: Assets/Res/Scene/Map2
+      CollectorType: 0
+      AddressRuleName: AddressByCollectorAndFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectAll
+      AssetTags: 

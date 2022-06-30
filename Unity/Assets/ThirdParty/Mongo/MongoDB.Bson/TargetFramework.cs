@@ -17,7 +17,7 @@ namespace MongoDB.Bson
 {
     internal static class TargetFramework
     {
-        public static string Moniker =>
+        public static string Moniker = "net472";
 #if NET472
             "net472";
 #elif NETSTANDARD2_0

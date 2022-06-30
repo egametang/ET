@@ -1,0 +1,15 @@
+{
+  "runtimeOptions": {
+    "tfm": "net5.0",
+    "includedFrameworks": [
+      {
+        "name": "Microsoft.NETCore.App",
+        "version": "5.0.13"
+      }
+    ],
+    "configProperties": {
+      "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+      "System.Runtime.TieredCompilation.QuickJit": false
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<linker>
+	<!-- Don't reference anything other than mscorlib in this file -->
+	<assembly fullname="mscorlib">
+		<type fullname="System.Collections.IEnumerator" preserve="nothing"/>
+		<type fullname="System.Object" preserve="nothing"/>
+		<type fullname="System.Type" preserve="nothing"/>
+		<type fullname="System.ValueType" preserve="nothing"/>
+		<type fullname="System.Attribute" preserve="nothing"/>
+		<type fullname="System.String" preserve="nothing"/>
+		<type fullname="System.Int32" preserve="nothing"/>
+		<type fullname="System.Single" preserve="nothing"/>
+		<type fullname="System.Double" preserve="nothing"/>
+		<type fullname="System.SByte" preserve="nothing"/>
+		<type fullname="System.Byte" preserve="nothing"/>
+		<type fullname="System.Char" preserve="nothing"/>
+		<type fullname="System.IntPtr" preserve="nothing"/>
+		<type fullname="System.UInt16" preserve="nothing"/>
+		<type fullname="System.UInt32" preserve="nothing"/>
+		<type fullname="System.UInt64" preserve="nothing"/>
+		<type fullname="System.Int16" preserve="nothing"/>
+		<type fullname="System.Int64" preserve="nothing"/>
+		<type fullname="System.UInt64" preserve="nothing"/>
+		<type fullname="System.Boolean" preserve="nothing"/>
+		<type fullname="System.Delegate" preserve="nothing"/>
+		<type fullname="System.MulticastDelegate" preserve="nothing"/>
+		<type fullname="System.AttributeUsageAttribute" preserve="nothing"/>
+		<type fullname="System.Collections.Hashtable" preserve="nothing"/>
+		<type fullname="System.Collections.ArrayList" preserve="nothing"/>
+		<type fullname="System.Collections.IList" preserve="nothing"/>
+		<type fullname="System.Collections.IDictionary" preserve="nothing"/>
+		<type fullname="System.DateTime" preserve="nothing"/>
+		<type fullname="System.Runtime.CompilerServices.FixedBufferAttribute" preserve="nothing"/>
+		<type fullname="System.Runtime.CompilerServices.AsyncStateMachineAttribute" preserve="nothing"/>
+		<type fullname="System.Enum" preserve="nothing"/>
+		<type fullname="System.Collections.IEnumerator">
+			<property name="Current" />
+			<method name="MoveNext" />
+		</type>
+		<type fullname="System.IDisposable">
+			<method name="Dispose" />
+		</type>
+		<type fullname="System.Reflection.CustomAttributeData" preserve="all" />
+		<type fullname="System.Reflection.CustomAttributeTypedArgument" preserve="all" />
+		<type fullname="System.Reflection.CustomAttributeNamedArgument" preserve="all" />
+	</assembly>
+</linker>

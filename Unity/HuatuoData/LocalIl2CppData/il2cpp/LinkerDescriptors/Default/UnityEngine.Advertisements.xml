@@ -1,0 +1,14 @@
+<linker>
+  <assembly fullname="UnityEngine">
+    <type fullname="UnityEngine.SocialPlatforms.GameCenter.GameCenterPlatform" preserve="fields"/>
+    <type fullname="UnityEngine.SocialPlatforms.GameCenter.GcAchievementData" preserve="fields"/>
+    <type fullname="UnityEngine.SocialPlatforms.GameCenter.GcAchievementDescriptionData" preserve="fields"/>
+    <type fullname="UnityEngine.SocialPlatforms.GameCenter.GcScoreData" preserve="fields"/>
+    <type fullname="UnityEngine.SocialPlatforms.GameCenter.GcUserProfileData" preserve="fields"/>
+  </assembly>
+  <assembly fullname="UnityEngine.Advertisements">
+    <type fullname="UnityEngine.Advertisements.Advertisement" preserve="fields">
+      <method name="LoadRuntime" />
+    </type>
+  </assembly>
+</linker>

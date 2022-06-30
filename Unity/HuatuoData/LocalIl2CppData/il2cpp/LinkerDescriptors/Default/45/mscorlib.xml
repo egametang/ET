@@ -1,0 +1,38 @@
+<linker>
+	<!-- Don't reference anything other than mscorlib in this file -->
+	<!-- Only reference types exclusively needed for net45 -->
+	<assembly fullname="mscorlib">
+		<type fullname="Microsoft.Win32.SafeFileHandle" preserve="nothing">
+			<method name=".ctor" /> <!-- Needs to get called by marshaling code -->
+		</type>
+		<type fullname="Microsoft.Win32.SafeFileMappingHandle" preserve="nothing">
+			<method name=".ctor" /> <!-- Needs to get called by marshaling code -->
+		</type>
+		<type fullname="Microsoft.Win32.SafeFindHandle" preserve="nothing">
+			<method name=".ctor" /> <!-- Needs to get called by marshaling code -->
+		</type>
+		<type fullname="Microsoft.Win32.SafeLibraryHandle" preserve="nothing">
+			<method name=".ctor" /> <!-- Needs to get called by marshaling code -->
+		</type>
+		<type fullname="Microsoft.Win32.SafeRegistryHandle" preserve="nothing">
+			<method name=".ctor" /> <!-- Needs to get called by marshaling code -->
+		</type>
+		<type fullname="Microsoft.Win32.SafeWaitHandle" preserve="nothing">
+			<method name=".ctor" /> <!-- Needs to get called by marshaling code -->
+		</type>
+		<type fullname="System.Collections.Generic.KeyValuePair`2" preserve="fields"> <!-- Accessed from marshaling code -->
+			<method name="get_Key" />
+			<method name="get_Value" />
+			<method name=".ctor"/>
+		</type>
+		<type fullname="System.RuntimeType" preserve="fields"/>
+		<type fullname="System.IOAsyncResult" preserve="fields"/>
+		<type fullname="System.Globalization.CalendarData" preserve="fields"/>
+		<type fullname="System.Threading._ThreadPoolWaitCallback" preserve="all"/>
+		<type fullname="System.Threading.NativeOverlapped" preserve="fields"/>
+		<type fullname="System.Runtime.CompilerServices.CompilationRelaxationsAttribute" preserve="all" />
+		<type fullname="System.Runtime.InteropServices.Marshal" preserve="fields">
+			<method signature="System.Int32 GetHRForException(System.Exception)" />
+		</type>
+	</assembly>
+</linker>

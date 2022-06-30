@@ -1,0 +1,9 @@
+<linker>
+    <!-- case 1331829 - Required for doing `new XmlSerializer(typeof(Foo))`
+      There is a a ton of reflection going on in the class libraries.
+      It's not worth the effort to try and precisely annotate the usages when this code only applies to the mono backend
+    -->
+	<assembly fullname="System.Xml">
+		<type fullname="System.Xml.Serialization.*" preserve="all"/>
+	</assembly>
+</linker>

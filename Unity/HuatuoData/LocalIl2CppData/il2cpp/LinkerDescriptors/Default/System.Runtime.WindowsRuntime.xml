@@ -1,0 +1,6 @@
+<linker>
+	<assembly fullname="System.Runtime.WindowsRuntime">
+		<type fullname="System.Runtime.InteropServices.WindowsRuntime.ConstantSplittableMap`2" preserve="all"> <!-- Needs to get called by marshaling code -->
+		</type>
+	</assembly>
+</linker>

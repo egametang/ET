@@ -1,0 +1,1326 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bee.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Bee.Core.DependencyKind">
+            <summary>
+            Wether you want to express a to-build or a to-use dependency
+            </summary>
+        </member>
+        <member name="F:Bee.Core.DependencyKind.ToBuild">
+            <summary>
+            A ToBuild dependency is a dependency that must be produced before you can build a certain node. If we are able to retrieve a node from the cache server
+            its to-build dependencies will not be built.
+            </summary>
+        </member>
+        <member name="F:Bee.Core.DependencyKind.ToUse">
+            <summary>
+            A ToUse dependency is a dependency that must be produced before this node is used/consumed/ran by something else. If we are able to retrieve this node from the cache server
+            we will also build its to-use dependencies before building any node that uses this node. One example of a ToUse dependencies is a dll distributed next to an executable.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.Backend">
+            <summary>
+            Interface for a build-graph construction backend.
+            </summary>
+            <remarks>Build code calls the methods on this interface to add elements to the build graph. Note that none of
+            the actions are executed immediately upon being called; they are simply recorded into the build graph, to be
+            executed later by the build backend.</remarks>
+        </member>
+        <member name="M:Bee.Core.Backend.AddWriteTextAction(NiceIO.NPath,System.String,System.String,NiceIO.NPath[])">
+            <summary>
+            Adds a "write text" action to the build graph, which, when executed during the build process, opens the
+            given file, overwrites the contents of it with the provided text, then closes it again.
+            </summary>
+            <param name="file">The file to write.</param>
+            <param name="contents">The string to replace the file contents with.</param>
+            <param name="actionName">The name of this action in the buildgraph. Defaults to "WriteText" but you can
+            specify a more meaningful name if you want.</param>
+            <param name="filesThatMightBeIncluded">To use ByLeafInput caching, generated files that #include non generated files need to specify in the buildgraph which non generated files they intend to include</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddCopyFileAction(NiceIO.NPath[],NiceIO.NPath[],System.String)">
+            <summary>
+            Adds a "copy file" action to the build graph, which, when executed during the build process, will copy each
+            given file from the 'sources' locations to the 'targets' locations. The number of sources and targets must match.
+            </summary>
+            <param name="targets">The paths to copy to.</param>
+            <param name="sources">The paths to copy from.</param>
+            <param name="actionName">The name of this action in the buildgraph. Defaults to "CopyFile" but you can
+            specify a more meaningful name if you want.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddDependency(NiceIO.NPath,NiceIO.NPath,Bee.Core.DependencyKind)">
+            <summary>
+            Adds a dependency between two files in the graph.
+            </summary>
+            <param name="from">The file that has the dependency.</param>
+            <param name="to">The file that it is dependent on.</param>
+            <param name="kind">Flags to specify if this dependency is required when this node is built, or when it is used, or both.</param>
+            <remarks>The backend will ensure that the 'to' file is up-to-date before it begins building the 'from' file.
+            However, note that this does not mean that rebuilding the 'to' file will also cause the 'from' file to be
+            rebuilt; that will only happen if the 'to' file is actually recorded as an input to the 'from' file, rather
+            than just a dependency.</remarks>
+        </member>
+        <member name="M:Bee.Core.Backend.AddDependency(NiceIO.NPath,System.Collections.Generic.IEnumerable{NiceIO.NPath},Bee.Core.DependencyKind)">
+            <summary>
+            Adds a dependency from one file to multiple other files in the graph.
+            </summary>
+            <param name="from">The file that has the dependency.</param>
+            <param name="to">The files that it is dependent on.</param>
+            <param name="kind">Flags to specify if this dependency is required when this node is built, or when it is used, or both.</param>
+            <remarks>The backend will ensure that all of the 'to' files are up-to-date before it begins building the 'from' file.
+            However, note that this does not mean that rebuilding any of the 'to' files will also cause the 'from' file to be
+            rebuilt; that will only happen if the 'to' files are actually recorded as an inputs to the 'from' file, rather
+            than just as a dependency.</remarks>
+        </member>
+        <member name="M:Bee.Core.Backend.ScanCppFileForHeaders(NiceIO.NPath,NiceIO.NPath,NiceIO.NPath[])">
+            <summary>
+            Configure a C++ file to be scanned for #include directives.
+            </summary>
+            <param name="objectFile">The path to the object file being created by compiling the C++ file.</param>
+            <param name="cppFile">The path to the C++ file being compiled.</param>
+            <param name="includeDirectories">The include directories that should be searched for headers.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.ScanInputsOfFileForCustomImplicitInputs(NiceIO.NPath,Bee.Core.CustomScannerInfo,NiceIO.NPath[])">
+            <summary>
+            Configure custom implicit input scanning for a build action. It's similar to scanning for #includes,
+            but allows you to find paths to files expressed in ways other than '#include' specifically.
+            </summary>
+            <param name="outputFile">An output file that identifies which action you're configuring.</param>
+            <param name="scanner">The custom scanner properties for this action.</param>
+            <param name="basePaths">Once the scanner finds a path in the input files, it will be resolved relative to these base paths in an attempt to locate the actual file on disk.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddAliasDependency(System.String,NiceIO.NPath)">
+            <summary>
+            Add a dependency between an 'alias', which is a symbolic name within the build graph, on one a particular file.
+            </summary>
+            <remarks>
+            Aliases may be treated case insensitive by the backend. Adding an alias that differs only by casing is not allowed.
+            </remarks>
+            <param name="alias">The alias that is having the dependency added.</param>
+            <param name="path">The file that it is dependent on.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddAliasDependency(System.String,NiceIO.NPath[])">
+            <summary>
+            Add a dependency between an 'alias', which is a symbolic name within the build graph, on one or more particular files.
+            </summary>
+            <remarks>
+            Aliases may be treated case insensitive by the backend. Adding an alias that differs only by casing is not allowed.
+            </remarks>
+            <param name="alias">The alias that is having the dependency added.</param>
+            <param name="paths">The files that it is dependent on.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddImplicitDependenciesToAllActionsWithInputsThatLiveIn(NiceIO.NPath,NiceIO.NPath)">
+            <summary>
+            Register the given directory as generating an implicit dependency, such that all actions which have inputs
+            inside the directory should automatically recieve a dependency on the given file.
+            </summary>
+            <param name="directory">The directory generating the dependency.</param>
+            <param name="makeDependOnThis">The file that should be added as a dependency to any actions with inputs in the directory.</param>
+        </member>
+        <member name="P:Bee.Core.Backend.AllDirectoriesProducingImplicitDependencies">
+            <summary>
+            Get the list of all directories which are currently registered as producing implicit dependencies.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Backend.RegisterGlobInfluencingGraph(NiceIO.NPath,System.String[],System.Boolean)">
+            <summary>
+            Register a directory which has been globbed during build graph generation, and therefore should be rechecked
+            by the build backend in order to determine whether the build graph is out of date and should be rebuilt.
+            </summary>
+            <param name="directory">The directory in which globbing was performed.</param>
+            <param name="filters">One or more filter expressions for files in this directory which should be included in
+            the glob. By default, null, which means all files in the directory will be considered.</param>
+            <param name="recurse">If true, also consider files in subdirectories, recursively. Default is false.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.RegisterFileInfluencingGraph(NiceIO.NPath[])">
+            <summary>
+            Register one or more files as having been used during build graph generation, and therefore should be checked
+            by the build backend in order to determine whether the build graph is out of date and should be rebuilt.
+            </summary>
+            <param name="files">The files that have been used during build graph generation.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.RegisterStatInfluencingGraph(NiceIO.NPath[])">
+            <summary>
+            Register one or more paths as having been checked for existence, and therefore should be checked
+            by the build backend in order to determine whether the build graph is out of date and should be rebuilt.
+            This will only cause the buildprogram to rerun if a file that first did not exist now does exist. Unlike FileInfluencingGraph
+            it does not care about contents
+            </summary>
+            <param name="files">The files that have been used during build graph generation.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddAliasToAliasDependency(System.String,System.String)">
+            <summary>
+            Add a dependency between one 'alias', which is a symbolic name within the build graph, and another alias.
+            </summary>
+            <param name="alias">The alias that is having the dependency added.</param>
+            <param name="otherAlias">The alias that it is dependent on.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddDependencyToAlias(NiceIO.NPath,System.String)">
+            <summary>
+            Add a dependency from one generated file to an already existing alias.
+            </summary>
+            <param name="fromPath">The file whose generation needs to have a dependency on the specified alias.</param>
+            <param name="toAlias">The alias that it is dependent on.</param>
+        </member>
+        <member name="P:Bee.Core.Backend.CanHandleAnsiColors">
+            <summary>
+            Returns whether this build backend can handle ANSI color codes in the output from executables.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Backend.AddSharedResource(System.String,System.String,System.String)">
+            <summary>
+            Adds a Shared Resource to the build graph. A Shared Resource is some supporting resource that is not itself
+            a build action, but is required to support build actions, such as a compiler server. The resource will be
+            created before any action that requires it is executed, and will be destroyed after all actions that require
+            it have completed.
+            </summary>
+            <param name="name">The name of the shared resource, such as "CscServer" or "MSPdbSrv". This is used when specifying the action, and will be displayed in messages emitted by the backend.</param>
+            <param name="createAction">The command to perform when the resource is being created. This will happen at most once per build, and will not happen at all if no actions that require this resource are being executed.</param>
+            <param name="destroyAction">The command to perform when the resource is being destroyed. This will happen after all actions that use this resource have completed executing; it will not happen if the resource was not created.</param>
+        </member>
+        <member name="M:Bee.Core.Backend.HasAction(NiceIO.NPath)">
+            <summary>
+            Use this to figure out if a certain file has been setup to be generated. Useful if you want to setup a dependency to it, as you can only setup dependencies to files that are generated.
+            </summary>
+            <param name="path">The path you're interested in</param>
+            <returns>Wether or not that path has been a targetFile of an AddAction() command</returns>
+        </member>
+        <member name="M:Bee.Core.Backend.AddAction(System.String,NiceIO.NPath[],NiceIO.NPath[],System.String,System.String[],System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String},NiceIO.NPath[],System.Boolean,System.Boolean,System.Boolean,System.String[],NiceIO.NPath[],NiceIO.NPath[],System.String[],System.Nullable{System.Boolean},NiceIO.NPath[],Bee.Core.CachingMode,NiceIO.NPath[],NiceIO.NPath,System.String)">
+            <summary>
+            Adds an action to the build graph, which will be executed by running an external program.
+            </summary>
+            <param name="actionName">The name of the action, such as "CompileC++". This, along with the first target file, will be used to identify the action in build output.</param>
+            <param name="targetFiles">The files that will be output by this build action.</param>
+            <param name="inputs">The files that will be used as inputs by this build action.</param>
+            <param name="executableStringFor">The command to launch the executable that performs this action. This should usually only be the path to the executable to run.</param>
+            <param name="commandLineArguments">The arguments that should be passed to the executable, or packed into a response file, if this action supports response files and the arguments are long enough.</param>
+            <param name="supportResponseFile">True if the executable supports response files using an @responsefile.rsp argument; false otherwise. Defaults to false.</param>
+            <param name="environmentVariables">Any custom environment variables that should be provided to the executable.</param>
+            <param name="rspAndBatchFiles">Paths to any pregenerated response files or command batch files.</param>
+            <param name="allowUnexpectedOutput">If false, check that every line in the standard output contains one of the substrings in the <c>allowedOutputSubstrings</c> array, and fail the action if any lines do not. Defaults to true.</param>
+            <param name="allowUnwrittenOutputFiles">If false, require that all <c>targetFiles</c> have updated timestamps after the action is run, and fail the action otherwise. Defaults to false.</param>
+            <param name="banContentDigestForInputs">If true, require that all <c>inputs</c> be scanned by timestamp instead of by content digest. Defaults to true.</param>
+            <param name="allowedOutputSubstrings">Multiline regular expression patterns to check for in the output. If one of the patterns matches, then the output will be swallowed.</param>
+            <param name="unavoidableOutputs">Additional files created as side effects of our real target files. Useful for allowing Bee to clean up these files when the action that generates them is no longer present.</param>
+            <param name="targetDirectories">Directories that this action will write into. Use this if the tool produces outputs that you cannot antipiate ahead of time.</param>
+            <param name="sharedResources">IDs of shared resources that this action requires to execute.</param>
+            <param name="deleteOutputsBeforeRun">If true, when this action is being run, then its outputs should be deleted first; if false the outputs will be left on disk (and presumably overwritten). If null, this parameter will default to true when using targetDirectories, and false otherwise.</param>
+            <param name="filesThatMightBeIncluded">To use ByLeafInput caching, generated files that #include non generated files need to specify in the buildgraph which non generated files they intend to include</param>
+            <param name="cachingMode">The caching mode for this node. You can specify leafinput caching for nodes that are valuable to cache because they are expensive to produce.</param>
+            <param name="cachingInputIgnoreList">a list of inputs that while technically are inputs to use when calculating hashing keys should be ignored anyway. useful for files that store tihngs like revision information</param>
+            <param name="profilerOutput">The optional path at which this node will write a chrome://tracing style profiler output file</param>
+            <param name="responseFileSeparator">The splitting char to use when creating the response file. Defaults to space</param>
+        </member>
+        <member name="M:Bee.Core.Backend.AddCSharpAction``1(System.String,NiceIO.NPath[],NiceIO.NPath[],System.Action{Bee.Core.CSharpActionContext,``0},``0,NiceIO.NPath[])">
+            <summary>
+            AddCSharpAction takes a c# delegate instead of an executablestring + arguments. The delegate is supposed to point to a static method, or a local static function.
+            The signature of the function needs to be YourStaticMethod(NPath[] targets, NPath[] inputs, TArgument argument, NPath[] targetDirectories). You can choose TArgument to your liking. It can be as simple
+            as a string, or a class with fields, or lists or arrays. As long as the ObjectsToDisk serializer can serialize it, you can use it.
+            </summary>
+            <param name="actionName">annotation for the action</param>
+            <param name="targetFiles">targetfiles for the action</param>
+            <param name="inputs">inputs for the action</param>
+            <param name="csharpAction">the delegate that points to the static method that holds the implementation of the action</param>
+            <param name="argument">the value of the argument you want to pass</param>
+            <param name="targetDirectories">the targetdirectories for this action</param>
+            <typeparam name="TArgument">the type of the argument this method takes</typeparam>
+        </member>
+        <member name="M:Bee.Core.Backend.AddCSharpAction(System.String,NiceIO.NPath[],NiceIO.NPath[],System.Action{Bee.Core.CSharpActionContext},NiceIO.NPath[])">
+            <summary>
+            AddCSharpAction takes a c# delegate instead of an executablestring + arguments. The delegate is supposed to point to a static method, or a local static function.
+            The signature of the function needs to be YourStaticMethod(NPath[] targets, NPath[] inputs, TArgument argument, NPath[] targetDirectories). You can choose TArgument to your liking. It can be as simple
+            as a string, or a class with fields, or lists or arrays. As long as the ObjectsToDisk serializer can serialize it, you can use it.
+            </summary>
+            <param name="actionName">annotation for the action</param>
+            <param name="targetFiles">targetfiles for the action</param>
+            <param name="inputs">inputs for the action</param>
+            <param name="csharpAction">the delegate that points to the static method that holds the implementation of the action</param>
+            <param name="targetDirectories">the targetdirectories for this action</param>
+        </member>
+        <member name="M:Bee.Core.Backend.ConfigureCSharpActions(Bee.Tools.Shell.ExecuteArgs)">
+            <summary>
+            Before using AddAction() with a csharp delegate as action, invoke this method to inform the backend of which commandline it should use to invoke a specific static method
+            in a buildprogram.
+            </summary>
+            <param name="csharpActionInvocationExecutionArgs"></param>
+        </member>
+        <member name="T:Bee.Core.KeyedCollectionWithConditions`3">
+            <summary>
+            Represents a collection of values applies to different keys, some of which should only be used in particular configurations.
+            </summary>
+            <typeparam name="TKey">The type of key to use, often a string or file.</typeparam>
+            <typeparam name="TValue">The type of value in the collection.</typeparam>
+            <typeparam name="TConfig">The type of the configuration object used to determine when values should or should not be used.</typeparam>
+        </member>
+        <member name="P:Bee.Core.KeyedCollectionWithConditions`3.KeyValidator">
+            <summary>
+            A validation function that is run on every key being added to the collection. Use this to check keys
+            before they are added and potentially throw exceptions if they are invalid.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection has already been added to. It is not permitted register a validator after values have been added.</exception>
+        </member>
+        <member name="P:Bee.Core.KeyedCollectionWithConditions`3.ValueValidator">
+            <summary>
+            A validation function that is run on every value being added to the collection. Use this to check values
+            before they are added and potentially throw exceptions if they are invalid.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection has already been added to. It is not permitted register a validator after values have been added.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(`1,`0[])">
+            <summary>
+            Adds a value to the collection with no condition, meaning that it will be used no matter what the configuration is for matching keys.
+            </summary>
+            <param name="value">The value to add.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Collections.Generic.IEnumerable{`1},`0[])">
+            <summary>
+            Adds multiple values to the collection with no condition, meaning that it will be used no matter what the configuration is for matching keys.
+            </summary>
+            <param name="values">Values to add.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,`1},`0[])">
+            <summary>
+            Adds a value to the collection which is derived from the configuration with no condition, but is unconditional, such that it will always be used for the matching keys.
+            </summary>
+            <param name="valueDependingOnConfig">A function which computes the value from the configuration.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Collections.Generic.IEnumerable{`1}},`0[])">
+            <summary>
+            Adds multiple values to the collection which are derived from the configuration, but are unconditional, such that they will always be used for the matching key.
+            </summary>
+            <param name="valuesDependingOnConfig">A function which computes the values from the configuration.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(`1,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a value to the collection with no condition, meaning that it will be used no matter what the configuration is for the matching keys.
+            </summary>
+            <param name="value">The value to add.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Collections.Generic.IEnumerable{`1},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds multiple values to the collection with no condition, meaning that it will be used no matter what the configuration is for matching keys.
+            </summary>
+            <param name="values">Values to add.</param>
+            <param name="keys">Collection of keys to which these value apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,`1},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a value to the collection which is derived from the configuration with no condition, but is unconditional, such that it will always be used for the matching keys.
+            </summary>
+            <param name="valueDependingOnConfig">A function which computes the value from the configuration.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Collections.Generic.IEnumerable{`1}},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds multiple values to the collection which are derived from the configuration, but are unconditional, such that they will always be used for the matching key.
+            </summary>
+            <param name="valuesDependingOnConfig">A function which computes the values from the configuration.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},`1,`0[])">
+            <summary>
+            Adds a value to the collection with the given condition for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The value will only be used when the condition function returns true.</param>
+            <param name="value">The value to add.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},System.Collections.Generic.IEnumerable{`1},`0[])">
+            <summary>
+            Adds multiple values to the collection with a condition for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="values">The values to add.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},System.Func{`2,`1},`0[])">
+            <summary>
+            Adds a value to the collection which is derived from the configuration, and is conditional for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="valueDependingOnConfig">A function which computes the value from the configuration.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},System.Func{`2,System.Collections.Generic.IEnumerable{`1}},`0[])">
+            <summary>
+            Adds values to the collection which are derived from the configuration, and are conditional for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="valuesDependingOnConfig">A function which computes the values from the configuration.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},`1,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a value to the collection with the given condition for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The value will only be used when the condition function returns true.</param>
+            <param name="value">The value to add.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},System.Func{`2,`1},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a value to the collection which is derived from the configuration, and is conditional for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="valueDependingOnConfig">A function which computes the value from the configuration.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},System.Collections.Generic.IEnumerable{`1},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds multiple values to the collection with a condition for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="values">The values to add.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.Add(System.Func{`2,System.Boolean},System.Func{`2,System.Collections.Generic.IEnumerable{`1}},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds values to the collection which are derived from the configuration, and are conditional for a selected set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="valuesDependingOnConfig">A function which computes the values from the configuration.</param>
+            <param name="keys">Collection of keys to which these values apply.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.For(`2)">
+            <summary>
+            Returns a dictionary of key-value list pairs to use for the given configuration.
+            </summary>
+            <param name="config">The configuration object used to resolve conditional checks and from which values can be computed where needed.</param>
+            <returns>A dictionary of key-value list pairs resolved from configuration.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.For(`0,`2)">
+            <summary>
+            Returns the values to use for a given configuration and key. The configuration object is used both to check conditions on any conditional values, and also to compute values that are derived from the config directly.
+            </summary>
+            <param name="key">The key used to lookup potential values.</param>
+            <param name="config">The configuration object.</param>
+            <returns>The values to use for this configuration and key.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.ForAny(`0)">
+            <summary>
+            Returns all values that this collection can hold across all configurations for a specific key.
+            </summary>
+            <param name="key">The key used to lookup potential values.</param>
+            <returns>All values this variable can hold. Note that this does not include values which are dynamically computed from the configuration object. It may also include duplicate values.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.TryGetValuesFor(`0,`2,System.Collections.Generic.List{`1}@)">
+            <summary>
+            Get the values to use for a given configuration and key. The configuration object is used both to check conditions on any conditional values, and also to compute values that are derived from the config directly.
+            </summary>
+            <param name="key">The key used to lookup potential values.</param>
+            <param name="config">The configuration object.</param>
+            <param name="values">List that will be filled out with values.</param>
+            <returns>True if there are any values matching the requested config and key.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.KeyedCollectionWithConditions`3.GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.DeployableFile">
+            <summary>Representation of a single file deployment</summary>
+            <remarks>Destination directory and name can optionally be controlled by setting TargetSubPath</remarks>
+        </member>
+        <member name="P:Bee.Core.DeployableFile.Path">
+            <summary>Source file path</summary>
+        </member>
+        <member name="P:Bee.Core.DeployableFile.DestinationFileName">
+            <summary>Destination file name</summary>
+        </member>
+        <member name="M:Bee.Core.DeployableFile.#ctor(NiceIO.NPath,NiceIO.NPath)">
+            <summary>Create an IDeployable from NPath</summary>
+            <param name="path">File to be deployed</param>
+            <param name="destinationPath">The file will be put at this sub path. See <see cref="P:Bee.Core.Deployable`1.DestinationSubDirectory"/> and <see cref="P:Bee.Core.DeployableFile.DestinationFileName"/></param>
+        </member>
+        <member name="T:Bee.Core.FreezableList`1">
+            <summary>
+            Use .Add() or a C# collection initializer to add items to this collection. Once the collection has been enumerated once it can never be added to again.
+            This type acts like a regular List, but it allows us to prevent modifications after the first read.
+            </summary>
+            <typeparam name="T">The type of the elements in the collection</typeparam>
+        </member>
+        <member name="M:Bee.Core.FreezableList`1.Add(`0)">
+            <summary>
+            Adds a single element
+            </summary>
+            <param name="t"></param>
+        </member>
+        <member name="M:Bee.Core.FreezableList`1.Add(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds multiple elements
+            </summary>
+            <param name="elements"></param>
+        </member>
+        <member name="M:Bee.Core.FreezableList`1.Add(`0[])">
+            <summary>
+            Adds multiple elements
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="M:Bee.Core.FreezableList`1.GetEnumerator">
+            <summary>
+            Gets an enumerator for the collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Bee.Core.CSharpActionContext">
+            <summary>
+            When you use AddAction() to register a csharp action using a delegate, that method will recieve a CSharpActionContext that has the information
+            about the action.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.CSharpActionContext.Targets">
+            <summary>
+            The targets that this action was registered with
+            </summary>
+        </member>
+        <member name="P:Bee.Core.CSharpActionContext.Inputs">
+            <summary>
+            The inputs this action was registered with
+            </summary>
+        </member>
+        <member name="P:Bee.Core.CSharpActionContext.TargetDirectories">
+            <summary>
+            the target directories this action was registerd with
+            </summary>
+        </member>
+        <member name="P:Bee.Core.IDeployable.Path">
+            <summary>Obsoleted! Use 'Files' instead.</summary>
+        </member>
+        <member name="P:Bee.Core.IDeployable.Files">
+            <summary>The complete list of source files used for deployment</summary>
+        </member>
+        <member name="M:Bee.Core.IDeployable.DeployTo(NiceIO.NPath,NiceIO.NPath)">
+            <summary>Deploy files to <code>destinationDirectory</code></summary>
+            <param name="destinationDirectory">Root directory of deployment</param>
+            <param name="destinationSubDirectory">
+            If set, files will be deployed relative to this directory within <code>destinationDirectory</code> unless
+            overridden by the IDeployable. An example of this is Deployable&lt;T&gt;.DestinationSubDirectory which
+            replaces this parameter for absolute paths.
+            </param>
+            <returns>An IDeployable representing the deployed files.</returns>
+        </member>
+        <member name="T:Bee.Core.Deployable`1">
+            <remarks>DestinationSubDirectory can be changed to put all deployables into a certain sub directory of <code>destinationDirectory</code></remarks>
+        </member>
+        <member name="P:Bee.Core.Deployable`1.DestinationSubDirectory">
+            <summary>Deployables will be put in this subdirectory</summary>
+            <remarks>
+            If this is an absolute path, then it's relative to <code>destinationDirectory</code>.
+            If it is relative it's appended to the directory of the deployable it's contained in (if any).
+            </remarks>
+        </member>
+        <member name="M:Bee.Core.Deployable`1.DeployTo(NiceIO.NPath,NiceIO.NPath)">
+            <summary>Deploy files to <code>destinationDirectory</code></summary>
+            <param name="destinationDirectory">Root directory of deployment</param>
+            <param name="destinationSubDirectory">
+            If set, files will be deployed relative to this directory within <code>destinationDirectory</code> unless
+            overridden by DestinationSubDirectory. DestinationSubDirectory replaces this parameter for absolute paths.
+            </param>
+            <returns>T representing the deployed files.</returns>
+        </member>
+        <member name="M:Bee.Core.Deployable`1.DeployToInternal(NiceIO.NPath,NiceIO.NPath)">
+            <summary>Called by DeployTo with destinationSubDirectory adjusted according to DestinationSubDirectory</summary>
+            <param name="destinationDirectory">Root directory of deployment</param>
+            <param name="destinationSubDirectory">Path to be appended to destinationDirectory (never null but can be empty)</param>
+            <returns>T representing the deployed files.</returns>
+        </member>
+        <member name="T:Bee.Core.OneOrMoreFiles">
+             <summary>
+             A class to that can represent one or more files. Its purpose is to allow globs (like Runtime/**/*.cpp), to not be immediately flattened into the resulting cpp files,
+             but for us to be able to continue to persist the knowledge of that glob throughout the pipeline, so that later we can still use this information. Project file generation
+             is a usecase that wants to know the original globs, as it allows to create project files that are more robust against changes-on-disk, since they won't have to be regenerated
+             when a new .cpp file gets added, since when they use globs, that won't change the contents of the project file itself. This also allows the buildprogram to avoid executing
+             the actual glob when it's producing the project file, which in turn means that the tundra buildgraph for the project files will have fewer GlobSignatures, so there will be a higher
+             % of builds that we can satisfy by doing completely nothing, isntead of having to run the buildprogram to realize we have to do nothing.
+            
+             In most usages of OneOrMoreFiles,  you can just implicitely assign an NPath and don't worry about anything.
+             </summary>
+        </member>
+        <member name="T:Bee.Core.CollectionWithConditions`2">
+            <summary>
+            Represents a collection of values, some of which should only be used in particular configurations.
+            </summary>
+            <typeparam name="TValue">The type of value in the collection.</typeparam>
+            <typeparam name="TConfig">The type of the configuration object used to determine when values should or should not be used.</typeparam>
+        </member>
+        <member name="P:Bee.Core.CollectionWithConditions`2.ValueValidator">
+            <summary>
+            A validation function that is run on every value being added to the collection. Use this to check values
+            before they are added and potentially throw exceptions if they are invalid.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection has already been added to. It is not permitted register a validator after values have been added.</exception>
+        </member>
+        <member name="P:Bee.Core.CollectionWithConditions`2.IsEmpty">
+            <summary>
+            True if no values have been added to the collection (either conditionally or unconditionally).
+            </summary>
+            <remarks>Because values may be conditional, be aware that even when IsEmpty returns false, querying the collection with
+            a specific configuration can still return an empty set of values. Also, note that querying this property does NOT count as
+            reading from the collection.</remarks>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(`0)">
+            <summary>
+            Adds a value to the collection with no condition, meaning that it will be used no matter what the configuration is.
+            </summary>
+            <param name="value">The value to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,System.Boolean},`0)">
+            <summary>
+            Adds a value to the collection with the given condition.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The value will only be used when the condition function returns true.</param>
+            <param name="value">The value to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(`0[])">
+            <summary>
+            Adds multiple values to the collection with no condition, meaning that they will all be used no matter what the configuration is.
+            </summary>
+            <param name="values">The values to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds multiple values to the collection with no condition, meaning that they will all be used no matter what the configuration is.
+            </summary>
+            <param name="values">The values to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,System.Boolean},`0[])">
+            <summary>
+            Adds multiple values to the collection with a condition.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="values">The values to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,System.Boolean},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds multiple values to the collection with a condition.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="values">The values to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,System.Collections.Generic.IEnumerable{`0}})">
+            <summary>
+            Adds values to the collection which are derived from the configuration, but are unconditional, such that they will always be used.
+            </summary>
+            <param name="valuesDependingOnConfig">A function which computes the values from the configuration.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,`0})">
+            <summary>
+            Adds a value to the collection which is derived from the configuration, but is unconditional, such that it will always be used.
+            </summary>
+            <param name="valueDependingOnConfig">A function which computes the value from the configuration.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,System.Boolean},System.Func{`1,`0})">
+            <summary>
+            Adds a value to the collection which is derived from the configuration, and is conditional.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="valueDependingOnConfig">A function which computes the value from the configuration.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.Add(System.Func{`1,System.Boolean},System.Func{`1,System.Collections.Generic.IEnumerable{`0}})">
+            <summary>
+            Adds values to the collection which are derived from the configuration, and are conditional.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="valuesDependingOnConfig">A function which computes the values from the configuration.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.AddFront(`0)">
+            <summary>
+            Adds a single value, with no condition, to the front of the collection, such that it will always be returned prior to other values that have already been added to the collection.
+            </summary>
+            <param name="value">The value to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.AddFront(System.Func{`1,System.Boolean},`0)">
+            <summary>
+            Adds a single value, conditionally, to the front of the collection, such that when the condition is true it will be returned prior to the other values that have already been added to the collection.
+            </summary>
+            <param name="onlyWhen">The condition function. It is passed a configuration object as a parameter. The values will only be used when the condition function returns true.</param>
+            <param name="value">The value to add.</param>
+            <exception cref="T:System.InvalidOperationException">The collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.For(`1)">
+            <summary>
+            Returns the values to use for a given configuration. The configuration object is used both to check conditions on any conditional values, and also to compute values that are derived from the config directly.
+            </summary>
+            <param name="config">The configuration object.</param>
+            <returns>The values to use for this configuration.</returns>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.CopyTo(Bee.Core.CollectionWithConditions{`0,`1})">
+            <summary>
+            Copy all values in this collection to another collection with the same type of value and configuration.
+            </summary>
+            <param name="other">The collection to copy values to. The values in this collection will be appended to any existing values in the other collection.</param>
+            <exception cref="T:System.InvalidOperationException">The target collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+            <remarks>Note that this will copy all unconditional and conditional values, but will not copy any values that are dynamically derived from the configuration.</remarks>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.CopyTo``1(Bee.Core.CollectionWithConditions{`0,``0},System.Func{``0,`1})">
+            <summary>
+            Copy all values in this collection to another collection which has the same type of value, but a different configuration object type.
+            </summary>
+            <typeparam name="TOtherConfig">The configuration type used by the other collection.</typeparam>
+            <param name="other">The collection to copy values to. The values in this collection will be appended to any existing values in the other collection.</param>
+            <param name="configConverter">A function that maps configuration objects used by this collection, to configuration objects used by the other collection.</param>
+            <exception cref="T:System.InvalidOperationException">The target collection has already been read from. It is not permitted to modify a collection after it has been read.</exception>
+            <remarks>Note that this will copy all unconditional and conditional values, as well as values dynamically derived from the configuration.</remarks>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.ForAny">
+            <summary>
+            Returns all values that are used in any configuration. Note that this may include duplicate values, and it will not include values which are computed from the configuration.
+            </summary>
+            <returns>All values used in any configuration.</returns>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.TryGetValuesFor(`1,System.Collections.Generic.List{`0}@)">
+            <summary>
+            Get the values to use for a given configuration. The configuration object is used both to check conditions on any conditional values, and also to compute values that are derived from the config directly.
+            </summary>
+            <param name="config">The configuration object.</param>
+            <param name="values">List that will be filled out with values.</param>
+            <returns>True if there are any values matching the requested config.</returns>
+        </member>
+        <member name="P:Bee.Core.CollectionWithConditions`2.ValuesWithoutCondition">
+            <summary>
+            Returns all unconditional values that are not derived from configuration in the collection.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.CollectionWithConditions`2.GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.ValueWithConditions`2">
+            <summary>
+            Represents a variable which may have different values under different configurations.
+            </summary>
+            <typeparam name="TValue">The type of value being held.</typeparam>
+            <typeparam name="TConfig">The type of the configuration objects used to determine which value is used.</typeparam>
+        </member>
+        <member name="P:Bee.Core.ValueWithConditions`2.ValueValidator">
+            <summary>
+            A validation function that is run on every value being added to the collection. Use this to check values
+            before they are added and potentially throw exceptions if they are invalid.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection has already been added to. It is not permitted register a validator after values have been added.</exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Set(System.Func{`1,System.Boolean},`0)">
+            <summary>
+            Sets the variable to hold the given value under a particular condition.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="value">The value to use.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Set(System.Func{`1,System.Boolean},System.Func{`1,`0})">
+            <summary>
+            Sets the variable to hold the given value under a particular condition.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Set(System.Func{`1,`0})">
+            <summary>
+            Sets the variable to unconditionally hold a value that is computed from the configuration object.
+            </summary>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Set(`0)">
+            <summary>
+            Sets the variable to unconditionally hold the given value.
+            </summary>
+            <param name="value">The value to set.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Add(`0)">
+            <summary>
+            Sets the variable to unconditionally hold the given value.
+            </summary>
+            <param name="value">The value to set.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Add(System.Func{`1,`0})">
+            <summary>
+            Sets the variable to unconditionally hold a value that is computed from the configuration object.
+            </summary>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Add(System.Func{`1,System.Boolean},`0)">
+            <summary>
+            Sets the variable to hold the given value under a particular condition.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="value">The value to use.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.Add(System.Func{`1,System.Boolean},System.Func{`1,`0})">
+            <summary>
+            Sets the variable to hold the given value under a particular condition.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.For(`1)">
+            <summary>
+            Returns the value to use for the given configuration.
+            </summary>
+            <param name="config">The configuration object used to resolve conditional checks and from which values can be computed where needed.</param>
+            <returns>The value to use for this configuration.</returns>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.TryGetValueFor(`1,`0@)">
+            <summary>
+            Get the value to use for the given configuration.
+            </summary>
+            <param name="config">The configuration object used to resolve conditional checks and from which values can be computed where needed.</param>
+            <param name="value">Value for the supplied configuration.</param>
+            <returns>True if there was a value matching the requested config.</returns>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.ForAny">
+            <summary>
+            Returns all values that this variable can hold across all configurations.
+            </summary>
+            <returns>All values this variable can hold. Note that this does not include values which are dynamically computed from the configuration object. It may also include duplicate values.</returns>
+        </member>
+        <member name="P:Bee.Core.ValueWithConditions`2.IsSet">
+            <summary>
+            Returns whether the value has been configured with any values or not.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.ValueWithConditions`2.GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.Architecture">
+            <summary>
+            Models a CPU architecture, usually for the purposes of describing a build target.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.Bits">
+            <summary>
+            The number of bits that compose a natural word on this architecture.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.Name">
+            <summary>
+            The name of this architecture.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.NameAliases">
+            <summary>
+            Potential aliases for this architecture.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.DisplayName">
+            <summary>
+            The name that should be used when displaying the architecture to the user.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.OfCurrentProcess">
+            <summary>
+            Returns the architecture of the current process.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.BestThisMachineCanRun">
+            <summary>
+            Returns the 'best' architecture supported on this host machine.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Architecture.All">
+            <summary>
+            Returns all known architectures.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.RequirementsForRunningBuildCode">
+            <summary>
+            Running buildcode that talks to bee api's requires certain global hooks to be set. This class
+            is the one place that controls which things needs to be set and need to be cleaned up.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.BuildProgramFileSystem">
+             <summary>
+             A custom NPath filesystem implementation designed to be used for all bee build programs.
+            
+             - Enforce the requirement that bee buildprograms should not be modifying the filesystem, only observing it, by making all write* methods throw an exception
+             - Use that requirement to cache results of Directory.GetFiles() and Directory.GetCurrentDirectory().
+             - Allow bee to ask the filesystem which globs/filereads were executed by the buildprogram, so we can store that information in the generated .dag.json
+             </summary>
+        </member>
+        <member name="T:Bee.Core.KeyedValueWithConditions`3">
+            <summary>
+            Represents a variable which may have different values under different configurations and for different keys.
+            A common use case is a variable value affecting a specific file (key) for a specific configuration.
+            </summary>
+            <typeparam name="TKey">The type of key to use, often a string or file.</typeparam>
+            <typeparam name="TValue">The type of value being held.</typeparam>
+            <typeparam name="TConfig">The type of the configuration objects used to determine which value is used.</typeparam>
+        </member>
+        <member name="P:Bee.Core.KeyedValueWithConditions`3.KeyValidator">
+            <summary>
+            A validation function that is run on every key being added to the collection. Use this to check keys
+            before they are added and potentially throw exceptions if they are invalid.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection has already been added to. It is not permitted register a validator after values have been added.</exception>
+        </member>
+        <member name="P:Bee.Core.KeyedValueWithConditions`3.ValueValidator">
+            <summary>
+            A validation function that is run on every value being added to the collection. Use this to check values
+            before they are added and potentially throw exceptions if they are invalid.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The collection has already been added to. It is not permitted register a validator after values have been added.</exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(`1,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Sets the variable to unconditionally hold the given value for a set of keys.
+            </summary>
+            <param name="value">The value to set.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(System.Func{`2,`1},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Sets the variable to unconditionally hold a value that is computed from the configuration object for a set of keys.
+            </summary>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(`1,`0[])">
+            <summary>
+            Sets the variable to unconditionally hold the given value for a set of keys.
+            </summary>
+            <param name="value">The value to set.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(System.Func{`2,`1},`0[])">
+            <summary>
+            Sets the variable to unconditionally hold a value that is computed from the configuration object for a set of keys.
+            </summary>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used; multiple unconditional values can not be configured.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with at least one conditional value, which this new unconditional value will render unusable.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(System.Func{`2,System.Boolean},`1,`0[])">
+            <summary>
+            Sets the variable to hold the given value under a particular condition for a set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="value">The value to use.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(System.Func{`2,System.Boolean},System.Func{`2,`1},`0[])">
+            <summary>
+            Sets the variable to hold the given value under a particular condition for a set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(System.Func{`2,System.Boolean},`1,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Sets the variable to hold the given value under a particular condition for a set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="value">The value to use.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.Add(System.Func{`2,System.Boolean},System.Func{`2,`1},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Sets the variable to hold the given value under a particular condition for a set of keys.
+            </summary>
+            <param name="onlyWhen">The condition function. This function will be passed a configuration object; if it returns true, the value will be used, otherwise the value will not be used.</param>
+            <param name="valueBasedOnConfigFunc">A function which takes a configuration object, and returns the value to use.</param>
+            <param name="keys">Collection of keys to which this value applies.</param>
+            <exception cref="T:System.InvalidOperationException">
+            <p>The variable has already been read from. It is not permitted to modify the variable after it has been read.</p>
+            <p>- or -</p>
+            <p>The variable has already been configured with an unconditional value, which will always be used, so conditional values cannot be additionally configured.</p>
+            </exception>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.ForAny(`0)">
+            <summary>
+            Returns all values that this variable can hold across all configurations for a specific key.
+            </summary>
+            <param name="key">The key used to lookup potential values.</param>
+            <returns>All values this variable can hold. Note that this does not include values which are dynamically computed from the configuration object. It may also include duplicate values.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.For(`0,`2)">
+            <summary>
+            Returns the value to use for the given configuration and key.
+            </summary>
+            <param name="key">The key used to lookup potential values.</param>
+            <param name="config">The configuration object used to resolve conditional checks and from which values can be computed where needed.</param>
+            <returns>The value to use for this configuration and key.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.TryGetValueFor(`0,`2,`1@)">
+            <summary>
+            Get the value to use for the given configuration and key.
+            </summary>
+            <param name="key">The key used to lookup potential values.</param>
+            <param name="config">The configuration object used to resolve conditional checks and from which values can be computed where needed.</param>
+            <param name="value">Value for the supplied configuration and key.</param>
+            <returns>True if there was a value matching the requested config and key.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.For(`2)">
+            <summary>
+            Returns a dictionary of key-value pairs to use for the given configuration.
+            </summary>
+            <param name="config">The configuration object used to resolve conditional checks and from which values can be computed where needed.</param>
+            <returns>A dictionary of key-value pairs resolved from configuration.</returns>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.KeyedValueWithConditions`3.GetEnumerator">
+            <summary>
+            You cannot enumerate this collection. Use For() or ForAny() instead.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.Platform">
+            <summary>
+            Models a platform, usually for the purposes of describing a build target.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Platform.HasPosix">
+            <summary>
+            True if this platform is POSIX compliant (or at least close enough for us to treat it as POSIX compliant).
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Platform.Name">
+            <summary>
+            The name of this platform.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Platform.DisplayName">
+            <summary>
+            The name that should be used when displaying this platform to the user.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Platform.All">
+            <summary>
+            All known platforms.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Platform.HostPlatform">
+            <summary>
+            The platform that the build code is executing on.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.CustomScannerInfo">
+            <summary>
+            Configuration for a 'custom' include scanner (i.e. for locating extra inputs to a build step
+            using a syntax other than the standard C/C++ #include directives).
+            </summary>
+        </member>
+        <member name="P:Bee.Core.CustomScannerInfo.Keywords">
+            <summary>
+            List of keywords which indicate that the rest of the line contains the path to an implicit input.
+            For a line to be considered, one of these keywords must be the first non-whitespace token on the line.
+            The keywords themselves can contain whitespace if necessary.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.CustomScannerInfo.SearchRelativeToScannedFile">
+            <summary>
+            If true, locate the files referenced by custom include expressions by searching relative to the file that
+            included them. If false, the path must be relative to one of the formal include directories provided with
+            the scanner.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.DeployablesCollection`1">
+            <summary>A collection of TElement deployables</summary>
+            <typeparam name="TElement">Type of elements contained by the collection</typeparam>
+        </member>
+        <member name="T:Bee.Core.DeployablesCollection`2">
+             <summary>A collection of TElement deployables</summary>
+             <remarks>For subclassing, type specifying this collection</remarks>
+             <typeparam name="TCollection">Type of the collection, usually "this"</typeparam>
+             <typeparam name="TElement">Type of elements contained by the collection</typeparam>
+            
+        </member>
+        <member name="M:Bee.Core.DeployablesCollection`2.Add(`1)">
+            <summary>Collection initializer support.</summary>
+            <remarks>
+            Only intended as collection initializer support.
+            Adding elements to this collection after initialization is undefined behavior.
+            </remarks>
+        </member>
+        <member name="T:Bee.Core.Deployables`1">
+            <summary>Usually a representation of multiple deployables.</summary>
+        </member>
+        <member name="P:Bee.Core.Deployables`1.LegacyDependencyPath">
+            <summary>This path will be setup to depend on all <see cref="P:Bee.Core.Deployables`1.Files"/></summary>
+            <remarks>Set to null if this is unwanted behavior.</remarks>
+        </member>
+        <member name="P:Bee.Core.Deployables`1.Path">
+            <summary>Obsoleted! Use 'Files' instead. Equivalent to Files.FirstOrDefault();</summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.Public(System.String)">
+            <summary>
+            Create a StevedoreArtifact that is sourced from the 'public' Stevedore repository.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.Testing(System.String)">
+            <summary>
+            Create a StevedoreArtifact that is sourced from the 'testing' Stevedore repository.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.UnityInternal(System.String)">
+            <summary>
+            Create a StevedoreArtifact that is sourced from the 'unity-internal' Stevedore repository.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.FromLocalFile(System.String,NiceIO.NPath)">
+            <summary>
+            Creates a StevedoreArtifact that's already present locally in the
+            repository, and thus should not be downloaded. Intended SOLELY as
+            a transitional measure, allowing the Stevedore APIs to be used for
+            existing largefiles until they're moved to a proper Stevedore server.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.IsByNameOnly">
+            <summary>
+            StevedoreArtifacts can be created either by name only, or by a specific repo, name and version. IsByName lets you know which one was used.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.FromLocalPath">
+            <summary>
+            The FromLocalPath of this StevedoreArtifact. Only query this property if you are sure this StevedoreArtifact was not created by name only.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.RepoName">
+            <summary>
+            The RepoName of this StevedoreArtifact. Only query this property if you are sure this StevedoreArtifact was created with an RepoName.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.ArtifactId">
+            <summary>
+            The ArtifactId of this StevedoreArtifact. Only query this property if you are sure this StevedoreArtifact was created with an ArtifactId.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.ArtifactName">
+            <summary>
+            The ArtifactName of this StevedoreArtifact.
+            </summary>
+        </member>
+        <member name="F:Bee.Core.Stevedore.StevedoreArtifact._path">
+            <summary>
+            The base path that this artifact will be unpacked to. All access to files in the artifact should be
+            constructed with this path as a base.
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.Path">
+            <summary>
+            Returns a virtual path representing this stevedore artifact. It looks like /VirtualStevedoreRoot/public/roslyn-csc-win64/...   and can be safely used through NPath and through Backend.Current
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreArtifact.VersionString">
+            <summary>
+            The 'version string' part of the artifact version (i.e. excluding the hash and file extension).
+            Given an artifact ID like "myartifact/1.0.1_26ab72615c65d7e857f.7z", returns "1.0.1".
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.GetFileList">
+            <summary>
+            Retrieves a list of all files in this artifact. Beware a number of
+            issues with this extension to the core Stevedore system:
+            - If the file list isn't already cached, it will be downloaded in
+              the frontend, which happens synchronously on a single thread
+              (like everything in the frontend). Using a lot of file lists
+              can thus have a significant performance impact in poor network
+              conditions (10 seconds per file list in the worst case).
+            - These frontend downloads may encounter SSL certificate issues on
+              certain .NET runtime and OS combinations (these issues do not
+              occur for regular downloads in the backend).
+            - Error handling is less polished in the frontend, and there's no
+              telemetry data, which may make troubleshooting more difficult.
+            - '.filelist' artifacts are not checksummed, and therefore carry an
+              increased risk of file corruption on disk or in transit.
+            </summary>
+            <returns>A list of all file paths in the artifact. The paths include the full base path so you can use them directly.</returns>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.#ctor(Bee.Stevedore.Program.RepoName,Bee.Stevedore.Program.ArtifactId)">
+            <summary>
+            Create a StevedoreArtifact with the specified repository name and artifact ID.
+            Manifests files (if used) may override the repository and artifact version.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.#ctor(Bee.Stevedore.Program.ArtifactName)">
+            <summary>
+            Create a StevedoreArtifact by looking up the given name in the manifest file(s).
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.#ctor(System.String)">
+            <summary>
+            Create a StevedoreArtifact by looking up the given name in the manifest file(s).
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.EnsureSetupUnpack">
+            <summary>
+            Ensures this StevedoreArtifact has been unpacked in the current backend. This method is useful in tests, and is not needed
+            in normal usage.
+            </summary>
+        </member>
+        <member name="M:Bee.Core.Stevedore.StevedoreArtifact.UnpackToUnusualLocation(NiceIO.NPath)">
+            <summary>
+            Register artifact (with Backend.Current) for unpacking directly
+            into a custom location in the "build" or "artifacts" folders.
+            Returns the path to the version file that other build actions
+            may reference as an input, in lieu of individual artifact files.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.Stevedore.StevedoreSettings">
+            <summary>
+            Settings that affect creation of StevedoreArtifacts for a specific backend. A new
+            settings instance can be assigned to a Backend.Current.Steve.Settings;
+            </summary>
+        </member>
+        <member name="P:Bee.Core.Stevedore.StevedoreSettings.EnforceManifest">
+            <summary>
+            Whether to refuse downloads of artifacts not listed in manifest.
+            </summary>
+        </member>
+        <member name="T:Bee.Core.Stevedore.SteveVirtualFileSystem">
+            <summary>
+            SteveVirtualFileSystem is responsible for detecting virtual paths like described in the comments in StevedoreArtifact.cs
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.IsExternalInit">
+            <summary>
+            Enables use of init properties prior to .net5.
+            See https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/init#metadata-encoding
+            </summary>
+        </member>
+    </members>
+</doc>

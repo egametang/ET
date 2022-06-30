@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
@@ -26,18 +27,16 @@ namespace ET
 		{
 		}
 		
-		public void Start()
+		public async ETTask Start()
 		{
 			switch (this.CodeMode)
 			{
 				case CodeMode.Mono:
 				{
-					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
-					byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
-					
-					assembly = Assembly.Load(assBytes, pdbBytes);
+					byte[] assBytes = await YooAssetProxy.GetRawFileAsync("Code_Code.dll");
+					byte[] pdbBytes = await YooAssetProxy.GetRawFileAsync("Code_Code.pdb");
 
+					assembly = Assembly.Load(assBytes, pdbBytes);
 
 					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly);
 					Game.EventSystem.Add(types);

@@ -27,8 +27,6 @@ namespace ET
             // 数值订阅组件
             Game.Scene.AddComponent<NumericWatcherComponent>();
             
-            Game.Scene.AddComponent<AIDispatcherComponent>();
-
             #region 机器人使用
 
             Game.Scene.AddComponent<Client.ClientSceneManagerComponent>();
@@ -37,7 +35,6 @@ namespace ET
 
             #endregion
 
-            
             Game.Scene.AddComponent<NetThreadComponent>();
             
             Game.Scene.AddComponent<NavmeshComponent>();

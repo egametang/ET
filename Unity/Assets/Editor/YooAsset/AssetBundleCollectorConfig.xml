@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root Version="1.0">
+  <Common AutoAddressable="False" AutoCollectShader="True" ShaderBundleName="myshaders" />
+  <Group GroupName="Code" GroupDesc="代码热更新dll" AssetTags="">
+    <Collector CollectPath="Assets/Res/Code" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackRawFile" FilterRule="CollectAll" AssetTags="" />
+  </Group>
+  <Group GroupName="Config" GroupDesc="配置表" AssetTags="">
+    <Collector CollectPath="Assets/Bundles/Config" CollectType="MainAssetCollector" AddressRule="AddressByGroupAndFileName" PackRule="PackDirectory" FilterRule="CollectAll" AssetTags="" />
+  </Group>
+  <Group GroupName="UI" GroupDesc="UI相关" AssetTags="">
+    <Collector CollectPath="Assets/Bundles/UI" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackDirectory" FilterRule="CollectAll" AssetTags="" />
+  </Group>
+  <Group GroupName="Unit" GroupDesc="Unit" AssetTags="">
+    <Collector CollectPath="Assets/Bundles/Unit" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackDirectory" FilterRule="CollectAll" AssetTags="" />
+  </Group>
+</root>

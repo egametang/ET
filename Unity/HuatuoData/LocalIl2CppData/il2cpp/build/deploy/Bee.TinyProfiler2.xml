@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bee.TinyProfiler2</name>
+    </assembly>
+    <members>
+        <member name="T:Bee.Core.TinyProfiler2Base">
+            <summary>Methods shared by both <see cref="T:Bee.Core.TinyProfiler2"/>and <see cref="T:Bee.Core.Track"/></summary>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2Base.Section(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>Profile a section tracked by an IDisposable object</summary>
+            <remarks>TraceEvent duration is calculated the first time Dispose is called.</remarks>
+            <param name="label">Label of what is being profiled. If omitted, this is the name of the calling function.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+            <returns>An IDisposable object tracking the profiled section.</returns>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2Base.Section(System.String,System.Action,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>Profiles the submitted Action</summary>
+            <param name="label">Label of what is being profiled.</param>
+            <param name="action">Code to be profiled.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2Base.Section``1(System.String,System.Func{``0},System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>Profiles the submitted Func</summary>
+            <param name="label">Label of what is being profiled.</param>
+            <param name="func">Code to be profiled.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2Base.Section(System.Action,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>Profiles the submitted Action</summary>
+            <param name="action">Code to be profiled.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+            <param name="label">Default initialized to calling member name</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2Base.Section``1(System.Func{``0},System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>Profiles the submitted Func</summary>
+            <param name="func">Code to be profiled.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+            <param name="label">Default initialized to calling member name</param>
+        </member>
+        <member name="T:Bee.Core.TinyProfiler2">
+            <summary>A profiler capable of emitting a chrome trace report</summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:Bee.Core.TinyProfiler2.Global">
+            <summary>Global profiler instance</summary>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.ResetGlobalInstance">
+            <summary>Resets the global instance</summary>
+        </member>
+        <member name="P:Bee.Core.TinyProfiler2.StartTime">
+            <summary>Absolute time of profiler instantiation</summary>
+            <remarks>Can be used to align event timestamps from other systems to this profiler instance.</remarks>
+        </member>
+        <member name="P:Bee.Core.TinyProfiler2.ElapsedProfilerTime">
+            <summary>Time that has passed since profiler instantiation</summary>
+        </member>
+        <member name="P:Bee.Core.TinyProfiler2.CurrentThreadTrack">
+            <summary>Get or implicitly create a track for the current thread</summary>
+            <remarks>A track need at least one event to be visible in the chrome trace report</remarks>
+        </member>
+        <member name="P:Bee.Core.TinyProfiler2.DefaultOptions">
+            Default options for writing a chrome trace report
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.#ctor">
+            <summary>Create a new profiler instance</summary>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.SetupNewTrack(System.String)">
+            <summary>Setup a new track</summary>
+            <remarks>
+            A track for the most common use case represents a thread.
+            But a user can also explicitly setup a track to hold submitted events and sections.</remarks>
+            <param name="trackName">Name of the track</param>
+            <returns>An instance assigned to the created track</returns>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.Write(System.String,Bee.Core.ChromeTraceOptions)">
+            <summary>Write a chrome trace events to stream</summary>
+            <remarks>
+            If the extension of the file passed is '.traceevents' this method will invoke WriteChromeTraceEvents(), otherwise it will call WriteChromeTrace() 
+            See <see cref="F:Bee.Core.ChromeTraceOptions.ExternalTraceEventFiles"/>.
+            </remarks>
+            <param name="file">output file</param>
+            <param name="options">chrome trace serialization options</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.WriteChromeTrace(System.String,Bee.Core.ChromeTraceOptions)">
+            <summary>Write a chrome trace report data to file</summary>
+            <param name="file">output file</param>
+            <param name="options">chrome trace serialization options</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.WriteChromeTraceEvents(System.String,Bee.Core.ChromeTraceOptions)">
+            <summary>Write a chrome trace events to stream</summary>
+            <remarks>
+            This is a list of trace events that can later be concatenated with reports from other processes or sessions.
+            See <see cref="F:Bee.Core.ChromeTraceOptions.ExternalTraceEventFiles"/>.
+            </remarks>
+            <param name="file">output file</param>
+            <param name="options">chrome trace serialization options</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.WriteChromeTrace(System.IO.TextWriter,Bee.Core.ChromeTraceOptions)">
+            <summary>Write a chrome trace report data to stream</summary>
+            <param name="output">output stream</param>
+            <param name="options">chrome trace serialization options</param>
+        </member>
+        <member name="M:Bee.Core.TinyProfiler2.WriteChromeTraceEvents(System.IO.TextWriter,Bee.Core.ChromeTraceOptions)">
+            <summary>Write a chrome trace events to stream</summary>
+            <remarks>
+            This is a list of trace events that can later be concatenated with reports from other processes or sessions.
+            See <see cref="F:Bee.Core.ChromeTraceOptions.ExternalTraceEventFiles"/>.
+            </remarks>
+            <param name="output">output stream</param>
+            <param name="options">chrome trace serialization options</param>
+        </member>
+        <member name="T:Bee.Core.Track">
+             <summary>A track in the chrome trace report is the same as "lane" or "thread"</summary>
+             <remarks>
+             A track is either an explicitly created track <see cref="M:Bee.Core.TinyProfiler2.SetupNewTrack(System.String)"/> or implicitly created
+             for the current thread <see cref="P:Bee.Core.TinyProfiler2.CurrentThreadTrack"/>.
+            
+             Note that when creating events manually using an external clock source. Make sure timestamp is relative to <see cref="P:Bee.Core.Track.ProfilerStartTime"/>.
+             One way to do that is to use <see cref="M:Bee.Core.Track.CreateEvent(System.DateTimeOffset,System.String,System.Collections.Generic.Dictionary{System.String,System.String})"/>.
+             </remarks>
+        </member>
+        <member name="P:Bee.Core.Track.Id">
+            <summary>Track Id</summary>
+            <remarks>
+            Explicitly created tracks use upper 32 bits to generate unique ids while thread tracks use the lower 32 bits
+            to store <see cref="P:System.Threading.Thread.ManagedThreadId"/>
+            </remarks>
+        </member>
+        <member name="P:Bee.Core.Track.Name">
+            <summary>Name of the track</summary>
+            <remarks>Thread tracks copy <see cref="P:System.Threading.Thread.Name"/> at the time of track creation</remarks>
+        </member>
+        <member name="P:Bee.Core.Track.ElapsedProfilerTime">
+            <summary>Time that has elapsed since the profiler was instantiated</summary>
+        </member>
+        <member name="P:Bee.Core.Track.ProfilerStartTime">
+            <summary>Time of profiler instantiation</summary>
+        </member>
+        <member name="M:Bee.Core.Track.#ctor(System.Threading.Thread,Bee.Core.TinyProfiler2)">
+            <summary>Create track from thread</summary>
+            <param name="thread"></param>
+            <param name="profiler"></param>
+        </member>
+        <member name="M:Bee.Core.Track.#ctor(System.String,Bee.Core.TinyProfiler2)">
+            <summary>Create track from name</summary>
+            <param name="name"></param>
+            <param name="profiler"></param>
+        </member>
+        <member name="M:Bee.Core.Track.CreateEvent(System.TimeSpan,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>Create and register a trace event with the profiler</summary>
+            <remarks>Duration can be set after the fact.</remarks>
+            <param name="timestamp">Start time of the event. This should be relative instantiation time of the profiler. In most cases ElapsedTimeSinceInstantiation.</param>
+            <param name="label">Label of what is being profiled. If omitted, this is the name of the calling function.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+            <returns>A trace event initialized according to parameters</returns>
+        </member>
+        <member name="M:Bee.Core.Track.CreateEvent(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>Create and register a trace event with the profiler</summary>
+            <remarks>
+            Timestamp of the event will be set to current time at event creation.
+            Duration can be set after the fact.
+            </remarks>
+            <param name="label">Label of what is being profiled. If omitted, this is the name of the calling function.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+            <returns>A trace event initialized according to parameters</returns>
+        </member>
+        <member name="M:Bee.Core.Track.CreateEvent(System.DateTimeOffset,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>Create and register a trace event with the profiler</summary>
+            <remarks>Duration can be set after the fact.</remarks>
+            <param name="timestamp">Start time of the event.</param>
+            <param name="label">Label of what is being profiled. If omitted, this is the name of the calling function.</param>
+            <param name="metadata">A dictionary of metadata associated with the event.</param>
+            <returns>A trace event initialized according to parameters</returns>
+        </member>
+        <member name="M:Bee.Core.Track.SetEventDurationBasedOnCurrentTime(Bee.Core.TraceEvent)">
+            <summary>Sets duration of the TraceEvent to ElapsedTimeSinceInstantiation - TraceEvent.Timestamp</summary>
+            <param name="traceEvent">The event to receive duration</param>
+            <returns>The event</returns>
+        </member>
+        <member name="M:Bee.Core.Track.SetEventDuration(Bee.Core.TraceEvent,System.TimeSpan)">
+            <summary>Sets duration of the TraceEvent</summary>
+            <param name="traceEvent">The event to receive duration</param>
+            <param name="duration">Duration of the event</param>
+            <returns>The event</returns>
+        </member>
+        <member name="T:Bee.Core.TraceEvent">
+            <summary>TraceEvent</summary>
+        </member>
+        <member name="T:Bee.Core.ChromeTraceOptions">
+            <summary>Chrome trace serialization options</summary>
+        </member>
+        <member name="F:Bee.Core.ChromeTraceOptions.EventDurationThreshold">
+            <summary>If an event has a duration less than this it will be excluded from the report</summary>
+            <remarks>1 microsecond is default</remarks>
+        </member>
+        <member name="F:Bee.Core.ChromeTraceOptions.ProcessId">
+            <summary>Id of the process</summary>
+            <remarks>Defaults to current process id.</remarks>
+        </member>
+        <member name="F:Bee.Core.ChromeTraceOptions.ProcessName">
+            <summary>Process name as seen in the chrome trace UI</summary>
+            <remarks>Defaults to entry assembly name.</remarks>
+        </member>
+        <member name="F:Bee.Core.ChromeTraceOptions.ProcessSortIndex">
+            <summary>Process sort index</summary>
+            <remarks>
+            This index decide how different processes are sorted in the chrome trace report.
+            Lower indices, including negative ones are sorted topmost.
+            </remarks>
+        </member>
+        <member name="F:Bee.Core.ChromeTraceOptions.ExternalTraceEventFiles">
+            <summary>Additional trace event files</summary>
+            <remarks>
+            Any additional trace event files that should be merged with the current report.
+            You need to pass a delegate returning the file instead of the file itself, as this allows you to start writing out the profile data,
+            before all ExternalTraceFiles are ready. Only when the writing process is actually ready to start processing ExternalTraceFiles it will
+            call your delegate, and at that time you need to ensure that the path your delegate returns exists.
+            </remarks>
+        </member>
+        <member name="F:Bee.Core.ChromeTraceOptions.HeaderMetadata">
+            <summary>
+            A dictionary of metadata about the machine that will be emitted in the header
+            </summary>
+        </member>
+        <member name="T:Bee.Core.SectionDisposable">
+            <summary>IDisposable struct that records duration on <see cref="M:Bee.Core.SectionDisposable.Dispose"/></summary>
+        </member>
+        <member name="M:Bee.Core.SectionDisposable.Dispose">
+            <summary>Record duration</summary>
+        </member>
+        <member name="T:Bee.Core.TraceEventsData">
+            <summary>TraceEvents data</summary>
+            <remarks>
+            We keep structs in a separate array from managed references to create less GC pressure.
+            We also keep a separate a regular list for Metadata as we assume that usage of metadata is rare and by using a
+            regular list we can create our own sparse array.
+            </remarks>
+        </member>
+        <member name="T:Bee.Core.ChromeTrace">
+            <summary>ChromeTrace is responsible for json serialization of TraceEvent data</summary>
+            <remarks>
+            The implementation is highly specific to the profiler implementation and should not be seen in any way as a
+            general purpose utility.
+            </remarks>
+        </member>
+        <member name="T:Bee.Core.BucketArray`1">
+             <summary>BucketArray is optimized for quick lookup and insert</summary>
+             <remarks>
+             BucketArray will only lock the first time an entry is inserted into a bucket. Bucket sizes grow exponentially.
+             For an initial bucket size of 1024 that means there are at most 21 buckets for a 32 bit integer range.
+            
+             Note! get by index isn't protected, which means it's undefined behavior to access an item not previously written.
+             It may throw a NullReferenceException or return default(T) depending on the situation.
+             </remarks>
+        </member>
+    </members>
+</doc>

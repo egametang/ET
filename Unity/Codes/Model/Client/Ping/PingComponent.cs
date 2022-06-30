@@ -1,4 +1,4 @@
-namespace ET.Client
+namespace ET
 {
     [ComponentOf(typeof(Session))]
     public class PingComponent: Entity, IAwake, IDestroy

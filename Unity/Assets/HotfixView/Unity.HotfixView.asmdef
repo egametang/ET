@@ -7,14 +7,15 @@
         "Unity.Model",
         "Unity.Hotfix",
         "Unity.ModelView",
-        "Unity.Core"
+        "Unity.Core",
+        "YooAsset"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

@@ -1,0 +1,2 @@
+; FullNames of all the generic and array types that will be automatically generated
+; for every il2cpp-based project, even if not explicitly referenced by any assembly.

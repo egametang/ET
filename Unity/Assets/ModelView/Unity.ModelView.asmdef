@@ -5,14 +5,15 @@
         "Unity.Model",
         "Unity.Mono",
         "Unity.ThirdParty",
-        "Unity.Core"
+        "Unity.Core",
+        "YooAsset"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

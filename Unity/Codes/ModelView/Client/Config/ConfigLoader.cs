@@ -1,31 +1,37 @@
 using System.Collections.Generic;
 using UnityEngine;
+using YooAsset;
 
 namespace ET.Client
 {
-    [Callback(CallbackType.GetAllConfigBytes)]
-    public class GetAllConfigBytes: IAction<Dictionary<string, byte[]>>
+    [Event(SceneType.Process)]
+    public class LoadConfig: AEvent<Scene, EventType.LoadConfig>
     {
-        public void Handle(Dictionary<string, byte[]> output)
+        protected override async ETTask Run(Scene entity, EventType.LoadConfig a)
         {
-            Dictionary<string, UnityEngine.Object> keys = ResourcesComponent.Instance.GetBundleAll("config.unity3d");
+            List<string> paths = YooAssetProxy.GetAssetPathsByTag("ConfigList");
 
+            Dictionary<string, UnityEngine.Object> keys = new Dictionary<string, UnityEngine.Object>();
+
+            List<ETTask<AssetOperationHandle>> etTasks = new List<ETTask<AssetOperationHandle>>();
+            foreach (var path in paths)
+            {
+                etTasks.Add(YooAssetProxy.LoadAssetAsync<TextAsset>(path));
+            }
+
+            await ETTaskHelper.WaitAll(etTasks);
+
+            foreach (var etTask in etTasks)
+            {
+                keys[etTask.GetResult().AssetObject.name] = etTask.GetResult().GetAsset<TextAsset>();
+            }
+            
             foreach (var kv in keys)
             {
                 TextAsset v = kv.Value as TextAsset;
                 string key = kv.Key;
-                output[key] = v.bytes;
+                a.configBytes[key] = v.bytes;
             }
-        }
-    }
-    
-    [Callback(CallbackType.GetOneConfigBytes)]
-    public class GetOneConfigBytes: IFunc<string, byte[]>
-    {
-        public byte[] Handle(string configName)
-        {
-            TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
-            return v.bytes;
         }
     }
 }

@@ -1,0 +1,98 @@
+<linker>
+	<!-- Don't reference anything other than System in this file -->
+	<!-- Only reference types exclusively needed for net45 -->
+	<assembly fullname="System">
+		<type fullname="System.IOAsyncResult" preserve="fields"/>
+		<type fullname="System.IOSelectorJob" preserve="fields"/>
+		<type fullname="System.Net.Configuration.NetSectionGroup" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.SettingsSection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.ConnectionManagementSection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.DefaultProxySection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.WebRequestModulesSection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.WebRequestModuleElementCollection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.BypassElementCollection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.PerformanceCountersElement" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.ServicePointManagerElement" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.ConnectionManagementElementCollection" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.SocketElement" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.ProxyElement" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.WebProxyScriptElement" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.Ipv6Element" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Net.Configuration.HttpWebRequestElement" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Uri" preserve="nothing">
+			<method signature="System.Void .ctor(System.String)"/> <!-- Used by UriMarshalInfoWriter -->
+		</type>
+		<type fullname="System.UriTypeConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.EnumConverter" preserve="fields">
+			<method signature="System.Void .ctor(System.Type)"/>
+		</type>
+		<type fullname="System.ComponentModel.TypeConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.StringConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.BooleanConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.Int64Converter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.Int32Converter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.Int16Converter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.ArrayConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.CollectionConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.DecimalConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.SingleConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.DoubleConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ComponentModel.TimeSpanConverter" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+	</assembly>
+</linker>

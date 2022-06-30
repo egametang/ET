@@ -1,0 +1,11 @@
+<linker>
+    <!-- case 1331829 - Required for doing `new XmlSerializer(typeof(Foo))` -->
+	<assembly fullname="System">
+		<type fullname="System.Diagnostics.SystemDiagnosticsSection" preserve="nothing">
+			<method name=".ctor"/>
+		</type>
+		<type fullname="System.Diagnostics.FilterElement" preserve="nothing">
+			<method name=".ctor"/>
+		</type>
+	</assembly>
+</linker>

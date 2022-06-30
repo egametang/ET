@@ -9,7 +9,7 @@ namespace ET.Client
         {
             // Unit View层
             // 这里可以改成异步加载，demo就不搞了
-            GameObject bundleGameObject = (GameObject)ResourcesComponent.Instance.GetAsset("Unit.unity3d", "Unit");
+            GameObject bundleGameObject = (await YooAssetProxy.LoadAssetAsync<GameObject>($"Unit_Unit")).GetAsset<GameObject>();
             GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 	        
             GameObject go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);

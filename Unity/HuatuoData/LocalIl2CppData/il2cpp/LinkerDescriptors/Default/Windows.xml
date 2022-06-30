@@ -1,0 +1,11 @@
+<linker>
+	<assembly fullname="Windows" windowsruntime="true" ignoreIfMissing="1">
+		<type fullname="Windows.Foundation.Collections.IIterator`1" preserve="all" /> <!-- Used by IIteratorToIEnumeratorAdapter`1 -->
+		<type fullname="Windows.Foundation.Collections.IKeyValuePair`2" preserve="all" />  <!-- Used by runtime callable wrapper unboxing code at runtime -->
+		<type fullname="Windows.Foundation.IPropertyValue" preserve="all" /> <!-- Used by value type boxing to windows runtime -->
+		<type fullname="Windows.Foundation.IReference`1" preserve="all" />  <!-- Used by value type boxing to windows runtime -->
+		<type fullname="Windows.Foundation.IReferenceArray`1" preserve="all" />  <!-- Used by array type boxing to windows runtime -->
+		<type fullname="Windows.Foundation.IStringable" preserve="all" /> <!-- Used by Il2CppComObject.ToString() -->
+		<type fullname="Windows.UI.Xaml.Interop.IBindableIterator" preserve="all" /> <!-- Used by IBindableIteratorToIEnumeratorAdapter -->
+	</assembly>
+</linker>

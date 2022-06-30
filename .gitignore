@@ -39,6 +39,7 @@ _ReSharper.CSharp/
 /Release
 .idea/
 /Unity/Logs
+/Unity/HuatuoData/
 /Unity/Assets/StreamingAssets/
 /netcoreapp2.0
 /Unity/Assets/StreamingAssets.meta

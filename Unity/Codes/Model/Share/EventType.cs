@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
@@ -11,7 +12,7 @@ namespace ET
         public struct SceneChangeStart
         {
         }
-        
+
         public struct SceneChangeFinish
         {
         }
@@ -20,15 +21,15 @@ namespace ET
         {
             public long Ping;
         }
-        
+
         public struct AfterCreateClientScene
         {
         }
-        
+
         public struct AfterCreateCurrentScene
         {
         }
-        
+
         public struct AfterCreateLoginScene
         {
         }
@@ -55,6 +56,11 @@ namespace ET
 
         public struct AfterUnitCreate
         {
+        }
+
+        public struct LoadConfig
+        {
+            public Dictionary<string, byte[]> configBytes;
         }
     }
 }

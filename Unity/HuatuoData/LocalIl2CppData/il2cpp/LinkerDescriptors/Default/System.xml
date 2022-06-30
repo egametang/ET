@@ -1,0 +1,10 @@
+<linker>
+	<!-- Don't reference anything other than System in this file -->
+	<assembly fullname="System">
+		<type fullname="System.Diagnostics.DiagnosticsConfigurationHandler" preserve="all"/>
+		<type fullname="System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension" preserve="all" />
+		<type fullname="System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension" preserve="all" />
+		<type fullname="System.Security.Cryptography.X509Certificates.X509KeyUsageExtension" preserve="all" />
+		<type fullname="System.Net.IPAddress" preserve="fields"/>
+	</assembly>
+</linker>

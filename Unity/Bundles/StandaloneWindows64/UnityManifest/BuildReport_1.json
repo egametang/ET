@@ -1,0 +1,307 @@
+{
+    "Summary": {
+        "UnityVersion": "2021.3.5f1c1",
+        "BuildTime": "2022/6/30 21:26:52",
+        "BuildSeconds": 5,
+        "BuildTarget": 19,
+        "BuildMode": 0,
+        "BuildVersion": 1,
+        "BuildinTags": "",
+        "EnableAddressable": true,
+        "AppendFileExtension": false,
+        "CopyBuildinTagFiles": true,
+        "AutoCollectShaders": true,
+        "ShadersBundleName": "myshaders",
+        "EncryptionServicesClassName": "null",
+        "CompressOption": 2,
+        "DisableWriteTypeTree": false,
+        "IgnoreTypeTreeChanges": true,
+        "AssetFileTotalCount": 27,
+        "AllBundleTotalCount": 10,
+        "AllBundleTotalSize": 3102854,
+        "BuildinBundleTotalCount": 9,
+        "BuildinBundleTotalSize": 3101603,
+        "EncryptedBundleTotalCount": 0,
+        "EncryptedBundleTotalSize": 0,
+        "RawBundleTotalCount": 3,
+        "RawBundleTotalSize": 299316
+    },
+    "AssetInfos": [
+        {
+            "Address": "Code_Code.dll",
+            "AssetPath": "Assets/Res/Code/Code.dll.bytes",
+            "AssetGUID": "809e1618bdca14f4b993dc6e298b49f3",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/code/code.dll.rawfile",
+            "MainBundleSize": 134656,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Code_Code.pdb",
+            "AssetPath": "Assets/Res/Code/Code.pdb.bytes",
+            "AssetGUID": "4e2140204a6ab9e41b2cfb71e584fbeb",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/code/code.pdb.rawfile",
+            "MainBundleSize": 63796,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Code_Unity.Core.dll",
+            "AssetPath": "Assets/Res/Code/Unity.Core.dll.bytes",
+            "AssetGUID": "da4d4f4079db4844fbe7e92f444a9aad",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/code/unity.core.dll.rawfile",
+            "MainBundleSize": 100864,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Config_UnitConfigCategory",
+            "AssetPath": "Assets/Res/Config/UnitConfigCategory.bytes",
+            "AssetGUID": "3f452063ceb5f4150bbbfe795c0aca90",
+            "AssetTags": [
+                "ConfigList"
+            ],
+            "MainBundleName": "assets/res/config.bundle",
+            "MainBundleSize": 1251,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_UIHelp",
+            "AssetPath": "Assets/Res/UI/UIHelp.prefab",
+            "AssetGUID": "c54e8d9624286b24fa23519e5df2ed0a",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/ui.bundle",
+            "MainBundleSize": 14885,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_UILobby",
+            "AssetPath": "Assets/Res/UI/UILobby.prefab",
+            "AssetGUID": "d8d87e53d93e234448658c9a801a9967",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/ui.bundle",
+            "MainBundleSize": 14885,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_UILogin",
+            "AssetPath": "Assets/Res/UI/UILogin.prefab",
+            "AssetGUID": "9f6d9adc6f537764fa0fea29671e77bf",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/ui.bundle",
+            "MainBundleSize": 14885,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Unit_Unit",
+            "AssetPath": "Assets/Res/Unit/Unit.prefab",
+            "AssetGUID": "cfaf4529ce2243c4c85126e9d008897b",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/unit.bundle",
+            "MainBundleSize": 762297,
+            "DependBundles": [
+                "myshaders.bundle"
+            ],
+            "DependAssets": [
+                "Assets/Res/Model/Skeleton/SkeletonController.controller",
+                "Assets/Res/Model/Skeleton/Skeleton.prefab",
+                "Assets/Res/Model/Skeleton/Texture/Skeleton_D.tif",
+                "Assets/Res/Model/Skeleton/Ani/Skeleton@Idle.FBX",
+                "Assets/Res/Model/Skeleton/Ani/Materials/skeleton_D.mat",
+                "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLit.shader",
+                "Assets/Res/Model/Skeleton/Ani/Skeleton@Run.FBX"
+            ]
+        },
+        {
+            "Address": "Scene_Map1",
+            "AssetPath": "Assets/Res/Scene/Map1.unity",
+            "AssetGUID": "a5294483f20f40d449699101bb428cda",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene.bundle",
+            "MainBundleSize": 87424,
+            "DependBundles": [
+                "assets/res/scene/map1.bundle",
+                "myshaders.bundle"
+            ],
+            "DependAssets": [
+                "Assets/Res/Scene/Map1/Lightmap-0_comp_light.exr",
+                "Assets/Res/Scene/Map1Settings.lighting",
+                "Assets/Res/Mat/Urp.mat",
+                "Assets/Res/Scene/Map1/ReflectionProbe-0.exr",
+                "Assets/Res/Scene/Map1/Lightmap-0_comp_dir.png",
+                "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader"
+            ]
+        },
+        {
+            "Address": "Scene_Map2",
+            "AssetPath": "Assets/Res/Scene/Map2.unity",
+            "AssetGUID": "064123f1e5067b249a9fd8967ddbde09",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene.bundle",
+            "MainBundleSize": 87424,
+            "DependBundles": [
+                "assets/res/scene/map2.bundle",
+                "myshaders.bundle"
+            ],
+            "DependAssets": [
+                "Assets/Res/Scene/Map2Settings.lighting",
+                "Assets/Res/Scene/Map2/ReflectionProbe-0.exr",
+                "Assets/Res/Mat/Urp.mat",
+                "Assets/Res/Scene/Map2/Lightmap-0_comp_dir.png",
+                "Assets/Res/Scene/Map2/Lightmap-0_comp_light.exr",
+                "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader"
+            ]
+        },
+        {
+            "Address": "Map1_Lightmap-0_comp_dir",
+            "AssetPath": "Assets/Res/Scene/Map1/Lightmap-0_comp_dir.png",
+            "AssetGUID": "eeeb8730251ee1b469b9b070c7efb1cf",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene/map1.bundle",
+            "MainBundleSize": 1249525,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Map1_Lightmap-0_comp_light",
+            "AssetPath": "Assets/Res/Scene/Map1/Lightmap-0_comp_light.exr",
+            "AssetGUID": "ab3027117b6819848bae7b1746588d06",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene/map1.bundle",
+            "MainBundleSize": 1249525,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Map1_ReflectionProbe-0",
+            "AssetPath": "Assets/Res/Scene/Map1/ReflectionProbe-0.exr",
+            "AssetGUID": "02bc6af578f699249a101b704d189b5a",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene/map1.bundle",
+            "MainBundleSize": 1249525,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Map2_Lightmap-0_comp_dir",
+            "AssetPath": "Assets/Res/Scene/Map2/Lightmap-0_comp_dir.png",
+            "AssetGUID": "62a71c4ca03e7434ca6ff4bba65ffb45",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene/map2.bundle",
+            "MainBundleSize": 631028,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Map2_Lightmap-0_comp_light",
+            "AssetPath": "Assets/Res/Scene/Map2/Lightmap-0_comp_light.exr",
+            "AssetGUID": "0d7da8dd669b0d8488a81fcb41451b21",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene/map2.bundle",
+            "MainBundleSize": 631028,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Map2_ReflectionProbe-0",
+            "AssetPath": "Assets/Res/Scene/Map2/ReflectionProbe-0.exr",
+            "AssetGUID": "1f1694b2c0d992047b551ad028dd5347",
+            "AssetTags": [],
+            "MainBundleName": "assets/res/scene/map2.bundle",
+            "MainBundleSize": 631028,
+            "DependBundles": [],
+            "DependAssets": []
+        }
+    ],
+    "BundleInfos": [
+        {
+            "BundleName": "assets/res/code/code.dll.rawfile",
+            "Hash": "b99f42ee653e8a3f4f587d7a7d8af636",
+            "CRC": "a896dd3b",
+            "SizeBytes": 134656,
+            "Tags": [],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/res/code/code.pdb.rawfile",
+            "Hash": "6c6875cc2ee0b60eb06347a9d8195fdb",
+            "CRC": "771c29c0",
+            "SizeBytes": 63796,
+            "Tags": [],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/res/code/unity.core.dll.rawfile",
+            "Hash": "bb272a19c54c4b77aa03aa97223a7473",
+            "CRC": "1f51ddeb",
+            "SizeBytes": 100864,
+            "Tags": [],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/res/config.bundle",
+            "Hash": "8a2d836194cea5908704cc7c700925b7",
+            "CRC": "80a34c95",
+            "SizeBytes": 1251,
+            "Tags": [
+                "ConfigList"
+            ],
+            "Flags": 0
+        },
+        {
+            "BundleName": "assets/res/ui.bundle",
+            "Hash": "7096bbe00097cb40cf6268447ee4e28e",
+            "CRC": "2eee80d7",
+            "SizeBytes": 14885,
+            "Tags": [],
+            "Flags": 2
+        },
+        {
+            "BundleName": "assets/res/unit.bundle",
+            "Hash": "52d8ecf25582c2109c9630590e0f08c3",
+            "CRC": "8270b23f",
+            "SizeBytes": 762297,
+            "Tags": [],
+            "Flags": 2
+        },
+        {
+            "BundleName": "assets/res/scene.bundle",
+            "Hash": "8cdc6cbb1f0194f83fd01462054608ec",
+            "CRC": "fedc7c2d",
+            "SizeBytes": 87424,
+            "Tags": [],
+            "Flags": 2
+        },
+        {
+            "BundleName": "assets/res/scene/map1.bundle",
+            "Hash": "a5947562f51b8917cb563d0ebe0f4973",
+            "CRC": "2f2d1aaf",
+            "SizeBytes": 1249525,
+            "Tags": [],
+            "Flags": 2
+        },
+        {
+            "BundleName": "assets/res/scene/map2.bundle",
+            "Hash": "5f8e092e345c689a6df7112ac8e0818f",
+            "CRC": "cb2085d9",
+            "SizeBytes": 631028,
+            "Tags": [],
+            "Flags": 2
+        },
+        {
+            "BundleName": "myshaders.bundle",
+            "Hash": "a16a7fe294e49fbba3c9de89dcbd6b23",
+            "CRC": "ceb9890e",
+            "SizeBytes": 57128,
+            "Tags": [],
+            "Flags": 2
+        }
+    ]
+}

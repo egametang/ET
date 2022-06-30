@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 3593552974
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: assets/res/config.bundle
+      Dependencies: {}
+    Info_1:
+      Name: assets/res/ui.bundle
+      Dependencies: {}
+    Info_2:
+      Name: assets/res/unit.bundle
+      Dependencies:
+        Dependency_0: myshaders.bundle
+    Info_3:
+      Name: assets/res/scene.bundle
+      Dependencies:
+        Dependency_0: assets/res/scene/map1.bundle
+        Dependency_1: assets/res/scene/map2.bundle
+        Dependency_2: myshaders.bundle
+    Info_4:
+      Name: assets/res/scene/map1.bundle
+      Dependencies: {}
+    Info_5:
+      Name: assets/res/scene/map2.bundle
+      Dependencies: {}
+    Info_6:
+      Name: myshaders.bundle
+      Dependencies: {}

@@ -3,34 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEngine;
 
 namespace ET
 {
+    /// <summary>
+    /// https://et-framework.cn/d/615/4
+    /// </summary>
     public static class BuildAssemblieEditor
     {
-        private const string CodeDir = "Assets/Bundles/Code/";
+        private const string CodeDir = "Assets/Res/Code/";
+        private const string EditorCodeDir = "Assets/Editor/Code/";
 
-        [MenuItem("Tools/Build/EnableAutoBuildCodeDebug _F1")]
-        public static void SetAutoBuildCode()
-        {
-            PlayerPrefs.SetInt("AutoBuild", 1);
-            ShowNotification("AutoBuildCode Enabled");
-        }
-        
-        [MenuItem("Tools/Build/DisableAutoBuildCodeDebug _F2")]
-        public static void CancelAutoBuildCode()
-        {
-            PlayerPrefs.DeleteKey("AutoBuild");
-            ShowNotification("AutoBuildCode Disabled");
-        }
-
-        [MenuItem("Tools/Build/BuildCodeDebug _F5")]
+        [MenuItem("Tools/BuildCodeDebug _F5")]
         public static void BuildCodeDebug()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new []
+            BuildAssemblieEditor.BuildMuteAssembly("Code", new[]
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
@@ -39,14 +29,14 @@ namespace ET
             }, Array.Empty<string>(), CodeOptimization.Debug);
 
             AfterCompiling();
-            
+
             AssetDatabase.Refresh();
         }
-        
-        [MenuItem("Tools/Build/BuildCodeRelease _F6")]
+
+        [MenuItem("Tools/BuildCodeRelease _F6")]
         public static void BuildCodeRelease()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new []
+            BuildAssemblieEditor.BuildMuteAssembly("Code", new[]
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
@@ -55,22 +45,22 @@ namespace ET
             }, Array.Empty<string>(), CodeOptimization.Release);
 
             AfterCompiling();
-            
+
             AssetDatabase.Refresh();
         }
-        
-        [MenuItem("Tools/Build/BuildData _F7")]
+
+        [MenuItem("Tools/BuildData _F7")]
         public static void BuildData()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Data", new []
+            BuildAssemblieEditor.BuildMuteAssembly("Data", new[]
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
             }, Array.Empty<string>(), CodeOptimization.Debug);
         }
-        
-        
-        [MenuItem("Tools/Build/BuildLogic _F8")]
+
+
+        [MenuItem("Tools/BuildLogic _F8")]
         public static void BuildLogic()
         {
             string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*");
@@ -78,23 +68,19 @@ namespace ET
             {
                 File.Delete(file);
             }
-            
+
             int random = RandomHelper.RandomNumber(100000000, 999999999);
             string logicFile = $"Logic_{random}";
-            
-            BuildAssemblieEditor.BuildMuteAssembly(logicFile, new []
+
+            BuildAssemblieEditor.BuildMuteAssembly(logicFile, new[]
             {
                 "Codes/Hotfix/",
                 "Codes/HotfixView/",
-            }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
+            }, new[] { Path.Combine(Define.BuildOutputDir, "Data.dll") }, CodeOptimization.Debug);
         }
 
         private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
         {
-            if (!Directory.Exists(Define.BuildOutputDir))
-            {
-                Directory.CreateDirectory(Define.BuildOutputDir);
-            }
             List<string> scripts = new List<string>();
             for (int i = 0; i < CodeDirectorys.Length; i++)
             {
@@ -108,13 +94,16 @@ namespace ET
 
             string dllPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll");
             string pdbPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb");
-            File.Delete(dllPath);
-            File.Delete(pdbPath);
-
-            Directory.CreateDirectory(Define.BuildOutputDir);
+            if (Directory.Exists(Define.BuildOutputDir))
+            {
+                File.Delete(dllPath);
+                File.Delete(pdbPath);
+            }
+            else
+                Directory.CreateDirectory(Define.BuildOutputDir);
 
             AssemblyBuilder assemblyBuilder = new AssemblyBuilder(dllPath, scripts.ToArray());
-            
+
             //启用UnSafe
             //assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
 
@@ -125,7 +114,7 @@ namespace ET
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 
             assemblyBuilder.additionalReferences = additionalReferences;
-            
+
             assemblyBuilder.flags = AssemblyBuilderFlags.None;
             //AssemblyBuilderFlags.None                 正常发布
             //AssemblyBuilderFlags.DevelopmentBuild     开发模式打包
@@ -136,9 +125,11 @@ namespace ET
 
             assemblyBuilder.buildTargetGroup = buildTargetGroup;
 
-            assemblyBuilder.buildStarted += delegate(string assemblyPath) { Debug.LogFormat("build start：" + assemblyPath); };
+            assemblyBuilder.excludeReferences = new string[] { "Library/ScriptAssemblies/Unity.Editor.dll" };
 
-            assemblyBuilder.buildFinished += delegate(string assemblyPath, CompilerMessage[] compilerMessages)
+            assemblyBuilder.buildStarted += delegate (string assemblyPath) { Debug.LogFormat("build start：" + assemblyPath); };
+
+            assemblyBuilder.buildFinished += delegate (string assemblyPath, CompilerMessage[] compilerMessages)
             {
                 int errorCount = compilerMessages.Count(m => m.type == CompilerMessageType.Error);
                 int warningCount = compilerMessages.Count(m => m.type == CompilerMessageType.Warning);
@@ -161,7 +152,9 @@ namespace ET
                     }
                 }
             };
-            
+
+            //assemblyBuilder.excludeReferences = new string[] { "Unity.Editor.dll" };
+
             //开始构建
             if (!assemblyBuilder.Build())
             {
@@ -179,33 +172,19 @@ namespace ET
                 Thread.Sleep(1000);
                 Debug.Log("Compiling wait2");
             }
-            
+
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
+            
             File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
+
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(EditorCodeDir, "Code.dll"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(EditorCodeDir, "Code.pdb"), true);
+
             AssetDatabase.Refresh();
             Debug.Log("copy Code.dll to Bundles/Code success!");
-            
-            // 设置ab包
-            AssetImporter assetImporter1 = AssetImporter.GetAtPath("Assets/Bundles/Code/Code.dll.bytes");
-            assetImporter1.assetBundleName = "Code.unity3d";
-            AssetImporter assetImporter2 = AssetImporter.GetAtPath("Assets/Bundles/Code/Code.pdb.bytes");
-            assetImporter2.assetBundleName = "Code.unity3d";
-            AssetDatabase.Refresh();
-            Debug.Log("set assetbundle success!");
-            
-            Debug.Log("build success!");
-            //反射获取当前Game视图，提示编译完成
-            ShowNotification("Build Code Success");
-        }
-
-        public static void ShowNotification(string tips)
-        {
-            var game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-            game?.ShowNotification(new GUIContent($"{tips}"));
         }
     }
-    
 }

@@ -1,0 +1,173 @@
+<linker>
+	<!-- Don't reference anything other than mscorlib in this file -->
+	<assembly fullname="mscorlib">
+		<type fullname="System.MonoEnumInfo" preserve="fields"/>
+		<type fullname="System.Version" preserve="fields"/>
+		<type fullname="System.Runtime.InteropServices.ErrorWrapper" preserve="fields"/>
+		<type fullname="System.Runtime.CompilerServices.FixedBufferAttribute" />
+
+		<!-- Exceptions used in vm::Exception -->
+		<type fullname="System.NullReferenceException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<!-- This is used by the libmonoruntime -->
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.OverflowException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.InvalidCastException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.IndexOutOfRangeException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.TypeLoadException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<!-- This is used by the libmonoruntime -->
+			<method signature="System.Void .ctor(System.String,System.String)"/>
+		</type>
+		<type fullname="System.ArgumentNullException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ArgumentException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.OutOfMemoryException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<!-- This is used by the libmonoruntime -->
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.ExecutionEngineException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.FormatException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.MethodAccessException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.NotSupportedException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.TypeInitializationException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.ArrayTypeMismatchException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.EntryPointNotFoundException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.DllNotFoundException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.InvalidOperationException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.MissingMethodException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.PlatformNotSupportedException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Reflection.TargetException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Threading.ThreadInterruptedException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Threading.ThreadAbortException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Threading.ThreadStateException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Threading.SynchronizationLockException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+				<type fullname="System.Threading._ThreadPoolWaitCallback" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Runtime.InteropServices.MarshalDirectiveException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.DivideByZeroException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.Runtime.InteropServices.COMException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<type fullname="System.StackOverflowException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+			<!-- This is used by the libmonoruntime -->
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.IO.FileLoadException" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+		<!-- End of Exceptions used in vm::Exception -->
+
+		<type fullname="System.Security.Cryptography.RNGCryptoServiceProvider" preserve="fields">
+			<method signature="System.Void .ctor()"/>
+		</type>
+
+		<type fullname="System.String" preserve="fields">
+			<method name="System.String Concat(System.String,System.String,System.String)"/>
+		</type>
+		<type fullname="System.Object" preserve="fields">
+			<method name="System.String ToString()" />
+		</type>
+		<type fullname="System.Array" preserve="all"/>
+
+		<!-- System.Reflection -->
+		<type fullname="System.Reflection.CustomAttributeData" preserve="all" />
+		<type fullname="System.Reflection.CustomAttributeTypedArgument" preserve="all" />
+		<type fullname="System.Reflection.CustomAttributeNamedArgument" preserve="all" />
+		<type fullname="System.Reflection.MonoGenericMethod" preserve="fields" />
+		<type fullname="System.Reflection.MonoGenericCMethod" preserve="fields" />
+		<type fullname="System.Reflection.MonoProperty" preserve="all" />
+		<type fullname="System.Reflection.Pointer" preserve="fields"/>
+
+		<type fullname="System.Reflection.Emit.UnmanagedMarshal" preserve="fields" />
+		<type fullname="System.Threading.ManualResetEvent" preserve="fields"/>
+		<type fullname="Microsoft.Win32.SafeHandles.SafeWaitHandle" preserve="fields"/>
+
+		<!-- Required for Delegate::BeginInvoke/EndInvoke -->
+		<type fullname="System.MonoAsyncCall" preserve="all" />
+		<type fullname="System.Runtime.Remoting.Messaging.AsyncResult" preserve="all" />
+		<type fullname="System.Net.Sockets.Socket/SocketAsyncResult" preserve="all" />
+		<type fullname="System.Runtime.InteropServices.DllImportAttribute" preserve="all" />
+		<type fullname="System.UnhandledExceptionEventArgs" preserve="all" />
+		<type fullname="System.Runtime.Remoting.Contexts.Context" preserve="all" />
+		<type fullname="System.Resources.RuntimeResourceSet" preserve="all" />
+		
+		<!-- Required for implementing IPropertyValue for boxed values -->
+		<type fullname="System.Guid" preserve="nothing">
+			<method name="Parse" />
+		</type>
+		<type fullname="System.IConvertible" preserve="nothing">
+			<method name="ToByte" />
+			<method name="ToInt16" />
+			<method name="ToUInt16" />
+			<method name="ToInt32" />
+			<method name="ToUInt32" />
+			<method name="ToInt64" />
+			<method name="ToUInt64" />
+			<method name="ToSingle" />
+			<method name="ToDouble" />
+		</type>
+
+		<type fullname="System.Collections.Generic.KeyNotFoundException" preserve="nothing">
+			<method signature="System.Void .ctor(System.String)"/>
+		</type>
+		<type fullname="System.Collections.Generic.EqualityComparer`1" preserve="nothing">
+			<method name="get_Default"/>
+			<method name="Equals"/>
+		</type>
+	<!-- The RegionInfo icall requires this full type to be kept. -->
+	<type fullname="System.Globalization.RegionInfo" preserve="all"/>
+	</assembly>
+</linker>

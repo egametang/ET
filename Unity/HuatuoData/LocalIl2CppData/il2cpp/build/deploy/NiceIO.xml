@@ -1,0 +1,809 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NiceIO</name>
+    </assembly>
+    <members>
+        <member name="T:NiceIO.NPath">
+            <summary>
+            A filesystem path.
+            </summary>
+            <remarks>
+            The path can be absolute or relative; the entity it refers to could be a file or a directory, and may or may not
+            actually exist in the filesystem.
+            </remarks>
+        </member>
+        <member name="M:NiceIO.NPath.#ctor(System.String)">
+            <summary>
+            Create a new NPath.
+            </summary>
+            <param name="path">The path that this NPath should represent.</param>
+        </member>
+        <member name="M:NiceIO.NPath.Combine(System.String)">
+            <summary>
+            Create a new NPath by appending a path fragment.
+            </summary>
+            <param name="append">The path fragment to append. This can be a filename, or a whole relative path.</param>
+            <returns>A new NPath which is the existing path with the fragment appended.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Combine(System.String,System.String)">
+            <summary>
+            Create a new NPath by appending two path fragments, one after the other.
+            </summary>
+            <param name="append1">The first path fragment to append.</param>
+            <param name="append2">The second path fragment to append.</param>
+            <returns>A new NPath which is the existing path with the first fragment appended, then the second fragment appended.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Combine(NiceIO.NPath)">
+            <summary>
+            Create a new NPath by appending a path fragment.
+            </summary>
+            <param name="append">The path fragment to append.</param>
+            <returns>A new NPath which is the existing path with the fragment appended.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Combine(NiceIO.NPath[])">
+            <summary>
+            Create a new NPath by appending multiple path fragments.
+            </summary>
+            <param name="append">The path fragments to append, in order.</param>
+            <returns>A new NPath which is this existing path with all the supplied path fragments appended, in order.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.Parent">
+            <summary>
+            The parent path fragment (i.e. the directory) of the path.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.RelativeTo(NiceIO.NPath)">
+            <summary>
+            Create a new NPath by computing the existing path relative to some other base path.
+            </summary>
+            <param name="path">The base path that the result should be relative to.</param>
+            <returns>A new NPath, which refers to the same target as the existing path, but is described relative to the given base path.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ChangeExtension(System.String)">
+            <summary>
+            Create an NPath by changing the extension of this one.
+            </summary>
+            <param name="extension">The new extension to use. Starting it with a "." character is optional. If you pass an empty string, the resulting path will have the extension stripped entirely, including the dot character.</param>
+            <returns>A new NPath which is the existing path but with the new extension at the end.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.IsRelative">
+            <summary>
+            Whether this path is relative (i.e. not absolute) or not.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.FileName">
+            <summary>
+            The name of the file or directory given at the end of this path, including any extension.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.FileNameWithoutExtension">
+            <summary>
+            The name of the file or directory given at the end of this path, excluding the extension.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.HasDirectory(System.String)">
+            <summary>
+            Determines whether the given path is, or is a child of, a directory with the given name.
+            </summary>
+            <param name="dir">The name of the directory to search for.</param>
+            <returns>True if the path describes a file/directory that is or is a child of a directory with the given name; false otherwise.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.Depth">
+            <summary>
+            The depth of the path, determined by the number of path separators present.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.IsCurrentDir">
+            <summary>
+            Tests whether the path is the current directory string ".".
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.Exists(NiceIO.NPath)">
+            <summary>
+            Tests whether the path exists.
+            </summary>
+            <param name="append">An optional path fragment to append before testing.</param>
+            <returns>True if the path (with optional appended fragment) exists, false otherwise.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.DirectoryExists(NiceIO.NPath)">
+            <summary>
+            Tests whether the path exists and is a directory.
+            </summary>
+            <param name="append">An optional path fragment to append before testing.</param>
+            <returns>True if the path (with optional appended fragment) exists and is a directory, false otherwise.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.FileExists(NiceIO.NPath)">
+            <summary>
+            Tests whether the path exists and is a file.
+            </summary>
+            <param name="append">An optional path fragment to append before testing.</param>
+            <returns>True if the path (with optional appended fragment) exists and is a file, false otherwise.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.Extension">
+            <summary>
+            The extension of the file, excluding the initial "." character.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.UNCServerName">
+            <summary>
+            UNC server name of the path, if present. Null if not present.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.DriveLetter">
+            <summary>
+            The Windows drive letter of the path, if present. Null if not present.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.InQuotes(NiceIO.SlashMode)">
+            <summary>
+            Provides a quoted version of the path as a string, with the requested path separator type.
+            </summary>
+            <param name="slashMode">The path separator to use. See the <see cref="T:NiceIO.SlashMode">SlashMode</see> enum for an explanation of the values. Defaults to <c>SlashMode.Forward</c>.</param>
+            <returns>The path, with the requested path separator type, in quotes.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ToString">
+            <summary>
+            Convert this path to a string, using forward slashes as path separators.
+            </summary>
+            <returns>The string representation of this path.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ToString(NiceIO.SlashMode)">
+            <summary>
+            Convert this path to a string, using the requested path separator type.
+            </summary>
+            <param name="slashMode">The path separator type to use. See <see cref="T:NiceIO.SlashMode">SlashMode</see> for possible values.</param>
+            <returns>The string representation of this path.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Equals(System.Object)">
+            <summary>
+            Checks if this NPath represents the same path as another object.
+            </summary>
+            <param name="obj">The object to compare to.</param>
+            <returns>True if this NPath represents the same path as the other object; false if it does not, if the other object is not an NPath, or is null.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Equals(NiceIO.NPath)">
+            <summary>
+            Checks if this NPath is equal to another NPath.
+            </summary>
+            <param name="p">The path to compare to.</param>
+            <returns>True if this NPath represents the same path as the other NPath; false otherwise.</returns>
+            <remarks>Note that the comparison requires that the paths are the same, not just that the targets are the same; "foo/bar" and "foo/baz/../bar" refer to the same target but will not be treated as equal by this comparison. However, this comparison will ignore case differences when the current operating system does not use case-sensitive filesystems.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.op_Equality(NiceIO.NPath,NiceIO.NPath)">
+            <summary>
+            Compare two NPaths for equality.
+            </summary>
+            <param name="a">The first NPath to compare.</param>
+            <param name="b">The second NPath to compare.</param>
+            <returns>True if the NPaths are both equal (or both null), false otherwise. See <see cref="M:NiceIO.NPath.Equals(NiceIO.NPath)">Equals.</see></returns>
+        </member>
+        <member name="M:NiceIO.NPath.GetHashCode">
+            <summary>
+            Get an appropriate hash value for this NPath.
+            </summary>
+            <returns>A hash value for this NPath.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.CompareTo(System.Object)">
+            <summary>
+            Compare this NPath to another NPath, returning a value that can be used to sort the two objects in a stable order.
+            </summary>
+            <param name="obj">The object to compare to. Note that this object must be castable to NPath.</param>
+            <returns>A value that indicates the relative order of the two objects. The return value has these meanings:
+            <list type="table">
+            <listheader><term>Value</term><description>Meaning</description></listheader>
+            <item><term>Less than zero</term><description>This instance precedes <c>obj</c> in the sort order.</description></item>
+            <item><term>Zero</term><description>This instance occurs in the same position as <c>obj</c> in the sort order.</description></item>
+            <item><term>Greater than zero</term><description>This instance follows <c>obj</c> in the sort order.</description></item>
+            </list>
+            </returns>
+        </member>
+        <member name="M:NiceIO.NPath.op_Inequality(NiceIO.NPath,NiceIO.NPath)">
+            <summary>
+            Compare two NPaths for inequality.
+            </summary>
+            <param name="a">The first NPath to compare.</param>
+            <param name="b">The second NPath to compare.</param>
+            <returns>True if the NPaths are not equal, false otherwise.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.HasExtension(System.String)">
+            <summary>
+            Tests whether this NPath has the provided extension.
+            </summary>
+            <param name="extension">The extension to test for.</param>
+            <returns>True if this NPath has has the provided extension. False otherwise.</returns>
+            <remarks>The extension "*" is special, and will return true for all paths if specified.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.HasExtension(System.String[])">
+            <summary>
+            Tests whether this NPath has one of the provided extensions, or if no extensions are provided, whether it has any extension at all.
+            </summary>
+            <param name="extensions">The possible extensions to test for.</param>
+            <returns>True if this NPath has one of the provided extensions; or, if no extensions are provided, true if this NPath has an extension. False otherwise.</returns>
+            <remarks>The extension "*" is special, and will return true for all paths if specified.</remarks>
+        </member>
+        <member name="P:NiceIO.NPath.IsRoot">
+            <summary>
+            Whether this path is rooted or not (begins with a slash character or drive specifier).
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.IsUNC">
+            <summary>
+            Whether this path starts with an UNC path prefix "\\" or not.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.Files(System.String,System.Boolean)">
+            <summary>
+            Find all files within this path that match the given filter.
+            </summary>
+            <param name="filter">The filter to match against the names of files. Wildcards can be included.</param>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for files that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of files that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Files(System.Boolean)">
+            <summary>
+            Find all files within this path.
+            </summary>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for files that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of files that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Files(System.String[],System.Boolean)">
+            <summary>
+            Find all files within this path that have one of the provided extensions.
+            </summary>
+            <param name="extensions">The extensions to search for.</param>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for files that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of files that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Contents(System.String,System.Boolean)">
+            <summary>
+            Find all files or directories within this path that match the given filter.
+            </summary>
+            <param name="filter">The filter to match against the names of files and directories. Wildcards can be included.</param>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for files and directories that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of files and directories that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Contents(System.Boolean)">
+            <summary>
+            Find all files and directories within this path.
+            </summary>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for files and directories that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of files and directories that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Directories(System.String,System.Boolean)">
+            <summary>
+            Find all directories within this path that match the given filter.
+            </summary>
+            <param name="filter">The filter to match against the names of directories. Wildcards can be included.</param>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for directories that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of directories that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Directories(System.Boolean)">
+            <summary>
+            Find all directories within this path.
+            </summary>
+            <param name="recurse">If true, search recursively inside subdirectories of this path; if false, search only for directories that are immediate children of this path. Defaults to false.</param>
+            <returns>An array of directories that were found.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.CreateFile">
+            <summary>
+            Create an empty file at this path.
+            </summary>
+            <returns>This NPath, for chaining further operations.</returns>
+            <remarks>If a file already exists at this path, it will be overwritten.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.CreateFile(NiceIO.NPath)">
+            <summary>
+            Append the given path fragment to this path, and create an empty file there.
+            </summary>
+            <param name="file">The path fragment to append.</param>
+            <returns>The path to the created file, for chaining further operations.</returns>
+            <remarks>If a file already exists at that path, it will be overwritten.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.CreateDirectory">
+            <summary>
+            Create this path as a directory if it does not already exist.
+            </summary>
+            <returns>This NPath, for chaining further operations.</returns>
+            <remark>This is identical to <see cref="M:NiceIO.NPath.EnsureDirectoryExists(NiceIO.NPath)"/>, except that EnsureDirectoryExists triggers "Stat" callbacks and this doesn't.</remark>
+        </member>
+        <member name="M:NiceIO.NPath.CreateDirectory(NiceIO.NPath)">
+            <summary>
+            Append the given path fragment to this path, and create it as a directory if it does not already exist.
+            </summary>
+            <param name="directory">The path fragment to append.</param>
+            <returns>The path to the created directory, for chaining further operations.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.CreateSymbolicLink(NiceIO.NPath,System.Boolean)">
+            <summary>
+            Create this path as a symbolic link to another file or directory.
+            </summary>
+            <param name="targetPath">The path that this path should be a symbolic link to. Can be relative or absolute.</param>
+            <param name="targetIsFile">Specifies whether this link is to a file or to a directory (required on Windows). Defaults to file.</param>
+            <returns>The path to the created symbolic link, for chaining further operations.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.IsSymbolicLink">
+            <summary>
+            Checks whether the entity referred to by this path is a symbolic link.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.Copy(NiceIO.NPath)">
+            <summary>
+            Copy this NPath to the given destination.
+            </summary>
+            <param name="dest">The path to copy to.</param>
+            <returns>The path to the copied result, for chaining further operations.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Copy(NiceIO.NPath,System.Func{NiceIO.NPath,System.Boolean})">
+            <summary>
+            Copy this NPath to the given destination, applying a filter function to decide which files are copied.
+            </summary>
+            <param name="dest">The path to copy to.</param>
+            <param name="fileFilter">The filter function. Each candidate file is passed to this function; if the function returns true, the file will be copied, otherwise it will not.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NiceIO.NPath.MakeAbsolute(NiceIO.NPath)">
+            <summary>
+            Create a new NPath by converting this path into an absolute representation.
+            </summary>
+            <param name="base">Optional base to use as a root for relative paths.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NiceIO.NPath.Delete(NiceIO.DeleteMode)">
+            <summary>
+            Deletes the file or directory referred to by the NPath.
+            </summary>
+            <param name="deleteMode">The deletion mode to use, see <see cref="T:NiceIO.DeleteMode">DeleteMode.</see> Defaults to DeleteMode.Normal.</param>
+            <exception cref="T:System.InvalidOperationException">The path does not exist. See also <see cref="M:NiceIO.NPath.DeleteIfExists(NiceIO.DeleteMode)">DeleteIfExists</see>.</exception>
+        </member>
+        <member name="M:NiceIO.NPath.DeleteIfExists(NiceIO.DeleteMode)">
+            <summary>
+            Deletes the file or directory referred to by the NPath, if it exists.
+            </summary>
+            <param name="deleteMode">The deletion mode to use, see <see cref="T:NiceIO.DeleteMode">DeleteMode.</see> Defaults to DeleteMode.Normal.</param>
+            <returns>This NPath, for chaining further operations.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.DeleteContents">
+            <summary>
+            Deletes all files and directories inside the directory referred to by this NPath.
+            </summary>
+            <returns>This NPath, for chaining further operations.</returns>
+            <exception cref="T:System.InvalidOperationException">This NPath refers to a file, rather than a directory.</exception>
+        </member>
+        <member name="M:NiceIO.NPath.CreateTempDirectory(System.String)">
+            <summary>
+            Create a temporary directory in the system temporary location and return the NPath of it.
+            </summary>
+            <param name="prefix">A prefix to use for the name of the temporary directory.</param>
+            <returns>A new NPath which targets the newly created temporary directory.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.Move(NiceIO.NPath)">
+            <summary>
+            Move the file or directory targetted by this NPath to a new location.
+            </summary>
+            <param name="dest">The destination for the move.</param>
+            <returns>An NPath representing the newly moved file or directory.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.CurrentDirectory">
+            <summary>
+            The current directory in use by the process.
+            </summary>
+            <remarks>Note that every read from this property will result in an operating system query, unless <see cref="M:NiceIO.NPath.WithFrozenCurrentDirectory(NiceIO.NPath)">WithFrozenCurrentDirectory</see> is used.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.SetCurrentDirectory(NiceIO.NPath)">
+            <summary>
+            Temporarily change the current directory for the process.
+            </summary>
+            <param name="directory">The new directory to set as the current directory.</param>
+            <returns>A token representing the change in current directory. When this is disposed, the current directory will be returned to its previous value. The usual usage pattern is to capture the token with a <c>using</c> statement, such that it is automatically disposed of when the <c>using</c> block exits.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.HomeDirectory">
+            <summary>
+            The current user's home directory.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.SystemTemp">
+            <summary>
+            The system temporary directory.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.EnsureDirectoryExists(NiceIO.NPath)">
+            <summary>
+            Append an optional path fragment to this NPath, then create it as a directory if it does not already exist.
+            </summary>
+            <param name="append">The path fragment to append.</param>
+            <returns>The path to the directory that is now guaranteed to exist.</returns>
+            <remark>This is identical to <see cref="M:NiceIO.NPath.CreateDirectory"/>, except that this triggers "Stat" callbacks and CreateDirectory doesn't.</remark>
+        </member>
+        <member name="M:NiceIO.NPath.EnsureParentDirectoryExists">
+            <summary>
+            Create the parent directory of this NPath if it does not already exist.
+            </summary>
+            <returns>This NPath, for chaining further operations.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.FileMustExist">
+            <summary>
+            Throw an exception if this path does not exist as a file.
+            </summary>
+            <returns>This path, in order to chain further operations.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">The path does not exist, or is not a file.</exception>
+        </member>
+        <member name="M:NiceIO.NPath.DirectoryMustExist">
+            <summary>
+            Throw an exception if this directory does not exist.
+            </summary>
+            <returns>This path, in order to chain further operations.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">The path does not exist, or is not a directory.</exception>
+        </member>
+        <member name="M:NiceIO.NPath.IsChildOf(NiceIO.NPath)">
+            <summary>
+            Check if this path is a child of the given path hierarchy root (i.e. is a file or directory that is inside the given hierachy root directory or one of its descendent directories).
+            </summary>
+            <param name="potentialBasePath">The path hierarchy root to check.</param>
+            <returns>True if this path is a child of the given root path, false otherwise.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.IsSameAsOrChildOf(NiceIO.NPath)">
+            <summary>
+            Check if this path is a child of the given path hierarchy root (i.e. is a file or directory that is inside the given hierachy root directory or one of its descendent directories), or is equal to it.
+            </summary>
+            <param name="potentialBasePath">The path hierarchy root to check.</param>
+            <returns>True if this path is equal to or is a child of the given root path, false otherwise.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.RecursiveParents">
+            <summary>
+            Return each parent directory of this path, starting with the immediate parent, then that directory's parent, and so on, until the root of the path is reached.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.ParentContaining(NiceIO.NPath)">
+            <summary>
+            Search all parent directories of this path for one that contains a file or directory with the given name.
+            </summary>
+            <param name="needle">The name of the file or directory to search for.</param>
+            <returns>The path to the parent directory that contains the file or directory, or null if none of the parents contained a file or directory with the requested name.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.WriteAllText(System.String)">
+            <summary>
+            Open this path as a text file, write the given string to it, then close the file.
+            </summary>
+            <param name="contents">The string to write to the text file.</param>
+            <returns>The path to this file, for use in chaining further operations.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ReplaceAllText(System.String)">
+            <summary>
+            Open this file as a text file, and replace the contents with the provided string, if they do not already match. Then close the file.
+            </summary>
+            <param name="contents">The string to replace the file's contents with.</param>
+            <returns>The path to this file, for use in chaining further operations.</returns>
+            <remarks>Note that if the contents of the file already match the provided string, the file is not modified - this includes not modifying the file's "last written" timestamp.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.WriteAllBytes(System.Byte[])">
+            <summary>
+            Open this path as a file, write the given bytes to it, then close the file.
+            </summary>
+            <param name="bytes">The bytes to write to the file.</param>
+            <returns>The path to this file, for use in chaining further operations.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ReadAllText">
+            <summary>
+            Opens a text file, reads all the text in the file into a single string, then closes the file.
+            </summary>
+            <returns>The contents of the text file, as a single string.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ReadAllBytes">
+            <summary>
+            Opens a file, reads all the bytes in the file, then closes the file.
+            </summary>
+            <returns>The contents of the file, as a bytes array.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.WriteAllLines(System.String[])">
+            <summary>
+            Opens a text file, writes all entries of a string array as separate lines into the file, then closes the file.
+            </summary>
+            <param name="contents">The entries to write into the file as separate lines.</param>
+            <returns>The path to this file.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ReadAllLines">
+            <summary>
+            Opens a text file, reads all lines of the file into a string array, and then closes the file.
+            </summary>
+            <returns>A string array containing all lines of the file.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.CopyFiles(NiceIO.NPath,System.Boolean,System.Func{NiceIO.NPath,System.Boolean})">
+            <summary>
+            Copy all files in this NPath to the given destination directory.
+            </summary>
+            <param name="destination">The directory to copy the files to.</param>
+            <param name="recurse">If true, files inside subdirectories of this NPath will also be copied. If false, only immediate child files of this NPath will be copied.</param>
+            <param name="fileFilter">An optional predicate function that can be used to filter files. It is passed each source file path in turn, and if it returns true, the file is copied; otherwise, the file is not copied.</param>
+            <returns>The paths to all the newly copied files.</returns>
+            <remarks>Note that the directory structure of the files relative to this NPath will be preserved within the target directory.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.MoveFiles(NiceIO.NPath,System.Boolean,System.Func{NiceIO.NPath,System.Boolean})">
+            <summary>
+            Move all files in this NPath to the given destination directory.
+            </summary>
+            <param name="destination">The directory to move the files to.</param>
+            <param name="recurse">If true, files inside subdirectories of this NPath will also be moved. If false, only immediate child files of this NPath will be moved.</param>
+            <param name="fileFilter">An optional predicate function that can be used to filter files. It is passed each source file path in turn, and if it returns true, the file is moved; otherwise, the file is not moved.</param>
+            <returns>The paths to all the newly moved files.</returns>
+            <remarks>Note that the directory structure of the files relative to this NPath will be preserved within the target directory.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.op_Implicit(System.String)~NiceIO.NPath">
+            <summary>
+            Implicitly construct a new NPath from a string.
+            </summary>
+            <param name="input">The string to construct the new NPath from.</param>
+        </member>
+        <member name="M:NiceIO.NPath.SetLastWriteTimeUtc(System.DateTime)">
+            <summary>
+            Set the last time the file was written to, in UTC.
+            </summary>
+            <returns>The last time the file was written to, in UTC.</returns>
+            <remarks>This is set automatically by the OS when the file is modified, but it can sometimes be useful
+            to explicitly update the timestamp without modifying the file contents.</remarks>
+        </member>
+        <member name="M:NiceIO.NPath.GetLastWriteTimeUtc">
+            <summary>
+            Get the last time the file was written to, in UTC.
+            </summary>
+            <returns>The last time the file was written to, in UTC.</returns>
+        </member>
+        <member name="M:NiceIO.NPath.GetFileSize">
+            <summary>
+            Get the file length in bytes.
+            </summary>
+            <returns>The file length in bytes.</returns>
+        </member>
+        <member name="P:NiceIO.NPath.Attributes">
+            <summary>
+            The filesystem attributes of the given file, assuming it exists. Note that when you set this property, the
+            OS may still modify the the actual attributes of the file beyond what you requested, so setting and then
+            getting the property is not guaranteed to roundtrip the value. Note also that some attributes (e.g.
+            FileAttributes.Hidden) are not supported on every OS, and may throw exceptions or simply be ignored.
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.WithFileSystem(NiceIO.NPath.FileSystem)">
+            <summary>
+            Until .Dispose is invoked on the returnvalue, makes all NPath's on this thread use the provided filesystem implementation for all filesystem access.
+            </summary>
+            <param name="fileSystem"></param>
+            <returns>An object you can invoke .Dispose() on, which will make all NPath filesystem operations stop using the provided filesystem</returns>
+        </member>
+        <member name="M:NiceIO.NPath.ResolveWithFileSystem">
+            <summary>
+            Lets the currently active filesystem resolve the path.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NiceIO.NPath.InQuotesResolved(NiceIO.SlashMode)">
+            <summary>
+            Shorthand for .ResolveWithFileSystem.InQuotes()
+            </summary>
+            <param name="slashMode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NiceIO.NPath.FileSystem">
+            <summary>
+            Abstract baseclass you can use to plug in different underlying filesystem behaviour for NPath to operate on
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.FileSystem.Active">
+            <summary>
+            The currently active filesystem for NPath operations. Set this using NPath.WithFileSystem()
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.FileSystem.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.FileSystem.Resolve(NiceIO.NPath)">
+            <summary>
+            If your filesystem does any kind of redirection or other magic, Resolve() is required to return the path that can be used against the raw lowlevel filesystem of the OS.
+            </summary>
+            <param name="path">The path to resolve</param>
+            <returns>The resolved path that is valid to use against the OS's real filesystem</returns>
+        </member>
+        <member name="T:NiceIO.NPath.RelayingFileSystem">
+            <summary>
+            A Filesystem that forwards all calls to another filesytem. Derive your own filesystem from this if you only want to
+            change the behaviour of a few methods.
+            </summary>
+        </member>
+        <member name="P:NiceIO.NPath.RelayingFileSystem.BaseFileSystem">
+            <summary>
+            The filesystem all methods will be forwarded to
+            </summary>
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.#ctor(NiceIO.NPath.FileSystem)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="baseFileSystem">the filesystem all calls will be forwarded to</param>
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_GetFiles(NiceIO.NPath,System.String,System.IO.SearchOption)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_Exists(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_Exists(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_WriteAllBytes(NiceIO.NPath,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_Copy(NiceIO.NPath,NiceIO.NPath,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_Delete(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_Move(NiceIO.NPath,NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_WriteAllText(NiceIO.NPath,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_ReadAllText(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_WriteAllLines(NiceIO.NPath,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_ReadAllLines(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_ReadAllBytes(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_SetLastWriteTimeUtc(NiceIO.NPath,System.DateTime)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_GetLastWriteTimeUtc(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_SetAttributes(NiceIO.NPath,System.IO.FileAttributes)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_GetAttributes(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.File_GetSize(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_CreateDirectory(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_Delete(NiceIO.NPath,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_Move(NiceIO.NPath,NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_GetCurrentDirectory">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_SetCurrentDirectory(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Directory_GetDirectories(NiceIO.NPath,System.String,System.IO.SearchOption)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.Resolve(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.IsSymbolicLink(NiceIO.NPath)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.RelayingFileSystem.CreateSymbolicLink(NiceIO.NPath,NiceIO.NPath,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:NiceIO.NPath.WithFrozenCurrentDirectory(NiceIO.NPath)">
+            <summary>
+            Temporarily assume that the current directory is a given value, instead of querying it from the environment when needed, in order to improve performance.
+            </summary>
+            <param name="frozenCurrentDirectory">The current directory to assume.</param>
+            <returns>A token representing the registered callback. This should be disposed of when the assumption is no longer required. The usual usage pattern is to capture the token with a <c>using</c> statement, such that it is automatically disposed of when the <c>using</c> block exits.</returns>
+        </member>
+        <member name="T:NiceIO.Extensions">
+            <summary>
+            NPath-related extension methods for other common types.
+            </summary>
+        </member>
+        <member name="M:NiceIO.Extensions.Copy(System.Collections.Generic.IEnumerable{NiceIO.NPath},NiceIO.NPath)">
+            <summary>
+            Copy these NPaths into the given directory.
+            </summary>
+            <param name="self">An enumerable sequence of NPaths.</param>
+            <param name="dest">The path to the target directory.</param>
+            <returns>The paths to the newly copied files.</returns>
+            <remarks>All path information in the source paths is ignored, other than the final file name; the resulting copied files and directories will all be immediate children of the target directory.</remarks>
+        </member>
+        <member name="M:NiceIO.Extensions.Move(System.Collections.Generic.IEnumerable{NiceIO.NPath},NiceIO.NPath)">
+            <summary>
+            Move these NPaths into the given directory.
+            </summary>
+            <param name="self">An enumerable sequence of NPaths.</param>
+            <param name="dest">The path to the target directory.</param>
+            <returns>The paths to the newly moved files.</returns>
+            <remarks>All path information in the source paths is ignored, other than the final file name; the resulting moved files and directories will all be immediate children of the target directory.</remarks>
+        </member>
+        <member name="M:NiceIO.Extensions.Delete(System.Collections.Generic.IEnumerable{NiceIO.NPath})">
+            <summary>
+            Delete the files/directories targetted by these paths.
+            </summary>
+            <param name="self">The paths to delete.</param>
+            <returns>All paths that were passed in to the method.</returns>
+        </member>
+        <member name="M:NiceIO.Extensions.InQuotes(System.Collections.Generic.IEnumerable{NiceIO.NPath},NiceIO.SlashMode)">
+            <summary>
+            Convert all these paths to quoted strings, using the requested path separator type.
+            </summary>
+            <param name="self">The paths to convert.</param>
+            <param name="slashMode">The path separator type to use. Defaults to <c>SlashMode.Forward</c>.</param>
+            <returns>The paths, converted to quoted strings.</returns>
+        </member>
+        <member name="M:NiceIO.Extensions.ToNPath(System.String)">
+            <summary>
+            Construct a new NPath from this string.
+            </summary>
+            <param name="path">The string to construct the path from.</param>
+            <returns>A new NPath constructed from this string.</returns>
+        </member>
+        <member name="M:NiceIO.Extensions.ToNPaths(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Construct new NPaths from each of these strings.
+            </summary>
+            <param name="paths">The strings to construct NPaths from.</param>
+            <returns>The newly constructed NPaths.</returns>
+        </member>
+        <member name="M:NiceIO.Extensions.ResolveWithFileSystem(System.Collections.Generic.IEnumerable{NiceIO.NPath})">
+            <summary>
+            Invokes .ResolveWithFileSystem on all NPaths
+            </summary>
+            <param name="paths"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NiceIO.Extensions.InQuotesResolved(System.Collections.Generic.IEnumerable{NiceIO.NPath})">
+            <summary>
+            Invokes InQuotesResolved on all NPaths
+            </summary>
+            <param name="paths"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NiceIO.SlashMode">
+            <summary>
+            Describes the different kinds of path separators that can be used when converting NPaths back into strings.
+            </summary>
+        </member>
+        <member name="F:NiceIO.SlashMode.Native">
+            <summary>
+            Use the slash mode that is native for the current platform - backslashes on Windows, forward slashes on macOS and Linux systems.
+            </summary>
+        </member>
+        <member name="F:NiceIO.SlashMode.Forward">
+            <summary>
+            Use forward slashes as path separators.
+            </summary>
+        </member>
+        <member name="F:NiceIO.SlashMode.Backward">
+            <summary>
+            Use backslashes as path separators.
+            </summary>
+        </member>
+        <member name="T:NiceIO.DeleteMode">
+            <summary>
+            Specifies the way that directory deletion should be performed.
+            </summary>
+        </member>
+        <member name="F:NiceIO.DeleteMode.Normal">
+            <summary>
+            When deleting a directory, if an IOException occurs, rethrow it.
+            </summary>
+        </member>
+        <member name="F:NiceIO.DeleteMode.Soft">
+            <summary>
+            When deleting a directory, if an IOException occurs, ignore it. The deletion request may or may not be later fulfilled by the OS.
+            </summary>
+        </member>
+    </members>
+</doc>

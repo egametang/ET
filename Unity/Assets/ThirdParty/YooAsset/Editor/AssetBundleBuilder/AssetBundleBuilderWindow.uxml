@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar name="Toolbar" style="display: flex;" />
+    <ui:VisualElement name="BuildContainer">
+        <ui:TextField picking-mode="Ignore" label="Build Output" name="BuildOutput" />
+        <uie:IntegerField label="Build Version" value="0" name="BuildVersion" />
+        <uie:EnumField label="Build Mode" name="BuildMode" />
+        <ui:VisualElement name="EncryptionContainer" style="height: 24px;" />
+        <uie:EnumField label="Compression" value="Center" name="Compression" />
+        <ui:Toggle label="Append Extension" name="AppendExtension" style="height: 15px;" />
+        <ui:TextField picking-mode="Ignore" label="Buildin Tags" name="BuildinTags" />
+        <ui:Button text="构建" display-tooltip-when-elided="true" name="Build" style="height: 50px; background-color: rgb(40, 106, 42); margin-top: 10px;" />
+    </ui:VisualElement>
+</ui:UXML>

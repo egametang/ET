@@ -1,0 +1,9 @@
+<linker>
+	<!-- Don't reference anything other than System.Configuration in this file -->
+	<assembly fullname="System.Configuration">
+        <type fullname="System.Configuration.ExeConfigurationHost" preserve="fields">
+            <method signature="System.Void .ctor()"/>
+        </type>
+		<type fullname="System.Configuration.IgnoreSection" preserve="all"/>
+	</assembly>
+</linker>
