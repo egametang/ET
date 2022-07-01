@@ -129,7 +129,7 @@ namespace System
         if (values)
         {
             int i;
-            WriteBarrier::GenericStore(fields, vm::Array::New(il2cpp_defaults.object_class, count));
+            WriteBarrier::GenericStore(fields, (Il2CppObject*)vm::Array::New(il2cpp_defaults.object_class, count));
             for (i = 0; i < count; ++i)
                 il2cpp_array_setref(*fields, i, values[i]);
             return false;
@@ -193,7 +193,7 @@ namespace System
         if (values)
         {
             int i;
-            WriteBarrier::GenericStore(fields, vm::Array::New(il2cpp_defaults.object_class, count));
+            WriteBarrier::GenericStore(fields, (Il2CppObject*)vm::Array::New(il2cpp_defaults.object_class, count));
             for (i = 0; i < count; ++i)
                 il2cpp_array_setref(*fields, i, values[i]);
         }

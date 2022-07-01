@@ -14,7 +14,6 @@
 #include "utils/ThreadSafeFreeList.h"
 
 #include <limits>
-#include <exception>
 
 #include "Baselib.h"
 #include "Cpp/Atomic.h"
@@ -613,7 +612,7 @@ namespace vm
         // Wait for pulse (if we either have a timeout or are supposed to
         // wait infinitely).
         il2cpp::os::WaitStatus pulseWaitStatus = kWaitStatusSuccess;
-        std::exception_ptr exceptionThrownDuringWait = NULL;
+        Il2CppException* exceptionThrownDuringWait = NULL;
         if (timeoutMilliseconds != 0)
         {
             pulseWaitStatus = kWaitStatusFailure;
@@ -622,11 +621,11 @@ namespace vm
                 il2cpp::vm::ThreadStateSetter state(il2cpp::vm::kThreadStateWaitSleepJoin);
                 pulseWaitStatus = waitNode->signalWaitingThread.Wait(timeoutMilliseconds, true);
             }
-            catch (...)
+            catch (Il2CppExceptionWrapper& exception)
             {
                 // Exception occurred during wait. Remember exception but continue with reacquisition
                 // and cleanup. We re-throw later.
-                exceptionThrownDuringWait = std::current_exception();
+                exceptionThrownDuringWait = exception.ex;
                 pulseWaitStatus = kWaitStatusFailure;
             }
         }
@@ -661,7 +660,7 @@ namespace vm
         //  still holds a lock. Otherwise a lock() statement around the Wait() will throw an exception,
         //  for example.
         if (exceptionThrownDuringWait)
-            std::rethrow_exception(exceptionThrownDuringWait);
+            il2cpp::vm::Exception::Raise(exceptionThrownDuringWait);
 
         ////TODO: According to MSDN, the timeout indicates whether we reacquired the lock in time
         ////    and not just whether the pulse came in time. Thus the current code is imprecise.

@@ -11,7 +11,6 @@
 #include "vm-utils/VmStringUtils.h"
 #include <cwctype>
 #include <wctype.h>
-#include <algorithm>
 
 namespace il2cpp
 {
@@ -23,6 +22,48 @@ namespace System
 {
 namespace Globalization
 {
+    void CompareInfo::free_internal_collator(mscorlib_System_Globalization_CompareInfo * thisPtr)
+    {
+        // This method does not need any implementation.
+    }
+
+    static int string_invariant_indexof(Il2CppString *source, int sindex, int count, Il2CppString *value, bool first)
+    {
+        int lencmpstr = il2cpp::utils::StringUtils::GetLength(value);
+        Il2CppChar* src = il2cpp::utils::StringUtils::GetChars(source);
+        Il2CppChar* cmpstr = il2cpp::utils::StringUtils::GetChars(value);
+
+        if (first)
+        {
+            count -= lencmpstr;
+            for (int pos = sindex; pos <= sindex + count; pos++)
+            {
+                for (int i = 0; src[pos + i] == cmpstr[i];)
+                {
+                    if (++i == lencmpstr)
+                        return (pos);
+                }
+            }
+
+            return (-1);
+        }
+        else
+        {
+            for (int pos = sindex - lencmpstr + 1; pos > sindex - count; pos--)
+            {
+                if (memcmp(src + pos, cmpstr, lencmpstr * sizeof(Il2CppChar)) == 0)
+                    return (pos);
+            }
+
+            return (-1);
+        }
+    }
+
+    int CompareInfo::internal_index(mscorlib_System_Globalization_CompareInfo *thisPtr, Il2CppString *source, int sindex, int count, Il2CppString *value, int options, bool first)
+    {
+        return (string_invariant_indexof(source, sindex, count, value, first));
+    }
+
     static int string_invariant_compare_char(Il2CppChar c1, Il2CppChar c2, int options)
     {
         int result = 0;
@@ -54,66 +95,92 @@ namespace Globalization
         return ((result < 0) ? -1 : (result > 0) ? 1 : 0);
     }
 
-    int32_t CompareInfo::internal_compare_icall(Il2CppChar* str1, int32_t length1, Il2CppChar* str2, int32_t length2, int32_t options)
+    static int string_invariant_compare(Il2CppString *str1, int off1, int len1, Il2CppString *str2, int off2, int len2, int options)
     {
-        // Do a normal ascii string compare, as we only know the invariant locale if we dont have ICU.
-        /* c translation of C# code from old string.cs.. :) */
-        const int length = std::max(length1, length2);
-        int charcmp;
-        int pos = 0;
+        int length;
+        if (len1 >= len2)
+            length = len1;
+        else
+            length = len2;
 
+        Il2CppChar* ustr1 = il2cpp::utils::StringUtils::GetChars(str1) + off1;
+        Il2CppChar* ustr2 = il2cpp::utils::StringUtils::GetChars(str2) + off2;
+
+        int pos = 0;
         for (pos = 0; pos != length; pos++)
         {
-            if (pos >= length1 || pos >= length2)
+            if (pos >= len1 || pos >= len2)
                 break;
 
-            charcmp = string_invariant_compare_char(str1[pos], str2[pos],
-                options);
+            int charcmp = string_invariant_compare_char(ustr1[pos], ustr2[pos], options);
             if (charcmp != 0)
                 return (charcmp);
         }
 
-        /* the lesser wins, so if we have looped until length we just
-         * need to check the last char
-         */
+        // The lesser wins, so if we have looped until length we just need to check the last char.
         if (pos == length)
-            return (string_invariant_compare_char(str1[pos - 1], str2[pos - 1], options));
+            return (string_invariant_compare_char(ustr1[pos - 1], ustr2[pos - 1], options));
 
-        /* Test if one of the strings has been compared to the end */
-        if (pos >= length1)
+        // Test if one of the strings has been compared to the end.
+        if (pos >= len1)
         {
-            if (pos >= length2)
+            if (pos >= len2)
                 return (0);
-            return (-1);
+            else
+                return (-1);
         }
-        else if (pos >= length2)
+        else if (pos >= len2)
             return (1);
 
-        /* if not, check our last char only.. (can this happen?) */
-        return (string_invariant_compare_char(str1[pos], str2[pos], options));
+        // If not, check our last char only.. (can this happen?)
+        return (string_invariant_compare_char(ustr1[pos], ustr2[pos], options));
     }
 
-    int32_t CompareInfo::internal_index_icall(Il2CppChar* source, int32_t sindex, int32_t count, Il2CppChar* value, int32_t value_length, bool first)
+    int CompareInfo::internal_compare(mscorlib_System_Globalization_CompareInfo *thisPtr, Il2CppString *str1, int off1, int len1, Il2CppString *str2, int off2, int len2, int options)
     {
-        int pos, i;
+        //MONO_ARCH_SAVE_REGS;
 
-        if (first)
+        // Do a normal ascii string compare, as we only know the invariant locale if we dont have ICU.
+        return (string_invariant_compare(str1, off1, len1, str2, off2, len2, options));
+    }
+
+    void CompareInfo::construct_compareinfo(mscorlib_System_Globalization_CompareInfo *, Il2CppString *)
+    {
+        // This method does not need any implementation.
+    }
+
+    static Il2CppArray* GetSortKeyCaseSensitive(Il2CppString* source)
+    {
+        const int32_t keyLength = sizeof(Il2CppChar) * source->length;
+        Il2CppArray* keyBytes = vm::Array::New(il2cpp_defaults.byte_class, keyLength);
+        memcpy(il2cpp_array_addr(keyBytes, uint8_t, 0), source->chars, keyLength);
+
+        return keyBytes;
+    }
+
+    static Il2CppArray* GetSortKeyIgnoreCase(Il2CppString* source)
+    {
+        const int32_t keyLength = sizeof(Il2CppChar) * source->length;
+        Il2CppArray* keyBytes = vm::Array::New(il2cpp_defaults.byte_class, keyLength);
+        Il2CppChar* destination = reinterpret_cast<Il2CppChar*>(il2cpp_array_addr(keyBytes, uint8_t, 0));
+
+        for (int i = 0; i < source->length; i++, destination++)
         {
-            count -= value_length;
-            for (pos = sindex; pos <= sindex + count; pos++)
-                for (i = 0; source[pos + i] == value[i];)
-                    if (++i == value_length)
-                        return (pos);
+            *destination = utils::VmStringUtils::Utf16ToLower(source->chars[i]);
+        }
 
-            return (-1);
+        return keyBytes;
+    }
+
+    void CompareInfo::assign_sortkey(void* /* System.Globalization.CompareInfo */ self, Il2CppSortKey* key, Il2CppString* source, CompareOptions options)
+    {
+        if ((options & CompareOptions_IgnoreCase) != 0 || (options & CompareOptions_OrdinalIgnoreCase) != 0)
+        {
+            key->key = GetSortKeyIgnoreCase(source);
         }
         else
         {
-            for (pos = sindex - value_length + 1; pos > sindex - count; pos--)
-                if (memcmp(source + pos, value, value_length * sizeof(Il2CppChar)) == 0)
-                    return (pos);
-
-            return (-1);
+            key->key = GetSortKeyCaseSensitive(source);
         }
     }
 } /* namespace Globalization */

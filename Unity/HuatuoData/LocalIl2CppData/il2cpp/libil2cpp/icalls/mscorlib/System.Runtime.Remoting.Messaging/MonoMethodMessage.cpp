@@ -4,11 +4,9 @@
 #include "il2cpp-object-internals.h"
 #include "il2cpp-tabledefs.h"
 #include "icalls/mscorlib/System.Runtime.Remoting.Messaging/MonoMethodMessage.h"
-#include "gc/WriteBarrier.h"
 #include "os/Atomic.h"
-#include "vm/Array.h"
 #include "vm/Exception.h"
-#include "vm/Method.h"
+#include "vm/Array.h"
 #include "vm/String.h"
 #include "utils/dynamic_array.h"
 
@@ -70,7 +68,7 @@ namespace Messaging
         il2cpp::utils::dynamic_array<const char*> names(method->method->parameters_count);
 
         for (int i = 0; i < method->method->parameters_count; ++i)
-            names[i] = vm::Method::GetParamName(method->method, i);
+            names[i] = method->method->parameters[i].name;
 
         arr = il2cpp_array_new_specific(string_array_klass, method->method->parameters_count);
 
@@ -84,7 +82,7 @@ namespace Messaging
 
         for (i = 0, j = 0; i < method->method->parameters_count; i++)
         {
-            if (method->method->parameters[i]->byref)
+            if (method->method->parameters[i].parameter_type->byref)
             {
                 if (out_args)
                 {
@@ -94,13 +92,13 @@ namespace Messaging
                 }
 
                 arg_type = 2;
-                if (!(method->method->parameters[i]->attrs & PARAM_ATTRIBUTE_OUT))
+                if (!(method->method->parameters[i].parameter_type->attrs & PARAM_ATTRIBUTE_OUT))
                     arg_type |= 1;
             }
             else
             {
                 arg_type = 1;
-                if (method->method->parameters[i]->attrs & PARAM_ATTRIBUTE_OUT)
+                if (method->method->parameters[i].parameter_type->attrs & PARAM_ATTRIBUTE_OUT)
                     arg_type |= 4;
             }
 

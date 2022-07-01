@@ -48,6 +48,5 @@ typedef enum Il2CppTypeEnum
     IL2CPP_TYPE_PROPERTY    = 0x54,
     // ===}} huatuo
 
-    IL2CPP_TYPE_ENUM       = 0x55,        /* an enumeration */
-    IL2CPP_TYPE_IL2CPP_TYPE_INDEX       = 0xff        /* an index into IL2CPP type metadata table */
+    IL2CPP_TYPE_ENUM       = 0x55        /* an enumeration */
 } Il2CppTypeEnum;

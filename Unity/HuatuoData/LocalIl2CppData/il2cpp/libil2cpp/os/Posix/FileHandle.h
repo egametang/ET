@@ -23,7 +23,7 @@ namespace os
         int shareMode;
         int accessMode;
 
-        // The default value of this field should be false,
+        // The defaukt value of this field should be false,
         // meaning we _do_ own the file descriptor, and therefore
         // can close it. Zero-allocating this struct is something
         // we want to support, so make sure the default is 0.
@@ -37,9 +37,7 @@ namespace os
         FileHandle *prev;
         FileHandle *next;
 
-        FileHandle()
-            : fd(-1), type(kFileTypeUnknown), options(0), shareMode(0), accessMode(0),
-            doesNotOwnFd(false), device(0), inode(0), prev(NULL), next(NULL)
+        FileHandle() : prev(NULL), next(NULL)
         {
         }
     };

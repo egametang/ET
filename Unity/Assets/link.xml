@@ -6,4 +6,93 @@
   <assembly fullname="System" preserve="all"/>
     <assembly fullname="UnityEngine.AnimationModule" preserve="all"/>
     <assembly fullname="System.Net.Http" preserve="all"/>
+    
+    <assembly fullname="Unity.NGUI" preserve="all" />
+    <assembly fullname="Unity.ThirdParty" preserve="all" />
+    <assembly fullname="System" preserve="all" />
+    <assembly fullname="UnityEngine" preserve="all" />
+    <assembly fullname="UnityEngine.CoreModule" preserve="all" />
+    <assembly fullname="Assembly-CSharp" preserve="all" />
+    <assembly fullname="Unity.Timeline" preserve="all" />
+    <assembly fullname="mscorlib" preserve="all" />
+    <assembly fullname="BehaviorDesigner.Runtime" preserve="all" />
+    <assembly fullname="DOTween" preserve="all" />
+    <assembly fullname="System.Core" preserve="all" />
+    <assembly fullname="UnityEngine.ParticleSystemModule">
+        <type fullname="UnityEngine.ParticleSystem" preserve="all" />
+        <type fullname="UnityEngine.ParticleSystemRenderer" preserve="all" />
+        <type fullname="UnityEngine.ParticleSystem+MainModule" preserve="all" />
+        <type fullname="UnityEngine.ParticleSystem+MinMaxGradient" preserve="all" />
+        <type fullname="UnityEngine.ParticleSystem+EmissionModule" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.AnimationModule">
+        <type fullname="UnityEngine.Animator" preserve="all" />
+        <type fullname="UnityEngine.AnimationClip" preserve="all" />
+        <type fullname="UnityEngine.RuntimeAnimatorController" preserve="all" />
+        <type fullname="UnityEngine.AnimationEvent" preserve="all" />
+        <type fullname="UnityEngine.AnimatorClipInfo" preserve="all" />
+        <type fullname="UnityEngine.AnimatorStateInfo" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.PhysicsModule">
+        <type fullname="UnityEngine.BoxCollider" preserve="all" />
+        <type fullname="UnityEngine.MeshCollider" preserve="all" />
+        <type fullname="UnityEngine.SphereCollider" preserve="all" />
+        <type fullname="UnityEngine.Rigidbody" preserve="all" />
+        <type fullname="UnityEngine.Collider" preserve="all" />
+        <type fullname="UnityEngine.Physics" preserve="all" />
+        <type fullname="UnityEngine.RaycastHit" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.TextRenderingModule">
+        <type fullname="UnityEngine.TextMesh" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.AIModule">
+        <type fullname="UnityEngine.AI.NavMeshObstacle" preserve="all" />
+        <type fullname="UnityEngine.AI.NavMeshPath" preserve="all" />
+        <type fullname="UnityEngine.AI.NavMeshAgent" preserve="all" />
+        <type fullname="UnityEngine.AI.NavMesh" preserve="all" />
+        <type fullname="UnityEngine.AI.NavMeshData" preserve="all" />
+        <type fullname="UnityEngine.AI.NavMeshDataInstance" preserve="all" />
+    </assembly>
+    <assembly fullname="Unity.RenderPipelines.Universal.Runtime">
+        <type fullname="UnityEngine.Rendering.Universal.UniversalAdditionalCameraData" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.AudioModule">
+        <type fullname="UnityEngine.AudioListener" preserve="all" />
+        <type fullname="UnityEngine.AudioClip" preserve="all" />
+        <type fullname="UnityEngine.AudioSource" preserve="all" />
+    </assembly>
+    <assembly fullname="Unity.WwisePlay">
+        <type fullname="WwisePlayHelper" preserve="all" />
+        <type fullname="WwisePlay" preserve="all" />
+    </assembly>
+    <assembly fullname="Cinemachine">
+        <type fullname="Cinemachine.CinemachineVirtualCameraBase" preserve="all" />
+        <type fullname="Cinemachine.CinemachineVirtualCamera" preserve="all" />
+        <type fullname="Cinemachine.LensSettings" preserve="all" />
+        <type fullname="Cinemachine.CinemachineFramingTransposer" preserve="all" />
+        <type fullname="Cinemachine.AxisState" preserve="all" />
+        <type fullname="Cinemachine.CinemachinePOV" preserve="all" />
+        <type fullname="Cinemachine.CinemachineComponentBase" preserve="all" />
+        <type fullname="Cinemachine.CinemachineBrain" preserve="all" />
+        <type fullname="Cinemachine.CinemachineBlendDefinition" preserve="all" />
+        <type fullname="Cinemachine.CinemachineVirtualCameraBase+TransitionParams" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.InputLegacyModule">
+        <type fullname="UnityEngine.Input" preserve="all" />
+        <type fullname="UnityEngine.Touch" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.DirectorModule">
+        <type fullname="UnityEngine.Playables.PlayableDirector" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.AndroidJNIModule">
+        <type fullname="UnityEngine.AndroidJavaObject" preserve="all" />
+        <type fullname="UnityEngine.AndroidJavaClass" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.ImageConversionModule">
+        <type fullname="UnityEngine.ImageConversion" preserve="all" />
+    </assembly>
+    <assembly fullname="UnityEngine.UnityWebRequestModule">
+        <type fullname="UnityEngine.Networking.UnityWebRequest" preserve="all" />
+        <type fullname="UnityEngine.Networking.DownloadHandler" preserve="all" />
+    </assembly>
 </linker>

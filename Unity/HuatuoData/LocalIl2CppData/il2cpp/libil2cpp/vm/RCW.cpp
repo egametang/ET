@@ -2,6 +2,7 @@
 #include "il2cpp-object-internals.h"
 #include "il2cpp-class-internals.h"
 #include "il2cpp-tabledefs.h"
+#include "il2cpp-vm-support.h"
 #include "gc/GCHandle.h"
 #include "metadata/GenericMetadata.h"
 #include "vm/Exception.h"
@@ -17,7 +18,6 @@
 #include "vm/Monitor.h"
 #include "os/Mutex.h"
 #include "os/WindowsRuntime.h"
-#include "utils/Il2CppError.h"
 #include "utils/Il2CppHashMap.h"
 #include "utils/HashUtils.h"
 #include "utils/StringUtils.h"
@@ -52,9 +52,7 @@ namespace vm
     {
         os::FastAutoLock lock(&s_RCWCacheMutex);
         rcw->refCount = 1;
-        auto weakRef = gc::GCHandle::NewWeakref(rcw, false);
-        vm::Exception::RaiseIfError(weakRef.GetError());
-        const bool inserted = s_RCWCache.insert(std::make_pair(rcw->identity, weakRef.Get())).second;
+        const bool inserted = s_RCWCache.insert(std::make_pair(rcw->identity, gc::GCHandle::NewWeakref(rcw, false))).second;
         Assert(inserted);
     }
 
@@ -62,7 +60,7 @@ namespace vm
     {
         Il2CppIUnknown* identity;
         il2cpp_hresult_t hr = unknown->QueryInterface(Il2CppIUnknown::IID, reinterpret_cast<void**>(&identity));
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
         IL2CPP_ASSERT(identity);
 
         return identity;
@@ -80,9 +78,8 @@ namespace vm
             return fallbackClass;
 
         uint32_t classNameLength;
-        auto classNamePtr = os::WindowsRuntime::GetHStringBuffer(className, &classNameLength);
-        vm::Exception::RaiseIfError(classNamePtr.GetError());
-        std::string classNameUtf8 = utils::StringUtils::Utf16ToUtf8(classNamePtr.Get(), classNameLength);
+        const Il2CppChar* classNamePtr = os::WindowsRuntime::GetHStringBuffer(className, &classNameLength);
+        std::string classNameUtf8 = utils::StringUtils::Utf16ToUtf8(classNamePtr, classNameLength);
         os::WindowsRuntime::DeleteHString(className);
 
         Il2CppClass* rcwClass = MetadataCache::GetWindowsRuntimeClass(classNameUtf8.c_str());
@@ -203,7 +200,7 @@ namespace vm
                 Exception::Raise(exception);
 
             // Set the field in our reboxed key value pair instance
-            if (Class::FromIl2CppType(field.type)->byval_arg.valuetype)
+            if (Class::FromIl2CppType(field.type)->valuetype)
             {
                 Field::SetValue(reboxed, &field, Object::Unbox(fieldValue));
             }
@@ -243,7 +240,7 @@ namespace vm
         for (uint16_t i = 0; i < uriMethodCount; i++)
         {
             const MethodInfo* method = systemUriClass->methods[i];
-            if (strcmp(method->name, ".ctor") == 0 && method->parameters_count == 1 && method->parameters[0]->type == IL2CPP_TYPE_STRING)
+            if (strcmp(method->name, ".ctor") == 0 && method->parameters_count == 1 && method->parameters[0].parameter_type->type == IL2CPP_TYPE_STRING)
             {
                 uriConstructor = method;
                 break;
@@ -339,9 +336,7 @@ namespace vm
         rcw->refCount = 1;
 
         // 5. Insert it into the cache
-        auto weakRef = gc::GCHandle::NewWeakref(rcw, false);
-        vm::Exception::RaiseIfError(weakRef.GetError());
-        const bool inserted = s_RCWCache.insert(std::make_pair(identity, weakRef.Get())).second;
+        const bool inserted = s_RCWCache.insert(std::make_pair(identity, gc::GCHandle::NewWeakref(rcw, false))).second;
         Assert(inserted);
 
         return rcw;

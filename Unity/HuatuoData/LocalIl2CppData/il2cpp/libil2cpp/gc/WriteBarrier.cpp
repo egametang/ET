@@ -6,9 +6,9 @@ namespace il2cpp
 {
 namespace gc
 {
-    void WriteBarrier::GenericStore(void** ptr, void* value)
+    void WriteBarrier::GenericStore(void* ptr, void* value)
     {
-        *ptr = value;
+        *(void**)ptr = value;
         GarbageCollector::SetWriteBarrier((void**)ptr);
     }
 } /* gc */

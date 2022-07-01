@@ -2,13 +2,13 @@
 #include "metadata/GenericMetadata.h"
 #include "os/LibraryLoader.h"
 #include "os/WindowsRuntime.h"
+#include "utils/Il2CppHStringReference.h"
 #include "utils/StringUtils.h"
 #include "utils/StringViewUtils.h"
 #include "vm/AssemblyName.h"
 #include "vm/Class.h"
 #include "vm/Exception.h"
 #include "vm/GenericClass.h"
-#include "vm/Il2CppHStringReference.h"
 #include "vm/Image.h"
 #include "vm/MetadataCache.h"
 #include "vm/Type.h"
@@ -27,7 +27,7 @@ namespace vm
 
     Il2CppIActivationFactory* WindowsRuntime::GetActivationFactory(const utils::StringView<Il2CppNativeChar>& runtimeClassName)
     {
-        Il2CppHStringReference className(runtimeClassName);
+        utils::Il2CppHStringReference className(runtimeClassName);
         Il2CppIActivationFactory* factory = NULL;
         il2cpp_hresult_t hr = os::WindowsRuntime::GetActivationFactory(className, &factory);
 
@@ -54,17 +54,16 @@ namespace vm
         Il2CppNativeChar* nativeDll = static_cast<Il2CppNativeChar*>(alloca((namespaceEnd + 5) * sizeof(Il2CppNativeChar)));
         memcpy(nativeDll, runtimeClassName.Str(), namespaceEnd * sizeof(Il2CppNativeChar));
 
-        std::string detailedError;
         while (namespaceEnd > 0)
         {
             memcpy(nativeDll + namespaceEnd, IL2CPP_NATIVE_STRING(".dll"), 4 * sizeof(Il2CppNativeChar));
             nativeDll[namespaceEnd + 4] = 0;
 
-            Baselib_DynamicLibrary_Handle dynamicLibrary = os::LibraryLoader::LoadDynamicLibrary(utils::StringView<Il2CppNativeChar>(nativeDll, namespaceEnd + 4), detailedError);
-            if (dynamicLibrary != Baselib_DynamicLibrary_Handle_Invalid)
+            void* dynamicLibrary = os::LibraryLoader::LoadDynamicLibrary(utils::StringView<Il2CppNativeChar>(nativeDll, namespaceEnd + 4));
+            if (dynamicLibrary != NULL)
             {
                 typedef il2cpp_hresult_t(STDCALL * DllGetActivationFactory)(Il2CppHString activatableClassId, Il2CppIActivationFactory** factory);
-                DllGetActivationFactory dllGetActivationFactory = reinterpret_cast<DllGetActivationFactory>(os::LibraryLoader::GetFunctionPointer(dynamicLibrary, "DllGetActivationFactory", detailedError));
+                DllGetActivationFactory dllGetActivationFactory = reinterpret_cast<DllGetActivationFactory>(os::LibraryLoader::GetFunctionPointer(dynamicLibrary, "DllGetActivationFactory"));
 
                 if (dllGetActivationFactory != NULL)
                 {
@@ -407,9 +406,8 @@ namespace vm
                 elementMetadataTypeName = GetWindowsRuntimeMetadataTypeName(elementClass);
 
                 uint32_t elementTypeNameLength;
-                auto elementMetadataTypeNamePtr = os::WindowsRuntime::GetNativeHStringBuffer(elementMetadataTypeName, &elementTypeNameLength);
-                vm::Exception::RaiseIfError(elementMetadataTypeNamePtr.GetError());
-                elementTypeName = utils::StringView<Il2CppNativeChar>(elementMetadataTypeNamePtr.Get(), elementTypeNameLength);
+                const Il2CppNativeChar* elementMetadataTypeNamePtr = os::WindowsRuntime::GetNativeHStringBuffer(elementMetadataTypeName, &elementTypeNameLength);
+                elementTypeName = utils::StringView<Il2CppNativeChar>(elementMetadataTypeNamePtr, elementTypeNameLength);
             }
 
             size_t offsetInChars = 0;
@@ -638,10 +636,10 @@ namespace vm
         if (classDefinition == NULL || !classDefinition->is_generic)
             return NULL;
 
-        const Il2CppType** genericArguments = (const Il2CppType**)alloca(genericArgumentCount * sizeof(const Il2CppType*));
+        std::vector<const Il2CppType*> genericArguments;
+        genericArguments.reserve(genericArgumentCount);
 
         int genericDepth = 0;
-        int genericArgumentsAdded = 0;
         const Il2CppNativeChar* genericArgumentsPtr = typeName.Str() + genericArgumentStartIndex + 1;
         const Il2CppNativeChar* currentGenericArgumentStart = genericArgumentsPtr;
         const Il2CppNativeChar* genericArgumentsEnd = typeName.Str() + typeName.Length() - 1;
@@ -673,18 +671,17 @@ namespace vm
                         if (genericArgumentClass == NULL)
                             return NULL;
 
-                        genericArguments[genericArgumentsAdded] = &genericArgumentClass->byval_arg;
+                        genericArguments.push_back(&genericArgumentClass->byval_arg);
                         currentGenericArgumentStart = genericArgumentsPtr + 1;
-                        genericArgumentsAdded++;
                     }
                 }
             }
         }
 
-        if (genericArgumentsAdded != genericArgumentCount)
+        if (genericArguments.size() != genericArgumentCount)
             return NULL;
 
-        const Il2CppGenericInst* genericInst = MetadataCache::GetGenericInst(genericArguments, genericArgumentCount);
+        const Il2CppGenericInst* genericInst = MetadataCache::GetGenericInst(genericArguments);
         Il2CppGenericClass* genericClass = metadata::GenericMetadata::GetGenericClass(classDefinition, genericInst);
         return GenericClass::GetClass(genericClass);
     }
@@ -813,9 +810,8 @@ namespace vm
             return NULL;
 
         uint32_t typeNameLength;
-        auto typeNamePtr = os::WindowsRuntime::GetNativeHStringBuffer(nativeType.typeName, &typeNameLength);
-        vm::Exception::RaiseIfError(typeNamePtr.GetError());
-        utils::StringView<Il2CppNativeChar> typeNameView(typeNamePtr.Get(), typeNameLength);
+        const Il2CppNativeChar* typeNamePtr = os::WindowsRuntime::GetNativeHStringBuffer(nativeType.typeName, &typeNameLength);
+        utils::StringView<Il2CppNativeChar> typeNameView(typeNamePtr, typeNameLength);
 
         switch (nativeType.typeKind)
         {

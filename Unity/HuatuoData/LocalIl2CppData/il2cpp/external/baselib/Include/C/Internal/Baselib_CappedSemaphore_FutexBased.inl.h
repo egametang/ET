@@ -18,18 +18,13 @@ typedef struct Baselib_CappedSemaphore
     int32_t wakeups;
     char _cachelineSpacer0[PLATFORM_CACHE_LINE_SIZE - sizeof(int32_t)];
     int32_t count;
-    const int32_t cap;
     char _cachelineSpacer1[PLATFORM_CACHE_LINE_SIZE - sizeof(int32_t) * 2]; // Having cap on the same cacheline is fine since it is a constant.
+    const int32_t cap;
 } Baselib_CappedSemaphore;
-
-BASELIB_STATIC_ASSERT(sizeof(Baselib_CappedSemaphore) == PLATFORM_CACHE_LINE_SIZE * 2, "Baselib_CappedSemaphore (Futex) size should match 2*cacheline size (128bytes)");
-BASELIB_STATIC_ASSERT(offsetof(Baselib_CappedSemaphore, wakeups) ==
-    (offsetof(Baselib_CappedSemaphore, count) - PLATFORM_CACHE_LINE_SIZE), "Baselib_CappedSemaphore (futex) wakeups and count shouldnt share cacheline");
-
 
 BASELIB_INLINE_API Baselib_CappedSemaphore Baselib_CappedSemaphore_Create(const uint16_t cap)
 {
-    Baselib_CappedSemaphore semaphore = { 0, {0}, 0, cap, {0} };
+    Baselib_CappedSemaphore semaphore = { 0, {0}, 0, {0}, cap };
     return semaphore;
 }
 

@@ -9,17 +9,6 @@
 #include "vm/RCW.h"
 #include "WindowsHelpers.h"
 
-#ifndef WINDOWS_SDK_BUILD_VERSION
-#error "We need to know which Windows SDK version we are compiling against!"
-#endif
-
-// There is a bug in Windows SDK 16299 where if the c++ compiler is too new, it forgets to define DEPRECATEDENUMERATOR.
-// To see if this workaround can be removed, compile this cfile against 10.0.16299 and verify that it compiles.
-// If it compiles correctly, we can remove this workaround.
-#if WINDOWS_SDK_BUILD_VERSION == 16299
-#define DEPRECATEDENUMERATOR(x)
-#endif
-
 #include <windows.ui.core.h>
 #include <wrl.h>
 

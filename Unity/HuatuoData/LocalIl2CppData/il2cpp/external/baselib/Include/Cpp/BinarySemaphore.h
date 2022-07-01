@@ -39,8 +39,6 @@ namespace baselib
             // If threads are waiting the token is consumed before this function return.
             //
             // When successful this function is guaranteed to emit a release barrier.
-            //
-            // \returns          true if a token was submitted, false otherwise (meaning the BinarySemaphore already has a token)
             inline bool Release()
             {
                 return CappedSemaphore::Release(1) == 1;

@@ -1,7 +1,5 @@
 #pragma once
 
-enum { Baselib_SystemSemaphore_PlatformSize = 32 }; // sem_t; 32 bytes
-
 #define MAX_PATH PATH_MAX
 
 #ifndef EXPORTED_SYMBOL

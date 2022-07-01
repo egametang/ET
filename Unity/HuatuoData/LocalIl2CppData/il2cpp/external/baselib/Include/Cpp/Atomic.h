@@ -174,7 +174,6 @@ namespace baselib
     #endif
 
     #undef detail_THREAD_FENCE
-    #undef detail_LOAD128
     #undef detail_LOAD
     #undef detail_STORE
     #undef detail_LOAD_STORE

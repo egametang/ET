@@ -7,7 +7,6 @@
 #include "vm/CachedCCWBase.h"
 #include "vm/Exception.h"
 #include "vm/MetadataCache.h"
-#include "vm/Method.h"
 #include "vm/RCW.h"
 #include "vm/Runtime.h"
 #include "vm/ScopedThreadAttacher.h"
@@ -97,13 +96,9 @@ namespace vm
     {
         Il2CppClass* klass = il2cpp::vm::Object::GetClass(value);
         const MethodInfo* toStringMethod = il2cpp::vm::Class::GetMethodFromName(klass, "ToString", 0);
-        // check if the method we are to call is expecting a value type 'this' parameter or not.
-        // handles edge case of enums where the 'value' is SomeEnum but the ToString method is Enum::ToString.
-        // In this case, a boxed 'this' parameter is expected even though the object value is a valuetype.
-        bool isValueTypeMethod = il2cpp::vm::Class::IsValuetype(il2cpp::vm::Method::GetClass(toStringMethod));
 
         Il2CppException* exception = NULL;
-        Il2CppString* result = (Il2CppString*)il2cpp::vm::Runtime::Invoke(toStringMethod, isValueTypeMethod ? Object::Unbox(value) : value, NULL, &exception);
+        Il2CppString* result = (Il2CppString*)il2cpp::vm::Runtime::Invoke(toStringMethod, value, NULL, &exception);
         if (exception != NULL)
             return String::Empty();
 

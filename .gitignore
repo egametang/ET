@@ -39,7 +39,7 @@ _ReSharper.CSharp/
 /Release
 .idea/
 /Unity/Logs
-/Unity/Bundles/
+/Unity/Bundles/#
 /Unity/HuatuoData/AssembliesPostIl2CppStrip/
 /Unity/HuatuoData/huatuo_repo/
 /Unity/HuatuoData/il2cpp_huatuo_repo/

@@ -17,16 +17,17 @@ namespace System
     class LIBIL2CPP_CODEGEN_API Array
     {
     public:
+        static void ClearInternal(Il2CppArray* arr, int32_t idx, int32_t length);
+        static Il2CppArray* Clone(Il2CppArray* arr);
         static Il2CppArray* CreateInstanceImpl(Il2CppReflectionType* elementType, Il2CppArray* lengths, Il2CppArray* bounds);
         static bool FastCopy(Il2CppArray* source, int32_t source_idx, Il2CppArray* dest, int32_t dest_idx, int32_t length);
-        static int32_t GetLength(Il2CppArray* thisPtr, int32_t dimension);
-        static int32_t GetLowerBound(Il2CppArray* thisPtr, int32_t dimension);
-        static int32_t GetRank(Il2CppArray* arr);
+        static int32_t GetLength(Il2CppArray* thisPtr, int dimension);
+        static int32_t GetLowerBound(Il2CppArray* , int32_t);
         static Il2CppObject* GetValue(Il2CppArray* thisPtr, Il2CppArray* indices);
         static Il2CppObject* GetValueImpl(Il2CppArray* thisPtr, int32_t pos);
-        static void ClearInternal(Il2CppArray* arr, int32_t index, int32_t count);
-        static void SetValue(Il2CppArray* thisPtr, Il2CppObject* value, Il2CppArray* indices);
-        static void SetValueImpl(Il2CppArray* thisPtr, Il2CppObject* value, int32_t pos);
+        static void SetValue(Il2CppArray* , Il2CppObject* , Il2CppArray*);
+        static void SetValueImpl(Il2CppArray* thisPtr, Il2CppObject* value, int index);
+        static int GetRank(Il2CppArray* array);
     };
 } /* namespace System */
 } /* namespace mscorlib */

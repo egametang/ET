@@ -3,8 +3,8 @@
 #if IL2CPP_TARGET_WINRT || IL2CPP_TARGET_XBOXONE
 #include "os/Win32/WindowsHeaders.h"
 
+#include "il2cpp-vm-support.h"
 #include "os/Process.h"
-#include "utils/Il2CppError.h"
 #include "utils/StringUtils.h"
 
 struct ProcessHandle
@@ -22,12 +22,14 @@ namespace os
         return ::GetCurrentProcessId();
     }
 
-    utils::Expected<ProcessHandle*> Process::GetProcess(int processId)
+    ProcessHandle* Process::GetProcess(int processId)
     {
         if (processId == GetCurrentProcessId())
             return (ProcessHandle*)::GetCurrentProcess();
 
-        return utils::Il2CppError(utils::NotSupported, "It is not possible to interact with other system processes on current platform.");
+        IL2CPP_VM_RAISE_PLATFORM_NOT_SUPPORTED_EXCEPTION(L"It is not possible to interact with other system processes on current platform.");
+
+        return NULL;
     }
 
     void Process::FreeProcess(ProcessHandle* handle)
@@ -35,7 +37,7 @@ namespace os
         // We have nothing to do here.
     }
 
-    utils::Expected<std::string> Process::GetProcessName(ProcessHandle* handle)
+    std::string Process::GetProcessName(ProcessHandle* handle)
     {
         if (handle == ::GetCurrentProcess())
         {
@@ -46,12 +48,9 @@ namespace os
             return utils::StringUtils::Utf16ToUtf8(path, static_cast<int>(pathLength));
         }
 
-        return utils::Il2CppError(utils::NotSupported, "It is not possible to interact with other system processes on current platform.");
-    }
+        IL2CPP_VM_RAISE_PLATFORM_NOT_SUPPORTED_EXCEPTION(L"It is not possible to interact with other system processes on current platform.");
 
-    intptr_t Process::GetMainWindowHandle(int32_t pid)
-    {
-        return 0;
+        return std::string();
     }
 }
 }

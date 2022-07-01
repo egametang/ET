@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2173286904
+CRC: 2096410792
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 55db0fb18ca706488ef2b1ecd39518ce
+    Hash: 811378e1d5f36ebf536b259cedb7859d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: c8f3dcf709f478e675a2d1cf4c38249a
+    Hash: 83aaa941c99f49978b9dff6bf2547d48
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -58,6 +58,6 @@ Assets:
 - Assets/Res/Scene/Map2.unity
 - Assets/Res/Scene/Map1.unity
 Dependencies:
-- D:/Study/GameProjects/ET/Unity/Bundles/StandaloneWindows64/UnityManifest/assets/res/scene/map1.bundle
-- D:/Study/GameProjects/ET/Unity/Bundles/StandaloneWindows64/UnityManifest/assets/res/scene/map2.bundle
-- D:/Study/GameProjects/ET/Unity/Bundles/StandaloneWindows64/UnityManifest/myshaders.bundle
+- D:/Study/GameProjects/MyET/Unity/Bundles/StandaloneWindows64/UnityManifest/assets/res/scene/map1.bundle
+- D:/Study/GameProjects/MyET/Unity/Bundles/StandaloneWindows64/UnityManifest/assets/res/scene/map2.bundle
+- D:/Study/GameProjects/MyET/Unity/Bundles/StandaloneWindows64/UnityManifest/myshaders.bundle

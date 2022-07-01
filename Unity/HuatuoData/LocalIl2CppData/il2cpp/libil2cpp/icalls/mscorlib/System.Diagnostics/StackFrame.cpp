@@ -2,7 +2,6 @@
 #include "icalls/mscorlib/System.Diagnostics/StackFrame.h"
 #include "vm/Reflection.h"
 #include "vm/StackTrace.h"
-#include "vm/String.h"
 #include "il2cpp-class-internals.h"
 #include "gc/GarbageCollector.h"
 
@@ -76,14 +75,6 @@ namespace Diagnostics
 
         *method = vm::Reflection::GetMethodObject(info.method, info.method->klass);
         il2cpp::gc::GarbageCollector::SetWriteBarrier((void**)method);
-
-        if (info.filePath != NULL && strlen(info.filePath) != 0)
-        {
-            *line = info.sourceCodeLineNumber;
-            *iloffset = info.ilOffset;
-            *file = il2cpp::vm::String::New(info.filePath);
-            il2cpp::gc::GarbageCollector::SetWriteBarrier((void**)file);
-        }
 
         return true;
     }

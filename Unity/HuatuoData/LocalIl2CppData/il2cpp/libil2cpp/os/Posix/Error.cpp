@@ -1,6 +1,6 @@
 #include "il2cpp-config.h"
 
-#if IL2CPP_TARGET_POSIX || IL2CPP_SUPPORT_SOCKETS_POSIX_API
+#if IL2CPP_TARGET_POSIX
 
 #include "Error.h"
 #include "utils/PathUtils.h"

@@ -29,7 +29,7 @@ namespace Diagnostics
     class LIBIL2CPP_CODEGEN_API DefaultTraceListener
     {
     public:
-        static void WriteWindowsDebugString(Il2CppChar* message);
+        static void WriteWindowsDebugString(Il2CppString* message);
     };
 } /* namespace Diagnostics */
 } /* namespace System */

@@ -26,16 +26,16 @@ SUITE(Process)
         CHECK_NOT_NULL(handle);
     }
 
-// GetProcessName is only supported on Windows, macOS, and Linux
-#if IL2CPP_TARGET_WINDOWS_DESKTOP || IL2CPP_TARGET_OSX || IL2CPP_TARGET_LINUX
+// GetProcessName is only supported on macOS for Posix targets
+#if IL2CPP_TARGET_POSIX && !IL2CPP_TARGET_DARWIN
     TEST(GetProcessHandleMatchesClass)
     {
         int processId = il2cpp::os::Process::GetCurrentProcessId();
         UnityPalProcessHandle* api_handle = UnityPalGetProcess(processId);
-        il2cpp::os::ProcessHandle* class_handle = il2cpp::os::Process::GetProcess(processId).Get();
+        il2cpp::os::ProcessHandle* class_handle = il2cpp::os::Process::GetProcess(processId);
 
-        std::string api_name = il2cpp::os::Process::GetProcessName(api_handle).Get();
-        std::string class_name = il2cpp::os::Process::GetProcessName(class_handle).Get();
+        std::string api_name = il2cpp::os::Process::GetProcessName(api_handle);
+        std::string class_name = il2cpp::os::Process::GetProcessName(class_handle);
 
         CHECK_EQUAL(class_name, api_name);
     }
@@ -64,10 +64,10 @@ SUITE(Process)
     {
         int processId = il2cpp::os::Process::GetCurrentProcessId();
         UnityPalProcessHandle* api_handle = UnityPalGetProcess(processId);
-        il2cpp::os::ProcessHandle* class_handle = il2cpp::os::Process::GetProcess(processId).Get();
+        il2cpp::os::ProcessHandle* class_handle = il2cpp::os::Process::GetProcess(processId);
 
         const char* api_name = UnityPalGetProcessName(api_handle);
-        std::string class_name = il2cpp::os::Process::GetProcessName(class_handle).Get();
+        std::string class_name = il2cpp::os::Process::GetProcessName(class_handle);
 
         CHECK_EQUAL(class_name.c_str(), api_name);
     }

@@ -10,22 +10,17 @@
 
 typedef struct Baselib_CappedSemaphore
 {
-    Baselib_SystemSemaphore_Handle handle;
     int32_t count;
+    const Baselib_SystemSemaphore_Handle handle;
     const int32_t cap;
     // Make the capped semaphore take a full cache line so that if the user cacheline aligned semaphore,
     // llsc operations on count will not spuriously fail.
     char _cachelineSpacer[PLATFORM_CACHE_LINE_SIZE - sizeof(int32_t) * 2 - sizeof(Baselib_SystemSemaphore_Handle)];
-    char _systemSemaphoreData[Baselib_SystemSemaphore_PlatformSize];
 } Baselib_CappedSemaphore;
-
-BASELIB_STATIC_ASSERT((offsetof(Baselib_CappedSemaphore, count) + PLATFORM_CACHE_LINE_SIZE - sizeof(Baselib_SystemSemaphore_Handle)) ==
-    offsetof(Baselib_CappedSemaphore, _systemSemaphoreData), "count and internalData must not share cacheline");
 
 BASELIB_INLINE_API Baselib_CappedSemaphore Baselib_CappedSemaphore_Create(uint16_t cap)
 {
-    Baselib_CappedSemaphore semaphore = {{0}, 0, cap, {0}, {0}};
-    semaphore.handle = Baselib_SystemSemaphore_CreateInplace(&semaphore._systemSemaphoreData);
+    Baselib_CappedSemaphore semaphore = {0, Baselib_SystemSemaphore_Create(), cap, {0}};
     return semaphore;
 }
 
@@ -118,5 +113,5 @@ BASELIB_INLINE_API void Baselib_CappedSemaphore_Free(Baselib_CappedSemaphore* se
         return;
     const int32_t count = Baselib_atomic_load_32_seq_cst(&semaphore->count);
     BaselibAssert(count >= 0, "Destruction is not allowed when there are still threads waiting on the semaphore.");
-    Baselib_SystemSemaphore_FreeInplace(semaphore->handle);
+    Baselib_SystemSemaphore_Free(semaphore->handle);
 }

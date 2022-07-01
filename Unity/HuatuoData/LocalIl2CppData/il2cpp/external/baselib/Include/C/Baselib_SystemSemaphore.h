@@ -31,14 +31,6 @@ enum { Baselib_SystemSemaphore_MaxCount = INT32_MAX };
 // \returns          A handle to a semaphore instance. Use Baselib_SystemSemaphore_Free to free the semaphore.
 BASELIB_API Baselib_SystemSemaphore_Handle Baselib_SystemSemaphore_Create(void);
 
-// Creates a counting semaphore synchronization primitive given a memory buffer.
-//
-// Semaphore is created in-place in semaphoreData and must be atleast Baselib_SystemSemaphore_PlatformSize in size.
-// (Some platforms dont support in-place creation and this function then works the same as Baselib_SystemSemaphore_Create() )
-//
-// \returns          A handle to a semaphore instance. Use Baselib_Semaphore_FreeInplace to free the semaphore.
-BASELIB_API Baselib_SystemSemaphore_Handle Baselib_SystemSemaphore_CreateInplace(void* semaphoreData);
-
 // Wait for semaphore token to become available
 //
 BASELIB_API void Baselib_SystemSemaphore_Acquire(Baselib_SystemSemaphore_Handle semaphore);
@@ -69,12 +61,6 @@ BASELIB_API void Baselib_SystemSemaphore_Release(Baselib_SystemSemaphore_Handle 
 //
 // If threads are waiting on the semaphore, calling free may cause process abort.
 BASELIB_API void Baselib_SystemSemaphore_Free(Baselib_SystemSemaphore_Handle semaphore);
-
-// Reclaim resources held by the semaphore created using Baselib_SystemSemaphore_CreateInplace
-//
-// If threads are waiting on the semaphore, calling free will trigger an assert and may cause process abort.
-// Must not be used to free a semaphore created with Baselib_Semaphore_Create
-BASELIB_API void Baselib_SystemSemaphore_FreeInplace(Baselib_SystemSemaphore_Handle semaphore);
 
 #ifdef __cplusplus
 } // BASELIB_C_INTERFACE

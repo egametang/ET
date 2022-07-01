@@ -13,33 +13,33 @@ namespace Security
 {
 namespace Cryptography
 {
-    bool KeyPairPersistence::_CanSecure(Il2CppChar* root)
+    bool KeyPairPersistence::_CanSecure(Il2CppString* root)
     {
         IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_CanSecure);
         return false;
     }
 
-    bool KeyPairPersistence::_IsMachineProtected(Il2CppChar* path)
+    bool KeyPairPersistence::_ProtectUser(Il2CppString* path)
     {
-        IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_IsMachineProtected);
+        IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_ProtectUser);
         return false;
     }
 
-    bool KeyPairPersistence::_IsUserProtected(Il2CppChar* path)
-    {
-        IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_IsUserProtected);
-        return false;
-    }
-
-    bool KeyPairPersistence::_ProtectMachine(Il2CppChar* path)
+    bool KeyPairPersistence::_ProtectMachine(Il2CppString* path)
     {
         IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_ProtectMachine);
         return false;
     }
 
-    bool KeyPairPersistence::_ProtectUser(Il2CppChar* path)
+    bool KeyPairPersistence::_IsUserProtected(Il2CppString* path)
     {
-        IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_ProtectUser);
+        IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_IsUserProtected);
+        return false;
+    }
+
+    bool KeyPairPersistence::_IsMachineProtected(Il2CppString* path)
+    {
+        IL2CPP_NOT_IMPLEMENTED_ICALL(KeyPairPersistence::_IsMachineProtected);
         return false;
     }
 } /* namespace Cryptography */

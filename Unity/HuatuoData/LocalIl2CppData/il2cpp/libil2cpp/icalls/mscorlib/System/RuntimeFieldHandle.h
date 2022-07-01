@@ -12,7 +12,6 @@ namespace System
     class LIBIL2CPP_CODEGEN_API RuntimeFieldHandle
     {
     public:
-        static Il2CppObject* GetValueDirect(Il2CppObject* field, Il2CppReflectionRuntimeType* fieldType, void* pTypedRef, Il2CppReflectionRuntimeType* contextType);
         static void SetValueDirect(Il2CppReflectionField* field, Il2CppObject* fieldType, Il2CppTypedRef* typedRef, Il2CppObject* value, Il2CppObject* contextType);
         static void SetValueInternal(Il2CppReflectionField* fi, Il2CppObject* obj, Il2CppObject* value);
     };

@@ -88,8 +88,6 @@ namespace baselib
             // If threads are waiting an equal amount of tokens are consumed before this function return.
             //
             // When successful this function is guaranteed to emit a release barrier.
-            //
-            // \returns          number of submitted tokens.
             inline uint16_t Release(const uint16_t count)
             {
                 return Baselib_CappedSemaphore_Release(&m_CappedSemaphoreData, count);

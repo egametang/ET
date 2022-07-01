@@ -1,6 +1,7 @@
 #pragma once
 
 #include "il2cpp-class-internals.h"
+#include "il2cpp-vm-support.h"
 #include "os/COM.h"
 #include "vm/Exception.h"
 
@@ -19,7 +20,7 @@ namespace vm
         static inline void CreateInstance(const Il2CppGuid& clsid, Il2CppIUnknown** object)
         {
             const il2cpp_hresult_t hr = os::COM::CreateInstance(clsid, object);
-            vm::Exception::RaiseIfFailed(hr, true);
+            IL2CPP_VM_RAISE_IF_FAILED(hr, true);
         }
 
         static inline il2cpp_hresult_t CreateFreeThreadedMarshaler(Il2CppIUnknown* outer, Il2CppIUnknown** marshal)
@@ -38,7 +39,7 @@ namespace vm
         static inline void DestroySafeArray(Il2CppSafeArray* safeArray)
         {
             const il2cpp_hresult_t hr = os::COM::SafeArrayDestroy(safeArray);
-            vm::Exception::RaiseIfFailed(hr, true);
+            IL2CPP_VM_RAISE_IF_FAILED(hr, true);
         }
     };
 } /* namespace vm */

@@ -1,5 +1,6 @@
 #include "il2cpp-config.h"
 #include "il2cpp-object-internals.h"
+#include "il2cpp-vm-support.h"
 #include "vm/Array.h"
 #include "vm/COM.h"
 #include "vm/Exception.h"
@@ -180,7 +181,7 @@ namespace vm
     void COM::DestroyVariant(Il2CppVariant* variant)
     {
         const il2cpp_hresult_t hr = os::COM::VariantClear(variant);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
     }
 
     Il2CppSafeArray* COM::MarshalSafeArray(uint16_t variantType, Il2CppArray* managedArray)
@@ -222,7 +223,7 @@ namespace vm
 
         uint16_t actualVariantType;
         il2cpp_hresult_t hr = os::COM::SafeArrayGetVartype(safeArray, &actualVariantType);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
         if (actualVariantType != variantType)
             Exception::Raise(IL2CPP_E_INVALIDARG, true);
 
@@ -232,23 +233,23 @@ namespace vm
 
         int32_t lowerBound;
         hr = os::COM::SafeArrayGetLBound(safeArray, 1, &lowerBound);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         int32_t upperBound;
         hr = os::COM::SafeArrayGetUBound(safeArray, 1, &upperBound);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         const il2cpp_array_size_t size = static_cast<il2cpp_array_size_t>(upperBound - lowerBound + 1);
         Il2CppArray* managedArray = Array::New(type, size);
 
         void* data;
         hr = os::COM::SafeArrayAccessData(safeArray, &data);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         ::memcpy(Array::GetFirstElementAddress(managedArray), data, Array::GetByteLength(managedArray));
 
         hr = os::COM::SafeArrayUnaccessData(safeArray);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         return managedArray;
     }
@@ -304,7 +305,7 @@ namespace vm
 
         uint16_t actualVariantType;
         il2cpp_hresult_t hr = os::COM::SafeArrayGetVartype(safeArray, &actualVariantType);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
         if (actualVariantType != IL2CPP_VT_BSTR)
             Exception::Raise(IL2CPP_E_INVALIDARG, true);
 
@@ -314,24 +315,24 @@ namespace vm
 
         int32_t lowerBound;
         hr = os::COM::SafeArrayGetLBound(safeArray, 1, &lowerBound);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         int32_t upperBound;
         hr = os::COM::SafeArrayGetUBound(safeArray, 1, &upperBound);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         const il2cpp_array_size_t size = static_cast<il2cpp_array_size_t>(upperBound - lowerBound + 1);
         Il2CppArray* managedArray = Array::New(il2cpp_defaults.string_class, size);
 
         Il2CppChar** data;
         hr = os::COM::SafeArrayAccessData(safeArray, reinterpret_cast<void**>(&data));
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         for (il2cpp_array_size_t i = 0; i < size; ++i)
             il2cpp_array_setref(managedArray, i, PlatformInvoke::MarshalCppBStringToCSharpStringResult(data[i]));
 
         hr = os::COM::SafeArrayUnaccessData(safeArray);
-        vm::Exception::RaiseIfFailed(hr, true);
+        IL2CPP_VM_RAISE_IF_FAILED(hr, true);
 
         return managedArray;
     }

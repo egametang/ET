@@ -1,8 +1,6 @@
 #include "il2cpp-config.h"
 #include "VersioningHelper.h"
 
-#include "vm/Exception.h"
-
 namespace il2cpp
 {
 namespace icalls
@@ -17,7 +15,8 @@ namespace Versioning
 {
     int32_t VersioningHelper::GetRuntimeId()
     {
-        NOT_SUPPORTED_IL2CPP(VersioningHelper::GetRuntimeId, "This icall is not supported by il2cpp.");
+        IL2CPP_NOT_IMPLEMENTED_ICALL(VersioningHelper::GetRuntimeId);
+        IL2CPP_UNREACHABLE;
         return 0;
     }
 } // namespace Versioning

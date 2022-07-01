@@ -1294,10 +1294,6 @@ GC_API GC_await_finalize_proc GC_CALL GC_get_await_finalize_proc(void);
 /* Does not use any synchronization.                            */
 GC_API int GC_CALL GC_should_invoke_finalizers(void);
 
-/* Sets flag to signal GC_invoke_finalizers to break            */
-/* Does not use any synchronization.                            */
-GC_API void GC_CALL GC_set_interrupt_finalizers(void);
-
 GC_API int GC_CALL GC_invoke_finalizers(void);
         /* Run finalizers for all objects that are ready to     */
         /* be finalized.  Return the number of finalizers       */

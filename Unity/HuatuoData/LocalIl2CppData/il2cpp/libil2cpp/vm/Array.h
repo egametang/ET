@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "il2cpp-config.h"
-#include "gc/GarbageCollector.h"
 
 struct Il2CppArray;
 struct Il2CppObject;
@@ -35,10 +34,14 @@ namespace vm
 } /* namespace vm */
 } /* namespace il2cpp */
 
+LIBIL2CPP_CODEGEN_API char* il2cpp_array_addr_with_size(Il2CppArray *array, int32_t size, uintptr_t idx);
+
 extern "C"
 {
     IL2CPP_EXPORT int il2cpp_array_element_size(const Il2CppClass *ac);
 }
+
+#define load_array_elema(arr, idx, size) ((((uint8_t*)(arr)) + kIl2CppSizeOfArray) + ((size) * (idx)))
 
 #define il2cpp_array_setwithsize(array, elementSize, index, value)  \
     do {    \
@@ -47,9 +50,8 @@ extern "C"
     } while (0)
 #define il2cpp_array_setrefwithsize(array, elementSize, index, value)  \
     do {    \
-        void* __p = (void*) il2cpp_array_addr_with_size ((array), elementSize, (index)); \
+        void*__p = (void*) il2cpp_array_addr_with_size ((array), elementSize, (index)); \
         memcpy(__p, value, elementSize); \
-        il2cpp::gc::GarbageCollector::SetWriteBarrier((void**)__p, elementSize); \
         } while (0)
 #define il2cpp_array_addr(array, type, index) ((type*)(void*) il2cpp_array_addr_with_size (array, sizeof (type), index))
 #define il2cpp_array_get(array, type, index) ( *(type*)il2cpp_array_addr ((array), type, (index)) )
@@ -62,5 +64,5 @@ extern "C"
     do {    \
         void* *__p = (void* *) il2cpp_array_addr ((array), void*, (index)); \
          *__p = (value);    \
-        il2cpp::gc::GarbageCollector::SetWriteBarrier(__p); \
+        il2cpp_gc_wbarrier_set_field((Il2CppObject *)(array), __p, (value));\
     } while (0)

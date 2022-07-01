@@ -4,7 +4,6 @@
 
 #include "icalls/mscorlib/System/Environment.h"
 
-#include "os/CrashHelpers.h"
 #include "os/Time.h"
 #include "os/Environment.h"
 
@@ -24,8 +23,6 @@
 #include "utils/PathUtils.h"
 #include "utils/StringUtils.h"
 #include "utils/Environment.h"
-#include "utils/Exception.h"
-#include "utils/Logging.h"
 
 namespace il2cpp
 {
@@ -39,7 +36,7 @@ namespace System
 
     static Il2CppArray* ToIl2CppArray(const std::vector<std::string>& strings)
     {
-        Il2CppClass* klass = il2cpp::vm::Class::GetArrayClass(il2cpp_defaults.string_class, 1);
+        Il2CppClass *klass = il2cpp::vm::Class::GetArrayClass(il2cpp_defaults.string_class, 1);
         Il2CppArray* array = (Il2CppArray*)il2cpp::vm::Array::NewSpecific(klass, (il2cpp_array_size_t)strings.size());
 
         for (size_t i = 0, size = strings.size(); i < size; ++i)
@@ -48,28 +45,19 @@ namespace System
         return array;
     }
 
-    bool Environment::get_HasShutdownStarted()
+    Il2CppString* Environment::get_MachineName()
     {
-        return vm::Runtime::IsShuttingDown();
+        return il2cpp::vm::String::New(il2cpp::os::Environment::GetMachineName().c_str());
     }
 
-    bool Environment::GetIs64BitOperatingSystem()
+    Il2CppString* Environment::get_NewLine(void)
     {
-        if (sizeof(void*) == 8)
-            return true;
-        auto result = il2cpp::os::Environment::Is64BitOs();
-        vm::Exception::RaiseIfError(result.GetError());
-        return result.Get();
+        return il2cpp::vm::String::NewUtf16(kIl2CppNewLine);
     }
 
-    int32_t Environment::get_ExitCode()
+    bool Environment::get_SocketSecurityEnabled()
     {
-        return vm::Runtime::GetExitCode();
-    }
-
-    int32_t Environment::get_ProcessorCount()
-    {
-        return il2cpp::os::Environment::GetProcessorCount();
+        return socket_security_enabled;
     }
 
     int32_t Environment::get_TickCount()
@@ -77,83 +65,9 @@ namespace System
         return il2cpp::os::Time::GetTicksMillisecondsMonotonic();
     }
 
-    int32_t Environment::GetPageSize()
+    int32_t Environment::get_ProcessorCount()
     {
-        return IL2CPP_PAGE_SIZE;
-    }
-
-    int32_t Environment::get_Platform()
-    {
-#if IL2CPP_TARGET_WINDOWS
-        return 2;
-#elif IL2CPP_TARGET_DARWIN
-        // new Mono expects distinct platform value for OSX/iOS
-        return 6;
-#else
-        return 4;
-#endif
-    }
-
-    Il2CppString* Environment::get_bundled_machine_config()
-    {
-        return NULL;
-    }
-
-    Il2CppString* Environment::get_MachineName()
-    {
-        return il2cpp::vm::String::New(il2cpp::os::Environment::GetMachineName().c_str());
-    }
-
-    Il2CppString* Environment::get_UserName()
-    {
-        return il2cpp::vm::String::New(il2cpp::os::Environment::GetOsUserName().c_str());
-    }
-
-    Il2CppString* Environment::GetMachineConfigPath()
-    {
-        const char* frameworkVersion = vm::Runtime::GetFrameworkVersion();
-
-        std::string path = utils::PathUtils::Combine(
-            vm::Runtime::GetConfigDir(), utils::PathUtils::Combine(
-                utils::StringView<char>("mono"), utils::PathUtils::Combine(
-                    utils::StringView<char>(frameworkVersion, strlen(frameworkVersion)), utils::StringView<char>("machine.config"))));
-
-        return vm::String::NewWrapper(path.c_str());
-    }
-
-    Il2CppString* Environment::GetNewLine()
-    {
-        return il2cpp::vm::String::NewUtf16(kIl2CppNewLine);
-    }
-
-    Il2CppString* Environment::GetOSVersionString()
-    {
-        return il2cpp::vm::String::New(il2cpp::os::Environment::GetOsVersionString().c_str());
-    }
-
-    Il2CppString* Environment::GetWindowsFolderPath(int32_t folder)
-    {
-        auto result = il2cpp::os::Environment::GetWindowsFolderPath(folder);
-        vm::Exception::RaiseIfError(result.GetError());
-        return il2cpp::vm::String::New(result.Get().c_str());
-    }
-
-    Il2CppString* Environment::internalGetEnvironmentVariable_native(intptr_t variablePtr)
-    {
-        const char* value = (char*)variablePtr;
-
-        if (!value)
-            return NULL;
-
-        const std::string nameStr(value);
-        const std::string variable(il2cpp::os::Environment::GetEnvironmentVariable(nameStr));
-
-        return variable.empty() ? NULL : il2cpp::vm::String::New(variable.c_str());
-    }
-
-    Il2CppString* Environment::internalGetHome()
-    {
-        return il2cpp::vm::String::New(il2cpp::os::Environment::GetHomeDirectory().c_str());
+        return il2cpp::os::Environment::GetProcessorCount();
     }
 
     Il2CppArray* Environment::GetCommandLineArgs()
@@ -177,9 +91,97 @@ namespace System
         return ToIl2CppArray(il2cpp::os::Environment::GetEnvironmentVariableNames());
     }
 
+    Il2CppString* Environment::GetWindowsFolderPath(int32_t folder)
+    {
+        return il2cpp::vm::String::New(il2cpp::os::Environment::GetWindowsFolderPath(folder).c_str());
+    }
+
+    Il2CppString* Environment::internalGetHome()
+    {
+        return il2cpp::vm::String::New(il2cpp::os::Environment::GetHomeDirectory().c_str());
+    }
+
     Il2CppArray* Environment::GetLogicalDrivesInternal()
     {
         return ToIl2CppArray(il2cpp::os::Environment::GetLogicalDrives());
+    }
+
+    void Environment::InternalSetEnvironmentVariable(Il2CppString* variable, Il2CppString* value)
+    {
+        const std::string variableStr(utils::StringUtils::Utf16ToUtf8(utils::StringUtils::GetChars(variable)));
+
+        const bool clearValue = value == NULL || utils::StringUtils::GetLength(value) == 0 || utils::StringUtils::GetChars(0) == 0;
+
+        const std::string valueStr = clearValue ? std::string() : utils::StringUtils::Utf16ToUtf8(utils::StringUtils::GetChars(value));
+
+        il2cpp::os::Environment::SetEnvironmentVariable(variableStr, valueStr);
+    }
+
+    void Environment::internalBroadcastSettingChange()
+    {
+        IL2CPP_NOT_IMPLEMENTED_ICALL(Environment::internalBroadcastSettingChange);
+    }
+
+    Il2CppString * Environment::GetMachineConfigPath(void)
+    {
+        const char* frameworkVersion = vm::Runtime::GetFrameworkVersion();
+
+        std::string path = utils::PathUtils::Combine(
+            vm::Runtime::GetConfigDir(), utils::PathUtils::Combine(
+                utils::StringView<char>("mono"), utils::PathUtils::Combine(
+                    utils::StringView<char>(frameworkVersion, strlen(frameworkVersion)), utils::StringView<char>("machine.config"))));
+
+        return vm::String::NewWrapper(path.c_str());
+    }
+
+    Il2CppString * Environment::internalGetEnvironmentVariable(Il2CppString *name)
+    {
+        const std::string nameStr(utils::StringUtils::Utf16ToUtf8(utils::StringUtils::GetChars(name)));
+        const std::string variable(il2cpp::os::Environment::GetEnvironmentVariable(nameStr));
+
+        return variable.empty() ? NULL : il2cpp::vm::String::New(variable.c_str());
+    }
+
+    Il2CppString * Environment::GetOSVersionString(void)
+    {
+        return il2cpp::vm::String::New(il2cpp::os::Environment::GetOsVersionString().c_str());
+    }
+
+    int Environment::get_Platform(void)
+    {
+#ifdef _MSC_VER
+        return 2;
+#elif IL2CPP_TARGET_DARWIN
+        // new Mono expects distinct platform value for OSX/iOS
+        return 6;
+#else
+        return 4;
+#endif
+    }
+
+    int32_t Environment::get_ExitCode()
+    {
+        return vm::Runtime::GetExitCode();
+    }
+
+    void Environment::set_ExitCode(int32_t value)
+    {
+        vm::Runtime::SetExitCode(value);
+    }
+
+    bool Environment::get_HasShutdownStarted()
+    {
+        return vm::Runtime::IsShuttingDown();
+    }
+
+    Il2CppString* Environment::get_EmbeddingHostName()
+    {
+        return il2cpp::vm::String::New("IL2CPP");
+    }
+
+    Il2CppString* Environment::get_UserName()
+    {
+        return il2cpp::vm::String::New(il2cpp::os::Environment::GetOsUserName().c_str());
     }
 
     void Environment::Exit(int32_t exitCode)
@@ -189,7 +191,57 @@ namespace System
         il2cpp::os::Environment::Exit(exitCode);
     }
 
-    void Environment::FailFast(Il2CppString* message, Il2CppException* exception, Il2CppString* errorSource)
+    Il2CppString* Environment::internalGetGacPath()
+    {
+        // Not used by the runtime. Used only by the Mono compiler (mcs).
+        IL2CPP_NOT_IMPLEMENTED_ICALL(Environment::internalGetGacPatH);
+
+        return 0;
+    }
+
+    bool Environment::GetIs64BitOperatingSystem()
+    {
+        if (sizeof(void*) == 8)
+            return true;
+        return il2cpp::os::Environment::Is64BitOs();
+    }
+
+    int32_t Environment::GetPageSize()
+    {
+        return IL2CPP_PAGE_SIZE;
+    }
+
+    Il2CppString* Environment::GetNewLine()
+    {
+        return get_NewLine();
+    }
+
+    Il2CppString* Environment::internalGetEnvironmentVariable_native(intptr_t variablePtr)
+    {
+        const char *value = (char*)variablePtr;
+
+        if (!value)
+            return NULL;
+
+        const std::string nameStr(value);
+        const std::string variable(il2cpp::os::Environment::GetEnvironmentVariable(nameStr));
+
+        return variable.empty() ? NULL : il2cpp::vm::String::New(variable.c_str());
+    }
+
+    Il2CppString* Environment::get_bundled_machine_config()
+    {
+        return NULL;
+    }
+
+#if IL2CPP_TINY_DEBUGGER
+    Il2CppString* Environment::GetStackTrace_internal()
+    {
+        std::string stackTrace = vm::StackTrace::GetStackTrace();
+        return vm::String::NewLen(stackTrace.c_str(), (uint32_t)stackTrace.length());
+    }
+
+    void Environment::FailFast_internal(Il2CppString* message)
     {
         bool messageWritten = false;
         if (message != NULL)
@@ -203,43 +255,20 @@ namespace System
         }
 
         if (!messageWritten)
-            il2cpp::utils::Logging::Write("Managed code called FailFast without specifying a reason.");
+            il2cpp::utils::Logging::Write("No error message was provided. Hopefully the stack trace can provide some information.");
 
-        if (exception != NULL)
+        std::string managedStackTrace = vm::StackTrace::GetStackTrace();
+        if (!managedStackTrace.empty())
         {
-            std::string exceptionMessage = utils::Exception::FormatException(exception);
-            il2cpp::utils::Logging::Write(exceptionMessage.c_str());
+            std::string managedStackTraceMessage = "Managed stack trace:\n" + managedStackTrace;
+            il2cpp::utils::Logging::Write(managedStackTraceMessage.c_str());
+        }
+        else
+        {
+            il2cpp::utils::Logging::Write("No managed stack trace exists. Make sure this is a development build to enable managed stack traces.");
         }
 
         il2cpp::os::CrashHelpers::Crash();
-    }
-
-    void Environment::InternalSetEnvironmentVariable(Il2CppChar* variable, int32_t variable_length, Il2CppChar* value, int32_t value_length)
-    {
-        const std::string variableStr(utils::StringUtils::Utf16ToUtf8(variable));
-
-        const bool clearValue = value == NULL || value_length == 0 || utils::StringUtils::GetChars(0) == 0;
-
-        const std::string valueStr = clearValue ? std::string() : utils::StringUtils::Utf16ToUtf8(value);
-
-        il2cpp::os::Environment::SetEnvironmentVariable(variableStr, valueStr);
-    }
-
-    void Environment::set_ExitCode(int32_t value)
-    {
-        vm::Runtime::SetExitCode(value);
-    }
-
-#if IL2CPP_TINY_DEBUGGER
-    Il2CppString* Environment::GetStackTrace_internal()
-    {
-        const char* stackTrace = vm::StackTrace::GetStackTrace();
-        return vm::String::NewLen(stackTrace, (uint32_t)strlen(stackTrace));
-    }
-
-    void Environment::FailFast_internal(Il2CppString* message)
-    {
-        il2cpp::vm::Runtime::FailFast(il2cpp::utils::StringUtils::Utf16ToUtf8(message->chars, message->length));
     }
 
 #endif

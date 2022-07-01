@@ -65,7 +65,7 @@ namespace os
         abort();
     }
 
-    utils::Expected<bool> Environment::Is64BitOs()
+    bool Environment::Is64BitOs()
     {
         return false;
     }

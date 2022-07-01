@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Atomic.h"
-#include "heap_allocator.h"
 #include "../C/Baselib_Memory.h"
 
 #include <algorithm>
@@ -10,6 +9,13 @@ namespace baselib
 {
     BASELIB_CPP_INTERFACE
     {
+        namespace detail
+        {
+            template<bool cacheline_aligned> struct ConditionallyCachelineAligned {};
+            template<> struct alignas(PLATFORM_CACHE_LINE_SIZE) ConditionallyCachelineAligned<true> {};
+            template<> struct ConditionallyCachelineAligned<false> {};
+        }
+
         // In computer science, a queue is a collection in which the entities in the collection are kept in order and the principal (or only) operations on the
         // collection are the addition of entities to the rear terminal position, known as enqueue, and removal of entities from the front terminal position, known
         // as dequeue. This makes the queue a First-In-First-Out (FIFO) data structure. In a FIFO data structure, the first element added to the queue will be the
@@ -31,13 +37,8 @@ namespace baselib
         {
         public:
             // Create a new queue instance capable of holding at most `capacity` number of elements.
-            // `buffer` is an optional user defined memory block large enough to hold the queue data structure.
-            // The size required is obtained by `buffer_size`, alignment requirements by `buffer_alignment`.
-            // If `buffer` is not set (default), the queue will internally allocate memory using baselib heap_allocator.
-            mpmc_fixed_queue(uint32_t capacity, void *buffer = nullptr)
-                : m_SlotAllocator()
-                , m_Slot(static_cast<Slot*>(buffer ? buffer : m_SlotAllocator.allocate(buffer_size(capacity))))
-                , m_UserAllocatedSlots(buffer ? nullptr : m_Slot)
+            mpmc_fixed_queue(uint32_t capacity)
+                : m_Slot(static_cast<Slot*>(Baselib_Memory_AlignedAllocate(sizeof(Slot) * (capacity ? capacity : 2), std::max(alignof(Slot), sizeof(void*)))))
                 , m_NumberOfSlots(capacity ? capacity : 2)
                 , m_Capacity(capacity)
                 , m_ReadPos(0)
@@ -73,7 +74,7 @@ namespace baselib
                         break;
                     slot.value.~value_type();
                 }
-                m_SlotAllocator.deallocate(m_UserAllocatedSlots, buffer_size(static_cast<uint32_t>(m_Capacity)));
+                Baselib_Memory_AlignedFree(m_Slot);
                 baselib::atomic_thread_fence(baselib::memory_order_seq_cst);
             }
 
@@ -189,25 +190,7 @@ namespace baselib
                 return m_Capacity;
             }
 
-            // Calculate the size in bytes of an memory buffer required to hold `capacity` number of elements.
-            //
-            // \returns Buffer size in bytes.
-            static constexpr size_t buffer_size(uint32_t capacity)
-            {
-                return sizeof(Slot) * (capacity ? capacity : 2);
-            }
-
-            // Calculate the required alignment for a memory buffer containing `value_type` elements.
-            //
-            // \returns Alignment requirement
-            static constexpr size_t buffer_alignment()
-            {
-                return SlotAlignment;
-            }
-
         private:
-            static constexpr uint32_t MinTypeAlignment = alignof(value_type) > sizeof(void*) ? alignof(value_type) : sizeof(void*);
-            static constexpr uint32_t SlotAlignment = cacheline_aligned && PLATFORM_CACHE_LINE_SIZE > MinTypeAlignment ? PLATFORM_CACHE_LINE_SIZE : MinTypeAlignment;
             static constexpr uint32_t ReadableBit = (uint32_t)1 << 31;
             static constexpr uint32_t WritableMask = ~ReadableBit;
             static constexpr uint32_t WriteableChecksum(uint32_t pos)       { return pos & WritableMask; }
@@ -217,15 +200,12 @@ namespace baselib
 
             constexpr uint32_t SlotIndex(uint32_t pos) const           { return pos % m_NumberOfSlots; }
 
-            const baselib::heap_allocator<SlotAlignment> m_SlotAllocator;
-
-            struct alignas(SlotAlignment) Slot
+            struct Slot : detail::ConditionallyCachelineAligned<cacheline_aligned>
             {
-                value_type value;
+                value_type                value;
                 baselib::atomic<uint32_t> checksum;
             };
-            Slot *const m_Slot;
-            void *const m_UserAllocatedSlots;
+            Slot* const m_Slot;
 
             // benchmarks show using uint32_t gives ~3x perf boost on 64bit platforms compared to size_t (uint64_t)
             const uint32_t m_NumberOfSlots;

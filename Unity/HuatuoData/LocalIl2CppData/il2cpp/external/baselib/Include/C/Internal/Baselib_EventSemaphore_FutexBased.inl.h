@@ -14,7 +14,6 @@ typedef struct Baselib_EventSemaphore
     char _cachelineSpacer1[PLATFORM_CACHE_LINE_SIZE - sizeof(int32_t)];
 } Baselib_EventSemaphore;
 
-BASELIB_STATIC_ASSERT(sizeof(Baselib_EventSemaphore) == PLATFORM_CACHE_LINE_SIZE, "Baselib_EventSemaphore size should match cacheline size (64bytes)");
 
 // The futex based event semaphore is in one of *three* states:
 // * ResetNoWaitingThreads: EventSemaphore blocks threads, but there aren't any blocked yet

@@ -1,4 +1,5 @@
 #include "il2cpp-config.h"
+#include "il2cpp-vm-support.h"
 
 #if IL2CPP_TARGET_WINDOWS_DESKTOP || IL2CPP_TARGET_WINDOWS_GAMES
 
@@ -21,7 +22,7 @@ namespace os
         return ::GetCurrentProcessId();
     }
 
-    utils::Expected<ProcessHandle*> Process::GetProcess(int processId)
+    ProcessHandle* Process::GetProcess(int processId)
     {
         return (ProcessHandle*)OpenProcess(PROCESS_ALL_ACCESS, TRUE, processId);
     }
@@ -31,7 +32,7 @@ namespace os
         ::CloseHandle((HANDLE)handle);
     }
 
-    utils::Expected<std::string> Process::GetProcessName(ProcessHandle* handle)
+    std::string Process::GetProcessName(ProcessHandle* handle)
     {
         const size_t bufferLength = 256;
         WCHAR buf[bufferLength];
@@ -49,38 +50,6 @@ namespace os
 
         return std::string(multiByteStr, numConverted);
     }
-
-#if IL2CPP_TARGET_WINDOWS_GAMES
-    intptr_t Process::GetMainWindowHandle(int32_t pid)
-    {
-        return 0;
-    }
-
-#else
-    typedef struct
-    {
-        DWORD pid;
-        HWND hwnd;
-    } EnumWindowsArgs;
-
-    static BOOL STDCALL Il2CppEnumWindowsCallback(HWND hwnd, LPARAM lparam)
-    {
-        EnumWindowsArgs* args = (EnumWindowsArgs*)lparam;
-        DWORD pid = 0;
-        GetWindowThreadProcessId(hwnd, &pid);
-        if (pid != args->pid || GetWindow(hwnd, GW_OWNER) != NULL || !IsWindowVisible(hwnd)) return TRUE;
-        args->hwnd = hwnd;
-        return FALSE;
-    }
-
-    intptr_t Process::GetMainWindowHandle(int32_t pid)
-    {
-        EnumWindowsArgs args = { (DWORD)pid, 0 };
-        EnumWindows(Il2CppEnumWindowsCallback, (LPARAM)&args);
-        return (intptr_t)args.hwnd;
-    }
-
-#endif
 }
 }
 

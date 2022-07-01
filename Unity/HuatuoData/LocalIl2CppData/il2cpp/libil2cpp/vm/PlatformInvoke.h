@@ -53,15 +53,8 @@ namespace vm
         static void MarshalStringBuilderResult(Il2CppStringBuilder* stringBuilder, char* buffer);
         static void MarshalWStringBuilderResult(Il2CppStringBuilder* stringBuilder, Il2CppChar* buffer);
 
-#if !IL2CPP_TINY
         static intptr_t MarshalDelegate(Il2CppDelegate* d);
         static Il2CppDelegate* MarshalFunctionPointerToDelegate(void* functionPtr, Il2CppClass* delegateType);
-        static bool IsFakeDelegateMethodMarshaledFromNativeCode(const Il2CppDelegate* d);
-#else
-        static intptr_t MarshalDelegate(Il2CppDelegate* d) { IL2CPP_ASSERT(false && "This should not be called on tiny"); return 0; }
-        static Il2CppDelegate* MarshalFunctionPointerToDelegate(void* functionPtr, Il2CppClass* delegateType) { IL2CPP_ASSERT(false && "This should not be called on tiny"); return NULL; }
-        static bool IsFakeDelegateMethodMarshaledFromNativeCode(const Il2CppDelegate* d) { IL2CPP_ASSERT(false && "This should not be called on tiny"); return NULL; }
-#endif
 
         template<typename T>
         static T* MarshalAllocateStringBuffer(size_t numberOfCharacters)

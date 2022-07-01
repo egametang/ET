@@ -2,25 +2,17 @@
 #include "MetadataAlloc.h"
 #include "il2cpp-class-internals.h"
 #include "utils/MemoryPool.h"
-#if IL2CPP_SANITIZE_ADDRESS
-#include "utils/MemoryPoolAddressSanitizer.h"
-#endif
+
 namespace il2cpp
 {
 namespace vm
 {
-#if IL2CPP_SANITIZE_ADDRESS
-    typedef utils::MemoryPoolAddressSanitizer MemoryPoolType;
-#else
-    typedef utils::MemoryPool MemoryPoolType;
-#endif
-
 // we allocate these dynamically on runtime initialization
 // because the pool uses standard allocators, and we want to give embedding
 // client the chance to install their own allocator callbacks
-    static MemoryPoolType* s_MetadataMemoryPool;
-    static MemoryPoolType* s_GenericClassMemoryPool;
-    static MemoryPoolType* s_GenericMethodMemoryPool;
+    static utils::MemoryPool* s_MetadataMemoryPool;
+    static utils::MemoryPool* s_GenericClassMemoryPool;
+    static utils::MemoryPool* s_GenericMethodMemoryPool;
 
 // This initial size (256k/512k) allows us enough room to initialize metadata
 // an empty Unity project and have a bit of room leftover.
@@ -28,16 +20,10 @@ namespace vm
 
     void MetadataAllocInitialize()
     {
-#if IL2CPP_SANITIZE_ADDRESS
-        s_MetadataMemoryPool = new utils::MemoryPoolAddressSanitizer(kInitialRegionSize);
-        s_GenericClassMemoryPool = new utils::MemoryPoolAddressSanitizer();
-        s_GenericMethodMemoryPool = new utils::MemoryPoolAddressSanitizer();
-#else
         s_MetadataMemoryPool = new utils::MemoryPool(kInitialRegionSize);
         // these can use the default smaller initial pool size
         s_GenericClassMemoryPool = new utils::MemoryPool();
         s_GenericMethodMemoryPool = new utils::MemoryPool();
-#endif
     }
 
     void MetadataAllocCleanup()

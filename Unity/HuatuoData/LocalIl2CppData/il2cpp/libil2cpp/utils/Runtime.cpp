@@ -6,13 +6,6 @@
 #include "utils/StringUtils.h"
 #include "utils/Environment.h"
 
-
-#ifndef IL2CPP_DEFAULT_DATA_DIR_PATH
-#define IL2CPP_DEFAULT_DATA_DIR_PATH Data
-#endif
-
-#define IL2CPP_DEFAULT_DATA_DIR_PATH_STR MAKE_STRING(STRINGIZE, IL2CPP_DEFAULT_DATA_DIR_PATH)
-
 namespace il2cpp
 {
 namespace utils

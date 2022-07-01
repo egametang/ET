@@ -11,9 +11,9 @@ namespace mscorlib
 {
 namespace Mono
 {
-    intptr_t SafeStringMarshal::StringToUtf8_icall(Il2CppString *volatile* str)
+    intptr_t SafeStringMarshal::StringToUtf8(Il2CppString* str)
     {
-        std::string strobj = il2cpp::utils::StringUtils::Utf16ToUtf8((*str)->chars, (*str)->length);
+        std::string strobj = il2cpp::utils::StringUtils::Utf16ToUtf8(str->chars, str->length);
         char* cstr = il2cpp::utils::StringUtils::StringDuplicate(strobj.c_str());
         return reinterpret_cast<intptr_t>(cstr);
     }

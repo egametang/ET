@@ -12,7 +12,7 @@ namespace vm
     {
     public:
         // internal
-        static Il2CppObject* GetDefaultParameterValueObject(const MethodInfo* method, int32_t parameterPosition, bool* isExplicitySetNullDefaultValue);
+        static Il2CppObject* GetDefaultParameterValueObject(const MethodInfo* method, const ParameterInfo* parameter, bool* isExplicitySetNullDefaultValue);
     };
 } /* namespace vm */
 } /* namespace il2cpp */

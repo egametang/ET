@@ -129,26 +129,13 @@ namespace utf8
         template <typename u16bit_iterator, typename octet_iterator>
         octet_iterator utf16to8 (u16bit_iterator start, u16bit_iterator end, octet_iterator result)
         {       
-            static const uint32_t replacement_marker = utf8::internal::mask16(0xfffd);
             while (start != end) {
                 uint32_t cp = utf8::internal::mask16(*start++);
-                // Take care of surrogate pairs first
+            // Take care of surrogate pairs first
                 if (utf8::internal::is_lead_surrogate(cp)) {
-                    if (start != end) {
-                        uint32_t trail_surrogate = utf8::internal::mask16(*start++);
-                        if (utf8::internal::is_trail_surrogate(trail_surrogate))
-                            cp = (cp << 10) + trail_surrogate + internal::SURROGATE_OFFSET;
-                        else
-                            cp = replacement_marker;
-                    }
-                    else
-                        cp = replacement_marker;
-
+                    uint32_t trail_surrogate = utf8::internal::mask16(*start++);
+                    cp = (cp << 10) + trail_surrogate + internal::SURROGATE_OFFSET;
                 }
-                // Lone trail surrogate
-                else if (utf8::internal::is_trail_surrogate(cp))
-                    cp = replacement_marker;
-
                 result = utf8::unchecked::append(cp, result);
             }
             return result;         

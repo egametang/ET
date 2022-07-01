@@ -19,8 +19,10 @@ namespace Reflection
     class LIBIL2CPP_CODEGEN_API FieldInfo
     {
     public:
+        static Il2CppReflectionMarshal* GetUnmanagedMarshal(Il2CppReflectionField* field);
         static Il2CppReflectionField* internal_from_handle_type(intptr_t field_handle, intptr_t type_handle);
-        static Il2CppObject* get_marshal_info(Il2CppObject* thisPtr);
+        static Il2CppArray* GetTypeModifiers(Il2CppReflectionField* field, bool optional);
+        static Il2CppObject* get_marshal_info(Il2CppObject* _this);
     };
 } /* namespace Reflection */
 } /* namespace System */

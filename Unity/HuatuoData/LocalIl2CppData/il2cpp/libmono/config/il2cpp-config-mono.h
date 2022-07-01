@@ -2,8 +2,6 @@
 #include "il2cpp-config-platforms.h"
 #include <stdint.h>
 
-#define MONO_CONFIG_H_WAS_INCLUDED
-
 //If we're building for a windows platform, check that we're not building on xp or earlier
 #if IL2CPP_TARGET_WINDOWS
 #include "il2cpp-config-mono-win.h"

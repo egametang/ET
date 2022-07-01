@@ -47,9 +47,9 @@ static void thread_info_uninstall_interrupt(bool *interrupted)
 
 static void worker_wait_interrupt(void* data)
 {
-    g_ThreadPool->active_threads_lock.Acquire();
-    g_ThreadPool->parked_threads_cond.Notify(1);
-    g_ThreadPool->active_threads_lock.Release();
+    g_ThreadPool->active_threads_lock.Lock();
+    g_ThreadPool->parked_threads_cond.Signal();
+    g_ThreadPool->active_threads_lock.Unlock();
 }
 
 /* return true if timeout, false otherwise (worker unpark or interrupt) */
@@ -61,7 +61,7 @@ static bool worker_park(void)
 
     il2cpp::gc::GarbageCollector::SetSkipThread(true);
 
-    g_ThreadPool->active_threads_lock.Acquire();
+    g_ThreadPool->active_threads_lock.Lock();
 
     if (!il2cpp::vm::Runtime::IsShuttingDown())
     {
@@ -82,7 +82,8 @@ static bool worker_park(void)
         thread_info_install_interrupt(worker_wait_interrupt, NULL, &interrupted);
         if (interrupted)
             goto done;
-        if (g_ThreadPool->parked_threads_cond.TimedWait(baselib::timeout_ms(il2cpp::vm::Random::Next(&rand_handle, 5 * 1000, 60 * 1000))) == false)
+
+        if (g_ThreadPool->parked_threads_cond.TimedWait(&g_ThreadPool->active_threads_lock, il2cpp::vm::Random::Next(&rand_handle, 5 * 1000, 60 * 1000)) != 0)
             timeout = true;
 
         thread_info_uninstall_interrupt(&interrupted);
@@ -92,7 +93,7 @@ static bool worker_park(void)
         g_ThreadPool->parked_threads_count -= 1;
     }
 
-    g_ThreadPool->active_threads_lock.Release();
+    g_ThreadPool->active_threads_lock.Unlock();
 
     il2cpp::gc::GarbageCollector::SetSkipThread(false);
 
@@ -154,16 +155,16 @@ struct WorkerThreadStateHolder
         IL2CPP_ASSERT(thread);
         il2cpp::vm::Thread::SetName(thread, il2cpp::vm::String::New("IL2CPP Threadpool worker"));
 
-        g_ThreadPool->active_threads_lock.AcquireScoped([this] {
-            g_ThreadPool->working_threads.push_back(thread);
-        });
+        il2cpp::os::FastAutoLockOld activeThreadsLock(&g_ThreadPool->active_threads_lock);
+        g_ThreadPool->working_threads.push_back(thread);
     }
 
     ~WorkerThreadStateHolder()
     {
-        g_ThreadPool->active_threads_lock.AcquireScoped([this] {
+        {
+            il2cpp::os::FastAutoLockOld activeThreadsLock(&g_ThreadPool->active_threads_lock);
             remove_working_thread(thread);
-        });
+        }
 
         COUNTER_ATOMIC(counter,
         {

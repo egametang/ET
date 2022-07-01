@@ -33,7 +33,6 @@ LIBIL2CPP_CODEGEN_API bool ves_icall_System_Threading_ThreadPool_RequestWorkerTh
 LIBIL2CPP_CODEGEN_API bool ves_icall_System_Threading_ThreadPool_PostQueuedCompletionStatus(Il2CppNativeOverlapped *native_overlapped);
 LIBIL2CPP_CODEGEN_API bool ves_icall_System_Threading_ThreadPool_BindIOCompletionCallbackNative(void* file_handle);
 LIBIL2CPP_CODEGEN_API bool ves_icall_System_Threading_ThreadPool_IsThreadPoolHosted(void);
-LIBIL2CPP_CODEGEN_API void ves_icall_System_Threading_ThreadPool_NotifyWorkItemQueued(void);
 
 /* Internals */
 bool threadpool_ms_enqueue_work_item(Il2CppDomain *domain, Il2CppObject *work_item);

@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "il2cpp-config.h"
-#include "os/Thread.h"
 #include "utils/NonCopyable.h"
 
 struct MethodInfo;
@@ -70,7 +69,7 @@ namespace vm
         static void Detach(Il2CppThread *thread);
         static void WalkFrameStack(Il2CppThread *thread, Il2CppFrameWalkFunc func, void *user_data);
         static Il2CppThread** GetAllAttachedThreads(size_t &size);
-        static void AbortAllThreads();
+        static void KillAllBackgroundThreadsAndWaitForForegroundThreads();
         static Il2CppThread* Main();
         static bool IsVmThread(Il2CppThread *thread);
         static uint64_t GetId(Il2CppThread *thread);
@@ -104,12 +103,12 @@ namespace vm
         static void Register(Il2CppThread *thread);
         static void Unregister(Il2CppThread *thread);
 
-        static void SetupInternalManagedThread(Il2CppThread* thread, os::Thread* osThread);
+        static void Setup(Il2CppThread* thread);
 
         /// Initialize and register thread.
         /// NOTE: Must be called on thread!
-        static void InitializeManagedThread(Il2CppThread *thread, Il2CppDomain* domain);
-        static void UninitializeManagedThread(Il2CppThread *thread);
+        static void Initialize(Il2CppThread *thread, Il2CppDomain* domain);
+        static void Uninitialize(Il2CppThread *thread);
 
         static void SetMain(Il2CppThread* thread);
 

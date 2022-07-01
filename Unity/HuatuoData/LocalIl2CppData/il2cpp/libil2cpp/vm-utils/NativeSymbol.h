@@ -1,15 +1,8 @@
 #pragma once
 
-#if !RUINTIME_TINY
-#include "vm/MetadataCache.h"
-#endif
-
-#include "vm/StackTrace.h"
-#include "vm-utils/MethodDefinitionKey.h"
-#include "vm-utils/VmMethod.h"
-
 #include <stdint.h>
 #include <vector>
+#include "il2cpp-vm-support.h"
 
 namespace il2cpp
 {
@@ -18,7 +11,7 @@ namespace utils
     class NativeSymbol
     {
     public:
-#if (IL2CPP_ENABLE_NATIVE_STACKTRACES && (!RUNTIME_TINY || IL2CPP_TINY_DEBUG_METADATA))
+#if IL2CPP_ENABLE_NATIVE_STACKTRACES
         static void RegisterMethods(const std::vector<MethodDefinitionKey>& managedMethods);
         static const VmMethod* GetMethodFromNativeSymbol(Il2CppMethodPointer nativeMethod);
         static bool GetMethodDebugInfo(const MethodInfo* method, Il2CppMethodDebugInfo* methodDebugInfo);

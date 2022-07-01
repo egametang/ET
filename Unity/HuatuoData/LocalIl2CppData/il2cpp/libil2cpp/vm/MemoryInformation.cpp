@@ -87,7 +87,7 @@ namespace MemoryInformation
             }
             else
             {
-                type.flags = (typeInfo->byval_arg.valuetype || typeInfo->byval_arg.type == IL2CPP_TYPE_PTR) ? kValueType : kNone;
+                type.flags = (typeInfo->valuetype || typeInfo->byval_arg.type == IL2CPP_TYPE_PTR) ? kValueType : kNone;
                 type.fieldCount = 0;
 
                 if (typeInfo->field_count > 0)
@@ -135,7 +135,7 @@ namespace MemoryInformation
             memcpy(type.name, typeName.c_str(), typeName.length() + 1);
 
             type.typeInfoAddress = reinterpret_cast<uint64_t>(typeInfo);
-            type.size = (typeInfo->byval_arg.valuetype) != 0 ? (typeInfo->instance_size - sizeof(Il2CppObject)) : typeInfo->instance_size;
+            type.size = (typeInfo->valuetype) != 0 ? (typeInfo->instance_size - sizeof(Il2CppObject)) : typeInfo->instance_size;
         }
     }
 
@@ -295,7 +295,7 @@ namespace MemoryInformation
     struct il2cpp_heap_chunk
     {
         void* start;
-        uint32_t size;
+        size_t size;
     };
 
     void ReportIL2CppClasses(ClassReportFunc callback, void* context)
@@ -324,8 +324,7 @@ namespace MemoryInformation
     {
         il2cpp_heap_chunk chunk;
         chunk.start = start;
-        //todo: change back to size_t once we change the memory profiler format and mono to use size_t for reporting chunk size
-        chunk.size = (uint32_t)((uint8_t *)end - (uint8_t *)start);
+        chunk.size = (uint8_t *)end - (uint8_t *)start;
         IterationContext* ctxPtr = reinterpret_cast<IterationContext*>(context);
         ctxPtr->callback(&chunk, ctxPtr->userData);
     }

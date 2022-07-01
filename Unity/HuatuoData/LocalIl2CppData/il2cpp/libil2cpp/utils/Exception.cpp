@@ -44,22 +44,10 @@ namespace utils
 
     std::string Exception::FormatStackTrace(const Il2CppException* ex)
     {
-        // Exception.RestoreExceptionDispatchInfo() will clear stack_trace, so we need to ensure that we read it only once
-        Il2CppString* stack_trace = ex->stack_trace;
-
-        if (stack_trace)
-            return il2cpp::utils::StringUtils::Utf16ToUtf8(il2cpp::utils::StringUtils::GetChars(stack_trace));
+        if (ex->stack_trace)
+            return il2cpp::utils::StringUtils::Utf16ToUtf8(il2cpp::utils::StringUtils::GetChars(ex->stack_trace));
 
         return "";
-    }
-
-    std::string Exception::FormatBaselibErrorState(const Baselib_ErrorState& errorState)
-    {
-        const auto len = Baselib_ErrorState_Explain(&errorState, nullptr, 0, Baselib_ErrorState_ExplainVerbosity_ErrorType_SourceLocation_Explanation);
-        std::string buffer(len, ' ');
-        // std::string::data() is const only until C++17
-        Baselib_ErrorState_Explain(&errorState, &buffer[0], len, Baselib_ErrorState_ExplainVerbosity_ErrorType_SourceLocation_Explanation);
-        return buffer;
     }
 } // utils
 } // il2cpp

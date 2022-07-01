@@ -6,7 +6,6 @@
 #include <string>
 #include "os/ErrorCodes.h"
 #include "os/c-api/OSGlobalEnums.h"
-#include "utils/Expected.h"
 
 #undef CopyFile
 #undef DeleteFile
@@ -38,12 +37,12 @@ namespace os
     public:
 
 
-        static utils::Expected<bool> Isatty(FileHandle* fileHandle);
+        static bool Isatty(FileHandle* fileHandle);
         static FileHandle* GetStdInput();
         static FileHandle* GetStdOutput();
         static FileHandle* GetStdError();
-        static utils::Expected<bool> CreatePipe(FileHandle** read_handle, FileHandle** write_handle);
-        static utils::Expected<bool> CreatePipe(FileHandle** read_handle, FileHandle** write_handle, int* error);
+        static bool CreatePipe(FileHandle** read_handle, FileHandle** write_handle);
+        static bool CreatePipe(FileHandle** read_handle, FileHandle** write_handle, int* error);
         static FileType GetFileType(FileHandle* handle);
         static UnityPalFileAttributes GetFileAttributes(const std::string& path, int* error);
         static bool SetFileAttributes(const std::string& path, UnityPalFileAttributes attributes, int* error);
@@ -63,14 +62,11 @@ namespace os
         static bool Flush(FileHandle* handle, int* error);
         static void Lock(FileHandle* handle,  int64_t position, int64_t length, int* error);
         static void Unlock(FileHandle* handle,  int64_t position, int64_t length, int* error);
-        static utils::Expected<bool> IsExecutable(const std::string& path);
+        static bool IsExecutable(const std::string& path);
         static bool Truncate(FileHandle* handle, int *error);
-        static bool Cancel(FileHandle* handle);
 
         static bool DuplicateHandle(FileHandle* source_process_handle, FileHandle* source_handle, FileHandle* target_process_handle,
             FileHandle** target_handle, int access, int inherit, int options, int* error);
-
-        static bool IsHandleOpenFileHandle(intptr_t lookup);
     };
 }
 }

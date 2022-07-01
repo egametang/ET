@@ -228,12 +228,6 @@ namespace os
 
         return os::kErrorCodeNoMoreFiles;
     }
-
-    int32_t Directory::CloseOSFindHandleDirectly(intptr_t osHandle)
-    {
-        IL2CPP_ASSERT(0 && "This function should be called for Windows only.");
-        return 0;
-    }
 }
 }
 

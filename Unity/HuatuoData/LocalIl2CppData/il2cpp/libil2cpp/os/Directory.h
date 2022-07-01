@@ -48,7 +48,6 @@ namespace os
 
         static os::ErrorCode FindFirstFile(FindHandle* findHandle, const utils::StringView<Il2CppNativeChar>& searchPathWithPattern, Il2CppNativeString* resultFileName, int32_t* resultAttributes);
         static os::ErrorCode FindNextFile(FindHandle* findHandle, Il2CppNativeString* resultFileName, int32_t* resultAttributes);
-        static int32_t CloseOSFindHandleDirectly(intptr_t osHandle);
     };
 }
 }

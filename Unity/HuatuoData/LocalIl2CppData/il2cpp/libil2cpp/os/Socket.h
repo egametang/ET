@@ -9,7 +9,6 @@
 #include "os/Atomic.h"
 #include "os/Mutex.h"
 #include "os/WaitStatus.h"
-#include "utils/Expected.h"
 #include "utils/NonCopyable.h"
 
 namespace il2cpp
@@ -296,11 +295,11 @@ namespace os
         WaitStatus Bind(const char *path);
         WaitStatus Bind(uint32_t address, uint16_t port);
         WaitStatus Bind(const char *address, uint16_t port);
-        utils::Expected<WaitStatus> Bind(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
+        WaitStatus Bind(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
 
         WaitStatus Connect(const char *path);
         WaitStatus Connect(uint32_t address, uint16_t port);
-        utils::Expected<WaitStatus> Connect(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
+        WaitStatus Connect(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
 
         WaitStatus Disconnect(bool reuse);
         WaitStatus Shutdown(int32_t how);
@@ -315,12 +314,12 @@ namespace os
         WaitStatus ReceiveArray(WSABuf *wsabufs, int32_t count, int32_t *len, SocketFlags c_flags);
 
         WaitStatus SendTo(uint32_t address, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
-        utils::Expected<WaitStatus> SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
-        utils::Expected<WaitStatus> SendTo(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
+        WaitStatus SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
+        WaitStatus SendTo(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
 
         WaitStatus RecvFrom(uint32_t address, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
-        utils::Expected<WaitStatus> RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
-        utils::Expected<WaitStatus> RecvFrom(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
+        WaitStatus RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
+        WaitStatus RecvFrom(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
 
         WaitStatus Available(int32_t *amount);
 

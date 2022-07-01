@@ -24,7 +24,7 @@ namespace System
         static Il2CppDelegate * CreateDelegate_internal(Il2CppReflectionType *, Il2CppObject *, Il2CppReflectionMethod *, bool);
         static void SetMulticastInvoke(Il2CppDelegate *);
         static Il2CppMulticastDelegate* AllocDelegateLike_internal(Il2CppDelegate* d);
-        static Il2CppReflectionMethod* GetVirtualMethod_internal(Il2CppDelegate* _this);
+        static Il2CppObject* GetVirtualMethod_internal(Il2CppObject* _this);
     };
 } /* namespace System */
 } /* namespace mscorlib */

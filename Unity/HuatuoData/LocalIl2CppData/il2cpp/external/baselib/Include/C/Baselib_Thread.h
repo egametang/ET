@@ -14,10 +14,6 @@ typedef intptr_t Baselib_Thread_Id;
 // Baselib_Thread_Id that is guaranteed not to represent a thread
 static const Baselib_Thread_Id Baselib_Thread_InvalidId = 0;
 
-// Max number of characters for threadnames internal to baselib. Used for name in Baselib_Thread_Config
-// In practice thread implementation on some platforms support even fewer characters for names
-static const size_t Baselib_Thread_MaxThreadNameLength = 64;
-
 // Yields the execution context of the current thread to other threads, potentially causing a context switch.
 //
 // The operating system may decide to not switch to any other thread.
@@ -48,7 +44,6 @@ typedef struct Baselib_Thread_Config
 {
     // Nullterminated name of the created thread (optional)
     // Useful exclusively for debugging - which tooling it is shown by and how it can be queried is platform dependent.
-    // Truncated to Baselib_Thread_MaxThreadNameLength number of characters and copied to an internal buffer
     const char* name;
 
     // The minimum size in bytes to allocate for the thread stack. (optional)

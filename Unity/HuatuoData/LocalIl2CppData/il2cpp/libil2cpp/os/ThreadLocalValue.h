@@ -2,7 +2,7 @@
 
 #include "os/ErrorCodes.h"
 
-#if IL2CPP_SUPPORT_THREADS || IL2CPP_TINY
+#if IL2CPP_SUPPORT_THREADS
 
 #if IL2CPP_THREADS_WIN32
 #include "os/Win32/ThreadLocalValueImpl.h"
@@ -22,7 +22,7 @@ namespace os
 
     class ThreadLocalValue
     {
-#if IL2CPP_SUPPORT_THREADS || IL2CPP_TINY
+#if IL2CPP_SUPPORT_THREADS
     public:
         inline ThreadLocalValue()
             : m_ThreadLocalValue(new ThreadLocalValueImpl())

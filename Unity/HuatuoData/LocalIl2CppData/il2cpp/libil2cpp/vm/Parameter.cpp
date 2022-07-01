@@ -12,31 +12,31 @@ namespace il2cpp
 {
 namespace vm
 {
-    Il2CppObject* Parameter::GetDefaultParameterValueObject(const MethodInfo* method, int32_t parameterPosition, bool* isExplicitySetNullDefaultValue)
+    Il2CppObject* Parameter::GetDefaultParameterValueObject(const MethodInfo* method, const ParameterInfo* parameter, bool* isExplicitySetNullDefaultValue)
     {
         const Il2CppType* typeOfDefaultValue;
-        const char* data = Method::GetParameterDefaultValue(method, parameterPosition, &typeOfDefaultValue, isExplicitySetNullDefaultValue);
+        const char* data = Method::GetParameterDefaultValue(method, parameter, &typeOfDefaultValue, isExplicitySetNullDefaultValue);
         if (data == NULL)
             return NULL;
 
-        Il2CppClass* parameterType = Class::FromIl2CppType(method->parameters[parameterPosition]);
-        if (il2cpp::vm::Class::IsValuetype(parameterType))
+        Il2CppClass* parameterType = Class::FromIl2CppType(parameter->parameter_type);
+        if (parameterType->valuetype)
         {
-            if (il2cpp::vm::Class::IsNullable(parameterType))
+            if (strcmp(parameterType->name, "Nullable`1") == 0 && strcmp(parameterType->namespaze, "System") == 0)
             {
-                parameterType = il2cpp::vm::Class::GetNullableArgument(parameterType);
+                parameterType = parameterType->element_class;
                 typeOfDefaultValue = &parameterType->byval_arg;
             }
 
             Class::SetupFields(parameterType);
             IL2CPP_ASSERT(parameterType->size_inited);
             void* value = alloca(parameterType->instance_size - sizeof(Il2CppObject));
-            utils::BlobReader::GetConstantValueFromBlob(method->klass->image, typeOfDefaultValue->type, data, value);
+            utils::BlobReader::GetConstantValueFromBlob(typeOfDefaultValue->type, data, value);
             return Object::Box(parameterType, value);
         }
 
         Il2CppObject* value = NULL;
-        utils::BlobReader::GetConstantValueFromBlob(method->klass->image, typeOfDefaultValue->type, data, &value);
+        utils::BlobReader::GetConstantValueFromBlob(typeOfDefaultValue->type, data, &value);
         return value;
     }
 }

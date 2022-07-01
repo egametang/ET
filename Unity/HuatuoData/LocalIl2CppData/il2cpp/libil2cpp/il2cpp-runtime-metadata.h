@@ -62,10 +62,9 @@ typedef struct Il2CppType
     } data;
     unsigned int attrs    : 16; /* param attributes or field flags */
     Il2CppTypeEnum type     : 8;
-    unsigned int num_mods : 5;  /* max 64 modifiers follow at the end */
+    unsigned int num_mods : 6;  /* max 64 modifiers follow at the end */
     unsigned int byref    : 1;
     unsigned int pinned   : 1;  /* valid when included in a local var signature */
-    unsigned int valuetype : 1;
     //MonoCustomMod modifiers [MONO_ZERO_LEN_ARRAY]; /* this may grow */
 } Il2CppType;
 

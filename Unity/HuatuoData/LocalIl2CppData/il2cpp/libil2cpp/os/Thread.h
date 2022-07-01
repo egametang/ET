@@ -94,7 +94,6 @@ namespace os
         static bool YieldInternal();
 
         static void SetDefaultAffinityMask(int64_t affinityMask);
-        static bool GetCurrentThreadStackBounds(void** low, void** high);
 
 #if IL2CPP_HAS_NATIVE_THREAD_CLEANUP
         typedef void (*ThreadCleanupFunc) (void* arg);

@@ -31,8 +31,8 @@ namespace Principal
     class LIBIL2CPP_CODEGEN_API WindowsPrincipal
     {
     public:
+        static bool IsMemberOfGroupName(intptr_t user, Il2CppString* group);
         static bool IsMemberOfGroupId(intptr_t user, intptr_t group);
-        static bool IsMemberOfGroupName(intptr_t user, intptr_t group);
     };
 } /* namespace Principal */
 } /* namespace Security */

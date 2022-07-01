@@ -1,6 +1,6 @@
 #include "il2cpp-config.h"
-#include "FileVersionInfo.h"
 
+#include "icalls/System/System.Diagnostics/FileVersionInfo.h"
 #include "vm/Exception.h"
 
 namespace il2cpp
@@ -13,9 +13,9 @@ namespace System
 {
 namespace Diagnostics
 {
-    void FileVersionInfo::GetVersionInfo_icall(Il2CppObject* thisPtr, Il2CppChar* fileName, int32_t fileName_length)
+    void FileVersionInfo::GetVersionInfo_internal(void* /* System.Diagnostics.FileVersionInfo */ self, Il2CppString* fileName)
     {
-        NOT_SUPPORTED_IL2CPP(FileVersionInfo::GetVersionInfo_icall, "This icall is not supported by il2cpp.");
+        IL2CPP_NOT_IMPLEMENTED_ICALL(FileVersionInfo::GetVersionInfo_internal);
     }
 } /* namespace Diagnostics */
 } /* namespace System */

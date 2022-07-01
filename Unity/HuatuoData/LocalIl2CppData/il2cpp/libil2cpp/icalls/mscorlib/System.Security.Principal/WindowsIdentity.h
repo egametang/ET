@@ -20,10 +20,10 @@ namespace Principal
     class LIBIL2CPP_CODEGEN_API WindowsIdentity
     {
     public:
-        static intptr_t GetCurrentToken();
         static intptr_t GetUserToken(Il2CppString* username);
-        static Il2CppString* GetTokenName(intptr_t token);
         static Il2CppArray* _GetRoles(intptr_t token);
+        static Il2CppString* GetTokenName(intptr_t token);
+        static intptr_t GetCurrentToken();
     };
 } /* namespace Principal */
 } /* namespace Security */

@@ -19,9 +19,11 @@ namespace Net
     class LIBIL2CPP_CODEGEN_API Dns
     {
     public:
-        static bool GetHostByAddr_icall(Il2CppString* addr, Il2CppString** h_name, Il2CppArray** h_aliases, Il2CppArray** h_addr_list, int32_t hint);
-        static bool GetHostByName_icall(Il2CppString* host, Il2CppString** h_name, Il2CppArray** h_aliases, Il2CppArray** h_addr_list, int32_t hint);
-        static bool GetHostName_icall(Il2CppString** h_name);
+        static bool GetHostByAddr(Il2CppString*, Il2CppString**, Il2CppArray**, Il2CppArray**);
+        static bool GetHostByName(Il2CppString*, Il2CppString**, Il2CppArray**, Il2CppArray**);
+        static bool GetHostByAddr40(Il2CppString*, Il2CppString**, Il2CppArray**, Il2CppArray**, int32_t hint);
+        static bool GetHostByName40(Il2CppString*, Il2CppString**, Il2CppArray**, Il2CppArray**, int32_t hint);
+        static bool GetHostName(Il2CppString**);
     };
 } /* namespace Net */
 } /* namespace System */

@@ -22,9 +22,7 @@ namespace System
     bool ConsoleDriver::Isatty(intptr_t handle)
     {
         il2cpp::os::FileHandle* fileHandle = (il2cpp::os::FileHandle*)handle;
-        auto result = os::File::Isatty(fileHandle);
-        vm::Exception::RaiseIfError(result.GetError());
-        return result.Get();
+        return os::File::Isatty(fileHandle);
     }
 
     int32_t ConsoleDriver::InternalKeyAvailable(int32_t ms_timeout)

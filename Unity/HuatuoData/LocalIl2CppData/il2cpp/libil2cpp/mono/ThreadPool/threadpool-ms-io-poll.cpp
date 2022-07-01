@@ -5,6 +5,7 @@
 #include "os/Socket.h"
 #include "utils/Memory.h"
 #include "vm/Thread.h"
+#include "vm/ThreadPool.h"
 
 #include <vector>
 

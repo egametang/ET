@@ -3,7 +3,6 @@
 #include "icalls/System/System.Net.Sockets/Socket.h"
 
 #include "il2cpp-class-internals.h"
-#include "gc/WriteBarrier.h"
 #include "os/Socket.h"
 #include "os/Mutex.h"
 #include "os/Thread.h"
@@ -131,7 +130,6 @@ namespace Sockets
             case kProtocolTypePup:
             case kProtocolTypeUdp:
             case kProtocolTypeIdp:
-            case kProtocolTypeIcmpV6:
                 // In this case the enum values map exactly.
                 return (os::ProtocolType)protocol;
 
@@ -313,7 +311,7 @@ namespace Sockets
         return __VA_ARGS__; \
     }
 
-    intptr_t Socket::Accept_icall(intptr_t socket, int32_t* error, bool blocking)
+    intptr_t Socket::Accept(intptr_t socket, int32_t* error, bool blocking)
     {
         *error = 0;
 
@@ -342,13 +340,7 @@ namespace Sockets
         return ret;
     }
 
-    bool Socket::SupportsPortReuse(int32_t proto)
-    {
-        IL2CPP_NOT_IMPLEMENTED_ICALL(Socket::SupportsPortReuse);
-        return false;
-    }
-
-    int32_t Socket::Available_icall(intptr_t socket, int32_t* error)
+    int32_t Socket::Available(intptr_t socket, int32_t *error)
     {
         *error = 0;
 
@@ -387,7 +379,7 @@ namespace Sockets
             (buffer[24]));
     }
 
-    void Socket::Bind_icall(intptr_t socket, Il2CppSocketAddress* socket_address, int32_t* error)
+    void Socket::Bind(intptr_t socket, Il2CppSocketAddress* socket_address, int32_t* error)
     {
         *error = 0;
 
@@ -448,10 +440,9 @@ namespace Sockets
             uint32_t scope;
             UnpackIPv6AddressFromBuffer(buffer, length, &port, address, &scope);
 
-            auto status = socketHandle->Bind(address, scope, port);
-            vm::Exception::RaiseIfError(status.GetError());
+            const os::WaitStatus status = socketHandle->Bind(address, scope, port);
 
-            if (status.Get() == kWaitStatusFailure)
+            if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
         }
         else
@@ -461,7 +452,7 @@ namespace Sockets
         }
     }
 
-    void Socket::Blocking_icall(intptr_t socket, bool block, int32_t* error)
+    void Socket::Blocking(intptr_t socket, bool block, int32_t* error)
     {
         *error = 0;
 
@@ -474,7 +465,7 @@ namespace Sockets
             *error = socketHandle->GetLastError();
     }
 
-    void Socket::Close_icall(intptr_t socket, int32_t* error)
+    void Socket::Close(intptr_t socket, int32_t* error)
     {
         *error = 0;
 
@@ -496,7 +487,7 @@ namespace Sockets
         os::ReleaseSocketHandle(socketHandle.GetHandle());
     }
 
-    void Socket::Connect_icall(intptr_t socket, Il2CppSocketAddress* socket_address, int32_t* error, bool blocking)
+    void Socket::Connect(intptr_t socket, Il2CppSocketAddress* socket_address, int32_t* error)
     {
         *error = 0;
 
@@ -557,10 +548,9 @@ namespace Sockets
             uint32_t scope;
             UnpackIPv6AddressFromBuffer(buffer, length, &port, address, &scope);
 
-            auto status = socketHandle->Connect(address, scope, port);
-            vm::Exception::RaiseIfError(status.GetError());
+            const os::WaitStatus status = socketHandle->Connect(address, scope, port);
 
-            if (status.Get() == kWaitStatusFailure)
+            if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
         }
         else
@@ -570,7 +560,7 @@ namespace Sockets
         }
     }
 
-    void Socket::Disconnect_icall(intptr_t socket, bool reuse, int32_t* error)
+    void Socket::Disconnect(intptr_t socket, bool reuse, int32_t *error)
     {
         *error = 0;
 
@@ -583,7 +573,7 @@ namespace Sockets
             *error = socketHandle->GetLastError();
     }
 
-    void Socket::GetSocketOption_arr_icall(intptr_t socket, SocketOptionLevel level, SocketOptionName name, Il2CppArray** byte_val, int32_t *error)
+    void Socket::GetSocketOptionArray(intptr_t socket, SocketOptionLevel level, SocketOptionName name, Il2CppArray **byte_val, int32_t *error)
     {
         *error = 0;
 
@@ -603,7 +593,7 @@ namespace Sockets
             *error = socketHandle->GetLastError();
     }
 
-    void Socket::GetSocketOption_obj_icall(intptr_t socket, SocketOptionLevel level, SocketOptionName name, Il2CppObject** obj_val, int32_t *error)
+    void Socket::GetSocketOptionObj(intptr_t socket, SocketOptionLevel level, SocketOptionName name, Il2CppObject **obj_val, int32_t *error)
     {
         *error = 0;
 
@@ -659,7 +649,7 @@ namespace Sockets
         }
     }
 
-    void Socket::Listen_icall(intptr_t socket, int32_t backlog, int32_t* error)
+    void Socket::Listen(intptr_t socket, int32_t backlog, int32_t *error)
     {
         *error = 0;
 
@@ -689,7 +679,7 @@ namespace Sockets
         return os::kPollFlagsNone;
     }
 
-    bool Socket::Poll_icall(intptr_t socket, SelectMode mode, int32_t timeout, int32_t* error)
+    bool Socket::Poll(intptr_t socket, SelectMode mode, int32_t timeout, int32_t *error)
     {
         *error = 0;
 
@@ -725,18 +715,21 @@ namespace Sockets
         return (requests[0].revents != os::kPollFlagsNone);
     }
 
-    int32_t Socket::Receive_array_icall(intptr_t socket, os::WSABuf* bufarray, int32_t count, SocketFlags flags, int32_t *error, bool blocking)
+    int32_t Socket::ReceiveArray(intptr_t socket, Il2CppArray *buffers, SocketFlags flags, int32_t *error)
     {
         *error = 0;
 
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(0);
 
+        const int32_t count = ARRAY_LENGTH_AS_INT32(buffers->max_length);
         const os::SocketFlags c_flags = convert_socket_flags(flags);
+
+        os::WSABuf *wsabufs = il2cpp_array_addr(buffers, os::WSABuf, 0);
 
         int32_t len = 0;
 
-        const os::WaitStatus status = socketHandle->ReceiveArray(bufarray, count, &len, c_flags);
+        const os::WaitStatus status = socketHandle->ReceiveArray(wsabufs, count, &len, c_flags);
 
         if (status == kWaitStatusFailure)
         {
@@ -747,18 +740,23 @@ namespace Sockets
         return len;
     }
 
-    int32_t Socket::Receive_icall(intptr_t socket, uint8_t* buffer, int32_t count, SocketFlags flags, int32_t* error, bool blocking)
+    int32_t Socket::Receive(intptr_t socket, Il2CppArray *buffer, int32_t offset, int32_t count, SocketFlags flags, int32_t *error)
     {
         *error = 0;
 
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(0);
 
+        const int32_t a_len = ARRAY_LENGTH_AS_INT32(buffer->max_length);
+        if (offset > a_len - count)
+            return 0;
+
         const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = il2cpp_array_addr(buffer, uint8_t, offset);
 
         int32_t len = 0;
 
-        const os::WaitStatus status = socketHandle->Receive(buffer, count, c_flags, &len);
+        const os::WaitStatus status = socketHandle->Receive(data, count, c_flags, &len);
 
         if (status == kWaitStatusFailure)
             *error = socketHandle->GetLastError();
@@ -766,14 +764,19 @@ namespace Sockets
         return len;
     }
 
-    int32_t Socket::ReceiveFrom_icall(intptr_t socket, uint8_t* buffer, int32_t count, SocketFlags flags, Il2CppSocketAddress** socket_address, int32_t* error, bool blocking)
+    int32_t Socket::RecvFrom(intptr_t socket, Il2CppArray *buffer, int32_t offset, int32_t count, SocketFlags flags, Il2CppSocketAddress **socket_address, int32_t *error)
     {
         *error = 0;
 
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(0);
 
+        const int32_t a_len = ARRAY_LENGTH_AS_INT32(buffer->max_length);
+        if (offset > a_len - count)
+            return 0;
+
         const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = il2cpp_array_addr(buffer, uint8_t, offset);
 
         int32_t len = 0;
 
@@ -803,7 +806,7 @@ namespace Sockets
             const uint16_t port = ((socket_buffer[2] << 8) | socket_buffer[3]);
             const uint32_t address = ((socket_buffer[4] << 24) | (socket_buffer[5] << 16) | (socket_buffer[6] << 8) | socket_buffer[7]);
 
-            const os::WaitStatus status = socketHandle->RecvFrom(address, port, buffer, count, c_flags, &len, info);
+            const os::WaitStatus status = socketHandle->RecvFrom(address, port, data, count, c_flags, &len, info);
 
             if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
@@ -823,10 +826,9 @@ namespace Sockets
                 path[i] = (char)socket_buffer[i + 2];
             }
 
-            auto status = socketHandle->RecvFrom(path, buffer, count, c_flags, &len, info);
-            vm::Exception::RaiseIfError(status.GetError());
+            const os::WaitStatus status = socketHandle->RecvFrom(path, data, count, c_flags, &len, info);
 
-            if (status.Get() == kWaitStatusFailure)
+            if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
         }
         else if (family == os::kAddressFamilyInterNetworkV6)
@@ -836,10 +838,9 @@ namespace Sockets
             uint32_t scope;
             UnpackIPv6AddressFromBuffer(socket_buffer, length, &port, address, &scope);
 
-            auto status = socketHandle->RecvFrom(address, scope, port, buffer, count, c_flags, &len, info);
-            vm::Exception::RaiseIfError(status.GetError());
+            const os::WaitStatus status = socketHandle->RecvFrom(address, scope, port, data, count, c_flags, &len, info);
 
-            if (status.Get() == kWaitStatusFailure)
+            if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
         }
         else
@@ -853,7 +854,7 @@ namespace Sockets
         return len;
     }
 
-    Il2CppSocketAddress* Socket::LocalEndPoint_icall(intptr_t socket, int32_t family, int32_t* error)
+    Il2CppSocketAddress* Socket::LocalEndPoint(intptr_t socket, int32_t* error)
     {
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(NULL);
@@ -878,7 +879,7 @@ namespace Sockets
         return socket_address;
     }
 
-    Il2CppSocketAddress* Socket::RemoteEndPoint_icall(intptr_t socket, int32_t family, int32_t* error)
+    Il2CppSocketAddress* Socket::RemoteEndPoint(intptr_t socket, int32_t* error)
     {
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(NULL);
@@ -903,7 +904,7 @@ namespace Sockets
         return socket_address;
     }
 
-    void Socket::Select_icall(Il2CppArray** sockets, int32_t timeout, int32_t* error)
+    void Socket::Select(Il2CppArray **sockets, int32_t timeout, int32_t *error)
     {
         *error = 0;
 
@@ -1038,7 +1039,7 @@ namespace Sockets
         *sockets = new_sockets;
     }
 
-    bool Socket::SendFile_icall(intptr_t socket, Il2CppString* filename, Il2CppArray* pre_buffer, Il2CppArray* post_buffer, TransmitFileOptions flags, int32_t* error, bool blocking)
+    bool Socket::SendFile(intptr_t socket, Il2CppString *filename, Il2CppArray *pre_buffer, Il2CppArray *post_buffer, TransmitFileOptions flags)
     {
         if (filename == NULL)
             return false;
@@ -1081,11 +1082,16 @@ namespace Sockets
         return true;
     }
 
-    int32_t Socket::SendTo_icall(intptr_t socket, uint8_t* buffer, int32_t count, SocketFlags flags, Il2CppSocketAddress* socket_address, int32_t* error, bool blocking)
+    int32_t Socket::SendTo(intptr_t socket, Il2CppArray *buffer, int32_t offset, int32_t count, SocketFlags flags, Il2CppSocketAddress *socket_address, int32_t *error)
     {
         *error = 0;
 
+        const int32_t a_len = ARRAY_LENGTH_AS_INT32(buffer->max_length);
+        if (offset > a_len - count)
+            return 0;
+
         const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = il2cpp_array_addr(buffer, uint8_t, offset);
 
         int32_t len = 0;
 
@@ -1114,7 +1120,7 @@ namespace Sockets
             const uint16_t port = ((socket_buffer[2] << 8) | socket_buffer[3]);
             const uint32_t address = ((socket_buffer[4] << 24) | (socket_buffer[5] << 16) | (socket_buffer[6] << 8) | socket_buffer[7]);
 
-            const os::WaitStatus status = socketHandle->SendTo(address, port, buffer, count, c_flags, &len);
+            const os::WaitStatus status = socketHandle->SendTo(address, port, data, count, c_flags, &len);
 
             if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
@@ -1134,10 +1140,9 @@ namespace Sockets
                 path[i] = (char)socket_buffer[i + 2];
             }
 
-            auto status = socketHandle->SendTo(path, buffer, count, c_flags, &len);
-            vm::Exception::RaiseIfError(status.GetError());
+            const os::WaitStatus status = socketHandle->SendTo(path, data, count, c_flags, &len);
 
-            if (status.Get() == kWaitStatusFailure)
+            if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
         }
         else if (family == os::kAddressFamilyInterNetworkV6)
@@ -1147,10 +1152,9 @@ namespace Sockets
             uint32_t scope;
             UnpackIPv6AddressFromBuffer(socket_buffer, length, &port, address, &scope);
 
-            auto status = socketHandle->SendTo(address, scope, port, buffer, count, c_flags, &len);
-            vm::Exception::RaiseIfError(status.GetError());
+            const os::WaitStatus status = socketHandle->SendTo(address, scope, port, data, count, c_flags, &len);
 
-            if (status.Get() == kWaitStatusFailure)
+            if (status == kWaitStatusFailure)
                 *error = socketHandle->GetLastError();
         }
         else
@@ -1162,18 +1166,21 @@ namespace Sockets
         return len;
     }
 
-    int32_t Socket::Send_array_icall(intptr_t socket, os::WSABuf* bufarray, int32_t count, SocketFlags flags, int32_t* error, bool blocking)
+    int32_t Socket::SendArray(intptr_t socket, Il2CppArray *buffers, SocketFlags flags, int32_t *error)
     {
         *error = 0;
 
+        const int32_t count = ARRAY_LENGTH_AS_INT32(buffers->max_length);
         const os::SocketFlags c_flags = convert_socket_flags(flags);
+
+        os::WSABuf *wsabufs = il2cpp_array_addr(buffers, os::WSABuf, 0);
 
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(0);
 
         int32_t sent = 0;
 
-        const os::WaitStatus status = socketHandle->SendArray(bufarray, count, &sent, c_flags);
+        const os::WaitStatus status = socketHandle->SendArray(wsabufs, count, &sent, c_flags);
 
         if (status == kWaitStatusFailure)
         {
@@ -1184,18 +1191,23 @@ namespace Sockets
         return sent;
     }
 
-    int32_t Socket::Send_icall(intptr_t socket, uint8_t* buffer, int32_t count, SocketFlags flags, int32_t* error, bool blocking)
+    int32_t Socket::Send(intptr_t socket, Il2CppArray *buffer, int32_t offset, int32_t count, SocketFlags flags, int32_t *error)
     {
         *error = 0;
 
+        const int32_t a_len = ARRAY_LENGTH_AS_INT32(buffer->max_length);
+        if (offset > a_len - count)
+            return 0;
+
         const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = il2cpp_array_addr(buffer, uint8_t, offset);
 
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(0);
 
         int32_t len = 0;
 
-        const os::WaitStatus status = socketHandle->Send(buffer, count, c_flags, &len);
+        const os::WaitStatus status = socketHandle->Send(data, count, c_flags, &len);
 
         if (status == kWaitStatusFailure)
             *error = socketHandle->GetLastError();
@@ -1206,7 +1218,7 @@ namespace Sockets
 #if IL2CPP_SUPPORT_IPV6
     static os::IPv6Address ipaddress_to_ipv6_addr(Il2CppObject *ipaddr)
     {
-        FieldInfo* numbersFieldInfo = vm::Class::GetFieldFromName(ipaddr->klass, "_numbers");
+        FieldInfo* numbersFieldInfo = vm::Class::GetFieldFromName(ipaddr->klass, "m_Numbers");
         IL2CPP_ASSERT(numbersFieldInfo);
         Il2CppArray* data = (Il2CppArray*)vm::Field::GetValueObject(numbersFieldInfo, ipaddr);
 
@@ -1238,7 +1250,7 @@ namespace Sockets
 
 #endif // IL2CPP_SUPPORT_IPV6
 
-    void Socket::SetSocketOption_icall(intptr_t socket, SocketOptionLevel level, SocketOptionName name, Il2CppObject* obj_val, Il2CppArray* byte_val, int32_t int_val, int32_t* error)
+    void Socket::SetSocketOption(intptr_t socket, SocketOptionLevel level, SocketOptionName name, Il2CppObject *obj_val, Il2CppArray *byte_val, int32_t int_val, int32_t *error)
     {
         *error = 0;
 
@@ -1291,8 +1303,7 @@ namespace Sockets
                     {
                         FieldInfo *group_field_info = vm::Class::GetFieldFromName(obj_val->klass, "group");
                         Il2CppObject* group_obj = vm::Field::GetValueObject(group_field_info, obj_val);
-                        const FieldInfo *group_address_field_info = vm::Class::GetFieldFromName(group_obj->klass, "_addressOrScopeId");
-                        IL2CPP_ASSERT(group_address_field_info != NULL);
+                        const FieldInfo *group_address_field_info = vm::Class::GetFieldFromName(group_obj->klass, "m_Address");
                         const uint32_t group_address = *((uint32_t*)(uint64_t*)((char*)group_obj + group_address_field_info->offset));
 
                         uint32_t local_address = 0;
@@ -1302,8 +1313,7 @@ namespace Sockets
                             Il2CppObject* local_obj = vm::Field::GetValueObject(local_field_info, obj_val);
                             if (local_obj != NULL)
                             {
-                                const FieldInfo *local_address_field_info = vm::Class::GetFieldFromName(local_obj->klass, "_addressOrScopeId");
-                                IL2CPP_ASSERT(local_address_field_info != NULL);
+                                const FieldInfo *local_address_field_info = vm::Class::GetFieldFromName(local_obj->klass, "m_Address");
                                 local_address = *((uint32_t*)(uint64_t*)((char*)local_obj + local_address_field_info->offset));
                             }
                         }
@@ -1326,7 +1336,7 @@ namespace Sockets
             *error = socketHandle->GetLastError();
     }
 
-    void Socket::Shutdown_icall(intptr_t socket, SocketShutdown how, int32_t* error)
+    void Socket::Shutdown(intptr_t socket, SocketShutdown how, int32_t* error)
     {
         *error = 0;
 
@@ -1339,7 +1349,7 @@ namespace Sockets
             *error = socketHandle->GetLastError();
     }
 
-    intptr_t Socket::Socket_icall(AddressFamily family, SocketType type, ProtocolType protocol, int32_t* error)
+    intptr_t Socket::Socket_internal(Il2CppObject *self, AddressFamily family, SocketType type, ProtocolType protocol, int32_t* error)
     {
         intptr_t socket = 0;
 
@@ -1387,14 +1397,14 @@ namespace Sockets
         return socket;
     }
 
-    int32_t Socket::IOControl_icall(intptr_t socket, int32_t ioctl_code, Il2CppArray* input, Il2CppArray* output, int32_t* error)
+    int32_t Socket::WSAIoctl(intptr_t socket, int32_t code, Il2CppArray *input, Il2CppArray *output, int32_t *error)
     {
         *error = 0;
 
         AUTO_ACQUIRE_SOCKET;
         RETURN_IF_SOCKET_IS_INVALID(-1);
 
-        if (ioctl_code == 0x5421 /* FIONBIO */)
+        if (code == 0x5421 /* FIONBIO */)
         {
             // Invalid command. Must use Socket.Blocking
             return -1;
@@ -1408,7 +1418,7 @@ namespace Sockets
 
         int32_t output_bytes = 0;
 
-        const os::WaitStatus status = socketHandle->Ioctl(ioctl_code, in_buffer, in_length, out_buffer, out_length, &output_bytes);
+        const os::WaitStatus status = socketHandle->Ioctl(code, in_buffer, in_length, out_buffer, out_length, &output_bytes);
 
         if (status == kWaitStatusFailure)
         {
@@ -1417,6 +1427,201 @@ namespace Sockets
         }
 
         return output_bytes;
+    }
+
+    bool Socket::SendFile_internal(intptr_t sock, Il2CppString* filename, Il2CppArray* pre_buffer, Il2CppArray* post_buffer, int32_t flags, int32_t* error, bool blocking)
+    {
+        return SendFile(sock, filename, pre_buffer, post_buffer, static_cast<TransmitFileOptions>(flags));
+    }
+
+    bool Socket::SupportsPortReuse(ProtocolType proto)
+    {
+        IL2CPP_NOT_IMPLEMENTED_ICALL(Socket::SupportsPortReuse);
+        IL2CPP_UNREACHABLE;
+        return false;
+    }
+
+    int32_t Socket::IOControl_internal(intptr_t sock, int32_t ioctl_code, Il2CppArray* input, Il2CppArray* output, int32_t* error)
+    {
+        return WSAIoctl(sock, ioctl_code, input, output, error);
+    }
+
+    int32_t Socket::ReceiveFrom_internal(intptr_t socket, uint8_t* buffer, int32_t count, SocketFlags flags, Il2CppSocketAddress** socket_address, int32_t* error, bool blocking)
+    {
+        *error = 0;
+
+        AUTO_ACQUIRE_SOCKET;
+        RETURN_IF_SOCKET_IS_INVALID(0);
+
+        const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = buffer;
+
+        int32_t len = 0;
+
+        const int32_t length = ARRAY_LENGTH_AS_INT32((*socket_address)->data->max_length);
+        const uint8_t *socket_buffer = (uint8_t*)il2cpp::vm::Array::GetFirstElementAddress((*socket_address)->data);
+
+        if (length < 2)
+        {
+            vm::Exception::Raise(vm::Exception::GetSystemException());
+            return 0;
+        }
+
+        const os::AddressFamily family = convert_address_family((AddressFamily)(socket_buffer[0] | (socket_buffer[1] << 8)));
+
+        os::EndPointInfo info;
+
+        info.family = os::kAddressFamilyError;
+
+        if (family == os::kAddressFamilyInterNetwork)
+        {
+            if (length < 8)
+            {
+                vm::Exception::Raise(vm::Exception::GetSystemException());
+                return 0;
+            }
+
+            const uint16_t port = ((socket_buffer[2] << 8) | socket_buffer[3]);
+            const uint32_t address = ((socket_buffer[4] << 24) | (socket_buffer[5] << 16) | (socket_buffer[6] << 8) | socket_buffer[7]);
+
+            const os::WaitStatus status = socketHandle->RecvFrom(address, port, data, count, c_flags, &len, info);
+
+            if (status == kWaitStatusFailure)
+                *error = socketHandle->GetLastError();
+        }
+        else if (family == os::kAddressFamilyUnix)
+        {
+            if (length - 2 >= END_POINT_MAX_PATH_LEN)
+            {
+                vm::Exception::Raise(vm::Exception::GetSystemException());
+                return 0;
+            }
+
+            char path[END_POINT_MAX_PATH_LEN] = { 0 };
+
+            for (int32_t i = 0; i < (length - 2); ++i)
+            {
+                path[i] = (char)socket_buffer[i + 2];
+            }
+
+            const os::WaitStatus status = socketHandle->RecvFrom(path, data, count, c_flags, &len, info);
+
+            if (status == kWaitStatusFailure)
+                *error = socketHandle->GetLastError();
+        }
+        else if (family == os::kAddressFamilyInterNetworkV6)
+        {
+            uint16_t port;
+            uint8_t address[ipv6AddressSize] = { 0 };
+            uint32_t scope;
+            UnpackIPv6AddressFromBuffer(socket_buffer, length, &port, address, &scope);
+
+            const os::WaitStatus status = socketHandle->RecvFrom(address, scope, port, data, count, c_flags, &len, info);
+
+            if (status == kWaitStatusFailure)
+                *error = socketHandle->GetLastError();
+        }
+        else
+        {
+            *error = os::kWSAeafnosupport;
+            return 0;
+        }
+
+        *socket_address = (info.family == os::kAddressFamilyError) ? NULL : end_point_info_to_socket_address(info);
+
+        return len;
+    }
+
+    int32_t Socket::SendTo_internal(intptr_t socket, uint8_t* buffer, int32_t count, SocketFlags flags, Il2CppSocketAddress* socket_address, int32_t* error, bool blocking)
+    {
+        *error = 0;
+
+        const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = buffer;
+
+        int32_t len = 0;
+
+        const int32_t length = ARRAY_LENGTH_AS_INT32(socket_address->data->max_length);
+        const uint8_t *socket_buffer = (uint8_t*)il2cpp::vm::Array::GetFirstElementAddress(socket_address->data);
+
+        if (length < 2)
+        {
+            vm::Exception::Raise(vm::Exception::GetSystemException());
+            return 0;
+        }
+
+        const os::AddressFamily family = convert_address_family((AddressFamily)(socket_buffer[0] | (socket_buffer[1] << 8)));
+
+        AUTO_ACQUIRE_SOCKET;
+        RETURN_IF_SOCKET_IS_INVALID(0);
+
+        if (family == os::kAddressFamilyInterNetwork)
+        {
+            if (length < 8)
+            {
+                vm::Exception::Raise(vm::Exception::GetSystemException());
+                return 0;
+            }
+
+            const uint16_t port = ((socket_buffer[2] << 8) | socket_buffer[3]);
+            const uint32_t address = ((socket_buffer[4] << 24) | (socket_buffer[5] << 16) | (socket_buffer[6] << 8) | socket_buffer[7]);
+
+            const os::WaitStatus status = socketHandle->SendTo(address, port, data, count, c_flags, &len);
+
+            if (status == kWaitStatusFailure)
+                *error = socketHandle->GetLastError();
+        }
+        else if (family == os::kAddressFamilyUnix)
+        {
+            if (length - 2 >= END_POINT_MAX_PATH_LEN)
+            {
+                vm::Exception::Raise(vm::Exception::GetSystemException());
+                return 0;
+            }
+
+            char path[END_POINT_MAX_PATH_LEN] = { 0 };
+
+            for (int32_t i = 0; i < (length - 2); ++i)
+            {
+                path[i] = (char)socket_buffer[i + 2];
+            }
+
+            const os::WaitStatus status = socketHandle->SendTo(path, data, count, c_flags, &len);
+
+            if (status == kWaitStatusFailure)
+                *error = socketHandle->GetLastError();
+        }
+        else if (family == os::kAddressFamilyInterNetworkV6)
+        {
+            uint16_t port;
+            uint8_t address[ipv6AddressSize] = { 0 };
+            uint32_t scope;
+            UnpackIPv6AddressFromBuffer(socket_buffer, length, &port, address, &scope);
+
+            const os::WaitStatus status = socketHandle->SendTo(address, scope, port, data, count, c_flags, &len);
+
+            if (status == kWaitStatusFailure)
+                *error = socketHandle->GetLastError();
+        }
+        else
+        {
+            *error = os::kWSAeafnosupport;
+            return 0;
+        }
+
+        return len;
+    }
+
+    Il2CppSocketAddress* Socket::LocalEndPoint_internal(intptr_t socket, int32_t family, int32_t* error)
+    {
+        // We should be able to ignore the family, as the socket should already have that information.
+        return LocalEndPoint(socket, error);
+    }
+
+    Il2CppSocketAddress* Socket::RemoteEndPoint_internal(intptr_t socket, int32_t family, int32_t* error)
+    {
+        // We should be able to ignore the family, as the socket should already have that information.
+        return RemoteEndPoint(socket, error);
     }
 
     static void STDCALL
@@ -1432,10 +1637,98 @@ namespace Sockets
         //IL2CPP_UNREACHABLE;
     }
 
-    bool Socket::Duplicate_icall(intptr_t handle, int32_t targetProcessId, intptr_t* duplicateHandle, int32_t* error)
+    void Socket::Connect_internal(intptr_t sock, Il2CppSocketAddress* sa, int32_t* error, bool blocking)
     {
-        IL2CPP_NOT_IMPLEMENTED_ICALL(Socket::Duplicate_icall);
+        Connect(sock, sa, error);
+    }
+
+    bool Socket::Duplicate_internal(intptr_t handle, int32_t targetProcessId, intptr_t *duplicate_handle, int32_t *werror)
+    {
+        IL2CPP_NOT_IMPLEMENTED_ICALL(Socket::Duplicate_internal);
         return false;
+    }
+
+    int32_t Socket::ReceiveArray40(intptr_t socket, void *buffers, int32_t count, SocketFlags flags, int32_t *error, bool blocking)
+    {
+        *error = 0;
+
+        AUTO_ACQUIRE_SOCKET;
+        RETURN_IF_SOCKET_IS_INVALID(0);
+
+        const os::SocketFlags c_flags = convert_socket_flags(flags);
+
+        int32_t len = 0;
+
+        const os::WaitStatus status = socketHandle->ReceiveArray((os::WSABuf*)buffers, count, &len, c_flags);
+
+        if (status == kWaitStatusFailure)
+        {
+            *error = socketHandle->GetLastError();
+            return 0;
+        }
+
+        return len;
+    }
+
+    int32_t Socket::Receive40(intptr_t socket, uint8_t *buffer, int32_t count, SocketFlags flags, int32_t *error, bool blocking)
+    {
+        *error = 0;
+
+        AUTO_ACQUIRE_SOCKET;
+        RETURN_IF_SOCKET_IS_INVALID(0);
+
+        const os::SocketFlags c_flags = convert_socket_flags(flags);
+
+        int32_t len = 0;
+
+        const os::WaitStatus status = socketHandle->Receive(buffer, count, c_flags, &len);
+
+        if (status == kWaitStatusFailure)
+            *error = socketHandle->GetLastError();
+
+        return len;
+    }
+
+    int32_t Socket::SendArray40(intptr_t socket, void *wsabufs, int32_t count, SocketFlags flags, int32_t *error, bool blocking)
+    {
+        *error = 0;
+
+        const os::SocketFlags c_flags = convert_socket_flags(flags);
+
+        AUTO_ACQUIRE_SOCKET;
+        RETURN_IF_SOCKET_IS_INVALID(0);
+
+        int32_t sent = 0;
+
+        const os::WaitStatus status = socketHandle->SendArray((os::WSABuf*)wsabufs, count, &sent, c_flags);
+
+        if (status == kWaitStatusFailure)
+        {
+            *error = socketHandle->GetLastError();
+            return 0;
+        }
+
+        return sent;
+    }
+
+    int32_t Socket::Send40(intptr_t socket, uint8_t *buffer, int32_t count, SocketFlags flags, int32_t *error, bool blocking)
+    {
+        *error = 0;
+
+        const os::SocketFlags c_flags = convert_socket_flags(flags);
+        const uint8_t *data = buffer;
+
+        AUTO_ACQUIRE_SOCKET;
+        RETURN_IF_SOCKET_IS_INVALID(0);
+
+        int32_t len = 0;
+
+        const os::WaitStatus status = socketHandle->Send(data, count, c_flags, &len);
+
+        if (status == kWaitStatusFailure)
+            *error = socketHandle->GetLastError();
+
+        return len;
     }
 
     bool Socket::IsProtocolSupported_internal(int32_t networkInterface)

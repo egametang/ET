@@ -18,8 +18,6 @@ namespace metadata
 
     size_t Il2CppGenericContextHash::Hash(const Il2CppGenericContext* context)
     {
-        //size_t classInstHash = HashUtils::AlignedPointerHash(context->class_inst);
-        //size_t methodInstHash = HashUtils::AlignedPointerHash(context->method_inst);
         size_t classInstHash = 0;
         size_t methodInstHash = 0;
 
@@ -27,6 +25,7 @@ namespace metadata
             classInstHash = Il2CppGenericInstHash::Hash(context->class_inst);
         if (context->method_inst)
             methodInstHash = Il2CppGenericInstHash::Hash(context->method_inst);
+
         return HashUtils::Combine(classInstHash, methodInstHash);
     }
 } /* namespace vm */

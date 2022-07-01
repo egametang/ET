@@ -48,12 +48,6 @@ namespace Threading
         return retval;
     }
 
-    void Interlocked::CompareExchangeObject(void** location, void** value, void** comparand, void** res)
-    {
-        *res = il2cpp::os::Atomic::CompareExchangePointer(location, *value, *comparand);
-        il2cpp::gc::GarbageCollector::SetWriteBarrier(location);
-    }
-
     intptr_t Interlocked::CompareExchangeIntPtr(intptr_t* location, intptr_t value, intptr_t comparand)
     {
         return reinterpret_cast<intptr_t>(il2cpp::os::Atomic::CompareExchangePointer(reinterpret_cast<void**>(location), reinterpret_cast<void*>(value), reinterpret_cast<void*>(comparand)));
@@ -191,12 +185,6 @@ namespace Threading
         return retval;
     }
 
-    void Interlocked::ExchangeObject(void** location1, void** value, void** res)
-    {
-        *res = il2cpp::os::Atomic::ExchangePointer(location1, *value);
-        il2cpp::gc::GarbageCollector::SetWriteBarrier(location1);
-    }
-
     float Interlocked::ExchangeSingle(float* location1, float value)
     {
         IntFloatUnion val, ret;
@@ -222,12 +210,6 @@ namespace Threading
         int32_t result = CompareExchange(location1, value, comparand);
         *succeeded = result == comparand;
         return result;
-    }
-
-    void Interlocked::MemoryBarrierProcessWide()
-    {
-        IL2CPP_NOT_IMPLEMENTED_ICALL(Interlocked::MemoryBarrierProcessWide);
-        IL2CPP_UNREACHABLE;
     }
 } /* namespace Threading */
 } /* namespace System */

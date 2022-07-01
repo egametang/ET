@@ -49,7 +49,6 @@ typedef enum Il2CppTypeNameFormat
 typedef struct Il2CppDefaults
 {
     Il2CppImage *corlib;
-    Il2CppImage *corlib_gen;
     Il2CppClass *object_class;
     Il2CppClass *byte_class;
     Il2CppClass *void_class;
@@ -87,11 +86,11 @@ typedef struct Il2CppDefaults
     Il2CppClass *mono_method_message_class;*/
     Il2CppClass *appdomain_class;
     Il2CppClass *appdomain_setup_class;
-    Il2CppClass *member_info_class;
     Il2CppClass *field_info_class;
     Il2CppClass *method_info_class;
     Il2CppClass *property_info_class;
     Il2CppClass *event_info_class;
+    Il2CppClass *mono_event_info_class;
     Il2CppClass *stringbuilder_class;
     /*Il2CppClass *math_class;*/
     Il2CppClass *stack_frame_class;
@@ -125,16 +124,21 @@ typedef struct Il2CppDefaults
     Il2CppClass *handleref_class;*/
     Il2CppClass *attribute_class;
     Il2CppClass *customattribute_data_class;
-    Il2CppClass *customattribute_typed_argument_class;
-    Il2CppClass *customattribute_named_argument_class;
     //Il2CppClass *critical_finalizer_object;
     Il2CppClass *version;
     Il2CppClass *culture_info;
     Il2CppClass *async_call_class;
     Il2CppClass *assembly_class;
+    Il2CppClass *mono_assembly_class;
     Il2CppClass *assembly_name_class;
+    Il2CppClass *mono_field_class;
+    Il2CppClass *mono_method_class;
+    Il2CppClass *mono_method_info_class;
+    Il2CppClass *mono_property_info_class;
     Il2CppClass *parameter_info_class;
+    Il2CppClass *mono_parameter_info_class;
     Il2CppClass *module_class;
+    Il2CppClass *pointer_class;
     Il2CppClass *system_exception_class;
     Il2CppClass *argument_exception_class;
     Il2CppClass *wait_handle_class;
@@ -176,8 +180,6 @@ typedef struct Il2CppDefaults
     Il2CppClass* uint16_shared_enum;
     Il2CppClass* uint32_shared_enum;
     Il2CppClass* uint64_shared_enum;
-    Il2CppClass* il2cpp_fully_shared_type;
-    Il2CppClass* il2cpp_fully_shared_struct_type;
 } Il2CppDefaults;
 
 extern LIBIL2CPP_CODEGEN_API Il2CppDefaults il2cpp_defaults;
@@ -193,6 +195,8 @@ typedef struct CustomAttributesCache
     int count;
     Il2CppObject** attributes;
 } CustomAttributesCache;
+
+typedef void (*CustomAttributesCacheGenerator)(CustomAttributesCache*);
 
 #ifndef THREAD_STATIC_FIELD_OFFSET
 #define THREAD_STATIC_FIELD_OFFSET -1
@@ -228,7 +232,15 @@ typedef struct EventInfo
     uint32_t token;
 } EventInfo;
 
-typedef void (*InvokerMethod)(Il2CppMethodPointer, const MethodInfo*, void*, void**, void*);
+typedef struct ParameterInfo
+{
+    const char* name;
+    int32_t position;
+    uint32_t token;
+    const Il2CppType* parameter_type;
+} ParameterInfo;
+
+typedef void* (*InvokerMethod)(Il2CppMethodPointer, const MethodInfo*, void*, void**);
 
 typedef enum MethodVariableKind
 {
@@ -329,12 +341,11 @@ typedef union Il2CppRGCTXData
 typedef struct MethodInfo
 {
     Il2CppMethodPointer methodPointer;
-    Il2CppMethodPointer virtualMethodPointer;
     InvokerMethod invoker_method;
     const char* name;
     Il2CppClass *klass;
     const Il2CppType *return_type;
-    const Il2CppType** parameters;
+    const ParameterInfo* parameters;
 
     union
     {
@@ -347,6 +358,7 @@ typedef struct MethodInfo
     {
         const Il2CppGenericMethod* genericMethod; /* is_inflated is true */
         Il2CppMetadataGenericContainerHandle genericContainerHandle; /* is_inflated is false and is_generic is true */
+        Il2CppMethodPointer nativeFunction; /* if is_marshaled_from_native is true */
     };
 
     uint32_t token;
@@ -357,8 +369,7 @@ typedef struct MethodInfo
     uint8_t is_generic : 1; /* true if method is a generic method definition */
     uint8_t is_inflated : 1; /* true if declaring_type is a generic instance or if method is a generic instance*/
     uint8_t wrapper_type : 1; /* always zero (MONO_WRAPPER_NONE) needed for the debugger */
-    uint8_t has_full_generic_sharing_signature : 1;
-    uint8_t indirect_call_via_invokers : 1;
+    uint8_t is_marshaled_from_native : 1; /* a fake MethodInfo wrapping a native function pointer */
 
     // ==={{ huatuo
     void* huatuoData;
@@ -417,7 +428,7 @@ typedef struct Il2CppClass
     uint32_t initializationExceptionGCHandle;
 
     uint32_t cctor_started;
-    uint32_t cctor_finished_or_no_cctor;
+    uint32_t cctor_finished;
     ALIGN_TYPE(8) size_t cctor_thread;
 
     // Remaining fields are always valid except where noted
@@ -448,13 +459,13 @@ typedef struct Il2CppClass
     uint8_t naturalAligment; // Alignment of this type without accounting for packing
     uint8_t packingSize;
 
-    // this is critical for performance of Class::InitFromCodegen. Equals to initialized && !initializationExceptionGCHandle at all times.
+    // this is critical for performance of Class::InitFromCodegen. Equals to initialized && !has_initialization_error at all times.
     // Use Class::UpdateInitializedAndNoError to update
     uint8_t initialized_and_no_error : 1;
 
+    uint8_t valuetype : 1;
     uint8_t initialized : 1;
     uint8_t enumtype : 1;
-    uint8_t nullabletype : 1;
     uint8_t is_generic : 1;
     uint8_t has_references : 1; // valid when size_inited is true
     uint8_t init_pending : 1;
@@ -465,7 +476,7 @@ typedef struct Il2CppClass
     uint8_t is_blittable : 1;
     uint8_t is_import_or_windows_runtime : 1;
     uint8_t is_vtable_initialized : 1;
-    uint8_t is_byref_like : 1;
+    uint8_t has_initialization_error : 1;
     VirtualInvokeData vtable[IL2CPP_ZERO_LEN_ARRAY];
 } Il2CppClass;
 
@@ -489,7 +500,6 @@ typedef struct Il2CppDomain
     Il2CppAppDomain* domain;
     Il2CppAppDomainSetup* setup;
     Il2CppAppContext* default_context;
-    Il2CppObject* ephemeron_tombstone;
     const char* friendly_name;
     uint32_t domain_id;
 
@@ -548,7 +558,6 @@ typedef struct Il2CppCodeGenOptions
 {
     bool enablePrimitiveValueTypeGenericSharing;
     int maximumRuntimeGenericDepth;
-    int recursiveGenericIterations;
 } Il2CppCodeGenOptions;
 
 typedef struct Il2CppRange
@@ -598,6 +607,7 @@ typedef struct Il2CppCodeGenModule
     const uint32_t rgctxsCount;
     const Il2CppRGCTXDefinition* rgctxs;
     const Il2CppDebuggerMetadataRegistration *debuggerMetadata;
+    const CustomAttributesCacheGenerator* customAttributeCacheGenerator;
     const Il2CppMethodPointer moduleInitializer;
     TypeDefinitionIndex* staticConstructorTypeIndices;
     const Il2CppMetadataRegistration* metadataRegistration; // Per-assembly mode only

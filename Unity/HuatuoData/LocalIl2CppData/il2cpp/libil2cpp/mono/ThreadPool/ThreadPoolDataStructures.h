@@ -5,8 +5,8 @@
 #include "Baselib.h"
 #include "Cpp/Atomic.h"
 #include "Cpp/ReentrantLock.h"
-#include "Cpp/ConditionVariable.h"
 
+#include "os/ConditionVariable.h"
 #include "os/Mutex.h"
 
 struct Il2CppDomain;
@@ -75,8 +75,8 @@ struct ThreadPool
 
     std::vector<Il2CppInternalThread*> working_threads;
     int32_t parked_threads_count;
-    baselib::ConditionVariable parked_threads_cond;
-    baselib::Lock active_threads_lock; /* protect access to working_threads and parked_threads */
+    il2cpp::os::ConditionVariable parked_threads_cond;
+    il2cpp::os::FastMutex active_threads_lock; /* protect access to working_threads and parked_threads */
 
     uint32_t worker_creation_current_second;
     uint32_t worker_creation_current_count;

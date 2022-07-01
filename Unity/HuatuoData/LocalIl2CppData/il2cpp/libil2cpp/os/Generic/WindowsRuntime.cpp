@@ -1,7 +1,6 @@
 #include "il2cpp-config.h"
+#include "il2cpp-vm-support.h"
 #include "os/WindowsRuntime.h"
-#include "utils/Expected.h"
-#include "utils/Il2CppError.h"
 
 #if IL2CPP_USE_GENERIC_WINDOWSRUNTIME
 
@@ -58,21 +57,30 @@ namespace os
         return IL2CPP_COR_E_PLATFORMNOTSUPPORTED;
     }
 
-    utils::Expected<const Il2CppChar*> WindowsRuntime::GetHStringBuffer(Il2CppHString hstring, uint32_t* length)
+    const Il2CppChar* WindowsRuntime::GetHStringBuffer(Il2CppHString hstring, uint32_t* length)
     {
         NO_UNUSED_WARNING(hstring);
         NO_UNUSED_WARNING(length);
-        return utils::Il2CppError(utils::ComError, IL2CPP_COR_E_PLATFORMNOTSUPPORTED);
+        IL2CPP_VM_RAISE_COM_EXCEPTION(IL2CPP_COR_E_PLATFORMNOTSUPPORTED, false);
+        return NULL;
     }
 
-    utils::Expected<const Il2CppNativeChar*> WindowsRuntime::GetNativeHStringBuffer(Il2CppHString hstring, uint32_t* length)
+    const Il2CppNativeChar* WindowsRuntime::GetNativeHStringBuffer(Il2CppHString hstring, uint32_t* length)
     {
         NO_UNUSED_WARNING(hstring);
         NO_UNUSED_WARNING(length);
-        return utils::Il2CppError(utils::ComError, IL2CPP_COR_E_PLATFORMNOTSUPPORTED);
+        IL2CPP_VM_RAISE_COM_EXCEPTION(IL2CPP_COR_E_PLATFORMNOTSUPPORTED, false);
+        return NULL;
     }
 
-    utils::Expected<il2cpp_hresult_t> WindowsRuntime::PreallocateHStringBuffer(uint32_t length, Il2CppNativeChar** mutableBuffer, void** bufferHandle)
+    Il2CppString* WindowsRuntime::HStringToManagedString(Il2CppHString hstring)
+    {
+        NO_UNUSED_WARNING(hstring);
+        IL2CPP_VM_RAISE_COM_EXCEPTION(IL2CPP_COR_E_PLATFORMNOTSUPPORTED, false);
+        return NULL;
+    }
+
+    il2cpp_hresult_t WindowsRuntime::PreallocateHStringBuffer(uint32_t length, Il2CppNativeChar** mutableBuffer, void** bufferHandle)
     {
         NO_UNUSED_WARNING(length);
         NO_UNUSED_WARNING(mutableBuffer);
@@ -80,14 +88,14 @@ namespace os
         return IL2CPP_COR_E_PLATFORMNOTSUPPORTED;
     }
 
-    utils::Expected<il2cpp_hresult_t> WindowsRuntime::PromoteHStringBuffer(void* bufferHandle, Il2CppHString* hstring)
+    il2cpp_hresult_t WindowsRuntime::PromoteHStringBuffer(void* bufferHandle, Il2CppHString* hstring)
     {
         NO_UNUSED_WARNING(bufferHandle);
         NO_UNUSED_WARNING(hstring);
         return IL2CPP_COR_E_PLATFORMNOTSUPPORTED;
     }
 
-    utils::Expected<il2cpp_hresult_t> WindowsRuntime::DeleteHStringBuffer(void* bufferHandle)
+    il2cpp_hresult_t WindowsRuntime::DeleteHStringBuffer(void* bufferHandle)
     {
         NO_UNUSED_WARNING(bufferHandle);
         return IL2CPP_COR_E_PLATFORMNOTSUPPORTED;
@@ -98,11 +106,10 @@ namespace os
         return NULL;
     }
 
-    void WindowsRuntime::OriginateLanguageException(il2cpp_hresult_t hresult, Il2CppException* ex, Il2CppString* exceptionString, GetOrCreateFunc createCCWCallback)
+    void WindowsRuntime::OriginateLanguageException(Il2CppException* ex, Il2CppString* exceptionString)
     {
         NO_UNUSED_WARNING(ex);
         NO_UNUSED_WARNING(exceptionString);
-        NO_UNUSED_WARNING(createCCWCallback);
     }
 
     void WindowsRuntime::EnableErrorReporting()

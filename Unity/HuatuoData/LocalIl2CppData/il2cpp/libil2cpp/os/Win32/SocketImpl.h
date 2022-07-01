@@ -9,7 +9,6 @@
 #include "os/Socket.h"
 #include "os/ErrorCodes.h"
 #include "os/WaitStatus.h"
-#include "utils/Expected.h"
 #include "utils/NonCopyable.h"
 
 struct sockaddr;
@@ -69,11 +68,11 @@ namespace os
         WaitStatus ReceiveArray(WSABuf *wsabufs, int32_t count, int32_t *len, SocketFlags c_flags);
 
         WaitStatus SendTo(uint32_t address, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
-        utils::Expected<WaitStatus> SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
+        WaitStatus SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
         WaitStatus SendTo(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
 
         WaitStatus RecvFrom(uint32_t address, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
-        utils::Expected<WaitStatus> RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
+        WaitStatus RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
         WaitStatus RecvFrom(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
 
         WaitStatus Available(int32_t *amount);

@@ -1,11 +1,11 @@
 #include "il2cpp-config.h"
-#include "il2cpp-object-internals.h"
 #include "CultureData.h"
+#include "CultureInfoInternals.h"
+#include "CultureInfoTables.h"
 #include "il2cpp-api.h"
-#include <icalls/mscorlib/System.Globalization/CultureInfoInternals.h>
-#include <icalls/mscorlib/System.Globalization/CultureInfoTables.h>
-#include "gc/WriteBarrier.h"
-#include <vm/Array.h>
+#include "il2cpp-object-internals.h"
+#include "il2cpp-class-internals.h"
+#include "vm/Array.h"
 
 namespace il2cpp
 {
@@ -57,39 +57,6 @@ namespace Globalization
         return ret;
     }
 
-    const void* CultureData::fill_number_data(int32_t number_index, NumberFormatEntryManaged* managed)
-    {
-        IL2CPP_ASSERT(number_index >= 0 && number_index < IL2CPP_ARRAY_SIZE(number_format_entries));
-
-        NumberFormatEntry const * const native = &number_format_entries[number_index];
-
-        managed->currency_decimal_digits = native->currency_decimal_digits;
-        managed->currency_decimal_separator = native->currency_decimal_separator;
-        managed->currency_group_separator = native->currency_group_separator;
-        managed->currency_group_sizes0 = native->currency_group_sizes[0];
-        managed->currency_group_sizes1 = native->currency_group_sizes[1];
-        managed->currency_negative_pattern = native->currency_negative_pattern;
-        managed->currency_positive_pattern = native->currency_positive_pattern;
-        managed->currency_symbol = native->currency_symbol;
-        managed->nan_symbol = native->nan_symbol;
-        managed->negative_infinity_symbol = native->negative_infinity_symbol;
-        managed->negative_sign = native->negative_sign;
-        managed->number_decimal_digits = native->number_decimal_digits;
-        managed->number_decimal_separator = native->number_decimal_separator;
-        managed->number_group_separator = native->number_group_separator;
-        managed->number_group_sizes0 = native->number_group_sizes[0];
-        managed->number_group_sizes1  = native->number_group_sizes[1];
-        managed->number_negative_pattern = native->number_negative_pattern;
-        managed->per_mille_symbol = native->per_mille_symbol;
-        managed->percent_negative_pattern = native->percent_negative_pattern;
-        managed->percent_positive_pattern = native->percent_positive_pattern;
-        managed->percent_symbol = native->percent_symbol;
-        managed->positive_infinity_symbol = native->positive_infinity_symbol;
-        managed->positive_sign = native->positive_sign;
-
-        return locale_strings;
-    }
-
     void CultureData::fill_culture_data(Il2CppCultureData* _this, int32_t datetimeIndex)
     {
         const DateTimeFormatEntry *dfe;
@@ -106,6 +73,39 @@ namespace Globalization
         IL2CPP_OBJECT_SETREF(_this, ShortTimePatterns, short_time_patterns);
         _this->FirstDayOfWeek = dfe->first_day_of_week;
         _this->CalendarWeekRule = dfe->calendar_week_rule;
+    }
+
+    void CultureData::fill_number_data(Il2CppNumberFormatInfo* number, int32_t numberIndex)
+    {
+        const NumberFormatEntry *nfe;
+
+        IL2CPP_ASSERT(numberIndex >= 0);
+
+        nfe = &number_format_entries[numberIndex];
+
+        number->currencyDecimalDigits = nfe->currency_decimal_digits;
+        IL2CPP_OBJECT_SETREF(number, currencyDecimalSeparator, il2cpp_string_new(idx2string(nfe->currency_decimal_separator)));
+        IL2CPP_OBJECT_SETREF(number, currencyGroupSeparator, il2cpp_string_new(idx2string(nfe->currency_group_separator)));
+        Il2CppArray *currency_sizes_arr = culture_data_create_group_sizes_array(nfe->currency_group_sizes, GROUP_SIZE);
+        IL2CPP_OBJECT_SETREF(number, currencyGroupSizes, currency_sizes_arr);
+        number->currencyNegativePattern = nfe->currency_negative_pattern;
+        number->currencyPositivePattern = nfe->currency_positive_pattern;
+        IL2CPP_OBJECT_SETREF(number, currencySymbol, il2cpp_string_new(idx2string(nfe->currency_symbol)));
+        IL2CPP_OBJECT_SETREF(number, naNSymbol, il2cpp_string_new(idx2string(nfe->nan_symbol)));
+        IL2CPP_OBJECT_SETREF(number, negativeInfinitySymbol, il2cpp_string_new(idx2string(nfe->negative_infinity_symbol)));
+        IL2CPP_OBJECT_SETREF(number, negativeSign, il2cpp_string_new(idx2string(nfe->negative_sign)));
+        number->numberDecimalDigits = nfe->number_decimal_digits;
+        IL2CPP_OBJECT_SETREF(number, numberDecimalSeparator, il2cpp_string_new(idx2string(nfe->number_decimal_separator)));
+        IL2CPP_OBJECT_SETREF(number, numberGroupSeparator, il2cpp_string_new(idx2string(nfe->number_group_separator)));
+        Il2CppArray *number_sizes_arr = culture_data_create_group_sizes_array(nfe->number_group_sizes, GROUP_SIZE);
+        IL2CPP_OBJECT_SETREF(number, numberGroupSizes, number_sizes_arr);
+        number->numberNegativePattern = nfe->number_negative_pattern;
+        number->percentNegativePattern = nfe->percent_negative_pattern;
+        number->percentPositivePattern = nfe->percent_positive_pattern;
+        IL2CPP_OBJECT_SETREF(number, percentSymbol, il2cpp_string_new(idx2string(nfe->percent_symbol)));
+        IL2CPP_OBJECT_SETREF(number, perMilleSymbol, il2cpp_string_new(idx2string(nfe->per_mille_symbol)));
+        IL2CPP_OBJECT_SETREF(number, positiveInfinitySymbol, il2cpp_string_new(idx2string(nfe->positive_infinity_symbol)));
+        IL2CPP_OBJECT_SETREF(number, positiveSign, il2cpp_string_new(idx2string(nfe->positive_sign)));
     }
 } // namespace Globalization
 } // namespace System

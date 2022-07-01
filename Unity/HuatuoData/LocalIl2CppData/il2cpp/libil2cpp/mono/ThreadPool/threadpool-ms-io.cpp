@@ -46,6 +46,7 @@
 #include "vm/Domain.h"
 #include "vm/Runtime.h"
 #include "vm/Thread.h"
+#include "vm/ThreadPool.h"
 
 #define UPDATES_CAPACITY 128
 
@@ -90,16 +91,8 @@ typedef struct {
 	} data;
 } ThreadPoolIOUpdate;
 
-typedef struct
-{
-    bool(*init)(int wakeup_pipe_fd);
-    void(*register_fd)(int fd, int events, bool is_new);
-    void(*remove_fd)(int fd);
-    int(*event_wait)(void(*callback)(int fd, int events, void* user_data), void* user_data);
-} ThreadPoolIOBackend;
-
 typedef struct {
-	ThreadPoolIOBackend backend;
+	il2cpp::vm::ThreadPool::ThreadPoolIOBackend backend;
 
 	ThreadPoolIOUpdate* updates;
 	int updates_size;
@@ -118,7 +111,7 @@ static bool io_selector_running = false;
 
 static ThreadPoolIO* threadpool_io;
 
-static ThreadPoolIOBackend backend_poll = { poll_init, poll_register_fd, poll_remove_fd, poll_event_wait };
+static il2cpp::vm::ThreadPool::ThreadPoolIOBackend backend_poll = { poll_init, poll_register_fd, poll_remove_fd, poll_event_wait };
 
 static Il2CppIOSelectorJob* get_job_for_event (ManagedList *list, int32_t event)
 {

@@ -46,8 +46,7 @@ namespace utils
         if (address != NULL)
         {
             address = (uint8_t*)address + (offset - actualOffset);
-            if (os::MemoryMappedFile::OwnsDuplicatedFileHandle(mappedFileHandle))
-                s_MappedAddressToMappedFileObject[address] = mappedFileHandle;
+            s_MappedAddressToMappedFileObject[address] = mappedFileHandle;
             s_MappedAddressToMappedLength[address] = length;
         }
 

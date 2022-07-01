@@ -2,7 +2,6 @@
 /r:System.Core.dll
 /r:Microsoft.CSharp.dll
 /r:Facades/System.Runtime.dll
-/r:Facades/netstandard.dll
 /u:System
 /u:System.IO
 /u:System.Collections.Generic

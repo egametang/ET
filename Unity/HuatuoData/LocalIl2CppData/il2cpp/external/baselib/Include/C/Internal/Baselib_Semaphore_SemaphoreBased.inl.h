@@ -4,26 +4,20 @@
 #include "../Baselib_SystemSemaphore.h"
 #include "../Baselib_Thread.h"
 
-
 #if PLATFORM_FUTEX_NATIVE_SUPPORT
     #error "It's highly recommended to use Baselib_Semaphore_FutexBased.inl.h on platforms which has native semaphore support"
 #endif
 
 typedef struct Baselib_Semaphore
 {
-    Baselib_SystemSemaphore_Handle handle;
     int32_t count;
+    const Baselib_SystemSemaphore_Handle handle;
     char _cachelineSpacer0[PLATFORM_CACHE_LINE_SIZE - sizeof(int32_t) - sizeof(Baselib_SystemSemaphore_Handle)];
-    char _systemSemaphoreData[Baselib_SystemSemaphore_PlatformSize];
 } Baselib_Semaphore;
-
-BASELIB_STATIC_ASSERT((offsetof(Baselib_Semaphore, count) + PLATFORM_CACHE_LINE_SIZE - sizeof(Baselib_SystemSemaphore_Handle)) ==
-    offsetof(Baselib_Semaphore, _systemSemaphoreData), "count and internalData must not share cacheline");
 
 BASELIB_INLINE_API Baselib_Semaphore Baselib_Semaphore_Create(void)
 {
-    Baselib_Semaphore semaphore = {{0}, 0, {0}, {0}};
-    semaphore.handle = Baselib_SystemSemaphore_CreateInplace(&semaphore._systemSemaphoreData);
+    Baselib_Semaphore semaphore = {0, Baselib_SystemSemaphore_Create(), {0}};
     return semaphore;
 }
 
@@ -111,7 +105,6 @@ BASELIB_INLINE_API uint32_t Baselib_Semaphore_ResetAndReleaseWaitingThreads(Base
     if (OPTIMIZER_LIKELY(count >= 0))
         return 0;
     const int32_t threadsToWakeup = -count;
-
     Baselib_SystemSemaphore_Release(semaphore->handle, threadsToWakeup);
     return threadsToWakeup;
 }
@@ -122,5 +115,5 @@ BASELIB_INLINE_API void Baselib_Semaphore_Free(Baselib_Semaphore* semaphore)
         return;
     const int32_t count = Baselib_atomic_load_32_seq_cst(&semaphore->count);
     BaselibAssert(count >= 0, "Destruction is not allowed when there are still threads waiting on the semaphore.");
-    Baselib_SystemSemaphore_FreeInplace(semaphore->handle);
+    Baselib_SystemSemaphore_Free(semaphore->handle);
 }

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4150494189
+CRC: 1318871810
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ae7dbcd02bae9505a00ba7fcfb50cbef
+    Hash: 1e14738e18143723a5935fa1d1733561
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 95e68d155bb95b6050820575be86debf
+    Hash: 9834afab3c22ea7818d3943a847d71ad
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -41,4 +41,4 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/Res/Unit/Unit.prefab
 Dependencies:
-- D:/Study/GameProjects/ET/Unity/Bundles/StandaloneWindows64/UnityManifest/myshaders.bundle
+- D:/Study/GameProjects/MyET/Unity/Bundles/StandaloneWindows64/UnityManifest/myshaders.bundle

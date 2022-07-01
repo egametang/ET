@@ -17,6 +17,8 @@
 #include "metadata/Il2CppSignature.h"
 #include "metadata/Il2CppTypeCompare.h"
 #include "metadata/Il2CppTypeHash.h"
+#include "metadata/Il2CppTypeVector.h"
+#include "metadata/Il2CppTypeVector.h"
 #include "vm-utils/VmStringUtils.h"
 #include "os/Mutex.h"
 
@@ -28,21 +30,6 @@ namespace vm
     {
         int32_t count;
         const Il2CppRGCTXDefinition* items;
-    };
-
-    typedef struct Il2CppGenericMethodPointers
-    {
-        Il2CppMethodPointer methodPointer;
-        Il2CppMethodPointer virtualMethodPointer;
-        InvokerMethod invoker_method;
-        bool isFullGenericShared;
-    } Il2CppGenericMethodPointers;
-
-    enum GenericParameterRestriction
-    {
-        GenericParameterRestrictionNone,
-        GenericParameterRestrictionValueType,
-        GenericParameterRestrictionReferenceType,
     };
 
     typedef Il2CppHashMap<const char*, Il2CppClass*, il2cpp::utils::StringUtils::StringHasher<const char*>, il2cpp::utils::VmStringUtils::CaseSensitiveComparer> WindowsRuntimeTypeNameToClassMap;
@@ -64,8 +51,8 @@ namespace vm
         static void ExecuteEagerStaticClassConstructors();
         static void ExecuteModuleInitializers();
 
-        static Il2CppClass* GetGenericInstanceType(Il2CppClass* genericTypeDefinition, const Il2CppType** genericArgumentTypes, uint32_t genericArgumentCount);
-        static const MethodInfo* GetGenericInstanceMethod(const MethodInfo* genericMethodDefinition, const Il2CppType** genericArgumentTypes, uint32_t genericArgumentCount);
+        static Il2CppClass* GetGenericInstanceType(Il2CppClass* genericTypeDefinition, const il2cpp::metadata::Il2CppTypeVector& genericArgumentTypes);
+        static const MethodInfo* GetGenericInstanceMethod(const MethodInfo* genericMethodDefinition, const il2cpp::metadata::Il2CppTypeVector& genericArgumentTypes);
         static const Il2CppGenericContext* GetMethodGenericContext(const MethodInfo* method);
         static const MethodInfo* GetGenericMethodDefinition(const MethodInfo* method);
 
@@ -77,16 +64,16 @@ namespace vm
         static void AddPointerType(Il2CppClass* type, Il2CppClass* pointerType);
 
         static const Il2CppGenericInst* GetGenericInst(const Il2CppType* const* types, uint32_t typeCount);
+        static const Il2CppGenericInst* GetGenericInst(const il2cpp::metadata::Il2CppTypeVector& types);
         static const Il2CppGenericMethod* GetGenericMethod(const MethodInfo* methodDefinition, const Il2CppGenericInst* classInst, const Il2CppGenericInst* methodInst);
-        static GenericParameterRestriction IsReferenceTypeGenericParameter(Il2CppMetadataGenericParameterHandle genericParameter);
 
-        static Il2CppGenericMethodPointers GetGenericMethodPointers(const MethodInfo* methodDefinition, const Il2CppGenericContext* context);
+        static InvokerMethod GetInvokerMethodPointer(const MethodInfo* methodDefinition, const Il2CppGenericContext* context);
+        static Il2CppMethodPointer GetMethodPointer(const MethodInfo* methodDefinition, const Il2CppGenericContext* context);
 
         static const MethodInfo* GetMethodInfoFromVTableSlot(const Il2CppClass* klass, int32_t vTableSlot);
 
         static const Il2CppType* GetTypeFromRgctxDefinition(const Il2CppRGCTXDefinition* rgctxDef);
         static const Il2CppGenericMethod* GetGenericMethodFromRgctxDefinition(const Il2CppRGCTXDefinition* rgctxDef);
-        static std::pair<const Il2CppType*, const MethodInfo*> GetConstrainedCallFromRgctxDefinition(const Il2CppRGCTXDefinition* rgctxDef);
 
         static void InitializeAllMethodMetadata();
         static void* InitializeRuntimeMetadata(uintptr_t* metadataPointer);
@@ -117,7 +104,7 @@ namespace vm
         static Il2CppInterfaceOffsetInfo GetInterfaceOffsetInfo(const Il2CppClass* klass, TypeInterfaceOffsetIndex index);
         static RGCTXCollection GetRGCTXs(const Il2CppImage* image, uint32_t token);
         static const uint8_t* GetFieldDefaultValue(const FieldInfo* field, const Il2CppType** type);
-        static const uint8_t* GetParameterDefaultValue(const MethodInfo* method, int32_t parameterPosition, const Il2CppType** type, bool* isExplicitySetNullDefaultValue);
+        static const uint8_t* GetParameterDefaultValue(const MethodInfo* method, const ParameterInfo* parameter, const Il2CppType** type, bool* isExplicitySetNullDefaultValue);
         static int GetFieldMarshaledSizeForField(const FieldInfo* field);
         static const MethodInfo* GetMethodInfoFromMethodHandle(Il2CppMetadataMethodDefinitionHandle handle);
 
@@ -129,7 +116,6 @@ namespace vm
         static const Il2CppAssembly* GetReferencedAssembly(const Il2CppAssembly* assembly, int32_t referencedAssemblyTableIndex);
 
         static Il2CppMetadataCustomAttributeHandle GetCustomAttributeTypeToken(const Il2CppImage* image, uint32_t token);
-        static std::tuple<void*, void*> GetCustomAttributeDataRange(const Il2CppImage* image, uint32_t token);
         static CustomAttributesCache* GenerateCustomAttributesCache(Il2CppMetadataCustomAttributeHandle token);
         static CustomAttributesCache* GenerateCustomAttributesCache(const Il2CppImage* image, uint32_t token);
         static bool HasAttribute(Il2CppMetadataCustomAttributeHandle token, Il2CppClass* attribute);
@@ -161,7 +147,7 @@ namespace vm
         static const char* GetGenericParameterName(Il2CppMetadataGenericParameterHandle handle);
         static Il2CppGenericParameterInfo GetGenericParameterInfo(Il2CppMetadataGenericParameterHandle handle);
 
-        static uint16_t GetGenericParameterFlags(Il2CppMetadataGenericParameterHandle handle);
+        static uint16_t GetGenericParameterFlags(Il2CppMetadataGenericContainerHandle handle, GenericContainerParameterIndex index);
         static int16_t GetGenericConstraintCount(Il2CppMetadataGenericParameterHandle handle);
 
         static Il2CppClass* GetTypeInfoFromHandle(Il2CppMetadataTypeHandle handle);
@@ -174,12 +160,11 @@ namespace vm
         static const MethodInfo* GetMethodInfoFromSequencePoint(const Il2CppImage* image, const Il2CppSequencePoint* cp);
         static Il2CppClass* GetTypeInfoFromTypeSourcePair(const Il2CppImage* image, const Il2CppTypeSourceFilePair* pair);
 
-        // The following methods still expose indexes - but only need to be public for debugger support (in il2cpp-mono-api.cpp & mono/mini/debugger-agent.c)
+        // The following methods still expose indexes - but only need to be public for debugger support (in il2cpp-stubs.cpp & mono/mini/debugger-agent.c)
         // Called from il2cpp_get_type_from_index
         static const Il2CppType* GetIl2CppTypeFromIndex(const Il2CppImage* image, TypeIndex index);
         // Called from il2cpp_get_class_from_index
         static Il2CppClass* GetTypeInfoFromTypeIndex(const Il2CppImage* image, TypeIndex index);
-        static const MethodInfo* GetMethodInfoFromMethodDefinitionIndex(const Il2CppImage* image, MethodIndex index);
 
     private:
         static void InitializeUnresolvedSignatureTable();

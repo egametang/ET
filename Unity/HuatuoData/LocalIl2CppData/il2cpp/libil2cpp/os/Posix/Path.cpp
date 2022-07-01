@@ -7,6 +7,7 @@
 
 #if defined(__APPLE__)
 #include "mach-o/dyld.h"
+#include "utils/PathUtils.h"
 #elif IL2CPP_TARGET_LINUX || IL2CPP_TARGET_ANDROID || IL2CPP_TARGET_LUMIN
 #include <linux/limits.h>
 #include <sys/stat.h>
@@ -23,6 +24,52 @@ namespace il2cpp
 {
 namespace os
 {
+#if __ENABLE_UNITY_PLUGIN__
+    std::string Path::GetApplicationPath()
+    {
+        std::string application_path = "";
+#if defined(__APPLE__)
+        do
+        {
+            std::string executbale_path = GetExecutablePath();
+            if (executbale_path.empty())
+            {
+                break;
+            }
+            size_t str_pos = 0;
+            if ((str_pos = executbale_path.find_last_of('/')) == std::string::npos)
+            {
+                break;
+            }
+            std::string macos_dir = executbale_path.substr(0, str_pos);
+
+            if ((str_pos = macos_dir.find_last_of('/')) == std::string::npos)
+            {
+                break;
+            }
+            application_path = macos_dir.substr(0, str_pos);
+        }
+        while (false);
+#endif
+        return application_path;
+    }
+
+#endif
+#if __ENABLE_UNITY_PLUGIN__
+    std::string Path::GetFrameworksPath()
+    {
+        std::string frameworks_path = "";
+#if defined(__APPLE__)
+        std::string application_path = GetApplicationPath();
+        if (!application_path.empty())
+        {
+            frameworks_path = utils::PathUtils::Combine(application_path, utils::StringView<char>("Frameworks"));
+        }
+#endif
+        return frameworks_path;
+    }
+
+#endif
     std::string Path::GetExecutablePath()
     {
 #if defined(__APPLE__)

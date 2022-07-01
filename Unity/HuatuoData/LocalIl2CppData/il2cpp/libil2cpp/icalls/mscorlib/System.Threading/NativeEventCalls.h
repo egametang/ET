@@ -23,10 +23,13 @@ namespace Threading
     class LIBIL2CPP_CODEGEN_API NativeEventCalls
     {
     public:
-        static bool ResetEvent_internal(intptr_t handle);
-        static bool SetEvent_internal(intptr_t handle);
-        static intptr_t CreateEvent_icall(bool manual, bool initial, Il2CppChar* name, int32_t name_length, int32_t* errorCode);
-        static void CloseEvent_internal(intptr_t handle);
+
+        static intptr_t CreateEvent_internal(bool manual, bool initial, Il2CppString* name, int32_t* errorCode);
+        static intptr_t OpenEvent_internal(Il2CppString* name, EventWaitHandleRights rights, int32_t* errorCode);
+
+        static bool ResetEvent_internal(intptr_t handlePtr);
+        static bool SetEvent_internal(intptr_t handlePtr);
+        static void CloseEvent_internal(intptr_t handlePtr);
     };
 } /* namespace Threading */
 } /* namespace System */

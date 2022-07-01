@@ -1,20 +1,5 @@
 #pragma once
 
-#ifndef __EMSCRIPTEN_PTHREADS__
-/*
-namespace detail
-{
-    struct Semaphore
-    {
-        uint32_t counter;
-    };
-}
-*/
-enum { Baselib_SystemSemaphore_PlatformSize = 4 }; // size should match size of struct above from no thread implementation
-#else
-enum { Baselib_SystemSemaphore_PlatformSize = 16 }; // sem_t with support for threads
-#endif
-
 #ifndef EXPORTED_SYMBOL
     #define EXPORTED_SYMBOL __attribute__((visibility("default")))
 #endif

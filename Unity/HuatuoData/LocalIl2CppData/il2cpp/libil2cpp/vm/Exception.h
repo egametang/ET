@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "il2cpp-config.h"
-#include "utils/Il2CppError.h"
 #include "utils/StringView.h"
 #include "il2cpp-class-internals.h"
 
@@ -24,18 +23,14 @@ namespace vm
 
         static void PrepareExceptionForThrow(Il2CppException* ex, MethodInfo* lastManagedFrame = NULL);
         static NORETURN void Raise(Il2CppException* ex, MethodInfo* lastManagedFrame = NULL);
-        static NORETURN void Rethrow(Il2CppException* ex);
         static NORETURN void RaiseOutOfMemoryException();
         static NORETURN void RaiseOutOfMemoryException(const utils::StringView<Il2CppChar>& msg);
         static NORETURN void RaiseNullReferenceException();
         static NORETURN void RaiseNullReferenceException(const utils::StringView<Il2CppChar>& msg);
         static NORETURN void RaiseDivideByZeroException();
-        static NORETURN void RaiseIndexOutOfRangeException();
         static NORETURN void RaiseOverflowException();
         static NORETURN void RaiseArgumentOutOfRangeException(const char* msg);
         static NORETURN void Raise(il2cpp_hresult_t hresult, bool defaultToCOMException);
-
-        static void RaiseIfError(const utils::Il2CppError& error);
 
         inline static void RaiseIfFailed(il2cpp_hresult_t hresult, bool defaultToCOMException)
         {
@@ -73,7 +68,6 @@ namespace vm
         static Il2CppException* GetArrayTypeMismatchException();
         static Il2CppException* GetTypeLoadException(const char* msg);
         static Il2CppException* GetEntryPointNotFoundException(const char* msg);
-        static Il2CppException* GetAmbiguousImplementationException(const char* msg);
         static Il2CppException* GetDllNotFoundException(const char* msg);
         static Il2CppException* GetInvalidOperationException(const char* msg);
         static Il2CppException* GetThreadInterruptedException();
@@ -83,17 +77,15 @@ namespace vm
         static Il2CppException* GetMissingMethodException(const char* msg);
         static Il2CppException* GetMarshalDirectiveException(const char* msg);
         static Il2CppException* GetTargetException(const char* msg);
-        static Il2CppException* GetMethodAccessException(const char* msg);
         static Il2CppException* GetExecutionEngineException(const char* msg);
+        static Il2CppException* GetMethodAccessException(const char* msg);
         static Il2CppException* GetUnauthorizedAccessException(const utils::StringView<Il2CppChar>& msg);
-        static Il2CppException* GetUnauthorizedAccessException(const char* msg);
         static Il2CppException* GetDivideByZeroException();
         static Il2CppException* GetPlatformNotSupportedException(const utils::StringView<Il2CppChar>& msg);
         static Il2CppException* GetFileLoadException(const char* msg);
         static Il2CppException* GetFileNotFoundException(const utils::StringView<Il2CppChar>& msg);
-        static Il2CppException* GetCustomAttributeFormatException(const char* msg);
 
-        static Il2CppException* GetMaximumNestedGenericsException();
+        static Il2CppException* GetMaxmimumNestedGenericsException();
 
         // ==={{ huatuo
         static Il2CppException* GetStackOverflowException(const char* msg);

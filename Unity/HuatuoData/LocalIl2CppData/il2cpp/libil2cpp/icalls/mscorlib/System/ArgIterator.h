@@ -17,10 +17,11 @@ namespace System
     class LIBIL2CPP_CODEGEN_API ArgIterator
     {
     public:
-        static intptr_t IntGetNextArgType(mscorlib_System_ArgIterator* thisPtr);
-        static void IntGetNextArg(mscorlib_System_ArgIterator* thisPtr, void* res);
-        static void IntGetNextArgWithType(mscorlib_System_ArgIterator* thisPtr, void* res, intptr_t rth);
-        static void Setup(mscorlib_System_ArgIterator* thisPtr, intptr_t argsp, intptr_t start);
+        static void* /* System.TypedReference */ IntGetNextArg(ArgIterator self);
+        static Il2CppTypedRef IntGetNextArg_mscorlib_System_TypedReference(mscorlib_System_ArgIterator * thisPtr);
+        static Il2CppTypedRef IntGetNextArg_mscorlib_System_TypedReference_mscorlib_System_IntPtr(mscorlib_System_ArgIterator * thisPtr, intptr_t rth);
+        static void Setup(mscorlib_System_ArgIterator * thisPtr, intptr_t argsp, intptr_t start);
+        static intptr_t IntGetNextArgType(mscorlib_System_ArgIterator * thisPtr);
     };
 } /* namespace System */
 } /* namespace mscorlib */

@@ -239,11 +239,6 @@ namespace os
         *resultAttributes = findData.dwFileAttributes;
         return os::kErrorCodeSuccess;
     }
-
-    int32_t Directory::CloseOSFindHandleDirectly(intptr_t osHandle)
-    {
-        return ::FindClose((HANDLE)osHandle);
-    }
 }
 }
 

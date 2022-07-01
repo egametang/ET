@@ -4,9 +4,8 @@
 
 #include "WindowsHelpers.h"
 
+#include "il2cpp-vm-support.h"
 #include "os/NativeMethods.h"
-#include "utils/Expected.h"
-#include "utils/Il2CppError.h"
 
 namespace il2cpp
 {
@@ -17,12 +16,13 @@ namespace os
         return ::CloseHandle(handle) != FALSE;
     }
 
-    utils::Expected<bool> NativeMethods::GetExitCodeProcess(ProcessHandle* handle, int32_t* exitCode)
+    bool NativeMethods::GetExitCodeProcess(ProcessHandle* handle, int32_t* exitCode)
     {
 #if IL2CPP_TARGET_WINDOWS_DESKTOP
         return ::GetExitCodeProcess((HANDLE)handle, (LPDWORD)exitCode);
 #else
-        return utils::Il2CppError(utils::NotSupported, "Getting process exit code is not supported on WinRT based platforms.");
+        IL2CPP_VM_NOT_SUPPORTED("GetExitCodeProcess", "Getting process exit code is not supported on WinRT based platforms.");
+        return FALSE;
 #endif
     }
 
@@ -31,7 +31,7 @@ namespace os
         return ::GetCurrentProcessId();
     }
 
-    utils::Expected<ProcessHandle*> NativeMethods::GetCurrentProcess()
+    ProcessHandle* NativeMethods::GetCurrentProcess()
     {
         return (ProcessHandle*)::GetCurrentProcess();
     }

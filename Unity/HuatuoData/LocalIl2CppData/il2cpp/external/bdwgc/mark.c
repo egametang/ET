@@ -116,7 +116,6 @@ GC_INNER size_t GC_mark_stack_size = 0;
 GC_INNER mark_state_t GC_mark_state = MS_NONE;
 
 GC_INNER GC_bool GC_mark_stack_too_small = FALSE;
-GC_INNER GC_bool GC_mark_stack_empty_called = FALSE;
 
 static struct hblk * scan_ptr;
 
@@ -401,26 +400,11 @@ static void alloc_mark_stack(size_t);
                 MARK_FROM_MARK_STACK();
                 break;
             } else {
+                GC_mark_state = MS_NONE;
                 if (GC_mark_stack_too_small) {
-                    GC_mark_state = MS_NONE;
                     alloc_mark_stack(2*GC_mark_stack_size);
-                    return(TRUE);
-                } else {
-                  GC_mark_stack_empty_proc mark_stack_empty_proc = GC_get_mark_stack_empty();
-                  if (GC_mark_stack_empty_called || !mark_stack_empty_proc) {
-                    GC_mark_state = MS_NONE;
-                    GC_mark_stack_empty_called = FALSE;
-                    return(TRUE);
-                  } else {
-                    if (mark_stack_empty_proc != 0)
-                      mark_stack_empty_proc();
-
-                    /* break below here loops us around the mark phase once again */
-                    /* to process any items push by the callback */
-                    GC_mark_stack_empty_called = TRUE;
-                  }
                 }
-                break;
+                return(TRUE);
             }
 
         case MS_INVALID:

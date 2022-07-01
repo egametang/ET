@@ -1,7 +1,5 @@
 #pragma once
 
-enum { Baselib_SystemSemaphore_PlatformSize = 16 }; // max size of all android versions
-
 #ifndef EXPORTED_SYMBOL
     #define EXPORTED_SYMBOL __attribute__((visibility("default")))
 #endif

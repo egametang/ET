@@ -14,9 +14,14 @@ namespace mscorlib
 {
 namespace System
 {
-    int32_t Object::InternalGetHashCode(Il2CppObject* obj)
+    int Object::InternalGetHashCode(Il2CppObject* obj)
     {
         return il2cpp::vm::Object::GetHash(obj);
+    }
+
+    Il2CppReflectionType* Object::GetType(Il2CppObject* obj)
+    {
+        return il2cpp::vm::Reflection::GetTypeObject(&obj->klass->byval_arg);
     }
 
     Il2CppObject* Object::MemberwiseClone(Il2CppObject* obj)
@@ -24,9 +29,9 @@ namespace System
         return il2cpp::vm::Object::Clone(obj);
     }
 
-    Il2CppReflectionType* Object::GetType(Il2CppObject* obj)
+    intptr_t Object::obj_address(Il2CppObject* obj)
     {
-        return il2cpp::vm::Reflection::GetTypeObject(&obj->klass->byval_arg);
+        return reinterpret_cast<intptr_t>(obj);
     }
 } /* namespace System */
 } /* namespace mscorlib */

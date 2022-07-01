@@ -4,7 +4,6 @@
 
 #include "os/NativeMethods.h"
 #include "os/Process.h"
-#include "utils/Expected.h"
 
 namespace il2cpp
 {
@@ -17,7 +16,7 @@ namespace os
         return false;
     }
 
-    utils::Expected<bool> NativeMethods::GetExitCodeProcess(ProcessHandle* handle, int32_t* exitCode)
+    bool NativeMethods::GetExitCodeProcess(ProcessHandle* handle, int32_t* exitCode)
     {
         IL2CPP_NOT_IMPLEMENTED_ICALL(NativeMethods::GetExitCodeProcess);
         IL2CPP_UNREACHABLE;
@@ -29,7 +28,7 @@ namespace os
         return Process::GetCurrentProcessId();
     }
 
-    utils::Expected<ProcessHandle*> NativeMethods::GetCurrentProcess()
+    ProcessHandle* NativeMethods::GetCurrentProcess()
     {
         return Process::GetProcess(Process::GetCurrentProcessId());
     }

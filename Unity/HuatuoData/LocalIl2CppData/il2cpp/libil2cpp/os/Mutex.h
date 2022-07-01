@@ -73,6 +73,23 @@ namespace os
         FastMutexImpl* m_Impl;
     };
 
+    struct FastAutoLockOld : public il2cpp::utils::NonCopyable
+    {
+        FastAutoLockOld(FastMutex* mutex)
+            : m_Mutex(mutex)
+        {
+            m_Mutex->Lock();
+        }
+
+        ~FastAutoLockOld()
+        {
+            m_Mutex->Unlock();
+        }
+
+    private:
+        FastMutex* m_Mutex;
+    };
+
     struct FastAutoLock : public il2cpp::utils::NonCopyable
     {
         FastAutoLock(baselib::ReentrantLock* mutex)

@@ -10,6 +10,16 @@ namespace mscorlib
 {
 namespace System
 {
+    int64_t DateTime::GetNow(void)
+    {
+        return os::Time::GetTicks100NanosecondsDateTime();
+    }
+
+    int64_t DateTime::GetTimeMonotonic()
+    {
+        return os::Time::GetTicks100NanosecondsMonotonic();
+    }
+
     int64_t DateTime::GetSystemTimeAsFileTime()
     {
         return os::Time::GetSystemTimeAsFileTime();

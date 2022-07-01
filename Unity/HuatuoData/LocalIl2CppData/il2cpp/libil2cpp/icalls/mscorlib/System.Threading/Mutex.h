@@ -23,9 +23,9 @@ namespace Threading
     class LIBIL2CPP_CODEGEN_API Mutex
     {
     public:
+        static intptr_t CreateMutex_internal(bool initiallyOwned, Il2CppString* name, bool* created);
+        static intptr_t OpenMutex_internal(Il2CppString* name, MutexRights rights, MonoIOError* error);
         static bool ReleaseMutex_internal(intptr_t handle);
-        static intptr_t CreateMutex_icall(bool initiallyOwned, Il2CppChar* name, int32_t name_length, bool* created);
-        static intptr_t OpenMutex_icall(Il2CppChar* name, int32_t name_length, int32_t rights, int32_t* error);
     };
 } /* namespace Threading */
 } /* namespace System */

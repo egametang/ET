@@ -13,7 +13,7 @@ namespace Mono
     class LIBIL2CPP_CODEGEN_API SafeStringMarshal
     {
     public:
-        static intptr_t StringToUtf8_icall(Il2CppString *volatile* str);
+        static intptr_t StringToUtf8(Il2CppString* str);
         static void GFree(intptr_t ptr);
     };
 } // namespace Mono

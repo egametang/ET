@@ -10,7 +10,7 @@ extern "C"
 {
     int32_t UnityPalIsatty(UnityPalFileHandle* fileHandle)
     {
-        return il2cpp::os::File::Isatty(fileHandle).Get();
+        return il2cpp::os::File::Isatty(fileHandle);
     }
 
     UnityPalFileHandle* UnityPalGetStdInput()
@@ -30,12 +30,12 @@ extern "C"
 
     int32_t UnityPalCreatePipe(UnityPalFileHandle** read_handle, UnityPalFileHandle** write_handle)
     {
-        return il2cpp::os::File::CreatePipe(read_handle, write_handle).Get();
+        return il2cpp::os::File::CreatePipe(read_handle, write_handle);
     }
 
     int32_t UnityPalCreatePipe_With_Error(UnityPalFileHandle** read_handle, UnityPalFileHandle** write_handle, int* error)
     {
-        return il2cpp::os::File::CreatePipe(read_handle, write_handle, error).Get();
+        return il2cpp::os::File::CreatePipe(read_handle, write_handle, error);
     }
 
     FileType UnityPalGetFileType(UnityPalFileHandle* handle)
@@ -186,7 +186,7 @@ extern "C"
 
     int32_t UnityPalIsExecutable(const char* filename)
     {
-        return il2cpp::os::File::IsExecutable(filename).Get();
+        return il2cpp::os::File::IsExecutable(filename);
     }
 }
 

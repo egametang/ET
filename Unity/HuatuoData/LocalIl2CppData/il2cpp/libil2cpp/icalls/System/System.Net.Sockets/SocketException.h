@@ -21,7 +21,7 @@ namespace Sockets
     class LIBIL2CPP_CODEGEN_API SocketException
     {
     public:
-        static int32_t WSAGetLastError_icall();
+        static int32_t WSAGetLastError();
     };
 } /* namespace Sockets */
 } /* namespace Net */

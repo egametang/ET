@@ -238,7 +238,7 @@ namespace os
 
 #if IL2CPP_TARGET_WINDOWS_DESKTOP
 
-    utils::Expected<std::string> Environment::GetWindowsFolderPath(int32_t folder)
+    std::string Environment::GetWindowsFolderPath(int32_t folder)
     {
         Il2CppChar path[MAX_PATH];
         if (SUCCEEDED(SHGetFolderPathW(NULL, folder | CSIDL_FLAG_CREATE, NULL, 0, path)))
@@ -249,7 +249,7 @@ namespace os
 
     typedef BOOL(WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 
-    utils::Expected<bool> Environment::Is64BitOs()
+    bool Environment::Is64BitOs()
     {
         BOOL isWow64Process = false;
 
@@ -274,12 +274,12 @@ namespace os
     }
 
 #elif IL2CPP_TARGET_WINDOWS_GAMES
-    utils::Expected<std::string> Environment::GetWindowsFolderPath(int32_t folder)
+    std::string Environment::GetWindowsFolderPath(int32_t folder)
     {
         return std::string();
     }
 
-    utils::Expected<bool> Environment::Is64BitOs()
+    bool Environment::Is64BitOs()
     {
 #if _WIN64 // the IsWow64Process(used above) function is not available on Windows Games,this is the best available.
         return true;

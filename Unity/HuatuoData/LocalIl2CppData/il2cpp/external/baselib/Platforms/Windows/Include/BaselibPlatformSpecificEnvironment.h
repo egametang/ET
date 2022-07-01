@@ -1,7 +1,5 @@
 #pragma once
 
-enum { Baselib_SystemSemaphore_PlatformSize = 1 }; // unused but 1 to simplify things
-
 // Don't include sdkddkver.h, because we might accidentally use API not available on older system
 // Include APIs from Windows 7 if versions are not defined yet
 #ifndef NTDDI_VERSION

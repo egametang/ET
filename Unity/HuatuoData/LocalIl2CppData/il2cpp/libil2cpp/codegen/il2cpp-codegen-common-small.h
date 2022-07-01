@@ -1,21 +1,26 @@
 #pragma once
 
-#include "il2cpp-codegen-common.h"
 #include "il2cpp-object-internals.h"
 #include <cmath>
-#include <type_traits>
+
+inline void il2cpp_codegen_initobj(void* value, size_t size)
+{
+    memset(value, 0, size);
+}
 
 template<typename TInput, typename TOutput, typename TFloat>
 inline TOutput il2cpp_codegen_cast_floating_point(TFloat value)
 {
-    // In release builds and on ARM, a cast from a floating point to
-    // integer value will use the min or max value if the cast is out
-    // of range (instead of overflowing like x86/x64 debug builds).
-    // So first do a cast to the output type (which is signed in
-    // .NET - the value stack does not have unsigned types) to try to
-    // get the value into a range that will actually be cast the way .NET does.
+#if IL2CPP_TARGET_ARM64 || IL2CPP_TARGET_ARMV7
+    // On ARM, a cast from a floating point to integer value will use
+    // the min or max value if the cast is out of range (instead of
+    // overflowing like x86/x64). So first do a cast to the output
+    // type (which is signed in .NET - the value stack does not have
+    // unsigned types) to try to get the value into a range that will
+    // actually be cast.
     if (value < 0)
         return (TOutput)((TInput)(TOutput)value);
+#endif
     return (TOutput)((TInput)value);
 }
 
@@ -28,14 +33,8 @@ template<typename T>
 inline T il2cpp_codegen_cast_double_to_int(double value)
 {
 #if IL2CPP_TARGET_ARM64 || IL2CPP_TARGET_ARMV7
-    if (value == HUGE_VAL)
-    {
-        if (std::is_same<T, int64_t>::value)
-            return INT64_MIN;
-        if (std::is_same<T, int32_t>::value)
-            return INT32_MIN;
-        return 0;
-    }
+    if (value == INFINITY)
+        return (T)-value;
 #endif
     return (T)value;
 }
@@ -123,11 +122,6 @@ struct Delegate_t;
 inline intptr_t il2cpp_codegen_marshal_get_function_pointer_for_delegate(const Delegate_t* d)
 {
     return reinterpret_cast<intptr_t>(reinterpret_cast<const Il2CppDelegate*>(d)->m_ReversePInvokeWrapperPtr);
-}
-
-inline void* il2cpp_codegen_get_reverse_pinvoke_function_ptr(void* d)
-{
-    return d;
 }
 
 #endif // IL2CPP_TINY

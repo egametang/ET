@@ -86,7 +86,7 @@ namespace vm
         s = NewSize(len);
         IL2CPP_ASSERT(s != NULL);
 
-        memcpy(utils::StringUtils::GetChars(s), text, (size_t)len * 2);
+        memcpy(utils::StringUtils::GetChars(s), text, len * 2);
 
         return s;
     }
@@ -104,7 +104,7 @@ namespace vm
 
         Il2CppString *s;
         IL2CPP_ASSERT(len >= 0);
-        size_t size = (sizeof(Il2CppString) + (((size_t)len + 1) * 2));
+        size_t size = (sizeof(Il2CppString) + ((len + 1) * 2));
 
         /* overflow ? can't fit it, can't allocate it! */
         if (static_cast<uint32_t>(len) > size)

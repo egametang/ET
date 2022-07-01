@@ -3,7 +3,6 @@
 #include "../Baselib_CountdownTimer.h"
 #include "../Baselib_Atomic_TypeSafe.h"
 #include "../Baselib_SystemSemaphore.h"
-#include "../Baselib_StaticAssert.h"
 
 #if PLATFORM_FUTEX_NATIVE_SUPPORT
     #error "It's highly recommended to use Baselib_EventSemaphore_FutexBased.inl.h on platforms which has native semaphore support"
@@ -39,17 +38,7 @@ typedef struct Baselib_EventSemaphore
     Detail_Baselib_EventSemaphore_State state;
     Baselib_SystemSemaphore_Handle setSemaphore;
     Baselib_SystemSemaphore_Handle setInProgressSemaphore;
-    char _cachelineSpacer0[PLATFORM_CACHE_LINE_SIZE - 2 * sizeof(Baselib_SystemSemaphore_Handle) - sizeof(Detail_Baselib_EventSemaphore_State)];
-    char _systemSemaphoreDataSemaphore[Baselib_SystemSemaphore_PlatformSize];
-    char _cachelineSpacer1[PLATFORM_CACHE_LINE_SIZE - Baselib_SystemSemaphore_PlatformSize];
-    char _systemSemaphoreDataInProgressSemaphore[Baselib_SystemSemaphore_PlatformSize];
 } Baselib_EventSemaphore;
-
-BASELIB_STATIC_ASSERT((offsetof(Baselib_EventSemaphore, state) + PLATFORM_CACHE_LINE_SIZE) ==
-    offsetof(Baselib_EventSemaphore, _systemSemaphoreDataSemaphore), "state and _systemSemaphoreDataSemaphore must not share cacheline");
-
-BASELIB_STATIC_ASSERT((offsetof(Baselib_EventSemaphore, _systemSemaphoreDataSemaphore) + PLATFORM_CACHE_LINE_SIZE) ==
-    offsetof(Baselib_EventSemaphore, _systemSemaphoreDataInProgressSemaphore), "_systemSemaphoreDataSemaphore and _systemSemaphoreDataInProgressSemaphore must not share cacheline");
 
 // How (Timed)Acquire works for the SemaphoreBased EventSemaphore:
 //
@@ -112,10 +101,12 @@ static FORCE_INLINE int32_t Detail_Baselib_EventSemaphore_SetWaitingForSetCount(
 
 BASELIB_INLINE_API Baselib_EventSemaphore Baselib_EventSemaphore_Create(void)
 {
-    Baselib_EventSemaphore semaphore = {{{0, 0}}, {0}, {0}, {0}, {0}, {0}, {0}};
-
-    semaphore.setSemaphore = Baselib_SystemSemaphore_CreateInplace(semaphore._systemSemaphoreDataSemaphore);
-    semaphore.setInProgressSemaphore = Baselib_SystemSemaphore_CreateInplace(semaphore._systemSemaphoreDataInProgressSemaphore);
+    const Baselib_EventSemaphore semaphore =
+    {
+        {{0, 0}},
+        Baselib_SystemSemaphore_Create(),
+        Baselib_SystemSemaphore_Create()
+    };
     return semaphore;
 }
 
@@ -205,7 +196,6 @@ BASELIB_INLINE_API void Baselib_EventSemaphore_Free(Baselib_EventSemaphore* sema
 {
     if (!semaphore)
         return;
-
-    Baselib_SystemSemaphore_FreeInplace(semaphore->setSemaphore);
-    Baselib_SystemSemaphore_FreeInplace(semaphore->setInProgressSemaphore);
+    Baselib_SystemSemaphore_Free(semaphore->setSemaphore);
+    Baselib_SystemSemaphore_Free(semaphore->setInProgressSemaphore);
 }

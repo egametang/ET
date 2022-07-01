@@ -13,7 +13,7 @@ namespace utils
             return hash1 * Seed + hash2;
         }
 
-        static inline size_t AlignedPointerHash(const void* ptr)
+        static inline size_t AlignedPointerHash(void* ptr)
         {
             return ((uintptr_t)ptr) >> 3;
         }

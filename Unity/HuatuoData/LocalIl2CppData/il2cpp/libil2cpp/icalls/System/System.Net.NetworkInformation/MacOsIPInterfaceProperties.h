@@ -15,7 +15,7 @@ namespace NetworkInformation
     class LIBIL2CPP_CODEGEN_API MacOsIPInterfaceProperties
     {
     public:
-        static bool ParseRouteInfo_icall(Il2CppString* iface, Il2CppArray** gw_addr_list);
+        static bool ParseRouteInfo_internal(Il2CppString* iface, Il2CppArray** gw_addr_list);
     };
 } // namespace NetworkInformation
 } // namespace Net

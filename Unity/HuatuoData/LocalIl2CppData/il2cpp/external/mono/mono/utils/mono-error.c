@@ -159,7 +159,7 @@ mono_error_cleanup (MonoError *oerror)
 	error->type_name = error->assembly_name = error->member_name = error->exception_name_space = error->exception_name = error->first_argument = error->member_signature = NULL;
 	error->exn.klass = NULL;
 #else
-	// Do nothing
+	g_assert_not_reached ();
 #endif
 }
 

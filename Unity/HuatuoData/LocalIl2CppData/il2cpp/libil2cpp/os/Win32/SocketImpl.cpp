@@ -18,9 +18,10 @@
 #include "os/Socket.h"
 #include "os/ErrorCodes.h"
 #include "os/Win32/SocketImpl.h"
-#include "utils/Il2CppError.h"
 #include "utils/StringUtils.h"
 #include "utils/Memory.h"
+
+#include "il2cpp-vm-support.h"
 
 typedef int socklen_t;
 
@@ -505,7 +506,6 @@ namespace os
             case kProtocolTypePup:
             case kProtocolTypeUdp:
             case kProtocolTypeIdp:
-            case kProtocolTypeIcmpV6:
                 // In this case the enum values map exactly.
                 return (int32_t)protocol;
 
@@ -1444,9 +1444,10 @@ namespace os
         return SendToInternal(&sa, sa_size, data, count, flags, len);
     }
 
-    utils::Expected<WaitStatus> SocketImpl::SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len)
+    WaitStatus SocketImpl::SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len)
     {
-        return utils::Il2CppError(utils::NotSupported, "Unix sockets are not supported on this platform.");
+        IL2CPP_VM_NOT_SUPPORTED(sockaddr_from_address, "Unix sockets are not supported on this platform.");
+        return kWaitStatusFailure;
     }
 
     WaitStatus SocketImpl::SendTo(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len)
@@ -1506,9 +1507,10 @@ namespace os
         return RecvFromInternal(&sa, sa_size, data, count, flags, len, ep);
     }
 
-    utils::Expected<WaitStatus> SocketImpl::RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep)
+    WaitStatus SocketImpl::RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep)
     {
-        return utils::Il2CppError(utils::NotSupported, "Unix sockets are not supported on this platform.");
+        IL2CPP_VM_NOT_SUPPORTED(sockaddr_from_address, "Unix sockets are not supported on this platform.");
+        return kWaitStatusFailure;
     }
 
     WaitStatus SocketImpl::RecvFrom(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep)

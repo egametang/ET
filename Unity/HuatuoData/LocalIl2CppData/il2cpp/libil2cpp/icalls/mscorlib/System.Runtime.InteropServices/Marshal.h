@@ -28,7 +28,6 @@ namespace InteropServices
     {
     public:
         static int32_t GetLastWin32Error();
-        static void SetLastWin32Error(uint32_t);
         static int32_t AddRefInternal(intptr_t pUnk);
         static intptr_t AllocCoTaskMem(int32_t size);
         static intptr_t AllocHGlobal(intptr_t size);
@@ -66,8 +65,8 @@ namespace InteropServices
         static int32_t ReleaseInternal(intptr_t pUnk);
         static int SizeOf(Il2CppReflectionType * rtype);
         static intptr_t StringToBSTR(Il2CppString* s);
-        static intptr_t StringToHGlobalAnsi(Il2CppChar* s, int32_t length);
-        static intptr_t StringToHGlobalUni(Il2CppChar* s, int32_t length);
+        static intptr_t StringToHGlobalAnsi(Il2CppString* s);
+        static intptr_t StringToHGlobalUni(Il2CppString* s);
         static void StructureToPtr(Il2CppObject* structure, intptr_t ptr, bool deleteOld);
         static intptr_t UnsafeAddrOfPinnedArrayElement(Il2CppArray* arr, int32_t index);
         static void WriteByte(intptr_t ptr, int32_t ofs, uint8_t val);
@@ -78,16 +77,13 @@ namespace InteropServices
         static void copy_to_unmanaged(Il2CppArray * source, int32_t startIndex, intptr_t destination, int32_t length);
         static void WriteIntPtr(intptr_t ptr, int32_t ofs, intptr_t val);
 
-        static intptr_t BufferToBSTR(Il2CppChar* ptr, int32_t slen);
+        static intptr_t BufferToBSTR(Il2CppArray* ptr, int32_t slen);
 
         static int32_t GetHRForException_WinRT(Il2CppException* e);
         static intptr_t GetRawIUnknownForComObjectNoAddRef(Il2CppObject* o);
         static Il2CppObject* GetNativeActivationFactory(Il2CppObject* type);
 
         static intptr_t AllocCoTaskMemSize(intptr_t sizet);
-
-        static void copy_from_unmanaged_fixed(intptr_t source, int32_t startIndex, Il2CppArray* destination, int32_t length, void* fixed_destination_element);
-        static void copy_to_unmanaged_fixed(Il2CppArray* source, int32_t startIndex, intptr_t destination, int32_t length, void* fixed_source_element);
     };
 } /* namespace InteropServices */
 } /* namespace Runtime */

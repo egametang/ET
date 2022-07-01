@@ -22,11 +22,11 @@ namespace Principal
         return false;
     }
 
-    bool WindowsImpersonationContext::RevertToSelf()
+    intptr_t WindowsImpersonationContext::DuplicateToken(intptr_t token)
     {
-        NOT_SUPPORTED_IL2CPP(WindowsImpersonationContext::RevertToSelf, "This icall is not supported by il2cpp.");
+        NOT_SUPPORTED_IL2CPP(WindowsImpersonationContext::DuplicateToken, "This icall is not supported by il2cpp.");
 
-        return false;
+        return intptr_t();
     }
 
     bool WindowsImpersonationContext::SetCurrentToken(intptr_t token)
@@ -36,11 +36,11 @@ namespace Principal
         return false;
     }
 
-    intptr_t WindowsImpersonationContext::DuplicateToken(intptr_t token)
+    bool WindowsImpersonationContext::RevertToSelf()
     {
-        NOT_SUPPORTED_IL2CPP(WindowsImpersonationContext::DuplicateToken, "This icall is not supported by il2cpp.");
+        NOT_SUPPORTED_IL2CPP(WindowsImpersonationContext::RevertToSelf, "This icall is not supported by il2cpp.");
 
-        return 0;
+        return false;
     }
 } /* namespace Principal */
 } /* namespace Security */

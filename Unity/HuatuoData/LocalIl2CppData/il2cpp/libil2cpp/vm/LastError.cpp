@@ -16,17 +16,13 @@ namespace vm
         return *(uint32_t*)Thread::GetThreadStaticData(s_LastErrorThreadLocalStorageOffset);
     }
 
-    void LastError::SetLastError(uint32_t error)
-    {
-        IL2CPP_ASSERT(s_LastErrorThreadLocalStorageOffset != -1);
-
-        uint32_t* lastErrorTls = (uint32_t*)Thread::GetThreadStaticData(s_LastErrorThreadLocalStorageOffset);
-        *lastErrorTls = error;
-    }
-
     void LastError::StoreLastError()
     {
-        SetLastError(os::LastError::GetLastError());
+        // Get the last error first, before any other calls (so that we don't stomp on it).
+        uint32_t lastError = os::LastError::GetLastError();
+
+        uint32_t* lastErrorTls = (uint32_t*)Thread::GetThreadStaticData(s_LastErrorThreadLocalStorageOffset);
+        *lastErrorTls = lastError;
     }
 
     void LastError::InitializeLastErrorThreadStatic()

@@ -12,14 +12,7 @@ namespace System
 {
 namespace Threading
 {
-    bool Semaphore::ReleaseSemaphore_internal(intptr_t handlePtr, int32_t releaseCount, int32_t* previousCount)
-    {
-        os::SemaphoreHandle* handle = (os::SemaphoreHandle*)handlePtr;
-
-        return handle->Get().Post(releaseCount, previousCount);
-    }
-
-    intptr_t Semaphore::CreateSemaphore_icall(int32_t initialCount, int32_t maximumCount, Il2CppChar* name, int32_t name_length, int32_t* errorCode)
+    intptr_t Semaphore::CreateSemaphore_internal40(int32_t initialCount, int32_t maximumCount, Il2CppString* name, int32_t* errorCode)
     {
         *errorCode = true;
         os::Semaphore* semaphore = NULL;
@@ -32,7 +25,14 @@ namespace Threading
         return reinterpret_cast<intptr_t>(new os::SemaphoreHandle(semaphore));
     }
 
-    intptr_t Semaphore::OpenSemaphore_icall(Il2CppChar* name, int32_t name_length, int32_t rights, int32_t* errorCode)
+    bool Semaphore::ReleaseSemaphore_internal40(intptr_t handlePtr, int32_t releaseCount, int32_t* previousCount)
+    {
+        os::SemaphoreHandle* handle = (os::SemaphoreHandle*)handlePtr;
+
+        return handle->Get().Post(releaseCount, previousCount);
+    }
+
+    intptr_t Semaphore::OpenSemaphore_internal(Il2CppString* name, int32_t rights, int32_t* error)
     {
         NOT_SUPPORTED_IL2CPP(Semaphore::OpenSemaphore_internal, "Named semaphores are not supported.");
 

@@ -19,10 +19,13 @@
 
 // Tells the compiler to assume that this statement is never reached.
 // (reaching it anyways is undefined behavior!)
-#define COMPILER_BUILTIN_UNREACHABLE()              __builtin_unreachable()
+#define COMPILER_BUILTIN_UNREACHABLE()               __builtin_unreachable()
 // Tells the compiler to assume that the given expression is true until the expression is modified.
 // (it is undefined behavior if the expression is not true after all)
-#define COMPILER_BUILTIN_ASSUME(EXPR_)              __builtin_assume(EXPR_)
+//
+// Note: There is __builtin_assume which according to documentation should be closer to what want here.
+// Performance tests have shown though that it behaves differently. See case 1094654
+#define COMPILER_BUILTIN_ASSUME(EXPR_)              PP_WRAP_CODE(if (!(EXPR_)) COMPILER_BUILTIN_UNREACHABLE())
 
 
 #define COMPILER_NOINLINE               __attribute__((unused, noinline)) // unused is needed to avoid warning when a function is not used
@@ -54,8 +57,6 @@
 
 #define COMPILER_ATTRIBUTE_UNUSED           __attribute__((unused))
 
-// Note that this is how the compiler defines a debug break which is not necessarily the standard way on any given platform.
-// For a platform friendly implementation, use `BASELIB_DEBUG_TRAP`
 #define COMPILER_DEBUG_TRAP()               __builtin_debugtrap()
 
 #define COMPILER_WARN_UNUSED_RESULT         __attribute__((warn_unused_result))

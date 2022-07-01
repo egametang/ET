@@ -4,14 +4,14 @@
 
 #if defined(__i386__)
 #define ARCHITECTURE_IS_X86 1
-#elif defined(__x86_64__)
-#define ARCHITECTURE_IS_AMD64 1
 #elif defined(__arm__)
 #define ARCHITECTURE_IS_ARMv7 1
 #define ARM_FPU_VFP 1
 #define HAVE_ARMV6 1
 #elif defined(__aarch64__)
 #define ARCHITECTURE_IS_AARCH64 1
+#elif defined(__x86_64__)
+#define ARCHITECTURE_IS_AMD64 1
 #else
 #error Unknown architecture when building!
 #endif

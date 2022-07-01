@@ -2,7 +2,6 @@
 #include "il2cpp-object-internals.h"
 #include "il2cpp-api.h"
 #include "AsyncResult.h"
-#include "gc/WriteBarrier.h"
 #include "vm/Runtime.h"
 #include "vm/WaitHandle.h"
 #include "vm/ThreadPoolMs.h"
@@ -44,7 +43,7 @@ namespace Messaging
         {
             il2cpp::os::EventHandle *wait_event = NULL;
 
-            IL2CPP_OBJECT_SETREF_NULL(ac->msg, exc);
+            IL2CPP_OBJECT_SETREF(ac->msg, exc, NULL);
             res = il2cpp::vm::ThreadPoolMs::MessageInvoke((Il2CppObject*)ares->async_delegate->target, ac->msg, &ac->msg->exc, &ac->out_args);
             IL2CPP_OBJECT_SETREF(ac, res, res);
 

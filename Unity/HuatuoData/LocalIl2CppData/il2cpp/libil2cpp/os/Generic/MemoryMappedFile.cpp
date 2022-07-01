@@ -211,11 +211,6 @@ namespace os
     void MemoryMappedFile::ConfigureHandleInheritability(FileHandle* file, bool inheritability)
     {
     }
-
-    bool MemoryMappedFile::OwnsDuplicatedFileHandle(FileHandle* file)
-    {
-        return true;
-    }
 }
 }
 #endif

@@ -17,7 +17,7 @@ extern "C"
 
     UnityPalProcessHandle* UnityPalGetProcess(int processId)
     {
-        return il2cpp::os::Process::GetProcess(processId).Get();
+        return il2cpp::os::Process::GetProcess(processId);
     }
 
     void UnityPalFreeProcess(UnityPalProcessHandle* handle)
@@ -27,7 +27,7 @@ extern "C"
 
     const char* UnityPalGetProcessName(UnityPalProcessHandle* handle)
     {
-        return Allocator::CopyToAllocatedStringBuffer(il2cpp::os::Process::GetProcessName(handle).Get());
+        return Allocator::CopyToAllocatedStringBuffer(il2cpp::os::Process::GetProcessName(handle));
     }
 }
 

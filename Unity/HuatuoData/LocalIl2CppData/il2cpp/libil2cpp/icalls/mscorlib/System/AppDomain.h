@@ -29,29 +29,33 @@ namespace System
     class LIBIL2CPP_CODEGEN_API AppDomain
     {
     public:
-        static Il2CppObject* createDomain(Il2CppString* friendlyName, Il2CppObject* info);
+        static void InternalPopDomainRef();
         static Il2CppAppDomain* getCurDomain();
         static Il2CppAppDomain* getRootDomain();
-        static Il2CppObject* InternalSetDomain(Il2CppObject* context);
-        static Il2CppObject* InternalSetDomainByID(int32_t domain_id);
-        static Il2CppAppDomainSetup* getSetup(Il2CppAppDomain* thisPtr);
-        static bool InternalIsFinalizingForUnload(int32_t domain_id);
-        static int32_t ExecuteAssembly(Il2CppObject* thisPtr, Il2CppObject* a, Il2CppArray* args);
-        static Il2CppObject* GetData(Il2CppAppDomain* thisPtr, Il2CppString* name);
-        static Il2CppReflectionAssembly* LoadAssembly(Il2CppAppDomain* thisPtr, Il2CppString* assemblyRef, Il2CppObject* securityEvidence, bool refOnly, int32_t* stackMark);
-        static Il2CppObject* LoadAssemblyRaw(Il2CppObject* thisPtr, Il2CppArray* rawAssembly, Il2CppArray* rawSymbolStore, Il2CppObject* securityEvidence, bool refonly);
-        static Il2CppArray* GetAssemblies(Il2CppObject* thisPtr, bool refOnly);
-        static Il2CppAppContext* InternalGetContext();
-        static Il2CppAppContext* InternalGetDefaultContext();
-        static Il2CppObject* InternalSetContext(Il2CppObject* context);
-        static Il2CppString* getFriendlyName(Il2CppAppDomain* thisPtr);
+        static int32_t ExecuteAssembly(Il2CppAppDomain* self, Il2CppAssembly* a, Il2CppArray* args);
+        static Il2CppObject* GetData(Il2CppAppDomain* self, Il2CppString* name);
+        static Il2CppAppContext* InternalGetContext(void);
+        static Il2CppAppContext* InternalGetDefaultContext(void);
         static Il2CppString* InternalGetProcessGuid(Il2CppString* newguid);
-        static void DoUnhandledException(Il2CppObject* thisPtr, Il2CppException* e);
-        static void InternalPopDomainRef();
-        static void InternalPushDomainRef(Il2CppObject* domain);
+        static bool InternalIsFinalizingForUnload(int32_t domain_id);
+        static void InternalPushDomainRef(mscorlib_System_AppDomain * domain);
         static void InternalPushDomainRefByID(int32_t domain_id);
+        static mscorlib_System_Runtime_Remoting_Contexts_Context * InternalSetContext(mscorlib_System_Runtime_Remoting_Contexts_Context * context);
+        static mscorlib_System_AppDomain * InternalSetDomain(mscorlib_System_AppDomain * context);
+        static mscorlib_System_AppDomain * InternalSetDomainByID(int32_t domain_id);
         static void InternalUnload(int32_t domain_id);
-        static void SetData(Il2CppAppDomain* thisPtr, Il2CppString* name, Il2CppObject* data);
+        static Il2CppReflectionAssembly* LoadAssembly(Il2CppAppDomain* ad, Il2CppString* assemblyRef, struct mscorlib_System_Security_Policy_Evidence* evidence, bool refOnly);
+        // ==={{ huatuo
+        // il2cpp bug! should return Il2CppReflectionAssembly*
+        //static Il2CppAssembly* LoadAssemblyRaw(Il2CppAppDomain* self, Il2CppArray* rawAssembly, Il2CppArray* rawSymbolStore, void* /* System.Security.Policy.Evidence */ securityEvidence, bool refonly);
+        static Il2CppReflectionAssembly* LoadAssemblyRaw(Il2CppAppDomain* self, Il2CppArray* rawAssembly, Il2CppArray* rawSymbolStore, void* /* System.Security.Policy.Evidence */ securityEvidence, bool refonly);
+        // ===}} huatuo
+        static void SetData(Il2CppAppDomain* self, Il2CppString* name, Il2CppObject* data);
+        static Il2CppAppDomain* createDomain(Il2CppString*, mscorlib_System_AppDomainSetup*);
+        static Il2CppString * getFriendlyName(Il2CppAppDomain* ad);
+        static Il2CppAppDomainSetup* getSetup(Il2CppAppDomain* domain);
+        static Il2CppArray* GetAssemblies(Il2CppAppDomain* ad, bool refonly);
+        static void DoUnhandledException(Il2CppObject* _this, Il2CppException* e);
     };
 } /* namespace System */
 } /* namespace mscorlib */

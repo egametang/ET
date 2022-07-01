@@ -29,7 +29,7 @@ namespace Threading
         return os::kErrorCodeSuccess == result;
     }
 
-    intptr_t NativeEventCalls::CreateEvent_icall(bool manual, bool initial, Il2CppChar* name, int32_t name_length, int32_t* errorCode)
+    intptr_t NativeEventCalls::CreateEvent_internal(bool manual, bool initial, Il2CppString* name, int32_t *errorCode)
     {
         *errorCode = 0;
         il2cpp::os::Event* event = NULL;
@@ -40,6 +40,12 @@ namespace Threading
             NOT_SUPPORTED_IL2CPP(NativeEventCalls::CreateEvent_internal, "Named events are not supported.");
 
         return reinterpret_cast<intptr_t>(new os::EventHandle(event));
+    }
+
+    intptr_t NativeEventCalls::OpenEvent_internal(Il2CppString* name, EventWaitHandleRights rights, int32_t* errorCode)
+    {
+        IL2CPP_NOT_IMPLEMENTED_ICALL(NativeEventCalls::OpenEvent_internal);
+        return intptr_t();
     }
 
     void NativeEventCalls::CloseEvent_internal(intptr_t handlePtr)

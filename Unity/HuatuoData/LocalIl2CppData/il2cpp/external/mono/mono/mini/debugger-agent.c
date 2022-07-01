@@ -88,11 +88,6 @@
 #define MONO_ARCH_SOFT_DEBUG_SUPPORTED
 #endif // !RUNTIME_IL2CPP
 
-#ifdef RUNTIME_IL2CPP
-#include "il2cpp-mono-api.h"
-#include "il2cpp-object-internals.h"
-#endif // RUNTIME_IL2CPP
-
 /*
  * On iOS we can't use System.Environment.Exit () as it will do the wrong
  * shutdown sequence.
@@ -126,7 +121,8 @@
 #include "debugger-agent.h"
 
 #ifdef RUNTIME_IL2CPP
-extern Il2CppDefaults il2cpp_mono_defaults;
+extern Il2CppMonoDefaults il2cpp_mono_defaults;
+extern Il2CppMonoDebugOptions il2cpp_mono_debug_options;
 #endif // RUNTIME_IL2CPP
 
 
@@ -170,11 +166,7 @@ typedef struct
 	Il2CppSequencePointExecutionContext* frame_context;
 #endif // RUNTIME_IL2CPP
 	MonoJitInfo *ji;
-#ifdef RUNTIME_IL2CPP
-	gpointer interp_frame;
-#else
 	MonoInterpFrameHandle interp_frame;
-#endif
 	int flags;
 	mgreg_t *reg_locations [MONO_MAX_IREGS];
 	/*
@@ -2374,6 +2366,7 @@ static GHashTable* s_jit_info_hashtable;
 void mono_debugger_il2cpp_init ()
 {
 	s_jit_info_hashtable = g_hash_table_new_full(mono_aligned_addr_hash, NULL, NULL, NULL);
+	debug_options.native_debugger_break = FALSE;
 }
 
 static gpointer
@@ -2678,7 +2671,7 @@ buffer_add_assemblyid (Buffer *buf, MonoDomain *domain, MonoAssembly *assembly)
 
 	id = buffer_add_ptr_id (buf, domain, ID_ASSEMBLY, assembly);
 	if (G_UNLIKELY (log_level >= 2) && assembly)
-		DEBUG_PRINTF (2, "[dbg]   send assembly [%s][%s][%d]\n", assembly->aname.name, VM_DOMAIN_GET_FRIENDLY_NAME(domain), id);
+		DEBUG_PRINTF (2, "[dbg]   send assembly [%s][%s][%d]\n", assembly->aname.name, domain->friendly_name, id);
 }
 
 static inline void
@@ -3007,14 +3000,7 @@ notify_thread (gpointer key, gpointer value, gpointer user_data)
 	InterruptData interrupt_data = { 0 };
 	interrupt_data.tls = tls;
 
-	// The mono_thread_info_safe_suspend_and_run method is in utils/mono-threads.c, which we need
-	// to compile with the debugger code. So we cannot use the same name for the IL2CPP implementation
-	// of this method as Mono uses.
-#ifdef RUNTIME_IL2CPP
-	il2cpp_thread_info_safe_suspend_and_run ((MonoNativeThreadId)(gpointer)(gsize)thread->tid, FALSE, debugger_interrupt_critical, &interrupt_data);
-#else
 	mono_thread_info_safe_suspend_and_run ((MonoNativeThreadId)(gpointer)(gsize)thread->tid, FALSE, debugger_interrupt_critical, &interrupt_data);
-#endif
 	if (!interrupt_data.valid_info) {
 		DEBUG_PRINTF (1, "[%p] mono_thread_info_suspend_sync () failed for %p...\n", (gpointer) (gsize) mono_native_thread_id_get (), (gpointer)tid);
 		/* 
@@ -3466,11 +3452,7 @@ compute_frame_info_from (MonoInternalThread *thread, DebuggerTlsData *tls, MonoT
 	user_data.tls = tls;
 	user_data.frames = NULL;
 
-#ifdef RUNTIME_IL2CPP
-	NOT_IMPLEMENTED;
-#else
 	mono_walk_stack_with_state (process_frame, state, opts, &user_data);
-#endif
 
 	nframes = g_slist_length (user_data.frames);
 	res = g_new0 (StackFrame*, nframes);
@@ -3600,14 +3582,12 @@ compute_frame_info (MonoInternalThread *thread, DebuggerTlsData *tls, gboolean f
 		 * the still valid stack frames.
 		 */
 		for (i = 0; i < tls->frame_count; ++i) {
-#ifdef RUNTIME_IL2CPP
-			if (tls->frames [i]->actual_method == f->actual_method) {
-#else
-			if (tls->frames [i]->frame_addr == f->frame_addr) {
-#endif // RUNTIME_IL2CPP
+#ifndef RUNTIME_IL2CPP
+			if (MONO_CONTEXT_GET_SP (&tls->frames [i]->ctx) == MONO_CONTEXT_GET_SP (&f->ctx)) {
 				f->id = tls->frames [i]->id;
 				break;
 			}
+#endif // !RUNTIME_IL2CPP
 		}
 
 		if (i >= tls->frame_count)
@@ -4508,18 +4488,14 @@ send_assemblies_for_domain (MonoDomain *domain, void *user_data)
 
 	mono_domain_set (domain, TRUE);
 
-#ifndef RUNTIME_IL2CPP
 	mono_domain_assemblies_lock (domain);
-#endif
 
 	void *iter = NULL;
 	MonoAssembly *ass;
 	while (ass = mono_domain_get_assemblies_iter(domain, &iter))
 		emit_assembly_load(ass, NULL);
 	
-#ifndef RUNTIME_IL2CPP
 	mono_domain_assemblies_unlock (domain);
-#endif
 
 	mono_domain_set (old_domain, TRUE);
 }
@@ -5819,12 +5795,9 @@ mono_debugger_agent_user_break (void)
 		mono_loader_unlock ();
 
 		process_event (EVENT_KIND_USER_BREAK, NULL, 0, &ctx, events, suspend_policy);
-	} 
-#ifndef RUNTIME_IL2CPP
-	else if (debug_options.native_debugger_break) {
+	} else if (debug_options.native_debugger_break) {
 		G_BREAKPOINT ();
 	}
-#endif // !RUNTIME_IL2CPP
 }
 
 static const char*
@@ -7887,7 +7860,7 @@ decode_value_internal (MonoType *t, int type, MonoDomain *domain, guint8 *addr, 
 				return ERR_INVALID_ARGUMENT;
 			}
 		} else if ((t->type == MONO_TYPE_GENERICINST) && 
-					mono_class_is_valuetype(t->data.generic_class->cached_class) &&
+					t->data.generic_class->cached_class->valuetype &&
 					t->data.generic_class->cached_class->enumtype){
 			err = decode_vtype (t, domain, addr, buf, &buf, limit);
 			if (err != ERR_NONE)
@@ -7911,7 +7884,7 @@ decode_value (MonoType *t, MonoDomain *domain, guint8 *addr, guint8 *buf, guint8
 	int type = decode_byte (buf, &buf, limit);
 
 	if (t->type == MONO_TYPE_GENERICINST && mono_class_is_nullable (mono_class_from_mono_type (t))) {
-		MonoType *targ = VM_GENERIC_INST_TYPE_ARGV(mono_generic_class_get_context (m_type_get_generic_class (t))->class_inst, 0);
+		MonoType *targ = mono_generic_class_get_context (m_type_get_generic_class (t))->class_inst->type_argv[0];
 		guint8 *nullable_buf;
 
 		/*
@@ -8464,7 +8437,7 @@ do_invoke_method (DebuggerTlsData *tls, Buffer *buf, InvokeData *invoke, guint8 
 			if (args [i] &&  VM_OBJECT_GET_DOMAIN(((MonoObject*)args [i])) != domain)
 				NOT_IMPLEMENTED;
 
-			if (mono_type_is_byref(sig->params [i])) {
+			if (sig->params [i]->byref) {
 				arg_buf [i] = (guint8 *)g_alloca (sizeof (mgreg_t));
 				*(gpointer*)arg_buf [i] = args [i];
 				args [i] = arg_buf [i];
@@ -8515,11 +8488,7 @@ do_invoke_method (DebuggerTlsData *tls, Buffer *buf, InvokeData *invoke, guint8 
 	mono_stopwatch_start (&watch);
 	res = mono_runtime_try_invoke (m, mono_class_is_valuetype (m->klass) ? (gpointer)this_buf : (gpointer)this_arg, args, &exc, &error);
 	if (!mono_error_ok (&error) && exc == NULL) {
-#ifdef RUNTIME_IL2CPP
-		g_assert(0 && "Not implemented yet");
-#else
 		exc = (MonoObject*) mono_error_convert_to_exception (&error);
-#endif
 	} else {
 		mono_error_cleanup (&error); /* FIXME report error */
 	}
@@ -8549,7 +8518,7 @@ do_invoke_method (DebuggerTlsData *tls, Buffer *buf, InvokeData *invoke, guint8 
 				buffer_add_value (buf, mono_class_get_type (VM_DEFAULTS_VOID_CLASS), NULL, domain);
 			}
 		} else if (MONO_TYPE_IS_REFERENCE (sig->ret)) {
-			if (mono_type_is_byref(sig->ret)) {
+			if (sig->ret->byref) {
 				MonoType* ret_byval = mono_class_get_type (mono_class_from_mono_type (sig->ret));
 				buffer_add_value (buf, ret_byval, &res, domain);
 			} else {
@@ -8566,7 +8535,7 @@ do_invoke_method (DebuggerTlsData *tls, Buffer *buf, InvokeData *invoke, guint8 
 			} else {
 				g_assert (res);
 
-				if (mono_type_is_byref(sig->ret)) {
+				if (sig->ret->byref) {
 					MonoType* ret_byval = mono_class_get_type (mono_class_from_mono_type (sig->ret));
 					buffer_add_value (buf, ret_byval, mono_object_unbox (res), domain);
 				} else {
@@ -8584,7 +8553,7 @@ do_invoke_method (DebuggerTlsData *tls, Buffer *buf, InvokeData *invoke, guint8 
 			for (i = 0; i < nargs; ++i) {
 				if (MONO_TYPE_IS_REFERENCE (sig->params [i]))
 					buffer_add_value (buf, sig->params [i], &args [i], domain);
-				else if (mono_type_is_byref(sig->params [i]))
+				else if (sig->params [i]->byref)
 					/* add_value () does an indirection */
 					buffer_add_value (buf, sig->params [i], &arg_buf [i], domain);
 				else
@@ -9185,9 +9154,7 @@ vm_commands (int command, int id, guint8 *p, guint8 *end, Buffer *buf)
 			MonoType *t;
 			GSList *tmp;
 
-#ifndef RUNTIME_IL2CPP
 			mono_domain_assemblies_lock (domain);
-#endif
 			void *iter = NULL;
 			while (ass = mono_domain_get_assemblies_iter (domain, &iter))
 			{
@@ -9203,9 +9170,7 @@ vm_commands (int command, int id, guint8 *p, guint8 *end, Buffer *buf)
 					}
 				}
 			}
-#ifndef RUNTIME_IL2CPP
 			mono_domain_assemblies_unlock (domain);
-#endif
 		}
 		mono_loader_unlock ();
 
@@ -9523,7 +9488,7 @@ domain_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 		domain = decode_domainid (p, &p, end, NULL, &err);
 		if (err != ERR_NONE)
 			return err;
-		buffer_add_string (buf, VM_DOMAIN_GET_FRIENDLY_NAME(domain));
+		buffer_add_string (buf, domain->friendly_name);
 		break;
 	}
 	case CMD_APPDOMAIN_GET_ASSEMBLIES: {
@@ -9537,7 +9502,7 @@ domain_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 		mono_loader_lock ();
 		count = 0;
 #ifdef RUNTIME_IL2CPP
-		while(mono_domain_get_assemblies_iter(domain, &iter)) {
+		while(il2cpp_domain_get_assemblies_iter(domain, &iter)) {
 #else
 	for (tmp = domain->domain_assemblies; tmp; tmp = tmp->next) {
 #endif // RUNTIME_IL2CPP
@@ -9545,7 +9510,7 @@ domain_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 		}
 		buffer_add_int (buf, count);
 #ifdef RUNTIME_IL2CPP
-		while(ass = mono_domain_get_assemblies_iter(domain, &iter)) {
+		while(ass = il2cpp_domain_get_assemblies_iter(domain, &iter)) {
 #else
 		for (tmp = domain->domain_assemblies; tmp; tmp = tmp->next) {
 			ass = (MonoAssembly *)tmp->data;
@@ -9556,9 +9521,6 @@ domain_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 		break;
 	}
 	case CMD_APPDOMAIN_GET_ENTRY_ASSEMBLY: {
-#ifndef RUNTIME_IL2CPP
-		return ERR_NOT_IMPLEMENTED;
-#else
 		domain = decode_domainid (p, &p, end, NULL, &err);
 		if (err != ERR_NONE)
 			return err;
@@ -9568,14 +9530,13 @@ domain_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 		buffer_add_assemblyid (buf, domain, domain->entry_assembly);
 #endif // RUNTIME_IL2CPP
 		break;
-#endif
 	}
 	case CMD_APPDOMAIN_GET_CORLIB: {
 		domain = decode_domainid (p, &p, end, NULL, &err);
 		if (err != ERR_NONE)
 			return err;
 
-		buffer_add_assemblyid (buf, domain, mono_domain_get_corlib (domain));
+		buffer_add_assemblyid (buf, domain, m_domain_get_corlib (domain));
 		break;
 	}
 	case CMD_APPDOMAIN_CREATE_STRING: {
@@ -9634,11 +9595,11 @@ static ErrorCode
 get_assembly_object_command (MonoDomain *domain, MonoAssembly *ass, Buffer *buf, MonoError *error)
 {
 #ifdef RUNTIME_IL2CPP
-	MonoObject* o = il2cpp_assembly_get_object(domain, ass, error);
+	MonoReflectionAssemblyHandle o = il2cpp_mono_assembly_get_object_handle(domain, ass, error);
 	if (o == NULL) {
 		return ERR_INVALID_OBJECT;
 	}
-	buffer_add_objid(buf, o);
+	buffer_add_objid(buf, (MonoObject*)o);
 	return ERR_NONE;
 #else
 	HANDLE_FUNCTION_ENTER();
@@ -9680,9 +9641,7 @@ assembly_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 			buffer_add_id (buf, 0);
 		} else {
 #ifdef RUNTIME_IL2CPP
-			// IL2CPP does not have APIs to map a token back to a method pointer
-			// (like mono_get_method_checked), so just get the entry point directly.
-			m = il2cpp_image_get_entry_point(ass->image);
+			m = il2cpp_mono_image_get_entry_point(ass->image);
 			if (m == NULL)
 				buffer_add_id (buf, 0);
 			else
@@ -10028,10 +9987,10 @@ type_commands_internal (int command, MonoClass *klass, MonoDomain *domain, guint
 			if (mono_class_is_ginst (klass)) {
 				MonoGenericInst *inst = mono_generic_class_get_context (mono_class_get_generic_class (klass))->class_inst;
 
-				count = VM_GENERIC_INST_TYPE_ARGC(inst);
+				count = inst->type_argc;
 				buffer_add_int (buf, count);
 				for (i = 0; i < count; i++)
-					buffer_add_typeid (buf, domain, mono_class_from_mono_type (VM_GENERIC_INST_TYPE_ARGV(inst, i)));
+					buffer_add_typeid (buf, domain, mono_class_from_mono_type (inst->type_argv [i]));
 			} else if (mono_class_is_gtd (klass)) {
 				MonoGenericContainer *container = mono_class_get_generic_container (klass);
 				MonoClass *pklass;
@@ -10039,12 +9998,7 @@ type_commands_internal (int command, MonoClass *klass, MonoDomain *domain, guint
 				count = container->type_argc;
 				buffer_add_int (buf, count);
 				for (i = 0; i < count; i++) {
-#ifdef RUNTIME_IL2CPP
-					MonoGenericParam *param = il2cpp_generic_container_get_param (container, i);
-#else
-					MonoGenericParam *param = mono_generic_container_get_param (container, i);
-#endif
-					pklass = mono_class_from_generic_parameter_internal (param);
+					pklass = mono_class_from_generic_parameter_internal (mono_generic_container_get_param (container, i));
 					buffer_add_typeid (buf, domain, pklass);
 				}
 			} else {
@@ -10435,7 +10389,7 @@ type_commands_internal (int command, MonoClass *klass, MonoDomain *domain, guint
 
 		if (vtable)
 #ifdef RUNTIME_IL2CPP
-			buffer_add_int (buf, il2cpp_class_is_initialized (klass) ? 1 : 0);
+			buffer_add_int (buf, m_class_is_initialized (klass) ? 1 : 0);
 #else
 			buffer_add_int (buf, (vtable->initialized || vtable->init_failed) ? 1 : 0);
 #endif // RUNTIME_IL2CPP
@@ -10511,7 +10465,7 @@ static void GetSequencePointsAndSourceFilesUniqueSequencePoints(MonoMethod* meth
 	*uniqueFileSequencePointIndices = g_array_new(FALSE, FALSE, sizeof(int));
 
     if (method->is_inflated)
-        method = il2cpp_get_generic_method_definition(method);
+        method = method->genericMethod->methodDefinition;
 
 	void *seqPointIter = NULL;
 	Il2CppSequencePoint *seqPoint;
@@ -10850,11 +10804,11 @@ method_commands_internal (int command, MonoMethod *method, MonoDomain *domain, g
 					if (is_inflated) {
 						MonoGenericInst *inst = mono_method_get_context (method)->method_inst;
 						if (inst) {
-							count = VM_GENERIC_INST_TYPE_ARGC(inst);
+							count = inst->type_argc;
 							buffer_add_int (buf, count);
 
 							for (i = 0; i < count; i++)
-								buffer_add_typeid (buf, domain, mono_class_from_mono_type (VM_GENERIC_INST_TYPE_ARGV(inst, i)));
+								buffer_add_typeid (buf, domain, mono_class_from_mono_type (inst->type_argv [i]));
 						} else {
 							buffer_add_int (buf, 0);
 						}
@@ -10864,11 +10818,7 @@ method_commands_internal (int command, MonoMethod *method, MonoDomain *domain, g
 						count = mono_method_signature (method)->generic_param_count;
 						buffer_add_int (buf, count);
 						for (i = 0; i < count; i++) {
-#ifdef RUNTIME_IL2CPP
-							MonoGenericParam *param = il2cpp_generic_container_get_param (container, i);
-#else
 							MonoGenericParam *param = mono_generic_container_get_param (container, i);
-#endif
 							MonoClass *pklass = mono_class_from_generic_parameter_internal (param);
 							buffer_add_typeid (buf, domain, pklass);
 						}
@@ -11254,7 +11204,7 @@ static void GetVariable(DebuggerTlsData* tls, StackFrame* frame, MethodVariableK
 		il2cpp_debugger_get_method_execution_context_and_header_info (frame->actual_method, &executionInfoCount, &executionContextInfo, &headerInfo, &scopes);
 
 		*var = frame->frame_context->locals[variablePosition];
-		*type = il2cpp_type_inflate ( il2cpp_get_type_from_index (executionContextInfo[variablePosition].typeIndex), mono_method_get_context (frame->actual_method));
+		*type = il2cpp_type_inflate ( il2cpp_get_type_from_index (executionContextInfo[variablePosition].typeIndex), il2cpp_mono_method_get_context (frame->actual_method));
 	}
 		break;
 	case kMethodVariableKind_This:
@@ -11888,7 +11838,7 @@ object_commands (int command, guint8 *p, guint8 *end, Buffer *buf)
 		buffer_add_domainid (buf, VM_OBJECT_GET_DOMAIN(obj));
 		break;
 	case CMD_OBJECT_REF_GET_INFO:
-		buffer_add_typeid (buf, VM_OBJECT_GET_DOMAIN(obj), mono_class_from_mono_type(mono_object_get_type(obj)));
+		buffer_add_typeid (buf, VM_OBJECT_GET_DOMAIN(obj), mono_class_from_mono_type(VM_OBJECT_GET_TYPE(obj)));
 		buffer_add_domainid (buf, VM_OBJECT_GET_DOMAIN(obj));
 		break;
 	default:
@@ -12186,7 +12136,7 @@ debugger_thread (void *arg)
 
 	debugger_thread_id = mono_native_thread_id_get ();
 #ifdef RUNTIME_IL2CPP
-	MonoThread *thread = mono_thread_attach (mono_get_root_domain ());
+	MonoThread *thread = mono_thread_attach (il2cpp_mono_get_root_domain ());
 #endif // RUNTIME_IL2CPP
 
 	MonoInternalThread *internal = mono_thread_internal_current ();
@@ -12211,7 +12161,7 @@ debugger_thread (void *arg)
 			process_profiler_event (EVENT_KIND_VM_START, mono_thread_get_main ());
 #ifdef RUNTIME_IL2CPP
 			{
-				MonoDomain* domain = mono_get_root_domain();
+				MonoDomain* domain = il2cpp_mono_get_root_domain();
 				appdomain_load(NULL, domain);
 				AgentDomainInfo *info = VM_DOMAIN_GET_AGENT_INFO(domain);
 				void *iter = NULL;
@@ -12359,7 +12309,7 @@ debugger_thread (void *arg)
 	mono_set_is_debugger_attached (FALSE);
 
 #ifdef RUNTIME_IL2CPP
-	mono_free_method_signatures();
+	il2cpp_mono_free_method_signatures();
 #endif // RUNTIME_IL2CPP
 
 	mono_coop_mutex_lock (&debugger_thread_exited_mutex);
@@ -12380,17 +12330,6 @@ debugger_thread (void *arg)
 
 	return 0;
 }
-
-// It is possible for a client (like Unity with a non-development player build) to initialize the debugger
-// without providing proper debugger agent arguments. In this case, debugger_agent_init will not be called,
-// but IL2CPP code generation will still attempt to check for sequence points. To avoid the need to do 
-// if checks in critical path code, initialize the debugger with the minimal necessary for the sequence
-// point checks to fail gracefully and allow execution to continue.
-void mono_debugger_agent_init_minimal(void)
-{
-	event_requests = g_ptr_array_new ();
-}
-
 #ifdef RUNTIME_IL2CPP
 static void
 unity_process_breakpoint_inner(DebuggerTlsData *tls, gboolean from_signal, Il2CppSequencePoint* sequencePoint)

@@ -1,6 +1,6 @@
 #include "il2cpp-config.h"
 #include "Normalization.h"
-#include <il2cpp-normalization-tables.h>
+#include "icalls/mscorlib/Mono.Globalization.Unicode/Normalization.h"
 
 namespace il2cpp
 {
@@ -12,14 +12,9 @@ namespace System
 {
 namespace Text
 {
-    void Normalization::load_normalization_resource(intptr_t* argProps, intptr_t* argMappedChars, intptr_t* argCharMapIndex, intptr_t* argHelperIndex, intptr_t* argMapIdxToComposite, intptr_t* argCombiningClass)
+    void Normalization::load_normalization_resource(intptr_t* props, intptr_t* mappedChars, intptr_t* charMapIndex, intptr_t* helperIndex, intptr_t* mapIdxToComposite, intptr_t* combiningClass)
     {
-        *argProps = reinterpret_cast<intptr_t>(props);
-        *argMappedChars = reinterpret_cast<intptr_t>(mappedChars);
-        *argCharMapIndex = reinterpret_cast<intptr_t>(charMapIndex);
-        *argHelperIndex = reinterpret_cast<intptr_t>(helperIndex);
-        *argMapIdxToComposite = reinterpret_cast<intptr_t>(mapIdxToComposite);
-        *argCombiningClass = reinterpret_cast<intptr_t>(combiningClass);
+        icalls::mscorlib::Mono::Globalization::Unicode::Normalization::load_normalization_resource(props, mappedChars, charMapIndex, helperIndex, mapIdxToComposite, combiningClass);
     }
 } // namespace Text
 } // namespace System

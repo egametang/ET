@@ -8,13 +8,12 @@
 #include "FilePlatformConfig.h"
 #endif
 
+#include "il2cpp-vm-support.h"
 #include "os/ConsoleExtension.h"
 #include "os/ErrorCodes.h"
 #include "os/File.h"
 #include "os/Mutex.h"
 #include "os/Posix/Error.h"
-#include "utils/Expected.h"
-#include "utils/Il2CppError.h"
 #include "utils/PathUtils.h"
 
 #if IL2CPP_SUPPORT_THREADS
@@ -107,21 +106,6 @@ namespace os
         return NULL;
     }
 
-    bool File::IsHandleOpenFileHandle(intptr_t lookup)
-    {
-#if IL2CPP_SUPPORT_THREADS
-        FastAutoLock autoLock(&s_fileHandleMutex);
-#endif
-
-        for (FileHandle *handle = s_fileHandleHead; handle != NULL; handle = handle->next)
-        {
-            if (reinterpret_cast<intptr_t>(handle) == lookup)
-                return true;
-        }
-
-        return false;
-    }
-
 // NOTE:
 // Checking for file sharing violations only works for the current process.
 //
@@ -135,11 +119,17 @@ namespace os
         if (fileHandle == NULL) // File is not open
             return true;
 
-        if (fileHandle->shareMode == kFileShareNone || shareMode == kFileShareNone)
+        if (fileHandle->shareMode == kFileShareNone)
             return false;
 
         if (((fileHandle->shareMode == kFileShareRead)  && (accessMode != kFileAccessRead)) ||
             ((fileHandle->shareMode == kFileShareWrite) && (accessMode != kFileAccessWrite)))
+        {
+            return false;
+        }
+
+        if (((fileHandle->accessMode & kFileAccessRead)  && !(shareMode & kFileShareRead)) ||
+            ((fileHandle->accessMode & kFileAccessWrite) && !(shareMode & kFileShareWrite)))
         {
             return false;
         }
@@ -262,7 +252,7 @@ namespace os
         return true;
     }
 
-    utils::Expected<bool> File::Isatty(FileHandle* fileHandle)
+    bool File::Isatty(FileHandle* fileHandle)
     {
         return isatty(fileHandle->fd) == 1;
     }
@@ -318,13 +308,13 @@ namespace os
 
 #endif
 
-    utils::Expected<bool> File::CreatePipe(FileHandle** read_handle, FileHandle** write_handle)
+    bool File::CreatePipe(FileHandle** read_handle, FileHandle** write_handle)
     {
         int error;
         return File::CreatePipe(read_handle, write_handle, &error);
     }
 
-    utils::Expected<bool> File::CreatePipe(FileHandle** read_handle, FileHandle** write_handle, int* error)
+    bool File::CreatePipe(FileHandle** read_handle, FileHandle** write_handle, int* error)
     {
         int fds[2];
 
@@ -1044,6 +1034,9 @@ namespace os
             return 0;
         }
 
+#if IL2CPP_ENABLE_PROFILER
+        IL2CPP_VM_PROFILE_FILEIO(IL2CPP_PROFILE_FILEIO_READ, count);
+#endif
         return ret;
     }
 
@@ -1068,6 +1061,10 @@ namespace os
             *error = FileErrnoToErrorCode(errno);
             return -1;
         }
+
+#if IL2CPP_ENABLE_PROFILER
+        IL2CPP_VM_PROFILE_FILEIO(IL2CPP_PROFILE_FILEIO_WRITE, count);
+#endif
 
 #if IL2CPP_SUPPORTS_CONSOLE_EXTENSION
         if (handle == GetStdOutput() || handle == GetStdError())
@@ -1187,18 +1184,14 @@ namespace os
         return false;
     }
 
-    utils::Expected<bool> File::IsExecutable(const std::string& path)
+    bool File::IsExecutable(const std::string& path)
     {
 #if IL2CPP_CAN_CHECK_EXECUTABLE
         return access(path.c_str(), X_OK) == 0;
 #else
-        return utils::Il2CppError(utils::NotSupported, "This platform cannot check for executable permissions.");
-#endif
-    }
-
-    bool File::Cancel(FileHandle* handle)
-    {
+        IL2CPP_VM_NOT_SUPPORTED(File::IsExecutable, "This platform cannot check for executable permissions.");
         return false;
+#endif
     }
 }
 }

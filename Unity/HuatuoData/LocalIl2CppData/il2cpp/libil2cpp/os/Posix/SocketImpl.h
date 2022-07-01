@@ -1,22 +1,15 @@
 #pragma once
 
-#if (IL2CPP_TARGET_POSIX || IL2CPP_SUPPORT_SOCKETS_POSIX_API) && !RUNTIME_TINY
+#if IL2CPP_TARGET_POSIX && !RUNTIME_TINY
 
 #include <string>
 #include <vector>
 #include <stdint.h>
-#include <sys/socket.h>
 
 #include "os/Socket.h"
 #include "os/ErrorCodes.h"
 #include "os/WaitStatus.h"
-#include "utils/Expected.h"
 #include "utils/NonCopyable.h"
-#if IL2CPP_USE_NETWORK_ACCESS_HANDLER
-#include "os/NetworkAccessHandler.h"
-#else
-#include "NetworkAccessHandlerStub.h"
-#endif
 
 struct sockaddr;
 
@@ -55,11 +48,11 @@ namespace os
         WaitStatus Bind(const char *path);
         WaitStatus Bind(const char *address, uint16_t port);
         WaitStatus Bind(uint32_t address, uint16_t port);
-        utils::Expected<WaitStatus> Bind(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
+        WaitStatus Bind(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
 
         WaitStatus Connect(const char *path);
         WaitStatus Connect(uint32_t address, uint16_t port);
-        utils::Expected<WaitStatus> Connect(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
+        WaitStatus Connect(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port);
 
         WaitStatus Disconnect(bool reuse);
         WaitStatus Shutdown(int32_t how);
@@ -77,11 +70,11 @@ namespace os
 
         WaitStatus SendTo(uint32_t address, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
         WaitStatus SendTo(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
-        utils::Expected<WaitStatus> SendTo(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
+        WaitStatus SendTo(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len);
 
         WaitStatus RecvFrom(uint32_t address, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
         WaitStatus RecvFrom(const char *path, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
-        utils::Expected<WaitStatus> RecvFrom(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
+        WaitStatus RecvFrom(uint8_t address[ipv6AddressSize], uint32_t scope, uint16_t port, const uint8_t *data, int32_t count, os::SocketFlags flags, int32_t *len, os::EndPointInfo &ep);
 
         WaitStatus Available(int32_t *amount);
 
@@ -118,9 +111,6 @@ namespace os
         static void Startup();
         static void Cleanup();
 
-        static bool is_private(const struct sockaddr *sa, socklen_t sa_size);
-        static bool is_private(const char* address);
-
     private:
 
         bool _is_valid;
@@ -131,7 +121,6 @@ namespace os
         ErrorCode _saved_error;
         int32_t _still_readable;
         ThreadStatusCallback _thread_status_callback;
-        NetworkAccessHandler _networkAccess;
 
         void StoreLastError();
         void StoreLastError(int32_t error_no);

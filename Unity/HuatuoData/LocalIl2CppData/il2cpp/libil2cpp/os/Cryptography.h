@@ -17,7 +17,7 @@ namespace os
         static void ReleaseCryptographyProvider(void* provider);
 
         /* Use the provider to fill the buffer with cryptographically random bytes. */
-        static bool FillBufferWithRandomBytes(void* provider, intptr_t length, unsigned char* data);
+        static bool FillBufferWithRandomBytes(void* provider, uint32_t length, unsigned char* data);
     };
 }
 }

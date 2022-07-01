@@ -11,18 +11,13 @@
 typedef struct Baselib_HighCapacitySemaphore
 {
     int64_t count;
-    Baselib_SystemSemaphore_Handle handle;
+    const Baselib_SystemSemaphore_Handle handle;
     char _cachelineSpacer0[PLATFORM_CACHE_LINE_SIZE - sizeof(int64_t) - sizeof(Baselib_SystemSemaphore_Handle)];
-    char _systemSemaphoreData[Baselib_SystemSemaphore_PlatformSize];
 } Baselib_HighCapacitySemaphore;
-
-BASELIB_STATIC_ASSERT((offsetof(Baselib_HighCapacitySemaphore, count) + PLATFORM_CACHE_LINE_SIZE) ==
-    offsetof(Baselib_HighCapacitySemaphore, _systemSemaphoreData), "count and internalData must not share cacheline");
 
 BASELIB_INLINE_API Baselib_HighCapacitySemaphore Baselib_HighCapacitySemaphore_Create(void)
 {
-    Baselib_HighCapacitySemaphore semaphore = {0, {0}, {0}, {0}};
-    semaphore.handle = Baselib_SystemSemaphore_CreateInplace(&semaphore._systemSemaphoreData);
+    Baselib_HighCapacitySemaphore semaphore = {0, Baselib_SystemSemaphore_Create(), {0}};
     return semaphore;
 }
 
@@ -122,5 +117,5 @@ BASELIB_INLINE_API void Baselib_HighCapacitySemaphore_Free(Baselib_HighCapacityS
         return;
     const int64_t count = Baselib_atomic_load_64_seq_cst(&semaphore->count);
     BaselibAssert(count >= 0, "Destruction is not allowed when there are still threads waiting on the semaphore.");
-    Baselib_SystemSemaphore_FreeInplace(semaphore->handle);
+    Baselib_SystemSemaphore_Free(semaphore->handle);
 }

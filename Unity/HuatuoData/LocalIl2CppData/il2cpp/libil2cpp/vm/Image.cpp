@@ -4,11 +4,9 @@
 #include <limits>
 #include "os/Mutex.h"
 #include "utils/StringUtils.h"
-#include "vm/Array.h"
 #include "vm/Class.h"
 #include "vm/Image.h"
 #include "vm/MetadataCache.h"
-#include "vm/Reflection.h"
 #include "vm/StackTrace.h"
 #include "vm/Type.h"
 #include "utils/HashUtils.h"
@@ -261,26 +259,9 @@ namespace vm
         return NULL;
     }
 
-    static bool IsExported(const Il2CppClass* type)
-    {
-        if ((type->flags & TYPE_ATTRIBUTE_VISIBILITY_MASK) == TYPE_ATTRIBUTE_PUBLIC)
-        {
-            return true;
-        }
-
-        if ((type->flags & TYPE_ATTRIBUTE_VISIBILITY_MASK) == TYPE_ATTRIBUTE_NESTED_PUBLIC)
-        {
-            IL2CPP_ASSERT(type->declaringType);
-            return IsExported(type->declaringType);
-        }
-
-        return false;
-    }
-
     void Image::GetTypes(const Il2CppImage* image, bool exportedOnly, TypeVector* target)
     {
         uint32_t typeCount = Image::GetNumTypes(image);
-        target->reserve(typeCount);
 
         for (uint32_t sourceIndex = 0; sourceIndex < typeCount; sourceIndex++)
         {
@@ -289,29 +270,9 @@ namespace vm
             {
                 continue;
             }
-            if (exportedOnly && !IsExported(type))
-            {
-                continue;
-            }
 
             target->push_back(type);
         }
-    }
-
-    Il2CppArray* Image::GetTypes(const Il2CppImage* image, bool exportedOnly)
-    {
-        TypeVector types;
-        GetTypes(image, exportedOnly, &types);
-        Il2CppArray* result = Array::New(il2cpp_defaults.monotype_class, (il2cpp_array_size_t)types.size());
-        size_t index = 0;
-        for (vm::TypeVector::const_iterator type = types.begin(); type != types.end(); ++type)
-        {
-            Il2CppReflectionType* reflectionType = Reflection::GetTypeObject(&(*type)->byval_arg);
-            il2cpp_array_setref(result, index, reflectionType);
-            index++;
-        }
-
-        return result;
     }
 
     uint32_t Image::GetNumTypes(const Il2CppImage* image)

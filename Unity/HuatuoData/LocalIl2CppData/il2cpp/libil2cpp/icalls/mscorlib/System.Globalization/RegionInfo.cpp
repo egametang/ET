@@ -3,7 +3,6 @@
 #include "icalls/mscorlib/System.Globalization/CultureInfoInternals.h"
 #include "icalls/mscorlib/System.Globalization/CultureInfoTables.h"
 #include "icalls/mscorlib/System.Globalization/RegionInfo.h"
-#include "gc/WriteBarrier.h"
 #include "utils/StringUtils.h"
 #include "vm/String.h"
 

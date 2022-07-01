@@ -22,7 +22,6 @@ namespace vm
 
         // allocate using gc memory since we hold onto object references
         S_domain = (Il2CppDomain*)il2cpp::gc::GarbageCollector::AllocateFixed(sizeof(Il2CppDomain), NULL);
-        gc::WriteBarrier::GenericStore(&S_domain->ephemeron_tombstone, Object::New(il2cpp_defaults.object_class));
 
         return S_domain;
     }

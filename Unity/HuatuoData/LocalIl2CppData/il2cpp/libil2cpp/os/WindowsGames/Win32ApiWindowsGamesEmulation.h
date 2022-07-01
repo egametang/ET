@@ -1,6 +1,5 @@
 #pragma once
 
-#include "il2cpp-config.h"
 
 #if IL2CPP_TARGET_WINDOWS_GAMES
 
@@ -39,16 +38,6 @@ extern "C"
     inline BOOL WINAPI GetUserNameW(LPWSTR lpBuffer, LPDWORD pcbBuffer)
     {
         SetLastError(il2cpp::os::kErrorCallNotImplemented);
-        return FALSE;
-    }
-
-    inline BOOL SetThreadErrorMode(DWORD dwNewMode, LPDWORD lpOldMode)
-    {
-        return TRUE;
-    }
-
-    inline BOOL DeleteVolumeMountPointW(LPCWSTR lpszVolumeMountPoint)
-    {
         return FALSE;
     }
 }

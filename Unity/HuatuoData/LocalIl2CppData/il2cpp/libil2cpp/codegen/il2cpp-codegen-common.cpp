@@ -1,22 +1,9 @@
 #include "il2cpp-config.h"
 
-#include "gc/GarbageCollector.h"
-
-#if IL2CPP_ENABLE_WRITE_BARRIERS
-void Il2CppCodeGenWriteBarrier(void** targetAddress, void* object)
-{
-    il2cpp::gc::GarbageCollector::SetWriteBarrier(targetAddress);
-}
-
-#endif
-
-
 #if !RUNTIME_TINY
 
 #include "utils/Runtime.h"
-#include "vm/Class.h"
-#include "vm/Field.h"
-#include "vm/Type.h"
+#include "gc/GarbageCollector.h"
 
 // This function exists to help with generation of callstacks for exceptions
 // on iOS and MacOS x64 with clang 6.0 (newer versions of clang don't have this
@@ -38,46 +25,12 @@ REAL_NORETURN void il2cpp_codegen_abort()
 }
 
 #if IL2CPP_ENABLE_WRITE_BARRIERS
-void Il2CppCodeGenWriteBarrierForType(const Il2CppType* type, void** targetAddress, void* object)
+void Il2CppCodeGenWriteBarrier(void** targetAddress, void* object)
 {
-#if IL2CPP_ENABLE_STRICT_WRITE_BARRIERS
-    if (il2cpp::vm::Type::IsPointerType(type))
-        return;
-
-    if (il2cpp::vm::Type::IsStruct(type))
-    {
-        Il2CppClass* klass = il2cpp::vm::Class::FromIl2CppType(type);
-
-        FieldInfo* field;
-        void* iter = NULL;
-        while ((field = il2cpp::vm::Class::GetFields(klass, &iter)))
-        {
-            if (il2cpp::vm::Field::GetFlags(field) & FIELD_ATTRIBUTE_STATIC)
-                continue;
-
-            void* fieldTargetAddress = il2cpp::vm::Field::GetInstanceFieldDataPointer((void*)targetAddress, field);
-            Il2CppCodeGenWriteBarrierForType(field->type, (void**)fieldTargetAddress, NULL);
-        }
-    }
-    else
-    {
-        il2cpp::gc::GarbageCollector::SetWriteBarrier(targetAddress);
-    }
-#else
     il2cpp::gc::GarbageCollector::SetWriteBarrier(targetAddress);
-#endif
 }
 
-void Il2CppCodeGenWriteBarrierForClass(Il2CppClass* klass, void** targetAddress, void* object)
-{
-#if IL2CPP_ENABLE_STRICT_WRITE_BARRIERS
-    Il2CppCodeGenWriteBarrierForType(il2cpp::vm::Class::GetType(klass), targetAddress, object);
-#else
-    il2cpp::gc::GarbageCollector::SetWriteBarrier(targetAddress);
 #endif
-}
-
-#endif // IL2CPP_ENABLE_WRITE_BARRIERS
 
 #endif // !RUNTIME_TINY
 

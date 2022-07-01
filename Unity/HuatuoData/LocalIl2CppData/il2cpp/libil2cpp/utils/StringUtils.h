@@ -29,7 +29,6 @@
 #include "il2cpp-config.h"
 #include "StringView.h"
 #include "StringViewUtils.h"
-#include "Baselib.h"
 
 namespace il2cpp
 {
@@ -230,20 +229,6 @@ namespace utils
                 return Hash(value);
             }
         };
-        
-        #if defined(_MSC_VER)
-        static inline const baselib_char16_t* NativeStringToBaselib(const Il2CppNativeChar* str)
-        {
-            static_assert(sizeof(Il2CppNativeChar) == sizeof(baselib_char16_t), "type sizes should match");
-            return reinterpret_cast<const baselib_char16_t*>(str);
-        }
-        #else
-        static inline const char* NativeStringToBaselib(const Il2CppNativeChar* str)
-        {
-            static_assert(sizeof(Il2CppNativeChar) == sizeof(char), "type sizes should match");
-            return str;
-        }
-        #endif
     };
 } /* utils */
 } /* il2cpp */

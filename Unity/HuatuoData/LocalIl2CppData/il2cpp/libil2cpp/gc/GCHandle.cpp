@@ -1,6 +1,7 @@
 #include "il2cpp-config.h"
 #include "gc/GCHandle.h"
 #include "il2cpp-object-internals.h"
+#include "il2cpp-vm-support.h"
 #include "GarbageCollector.h"
 #include "os/Mutex.h"
 #include "utils/Memory.h"
@@ -173,13 +174,13 @@ namespace gc
         return alloc_handle(&gc_handles[pinned ? HANDLE_PINNED : HANDLE_NORMAL], obj, false);
     }
 
-    utils::Expected<uint32_t> GCHandle::NewWeakref(Il2CppObject *obj, bool track_resurrection)
+    uint32_t GCHandle::NewWeakref(Il2CppObject *obj, bool track_resurrection)
     {
         uint32_t handle = alloc_handle(&gc_handles[track_resurrection ? HANDLE_WEAK_TRACK : HANDLE_WEAK], obj, track_resurrection);
 
 #ifndef HAVE_SGEN_GC
         if (track_resurrection)
-            return utils::Il2CppError(utils::NotSupported, "IL2CPP does not support resurrection for weak references. Pass the trackResurrection with a value of false.");
+            IL2CPP_VM_NOT_SUPPORTED(GCHandle::NewWeakref, "IL2CPP does not support resurrection for weak references. Pass the trackResurrection with a value of false.");
 #endif
 
         return handle;
@@ -297,7 +298,7 @@ namespace gc
         unlock_handles(handles);
     }
 
-    utils::Expected<uint32_t> GCHandle::GetTargetHandle(Il2CppObject * obj, int32_t handle, int32_t type)
+    int32_t GCHandle::GetTargetHandle(Il2CppObject * obj, int32_t handle, int32_t type)
     {
         if (type == -1)
         {

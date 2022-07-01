@@ -43,7 +43,7 @@
 #define COMPILER_BUILTIN_UNREACHABLE()              __builtin_unreachable()
 // Tells the compiler to assume that the given expression is true until the expression is modified.
 // (it is undefined behavior if the expression is not true after all)
-#define COMPILER_BUILTIN_ASSUME(EXPR_)              do { if (!(EXPR_)) COMPILER_BUILTIN_UNREACHABLE(); } while(false)
+#define COMPILER_BUILTIN_ASSUME(EXPR_)             PP_WRAP_CODE(if (!(EXPR_)) COMPILER_BUILTIN_UNREACHABLE())
 
 #define COMPILER_NOINLINE                   __attribute__((unused, noinline)) // unused is needed to avoid warning when a function is not used
 #define COMPILER_INLINE                     __attribute__((unused)) inline

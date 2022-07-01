@@ -11,6 +11,8 @@
 #include "il2cpp-class-internals.h"
 #include "il2cpp-object-internals.h"
 
+typedef il2cpp::utils::dynamic_array<Il2CppObject*> custom_growable_array;
+
 #define MARK_OBJ(obj) \
     do { \
         (obj)->klass = (Il2CppClass*)(((size_t)(obj)->klass) | (size_t)1); \
@@ -40,11 +42,9 @@ namespace vm
     /* how far we recurse processing array elements before we stop. Prevents stack overflow */
     const int kMaxTraverseRecursionDepth = 128;
 
-    struct CustomGrowableBlockArray;
-
     struct LivenessState
     {
-        LivenessState(Il2CppClass* filter, uint32_t maxCount, Liveness::register_object_callback callback, void*callback_userdata, Liveness::ReallocateArrayCallback reallocateArray);
+        LivenessState(Il2CppClass* filter, uint32_t maxCount, Liveness::register_object_callback callback, void*callback_userdata, Liveness::WorldChangedCallback onWorldStarted, Liveness::WorldChangedCallback onWorldStopped);
         ~LivenessState();
 
         void Finalize();
@@ -60,6 +60,7 @@ namespace vm
         static bool AddProcessObject(Il2CppObject* object, LivenessState* state);
         static bool ShouldProcessValue(Il2CppObject* val, Il2CppClass* filter);
         static bool FieldCanContainReferences(FieldInfo* field);
+        void SafeGrowArray(custom_growable_array* array);
 
         static bool ShouldTraverseObjects(size_t index, int32_t recursion_depth)
         {
@@ -67,154 +68,32 @@ namespace vm
             return ((index + 1) & (kArrayElementsPerChunk - 1)) == 0 && recursion_depth < kMaxTraverseRecursionDepth;
         }
 
-        CustomGrowableBlockArray* all_objects;
+        int32_t                first_index_in_all_objects;
+        custom_growable_array* all_objects;
 
         Il2CppClass*          filter;
 
-        CustomGrowableBlockArray* process_array;
+        custom_growable_array* process_array;
+        uint32_t               initial_alloc_count;
 
         void*               callback_userdata;
 
         Liveness::register_object_callback filter_callback;
-        Liveness::ReallocateArrayCallback reallocateArray;
-
+        Liveness::WorldChangedCallback onWorldStarted;
+        Liveness::WorldChangedCallback onWorldStopped;
         int32_t               traverse_depth; // track recursion. Prevent stack overflow by limiting recurion
     };
 
-#define kBlockSize (8 * 1024)
-#define kArrayElementsPerBlock ((kBlockSize - 3 *sizeof (void*)) / sizeof (void*))
-
-    struct CustomArrayBlock
-    {
-        Il2CppObject** next_item;
-        CustomArrayBlock *prev_block;
-        CustomArrayBlock *next_block;
-        Il2CppObject* p_data[kArrayElementsPerBlock];
-    };
-
-    struct CustomBlockArrayIterator;
-    struct CustomGrowableBlockArray
-    {
-        CustomArrayBlock *first_block;
-        CustomArrayBlock *current_block;
-        CustomBlockArrayIterator *iterator;
-
-        CustomGrowableBlockArray(LivenessState *state);
-
-        bool IsEmpty();
-        void PushBack(Il2CppObject* value, LivenessState *state);
-        Il2CppObject* PopBack();
-        void ResetIterator();
-        Il2CppObject* Next();
-        void Clear();
-        void Destroy(LivenessState *state);
-    };
-
-    struct CustomBlockArrayIterator
-    {
-        CustomGrowableBlockArray *array;
-        CustomArrayBlock *current_block;
-        Il2CppObject** current_position;
-    };
-
-    CustomGrowableBlockArray::CustomGrowableBlockArray(LivenessState *state)
-    {
-        current_block = (CustomArrayBlock*)state->reallocateArray(NULL, kBlockSize, state->callback_userdata);
-        current_block->prev_block = NULL;
-        current_block->next_block = NULL;
-        current_block->next_item = current_block->p_data;
-        first_block = current_block;
-
-        iterator = new CustomBlockArrayIterator();
-        iterator->array = this;
-        iterator->current_block = first_block;
-        iterator->current_position = first_block->p_data;
-    }
-
-    bool CustomGrowableBlockArray::IsEmpty()
-    {
-        return first_block->next_item == first_block->p_data;
-    }
-
-    void CustomGrowableBlockArray::PushBack(Il2CppObject* value, LivenessState *state)
-    {
-        if (current_block->next_item == current_block->p_data + kArrayElementsPerBlock)
-        {
-            CustomArrayBlock* new_block = current_block->next_block;
-            if (current_block->next_block == NULL)
-            {
-                new_block = (CustomArrayBlock*)state->reallocateArray(NULL, kBlockSize, state->callback_userdata);
-                new_block->next_block = NULL;
-                new_block->prev_block = current_block;
-                new_block->next_item = new_block->p_data;
-                current_block->next_block = new_block;
-            }
-            current_block = new_block;
-        }
-        *current_block->next_item++ = value;
-    }
-
-    Il2CppObject* CustomGrowableBlockArray::PopBack()
-    {
-        if (current_block->next_item == current_block->p_data)
-        {
-            if (current_block->prev_block == NULL)
-                return NULL;
-            current_block = current_block->prev_block;
-            current_block->next_item = current_block->p_data + kArrayElementsPerBlock;
-        }
-        return *--current_block->next_item;
-    }
-
-    void CustomGrowableBlockArray::ResetIterator()
-    {
-        iterator->current_block = first_block;
-        iterator->current_position = first_block->p_data;
-    }
-
-    Il2CppObject* CustomGrowableBlockArray::Next()
-    {
-        if (iterator->current_position != iterator->current_block->next_item)
-            return *iterator->current_position++;
-        if (iterator->current_block->next_block == NULL)
-            return NULL;
-        iterator->current_block = iterator->current_block->next_block;
-        iterator->current_position = iterator->current_block->p_data;
-        if (iterator->current_position == iterator->current_block->next_item)
-            return NULL;
-        return *iterator->current_position++;
-    }
-
-    void CustomGrowableBlockArray::Clear()
-    {
-        CustomArrayBlock *block = first_block;
-        while (block != NULL)
-        {
-            block->next_item = block->p_data;
-            block = block->next_block;
-        }
-    }
-
-    void CustomGrowableBlockArray::Destroy(LivenessState *state)
-    {
-        CustomArrayBlock *block = first_block;
-        while (block != NULL)
-        {
-            CustomArrayBlock *data_block = block;
-            block = block->next_block;
-            state->reallocateArray(data_block, 0, state->callback_userdata);
-        }
-        delete iterator;
-        delete this;
-    }
-
-    LivenessState::LivenessState(Il2CppClass* filter, uint32_t maxCount, Liveness::register_object_callback callback, void*callback_userdata, Liveness::ReallocateArrayCallback reallocateArray) :
+    LivenessState::LivenessState(Il2CppClass* filter, uint32_t maxCount, Liveness::register_object_callback callback, void*callback_userdata, Liveness::WorldChangedCallback onWorldStarted, Liveness::WorldChangedCallback onWorldStopped) :
+        first_index_in_all_objects(0),
         all_objects(NULL),
         filter(NULL),
         process_array(NULL),
+        initial_alloc_count(0),
         callback_userdata(NULL),
         filter_callback(NULL),
-        reallocateArray(reallocateArray),
+        onWorldStarted(onWorldStarted),
+        onWorldStopped(onWorldStopped),
         traverse_depth(0)
     {
 // construct liveness_state;
@@ -223,35 +102,38 @@ namespace vm
 // process_array. array that contains the objcets that should be processed. this should run depth first to reduce memory usage
 // if all_objects run out of space, run through list, add objects that match the filter, clear bit in vtable and then clear the array.
 
+        maxCount = maxCount < 1000 ? 1000 : maxCount;
+        all_objects = new custom_growable_array();
+        all_objects->reserve(maxCount * 4);
+        process_array = new custom_growable_array();
+        process_array->reserve(maxCount);
+
+        first_index_in_all_objects = 0;
         this->filter = filter;
 
         this->callback_userdata = callback_userdata;
         this->filter_callback = callback;
-
-        all_objects = new CustomGrowableBlockArray(this);
-        process_array = new CustomGrowableBlockArray(this);
     }
 
     LivenessState::~LivenessState()
     {
-        all_objects->Destroy(this);
-        process_array->Destroy(this);
+        delete all_objects;
+        delete process_array;
     }
 
     void LivenessState::Finalize()
     {
-        all_objects->ResetIterator();
-        Il2CppObject* object = all_objects->Next();
-        while (object != NULL)
+        for (size_t i = 0; i < all_objects->size(); i++)
         {
+            Il2CppObject* object = (*all_objects)[i];
             CLEAR_OBJ(object);
-            object = all_objects->Next();
         }
     }
 
     void LivenessState::Reset()
     {
-        process_array->Clear();
+        first_index_in_all_objects = (int32_t)all_objects->size();
+        process_array->resize_uninitialized(0);
     }
 
     void LivenessState::TraverseObjects()
@@ -259,9 +141,10 @@ namespace vm
         Il2CppObject* object = NULL;
 
         traverse_depth++;
-        while (!process_array->IsEmpty())
+        while (process_array->size() > 0)
         {
-            object = process_array->PopBack();
+            object = process_array->back();
+            process_array->pop_back();
             TraverseGenericObject(object, this);
         }
         traverse_depth--;
@@ -272,10 +155,10 @@ namespace vm
         Il2CppObject* filtered_objects[64];
         int32_t num_objects = 0;
 
-        Il2CppObject* value = all_objects->Next();
-        while (value)
+        size_t i = (size_t)first_index_in_all_objects;
+        for (; i < all_objects->size(); i++)
         {
-            Il2CppObject* object = value;
+            Il2CppObject* object = (*all_objects)[i];
             if (ShouldProcessValue(object, filter))
                 filtered_objects[num_objects++] = object;
             if (num_objects == 64)
@@ -283,7 +166,6 @@ namespace vm
                 filter_callback(filtered_objects, 64, callback_userdata);
                 num_objects = 0;
             }
-            value = all_objects->Next();
         }
 
         if (num_objects != 0)
@@ -418,7 +300,7 @@ namespace vm
             return;
 
         array_length = Array::GetLength(array);
-        if (element_class->byval_arg.valuetype)
+        if (element_class->valuetype)
         {
             size_t items_processed = 0;
             elementClassSize = Class::GetArrayElementSize(element_class);
@@ -457,13 +339,18 @@ namespace vm
         bool has_references = GET_CLASS(object)->has_references;
         if (has_references || ShouldProcessValue(object, state->filter))
         {
-            state->all_objects->PushBack(object, state);
+            // TODO
+            if (state->all_objects->size() == state->all_objects->capacity())
+                state->SafeGrowArray(state->all_objects);
+            state->all_objects->push_back(object);
             MARK_OBJ(object);
         }
         // Check if klass has further references - if not skip adding
         if (has_references)
         {
-            state->process_array->PushBack(object, state);
+            if (state->process_array->size() == state->process_array->capacity())
+                state->SafeGrowArray(state->process_array);
+            state->process_array->push_back(object);
             return true;
         }
 
@@ -490,25 +377,44 @@ namespace vm
         return Type::IsReference(field->type);
     }
 
-    void* Liveness::AllocateStruct(Il2CppClass* filter, int max_object_count, register_object_callback callback, void* userdata, ReallocateArrayCallback reallocateArray)
+    void LivenessState::SafeGrowArray(custom_growable_array* array)
+    {
+        // if all_objects run out of space, run through list
+        // clear bit in vtable, start the world, reallocate, stop the world and continue
+        for (size_t i = 0; i < all_objects->size(); i++)
+        {
+            Il2CppObject* object = (*all_objects)[i];
+            CLEAR_OBJ(object);
+        }
+        Liveness::StartWorld(onWorldStarted);
+        array->reserve(array->capacity() * 2);
+        Liveness::StopWorld(onWorldStopped);
+        for (size_t i = 0; i < all_objects->size(); i++)
+        {
+            Il2CppObject* object = (*all_objects)[i];
+            MARK_OBJ(object);
+        }
+    }
+
+    void* Liveness::Begin(Il2CppClass* filter, int max_object_count, register_object_callback callback, void* userdata, WorldChangedCallback onWorldStarted, WorldChangedCallback onWorldStopped)
     {
         // ensure filter is initialized so we can do fast (and lock free) check HasParentUnsafe
         Class::SetupTypeHierarchy(filter);
-        LivenessState* state = new LivenessState(filter, max_object_count, callback, userdata, reallocateArray);
+        LivenessState* state = new LivenessState(filter, max_object_count, callback, userdata, onWorldStarted, onWorldStopped);
+        StopWorld(onWorldStopped);
         // no allocations can happen beyond this point
         return state;
     }
 
-    void Liveness::FreeStruct(void* state)
-    {
-        LivenessState* lstate = (LivenessState*)state;
-        delete lstate;
-    }
-
-    void Liveness::Finalize(void* state)
+    void Liveness::End(void* state)
     {
         LivenessState* lstate = (LivenessState*)state;
         lstate->Finalize();
+
+        WorldChangedCallback onWorldStarted = lstate->onWorldStarted;
+        StartWorld(onWorldStarted);
+
+        delete lstate;
     }
 
     void Liveness::FromRoot(Il2CppObject* root, void* state)
@@ -516,7 +422,7 @@ namespace vm
         LivenessState* liveness_state = (LivenessState*)state;
         liveness_state->Reset();
 
-        liveness_state->process_array->PushBack(root, liveness_state);
+        liveness_state->process_array->push_back(root);
 
         liveness_state->TraverseObjects();
 
@@ -585,6 +491,18 @@ namespace vm
         liveness_state->TraverseObjects();
         //Filter objects and call callback to register found objects
         liveness_state->FilterObjects();
+    }
+
+    void Liveness::StopWorld(WorldChangedCallback onWorldStopped)
+    {
+        onWorldStopped();
+        il2cpp::gc::GarbageCollector::StopWorld();
+    }
+
+    void Liveness::StartWorld(WorldChangedCallback onWorldStarted)
+    {
+        il2cpp::gc::GarbageCollector::StartWorld();
+        onWorldStarted();
     }
 } /* namespace vm */
 } /* namespace il2cpp */

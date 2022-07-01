@@ -5,7 +5,6 @@
 #include "os/Mutex.h"
 #include "os/WindowsRuntime.h"
 #include "utils/StringUtils.h"
-#include "vm/Exception.h"
 #include "vm/MetadataCache.h"
 #include "vm/Runtime.h"
 
@@ -18,15 +17,13 @@ struct HStringLess
         uint32_t lengthLeft = 0;
         uint32_t lengthRight = 0;
 
-        auto charsLeft = il2cpp::os::WindowsRuntime::GetHStringBuffer(left, &lengthLeft);
-        il2cpp::vm::Exception::RaiseIfError(charsLeft.GetError());
-        auto charsRight = il2cpp::os::WindowsRuntime::GetHStringBuffer(right, &lengthRight);
-        il2cpp::vm::Exception::RaiseIfError(charsRight.GetError());
+        const Il2CppChar* charsLeft = il2cpp::os::WindowsRuntime::GetHStringBuffer(left, &lengthLeft);
+        const Il2CppChar* charsRight = il2cpp::os::WindowsRuntime::GetHStringBuffer(right, &lengthRight);
 
         if (lengthLeft != lengthRight)
             return lengthLeft < lengthRight;
 
-        return memcmp(charsLeft.Get(), charsRight.Get(), sizeof(Il2CppChar) * lengthLeft) < 0;
+        return memcmp(charsLeft, charsRight, sizeof(Il2CppChar) * lengthLeft) < 0;
     }
 };
 
@@ -97,9 +94,8 @@ extern "C" IL2CPP_EXPORT il2cpp_hresult_t STDCALL DllGetActivationFactory(Il2Cpp
     }
 
     uint32_t classNameLength;
-    auto classNameUtf16 = il2cpp::os::WindowsRuntime::GetHStringBuffer(className, &classNameLength);
-    il2cpp::vm::Exception::RaiseIfError(classNameUtf16.GetError());
-    std::string classNameUtf8 = il2cpp::utils::StringUtils::Utf16ToUtf8(classNameUtf16.Get(), classNameLength);
+    const Il2CppChar* classNameUtf16 = il2cpp::os::WindowsRuntime::GetHStringBuffer(className, &classNameLength);
+    std::string classNameUtf8 = il2cpp::utils::StringUtils::Utf16ToUtf8(classNameUtf16, classNameLength);
     FactoryCreationFunction factoryCreationFunction = reinterpret_cast<FactoryCreationFunction>(il2cpp::vm::MetadataCache::GetWindowsRuntimeFactoryCreationFunction(classNameUtf8.c_str()));
 
     if (factoryCreationFunction == NULL)

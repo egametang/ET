@@ -132,7 +132,7 @@ namespace vm
 #endif
         }
 #if !RUNTIME_TINY
-        else if (klass->element_class->byval_arg.valuetype &&
+        else if (klass->element_class->valuetype &&
                  ((GC_descr)klass->element_class->gc_desc & GC_DS_TAGS) == GC_DS_BITMAP)
         {
             o = (Il2CppObject*)GC_gcj_vector_malloc(byte_len, klass);
@@ -273,6 +273,12 @@ namespace vm
     }
 } /* namespace vm */
 } /* namespace il2cpp */
+
+LIBIL2CPP_CODEGEN_API char*
+il2cpp_array_addr_with_size(Il2CppArray *array, int32_t size, uintptr_t idx)
+{
+    return ((char*)array) + kIl2CppSizeOfArray + size * idx;
+}
 
 LIBIL2CPP_CODEGEN_API int32_t
 il2cpp_array_element_size(Il2CppClass *ac)

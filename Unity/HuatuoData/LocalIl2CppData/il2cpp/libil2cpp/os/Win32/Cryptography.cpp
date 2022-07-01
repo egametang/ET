@@ -36,10 +36,9 @@ namespace os
         CryptReleaseContext((HCRYPTPROV)provider, 0);
     }
 
-    bool Cryptography::FillBufferWithRandomBytes(void* provider, intptr_t length, unsigned char* data)
+    bool Cryptography::FillBufferWithRandomBytes(void* provider, uint32_t length, unsigned char* data)
     {
-        ULONG const size = (ULONG)(length < ULONG_MAX ? length : ULONG_MAX); // This is how mono solves the type size difference
-        return CryptGenRandom((HCRYPTPROV)provider, size, data) == TRUE;
+        return CryptGenRandom((HCRYPTPROV)provider, length, data) == TRUE;
     }
 }
 }

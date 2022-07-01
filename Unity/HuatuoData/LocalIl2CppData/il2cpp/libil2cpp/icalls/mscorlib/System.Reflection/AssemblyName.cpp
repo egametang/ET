@@ -33,6 +33,11 @@ namespace System
 {
 namespace Reflection
 {
+    bool AssemblyName::ParseName(Il2CppReflectionAssemblyName* aname, Il2CppString* assemblyName)
+    {
+        return vm::AssemblyName::ParseName(aname, utils::StringUtils::Utf16ToUtf8(utils::StringUtils::GetChars(assemblyName)));
+    }
+
     void AssemblyName::get_public_token(uint8_t* token, uint8_t* pubkey, int32_t len)
     {
         uint8_t digest[20];

@@ -1,12 +1,10 @@
 #include "il2cpp-config.h"
-#include "utils/Memory.h"
 
 #if IL2CPP_TARGET_WINDOWS
 
 #include "os/Image.h"
 
 #include "WindowsHeaders.h"
-#include <libloaderapi.h>
 #include <cstdio>
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
@@ -52,7 +50,7 @@ namespace Image
         char      PdbFileName[1];
     };
 
-    char* GetImageUUID()
+    void GetImageUUID(char* uuid)
     {
         uintptr_t base_pointer = (uintptr_t)((char*)&__ImageBase);
 
@@ -63,7 +61,6 @@ namespace Image
         if (IMAGE_DEBUG_TYPE_CODEVIEW == dbg_dir->Type)
         {
             PdbInfo* pdb_info = (PdbInfo*)(base_pointer + dbg_dir->AddressOfRawData);
-            char* uuid = static_cast<char*>(IL2CPP_MALLOC(41));
 
             // Crash reporting expects the GUID without dashes (the format used by symbol servers)
             _snprintf_s(uuid, 41, 40, "%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX%X",
@@ -78,17 +75,7 @@ namespace Image
                 pdb_info->Guid.Data4[0], pdb_info->Guid.Data4[1], pdb_info->Guid.Data4[2], pdb_info->Guid.Data4[3],
                 pdb_info->Guid.Data4[4], pdb_info->Guid.Data4[5], pdb_info->Guid.Data4[6], pdb_info->Guid.Data4[7],
                 pdb_info->Age);
-            return uuid;
         }
-
-        return NULL;
-    }
-
-    char* GetImageName()
-    {
-        char* name = static_cast<char*>(IL2CPP_MALLOC(MAX_PATH + 1));
-        GetModuleFileNameA((HMODULE)&__ImageBase, name, MAX_PATH + 1);
-        return name;
     }
 
 #endif

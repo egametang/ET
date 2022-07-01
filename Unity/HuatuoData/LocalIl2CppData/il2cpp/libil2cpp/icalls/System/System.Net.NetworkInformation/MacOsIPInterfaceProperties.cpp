@@ -110,7 +110,7 @@ namespace Net
 {
 namespace NetworkInformation
 {
-    bool MacOsIPInterfaceProperties::ParseRouteInfo_icall(Il2CppString* iface, Il2CppArray** gw_addr_list)
+    bool MacOsIPInterfaceProperties::ParseRouteInfo_internal(Il2CppString* iface, Il2CppArray** gw_addr_list)
     {
 #if IL2CPP_TARGET_OSX || IL2CPP_TARGET_IOS
         size_t needed;
@@ -199,7 +199,7 @@ namespace NetworkInformation
 
         return true;
 #else
-        IL2CPP_NOT_IMPLEMENTED_ICALL(MacOsIPInterfaceProperties::ParseRouteInfo_icall);
+        IL2CPP_NOT_IMPLEMENTED_ICALL(MacOsIPInterfaceProperties::ParseRouteInfo_internal);
         IL2CPP_UNREACHABLE;
         return false;
 #endif

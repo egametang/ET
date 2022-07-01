@@ -5,7 +5,6 @@
 #include "../LibraryLoader-c-api.h"
 #include "../../LibraryLoader.h"
 #include "utils/StringUtils.h"
-#include "utils/BaselibHandleUtils.h"
 
 #if IL2CPP_TARGET_POSIX && !IL2CPP_TARGET_PS4
 #include "dlfcn.h"
@@ -36,8 +35,7 @@ SUITE(LibraryLoader)
         {
             palDynLib = UnityPalLibraryLoaderLoadDynamicLibrary(POSIX_DL_NAME, RTLD_LAZY);
             Il2CppNativeString libName(il2cpp::utils::StringUtils::Utf8ToNativeString(POSIX_DL_NAME));
-            std::string detailedError;
-            classDynLib = il2cpp::utils::BaselibHandleUtils::HandleToVoidPtr(il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName), detailedError));
+            classDynLib = il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName));
         }
 
         ~PosixLoaderFixture()
@@ -79,17 +77,15 @@ SUITE(LibraryLoader)
         void* palDynLib = UnityPalLibraryLoaderLoadDynamicLibrary(POSIX_DL_NAME, RTLD_LAZY);
         bool palResult = UnityPalLibraryLoaderCloseLoadedLibrary(&palDynLib);
         Il2CppNativeString libName(il2cpp::utils::StringUtils::Utf8ToNativeString(POSIX_DL_NAME));
-        std::string detailedError;
-        void* classDynLib = il2cpp::utils::BaselibHandleUtils::HandleToVoidPtr(il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName), detailedError));
-        bool classResult = il2cpp::os::LibraryLoader::CloseLoadedLibrary(il2cpp::utils::BaselibHandleUtils::VoidPtrToHandle<Baselib_DynamicLibrary_Handle>(classDynLib));
+        void* classDynLib = il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName));
+        bool classResult = il2cpp::os::LibraryLoader::CloseLoadedLibrary(classDynLib);
         CHECK_EQUAL(classResult, palResult);
     }
 
     TEST_FIXTURE(PosixLoaderFixture, PosixGetFunctionPointerMatchesClass)
     {
         palMethodPointer = UnityPalLibraryLoaderGetFunctionPointer(classDynLib, POSIX_FUNC_NAME);
-        std::string detailedError;
-        classMethodPointer = il2cpp::os::LibraryLoader::GetFunctionPointer(il2cpp::utils::BaselibHandleUtils::VoidPtrToHandle<Baselib_DynamicLibrary_Handle>(classDynLib), POSIX_FUNC_NAME, detailedError);
+        classMethodPointer = il2cpp::os::LibraryLoader::GetFunctionPointer(classDynLib, POSIX_FUNC_NAME);
         CHECK_EQUAL(classMethodPointer, palMethodPointer);
     }
 
@@ -102,8 +98,7 @@ SUITE(LibraryLoader)
         {
             palDynLib = UnityPalLibraryLoaderLoadDynamicLibrary(WINDOWS_DL_NAME, RTLD_LAZY);
             Il2CppNativeString libName(il2cpp::utils::StringUtils::Utf8ToNativeString(WINDOWS_DL_NAME));
-            std::string detailedError;
-            classDynLib = il2cpp::utils::BaselibHandleUtils::HandleToVoidPtr(il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName), detailedError));
+            classDynLib = il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName));
         }
 
         ~WindowsLoaderFixture()
@@ -145,17 +140,15 @@ SUITE(LibraryLoader)
         void* palDynLib = UnityPalLibraryLoaderLoadDynamicLibrary(WINDOWS_DL_NAME, RTLD_LAZY);
         bool palResult = UnityPalLibraryLoaderCloseLoadedLibrary(&palDynLib);
         Il2CppNativeString libName(il2cpp::utils::StringUtils::Utf8ToNativeString(WINDOWS_DL_NAME));
-        std::string detailedError;
-        void* classDynLib = il2cpp::utils::BaselibHandleUtils::HandleToVoidPtr(il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName), detailedError));
-        bool classResult = il2cpp::os::LibraryLoader::CloseLoadedLibrary(il2cpp::utils::BaselibHandleUtils::VoidPtrToHandle<Baselib_DynamicLibrary_Handle>(classDynLib));
+        void* classDynLib = il2cpp::os::LibraryLoader::LoadDynamicLibrary(STRING_TO_STRINGVIEW(libName));
+        bool classResult = il2cpp::os::LibraryLoader::CloseLoadedLibrary(classDynLib);
         CHECK_EQUAL(classResult, palResult);
     }
 
     TEST_FIXTURE(WindowsLoaderFixture, WindowsGetFunctionPointerMatchesClass)
     {
         palMethodPointer = UnityPalLibraryLoaderGetFunctionPointer(classDynLib, WINDOWS_FUNC_NAME);
-        std::string detailedError;
-        classMethodPointer = il2cpp::os::LibraryLoader::GetFunctionPointer(il2cpp::utils::BaselibHandleUtils::VoidPtrToHandle<Baselib_DynamicLibrary_Handle>(classDynLib), WINDOWS_FUNC_NAME, detailedError);
+        classMethodPointer = il2cpp::os::LibraryLoader::GetFunctionPointer(classDynLib, WINDOWS_FUNC_NAME);
         CHECK_EQUAL(classMethodPointer, palMethodPointer);
     }
 

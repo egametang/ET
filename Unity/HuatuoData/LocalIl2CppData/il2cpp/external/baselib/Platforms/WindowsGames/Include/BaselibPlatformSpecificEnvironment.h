@@ -1,7 +1,5 @@
 #pragma once
 
-enum { Baselib_SystemSemaphore_PlatformSize = 1 }; // unused but 1 to simplify things
-
 // These affect <windows.h> behavior; define them here so that no matter how/if later windows.h is included, it will get consistent result.
 #ifndef WIN32_LEAN_AND_MEAN
     #define WIN32_LEAN_AND_MEAN

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #include "os/Process.h"
-#include "utils/Il2CppError.h"
+#include "il2cpp-vm-support.h"
 
 struct ProcessHandle
 {
@@ -26,7 +26,7 @@ namespace os
         return getpid();
     }
 
-    utils::Expected<ProcessHandle*> Process::GetProcess(int processId)
+    ProcessHandle* Process::GetProcess(int processId)
     {
         // If/when we implement the CreateProcess_internal icall we will likely
         // need to so something smarter here to find the process if we did
@@ -40,7 +40,7 @@ namespace os
         // We have nothing to do here.
     }
 
-    utils::Expected<std::string> Process::GetProcessName(ProcessHandle* handle)
+    std::string Process::GetProcessName(ProcessHandle* handle)
     {
 #if !IL2CPP_TARGET_IOS
         const size_t bufferLength = 256;
@@ -52,13 +52,9 @@ namespace os
 
         return std::string(buf, length);
 #else
-        return utils::Il2CppError(utils::NotSupported, "GetProcessName is not supported for non-Windows/OSX/Linux desktop platforms");
+        IL2CPP_VM_NOT_SUPPORTED(Process::GetProcessName, "GetProcessName is not supported for non-Windows/OSX desktop platforms");
+        return std::string();
 #endif
-    }
-
-    intptr_t Process::GetMainWindowHandle(int32_t pid)
-    {
-        return 0;
     }
 }
 }

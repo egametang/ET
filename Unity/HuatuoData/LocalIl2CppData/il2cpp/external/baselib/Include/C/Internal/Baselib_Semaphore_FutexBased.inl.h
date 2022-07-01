@@ -21,10 +21,6 @@ typedef struct Baselib_Semaphore
     char _cachelineSpacer2[PLATFORM_CACHE_LINE_SIZE - sizeof(int32_t)];
 } Baselib_Semaphore;
 
-BASELIB_STATIC_ASSERT(sizeof(Baselib_Semaphore) == PLATFORM_CACHE_LINE_SIZE * 2, "Baselib_Semaphore (Futex) size should match 2*cacheline size (128bytes)");
-BASELIB_STATIC_ASSERT(offsetof(Baselib_Semaphore, wakeups) ==
-    (offsetof(Baselib_Semaphore, count) - PLATFORM_CACHE_LINE_SIZE), "Baselib_Semaphore (Futex) wakeups and count shouldnt share cacheline");
-
 BASELIB_INLINE_API Baselib_Semaphore Baselib_Semaphore_Create(void)
 {
     Baselib_Semaphore semaphore = {0, {0}, 0, {0}};

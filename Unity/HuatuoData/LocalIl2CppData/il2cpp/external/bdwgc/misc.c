@@ -812,8 +812,9 @@ GC_API int GC_CALL GC_is_init_called(void)
   }
 #endif
 
-#if defined(MSWIN32) && !defined(MSWINRT_FLAVOR) && !defined(MSWIN_XBOX1) \
-    && !defined(SMALL_CONFIG)
+#if defined(MSWIN32) && !defined(MSWINRT_FLAVOR) && (!defined(SMALL_CONFIG) \
+                         || (!defined(_WIN64) && defined(GC_WIN32_THREADS) \
+                             && defined(CHECK_NOT_WOW64))) && !defined(_XBOX_ONE)
   STATIC void GC_win32_MessageBoxA(const char *msg, const char *caption,
                                    unsigned flags)
   {
@@ -899,6 +900,30 @@ GC_API void GC_CALL GC_init(void)
       initial_heap_sz = GC_INITIAL_HEAP_SIZE;
 #   else
       initial_heap_sz = MINHINCR * HBLKSIZE;
+#   endif
+
+#   if defined(MSWIN32) && !defined(_WIN64) && defined(GC_WIN32_THREADS) \
+       && defined(CHECK_NOT_WOW64) && !defined(_XBOX_ONE)
+      {
+        /* Windows: running 32-bit GC on 64-bit system is broken!       */
+        /* WoW64 bug affects SuspendThread, no workaround exists.       */
+        HMODULE hK32 = GetModuleHandle(TEXT("kernel32.dll"));
+        if (hK32) {
+          FARPROC pfn = GetProcAddress(hK32, "IsWow64Process");
+          BOOL bIsWow64 = FALSE;
+          if (pfn
+              && (*(BOOL (WINAPI*)(HANDLE, BOOL*))pfn)(GetCurrentProcess(),
+                                                       &bIsWow64)
+              && bIsWow64) {
+            GC_win32_MessageBoxA("This program uses BDWGC garbage collector"
+                " compiled for 32-bit but running on 64-bit Windows.\n"
+                "This is known to be broken due to a design flaw"
+                " in Windows itself! Expect erratic behavior...",
+                "32-bit program running on 64-bit system",
+                MB_ICONWARNING | MB_OK);
+          }
+        }
+      }
 #   endif
 
     DISABLE_CANCEL(cancel_state);

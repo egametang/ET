@@ -27,8 +27,9 @@ namespace System
     class LIBIL2CPP_CODEGEN_API TypedReference
     {
     public:
-        static Il2CppObject* InternalToObject(Il2CppTypedRef* value);
-        static void InternalMakeTypedReference(Il2CppTypedRef* res, Il2CppObject* target, Il2CppArray* flds, Il2CppReflectionRuntimeType* lastFieldType);
+        static Il2CppObject* ToObject(void* /* System.TypedReference */ value);
+        static Il2CppObject* InternalToObject(Il2CppTypedRef* typedRef);
+        static Il2CppTypedRef MakeTypedReferenceInternal(Il2CppObject* target, Il2CppArray* fields);
     };
 } /* namespace System */
 } /* namespace mscorlib */

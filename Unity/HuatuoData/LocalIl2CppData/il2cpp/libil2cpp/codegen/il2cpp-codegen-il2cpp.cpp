@@ -1,5 +1,4 @@
 #include <string>
-#include <stdarg.h>
 
 #include "il2cpp-config.h"
 #include "il2cpp-codegen.h"
@@ -9,32 +8,31 @@
 #if !RUNTIME_TINY
 
 #include "os/Atomic.h"
-#include "metadata/GenericMethod.h"
-#include "gc/WriteBarrier.h"
-#include "vm/Array.h"
-#include "vm/CCW.h"
-#include "vm/COM.h"
 #include "vm/Class.h"
-#include "vm/Exception.h"
-#include "vm/Field.h"
-#include "vm/InternalCalls.h"
 #include "vm/LastError.h"
-#include "vm/MarshalAlloc.h"
-#include "vm/MetadataCache.h"
-#include "vm/Method.h"
-#include "vm/Object.h"
-#include "vm/PlatformInvoke.h"
-#include "vm/Profiler.h"
-#include "vm/RCW.h"
-#include "vm/Reflection.h"
-#include "vm/Runtime.h"
-#include "vm/StackTrace.h"
-#include "vm/String.h"
-#include "vm/Thread.h"
 #include "vm/ThreadPoolMs.h"
+#include "vm/ThreadPool.h"
+#include "vm/InternalCalls.h"
+#include "vm/Reflection.h"
+#include "vm/MetadataCache.h"
+#include "vm/Thread.h"
+#include "vm/Array.h"
+#include "vm/Method.h"
+#include "vm/Runtime.h"
+#include "vm/Object.h"
+#include "vm/MarshalAlloc.h"
+#include "vm/Profiler.h"
+#include "vm/Exception.h"
+#include "vm/COM.h"
+#include "vm/CCW.h"
+#include "vm/RCW.h"
+#include "vm/String.h"
 #include "vm/Type.h"
+#include "vm/Class.h"
+#include "vm/PlatformInvoke.h"
 #include "vm/WindowsRuntime.h"
-#include "vm-utils/VmThreadUtils.h"
+#include "vm/StackTrace.h"
+#include "vm/Field.h"
 
 void* il2cpp_codegen_atomic_compare_exchange_pointer(void** dest, void* exchange, void* comparand)
 {
@@ -54,12 +52,6 @@ Il2CppAsyncResult* il2cpp_codegen_delegate_begin_invoke(RuntimeDelegate* delegat
 RuntimeObject* il2cpp_codegen_delegate_end_invoke(Il2CppAsyncResult* asyncResult, void **out_args)
 {
     return il2cpp::vm::ThreadPoolMs::DelegateEndInvoke(asyncResult, out_args);
-}
-
-void il2cpp_codegen_set_closed_delegate_invoke(RuntimeObject* delegate, RuntimeObject* target, void* methodPtr)
-{
-    IL2CPP_ASSERT(delegate->klass->parent == il2cpp_defaults.multicastdelegate_class);
-    il2cpp::vm::Type::SetClosedDelegateInvokeMethod((RuntimeDelegate*)delegate, target, (Il2CppMethodPointer)methodPtr);
 }
 
 Il2CppMethodPointer il2cpp_codegen_resolve_icall(const char* name)
@@ -108,20 +100,9 @@ void* il2cpp_codegen_initialize_runtime_metadata_inline(uintptr_t* metadataPoint
     return il2cpp::vm::MetadataCache::InitializeRuntimeMetadata(metadataPointer);
 }
 
-const RuntimeClass* il2cpp_codegen_get_generic_type_definition(const RuntimeClass* klass)
-{
-    IL2CPP_ASSERT(klass->generic_class);
-    return il2cpp::vm::Class::FromIl2CppType(klass->generic_class->type);
-}
-
 const RuntimeMethod* il2cpp_codegen_get_generic_method_definition(const RuntimeMethod* method)
 {
     return il2cpp::vm::MetadataCache::GetGenericMethodDefinition(method);
-}
-
-const RuntimeMethod* il2cpp_codegen_get_generic_instance_method_from_method_definition(RuntimeClass* genericInstanceClass, const RuntimeMethod* methodDefinition)
-{
-    return il2cpp::vm::Class::GetGenericInstanceMethodFromDefintion(genericInstanceClass, methodDefinition);
 }
 
 void* il2cpp_codegen_get_thread_static_data(RuntimeClass* klass)
@@ -129,70 +110,9 @@ void* il2cpp_codegen_get_thread_static_data(RuntimeClass* klass)
     return il2cpp::vm::Thread::GetThreadStaticData(klass->thread_static_fields_offset);
 }
 
-void il2cpp_codegen_assert_field_size(RuntimeField* field, size_t size)
-{
-    IL2CPP_ASSERT(size == il2cpp_codegen_sizeof(InitializedTypeInfo(il2cpp::vm::Class::FromIl2CppType(field->type))));
-}
-
-void* il2cpp_codegen_get_instance_field_data_pointer(void* instance, RuntimeField* field)
-{
-    return il2cpp::vm::Field::GetInstanceFieldDataPointer(instance, field);
-}
-
-void il2cpp_codegen_write_instance_field_data(void* instance, RuntimeField* field, void* data, uint32_t size)
-{
-    il2cpp_codegen_assert_field_size(field, size);
-    IL2CPP_ASSERT(il2cpp::vm::Field::IsInstance(field));
-
-    void* fieldPointer = il2cpp_codegen_get_instance_field_data_pointer(instance, field);
-    il2cpp_codegen_memcpy(fieldPointer, data, size);
-    Il2CppCodeGenWriteBarrierForType(field->type, (void**)fieldPointer, NULL);
-}
-
-void* il2cpp_codegen_get_static_field_data_pointer(RuntimeField* field)
-{
-    IL2CPP_ASSERT(il2cpp::vm::Field::IsNormalStatic(field));
-
-    return ((uint8_t*)field->parent->static_fields) + field->offset;
-}
-
-void il2cpp_codegen_write_static_field_data(RuntimeField* field, void* data, uint32_t size)
-{
-    il2cpp_codegen_assert_field_size(field, size);
-    IL2CPP_ASSERT(il2cpp::vm::Field::IsNormalStatic(field));
-
-    void* fieldPointer = il2cpp_codegen_get_static_field_data_pointer(field);
-    il2cpp_codegen_memcpy(fieldPointer, data, size);
-    Il2CppCodeGenWriteBarrierForType(field->type, (void**)fieldPointer, NULL);
-}
-
-void* il2cpp_codegen_get_thread_static_field_data_pointer(RuntimeField* field)
-{
-    IL2CPP_ASSERT(il2cpp::vm::Field::IsThreadStatic(field));
-
-    int threadStaticFieldOffset = il2cpp::vm::MetadataCache::GetThreadLocalStaticOffsetForField(field);
-    void* threadStaticData = il2cpp::vm::Thread::GetThreadStaticDataForThread(field->parent->thread_static_fields_offset, il2cpp::vm::Thread::Current());
-    return static_cast<uint8_t*>(threadStaticData) + threadStaticFieldOffset;
-}
-
-void il2cpp_codegen_write_thread_static_field_data(RuntimeField* field, void* data, uint32_t size)
-{
-    il2cpp_codegen_assert_field_size(field, size);
-    IL2CPP_ASSERT(il2cpp::vm::Field::IsThreadStatic(field));
-
-    void* fieldPointer = il2cpp_codegen_get_thread_static_field_data_pointer(field);
-    il2cpp_codegen_memcpy(fieldPointer, data, size);
-    Il2CppCodeGenWriteBarrierForType(field->type, (void**)fieldPointer, NULL);
-}
-
 void il2cpp_codegen_memory_barrier()
 {
     il2cpp::vm::Thread::FullMemoryBarrier();
-}
-
-void SetGenericValueImpl(RuntimeArray* thisPtr, int32_t pos, void* value)
-{
-    il2cpp_array_setrefwithsize(thisPtr, thisPtr->klass->element_size, pos, value);
 }
 
 RuntimeArray* SZArrayNew(RuntimeClass* arrayType, uint32_t length)
@@ -205,17 +125,12 @@ RuntimeArray* GenArrayNew(RuntimeClass* arrayType, il2cpp_array_size_t* dimensio
     return il2cpp::vm::Array::NewFull(arrayType, dimensions, NULL);
 }
 
-bool il2cpp_codegen_method_is_generic_instance_method(RuntimeMethod* method)
+bool il2cpp_codegen_method_is_generic_instance(RuntimeMethod* method)
 {
-    return il2cpp::vm::Method::IsGenericInstanceMethod(method);
+    return il2cpp::vm::Method::IsGenericInstance(method);
 }
 
-bool il2cpp_codegen_method_is_generic_instance(RuntimeClass* klass)
-{
-    return il2cpp::vm::Class::IsInflated(klass);
-}
-
-RuntimeClass* il2cpp_codegen_method_get_declaring_type(const RuntimeMethod* method)
+RuntimeClass* il2cpp_codegen_method_get_declaring_type(RuntimeMethod* method)
 {
     return il2cpp::vm::Method::GetClass(method);
 }
@@ -236,14 +151,9 @@ NORETURN void il2cpp_codegen_raise_profile_exception(const RuntimeMethod* method
     il2cpp_codegen_raise_exception(il2cpp_codegen_get_not_supported_exception(methodName.c_str()));
 }
 
-Il2CppMethodPointer il2cpp_codegen_get_virtual_call_method_pointer(const RuntimeMethod* method)
+const RuntimeMethod* il2cpp_codegen_get_generic_virtual_method_internal(const RuntimeMethod* methodDefinition, const RuntimeMethod* inflatedMethod)
 {
-    return il2cpp::vm::Method::GetVirtualCallMethodPointer(method);
-}
-
-void il2cpp_codegen_get_generic_virtual_method_internal(const RuntimeMethod* methodDefinition, const RuntimeMethod* inflatedMethod, VirtualInvokeData* invokeData)
-{
-    il2cpp::vm::Runtime::GetGenericVirtualMethod(methodDefinition, inflatedMethod, invokeData);
+    return il2cpp::vm::Runtime::GetGenericVirtualMethod(methodDefinition, inflatedMethod);
 }
 
 void il2cpp_codegen_runtime_class_init(RuntimeClass* klass)
@@ -256,9 +166,9 @@ void il2cpp_codegen_raise_execution_engine_exception(const RuntimeMethod* method
     il2cpp::vm::Runtime::AlwaysRaiseExecutionEngineException(method);
 }
 
-void il2cpp_codegen_raise_execution_engine_exception_missing_virtual(const RuntimeMethod* method)
+void il2cpp_codegen_raise_execution_engine_exception_if_method_is_not_found(const RuntimeMethod* method)
 {
-    il2cpp::vm::Runtime::AlwaysRaiseExecutionEngineExceptionOnVirtualCall(method);
+    il2cpp::vm::Runtime::RaiseExecutionEngineExceptionIfMethodIsNotFound(method);
 }
 
 RuntimeObject* IsInst(RuntimeObject *obj, RuntimeClass* targetType)
@@ -276,44 +186,9 @@ void* Unbox_internal(Il2CppObject* obj)
     return il2cpp::vm::Object::Unbox(obj);
 }
 
-void UnBoxNullable_internal(RuntimeObject* obj, RuntimeClass* nullableClass, void* storage)
+void UnBoxNullable_internal(RuntimeObject* obj, RuntimeClass* expectedBoxedClass, void* storage)
 {
-    il2cpp::vm::Object::UnboxNullable(obj, nullableClass, storage);
-}
-
-void* UnBox_Any(RuntimeObject* obj, RuntimeClass* expectedBoxedClass, void* unboxStorage)
-{
-    IL2CPP_ASSERT(unboxStorage != NULL);
-    // We assume unboxStorage is on the stack, if not we'll need a write barrier
-    IL2CPP_ASSERT_STACK_PTR(unboxStorage);
-
-    if (il2cpp::vm::Class::IsValuetype(expectedBoxedClass))
-    {
-        if (il2cpp::vm::Class::IsNullable(expectedBoxedClass))
-        {
-            UnBoxNullable(obj, expectedBoxedClass, unboxStorage);
-            return unboxStorage;
-        }
-        return UnBox(obj, expectedBoxedClass);
-    }
-
-    // Use unboxStorage to return a pointer to obj
-    // This keeps the return value of UnBox_Any consistent; it always returns a pointer to the data we want
-    // This saves a runtime check on the class type
-    *((void**)unboxStorage) = Castclass(obj, expectedBoxedClass);
-    return unboxStorage;
-}
-
-bool il2cpp_codegen_would_box_to_non_null(RuntimeClass* klass, void* objBuffer)
-{
-    if (il2cpp::vm::Class::IsValuetype(klass))
-    {
-        if (il2cpp::vm::Class::IsNullable(klass))
-            return il2cpp::vm::Object::NullableHasValue(klass, objBuffer);
-        return true;
-    }
-
-    return *(void**)objBuffer != NULL;
+    il2cpp::vm::Object::UnboxNullable(obj, expectedBoxedClass, storage);
 }
 
 RuntimeObject* il2cpp_codegen_object_new(RuntimeClass *klass)
@@ -366,17 +241,7 @@ void il2cpp_codegen_profiler_method_exit(const RuntimeMethod* method)
 
 NORETURN void il2cpp_codegen_raise_exception(Exception_t *ex, MethodInfo* lastManagedFrame)
 {
-    RuntimeException* exc = (RuntimeException*)ex;
-#if !IL2CPP_TINY
-    IL2CPP_OBJECT_SETREF_NULL(exc, trace_ips);
-    IL2CPP_OBJECT_SETREF_NULL(exc, stack_trace);
-#endif
-    il2cpp::vm::Exception::Raise(exc, lastManagedFrame);
-}
-
-NORETURN void il2cpp_codegen_rethrow_exception(Exception_t *ex)
-{
-    il2cpp::vm::Exception::Rethrow((RuntimeException*)ex);
+    il2cpp::vm::Exception::Raise((RuntimeException*)ex, lastManagedFrame);
 }
 
 NORETURN void il2cpp_codegen_raise_exception(il2cpp_hresult_t hresult, bool defaultToCOMException)
@@ -397,11 +262,6 @@ NORETURN void il2cpp_codegen_raise_null_reference_exception()
 NORETURN void il2cpp_codegen_raise_divide_by_zero_exception()
 {
     il2cpp::vm::Exception::RaiseDivideByZeroException();
-}
-
-NORETURN void il2cpp_codegen_raise_index_out_of_range_exception()
-{
-    il2cpp::vm::Exception::RaiseIndexOutOfRangeException();
 }
 
 Exception_t* il2cpp_codegen_get_argument_exception(const char* param, const char* msg)
@@ -451,7 +311,7 @@ Exception_t* il2cpp_codegen_get_missing_method_exception(const char* msg)
 
 Exception_t* il2cpp_codegen_get_maximum_nested_generics_exception()
 {
-    return (Exception_t*)il2cpp::vm::Exception::GetMaximumNestedGenericsException();
+    return (Exception_t*)il2cpp::vm::Exception::GetMaxmimumNestedGenericsException();
 }
 
 Exception_t* il2cpp_codegen_get_index_out_of_range_exception()
@@ -600,7 +460,7 @@ RuntimeString* il2cpp_codegen_type_append_assembly_name_if_necessary(RuntimeStri
     return il2cpp::vm::Type::AppendAssemblyNameIfNecessary(typeName, callingMethod);
 }
 
-Type_t* il2cpp_codegen_get_type(String_t* typeName, const RuntimeMethod* getTypeMethod, const RuntimeMethod* callingMethod)
+Type_t* il2cpp_codegen_get_type(const RuntimeMethod* getTypeMethod, String_t* typeName, const RuntimeMethod* callingMethod)
 {
     RuntimeString* assemblyQualifiedTypeName = il2cpp_codegen_type_append_assembly_name_if_necessary((RuntimeString*)typeName, callingMethod);
 
@@ -620,7 +480,7 @@ Type_t* il2cpp_codegen_get_type(String_t* typeName, const RuntimeMethod* getType
     return type;
 }
 
-Type_t* il2cpp_codegen_get_type(String_t* typeName, bool throwOnError, const RuntimeMethod* getTypeMethod, const RuntimeMethod* callingMethod)
+Type_t* il2cpp_codegen_get_type(const RuntimeMethod* getTypeMethod, String_t* typeName, bool throwOnError, const RuntimeMethod* callingMethod)
 {
     typedef Type_t* (*getTypeFuncType)(String_t*, bool);
     RuntimeString* assemblyQualifiedTypeName = il2cpp_codegen_type_append_assembly_name_if_necessary((RuntimeString*)typeName, callingMethod);
@@ -642,7 +502,7 @@ Type_t* il2cpp_codegen_get_type(String_t* typeName, bool throwOnError, const Run
     return type;
 }
 
-Type_t* il2cpp_codegen_get_type(String_t* typeName, bool throwOnError, bool ignoreCase, const RuntimeMethod* getTypeMethod , const RuntimeMethod* callingMethod)
+Type_t* il2cpp_codegen_get_type(const RuntimeMethod* getTypeMethod, String_t* typeName, bool throwOnError, bool ignoreCase, const RuntimeMethod* callingMethod)
 {
     typedef Type_t* (*getTypeFuncType)(String_t*, bool, bool);
     RuntimeString* assemblyQualifiedTypeName = il2cpp_codegen_type_append_assembly_name_if_necessary((RuntimeString*)typeName, callingMethod);
@@ -681,44 +541,14 @@ bool il2cpp_codegen_class_is_assignable_from(RuntimeClass *klass, RuntimeClass *
     return il2cpp::vm::Class::IsAssignableFrom(klass, oklass);
 }
 
-bool il2cpp_codegen_class_is_nullable(RuntimeClass* type)
+bool il2cpp_codegen_class_is_value_type(RuntimeClass* type)
 {
-    return il2cpp::vm::Class::IsNullable(type);
-}
-
-RuntimeClass* il2cpp_codegen_get_generic_argument(RuntimeClass* klass, uint32_t argNum)
-{
-    const Il2CppGenericInst* classInst = il2cpp_codegen_get_generic_class_inst(klass);
-    IL2CPP_ASSERT(argNum < classInst->type_argc);
-    return il2cpp::vm::Class::FromIl2CppType(classInst->type_argv[argNum]);
+    return il2cpp::vm::Class::IsValuetype(type);
 }
 
 RuntimeClass* il2cpp_codegen_inflate_generic_class(RuntimeClass* genericClassDefinition, const Il2CppGenericInst* genericInst)
 {
     return il2cpp::vm::Class::GetInflatedGenericInstanceClass(genericClassDefinition, genericInst);
-}
-
-RuntimeClass* il2cpp_codegen_inflate_generic_class(RuntimeClass* genericClassDefinition, const RuntimeType* p1, /*const RuntimeType*, const RuntimeType* */ ...)
-{
-    IL2CPP_ASSERT(genericClassDefinition->is_generic);
-
-    const uint32_t genericParameterCount = il2cpp::vm::MetadataCache::GetGenericContainerCount(genericClassDefinition->genericContainerHandle);
-
-    const RuntimeType** types = (const RuntimeType**)alloca(sizeof(RuntimeType*) * genericParameterCount);
-    types[0] = p1;
-
-    if (genericParameterCount > 1)
-    {
-        va_list genericArguments;
-        va_start(genericArguments, p1);
-
-        for (uint32_t i = 1; i < genericParameterCount; i++)
-            types[i] = va_arg(genericArguments, const RuntimeType*);
-
-        va_end(genericArguments);
-    }
-
-    return il2cpp::vm::Class::GetInflatedGenericInstanceClass(genericClassDefinition, il2cpp::vm::MetadataCache::GetGenericInst(types, genericParameterCount));
 }
 
 int32_t il2cpp_codgen_class_get_instance_size(RuntimeClass* klass)
@@ -821,11 +651,6 @@ Il2CppDelegate* il2cpp_codegen_marshal_function_ptr_to_delegate_internal(void* f
     return il2cpp::vm::PlatformInvoke::MarshalFunctionPointerToDelegate(functionPtr, delegateType);
 }
 
-bool il2cpp_codegen_is_marshalled_delegate(MulticastDelegate_t* d)
-{
-    return il2cpp::vm::PlatformInvoke::IsFakeDelegateMethodMarshaledFromNativeCode((const RuntimeDelegate*)d);
-}
-
 Il2CppMethodPointer il2cpp_codegen_resolve(const PInvokeArguments& pinvokeArgs)
 {
     return il2cpp::vm::PlatformInvoke::Resolve(pinvokeArgs);
@@ -881,182 +706,16 @@ const char* il2cpp_codegen_get_field_data(RuntimeField* field)
     return il2cpp::vm::Field::GetData(field);
 }
 
-void il2cpp_codegen_array_unsafe_mov(RuntimeClass * destClass, void* dest, RuntimeClass * srcClass, void* src)
-{
-    // A runtime implementation of System.Array::UnsafeMov
-
-    IL2CPP_ASSERT(destClass);
-    IL2CPP_ASSERT(dest);
-    IL2CPP_ASSERT(srcClass);
-    IL2CPP_ASSERT(src);
-
-    uint32_t destSize = il2cpp_codegen_sizeof(destClass);
-    uint32_t srcSize = il2cpp_codegen_sizeof(srcClass);
-
-    // If the types are the same size we can just memcpy them
-    // otherwise we need to "move" them using the correct casting rules for primitive types
-    if (destSize == srcSize)
-    {
-        il2cpp_codegen_memcpy(dest, src, destSize);
-        return;
-    }
-
-    const Il2CppType* destType = il2cpp::vm::Class::IsEnum(destClass) ? il2cpp::vm::Class::GetEnumBaseType(destClass) : &destClass->byval_arg;
-    const Il2CppType* srcType = il2cpp::vm::Class::IsEnum(srcClass) ? il2cpp::vm::Class::GetEnumBaseType(srcClass) : &srcClass->byval_arg;
-
-    switch (destType->type)
-    {
-        case IL2CPP_TYPE_BOOLEAN:
-            il2cpp_codegen_array_unsafe_mov_primitive<bool>(destType, (bool*)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_I1:
-            il2cpp_codegen_array_unsafe_mov_primitive<int8_t>(destType, (int8_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_U1:
-            il2cpp_codegen_array_unsafe_mov_primitive<uint8_t>(destType, (uint8_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_I2:
-            il2cpp_codegen_array_unsafe_mov_primitive<int16_t>(destType, (int16_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_CHAR:
-        case IL2CPP_TYPE_U2:
-            il2cpp_codegen_array_unsafe_mov_primitive<uint16_t>(destType, (uint16_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_I4:
-            il2cpp_codegen_array_unsafe_mov_primitive<int32_t>(destType, (int32_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_U4:
-            il2cpp_codegen_array_unsafe_mov_primitive<uint32_t>(destType, (uint32_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_I8:
-            il2cpp_codegen_array_unsafe_mov_primitive<int64_t>(destType, (int64_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_U8:
-            il2cpp_codegen_array_unsafe_mov_primitive<uint64_t>(destType, (uint64_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_I:
-            il2cpp_codegen_array_unsafe_mov_primitive<intptr_t>(destType, (intptr_t *)dest, srcType, src);
-            break;
-        case IL2CPP_TYPE_U:
-            il2cpp_codegen_array_unsafe_mov_primitive<uintptr_t>(destType, (uintptr_t *)dest, srcType, src);
-            break;
-        default:
-            il2cpp_codegen_array_unsafe_mov_type_exception(destType, srcType);
-    }
-}
-
-NORETURN void il2cpp_codegen_array_unsafe_mov_type_exception(const RuntimeType * destType, const RuntimeType* srcType)
-{
-    // No other primitive types are supported by Array::UnsafeMov (floating point types are not supported)
-    // Or we're trying to assign structs of different sizes
-
-    IL2CPP_ASSERT(false);
-
-    std::string msg;
-    msg += "Unsupported call to ";
-    msg += il2cpp::vm::Class::GetName(il2cpp::vm::Class::FromIl2CppType(destType));
-    msg += " System.Array::UnsafeMov(";
-    msg += il2cpp::vm::Class::GetName(il2cpp::vm::Class::FromIl2CppType(srcType));
-    msg += ");";
-    il2cpp_codegen_raise_exception(il2cpp_codegen_get_not_supported_exception(msg.c_str()));
-}
-
-void il2cpp_codegen_runtime_constrained_call(RuntimeClass* type, const RuntimeMethod* constrainedMethod, void* boxBuffer, void* objBuffer, void** args, void* retVal)
-{
-    // Reference types use a virtual method call
-    if (!type->byval_arg.valuetype)
-    {
-        RuntimeObject* refObj = *(RuntimeObject**)objBuffer;
-        NullCheck(refObj);
-        const MethodInfo* virtualMethod = il2cpp::vm::Object::GetVirtualMethod(refObj, constrainedMethod);
-        virtualMethod->invoker_method(virtualMethod->virtualMethodPointer, virtualMethod, refObj, args, retVal);
-    }
-    // For value types, the constrained RGCTX does our lookup for us
-    else if (type == constrainedMethod->klass)
-    {
-        // If the value type overrode the method, do a direct call wiht the pointer to the struct
-        constrainedMethod->invoker_method(constrainedMethod->methodPointer, constrainedMethod, objBuffer, args, retVal);
-    }
-    else if (il2cpp::vm::Class::IsInterface(constrainedMethod->klass))
-    {
-        // We are invoking a default interface method on a struct
-        // We need to box to call the interface method, and the boxing is observable
-        IL2CPP_ASSERT(type->byval_arg.valuetype);
-
-        RuntimeObject* boxed = il2cpp::vm::Object::Box(type, objBuffer);
-        constrainedMethod->invoker_method(constrainedMethod->methodPointer, constrainedMethod, boxed, args, retVal);
-    }
-    else
-    {
-        IL2CPP_ASSERT(constrainedMethod->klass == il2cpp_defaults.object_class || constrainedMethod->klass == il2cpp_defaults.value_type_class || constrainedMethod->klass == il2cpp_defaults.enum_class);
-
-        // The value type did not override the method, so we're making a call to a method declared on
-        // System.Object, System.ValueType, or System.Enum so we need to box, but fake boxing should work
-        // because these methods will not mutate "this" and we can assume that they do not store the "this" pointer past the call
-        if (il2cpp::vm::Class::IsNullable(type))
-        {
-            if (!il2cpp::vm::Object::NullableHasValue(type, objBuffer))
-                il2cpp_codegen_raise_null_reference_exception();
-            type = il2cpp::vm::Class::GetNullableArgument(type);
-        }
-
-        Il2CppFakeBoxBuffer* boxed = new(boxBuffer) Il2CppFakeBoxBuffer(type, objBuffer);
-        constrainedMethod->invoker_method(constrainedMethod->methodPointer, constrainedMethod, boxed, args, retVal);
-    }
-}
-
-void* il2cpp_codegen_runtime_box_constrained_this(RuntimeClass* type, const RuntimeMethod* constrainedMethod, void* obj)
-{
-    // We are calling a method defined on the type, no need to box
-    IL2CPP_ASSERT(il2cpp::vm::Class::IsValuetype(type));
-    if (type == constrainedMethod->klass)
-        return obj;
-
-    // We are calling a default interface method with a value type, we have to box
-    IL2CPP_ASSERT(il2cpp::vm::Class::IsInterface(constrainedMethod->klass));
-    return il2cpp::vm::Object::Box(type, obj);
-}
-
-bool il2cpp_codegen_is_reference_or_contains_references(const RuntimeMethod* method)
-{
-    IL2CPP_ASSERT(il2cpp::vm::Method::IsGenericInstance(method));
-    const Il2CppGenericContext* context = il2cpp::metadata::GenericMethod::GetContext(method->genericMethod);
-
-    IL2CPP_ASSERT(context->method_inst);
-    IL2CPP_ASSERT(context->method_inst->type_argc == 1);
-    IL2CPP_ASSERT(!il2cpp::metadata::Il2CppTypeEqualityComparer::AreEqual(context->method_inst->type_argv[0], &il2cpp_defaults.il2cpp_fully_shared_type->byval_arg));
-
-    const Il2CppType* type = context->method_inst->type_argv[0];
-
-    if (!type->valuetype)
-        return true;
-
-    Il2CppClass* klass = il2cpp::vm::Class::FromIl2CppType(type);
-    il2cpp::vm::ClassInlines::InitFromCodegen(klass);
-    return klass->has_references;
-}
-
-bool il2cpp_codegen_is_unmanaged(const RuntimeMethod* method)
-{
-    return !il2cpp_codegen_is_reference_or_contains_references(method);
-}
-
 #endif // !RUNTIME_TINY
 
 #if IL2CPP_TINY_DEBUGGER
-
-#include "vm/Image.h"
-#include "gc/WriteBarrier.h"
 
 MulticastDelegate_t* il2cpp_codegen_create_combined_delegate(Type_t* type, Il2CppArray* delegates, int delegateCount)
 {
     Il2CppClass* klass = il2cpp::vm::Class::FromSystemType((Il2CppReflectionType*)type);
     Il2CppMulticastDelegate* result = reinterpret_cast<Il2CppMulticastDelegate*>(il2cpp_codegen_object_new(klass));
-    il2cpp::gc::WriteBarrier::GenericStore(&result->delegates, delegates);
-    il2cpp::gc::WriteBarrier::GenericStore(&result->delegate.m_target, (Il2CppObject*)result);
+    result->delegates = delegates;
     result->delegateCount = delegateCount;
-    result->delegate.invoke_impl = il2cpp_array_get(delegates, Il2CppDelegate*, 0)->multicast_invoke_impl;
-    result->delegate.multicast_invoke_impl = result->delegate.invoke_impl;
     return reinterpret_cast<MulticastDelegate_t*>(result);
 }
 
@@ -1103,12 +762,6 @@ bool il2cpp_codegen_type_is_pointer(Type_t* t)
 {
     Il2CppClass* klass = il2cpp::vm::Class::FromSystemType((Il2CppReflectionType*)t);
     return il2cpp::vm::Class::GetType(klass)->type == IL2CPP_TYPE_PTR;
-}
-
-NORETURN void il2cpp_codegen_raise_exception(const char* message)
-{
-    il2cpp::vm::Exception::Raise(il2cpp::vm::Exception::FromNameMsg(il2cpp::vm::Image::GetCorlib(), "System", "Exception", message));
-    IL2CPP_UNREACHABLE;
 }
 
 #endif

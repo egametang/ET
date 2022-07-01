@@ -31,10 +31,10 @@ namespace Principal
     class LIBIL2CPP_CODEGEN_API WindowsImpersonationContext
     {
     public:
-        static bool CloseToken(intptr_t token);
         static bool RevertToSelf();
-        static bool SetCurrentToken(intptr_t token);
         static intptr_t DuplicateToken(intptr_t token);
+        static bool SetCurrentToken(intptr_t token);
+        static bool CloseToken(intptr_t token);
     };
 } /* namespace Principal */
 } /* namespace Security */

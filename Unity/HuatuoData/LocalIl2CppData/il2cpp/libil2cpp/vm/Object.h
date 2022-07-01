@@ -24,12 +24,10 @@ namespace vm
         static Il2CppObject* New(Il2CppClass *klass);
         static void* Unbox(Il2CppObject* obj);
         static void UnboxNullable(Il2CppObject* obj, Il2CppClass* nullableArgumentClass, void* storage);
-        static void UnboxNullableWithWriteBarrier(Il2CppObject* obj, Il2CppClass* nullableArgumentClass, void* storage);
 
         static Il2CppObject * Clone(Il2CppObject *obj);
         static Il2CppObject* NewPinned(Il2CppClass *klass);
         static void NullableInit(uint8_t* buf, Il2CppObject* value, Il2CppClass* klass);
-        static bool NullableHasValue(Il2CppClass* klass, void* data);
     private:
         static Il2CppObject * NewAllocSpecific(Il2CppClass *klass);
         static Il2CppObject* NewPtrFree(Il2CppClass *klass);
@@ -37,12 +35,13 @@ namespace vm
         static Il2CppObject* AllocatePtrFree(size_t size, Il2CppClass *typeInfo);
         static Il2CppObject* AllocateSpec(size_t size, Il2CppClass *typeInfo);
 
-        // Yo! Don't call this function! See the comments in the implementation if you do.
-        static uint32_t UnboxNullableGCUnsafe(Il2CppObject* obj, Il2CppClass* nullableArgumentClass, void* storage);
-
         friend class Array;
         friend class RCW;
         friend class String;
     };
 } /* namespace vm */
 } /* namespace il2cpp */
+
+#define IL2CPP_OBJECT_SETREF(obj, fieldname, value) do {\
+        il2cpp_gc_wbarrier_set_field((Il2CppObject *)(obj), (void**)&(obj)->fieldname, (value));\
+    } while (0)
