@@ -1,8 +1,9 @@
 {
   "dependencies": {
+    "com.unity.editorcoroutines": "1.0.0",
     "com.unity.ide.rider": "3.0.14",
     "com.unity.ide.visualstudio": "2.0.15",
-    "com.unity.render-pipelines.universal": "12.1.7",
+    "com.unity.render-pipelines.universal": "10.9.0",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.7.1",
     "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.1",

@@ -5,7 +5,8 @@
         "Unity.Mono",
         "Unity.ThirdParty",
         "Unity.Core",
-        "YooAsset"
+        "YooAsset",
+        "Unity.EditorCoroutines.Editor"
     ],
     "includePlatforms": [
         "Editor"

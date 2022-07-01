@@ -38,22 +38,22 @@ namespace ET
             
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\Hotfix\**\*.cs");
+                return GenerateCustomProject(path, content, @"Packages\Codes\Hotfix\**\*.cs");
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\HotfixView\**\*.cs");
+                return GenerateCustomProject(path, content, @"Packages\Codes\HotfixView\**\*.cs");
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\Model\**\*.cs");
+                return GenerateCustomProject(path, content, @"Packages\Codes\Model\**\*.cs");
             }
 
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\ModelView\**\*.cs");
+                return GenerateCustomProject(path, content, @"Packages\Codes\ModelView\**\*.cs");
             }
             
             return content;

@@ -1,0 +1,15 @@
+{
+  "name": "com.nkg.yy",
+  "displayName": "HotfixCodes",
+  "version": "1.0.0",
+  "unity": "2020.3",
+  "unityRelease": "18f1",
+  "dependencies": {
+
+  },
+  "keywords": [
+  ],
+  "repository": {
+
+  }
+}

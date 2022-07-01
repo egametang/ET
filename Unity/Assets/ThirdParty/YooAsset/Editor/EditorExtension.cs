@@ -17,7 +17,7 @@ namespace YooAsset.Editor
 	{
 		public static void Rebuild(this UnityEngine.UIElements.ListView o)
 		{
-			o.Refresh();
+			o.Rebuild();
 		}
 	}
 #endif

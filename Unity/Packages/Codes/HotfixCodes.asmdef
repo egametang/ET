@@ -1,0 +1,23 @@
+{
+    "name": "HotfixCodes",
+    "rootNamespace": "ET",
+    "references": [
+        "GUID:9ef2053bcf13a254ab3940a767f7b1a5",
+        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4",
+        "GUID:1aa3e8589868c80499255710874679c0",
+        "GUID:e34a5702dd353724aa315fb8011f08c3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "NKGEditorOnly"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

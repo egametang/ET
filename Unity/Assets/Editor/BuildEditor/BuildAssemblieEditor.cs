@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Unity.EditorCoroutines.Editor;
 using UnityEditor;
+using UnityEditor.Build.Content;
 using UnityEditor.Compilation;
 using UnityEngine;
 
@@ -15,76 +18,126 @@ namespace ET
     public static class BuildAssemblieEditor
     {
         private const string CodeDir = "Assets/Res/Code/";
-        private const string EditorCodeDir = "Assets/Editor/Code/";
+
+        private static bool s_CompileHotfixCompleted = false;
+        private static bool m_IsContainsNkgEditorOnlySymbolDefine = false;
+
+        private static string assemblyName;
+        private static string[] includeAssemblies;
+        private static string[] additionalReferences;
+        private static CodeOptimization codeOptimization;
+        private static string[] backSymbolDefines;
 
         [MenuItem("Tools/BuildCodeDebug _F5")]
         public static void BuildCodeDebug()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new[]
+            assemblyName = "Code";
+            includeAssemblies = new[]
             {
-                "Codes/Model/",
-                "Codes/ModelView/",
-                "Codes/Hotfix/",
-                "Codes/HotfixView/"
-            }, Array.Empty<string>(), CodeOptimization.Debug);
+                "Packages/Codes/Model/",
+                "Packages/Codes/ModelView/",
+                "Packages/Codes/Hotfix/",
+                "Packages/Codes/HotfixView/"
+            };
+            additionalReferences = Array.Empty<string>();
+            codeOptimization = CodeOptimization.Debug;
 
-            AfterCompiling();
-
-            AssetDatabase.Refresh();
+            BuildAssemblieEditor.BuildMuteAssembly();
         }
 
         [MenuItem("Tools/BuildCodeRelease _F6")]
         public static void BuildCodeRelease()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new[]
+            assemblyName = "Code";
+            includeAssemblies = new[]
             {
-                "Codes/Model/",
-                "Codes/ModelView/",
-                "Codes/Hotfix/",
-                "Codes/HotfixView/"
-            }, Array.Empty<string>(), CodeOptimization.Release);
+                "Packages/Codes/Model/",
+                "Packages/Codes/ModelView/",
+                "Packages/Codes/Hotfix/",
+                "Packages/Codes/HotfixView/"
+            };
+            additionalReferences = Array.Empty<string>();
+            codeOptimization = CodeOptimization.Release;
 
-            AfterCompiling();
-
-            AssetDatabase.Refresh();
+            BuildAssemblieEditor.BuildMuteAssembly();
         }
 
         [MenuItem("Tools/BuildData _F7")]
         public static void BuildData()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Data", new[]
+            assemblyName = "Data";
+            includeAssemblies = new[]
             {
-                "Codes/Model/",
-                "Codes/ModelView/",
-            }, Array.Empty<string>(), CodeOptimization.Debug);
+                "Packages/Codes/Model/",
+                "Packages/Codes/ModelView/",
+            };
+            additionalReferences = Array.Empty<string>();
+            codeOptimization = CodeOptimization.Debug;
+
+            BuildAssemblieEditor.BuildMuteAssembly();
         }
 
 
         [MenuItem("Tools/BuildLogic _F8")]
         public static void BuildLogic()
         {
-            string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*");
-            foreach (string file in logicFiles)
+            assemblyName = "Logic";
+            includeAssemblies = new[]
             {
-                File.Delete(file);
-            }
+                "Packages/Codes/Hotfix/",
+                "Packages/Codes/HotfixView/"
+            };
+            additionalReferences = Array.Empty<string>();
+            codeOptimization = CodeOptimization.Debug;
 
-            int random = RandomHelper.RandomNumber(100000000, 999999999);
-            string logicFile = $"Logic_{random}";
-
-            BuildAssemblieEditor.BuildMuteAssembly(logicFile, new[]
-            {
-                "Codes/Hotfix/",
-                "Codes/HotfixView/",
-            }, new[] { Path.Combine(Define.BuildOutputDir, "Data.dll") }, CodeOptimization.Debug);
+            BuildAssemblieEditor.BuildMuteAssembly();
         }
 
-        private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
+
+        private static void BuildMuteAssembly()
         {
-            List<string> scripts = new List<string>();
-            for (int i = 0; i < CodeDirectorys.Length; i++)
+            s_CompileHotfixCompleted = false;
+
+            string[] backDefineSymbolsForGroup =
+                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup)
+                    .Split(';');
+            List<string> buildTempDefineSymbolsForGroup = new List<string>();
+
+            m_IsContainsNkgEditorOnlySymbolDefine = false;
+            foreach (var defineSymbol in backDefineSymbolsForGroup)
             {
-                DirectoryInfo dti = new DirectoryInfo(CodeDirectorys[i]);
+                if (defineSymbol == "NKGEditorOnly")
+                {
+                    m_IsContainsNkgEditorOnlySymbolDefine = true;
+                    continue;
+                }
+
+                buildTempDefineSymbolsForGroup.Add(defineSymbol);
+            }
+
+            if (m_IsContainsNkgEditorOnlySymbolDefine)
+            {
+                backSymbolDefines = backDefineSymbolsForGroup;
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup,
+                    buildTempDefineSymbolsForGroup.ToArray());
+
+                CompilationPipeline.RequestScriptCompilation();
+                CompilationPipeline.compilationFinished += OnSymbolHandleCompleted;
+            }
+            else
+            {
+                OnSymbolHandleCompleted(null);
+            }
+        }
+
+        private static void OnSymbolHandleCompleted(object s)
+        {
+            CompilationPipeline.compilationFinished -= OnSymbolHandleCompleted;
+
+            List<string> scripts = new List<string>();
+            for (int i = 0; i < includeAssemblies.Length; i++)
+            {
+                DirectoryInfo dti = new DirectoryInfo(includeAssemblies[i]);
                 FileInfo[] fileInfos = dti.GetFiles("*.cs", System.IO.SearchOption.AllDirectories);
                 for (int j = 0; j < fileInfos.Length; j++)
                 {
@@ -107,10 +160,12 @@ namespace ET
             //启用UnSafe
             //assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
 
-            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+            BuildTargetGroup buildTargetGroup =
+                BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 
             assemblyBuilder.compilerOptions.CodeOptimization = codeOptimization;
-            assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
+            assemblyBuilder.compilerOptions.ApiCompatibilityLevel =
+                PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 
             assemblyBuilder.additionalReferences = additionalReferences;
@@ -127,9 +182,12 @@ namespace ET
 
             assemblyBuilder.excludeReferences = new string[] { "Library/ScriptAssemblies/Unity.Editor.dll" };
 
-            assemblyBuilder.buildStarted += delegate (string assemblyPath) { Debug.LogFormat("build start：" + assemblyPath); };
+            assemblyBuilder.buildStarted += delegate(string assemblyPath)
+            {
+                Debug.LogFormat("build start：" + assemblyPath);
+            };
 
-            assemblyBuilder.buildFinished += delegate (string assemblyPath, CompilerMessage[] compilerMessages)
+            assemblyBuilder.buildFinished += delegate(string assemblyPath, CompilerMessage[] compilerMessages)
             {
                 int errorCount = compilerMessages.Count(m => m.type == CompilerMessageType.Error);
                 int warningCount = compilerMessages.Count(m => m.type == CompilerMessageType.Warning);
@@ -151,37 +209,46 @@ namespace ET
                         }
                     }
                 }
+
+                s_CompileHotfixCompleted = true;
+
+                if (m_IsContainsNkgEditorOnlySymbolDefine)
+                {
+                    PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup,
+                        backSymbolDefines.ToArray());
+                }
             };
 
             //assemblyBuilder.excludeReferences = new string[] { "Unity.Editor.dll" };
+
+            EditorApplication.update += CheckCompileHotfixCompleted;
 
             //开始构建
             if (!assemblyBuilder.Build())
             {
                 Debug.LogErrorFormat("build fail：" + assemblyBuilder.assemblyPath);
-                return;
             }
         }
 
-        private static void AfterCompiling()
+        private static void CheckCompileHotfixCompleted()
         {
-            while (EditorApplication.isCompiling)
+            if (!s_CompileHotfixCompleted)
             {
-                Debug.Log("Compiling wait1");
-                // 主线程sleep并不影响编译线程
-                Thread.Sleep(1000);
-                Debug.Log("Compiling wait2");
+                EditorUtility.DisplayProgressBar("正在编译热更程序集，请稍等。。。", "Wait...", 1.0f);
+                return;
             }
+            
+            EditorUtility.ClearProgressBar();
+
+            EditorApplication.update -= CheckCompileHotfixCompleted;
+            s_CompileHotfixCompleted = false;
 
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
-            
+
             File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
-
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(EditorCodeDir, "Code.dll"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(EditorCodeDir, "Code.pdb"), true);
 
             AssetDatabase.Refresh();
             Debug.Log("copy Code.dll to Bundles/Code success!");

@@ -5,7 +5,6 @@
         "Unity.Model",
         "Unity.Mono",
         "Unity.ThirdParty",
-        "Unity.Core",
         "YooAsset"
     ],
     "includePlatforms": [
@@ -13,7 +12,7 @@
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": true,
+    "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

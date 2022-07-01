@@ -49,21 +49,23 @@ namespace ET
                 LoadMetadataForAOTAssembly((abase as RawFileOperation).LoadFileData());
             };
 
-            // InternalLoadCode().Coroutine();
-            // async ETTask InternalLoadCode()
-            // {
-            //     await CodeLoader.Instance.Start();
-            //     Log.Info("Dll加载完毕，正式进入游戏流程");
-            // }
+            InternalLoadCode().Coroutine();
+            async ETTask InternalLoadCode()
+            {
+                await CodeLoader.Instance.Start();
+                Log.Info("Dll加载完毕，正式进入游戏流程");
+            }
         }
         
         public static unsafe void LoadMetadataForAOTAssembly(byte[] dllBytes)
         {
             fixed (byte* ptr = dllBytes)
             {
+#if !UNITY
                 // 加载assembly对应的dll，会自动为它hook。一旦aot泛型函数的native函数不存在，用解释器版本代码
                 int err = Huatuo.HuatuoApi.LoadMetadataForAOTAssembly((IntPtr)ptr, dllBytes.Length);
                 Debug.Log("LoadMetadataForAOTAssembly. ret:" + err);
+#endif
             }
         }
 
