@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ET
 {
@@ -20,7 +21,20 @@ namespace ET
                 {
                     return scene;
                 }
+#if UNITY_EDITOR
+                var editorAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Unity.Editor");
+                if (!UnityEngine.Application.isPlaying)
+                {
+                    editorAssembly.GetType("ET.EditorEntityLauncher").GetMethod("InitEditorEnv").Invoke(null, null);
+                }
+#endif
                 scene = EntitySceneFactory.CreateScene(0, SceneType.Process, "Process");
+#if UNITY_EDITOR
+                if (!UnityEngine.Application.isPlaying)
+                {
+                    editorAssembly.GetType("ET.EditorEntityLauncher").GetMethod("InitEventSystemInEditorMode").Invoke(null, new object[] { scene });
+                }
+#endif
                 return scene;
             }
         }

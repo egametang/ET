@@ -12,6 +12,7 @@ namespace ET
     public static class BuildAssemblieEditor
     {
         private const string CodeDir = "Assets/Bundles/Code/";
+        private const string EditorCodeDir = "Assets/Editor/RuntimeDll/";
 
         [MenuItem("Tools/Build/EnableAutoBuildCodeDebug _F1")]
         public static void SetAutoBuildCode()
@@ -183,8 +184,11 @@ namespace ET
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
+            Directory.CreateDirectory(EditorCodeDir);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(EditorCodeDir, "Code.dll"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(EditorCodeDir, "Code.pdb"), true);
             AssetDatabase.Refresh();
             Debug.Log("copy Code.dll to Bundles/Code success!");
             
