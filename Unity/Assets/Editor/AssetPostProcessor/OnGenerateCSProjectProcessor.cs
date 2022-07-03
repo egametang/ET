@@ -11,31 +11,35 @@ namespace ET
     {
         public static string OnGeneratedCSProject(string path, string content)
         {
-            
+            if (!path.EndsWith("Unity.Editor.csproj"))
+            {
+                content = content.Replace("<Reference Include=\"Code\">\r\n      <HintPath>Assets\\Editor\\RuntimeDll\\Code.dll</HintPath>\r\n    </Reference>", string.Empty);
+            }
+
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\Hotfix\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
             }
-            
+
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\HotfixView\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
             }
-            
+
             if (path.EndsWith("Unity.Model.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\Model\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Model\\Unity.Model.asmdef\" />", string.Empty);
             }
-            
+
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\ModelView\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
             }
-            
+
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 return GenerateCustomProject(path, content, @"Codes\Hotfix\**\*.cs");
@@ -55,7 +59,7 @@ namespace ET
             {
                 return GenerateCustomProject(path, content, @"Codes\ModelView\**\*.cs");
             }
-            
+
             return content;
         }
 
