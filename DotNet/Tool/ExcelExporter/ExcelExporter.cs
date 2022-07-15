@@ -53,8 +53,8 @@ namespace ET
     {
         private static string template;
 
-        public const string ClientClassDir = "../Unity/Codes/Model/Generate/Config";
-        public const string ServerClassDir = "../Apps/Model/Generate/Config";
+        public const string ClientClassDir = "../Codes/Generate/Client/Config";
+        public const string ServerClassDir = "../Codes/Generate/Server/Config";
 
         private const string excelDir = "../Excel";
 
