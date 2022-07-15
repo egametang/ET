@@ -45,11 +45,8 @@
         
     </ItemGroup> 
     <ItemGroup> 
-        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Codes\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Core\DotNet.Core.csproj" />
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Server\Scenes" />
     </ItemGroup>
 </Project>

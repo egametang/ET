@@ -31,13 +31,10 @@
 
         <Compile Include="..\..\Codes\Hotfix\Share\**\*.cs">
             <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link> 
-        </Compile>
+        </Compile> 
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Codes\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Server\Scenes" />
     </ItemGroup>
 </Project>
