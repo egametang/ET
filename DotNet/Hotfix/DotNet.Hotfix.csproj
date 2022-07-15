@@ -11,7 +11,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>TRACE2_0;NOT_UNITY;APPS;</DefineConstants>
-        <OutputPath>..\..\Bin\</OutputPath>
+        <OutputPath>..\..\Bin\</OutputPath> 
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -21,15 +21,15 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Codes\Hotfix\Module\**\*.cs">
-            <Link>Module\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Codes\Hotfix\Client\**\*.cs">
+        <Compile Include="..\..\Codes\Hotfix\Client\**\*.cs">
             <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile> 
+
+        <Compile Include="..\..\Codes\Hotfix\Server\**\*.cs">
+            <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Codes\Hotfix\Share\**\*.cs">
+        <Compile Include="..\..\Codes\Hotfix\Share\**\*.cs">
             <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link> 
         </Compile>
     </ItemGroup>

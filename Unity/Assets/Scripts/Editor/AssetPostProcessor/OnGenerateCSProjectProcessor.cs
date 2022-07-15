@@ -14,52 +14,61 @@ namespace ET
             
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\Hotfix\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\Hotfix\\Empty.cs\" />", string.Empty);
+                content =  content.Replace("<None Include=\"Assets\\Scripts\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\HotfixView\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\HotfixView\\Empty.cs\" />", string.Empty);
+                content =  content.Replace("<None Include=\"Assets\\Scripts\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\Model\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\Model\\Unity.Model.asmdef\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", string.Empty);
+                content =  content.Replace("<None Include=\"Assets\\Scripts\\Model\\Unity.Model.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\ModelView\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
+                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\ModelView\\Empty.cs\" />", string.Empty);
+                content =  content.Replace("<None Include=\"Assets\\Scripts\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
             }
             
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\Hotfix\**\*.cs");
+                return GenerateCustomProject(path, content, 
+                    @"..\Codes\Hotfix\Client\**\*.cs Client", 
+                    @"..\Codes\Hotfix\Share\**\*.cs Share");
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\HotfixView\**\*.cs");
+                return GenerateCustomProject(path, content, 
+                    @"..\Codes\HotfixView\Client\**\*.cs Client", 
+                    @"..\Codes\HotfixView\Share\**\*.cs Share"); 
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\Model\**\*.cs");
+                return GenerateCustomProject(path, content, 
+                    @"..\Codes\Model\Client\**\*.cs Client",
+                    @"..\Codes\Model\Share\**\*.cs Share",
+                    @"..\Codes\Generate\Client\**\*.cs Generate");
             }
 
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                return GenerateCustomProject(path, content, @"Codes\ModelView\**\*.cs");
+                return GenerateCustomProject(path, content, 
+                    @"..\Codes\ModelView\Client\**\*.cs Client",
+                    @"..\Codes\ModelView\Share\**\*.cs Share");
             }
             
             return content;
         }
 
-        private static string GenerateCustomProject(string path, string content, string codesPath)
+        private static string GenerateCustomProject(string path, string content, params string[] links)
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(content);
@@ -68,11 +77,19 @@ namespace ET
 
             var rootNode = newDoc.GetElementsByTagName("Project")[0];
 
-            var itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
-            var compile = newDoc.CreateElement("Compile", newDoc.DocumentElement.NamespaceURI);
-
-            compile.SetAttribute("Include", codesPath);
-            itemGroup.AppendChild(compile);
+            XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
+            foreach (var s in links)
+            {
+                string[] ss = s.Split(' ');
+                string p = ss[0];
+                string linkStr = ss[1];
+                XmlElement compile = newDoc.CreateElement("Compile", newDoc.DocumentElement.NamespaceURI);
+                XmlElement link = newDoc.CreateElement("Link", newDoc.DocumentElement.NamespaceURI);
+                link.InnerText = $"{linkStr}\\%(RecursiveDir)%(FileName)%(Extension)";
+                compile.AppendChild(link);
+                compile.SetAttribute("Include", p);
+                itemGroup.AppendChild(compile);
+            }
 
             var projectReference = newDoc.CreateElement("ProjectReference", newDoc.DocumentElement.NamespaceURI);
             projectReference.SetAttribute("Include", @"..\Share\Analyzer\Share.Analyzer.csproj");

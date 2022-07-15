@@ -32,10 +32,13 @@ namespace ET
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
             {
-                "Codes/Model/",
-                "Codes/ModelView/",
-                "Codes/Hotfix/",
-                "Codes/HotfixView/"
+                "../Codes/Generate/Client/",
+                "../Codes/Model/Share/",
+                "../Codes/Hotfix/Share/",
+                "../Codes/Model/Client/",
+                "../Codes/ModelView/Client/",
+                "../Codes/Hotfix/Client/",
+                "../Codes/HotfixView/Client/"
             }, Array.Empty<string>(), CodeOptimization.Debug);
 
             AfterCompiling();
@@ -48,10 +51,13 @@ namespace ET
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
             {
-                "Codes/Model/",
-                "Codes/ModelView/",
-                "Codes/Hotfix/",
-                "Codes/HotfixView/"
+                "../Codes/Generate/Client/",
+                "../Codes/Model/Share/",
+                "../Codes/Hotfix/Share/",
+                "../Codes/Model/Client/",
+                "../Codes/ModelView/Client/",
+                "../Codes/Hotfix/Client/",
+                "../Codes/HotfixView/Client/"
             }, Array.Empty<string>(), CodeOptimization.Release);
 
             AfterCompiling();
@@ -64,8 +70,10 @@ namespace ET
         {
             BuildAssemblieEditor.BuildMuteAssembly("Data", new []
             {
-                "Codes/Model/",
-                "Codes/ModelView/",
+                "../Codes/Generate/Client/",
+                "../Codes/Model/Share/",
+                "../Codes/Model/Client/",
+                "../Codes/ModelView/Client/",
             }, Array.Empty<string>(), CodeOptimization.Debug);
         }
         
@@ -84,8 +92,9 @@ namespace ET
             
             BuildAssemblieEditor.BuildMuteAssembly(logicFile, new []
             {
-                "Codes/Hotfix/",
-                "Codes/HotfixView/",
+                "../Codes/Hotfix/Share/",
+                "../Codes/Hotfix/Client/",
+                "../Codes/HotfixView/Client/"
             }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
         }
 
