@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>disable</Nullable>
         <LangVersion>10</LangVersion>
-        <RootNamespace>ETTask</RootNamespace>
+        <RootNamespace>ET</RootNamespace>
         <AssemblyName>ThirdParty</AssemblyName>
     </PropertyGroup>
     
