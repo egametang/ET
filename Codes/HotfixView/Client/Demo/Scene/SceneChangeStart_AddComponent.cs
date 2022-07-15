@@ -1,3 +1,5 @@
+using UnityEngine.SceneManagement;
+
 namespace ET.Client
 {
     [Event(SceneType.Client)]
@@ -11,18 +13,7 @@ namespace ET.Client
             await ResourcesComponent.Instance.LoadBundleAsync($"{currentScene.Name}.unity3d");
             // 切换到map场景
 
-            SceneChangeComponent sceneChangeComponent = null;
-            try
-            {
-                sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>();
-                {
-                    await sceneChangeComponent.ChangeSceneAsync(currentScene.Name);
-                }
-            }
-            finally
-            {
-                sceneChangeComponent?.Dispose();
-            }
+            await SceneManager.LoadSceneAsync(currentScene.Name);
 			
 
             currentScene.AddComponent<OperaComponent>();
