@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <LangVersion>9</LangVersion>
+        <RootNamespace>ET</RootNamespace>
+        <AssemblyName>ThirdParty</AssemblyName>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACE;NOT_UNITY;APPS</DefineConstants>
+      <OutputPath>..\..\Bin\</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DefineConstants>TRACE;NOT_UNITY;APPS</DefineConstants>
+      <OutputPath>..\..\Bin\</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ETTask\**\*.cs">
+        <Link>ETTask/%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ShareLib\Kcp\Kcp.cs">
+      <Link>Kcp\Kcp.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ShareLib\Recast\Recast.cs">
+      <Link>Recast\Recast.cs</Link>
+    </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\Unity\Assets\Plugins\MacOS\arm64\libkcp.dylib">
+        <Link>libkcp.dylib</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\Unity\Assets\Plugins\MacOS\x86_64\libkcp.dylib">
+        <Link>libkcp.dylib</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\Unity\Assets\Plugins\MacOS\libRecastDll.dylib">
+        <Link>libRecastDll.dylib</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\Unity\Assets\Plugins\x86_64\kcp.dll">
+        <Link>kcp.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\Unity\Assets\Plugins\x86_64\RecastDll.dll">
+        <Link>RecastDll.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.8.0" />
+      <PackageReference Include="EPPlus" Version="5.8.8" />
+      <PackageReference Include="MongoDB.Driver" Version="2.15.0" />
+      <PackageReference Include="NLog" Version="4.7.15" />
+      <PackageReference Include="protobuf-net" Version="2.4.6" />
+      <PackageReference Include="SharpZipLib" Version="1.3.3" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.1" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+    </ItemGroup>
+
+</Project>
