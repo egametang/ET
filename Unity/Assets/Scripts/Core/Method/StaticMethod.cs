@@ -1,15 +1,14 @@
-using System;
 using System.Reflection;
 
 namespace ET
 {
-    public class MonoStaticMethod : IStaticMethod
+    public class StaticMethod : IStaticMethod
     {
         private readonly MethodInfo methodInfo;
 
         private readonly object[] param;
 
-        public MonoStaticMethod(Assembly assembly, string typeName, string methodName)
+        public StaticMethod(Assembly assembly, string typeName, string methodName)
         {
             this.methodInfo = assembly.GetType(typeName).GetMethod(methodName);
             this.param = new object[this.methodInfo.GetParameters().Length];

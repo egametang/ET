@@ -16,10 +16,6 @@ namespace ET
 		
 		private void Awake()
 		{
-#if ENABLE_IL2CPP
-			this.CodeMode = CodeMode.ILRuntime;
-#endif
-
 			DontDestroyOnLoad(gameObject);
 
 			CodeLoader.Instance.CodeMode = this.CodeMode;

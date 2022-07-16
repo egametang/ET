@@ -42,7 +42,7 @@ namespace ET
 					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly);
 					Game.EventSystem.Add(types);
 					
-					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Client.Entry", "Start");
+					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
 				}
@@ -53,7 +53,7 @@ namespace ET
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					this.LoadLogic();
-					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Client.Entry", "Start");
+					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
 				}
