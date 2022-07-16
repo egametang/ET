@@ -21,7 +21,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' "> 
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
       <DefineConstants>TRACE;APPS</DefineConstants>
       <OutputPath>..\..\Bin\</OutputPath>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace ET
@@ -64,6 +63,17 @@ namespace ET
                 this.SceneType = sceneType;
             }
         }
+        
+        private class TwoQueue
+        {
+            public Queue<long> Queue1 = new();
+            public Queue<long> Queue2 = new();
+
+            public void Swap()
+            {
+                (this.Queue1, this.Queue2) = (this.Queue2, this.Queue1);
+            }
+        }
 
         private static EventSystem instance;
 
@@ -92,17 +102,22 @@ namespace ET
 
         private TypeSystems typeSystems = new();
 
-        private Queue<long> updates = new();
-        private Queue<long> updates2 = new();
+        private readonly TwoQueue[] twoQueues = new TwoQueue[(int)TwoQueueEnum.Max];
 
-        private Queue<long> loaders = new();
-        private Queue<long> loaders2 = new();
-
-        private Queue<long> lateUpdates = new();
-        private Queue<long> lateUpdates2 = new();
+        private enum TwoQueueEnum
+        {
+            Update = 0,
+            LateUpdate = 1,
+            Load = 2,
+            Max = 3,
+        }
 
         private EventSystem()
         {
+            for (int i = 0; i < this.twoQueues.Length; i++)
+            {
+                this.twoQueues[i] = new TwoQueue();
+            }
         }
 
         private static List<Type> GetBaseAttributes(Dictionary<string, Type> addTypes)
@@ -247,12 +262,16 @@ namespace ET
 
             Type type = component.GetType();
 
-            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);;
+            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
+            if (oneTypeSystems == null)
+            {
+                return;
+            }
             if (component is ILoad)
             {
                 if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
                 {
-                    this.loaders.Enqueue(component.InstanceId);
+                    this.twoQueues[(int)TwoQueueEnum.Load].Queue1.Enqueue(component.InstanceId);
                 }
             }
 
@@ -260,7 +279,7 @@ namespace ET
             {
                 if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
                 {
-                    this.updates.Enqueue(component.InstanceId);
+                    this.twoQueues[(int)TwoQueueEnum.Update].Queue1.Enqueue(component.InstanceId);
                 }
             }
 
@@ -268,7 +287,7 @@ namespace ET
             {
                 if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
                 {
-                    this.lateUpdates.Enqueue(component.InstanceId);
+                    this.twoQueues[(int)TwoQueueEnum.LateUpdate].Queue1.Enqueue(component.InstanceId);
                 }
             }
         }
@@ -502,9 +521,10 @@ namespace ET
 
         public void Load()
         {
-            while (this.loaders.Count > 0)
+            TwoQueue twoQueue = this.twoQueues[(int)TwoQueueEnum.Load];
+            while (twoQueue.Queue1.Count > 0)
             {
-                long instanceId = this.loaders.Dequeue();
+                long instanceId = twoQueue.Queue1.Dequeue();
                 Entity component;
                 if (!this.allEntities.TryGetValue(instanceId, out component))
                 {
@@ -522,7 +542,7 @@ namespace ET
                     continue;
                 }
 
-                this.loaders2.Enqueue(instanceId);
+                twoQueue.Queue2.Enqueue(instanceId);
 
                 foreach (ILoadSystem iLoadSystem in iLoadSystems)
                 {
@@ -537,7 +557,7 @@ namespace ET
                 }
             }
 
-            ObjectHelper.Swap(ref this.loaders, ref this.loaders2);
+            twoQueue.Swap();
         }
 
         public void Destroy(Entity component)
@@ -568,9 +588,10 @@ namespace ET
 
         public void Update()
         {
-            while (this.updates.Count > 0)
+            TwoQueue twoQueue = this.twoQueues[(int)TwoQueueEnum.Update];
+            while (twoQueue.Queue1.Count > 0)
             {
-                long instanceId = this.updates.Dequeue();
+                long instanceId = twoQueue.Queue1.Dequeue();
                 Entity component;
                 if (!this.allEntities.TryGetValue(instanceId, out component))
                 {
@@ -588,7 +609,7 @@ namespace ET
                     continue;
                 }
 
-                this.updates2.Enqueue(instanceId);
+                twoQueue.Queue2.Enqueue(instanceId);
 
                 foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
                 {
@@ -603,14 +624,15 @@ namespace ET
                 }
             }
 
-            ObjectHelper.Swap(ref this.updates, ref this.updates2);
+            twoQueue.Swap();
         }
 
         public void LateUpdate()
         {
-            while (this.lateUpdates.Count > 0)
+            TwoQueue twoQueue = this.twoQueues[(int)TwoQueueEnum.LateUpdate];
+            while (twoQueue.Queue1.Count > 0)
             {
-                long instanceId = this.lateUpdates.Dequeue();
+                long instanceId = twoQueue.Queue1.Dequeue();
                 Entity component;
                 if (!this.allEntities.TryGetValue(instanceId, out component))
                 {
@@ -628,7 +650,7 @@ namespace ET
                     continue;
                 }
 
-                this.lateUpdates2.Enqueue(instanceId);
+                twoQueue.Queue2.Enqueue(instanceId);
 
                 foreach (ILateUpdateSystem iLateUpdateSystem in iLateUpdateSystems)
                 {
@@ -643,7 +665,7 @@ namespace ET
                 }
             }
 
-            ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
+            twoQueue.Swap();
         }
 
         public async ETTask PublishAsync<E, T>(E entity, T a) where E: Entity where T : struct

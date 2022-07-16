@@ -19,7 +19,6 @@ namespace ET
 						Thread.Sleep(1);
 						Game.Update();
 						Game.LateUpdate();
-						Game.FrameFinish();
 					}
 					catch (Exception e)
 					{
