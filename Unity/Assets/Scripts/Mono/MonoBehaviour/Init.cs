@@ -19,21 +19,8 @@ namespace ET
 #if ENABLE_IL2CPP
 			this.CodeMode = CodeMode.ILRuntime;
 #endif
-			
-			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-			{
-				Log.Error(e.ExceptionObject.ToString());
-			};
-			
-			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
-			
+
 			DontDestroyOnLoad(gameObject);
-
-			ETTask.ExceptionHandler += Log.Error;
-
-			Game.ILog = new UnityLogger();
-
-			Options.Instance = new Options();
 
 			CodeLoader.Instance.CodeMode = this.CodeMode;
 		}

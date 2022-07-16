@@ -7,11 +7,7 @@ namespace ET
 {
     public static class ProtobufHelper
     {
-	    public static void Init()
-        {
-        }
-
-        public static object FromBytes(Type type, byte[] bytes, int index, int count)
+		public static object FromBytes(Type type, byte[] bytes, int index, int count)
         {
 	        using (MemoryStream stream = new MemoryStream(bytes, index, count))
 	        {

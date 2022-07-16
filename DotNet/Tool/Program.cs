@@ -26,7 +26,6 @@ namespace ET.Server
                     
                 Game.EventSystem.Add(types);
                 
-                ProtobufHelper.Init();
                 MongoHelper.Register(Game.EventSystem.GetTypes());
 				
                 // 命令行参数
