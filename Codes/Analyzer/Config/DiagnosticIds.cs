@@ -25,6 +25,8 @@
         public const string UniqueIdRangeAnalyzerRuleId = "ET0011";
         
         public const string UniqueIdDuplicateAnalyzerRuleId = "ET0012";
-        
+
+        public const string StaticClassCircularDedendencyAnalyzerRuleId = "ET0013";
+
     }
 }
