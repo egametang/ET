@@ -53,19 +53,5 @@ namespace ET.Server
         {
             return self.GetComponent<AOIEntity>().GetBeSeePlayers();
         }
-        
-        public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
-        {
-            M2C_CreateUnits createUnits = new M2C_CreateUnits();
-            createUnits.Units.Add(CreateUnitInfo(sendUnit));
-            MessageHelper.SendToClient(unit, createUnits);
-        }
-        
-        public static void NoticeUnitRemove(Unit unit, Unit sendUnit)
-        {
-            M2C_RemoveUnits removeUnits = new M2C_RemoveUnits();
-            removeUnits.Units.Add(sendUnit.Id);
-            MessageHelper.SendToClient(unit, removeUnits);
-        }
     }
 }
