@@ -9,7 +9,7 @@ namespace ET
         [ObjectSystem]
         public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>
         {
-            public override void Awake(NumericWatcherComponent self)
+            protected override void Awake(NumericWatcherComponent self)
             {
                 NumericWatcherComponent.Instance = self;
                 self.Init();
@@ -19,7 +19,7 @@ namespace ET
 	
         public class NumericWatcherComponentLoadSystem : LoadSystem<NumericWatcherComponent>
         {
-            public override void Load(NumericWatcherComponent self)
+            protected override void Load(NumericWatcherComponent self)
             {
                 self.Init();
             }

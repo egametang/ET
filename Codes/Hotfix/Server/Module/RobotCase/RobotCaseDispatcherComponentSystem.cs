@@ -10,7 +10,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RobotCaseDispatcherComponentAwakeSystem: AwakeSystem<RobotCaseDispatcherComponent>
         {
-            public override void Awake(RobotCaseDispatcherComponent self)
+            protected override void Awake(RobotCaseDispatcherComponent self)
             {
                 RobotCaseDispatcherComponent.Instance = self;
                 self.Load();
@@ -20,7 +20,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RobotCaseDispatcherComponentLoadSystem: LoadSystem<RobotCaseDispatcherComponent>
         {
-            public override void Load(RobotCaseDispatcherComponent self)
+            protected override void Load(RobotCaseDispatcherComponent self)
             {
                 self.Load();
             }

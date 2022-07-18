@@ -13,7 +13,7 @@ namespace ET.Client
         [ObjectSystem]
         public class ABInfoAwakeSystem: AwakeSystem<ABInfo, string, AssetBundle>
         {
-            public override void Awake(ABInfo self, string abName, AssetBundle a)
+            protected override void Awake(ABInfo self, string abName, AssetBundle a)
             {
                 self.AssetBundle = a;
                 self.Name = abName;
@@ -25,7 +25,7 @@ namespace ET.Client
         [ObjectSystem]
         public class ABInfoDestroySystem: DestroySystem<ABInfo>
         {
-            public override void Destroy(ABInfo self)
+            protected override void Destroy(ABInfo self)
             {
                 //Log.Debug($"desdroy assetbundle: {self.Name}");
 
@@ -132,7 +132,7 @@ namespace ET.Client
         [ObjectSystem]
         public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
         {
-            public override void Awake(ResourcesComponent self)
+            protected override void Awake(ResourcesComponent self)
             {
                 ResourcesComponent.Instance = self;
 
@@ -147,7 +147,7 @@ namespace ET.Client
         [ObjectSystem]
         public class ResourcesComponentDestroySystem: DestroySystem<ResourcesComponent>
         {
-            public override void Destroy(ResourcesComponent self)
+            protected override void Destroy(ResourcesComponent self)
             {
                 ResourcesComponent.Instance = null;
 

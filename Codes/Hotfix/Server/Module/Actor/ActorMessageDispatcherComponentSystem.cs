@@ -12,7 +12,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
         {
-            public override void Awake(ActorMessageDispatcherComponent self)
+            protected override void Awake(ActorMessageDispatcherComponent self)
             {
                 ActorMessageDispatcherComponent.Instance = self;
                 self.Awake();
@@ -22,7 +22,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
         {
-            public override void Load(ActorMessageDispatcherComponent self)
+            protected override void Load(ActorMessageDispatcherComponent self)
             {
                 self.Load();
             }
@@ -31,7 +31,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
         {
-            public override void Destroy(ActorMessageDispatcherComponent self)
+            protected override void Destroy(ActorMessageDispatcherComponent self)
             {
                 self.ActorMessageHandlers.Clear();
                 ActorMessageDispatcherComponent.Instance = null;

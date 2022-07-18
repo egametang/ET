@@ -6,7 +6,7 @@ namespace ET.Client
     [ObjectSystem]
     public class RouterCheckComponentAwakeSystem: AwakeSystem<RouterCheckComponent>
     {
-        public override void Awake(RouterCheckComponent self)
+        protected override void Awake(RouterCheckComponent self)
         {
             CheckAsync(self).Coroutine();
         }

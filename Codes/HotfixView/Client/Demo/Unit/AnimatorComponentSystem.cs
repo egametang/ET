@@ -9,7 +9,7 @@ namespace ET.Client
 		[ObjectSystem]
 		public class AnimatorComponentAwakeSystem : AwakeSystem<AnimatorComponent>
 		{
-			public override void Awake(AnimatorComponent self)
+			protected override void Awake(AnimatorComponent self)
 			{
 				self.Awake();
 			}
@@ -18,7 +18,7 @@ namespace ET.Client
 		[ObjectSystem]
 		public class AnimatorComponentUpdateSystem : UpdateSystem<AnimatorComponent>
 		{
-			public override void Update(AnimatorComponent self)
+			protected override void Update(AnimatorComponent self)
 			{
 				self.Update();
 			}
@@ -27,7 +27,7 @@ namespace ET.Client
 		[ObjectSystem]
 		public class AnimatorComponentDestroySystem : DestroySystem<AnimatorComponent>
 		{
-			public override void Destroy(AnimatorComponent self)
+			protected override void Destroy(AnimatorComponent self)
 			{
 				self.animationClips = null;
 				self.Parameter = null;

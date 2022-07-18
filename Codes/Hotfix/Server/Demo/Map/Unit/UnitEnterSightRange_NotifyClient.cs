@@ -21,7 +21,7 @@
 
             Unit ub = b.GetParent<Unit>();
 
-            UnitHelper.NoticeUnitAdd(ua, ub);
+            MessageHelper.NoticeUnitAdd(ua, ub);
         }
     }
 }

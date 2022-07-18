@@ -9,7 +9,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RobotCaseComponentAwakeSystem: AwakeSystem<RobotCaseComponent>
         {
-            public override void Awake(RobotCaseComponent self)
+            protected override void Awake(RobotCaseComponent self)
             {
                 RobotCaseComponent.Instance = self;
             }
@@ -18,7 +18,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RobotCaseComponentDestroySystem: DestroySystem<RobotCaseComponent>
         {
-            public override void Destroy(RobotCaseComponent self)
+            protected override void Destroy(RobotCaseComponent self)
             {
                 RobotCaseComponent.Instance = null;
             }

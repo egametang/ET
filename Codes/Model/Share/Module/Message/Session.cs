@@ -24,7 +24,7 @@ namespace ET
         [ObjectSystem]
         public class SessionAwakeSystem: AwakeSystem<Session, AService>
         {
-            public override void Awake(Session self, AService aService)
+            protected override void Awake(Session self, AService aService)
             {
                 self.AService = aService;
                 long timeNow = TimeHelper.ClientNow();
@@ -40,7 +40,7 @@ namespace ET
         [ObjectSystem]
         public class SessionDestroySystem: DestroySystem<Session>
         {
-            public override void Destroy(Session self)
+            protected override void Destroy(Session self)
             {
                 self.AService.RemoveChannel(self.Id);
             

@@ -65,7 +65,7 @@ namespace ET
             this.Awake((T)o);
         }
 
-        public abstract void Awake(T self);
+        protected abstract void Awake(T self);
     }
     
     [ObjectSystem]
@@ -86,7 +86,7 @@ namespace ET
             this.Awake((T)o, a);
         }
 
-        public abstract void Awake(T self, A a);
+        protected abstract void Awake(T self, A a);
     }
 
     [ObjectSystem]
@@ -107,7 +107,7 @@ namespace ET
             this.Awake((T)o, a, b);
         }
 
-        public abstract void Awake(T self, A a, B b);
+        protected abstract void Awake(T self, A a, B b);
     }
 
     [ObjectSystem]
@@ -128,7 +128,7 @@ namespace ET
             this.Awake((T)o, a, b, c);
         }
 
-        public abstract void Awake(T self, A a, B b, C c);
+        protected abstract void Awake(T self, A a, B b, C c);
     }
     
     [ObjectSystem]
@@ -149,6 +149,6 @@ namespace ET
             this.Awake((T)o, a, b, c, d);
         }
 
-        public abstract void Awake(T self, A a, B b, C c, D d);
+        protected abstract void Awake(T self, A a, B b, C c, D d);
     }
 }

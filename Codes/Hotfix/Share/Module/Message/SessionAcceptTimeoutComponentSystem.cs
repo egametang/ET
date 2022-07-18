@@ -21,7 +21,7 @@ namespace ET
     [ObjectSystem]
     public class SessionAcceptTimeoutComponentAwakeSystem: AwakeSystem<SessionAcceptTimeoutComponent>
     {
-        public override void Awake(SessionAcceptTimeoutComponent self)
+        protected override void Awake(SessionAcceptTimeoutComponent self)
         {
             self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 5000, CallbackType.SessionAcceptTimeout, self);
         }
@@ -30,7 +30,7 @@ namespace ET
     [ObjectSystem]
     public class SessionAcceptTimeoutComponentDestroySystem: DestroySystem<SessionAcceptTimeoutComponent>
     {
-        public override void Destroy(SessionAcceptTimeoutComponent self)
+        protected override void Destroy(SessionAcceptTimeoutComponent self)
         {
             TimerComponent.Instance.Remove(ref self.Timer);
         }

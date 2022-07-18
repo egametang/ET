@@ -5,7 +5,7 @@ namespace ET.Server
     [ObjectSystem]
     public class LocationProxyComponentAwakeSystem: AwakeSystem<LocationProxyComponent>
     {
-        public override void Awake(LocationProxyComponent self)
+        protected override void Awake(LocationProxyComponent self)
         {
             LocationProxyComponent.Instance = self;
         }
@@ -14,7 +14,7 @@ namespace ET.Server
     [ObjectSystem]
     public class LocationProxyComponentDestroySystem: DestroySystem<LocationProxyComponent>
     {
-        public override void Destroy(LocationProxyComponent self)
+        protected override void Destroy(LocationProxyComponent self)
         {
             LocationProxyComponent.Instance = null;
         }

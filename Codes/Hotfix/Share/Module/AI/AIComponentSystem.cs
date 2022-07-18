@@ -25,7 +25,7 @@ namespace ET
         [ObjectSystem]
         public class AIComponentAwakeSystem: AwakeSystem<AIComponent, int>
         {
-            public override void Awake(AIComponent self, int aiConfigId)
+            protected override void Awake(AIComponent self, int aiConfigId)
             {
                 self.AIConfigId = aiConfigId;
                 self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, CallbackType.AITimer, self);
@@ -35,7 +35,7 @@ namespace ET
         [ObjectSystem]
         public class AIComponentDestroySystem: DestroySystem<AIComponent>
         {
-            public override void Destroy(AIComponent self)
+            protected override void Destroy(AIComponent self)
             {
                 TimerComponent.Instance?.Remove(ref self.Timer);
                 self.CancellationToken?.Cancel();

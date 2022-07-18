@@ -27,7 +27,7 @@ namespace ET
         [ObjectSystem]
         public class ObjectWaitAwakeSystem: AwakeSystem<ObjectWait>
         {
-            public override void Awake(ObjectWait self)
+            protected override void Awake(ObjectWait self)
             {
                 self.tcss.Clear();
             }
@@ -36,7 +36,7 @@ namespace ET
         [ObjectSystem]
         public class ObjectWaitDestroySystem: DestroySystem<ObjectWait>
         {
-            public override void Destroy(ObjectWait self)
+            protected override void Destroy(ObjectWait self)
             {
                 foreach (object v in self.tcss.Values.ToArray())
                 {

@@ -14,7 +14,7 @@ namespace ET
         [ObjectSystem]
         public class CoroutineLockQueueAwakeSystem: AwakeSystem<CoroutineLockQueue>
         {
-            public override void Awake(CoroutineLockQueue self)
+            protected override void Awake(CoroutineLockQueue self)
             {
                 self.queue.Clear();
             }
@@ -23,7 +23,7 @@ namespace ET
         [ObjectSystem]
         public class CoroutineLockQueueDestroySystem: DestroySystem<CoroutineLockQueue>
         {
-            public override void Destroy(CoroutineLockQueue self)
+            protected override void Destroy(CoroutineLockQueue self)
             {
                 self.queue.Clear();
             }

@@ -6,7 +6,7 @@ namespace ET.Client
     [ObjectSystem]
     public class UiLoadingComponentAwakeSystem : AwakeSystem<UILoadingComponent>
     {
-        public override void Awake(UILoadingComponent self)
+        protected override void Awake(UILoadingComponent self)
         {
             self.text = self.GetParent<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
             self.StartAsync().Coroutine();

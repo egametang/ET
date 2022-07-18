@@ -7,7 +7,7 @@ namespace ET.Client
         [ObjectSystem]
         public class DestroySystem: DestroySystem<GameObjectComponent>
         {
-            public override void Destroy(GameObjectComponent self)
+            protected override void Destroy(GameObjectComponent self)
             {
                 UnityEngine.Object.Destroy(self.GameObject);
             }

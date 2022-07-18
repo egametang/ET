@@ -12,7 +12,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ConsoleComponentAwakeSystem: AwakeSystem<ConsoleComponent>
         {
-            public override void Awake(ConsoleComponent self)
+            protected override void Awake(ConsoleComponent self)
             {
                 self.Load();
             
@@ -23,7 +23,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ConsoleComponentLoadSystem: LoadSystem<ConsoleComponent>
         {
-            public override void Load(ConsoleComponent self)
+            protected override void Load(ConsoleComponent self)
             {
                 self.Load();
             }

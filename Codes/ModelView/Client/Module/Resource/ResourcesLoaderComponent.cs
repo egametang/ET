@@ -8,7 +8,7 @@ namespace ET.Client
         [ObjectSystem]
             public class ResourcesLoaderComponentDestroySystem: DestroySystem<ResourcesLoaderComponent>
             {
-                public override void Destroy(ResourcesLoaderComponent self)
+                protected override void Destroy(ResourcesLoaderComponent self)
                 {
                     async ETTask UnLoadAsync()
                     {

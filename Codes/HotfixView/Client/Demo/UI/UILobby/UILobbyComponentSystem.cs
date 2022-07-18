@@ -9,7 +9,7 @@ namespace ET.Client
         [ObjectSystem]
         public class UILobbyComponentAwakeSystem: AwakeSystem<UILobbyComponent>
         {
-            public override void Awake(UILobbyComponent self)
+            protected override void Awake(UILobbyComponent self)
             {
                 ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 

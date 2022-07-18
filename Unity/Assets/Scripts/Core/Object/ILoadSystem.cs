@@ -29,6 +29,6 @@ namespace ET
 			return typeof(ILoadSystem);
 		}
 
-		public abstract void Load(T self);
+		protected abstract void Load(T self);
 	}
 }

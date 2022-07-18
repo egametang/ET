@@ -5,7 +5,7 @@ namespace ET.Server
     [ObjectSystem]
     public class ActorLocationSenderAwakeSystem: AwakeSystem<ActorLocationSender>
     {
-        public override void Awake(ActorLocationSender self)
+        protected override void Awake(ActorLocationSender self)
         {
             self.LastSendOrRecvTime = TimeHelper.ServerNow();
             self.ActorId = 0;
@@ -16,7 +16,7 @@ namespace ET.Server
     [ObjectSystem]
     public class ActorLocationSenderDestroySystem: DestroySystem<ActorLocationSender>
     {
-        public override void Destroy(ActorLocationSender self)
+        protected override void Destroy(ActorLocationSender self)
         {
             Log.Debug($"actor location remove: {self.Id}");
             self.LastSendOrRecvTime = 0;

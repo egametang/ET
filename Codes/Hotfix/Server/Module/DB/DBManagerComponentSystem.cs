@@ -8,7 +8,7 @@ namespace ET.Server
         [ObjectSystem]
         public class DBManagerComponentAwakeSystem: AwakeSystem<DBManagerComponent>
         {
-            public override void Awake(DBManagerComponent self)
+            protected override void Awake(DBManagerComponent self)
             {
                 DBManagerComponent.Instance = self;
             }
@@ -17,7 +17,7 @@ namespace ET.Server
         [ObjectSystem]
         public class DBManagerComponentDestroySystem: DestroySystem<DBManagerComponent>
         {
-            public override void Destroy(DBManagerComponent self)
+            protected override void Destroy(DBManagerComponent self)
             {
                 DBManagerComponent.Instance = null;
             }

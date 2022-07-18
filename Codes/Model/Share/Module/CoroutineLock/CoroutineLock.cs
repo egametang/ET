@@ -5,7 +5,7 @@ namespace ET
     [ObjectSystem]
     public class CoroutineLockAwakeSystem: AwakeSystem<CoroutineLock, int, long, int>
     {
-        public override void Awake(CoroutineLock self, int type, long k, int count)
+        protected override void Awake(CoroutineLock self, int type, long k, int count)
         {
             self.coroutineLockType = type;
             self.key = k;
@@ -16,7 +16,7 @@ namespace ET
     [ObjectSystem]
     public class CoroutineLockDestroySystem: DestroySystem<CoroutineLock>
     {
-        public override void Destroy(CoroutineLock self)
+        protected override void Destroy(CoroutineLock self)
         {
             if (self.coroutineLockType != CoroutineLockType.None)
             {

@@ -5,7 +5,7 @@ namespace ET.Client
     [ObjectSystem]
     public class GlobalComponentAwakeSystem: AwakeSystem<GlobalComponent>
     {
-        public override void Awake(GlobalComponent self)
+        protected override void Awake(GlobalComponent self)
         {
             GlobalComponent.Instance = self;
             

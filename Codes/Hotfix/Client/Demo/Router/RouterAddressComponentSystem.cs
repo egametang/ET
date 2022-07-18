@@ -11,7 +11,7 @@ namespace ET.Client
     {
         public class RouterAddressComponentAwakeSystem: AwakeSystem<RouterAddressComponent, string>
         {
-            public override void Awake(RouterAddressComponent self, string routerManagerAddress)
+            protected override void Awake(RouterAddressComponent self, string routerManagerAddress)
             {
                 self.RouterManagerAddress = routerManagerAddress;
             }
@@ -22,7 +22,7 @@ namespace ET.Client
             await self.GetAllRouter();
         }
 
-        public static async ETTask GetAllRouter(this RouterAddressComponent self)
+        private static async ETTask GetAllRouter(this RouterAddressComponent self)
         {
             string url = $"http://{self.RouterManagerAddress}/get_router?v={RandomHelper.RandUInt32()}";
             Log.Debug($"start get router info: {url}");

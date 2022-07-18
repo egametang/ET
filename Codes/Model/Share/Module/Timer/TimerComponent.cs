@@ -14,7 +14,7 @@ namespace ET
     [ObjectSystem]
     public class TimerActionAwakeSystem: AwakeSystem<TimerAction, TimerClass, long, int, object>
     {
-        public override void Awake(TimerAction self, TimerClass timerClass, long time, int type, object obj)
+        protected override void Awake(TimerAction self, TimerClass timerClass, long time, int type, object obj)
         {
             self.TimerClass = timerClass;
             self.Object = obj;
@@ -26,7 +26,7 @@ namespace ET
     [ObjectSystem]
     public class TimerActionDestroySystem: DestroySystem<TimerAction>
     {
-        public override void Destroy(TimerAction self)
+        protected override void Destroy(TimerAction self)
         {
             self.Object = null;
             self.Time = 0;
@@ -53,7 +53,7 @@ namespace ET
         [ObjectSystem]
         public class TimerComponentAwakeSystem: AwakeSystem<TimerComponent>
         {
-            public override void Awake(TimerComponent self)
+            protected override void Awake(TimerComponent self)
             {
                 TimerComponent.Instance = self;
             }
@@ -62,7 +62,7 @@ namespace ET
         [ObjectSystem]
         public class TimerComponentUpdateSystem: UpdateSystem<TimerComponent>
         {
-            public override void Update(TimerComponent self)
+            protected override void Update(TimerComponent self)
             {
                 if (self.TimeId.Count == 0)
                 {
@@ -118,7 +118,7 @@ namespace ET
         [ObjectSystem]
         public class TimerComponentDestroySystem: DestroySystem<TimerComponent>
         {
-            public override void Destroy(TimerComponent self)
+            protected override void Destroy(TimerComponent self)
             {
                 TimerComponent.Instance = null;
             }

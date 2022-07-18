@@ -12,7 +12,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RouterComponentAwakeSystem: AwakeSystem<RouterComponent, IPEndPoint, string>
         {
-            public override void Awake(RouterComponent self, IPEndPoint outerAddress, string innerIP)
+            protected override void Awake(RouterComponent self, IPEndPoint outerAddress, string innerIP)
             {
                 self.OuterSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 self.OuterSocket.Bind(outerAddress);
@@ -46,7 +46,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RouterComponentDestroySystem: DestroySystem<RouterComponent>
         {
-            public override void Destroy(RouterComponent self)
+            protected override void Destroy(RouterComponent self)
             {
                 self.OuterSocket.Dispose();
                 self.InnerSocket.Dispose();
@@ -58,7 +58,7 @@ namespace ET.Server
         [ObjectSystem]
         public class RouterComponentUpdateSystem: UpdateSystem<RouterComponent>
         {
-            public override void Update(RouterComponent self)
+            protected override void Update(RouterComponent self)
             {
                 long timeNow = TimeHelper.ClientNow();
                 self.RecvOuter(timeNow);

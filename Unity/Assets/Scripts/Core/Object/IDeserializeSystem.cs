@@ -34,6 +34,6 @@ namespace ET
 			return typeof(T);
 		}
 
-		public abstract void Deserialize(T self);
+		protected abstract void Deserialize(T self);
 	}
 }

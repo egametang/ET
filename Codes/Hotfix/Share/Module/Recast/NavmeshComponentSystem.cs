@@ -7,7 +7,7 @@ namespace ET
     {
         public class AwakeSystem: AwakeSystem<NavmeshComponent>
         {
-            public override void Awake(NavmeshComponent self)
+            protected override void Awake(NavmeshComponent self)
             {
                 NavmeshComponent.Instance = self;
             }

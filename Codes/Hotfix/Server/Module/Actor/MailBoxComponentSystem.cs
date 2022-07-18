@@ -5,7 +5,7 @@ namespace ET.Server
     [ObjectSystem]
     public class MailBoxComponentAwakeSystem: AwakeSystem<MailBoxComponent>
     {
-        public override void Awake(MailBoxComponent self)
+        protected override void Awake(MailBoxComponent self)
         {
             self.MailboxType = MailboxType.MessageDispatcher;
         }
@@ -14,7 +14,7 @@ namespace ET.Server
     [ObjectSystem]
     public class MailBoxComponentAwake1System: AwakeSystem<MailBoxComponent, MailboxType>
     {
-        public override void Awake(MailBoxComponent self, MailboxType mailboxType)
+        protected override void Awake(MailBoxComponent self, MailboxType mailboxType)
         {
             self.MailboxType = mailboxType;
         }
