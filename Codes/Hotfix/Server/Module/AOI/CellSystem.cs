@@ -9,7 +9,7 @@ namespace ET.Server
         [ObjectSystem]
         public class CellDestroySystem: DestroySystem<Cell>
         {
-            public override void Destroy(Cell self)
+            protected override void Destroy(Cell self)
             {
                 self.AOIUnits.Clear();
 

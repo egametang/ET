@@ -10,7 +10,7 @@ namespace ET
 		[ObjectSystem]
 		public class ConfigAwakeSystem : AwakeSystem<ConfigComponent>
 		{
-			public override void Awake(ConfigComponent self)
+			protected override void Awake(ConfigComponent self)
 			{
 				ConfigComponent.Instance = self;
 			}
@@ -19,7 +19,7 @@ namespace ET
 		[ObjectSystem]
 		public class ConfigDestroySystem : DestroySystem<ConfigComponent>
 		{
-			public override void Destroy(ConfigComponent self)
+			protected override void Destroy(ConfigComponent self)
 			{
 				ConfigComponent.Instance = null;
 			}

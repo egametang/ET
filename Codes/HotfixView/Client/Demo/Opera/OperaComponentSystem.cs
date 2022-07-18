@@ -9,7 +9,7 @@ namespace ET.Client
         [ObjectSystem]
         public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>
         {
-            public override void Awake(OperaComponent self)
+            protected override void Awake(OperaComponent self)
             {
                 self.mapMask = LayerMask.GetMask("Map");
             }
@@ -18,7 +18,7 @@ namespace ET.Client
         [ObjectSystem]
         public class OperaComponentUpdateSystem : UpdateSystem<OperaComponent>
         {
-            public override void Update(OperaComponent self)
+            protected override void Update(OperaComponent self)
             {
                 self.Update();
             }

@@ -9,7 +9,7 @@ namespace ET
         [ObjectSystem]
         public class OpcodeTypeComponentAwakeSystem: AwakeSystem<OpcodeTypeComponent>
         {
-            public override void Awake(OpcodeTypeComponent self)
+            protected override void Awake(OpcodeTypeComponent self)
             {
                 OpcodeTypeComponent.Instance = self;
                 
@@ -67,7 +67,7 @@ namespace ET
         [ObjectSystem]
         public class OpcodeTypeComponentDestroySystem: DestroySystem<OpcodeTypeComponent>
         {
-            public override void Destroy(OpcodeTypeComponent self)
+            protected override void Destroy(OpcodeTypeComponent self)
             {
                 OpcodeTypeComponent.Instance = null;
             }

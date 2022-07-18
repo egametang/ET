@@ -27,9 +27,6 @@ namespace ET.Analyzer
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        public static readonly ConcurrentDictionary<string, ConcurrentBag<string>> DependencyMap =
-                new ConcurrentDictionary<string, ConcurrentBag<string>>();
-
         public override void Initialize(AnalysisContext context)
         {
             if (!AnalyzerGlobalSetting.EnableAnalyzer)

@@ -8,7 +8,7 @@ namespace ET.Client
         [ObjectSystem]
         public class ClientSceneManagerComponentAwakeSystem: AwakeSystem<ClientSceneManagerComponent>
         {
-            public override void Awake(ClientSceneManagerComponent self)
+            protected override void Awake(ClientSceneManagerComponent self)
             {
                 ClientSceneManagerComponent.Instance = self;
             }
@@ -17,7 +17,7 @@ namespace ET.Client
         [ObjectSystem]
         public class ClientSceneManagerComponentDestroySystem: DestroySystem<ClientSceneManagerComponent>
         {
-            public override void Destroy(ClientSceneManagerComponent self)
+            protected override void Destroy(ClientSceneManagerComponent self)
             {
                 self.ClientScenes.Clear();
             }

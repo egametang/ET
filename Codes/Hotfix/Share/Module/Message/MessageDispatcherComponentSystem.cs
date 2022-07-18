@@ -12,7 +12,7 @@ namespace ET
         [ObjectSystem]
         public class MessageDispatcherComponentAwakeSystem: AwakeSystem<MessageDispatcherComponent>
         {
-            public override void Awake(MessageDispatcherComponent self)
+            protected override void Awake(MessageDispatcherComponent self)
             {
                 MessageDispatcherComponent.Instance = self;
                 self.Load();
@@ -22,7 +22,7 @@ namespace ET
         [ObjectSystem]
         public class MessageDispatcherComponentLoadSystem: LoadSystem<MessageDispatcherComponent>
         {
-            public override void Load(MessageDispatcherComponent self)
+            protected override void Load(MessageDispatcherComponent self)
             {
                 self.Load();
             }
@@ -31,7 +31,7 @@ namespace ET
         [ObjectSystem]
         public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
         {
-            public override void Destroy(MessageDispatcherComponent self)
+            protected override void Destroy(MessageDispatcherComponent self)
             {
                 MessageDispatcherComponent.Instance = null;
                 self.Handlers.Clear();

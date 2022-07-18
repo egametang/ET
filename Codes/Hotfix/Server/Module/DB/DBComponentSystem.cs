@@ -10,7 +10,7 @@ namespace ET.Server
     {
 	    public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string, int>
 	    {
-		    public override void Awake(DBComponent self, string dbConnection, string dbName, int zone)
+			protected override void Awake(DBComponent self, string dbConnection, string dbName, int zone)
 		    {
 			    self.mongoClient = new MongoClient(dbConnection);
 			    self.database = self.mongoClient.GetDatabase(dbName);

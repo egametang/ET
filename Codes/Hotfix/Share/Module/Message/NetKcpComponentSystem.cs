@@ -10,7 +10,7 @@ namespace ET
         [ObjectSystem]
         public class NetKcpComponentAwakeSystem: AwakeSystem<NetKcpComponent, int>
         {
-            public override void Awake(NetKcpComponent self, int sessionStreamDispatcherType)
+            protected override void Awake(NetKcpComponent self, int sessionStreamDispatcherType)
             {
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
@@ -25,7 +25,7 @@ namespace ET
         [ObjectSystem]
         public class NetKcpComponentAwake1System: AwakeSystem<NetKcpComponent, IPEndPoint, int>
         {
-            public override void Awake(NetKcpComponent self, IPEndPoint address, int sessionStreamDispatcherType)
+            protected override void Awake(NetKcpComponent self, IPEndPoint address, int sessionStreamDispatcherType)
             {
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
@@ -41,7 +41,7 @@ namespace ET
         [ObjectSystem]
         public class NetKcpComponentDestroySystem: DestroySystem<NetKcpComponent>
         {
-            public override void Destroy(NetKcpComponent self)
+            protected override void Destroy(NetKcpComponent self)
             {
                 NetThreadComponent.Instance.Remove(self.Service);
                 self.Service.Destroy();

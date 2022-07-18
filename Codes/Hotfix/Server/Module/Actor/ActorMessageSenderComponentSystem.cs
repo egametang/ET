@@ -25,7 +25,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
         {
-            public override void Awake(ActorMessageSenderComponent self)
+            protected override void Awake(ActorMessageSenderComponent self)
             {
                 ActorMessageSenderComponent.Instance = self;
 
@@ -36,7 +36,7 @@ namespace ET.Server
         [ObjectSystem]
         public class ActorMessageSenderComponentDestroySystem: DestroySystem<ActorMessageSenderComponent>
         {
-            public override void Destroy(ActorMessageSenderComponent self)
+            protected override void Destroy(ActorMessageSenderComponent self)
             {
                 ActorMessageSenderComponent.Instance = null;
                 TimerComponent.Instance.Remove(ref self.TimeoutCheckTimer);

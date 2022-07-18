@@ -9,7 +9,7 @@ namespace ET
         [ObjectSystem]
         public class NetThreadComponentAwakeSystem: AwakeSystem<NetThreadComponent>
         {
-            public override void Awake(NetThreadComponent self)
+            protected override void Awake(NetThreadComponent self)
             {
                 NetThreadComponent.Instance = self;
             
@@ -20,7 +20,7 @@ namespace ET
         [ObjectSystem]
         public class NetThreadComponentUpdateSystem: LateUpdateSystem<NetThreadComponent>
         {
-            public override void LateUpdate(NetThreadComponent self)
+            protected override void LateUpdate(NetThreadComponent self)
             {
                 foreach (AService service in self.Services)
                 {
@@ -32,7 +32,7 @@ namespace ET
         [ObjectSystem]
         public class NetThreadComponentDestroySystem: DestroySystem<NetThreadComponent>
         {
-            public override void Destroy(NetThreadComponent self)
+            protected override void Destroy(NetThreadComponent self)
             {
                 self.Stop();
             }

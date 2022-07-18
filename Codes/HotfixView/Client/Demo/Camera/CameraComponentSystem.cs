@@ -8,7 +8,7 @@ namespace ET.Client
 		[ObjectSystem]
 		public class CameraComponentAwakeSystem : AwakeSystem<CameraComponent>
 		{
-			public override void Awake(CameraComponent self)
+			protected override void Awake(CameraComponent self)
 			{
 				self.Awake();
 			}
@@ -17,18 +17,18 @@ namespace ET.Client
 		[ObjectSystem]
 		public class CameraComponentLateUpdateSystem : LateUpdateSystem<CameraComponent>
 		{
-			public override void LateUpdate(CameraComponent self)
+			protected override void LateUpdate(CameraComponent self)
 			{
 				self.LateUpdate();
 			}
 		}
-		
-		public static void Awake(this CameraComponent self)
+
+		private static void Awake(this CameraComponent self)
 		{
 			self.mainCamera = Camera.main;
 		}
 
-		public static void LateUpdate(this CameraComponent self)
+		private static void LateUpdate(this CameraComponent self)
 		{
 			// 摄像机每帧更新位置
 			self.UpdatePosition();

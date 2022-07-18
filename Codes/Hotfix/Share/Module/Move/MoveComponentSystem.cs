@@ -26,7 +26,7 @@ namespace ET
         [ObjectSystem]
         public class MoveComponentDestroySystem: DestroySystem<MoveComponent>
         {
-            public override void Destroy(MoveComponent self)
+            protected override void Destroy(MoveComponent self)
             {
                 self.Clear();
             }
@@ -35,7 +35,7 @@ namespace ET
         [ObjectSystem]
         public class MoveComponentAwakeSystem: AwakeSystem<MoveComponent>
         {
-            public override void Awake(MoveComponent self)
+            protected override void Awake(MoveComponent self)
             {
                 self.StartTime = 0;
                 self.StartPos = Vector3.zero;

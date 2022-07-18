@@ -6,7 +6,7 @@
         [ObjectSystem]
         public class RouterNodeAwakeSystem: AwakeSystem<RouterNode>
         {
-            public override void Awake(RouterNode self)
+            protected override void Awake(RouterNode self)
             {
                 long timeNow = TimeHelper.ServerNow();
                 self.LastRecvInnerTime = timeNow;
@@ -22,7 +22,7 @@
         [ObjectSystem]
         public class RouterNodeDestroySystem: DestroySystem<RouterNode>
         {
-            public override void Destroy(RouterNode self)
+            protected override void Destroy(RouterNode self)
             {
                 self.OuterConn = 0;
                 self.InnerConn = 0;

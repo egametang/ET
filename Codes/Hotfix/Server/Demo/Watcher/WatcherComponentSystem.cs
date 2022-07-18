@@ -8,7 +8,7 @@ namespace ET.Server
     {
         public class WatcherComponentAwakeSystem: AwakeSystem<WatcherComponent>
         {
-            public override void Awake(WatcherComponent self)
+            protected override void Awake(WatcherComponent self)
             {
                 WatcherComponent.Instance = self;
             }
@@ -16,7 +16,7 @@ namespace ET.Server
     
         public class WatcherComponentDestroySystem: DestroySystem<WatcherComponent>
         {
-            public override void Destroy(WatcherComponent self)
+            protected override void Destroy(WatcherComponent self)
             {
                 WatcherComponent.Instance = null;
             }

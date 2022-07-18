@@ -9,7 +9,7 @@ namespace ET.Server
     {
         public class HttpComponentAwakeSystem : AwakeSystem<HttpComponent, string>
         {
-            public override void Awake(HttpComponent self, string address)
+            protected override void Awake(HttpComponent self, string address)
             {
                 try
                 {
@@ -40,7 +40,7 @@ namespace ET.Server
         [ObjectSystem]
         public class HttpComponentLoadSystem: LoadSystem<HttpComponent>
         {
-            public override void Load(HttpComponent self)
+            protected override void Load(HttpComponent self)
             {
                 self.Load();
             }
@@ -49,7 +49,7 @@ namespace ET.Server
         [ObjectSystem]
         public class HttpComponentDestroySystem: DestroySystem<HttpComponent>
         {
-            public override void Destroy(HttpComponent self)
+            protected override void Destroy(HttpComponent self)
             {
                 self.Listener.Stop();
                 self.Listener.Close();

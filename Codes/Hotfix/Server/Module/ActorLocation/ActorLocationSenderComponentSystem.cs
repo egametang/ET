@@ -22,7 +22,7 @@ namespace ET.Server
     [ObjectSystem]
     public class ActorLocationSenderComponentAwakeSystem: AwakeSystem<ActorLocationSenderComponent>
     {
-        public override void Awake(ActorLocationSenderComponent self)
+        protected override void Awake(ActorLocationSenderComponent self)
         {
             ActorLocationSenderComponent.Instance = self;
 
@@ -35,7 +35,7 @@ namespace ET.Server
     [ObjectSystem]
     public class ActorLocationSenderComponentDestroySystem: DestroySystem<ActorLocationSenderComponent>
     {
-        public override void Destroy(ActorLocationSenderComponent self)
+        protected override void Destroy(ActorLocationSenderComponent self)
         {
             ActorLocationSenderComponent.Instance = null;
             TimerComponent.Instance.Remove(ref self.CheckTimer);

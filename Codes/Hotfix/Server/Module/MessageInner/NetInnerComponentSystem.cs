@@ -10,7 +10,7 @@ namespace ET.Server
         [ObjectSystem]
         public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent, int>
         {
-            public override void Awake(NetInnerComponent self, int sessionStreamDispatcherType)
+            protected override void Awake(NetInnerComponent self, int sessionStreamDispatcherType)
             {
                 NetInnerComponent.Instance = self;
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
@@ -26,7 +26,7 @@ namespace ET.Server
         [ObjectSystem]
         public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint, int>
         {
-            public override void Awake(NetInnerComponent self, IPEndPoint address, int sessionStreamDispatcherType)
+            protected override void Awake(NetInnerComponent self, IPEndPoint address, int sessionStreamDispatcherType)
             {
                 NetInnerComponent.Instance = self;
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
@@ -43,7 +43,7 @@ namespace ET.Server
         [ObjectSystem]
         public class NetInnerComponentDestroySystem: DestroySystem<NetInnerComponent>
         {
-            public override void Destroy(NetInnerComponent self)
+            protected override void Destroy(NetInnerComponent self)
             {
                 NetThreadComponent.Instance.Remove(self.Service);
                 self.Service.Destroy();

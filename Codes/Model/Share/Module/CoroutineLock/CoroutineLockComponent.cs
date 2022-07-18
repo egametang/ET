@@ -9,7 +9,7 @@ namespace ET
         [ObjectSystem]
         public class CoroutineLockComponentAwakeSystem: AwakeSystem<CoroutineLockComponent>
         {
-            public override void Awake(CoroutineLockComponent self)
+            protected override void Awake(CoroutineLockComponent self)
             {
                 CoroutineLockComponent.Instance = self;
 
@@ -26,7 +26,7 @@ namespace ET
         [ObjectSystem]
         public class CoroutineLockComponentDestroySystem: DestroySystem<CoroutineLockComponent>
         {
-            public override void Destroy(CoroutineLockComponent self)
+            protected override void Destroy(CoroutineLockComponent self)
             {
                 self.list.Clear();
                 self.nextFrameRun.Clear();
@@ -41,7 +41,7 @@ namespace ET
         [FriendOf(typeof (CoroutineLock))]
         public class CoroutineLockComponentUpdateSystem: UpdateSystem<CoroutineLockComponent>
         {
-            public override void Update(CoroutineLockComponent self)
+            protected override void Update(CoroutineLockComponent self)
             {
                 // 检测超时的CoroutineLock
                 TimeoutCheck(self);

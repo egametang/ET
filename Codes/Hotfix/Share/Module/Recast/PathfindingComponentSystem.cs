@@ -10,7 +10,7 @@ namespace ET
         [ObjectSystem]
         public class AwakeSystem: AwakeSystem<PathfindingComponent, string>
         {
-            public override void Awake(PathfindingComponent self, string name)
+            protected override void Awake(PathfindingComponent self, string name)
             {
                 self.Name = name;
                 self.NavMesh = NavmeshComponent.Instance.Get(name);
@@ -25,7 +25,7 @@ namespace ET
         [ObjectSystem]
         public class DestroySystem: DestroySystem<PathfindingComponent>
         {
-            public override void Destroy(PathfindingComponent self)
+            protected override void Destroy(PathfindingComponent self)
             {
                 self.Name = string.Empty;
                 self.NavMesh = 0;

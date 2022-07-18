@@ -5,7 +5,7 @@ namespace ET.Client
     [ObjectSystem]
     public class PingComponentAwakeSystem: AwakeSystem<PingComponent>
     {
-        public override void Awake(PingComponent self)
+        protected override void Awake(PingComponent self)
         {
             PingAsync(self).Coroutine();
         }
@@ -56,7 +56,7 @@ namespace ET.Client
     [ObjectSystem]
     public class PingComponentDestroySystem: DestroySystem<PingComponent>
     {
-        public override void Destroy(PingComponent self)
+        protected override void Destroy(PingComponent self)
         {
             self.Ping = default;
         }

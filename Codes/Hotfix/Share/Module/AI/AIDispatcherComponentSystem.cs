@@ -8,7 +8,7 @@ namespace ET
         [ObjectSystem]
         public class AIDispatcherComponentAwakeSystem: AwakeSystem<AIDispatcherComponent>
         {
-            public override void Awake(AIDispatcherComponent self)
+            protected override void Awake(AIDispatcherComponent self)
             {
                 AIDispatcherComponent.Instance = self;
                 self.Load();
@@ -18,7 +18,7 @@ namespace ET
         [ObjectSystem]
         public class AIDispatcherComponentLoadSystem: LoadSystem<AIDispatcherComponent>
         {
-            public override void Load(AIDispatcherComponent self)
+            protected override void Load(AIDispatcherComponent self)
             {
                 self.Load();
             }
@@ -27,7 +27,7 @@ namespace ET
         [ObjectSystem]
         public class AIDispatcherComponentDestroySystem: DestroySystem<AIDispatcherComponent>
         {
-            public override void Destroy(AIDispatcherComponent self)
+            protected override void Destroy(AIDispatcherComponent self)
             {
                 self.AIHandlers.Clear();
                 AIDispatcherComponent.Instance = null;

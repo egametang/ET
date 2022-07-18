@@ -29,6 +29,6 @@ namespace ET
 			return typeof(ILateUpdateSystem);
 		}
 
-		public abstract void LateUpdate(T self);
+		protected abstract void LateUpdate(T self);
 	}
 }

@@ -3,7 +3,7 @@
     [ObjectSystem]
     public class LockInfoAwakeSystem: AwakeSystem<LockInfo, long, CoroutineLock>
     {
-        public override void Awake(LockInfo self, long lockInstanceId, CoroutineLock coroutineLock)
+        protected override void Awake(LockInfo self, long lockInstanceId, CoroutineLock coroutineLock)
         {
             self.CoroutineLock = coroutineLock;
             self.LockInstanceId = lockInstanceId;
@@ -13,7 +13,7 @@
     [ObjectSystem]
     public class LockInfoDestroySystem: DestroySystem<LockInfo>
     {
-        public override void Destroy(LockInfo self)
+        protected override void Destroy(LockInfo self)
         {
             self.CoroutineLock.Dispose();
             self.LockInstanceId = 0;

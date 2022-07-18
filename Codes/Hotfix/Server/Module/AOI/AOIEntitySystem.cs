@@ -10,7 +10,7 @@ namespace ET.Server
         [ObjectSystem]
         public class AwakeSystem: AwakeSystem<AOIEntity, int, Vector3>
         {
-            public override void Awake(AOIEntity self, int distance, Vector3 pos)
+            protected override void Awake(AOIEntity self, int distance, Vector3 pos)
             {
                 self.ViewDistance = distance;
                 self.Domain.GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
@@ -20,7 +20,7 @@ namespace ET.Server
         [ObjectSystem]
         public class DestroySystem: DestroySystem<AOIEntity>
         {
-            public override void Destroy(AOIEntity self)
+            protected override void Destroy(AOIEntity self)
             {
                 self.Domain.GetComponent<AOIManagerComponent>()?.Remove(self);
                 self.ViewDistance = 0;

@@ -9,7 +9,7 @@ namespace ET
         [ObjectSystem]
         public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
         {
-            public override void Awake(UI self, string name, GameObject gameObject)
+            protected override void Awake(UI self, string name, GameObject gameObject)
             {
                 self.nameChildren.Clear();
                 gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
@@ -21,7 +21,7 @@ namespace ET
         [ObjectSystem]
         public class UIDestroySystem : DestroySystem<UI>
         {
-            public override void Destroy(UI self)
+            protected override void Destroy(UI self)
             {
                 foreach (UI ui in self.nameChildren.Values)
                 {
