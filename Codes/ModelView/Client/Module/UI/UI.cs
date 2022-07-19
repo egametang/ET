@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     [FriendOf(typeof(UI))]
     public static class UISystem
