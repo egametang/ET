@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 namespace ET.Server
 {
-    [ChildType(typeof(RouterNode))]
+    
     [ComponentOf(typeof(Scene))]
     public class RouterComponent: Entity, IAwake<IPEndPoint, string>, IDestroy, IUpdate
     {

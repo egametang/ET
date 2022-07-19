@@ -47,6 +47,7 @@ namespace ET.Client
         }
     }
 
+    [ChildOf(typeof(ResourcesComponent))]
     public class ABInfo: Entity, IAwake<string, AssetBundle>, IDestroy
     {
         public string Name { get; set; }
@@ -600,7 +601,6 @@ namespace ET.Client
     }
     
     [ComponentOf(typeof(Scene))]
-    [ChildType(typeof(ABInfo))]
     public class ResourcesComponent: Entity, IAwake, IDestroy
     {
         public static ResourcesComponent Instance { get; set; }

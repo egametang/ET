@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ChildOf(typeof(UnitComponent))]
     public class Unit: Entity, IAwake<int>
     {
         public int ConfigId { get; set; } //配置表id

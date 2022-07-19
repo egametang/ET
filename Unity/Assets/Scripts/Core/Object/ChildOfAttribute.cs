@@ -3,11 +3,11 @@
 namespace ET
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class ChildTypeAttribute : Attribute
+    public class ChildOfAttribute : Attribute
     {
         public Type type;
 
-        public ChildTypeAttribute(Type type)
+        public ChildOfAttribute(Type type = null)
         {
             this.type = type;
         }

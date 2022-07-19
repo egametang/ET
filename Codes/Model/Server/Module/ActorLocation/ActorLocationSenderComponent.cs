@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [ChildType(typeof(ActorLocationSender))]
+    
     [ComponentOf(typeof(Scene))]
     public class ActorLocationSenderComponent: Entity, IAwake, IDestroy
     {

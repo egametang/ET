@@ -143,6 +143,7 @@ namespace ET
         }
     }
 
+    [ChildOf]
     public sealed class Session: Entity, IAwake<AService>, IDestroy
     {
         public AService AService { get; set; }

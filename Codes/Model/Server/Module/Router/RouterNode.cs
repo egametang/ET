@@ -8,6 +8,7 @@ namespace ET.Server
         Msg,
     }
 
+    [ChildOf(typeof(RouterComponent))]
     public class RouterNode: Entity, IDestroy, IAwake
     {
         public uint ConnectId;

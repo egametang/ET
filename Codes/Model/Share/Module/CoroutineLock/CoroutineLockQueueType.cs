@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [ChildType(typeof(CoroutineLockQueue))]
+    [ChildOf(typeof(CoroutineLockComponent))]
     public class CoroutineLockQueueType: Entity, IAwake, IDestroy
     {
     }
