@@ -13,9 +13,9 @@ namespace ET.Analyzer
     {
         private const string Title = "AddChild方法类型约束错误";
 
-        private const string MessageFormat = "Type: {0} 不允许作为实体: {1} 的AddChild函数参数类型! 若要允许该类型作为参数,请使用ChildTypeAttribute对实体类进行标记";
+        private const string MessageFormat = "Type: {0} 不允许作为实体: {1} 的AddChild函数参数类型! 若要允许该类型作为参数,请使用ChildOfAttribute对child实体类标记父级类型";
 
-        private const string Description = "请使用被允许的ChildType 或添加该类型至ChildType.";
+        private const string Description = "AddChild方法类型约束错误.";
 
         private static readonly string[] AddChildMethods = { "AddChild", "AddChildWithId" };
         
@@ -79,28 +79,6 @@ namespace ET.Analyzer
 
             // 只检查Entity的子类
             if (parentTypeSymbol.BaseType?.ToString()!= EntityType)
-            {
-                return;
-            }
-
-            // 获取实体类 ChildType标签的约束类型
-            INamedTypeSymbol? availableChildTypeSymbol = null;
-            bool hasChildTypeAttribute = false;
-            foreach (AttributeData? attributeData in parentTypeSymbol.GetAttributes())
-            {
-                if (attributeData.AttributeClass?.Name == "ChildTypeAttribute")
-                {
-                    hasChildTypeAttribute = true;
-                    if (!(attributeData.ConstructorArguments[0].Value is INamedTypeSymbol s))
-                    {
-                        continue;
-                    }
-
-                    availableChildTypeSymbol = s;
-                }
-            }
-            
-            if (hasChildTypeAttribute &&(availableChildTypeSymbol==null))
             {
                 return;
             }
@@ -186,8 +164,33 @@ namespace ET.Analyzer
                 return;
             }
             
-            // 判断child类型是否属于约束类型
-            if (availableChildTypeSymbol?.ToString() == childTypeSymbol.ToString())
+            // 获取ChildOf标签的约束类型
+
+            if (!(childTypeSymbol is ITypeSymbol childType))
+            {
+                throw new Exception($"{childTypeSymbol} 不是typeSymbol");
+            }
+
+            INamedTypeSymbol? availableParentType = null;
+            bool hasAttribute = false;
+
+            foreach (AttributeData? attributeData in childType.GetAttributes())
+            {
+                if (attributeData.AttributeClass?.Name == "ChildOfAttribute")
+                {
+                    hasAttribute = true;
+                    availableParentType = attributeData.ConstructorArguments[0].Value as INamedTypeSymbol;
+                    break;
+                }
+            }
+
+            if (hasAttribute && availableParentType==null)
+            {
+                return;
+            }
+            
+            // 判断父级类型是否属于child约束的父级类型
+            if (availableParentType?.ToString() == parentTypeSymbol.ToString())
             {
                 return;
             }

@@ -32,7 +32,7 @@ namespace ET
             self.level = 0;
         }
     }
-    
+    [ChildOf(typeof(CoroutineLockQueue))]
     public class CoroutineLock: Entity, IAwake<int, long, int>, IDestroy
     {
         public int coroutineLockType;

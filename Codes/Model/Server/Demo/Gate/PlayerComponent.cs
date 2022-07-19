@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace ET.Server
 {
-	[ChildType(typeof(Player))]
 	[ComponentOf(typeof(Scene))]
 	public class PlayerComponent : Entity, IAwake, IDestroy
 	{

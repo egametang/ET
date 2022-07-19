@@ -179,7 +179,6 @@ namespace ET
     }
 
     [ComponentOf(typeof(Scene))]
-    [ChildType(typeof(CoroutineLockQueueType))]
     public class CoroutineLockComponent: Entity, IAwake, IUpdate, IDestroy
     {
         public static CoroutineLockComponent Instance;

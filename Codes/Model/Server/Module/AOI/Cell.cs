@@ -2,6 +2,7 @@
 
 namespace ET.Server
 {
+    [ChildOf(typeof(AOIManagerComponent))]
     public class Cell: Entity, IAwake, IDestroy
     {
         // 处在这个cell的单位

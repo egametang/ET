@@ -2,14 +2,14 @@
 
 namespace ET.Server
 {
+    [ChildOf(typeof(LocationComponent))]
     public class LockInfo: Entity, IAwake<long, CoroutineLock>, IDestroy
     {
         public long LockInstanceId;
 
         public CoroutineLock CoroutineLock;
     }
-
-    [ChildType(typeof(LockInfo))]
+    
     [ComponentOf(typeof(Scene))]
     public class LocationComponent: Entity, IAwake
     {

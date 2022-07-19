@@ -40,7 +40,7 @@ namespace ET
         }
     }
     
-    [ChildType(typeof(CoroutineLock))]
+    [ChildOf(typeof(CoroutineLockQueueType))]
     public class CoroutineLockQueue: Entity, IAwake, IDestroy
     {
         public Queue<CoroutineLockInfo> queue = new Queue<CoroutineLockInfo>();

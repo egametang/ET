@@ -35,6 +35,7 @@ namespace ET
         }
     }
     
+    [ChildOf(typeof(TimerComponent))]
     public class TimerAction: Entity, IAwake, IAwake<TimerClass, long, int, object>, IDestroy
     {
         public TimerClass TimerClass;
@@ -314,7 +315,6 @@ namespace ET
 
     
     [ComponentOf(typeof(Scene))]
-    [ChildType(typeof(TimerAction))]
     public class TimerComponent: Entity, IAwake, IUpdate, ILoad, IDestroy
     {
         public static TimerComponent Instance
