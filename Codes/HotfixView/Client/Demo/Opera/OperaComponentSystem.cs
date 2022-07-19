@@ -42,7 +42,7 @@ namespace ET.Client
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                CodeLoader.Instance.LoadLogic();
+                CodeLoader.Instance.LoadHotfix();
                 Game.EventSystem.Load();
                 Log.Debug("hot reload success!");
             }

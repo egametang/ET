@@ -20,9 +20,7 @@ namespace ET.Server
             // 异步方法全部会回掉到主线程
             SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
             
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Game).Assembly, typeof(Entry).Assembly, DllHelper.GetHotfixAssembly());
-                    
-            Game.EventSystem.Add(types);
+            CodeLoader.Instance.LoadHotfix();
 				
             MongoHelper.Register(Game.EventSystem.GetTypes());
 

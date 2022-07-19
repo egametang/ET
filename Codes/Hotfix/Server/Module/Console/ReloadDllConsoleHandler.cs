@@ -13,9 +13,7 @@ namespace ET.Server
                 case ConsoleMode.ReloadDll:
                     contex.Parent.RemoveComponent<ModeContex>();
                     
-                    Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Unit).Assembly, DllHelper.GetHotfixAssembly());
-                    
-                    Game.EventSystem.Add(types);
+                    CodeLoader.Instance.LoadHotfix();
                     
                     Game.EventSystem.Load();
                     break;

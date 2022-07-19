@@ -71,7 +71,7 @@ namespace ETEditor
         private static string outputServerFolder = "../Config/RecastNavData/ExportedObj/";
 
         #region 菜单主函数
-        [MenuItem("Tools/NavMesh/ExportSceneObj")]
+        [MenuItem("ET/NavMesh/ExportSceneObj")]
         public static void ExportScene()
         {
             var triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();

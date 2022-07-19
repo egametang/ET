@@ -13,22 +13,19 @@ namespace ET
     {
         private const string CodeDir = "Assets/Bundles/Code/";
 
-        [MenuItem("Tools/Build/EnableAutoBuildCodeDebug _F1")]
         public static void SetAutoBuildCode()
         {
             PlayerPrefs.SetInt("AutoBuild", 1);
             ShowNotification("AutoBuildCode Enabled");
         }
         
-        [MenuItem("Tools/Build/DisableAutoBuildCodeDebug _F2")]
         public static void CancelAutoBuildCode()
         {
             PlayerPrefs.DeleteKey("AutoBuild");
             ShowNotification("AutoBuildCode Disabled");
         }
 
-        [MenuItem("Tools/Build/BuildCodeDebug _F5")]
-        public static void BuildCodeDebug()
+        public static void BuildCode(CodeOptimization codeOptimization)
         {
             BuildAssemblieEditor.BuildMuteAssembly("Code", new []
             {
@@ -39,63 +36,42 @@ namespace ET
                 "../Codes/ModelView/Client/",
                 "../Codes/Hotfix/Client/",
                 "../Codes/HotfixView/Client/"
-            }, Array.Empty<string>(), CodeOptimization.Debug);
+            }, Array.Empty<string>(), codeOptimization);
 
             AfterCompiling();
             
             AssetDatabase.Refresh();
         }
         
-        [MenuItem("Tools/Build/BuildCodeRelease _F6")]
-        public static void BuildCodeRelease()
+        public static void BuildModel(CodeOptimization codeOptimization)
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new []
-            {
-                "../Codes/Generate/Client/",
-                "../Codes/Model/Share/",
-                "../Codes/Hotfix/Share/",
-                "../Codes/Model/Client/",
-                "../Codes/ModelView/Client/",
-                "../Codes/Hotfix/Client/",
-                "../Codes/HotfixView/Client/"
-            }, Array.Empty<string>(), CodeOptimization.Release);
-
-            AfterCompiling();
-            
-            AssetDatabase.Refresh();
-        }
-        
-        [MenuItem("Tools/Build/BuildData _F7")]
-        public static void BuildData()
-        {
-            BuildAssemblieEditor.BuildMuteAssembly("Data", new []
+            BuildAssemblieEditor.BuildMuteAssembly("Model", new []
             {
                 "../Codes/Generate/Client/",
                 "../Codes/Model/Share/",
                 "../Codes/Model/Client/",
                 "../Codes/ModelView/Client/",
-            }, Array.Empty<string>(), CodeOptimization.Debug);
+            }, Array.Empty<string>(), codeOptimization);
         }
         
         
-        [MenuItem("Tools/Build/BuildLogic _F8")]
-        public static void BuildLogic()
+        public static void BuildHotfix(CodeOptimization codeOptimization)
         {
-            string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*");
+            string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Hotfix_*");
             foreach (string file in logicFiles)
             {
                 File.Delete(file);
             }
             
             int random = RandomHelper.RandomNumber(100000000, 999999999);
-            string logicFile = $"Logic_{random}";
+            string logicFile = $"Hotfix_{random}";
             
             BuildAssemblieEditor.BuildMuteAssembly(logicFile, new []
             {
                 "../Codes/Hotfix/Share/",
                 "../Codes/Hotfix/Client/",
                 "../Codes/HotfixView/Client/"
-            }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
+            }, new[]{Path.Combine(Define.BuildOutputDir, "Model.dll")}, codeOptimization);
         }
 
         private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
