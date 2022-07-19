@@ -4,7 +4,6 @@ namespace ET
 {
     public static class ToolsEditor
     {
-        [MenuItem("Tools/ExcelExporter")]
         public static void ExcelExporter()
         {
 #if UNITY_EDITOR_OSX
@@ -15,7 +14,6 @@ namespace ET
             ShellHelper.Run($"{tools} --AppType=ExcelExporter --Console=1", "../Bin/");
         }
         
-        [MenuItem("Tools/Proto2CS")]
         public static void Proto2CS()
         {
 #if UNITY_EDITOR_OSX

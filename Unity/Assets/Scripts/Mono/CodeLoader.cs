@@ -48,11 +48,11 @@ namespace ET
 				}
 				case CodeMode.Reload:
 				{
-					byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.dll"));
-					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.pdb"));
+					byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
+					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
-					this.LoadLogic();
+					this.LoadHotfix();
 					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
@@ -63,7 +63,7 @@ namespace ET
 		// 热重载调用下面两个方法
 		// CodeLoader.Instance.LoadLogic();
 		// Game.EventSystem.Load();
-		public void LoadLogic()
+		public void LoadHotfix()
 		{
 			if (this.CodeMode != CodeMode.Reload)
 			{
@@ -71,7 +71,7 @@ namespace ET
 			}
 			
 			// 傻屌Unity在这里搞了个傻逼优化，认为同一个路径的dll，返回的程序集就一样。所以这里每次编译都要随机名字
-			string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*.dll");
+			string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Hotfix_*.dll");
 			if (logicFiles.Length != 1)
 			{
 				throw new Exception("Logic dll count != 1");

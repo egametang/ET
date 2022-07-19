@@ -1,4 +1,4 @@
-namespace ET
+namespace ET.Client
 {
     public abstract class AUIEvent
     {
