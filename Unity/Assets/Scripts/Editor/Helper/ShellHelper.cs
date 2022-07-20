@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ET
 {
@@ -22,10 +20,10 @@ namespace ET
         }
 
         private static volatile bool isFinish;
-        
+
         public static void Run(string cmd, string workDirectory, List<string> environmentVars = null)
         {
-            Process p = null;
+            Process p = new();
             try
             {
                 ProcessStartInfo start = new ProcessStartInfo(shellApp);
@@ -35,7 +33,7 @@ namespace ET
                 start.Arguments = "-c";
 #elif UNITY_EDITOR_WIN
                 string splitChar = ";";
-				start.Arguments = "/c";
+                start.Arguments = "/c";
 #endif
 
                 if (environmentVars != null)
@@ -46,6 +44,7 @@ namespace ET
                     }
                 }
 
+                p.StartInfo = start;
                 start.Arguments += (" \"" + cmd + "\"");
                 start.CreateNoWindow = true;
                 start.ErrorDialog = true;
@@ -67,50 +66,43 @@ namespace ET
                     start.StandardErrorEncoding = System.Text.Encoding.UTF8;
                 }
 
-                
-
-                Barrier barrier = new Barrier(2);
-                
-                // 放到新线程启动进程，主线程循环读标准输出，直到进程结束
-                Task.Run(() =>
-                {
-                    p = Process.Start(start);
-                    barrier.RemoveParticipant();
-                    p.WaitForExit();
-                    isFinish = true;
-                });
-                
-                // 这里要等待进程启动才能往下走，否则p将为null
-                barrier.SignalAndWait();
-                do
-                {
-                    string line = p.StandardOutput.ReadLine();
-                    if (string.IsNullOrEmpty(line))
-                    {
-                        break;
-                    }
-
-                    line = line.Replace("\\", "/");
-
-                    UnityEngine.Debug.Log(line);
-                }
-                while (!isFinish);
-
                 bool hasError = false;
-                while (true)
+                bool endOutput = false;
+                bool endError = false;
+
+                p.OutputDataReceived += (sender, args) =>
                 {
-                    string error = p.StandardError.ReadLine();
-                    if (string.IsNullOrEmpty(error))
+                    if (args.Data != null)
                     {
-                        break;
+                        UnityEngine.Debug.Log(args.Data);
                     }
+                    else
+                    {
+                        endOutput = true;
+                    }
+                };
 
-                    hasError = true;
-                    UnityEngine.Debug.LogError(error);
-                }
+                p.ErrorDataReceived += (sender, args) =>
+                {
+                    if (args.Data != null)
+                    {
+                        UnityEngine.Debug.LogError(args.Data);
+                    }
+                    else
+                    {
+                        endError = true;
+                    }
+                };
 
-                
-                p.Close();
+                p.Start();
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+
+                while (!endOutput || !endError) { }
+
+                p.CancelOutputRead();
+                p.CancelErrorRead();
+
                 if (hasError)
                 {
                     UnityEngine.Debug.LogError("has error!");
