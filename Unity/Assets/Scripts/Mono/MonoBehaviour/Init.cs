@@ -3,22 +3,15 @@ using UnityEngine;
 
 namespace ET
 {
-	// 1 mono模式 2 mono热重载模式
-	public enum CodeMode
-	{
-		Mono = 1,
-		Reload = 2,
-	}
-	
 	public class Init: MonoBehaviour
 	{
-		public CodeMode CodeMode = CodeMode.Mono;
+		public GlobalConfig GlobalConfig;
 		
 		private void Awake()
 		{
 			DontDestroyOnLoad(gameObject);
 
-			CodeLoader.Instance.CodeMode = this.CodeMode;
+			CodeLoader.Instance.GlobalConfig = this.GlobalConfig;
 		}
 
 		private void Start()

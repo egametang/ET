@@ -136,7 +136,6 @@ namespace ET.Client
             protected override void Awake(ResourcesComponent self)
             {
                 ResourcesComponent.Instance = self;
-
                 if (Define.IsAsync)
                 {
                     self.LoadOneBundle("StreamingAssets");
@@ -600,7 +599,7 @@ namespace ET.Client
         }
     }
     
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf]
     public class ResourcesComponent: Entity, IAwake, IDestroy
     {
         public static ResourcesComponent Instance { get; set; }

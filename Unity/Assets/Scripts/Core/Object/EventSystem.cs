@@ -734,52 +734,92 @@ namespace ET
         
         public void Callback(int type)
         {
-            (this.allCallbacks[type] as IAction).Handle();
+            if (this.allCallbacks[type] is not IAction action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            action.Handle();
         }
 
         public void Callback<A>(int type, A a)
         {
-            (this.allCallbacks[type] as IAction<A>).Handle(a);
+            if (this.allCallbacks[type] is not IAction<A> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            action.Handle(a);
         }
         
         public void Callback<A, B>(int type, A a, B b)
         {
-            (this.allCallbacks[type] as IAction<A, B>).Handle(a, b);
+            if (this.allCallbacks[type] is not IAction<A, B> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            action.Handle(a, b);
         }
         
         public void Callback<A, B, C>(int type, A a, B b, C c)
         {
-            (this.allCallbacks[type] as IAction<A, B, C>).Handle(a, b, c);
+            if (this.allCallbacks[type] is not IAction<A, B, C> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            action.Handle(a, b, c);
         }
         
         public void Callback<A, B, C, D>(int type, A a, B b, C c, D d)
         {
-            (this.allCallbacks[type] as IAction<A, B, C, D>).Handle(a, b, c, d);
+            if (this.allCallbacks[type] is not IAction<A, B, C, D> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            action.Handle(a, b, c, d);
         }
         
         public T Callback<T>(int type)
         {
-            return (this.allCallbacks[type] as IFunc<T>).Handle();
+            if (this.allCallbacks[type] is not IFunc<T> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            return action.Handle();
         }
 
         public T Callback<A, T>(int type, A a)
         {
-            return (this.allCallbacks[type] as IFunc<A, T>).Handle(a);
+            if (this.allCallbacks[type] is not IFunc<A, T> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            return action.Handle(a);
         }
         
         public T Callback<A, B, T>(int type, A a, B b)
         {
-            return (this.allCallbacks[type] as IFunc<A, B, T>).Handle(a, b);
+            if (this.allCallbacks[type] is not IFunc<A, B, T> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            return action.Handle(a, b);
         }
         
         public T Callback<A, B, C, T>(int type, A a, B b, C c)
         {
-            return (this.allCallbacks[type] as IFunc<A, B, C, T>).Handle(a, b, c);
+            if (this.allCallbacks[type] is not IFunc<A, B, C, T> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            return action.Handle(a, b, c);
         }
         
         public T Callback<A, B, C, D, T>(int type, A a, B b, C c, D d)
         {
-            return (this.allCallbacks[type] as IFunc<A, B, C, D, T>).Handle(a, b, c, d);
+            if (this.allCallbacks[type] is not IFunc<A, B, C, D, T> action)
+            {
+                throw new Exception($"callback error: {type}");
+            }
+            return action.Handle(a, b, c, d);
         }
 
         public override string ToString()

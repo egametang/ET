@@ -40,7 +40,7 @@ namespace ET
 			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
-			Game.EventSystem.Callback(CallbackType.GetAllConfigBytes, configBytes);
+			Game.EventSystem.Callback(CallbackType.GetAllConfigBytes, self, configBytes);
 
 			foreach (Type type in types)
 			{
@@ -54,7 +54,7 @@ namespace ET
 			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
-			Game.EventSystem.Callback(CallbackType.GetAllConfigBytes, configBytes);
+			Game.EventSystem.Callback(CallbackType.GetAllConfigBytes, self, configBytes);
 
 			using (ListComponent<Task> listTasks = ListComponent<Task>.Create())
 			{

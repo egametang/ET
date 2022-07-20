@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff906ecbbd0163f4094f8fa4e305d39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CodeMode: 1
+  GlobalConfig: {fileID: 11400000, guid: a60778dce43da574aa447ab3fcf5d9f7, type: 2}
 --- !u!4 &575235020
 Transform:
   m_ObjectHideFlags: 0

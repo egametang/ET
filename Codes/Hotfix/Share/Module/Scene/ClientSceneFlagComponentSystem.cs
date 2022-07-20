@@ -1,4 +1,4 @@
-﻿namespace ET.Client
+﻿namespace ET
 {
     [ObjectSystem]
     public class ClientSceneFlagComponentDestroySystem: DestroySystem<ClientSceneFlagComponent>

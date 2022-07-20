@@ -10,6 +10,11 @@ namespace ET.Server
     {
         public static void Start()
         {
+            StartAsync().Coroutine();
+        }
+        
+        private static async ETTask StartAsync()
+        {
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
                 Log.Error(e.ExceptionObject.ToString());
@@ -38,8 +43,9 @@ namespace ET.Server
             LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
             Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Game.Options)} ");
-
-            Game.EventSystem.Publish(Game.Scene, new ET.EventType.AppStart());
+            
+            await Game.EventSystem.Callback<ETTask>(CallbackType.InitShare);
+            await Game.EventSystem.Callback<ETTask>(CallbackType.InitServer);
         }
     }
 }

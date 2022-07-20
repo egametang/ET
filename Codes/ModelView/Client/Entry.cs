@@ -7,9 +7,14 @@ namespace ET.Client
 	{
 		public static void Start()
 		{
+			StartAsync().Coroutine();
+		}
+		
+		private static async ETTask StartAsync()
+		{
 			try
 			{
-				System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+				AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 				{
 					Log.Error(e.ExceptionObject.ToString());
 				};
@@ -28,7 +33,24 @@ namespace ET.Client
 
 				Options.Instance = new Options();
 
-				Game.EventSystem.Publish(Game.Scene, new EventType.AppStart());
+				await Game.EventSystem.Callback<ETTask>(CallbackType.InitShare);
+				
+				switch (CodeLoader.Instance.GlobalConfig.CodeMode)
+				{
+					case CodeMode.Client:
+						await Game.EventSystem.Callback<ETTask>(CallbackType.InitClient);
+						break;
+					case CodeMode.Server:
+						await Game.EventSystem.Callback<ETTask>(CallbackType.InitServer);
+						break;
+					case CodeMode.ClientServer:
+						await Game.EventSystem.Callback<ETTask>(CallbackType.InitServer);
+						await Game.EventSystem.Callback<ETTask>(CallbackType.InitClient);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+				Log.Info("Init Finish!");
 			}
 			catch (Exception e)
 			{
