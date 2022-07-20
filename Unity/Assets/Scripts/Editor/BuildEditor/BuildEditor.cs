@@ -109,17 +109,20 @@ namespace ET
 			GUILayout.Label("");
 			if (GUILayout.Button("BuildCode"))
 			{
-				BuildAssemblieEditor.BuildCode(this.codeOptimization);
+				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+				BuildAssemblieEditor.BuildCode(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("BuildModel"))
 			{
-				BuildAssemblieEditor.BuildModel(this.codeOptimization);
+				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+				BuildAssemblieEditor.BuildModel(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("BuildHotfix"))
 			{
-				BuildAssemblieEditor.BuildHotfix(this.codeOptimization);
+				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+				BuildAssemblieEditor.BuildHotfix(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("ExcelExporter"))

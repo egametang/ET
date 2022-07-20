@@ -15,8 +15,8 @@ namespace ET
 		public Action OnApplicationQuit;
 
 		private Assembly assembly;
-		
-		public CodeMode CodeMode { get; set; }
+
+		public GlobalConfig GlobalConfig;
 
 		private CodeLoader()
 		{
@@ -28,9 +28,9 @@ namespace ET
 		
 		public void Start()
 		{
-			switch (this.CodeMode)
+			switch (this.GlobalConfig.LoadMode)
 			{
-				case CodeMode.Mono:
+				case LoadMode.Mono:
 				{
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
@@ -46,7 +46,7 @@ namespace ET
 					start.Run();
 					break;
 				}
-				case CodeMode.Reload:
+				case LoadMode.Reload:
 				{
 					byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
 					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
@@ -65,7 +65,7 @@ namespace ET
 		// Game.EventSystem.Load();
 		public void LoadHotfix()
 		{
-			if (this.CodeMode != CodeMode.Reload)
+			if (this.GlobalConfig.LoadMode != LoadMode.Reload)
 			{
 				throw new Exception("CodeMode != Reload!");
 			}
