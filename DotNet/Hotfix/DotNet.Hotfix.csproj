@@ -37,4 +37,9 @@
         <ProjectReference Include="..\..\Codes\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="..\..\Codes\Hotfix\Share\Demo">
+        <Link>Share\Demo</Link>
+      </Folder>
+    </ItemGroup>
 </Project>

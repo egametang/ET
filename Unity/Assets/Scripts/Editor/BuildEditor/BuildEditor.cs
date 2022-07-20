@@ -36,6 +36,8 @@ namespace ET
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
+		private GlobalConfig globalConfig;
+
 		[MenuItem("ET/Build Tool")]
 		public static void ShowWindow()
 		{
@@ -43,7 +45,9 @@ namespace ET
 		}
 
         private void OnEnable()
-        {
+		{
+			globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+			
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
 #elif UNITY_IOS
@@ -107,21 +111,24 @@ namespace ET
 			}
 			
 			GUILayout.Label("");
+			GUILayout.Label("代码编译：");
+			
+			this.globalConfig.LoadMode = (LoadMode)EditorGUILayout.EnumPopup("LoadMode: ", this.globalConfig.LoadMode);
+			
+			this.globalConfig.CodeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+			
 			if (GUILayout.Button("BuildCode"))
 			{
-				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
 				BuildAssemblieEditor.BuildCode(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("BuildModel"))
 			{
-				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
 				BuildAssemblieEditor.BuildModel(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("BuildHotfix"))
 			{
-				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
 				BuildAssemblieEditor.BuildHotfix(this.codeOptimization, globalConfig);
 			}
 			

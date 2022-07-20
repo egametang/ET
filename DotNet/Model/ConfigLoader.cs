@@ -4,9 +4,9 @@ using System.IO;
 namespace ET.Server
 {
     [Callback(CallbackType.GetAllConfigBytes)]
-    public class GetAllConfigBytes: IAction<Dictionary<string, byte[]>>
+    public class GetAllConfigBytes: IAction<ConfigComponent, Dictionary<string, byte[]>>
     {
-        public void Handle(Dictionary<string, byte[]> output)
+        public void Handle(ConfigComponent configComponent, Dictionary<string, byte[]> output)
         {
             foreach (string file in Directory.GetFiles($"../Config", "*.bytes"))
             {

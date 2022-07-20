@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ET.Client
+namespace ET
 {
     public static class CurrentScenesComponentSystem
     {

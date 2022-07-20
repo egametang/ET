@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ET.Client
+namespace ET
 {
     [ComponentOf(typeof(Scene))]
     public class ClientSceneFlagComponent: Entity, IAwake, IDestroy

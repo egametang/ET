@@ -1,31 +1,38 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ET.Client
 {
     [Callback(CallbackType.GetAllConfigBytes)]
-    public class GetAllConfigBytes: IAction<Dictionary<string, byte[]>>
+    public class GetAllConfigBytes: IAction<ConfigComponent, Dictionary<string, byte[]>>
     {
-        public void Handle(Dictionary<string, byte[]> output)
+        public void Handle(ConfigComponent configComponent, Dictionary<string, byte[]> output)
         {
-            Dictionary<string, UnityEngine.Object> keys = ResourcesComponent.Instance.GetBundleAll("config.unity3d");
-
-            foreach (var kv in keys)
+            using (Game.Scene.AddComponent<ResourcesComponent>())
             {
-                TextAsset v = kv.Value as TextAsset;
-                string key = kv.Key;
-                output[key] = v.bytes;
+                const string configBundleName = "config.unity3d";
+                ResourcesComponent.Instance.LoadBundle(configBundleName);
+                Dictionary<string, UnityEngine.Object> keys = ResourcesComponent.Instance.GetBundleAll(configBundleName);
+
+                foreach (var kv in keys)
+                {
+                    TextAsset v = kv.Value as TextAsset;
+                    string key = kv.Key;
+                    output[key] = v.bytes;
+                }
             }
         }
     }
-    
+
     [Callback(CallbackType.GetOneConfigBytes)]
     public class GetOneConfigBytes: IFunc<string, byte[]>
     {
         public byte[] Handle(string configName)
         {
-            TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
-            return v.bytes;
+            //TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
+            //return v.bytes;
+            throw new NotImplementedException("client cant use LoadOneConfig");
         }
     }
 }

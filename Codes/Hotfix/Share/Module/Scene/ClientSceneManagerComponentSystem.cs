@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ET.Client
+namespace ET
 {
     [FriendOf(typeof(ClientSceneManagerComponent))]
     public static class ClientSceneManagerComponentSystem

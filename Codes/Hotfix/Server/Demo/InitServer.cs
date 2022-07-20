@@ -1,23 +1,12 @@
 using System.Net;
-using ET.Server;
-using ET.Client;
 
-namespace ET
+namespace ET.Server
 {
-    [Event(SceneType.Process)]
-    public class AppStart_Init: AEvent<Scene, ET.EventType.AppStart>
+    [Callback(CallbackType.InitServer)]
+    public class InitServer: IFunc<ETTask>
     {
-        protected override async ETTask Run(Scene scene, ET.EventType.AppStart args)
+        public async ETTask Handle()
         {
-            Game.Scene.AddComponent<ConfigComponent>();
-            await ConfigComponent.Instance.LoadAsync();
-
-            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
-
-            Game.Scene.AddComponent<TimerComponent>();
-            Game.Scene.AddComponent<OpcodeTypeComponent>();
-            Game.Scene.AddComponent<MessageDispatcherComponent>();
-            Game.Scene.AddComponent<CoroutineLockComponent>();
             // 发送普通actor消息
             Game.Scene.AddComponent<ActorMessageSenderComponent>();
             // 发送location actor消息
@@ -25,24 +14,13 @@ namespace ET
             // 访问location server的组件
             Game.Scene.AddComponent<LocationProxyComponent>();
             Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
-            // 数值订阅组件
-            Game.Scene.AddComponent<NumericWatcherComponent>();
             
-            Game.Scene.AddComponent<AIDispatcherComponent>();
-
-            #region 机器人使用
-
-            Game.Scene.AddComponent<ClientSceneManagerComponent>();
             Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
 
-            #endregion
-
-            
-            Game.Scene.AddComponent<NetThreadComponent>();
-            
             Game.Scene.AddComponent<NavmeshComponent>();
 
+            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
             switch (Game.Options.AppType)
             {
                 case AppType.Server:
@@ -52,7 +30,7 @@ namespace ET
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        await Server.SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
+                        await SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
                             startConfig.Type, startConfig);
                     }
 
