@@ -6,35 +6,21 @@ namespace ET
 {
     public static class ShellHelper
     {
-        private static string shellApp
-        {
-            get
-            {
-#if UNITY_EDITOR_WIN
-			    string app = "cmd.exe";
-#elif UNITY_EDITOR_OSX
-                string app = "bash";
-#endif
-                return app;
-            }
-        }
-
-        private static volatile bool isFinish;
-
         public static void Run(string cmd, string workDirectory, List<string> environmentVars = null)
         {
-            Process p = new();
+            Process process = new();
             try
             {
-                ProcessStartInfo start = new ProcessStartInfo(shellApp);
-
 #if UNITY_EDITOR_OSX
+                string app = "bash";
                 string splitChar = ":";
-                start.Arguments = "-c";
+                string arguments = "-c";
 #elif UNITY_EDITOR_WIN
+                string app = "cmd.exe";
                 string splitChar = ";";
-                start.Arguments = "/c";
+                string arguments = "/c";
 #endif
+                ProcessStartInfo start = new ProcessStartInfo(app);
 
                 if (environmentVars != null)
                 {
@@ -44,8 +30,8 @@ namespace ET
                     }
                 }
 
-                p.StartInfo = start;
-                start.Arguments += (" \"" + cmd + "\"");
+                process.StartInfo = start;
+                start.Arguments = arguments + " \"" + cmd + "\"";
                 start.CreateNoWindow = true;
                 start.ErrorDialog = true;
                 start.UseShellExecute = false;
@@ -66,11 +52,10 @@ namespace ET
                     start.StandardErrorEncoding = System.Text.Encoding.UTF8;
                 }
 
-                bool hasError = false;
                 bool endOutput = false;
                 bool endError = false;
 
-                p.OutputDataReceived += (sender, args) =>
+                process.OutputDataReceived += (sender, args) =>
                 {
                     if (args.Data != null)
                     {
@@ -82,7 +67,7 @@ namespace ET
                     }
                 };
 
-                p.ErrorDataReceived += (sender, args) =>
+                process.ErrorDataReceived += (sender, args) =>
                 {
                     if (args.Data != null)
                     {
@@ -94,27 +79,24 @@ namespace ET
                     }
                 };
 
-                p.Start();
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
-                while (!endOutput || !endError) { }
-
-                p.CancelOutputRead();
-                p.CancelErrorRead();
-
-                if (hasError)
+                while (!endOutput || !endError)
                 {
-                    UnityEngine.Debug.LogError("has error!");
                 }
+
+                process.CancelOutputRead();
+                process.CancelErrorRead();
             }
             catch (Exception e)
             {
                 UnityEngine.Debug.LogException(e);
-                if (p != null)
-                {
-                    p.Close();
-                }
+            }
+            finally
+            {
+                process.Close();
             }
         }
     }
