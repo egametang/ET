@@ -46,12 +46,12 @@ MonoBehaviour:
       AssetTags: 
   - GroupName: Config
     GroupDesc: "\u914D\u7F6E"
-    AssetTags: 
+    AssetTags: config
     ActiveRuleName: EnableGroup
     Collectors:
     - CollectPath: Assets/Bundles/ConfigBin
       CollectorType: 0
       AddressRuleName: AddressByFileName
-      PackRuleName: PackDirectory
+      PackRuleName: PackRawFile
       FilterRuleName: CollectAll
       AssetTags: 

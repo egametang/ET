@@ -13,15 +13,25 @@ namespace ET
     public partial class Tables
     {
         private static Tables _instance;
-        public static Tables Ins => _instance;
-
+        public static Tables Ins
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new Tables();
+                }
+                return _instance;
+            }
+        }
+        private bool _initialized = false;
         public async UniTask Init(IConfigLoader loader)
         {
-            if (_instance != null)
+            if (_initialized)
             {
                 return;
             }
-            _instance = new Tables();
+            _initialized = true;
             await _instance.LoadAsync(loader.Loader);
         }
     }

@@ -2,8 +2,8 @@
     "Summary": {
         "YooVersion": "1.2.0",
         "UnityVersion": "2020.3.36f1c1",
-        "BuildDate": "2022/7/21 19:58:20",
-        "BuildSeconds": 172,
+        "BuildDate": "2022/7/21 22:27:15",
+        "BuildSeconds": 91,
         "BuildTarget": 19,
         "BuildPipeline": 0,
         "BuildMode": 0,
@@ -20,13 +20,13 @@
         "IgnoreTypeTreeChanges": true,
         "AssetFileTotalCount": 33,
         "AllBundleTotalCount": 4,
-        "AllBundleTotalSize": 2380567,
+        "AllBundleTotalSize": 2467567,
         "BuildinBundleTotalCount": 1,
-        "BuildinBundleTotalSize": 4797,
+        "BuildinBundleTotalSize": 4801,
         "EncryptedBundleTotalCount": 0,
         "EncryptedBundleTotalSize": 0,
         "RawBundleTotalCount": 2,
-        "RawBundleTotalSize": 269812
+        "RawBundleTotalSize": 356916
     },
     "AssetInfos": [
         {
@@ -37,7 +37,7 @@
                 "csharp"
             ],
             "MainBundleName": "assets/bundles/code/code.dll.rawfile",
-            "MainBundleSize": 183808,
+            "MainBundleSize": 239104,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -49,7 +49,7 @@
                 "csharp"
             ],
             "MainBundleName": "assets/bundles/code/code.pdb.rawfile",
-            "MainBundleSize": 86004,
+            "MainBundleSize": 117812,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -61,7 +61,7 @@
                 "scene"
             ],
             "MainBundleName": "assets/scenes.bundle",
-            "MainBundleSize": 2105958,
+            "MainBundleSize": 2105850,
             "DependBundles": [],
             "DependAssets": [
                 "Assets/Scenes/Map1/Lightmap-0_comp_light.exr",
@@ -80,7 +80,7 @@
                 "scene"
             ],
             "MainBundleName": "assets/scenes.bundle",
-            "MainBundleSize": 2105958,
+            "MainBundleSize": 2105850,
             "DependBundles": [],
             "DependAssets": [
                 "Assets/Scenes/Map2Settings.lighting",
@@ -97,7 +97,7 @@
             "AssetGUID": "a634aecce9ca0604eba0915c97088914",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -107,7 +107,7 @@
             "AssetGUID": "3b6390330718d8e4aa9c23a0e6d594c1",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -117,7 +117,7 @@
             "AssetGUID": "eeac8bbda3d8dc04288a49327fcfe16b",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -127,7 +127,7 @@
             "AssetGUID": "e3d91adbb0172b04aa07c18e86f6b970",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -137,7 +137,7 @@
             "AssetGUID": "4ea413ba6415f7e46a679cf704371cbf",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -147,7 +147,7 @@
             "AssetGUID": "9596a29fe3f782542817e7692d2b8356",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -157,7 +157,7 @@
             "AssetGUID": "75bb8d2a53476424ba33db04d540facc",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -167,7 +167,7 @@
             "AssetGUID": "18c1654aa1e473544851519c96497ad2",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -177,7 +177,7 @@
             "AssetGUID": "531b393c92c046b47808abc320a5f53e",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -187,7 +187,7 @@
             "AssetGUID": "a94b89f2e5cb46f47ac4bb92cfc7b3a0",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -197,7 +197,7 @@
             "AssetGUID": "73a68f88b1b21964f9328547aa60802b",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -207,7 +207,7 @@
             "AssetGUID": "e3e52be6131a06c44bd324e4368251de",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -217,7 +217,7 @@
             "AssetGUID": "5962f6915b26d87448a80b6353eade7d",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -227,7 +227,7 @@
             "AssetGUID": "f42ebc883c494474693e917af3d479d8",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -237,7 +237,7 @@
             "AssetGUID": "b5414600e3b99da498e9891ba758a837",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -247,7 +247,7 @@
             "AssetGUID": "140ff7bef95f3b84bb147eb8ef46ca2f",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -257,7 +257,7 @@
             "AssetGUID": "8ea17ba880ea9714d9c65cab4b763c07",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -267,7 +267,7 @@
             "AssetGUID": "25de31d133f331f43a78452700518ff0",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -277,7 +277,7 @@
             "AssetGUID": "07144263bd5e3fe48a0c200465212a07",
             "AssetTags": [],
             "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4797,
+            "MainBundleSize": 4801,
             "DependBundles": [],
             "DependAssets": []
         }
@@ -285,9 +285,9 @@
     "BundleInfos": [
         {
             "BundleName": "assets/bundles/code/code.dll.rawfile",
-            "Hash": "132db51f3fb38371dd0cd91cfd9099ce",
-            "CRC": "1cbdde4c",
-            "SizeBytes": 183808,
+            "Hash": "4155ba8d22577be6dde561f46cdf381b",
+            "CRC": "be6293d8",
+            "SizeBytes": 239104,
             "Tags": [
                 "csharp"
             ],
@@ -295,9 +295,9 @@
         },
         {
             "BundleName": "assets/bundles/code/code.pdb.rawfile",
-            "Hash": "80440cc8cfa71d06a419b735ab341570",
-            "CRC": "a9fcc11d",
-            "SizeBytes": 86004,
+            "Hash": "b0c221580d189811d9b0296977d549ca",
+            "CRC": "2ea5b3ec",
+            "SizeBytes": 117812,
             "Tags": [
                 "csharp"
             ],
@@ -305,9 +305,9 @@
         },
         {
             "BundleName": "assets/scenes.bundle",
-            "Hash": "5b3576d34b7b6a23d4cd539c335d7ed9",
-            "CRC": "c350c51c",
-            "SizeBytes": 2105958,
+            "Hash": "ffb669bc87082624647540c6cbcfd3fb",
+            "CRC": "c5e55387",
+            "SizeBytes": 2105850,
             "Tags": [
                 "scene"
             ],
@@ -315,9 +315,9 @@
         },
         {
             "BundleName": "assets/bundles/configbin.bundle",
-            "Hash": "c0ea4c97cc732c70382f7d060a7a4ed2",
-            "CRC": "80a8a3cd",
-            "SizeBytes": 4797,
+            "Hash": "1c25491efb06968941d3bd70a408d55a",
+            "CRC": "4cc047bf",
+            "SizeBytes": 4801,
             "Tags": [],
             "Flags": 2
         }

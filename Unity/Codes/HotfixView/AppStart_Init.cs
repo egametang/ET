@@ -29,6 +29,7 @@ namespace ET
 
             Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
             Log.Info("加载成功");
+            Log.Info(Tables.Ins.TbBuff.Get(100003).Name);
         }
     }
 }
