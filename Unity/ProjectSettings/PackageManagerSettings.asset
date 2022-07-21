@@ -24,20 +24,28 @@ MonoBehaviour:
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
-  m_UserSelectedRegistryName: 
+  - m_Id: 'scoped:Name: package.openupm.cn'
+    m_Name: 'Name: package.openupm.cn'
+    m_Url: https://package.openupm.cn
+    m_Scopes:
+    - com.tuyoogame.yooasset
+    m_IsDefault: 0
+    m_Capabilities: 0
+  m_UserSelectedRegistryName: 'Name: package.openupm.cn'
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_ErrorMessage: 
     m_Original:
-      m_Id: 
-      m_Name: 
-      m_Url: 
-      m_Scopes: []
+      m_Id: 'scoped:Name: package.openupm.cn'
+      m_Name: 'Name: package.openupm.cn'
+      m_Url: https://package.openupm.cn
+      m_Scopes:
+      - com.tuyoogame.yooasset
       m_IsDefault: 0
       m_Capabilities: 0
     m_Modified: 0
-    m_Name: 
-    m_Url: 
+    m_Name: 'Name: package.openupm.cn'
+    m_Url: https://package.openupm.cn
     m_Scopes:
-    - 
+    - com.tuyoogame.yooasset
     m_SelectedScopeIndex: 0

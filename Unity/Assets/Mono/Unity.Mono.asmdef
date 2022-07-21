@@ -2,7 +2,8 @@
     "name": "Unity.Mono",
     "rootNamespace": "",
     "references": [
-        "Unity.ThirdParty"
+        "Unity.ThirdParty",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

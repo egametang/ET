@@ -1,0 +1,125 @@
+{
+    "Summary": {
+        "YooVersion": "1.2.0",
+        "UnityVersion": "2020.3.36f1c1",
+        "BuildDate": "2022/7/21 16:34:08",
+        "BuildSeconds": 77,
+        "BuildTarget": 19,
+        "BuildPipeline": 0,
+        "BuildMode": 0,
+        "BuildVersion": 100,
+        "BuildinTags": "csharp;scene",
+        "EnableAddressable": true,
+        "AppendFileExtension": false,
+        "CopyBuildinTagFiles": true,
+        "AutoCollectShaders": false,
+        "ShadersBundleName": "myshaders",
+        "EncryptionServicesClassName": "null",
+        "CompressOption": 2,
+        "DisableWriteTypeTree": false,
+        "IgnoreTypeTreeChanges": true,
+        "AssetFileTotalCount": 13,
+        "AllBundleTotalCount": 3,
+        "AllBundleTotalSize": 2173371,
+        "BuildinBundleTotalCount": 3,
+        "BuildinBundleTotalSize": 2173371,
+        "EncryptedBundleTotalCount": 0,
+        "EncryptedBundleTotalSize": 0,
+        "RawBundleTotalCount": 2,
+        "RawBundleTotalSize": 270324
+    },
+    "AssetInfos": [
+        {
+            "Address": "Code.dll",
+            "AssetPath": "Assets/Bundles/Code/Code.dll.bytes",
+            "AssetGUID": "238e294b9c9af7f459b1efdbea13d8e9",
+            "AssetTags": [
+                "csharp"
+            ],
+            "MainBundleName": "assets/bundles/code/code.dll.rawfile",
+            "MainBundleSize": 184320,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Code.pdb",
+            "AssetPath": "Assets/Bundles/Code/Code.pdb.bytes",
+            "AssetGUID": "77e04ce293847cf499bc440a64cbd095",
+            "AssetTags": [
+                "csharp"
+            ],
+            "MainBundleName": "assets/bundles/code/code.pdb.rawfile",
+            "MainBundleSize": 86004,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Map1",
+            "AssetPath": "Assets/Scenes/Map1.unity",
+            "AssetGUID": "a5294483f20f40d449699101bb428cda",
+            "AssetTags": [
+                "scene"
+            ],
+            "MainBundleName": "assets/scenes.bundle",
+            "MainBundleSize": 1903047,
+            "DependBundles": [],
+            "DependAssets": [
+                "Assets/Scenes/Map1/Lightmap-0_comp_light.exr",
+                "Assets/Scenes/Map1Settings.lighting",
+                "Assets/Res/Mat/Urp.mat",
+                "Assets/Scenes/Map1/ReflectionProbe-0.exr",
+                "Assets/Scenes/Map1/Lightmap-0_comp_dir.png"
+            ]
+        },
+        {
+            "Address": "Map2",
+            "AssetPath": "Assets/Scenes/Map2.unity",
+            "AssetGUID": "064123f1e5067b249a9fd8967ddbde09",
+            "AssetTags": [
+                "scene"
+            ],
+            "MainBundleName": "assets/scenes.bundle",
+            "MainBundleSize": 1903047,
+            "DependBundles": [],
+            "DependAssets": [
+                "Assets/Scenes/Map2Settings.lighting",
+                "Assets/Scenes/Map2/ReflectionProbe-0.exr",
+                "Assets/Res/Mat/Urp.mat",
+                "Assets/Scenes/Map2/Lightmap-0_comp_dir.png",
+                "Assets/Scenes/Map2/Lightmap-0_comp_light.exr"
+            ]
+        }
+    ],
+    "BundleInfos": [
+        {
+            "BundleName": "assets/bundles/code/code.dll.rawfile",
+            "Hash": "a8db6de60ec69fad816578d7ba7666aa",
+            "CRC": "e097411e",
+            "SizeBytes": 184320,
+            "Tags": [
+                "csharp"
+            ],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/bundles/code/code.pdb.rawfile",
+            "Hash": "3ee7f5fd00ae948110b8b058134b308e",
+            "CRC": "76e54a77",
+            "SizeBytes": 86004,
+            "Tags": [
+                "csharp"
+            ],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/scenes.bundle",
+            "Hash": "a1bb6af052f40b65087907b9203a894c",
+            "CRC": "838932df",
+            "SizeBytes": 1903047,
+            "Tags": [
+                "scene"
+            ],
+            "Flags": 2
+        }
+    ]
+}

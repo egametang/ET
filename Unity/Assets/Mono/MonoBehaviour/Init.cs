@@ -7,7 +7,7 @@ namespace ET
 	public enum CodeMode
 	{
 		Mono = 1,
-		ILRuntime = 2,
+		HybridCLR = 2,
 		Reload = 3,
 	}
 	
@@ -18,9 +18,9 @@ namespace ET
 		private void Awake()
 		{
 #if ENABLE_IL2CPP
-			this.CodeMode = CodeMode.ILRuntime;
+			this.CodeMode = CodeMode.HybridCLR;
 #endif
-			
+
 			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				Log.Error(e.ExceptionObject.ToString());
@@ -50,12 +50,12 @@ namespace ET
 
 		private void Update()
 		{
-			CodeLoader.Instance.Update();
+			CodeLoader.Instance.Update?.Invoke();
 		}
 
 		private void LateUpdate()
 		{
-			CodeLoader.Instance.LateUpdate();
+			CodeLoader.Instance.LateUpdate?.Invoke();
 		}
 
 		private void OnApplicationQuit()
