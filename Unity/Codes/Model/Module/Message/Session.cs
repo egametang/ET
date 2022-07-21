@@ -33,7 +33,7 @@ namespace ET
 
                 self.requestCallbacks.Clear();
             
-                Log.Info($"session create: zone: {self.DomainZone()} id: {self.Id} {timeNow} ");
+                Log.Debug($"session create: zone: {self.DomainZone()} id: {self.Id} {timeNow} ");
             }
         }
         
@@ -49,7 +49,7 @@ namespace ET
                     responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
                 }
 
-                Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
+                Log.Debug($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
             
                 self.requestCallbacks.Clear();
             }

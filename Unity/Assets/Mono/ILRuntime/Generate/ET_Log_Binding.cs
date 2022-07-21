@@ -104,7 +104,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
 
-            ET.Log.Info(@msg);
+            ET.Log.Debug(@msg);
 
             return __ret;
         }

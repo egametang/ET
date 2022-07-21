@@ -58,7 +58,7 @@ namespace ET
             try
             {
                 Marshal.Copy(bytes, logBuffer, 0, len);
-                Log.Info(logBuffer.ToStr(0, len));
+                Log.Debug(logBuffer.ToStr(0, len));
             }
             catch (Exception e)
             {
@@ -144,7 +144,7 @@ namespace ET
                 return;
             }
 
-            Log.Info($"channel change address: {id} {address}");
+            Log.Debug($"channel change address: {id} {address}");
             kChannel.RemoteAddress = address;
         }
 
@@ -307,7 +307,7 @@ namespace ET
                             kChannel = this.GetByLocalConn(localConn);
                             if (kChannel != null)
                             {
-                                Log.Info($"kservice ack: {kChannel.Id} {remoteConn} {localConn}");
+                                Log.Debug($"kservice ack: {kChannel.Id} {remoteConn} {localConn}");
                                 kChannel.RemoteConn = remoteConn;
                                 kChannel.HandleConnnect();
                             }
@@ -337,7 +337,7 @@ namespace ET
                                 break;
                             }
                             
-                            Log.Info($"kservice recv fin: {kChannel.Id} {localConn} {remoteConn} {error}");
+                            Log.Debug($"kservice recv fin: {kChannel.Id} {localConn} {remoteConn} {error}");
                             kChannel.OnError(ErrorCore.ERR_PeerDisconnect);
 
                             break;
@@ -417,7 +417,7 @@ namespace ET
             {
                 return;
             }
-            Log.Info($"kservice remove channel: {id} {kChannel.LocalConn} {kChannel.RemoteConn}");
+            Log.Debug($"kservice remove channel: {id} {kChannel.LocalConn} {kChannel.RemoteConn}");
             this.idChannels.Remove(id);
             this.localConnChannels.Remove(kChannel.LocalConn);
             if (this.waitConnectChannels.TryGetValue(kChannel.RemoteConn, out KChannel waitChannel))
@@ -454,7 +454,7 @@ namespace ET
                 Log.Error($"Disconnect error {localConn} {remoteConn} {error} {address} {e}");
             }
             
-            Log.Info($"channel send fin: {localConn} {remoteConn} {address} {error}");
+            Log.Debug($"channel send fin: {localConn} {remoteConn} {address} {error}");
         }
         
         protected override void Send(long channelId, long actorId, MemoryStream stream)

@@ -99,7 +99,7 @@ namespace ET
 				return;
 			}
 
-			Log.Info($"channel dispose: {this.Id} {this.RemoteAddress}");
+			Log.Debug($"channel dispose: {this.Id} {this.RemoteAddress}");
 			
 			long id = this.Id;
 			this.Id = 0;
@@ -401,7 +401,7 @@ namespace ET
 
 		private void OnError(int error)
 		{
-			Log.Info($"TChannel OnError: {error} {this.RemoteAddress}");
+			Log.Error($"TChannel OnError: {error} {this.RemoteAddress}");
 			
 			long channelId = this.Id;
 			

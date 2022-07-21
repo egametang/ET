@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Unity.ThirdParty",
-        "YooAsset"
+        "YooAsset",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
@@ -32,8 +34,8 @@ namespace ET
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
             
             Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
-            
-            Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
+            Log.Info("加载成功");
+            //Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
         }
     }
 }

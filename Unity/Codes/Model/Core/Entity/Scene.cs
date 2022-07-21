@@ -31,7 +31,7 @@
             this.IsRegister = true;
             this.Parent = parent;
             this.Domain = this;
-            Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
+            Log.Debug($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
         public Scene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
@@ -46,14 +46,14 @@
             this.IsRegister = true;
             this.Parent = parent;
             this.Domain = this;
-            Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
+            Log.Debug($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
         public override void Dispose()
         {
             base.Dispose();
             
-            Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
+            Log.Debug($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
         public Scene Get(long id)

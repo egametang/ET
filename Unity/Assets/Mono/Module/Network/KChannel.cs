@@ -74,7 +74,7 @@ namespace ET
 			this.Id = id;
 			this.ChannelType = ChannelType.Connect;
 			
-			Log.Info($"channel create: {this.Id} {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
+			Log.Debug($"channel create: {this.Id} {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
 			
 			this.kcp = IntPtr.Zero;
 			this.Service = kService;
@@ -93,7 +93,7 @@ namespace ET
 			this.Id = id;
 			this.ChannelType = ChannelType.Accept;
 			
-			Log.Info($"channel create: {this.Id} {localConn} {remoteConn} {remoteEndPoint} {this.ChannelType}");
+			Log.Debug($"channel create: {this.Id} {localConn} {remoteConn} {remoteEndPoint} {this.ChannelType}");
 
 			this.Service = kService;
 			this.LocalConn = localConn;
@@ -117,7 +117,7 @@ namespace ET
 
 			uint localConn = this.LocalConn;
 			uint remoteConn = this.RemoteConn;
-			Log.Info($"channel dispose: {this.Id} {localConn} {remoteConn}");
+			Log.Debug($"channel dispose: {this.Id} {localConn} {remoteConn}");
 			
 			long id = this.Id;
 			this.Id = 0;
@@ -154,7 +154,7 @@ namespace ET
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, IntPtr.Zero);
 			this.InitKcp();
 
-			Log.Info($"channel connected: {this.Id} {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
+			Log.Debug($"channel connected: {this.Id} {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
 			this.IsConnected = true;
 			this.lastRecvTime = this.Service.TimeNow;
 			
@@ -186,7 +186,7 @@ namespace ET
 				buffer.WriteTo(1, this.LocalConn);
 				buffer.WriteTo(5, this.RemoteConn);
 				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
-				Log.Info($"kchannel connect {this.Id} {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
+				Log.Debug($"kchannel connect {this.Id} {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
 				
 				// 300毫秒后再次update发送connect请求
 				this.Service.AddToUpdateNextTime(timeNow + 300, this.Id);

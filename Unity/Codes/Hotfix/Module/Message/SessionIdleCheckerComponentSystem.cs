@@ -48,7 +48,7 @@ namespace ET
                 return;
             }
 
-            Log.Info(
+            Log.Debug(
                 $"session timeout: {session.Id} {timeNow} {session.LastRecvTime} {session.LastSendTime} {timeNow - session.LastRecvTime} {timeNow - session.LastSendTime}");
             session.Error = ErrorCore.ERR_SessionSendOrRecvTimeout;
 

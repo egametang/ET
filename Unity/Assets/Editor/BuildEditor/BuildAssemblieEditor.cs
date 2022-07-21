@@ -41,6 +41,7 @@ namespace ET
             AfterCompiling();
             
             AssetDatabase.Refresh();
+            EditorApplication.isPlaying = true;
         }
         
         [MenuItem("Tools/Build/BuildCodeRelease _F6")]

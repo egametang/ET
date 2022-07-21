@@ -3,7 +3,7 @@ using System;
 
 namespace ET
 {
-    public class UnityLogger: ILog
+    public class UnityLogger : ILog
     {
         public void Trace(string msg)
         {
@@ -17,7 +17,7 @@ namespace ET
 
         public void Info(string msg)
         {
-            UnityEngine.Debug.Log(msg);
+            UnityEngine.Debug.Log($"【CUSTOM】<color=#008000>{msg}</color>");
         }
 
         public void Warning(string msg)

@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "78db78c7bd5c1c75902dabb1496c85bd2316fca5"
+    },
     "com.tuyoogame.yooasset": {
       "version": "1.2.0",
       "depth": 0,
