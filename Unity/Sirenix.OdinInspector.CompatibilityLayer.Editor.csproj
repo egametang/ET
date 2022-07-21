@@ -57,10 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\Vector2IntMinMaxAttributeDrawer.cs" />
-    <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\EnsureOdinInspectorDefine.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\SyncVarAttributeDrawer.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\VectorIntDrawers.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\FixBrokenUnityObjectWrapperDrawer.cs" />
+    <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\EnsureOdinInspectorDefine.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\BuildAOTAutomation.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\VectorIntPropertyResolvers.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Inspector\Scripts\Editor\AssemblyImportSettingsAutomation.cs" />
@@ -319,6 +319,9 @@
     <Reference Include="Sirenix.Utilities">
       <HintPath>Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>Library\PackageCache\com.unity.render-pipelines.core@10.9.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -327,9 +330,6 @@
     </Reference>
     <Reference Include="Sirenix.Utilities.Editor">
       <HintPath>Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>Library\PackageCache\com.unity.render-pipelines.core@10.9.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>

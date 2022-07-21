@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 
@@ -16,13 +17,45 @@ namespace ET
 			public long New;
 		}
 	}
+    public class NumericRangeAttribute : Attribute
+    {
+        public decimal? min = null;
+        public decimal? max = null;
 
+        public NumericType? relateMin = null;
+        public NumericType? relateMax = null;
+
+        public NumericRangeAttribute(long min, long max)
+        {
+            this.min = min;
+            this.max = max;
+        }
+        public NumericRangeAttribute(NumericType relateMin, long max)
+        {
+            this.relateMin = relateMin;
+            this.max = max;
+        }
+        public NumericRangeAttribute(long min, NumericType relateMax)
+        {
+            this.min = min;
+            this.relateMax = relateMax;
+        }
+        public NumericRangeAttribute(NumericType relateMin, NumericType relateMax)
+        {
+            this.relateMin = relateMin;
+            this.relateMax = relateMax;
+        }
+    }
 	[FriendClass(typeof(NumericComponent))]
 	public static class NumericComponentSystem
 	{
 		public static float GetAsFloat(this NumericComponent self, int numericType)
 		{
 			return (float)self.GetByKey(numericType) / 10000;
+		}
+		public static float GetAsFloat(this NumericComponent self, NumericType numericType)
+		{
+			return self.GetAsFloat((int)numericType);
 		}
 
 		public static int GetAsInt(this NumericComponent self, int numericType)
@@ -35,14 +68,14 @@ namespace ET
 			return self.GetByKey(numericType);
 		}
 
-		public static void Set(this NumericComponent self, int nt, float value)
+		public static void Set(this NumericComponent self, NumericType nt, float value)
 		{
-			self[nt] = (int) (value * 10000);
+			self[(int)nt] = (int) (value * 10000);
 		}
 
-		public static void Set(this NumericComponent self, int nt, int value)
+		public static void Set(this NumericComponent self, NumericType nt, int value)
 		{
-			self[nt] = value;
+			self[(int)nt] = value;
 		}
 		
 		public static void Set(this NumericComponent self, int nt, long value)
@@ -65,7 +98,7 @@ namespace ET
 
 			self.NumericDic[numericType] = value;
 
-			if (numericType >= NumericType.Max)
+			if (numericType >= (int)NumericType.Max)
 			{
 				self.Update(numericType,isPublicEvent);
 				return;

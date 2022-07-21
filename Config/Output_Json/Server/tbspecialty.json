@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1001,
+    "name": "杂技",
+    "relevance_attribute": 1002,
+    "desc": ""
+  },
+  {
+    "id": 1002,
+    "name": "神秘",
+    "relevance_attribute": 1004,
+    "desc": ""
+  },
+  {
+    "id": 1003,
+    "name": "运动",
+    "relevance_attribute": 1001,
+    "desc": ""
+  },
+  {
+    "id": 1004,
+    "name": "唬骗",
+    "relevance_attribute": 1006,
+    "desc": ""
+  },
+  {
+    "id": 1005,
+    "name": "交涉",
+    "relevance_attribute": 1006,
+    "desc": ""
+  },
+  {
+    "id": 1006,
+    "name": "地城",
+    "relevance_attribute": 1005,
+    "desc": ""
+  },
+  {
+    "id": 1007,
+    "name": "坚韧",
+    "relevance_attribute": 1003,
+    "desc": ""
+  },
+  {
+    "id": 1008,
+    "name": "医疗",
+    "relevance_attribute": 1005,
+    "desc": ""
+  },
+  {
+    "id": 1009,
+    "name": "历史",
+    "relevance_attribute": 1004,
+    "desc": ""
+  },
+  {
+    "id": 1010,
+    "name": "洞察",
+    "relevance_attribute": 1005,
+    "desc": ""
+  },
+  {
+    "id": 1011,
+    "name": "威吓",
+    "relevance_attribute": 1006,
+    "desc": ""
+  },
+  {
+    "id": 1012,
+    "name": "自然",
+    "relevance_attribute": 1005,
+    "desc": ""
+  },
+  {
+    "id": 1013,
+    "name": "侦查",
+    "relevance_attribute": 1005,
+    "desc": ""
+  },
+  {
+    "id": 1014,
+    "name": "宗教",
+    "relevance_attribute": 1004,
+    "desc": ""
+  },
+  {
+    "id": 1015,
+    "name": "隐秘",
+    "relevance_attribute": 1002,
+    "desc": ""
+  },
+  {
+    "id": 1016,
+    "name": "市井",
+    "relevance_attribute": 1006,
+    "desc": ""
+  },
+  {
+    "id": 1017,
+    "name": "巧手",
+    "relevance_attribute": 1002,
+    "desc": ""
+  }
+]

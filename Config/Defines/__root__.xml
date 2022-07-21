@@ -1,0 +1,37 @@
+<root>
+
+	<topmodule name="ET"/>
+
+	<patch name="cn"/>
+	<patch name="tw"/>
+	<patch name="en"/>
+	<patch name="jp"/>
+
+	<group name="c" default="1"/> client
+	<group name="s" default="1"/> server
+	<group name="e" default="1"/> editor
+	
+	<import name="."/>
+	
+	<importexcel name="enums.xlsx" type="enum"/>相对data目录
+	<importexcel name="beans.xlsx" type="bean"/>相对data目录
+	<importexcel name="tables.xlsx" type="table"/> 相对data目录
+	<importexcel name="FGUI/FGUIType.xlsx" type="enum"/>相对data目录
+	<importexcel name="Game/ErrorCode.xlsx" type="enum"/>相对data目录
+	<importexcel name="Game/Numeric.xlsx" type="enum"/>相对data目录
+	<importexcel name="Game/AICondition.xlsx" type="bean"/>相对data目录
+	<importexcel name="Game/AIExecute.xlsx" type="bean"/>相对data目录
+	<importexcel name="Game/Worker.xlsx" type="bean"/>相对data目录
+	<importexcel name="Game/LotteryWeightInfoBean.xlsx" type="bean"/>相对data目录
+	<importexcel name="Battle/BuffCondition.xlsx" type="bean"/>相对data目录
+	<importexcel name="Battle/MetaBuffMechanism.xlsx" type="bean"/>相对data目录
+	<importexcel name="Battle/BuffVoidCaster.xlsx" type="bean"/>相对data目录
+
+	<externalselector name="unity_cs"/>
+	<externalselector name="ue_cpp"/>
+    <externalselector name="dotnet_cs"/>
+	
+	<service name="server" manager="Tables" group="s"/>
+	<service name="client" manager="Tables" group="c"/>
+	<service name="all" manager="Tables" group="c,s,e"/>
+</root>

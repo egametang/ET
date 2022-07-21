@@ -1,0 +1,84 @@
+[
+  {
+    "id": 1001,
+    "name": "米克尔",
+    "desc": "",
+    "attributes": [
+      {
+        "numeric_type": 1001,
+        "formula": "80"
+      },
+      {
+        "numeric_type": 1101,
+        "formula": "800"
+      },
+      {
+        "numeric_type": 1103,
+        "formula": "50"
+      }
+    ]
+  },
+  {
+    "id": 1002,
+    "name": "臭巴嘎",
+    "desc": "",
+    "attributes": [
+      {
+        "numeric_type": 1001,
+        "formula": "100"
+      },
+      {
+        "numeric_type": 1101,
+        "formula": "500"
+      },
+      {
+        "numeric_type": 1103,
+        "formula": "50"
+      }
+    ]
+  },
+  {
+    "id": 1003,
+    "name": "homo",
+    "desc": "",
+    "attributes": [
+      {
+        "numeric_type": 1001,
+        "formula": "200"
+      },
+      {
+        "numeric_type": 1101,
+        "formula": "200"
+      },
+      {
+        "numeric_type": 1103,
+        "formula": "20"
+      }
+    ]
+  },
+  {
+    "id": 1004,
+    "name": "狗鱼",
+    "desc": "1",
+    "attributes": [
+      {
+        "numeric_type": 1001,
+        "formula": "90"
+      },
+      {
+        "numeric_type": 1101,
+        "formula": "500"
+      },
+      {
+        "numeric_type": 1103,
+        "formula": "53"
+      }
+    ]
+  },
+  {
+    "id": 9001,
+    "name": "无",
+    "desc": "",
+    "attributes": []
+  }
+]

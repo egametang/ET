@@ -6,7 +6,10 @@
         "Unity.ThirdParty",
         "Unity.Model",
         "Unity.Hotfix",
-        "Unity.ModelView"
+        "Unity.ModelView",
+        "Luban",
+        "YooAsset",
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"

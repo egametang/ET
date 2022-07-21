@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CommandLine;
+using ET.StartServer;
 using NLog;
 
 namespace ET
@@ -22,10 +23,10 @@ namespace ET
                             .WithParsed(o => { options = o; });
 
                     // 获取当前进程的RobotScene
-                    using (ListComponent<StartSceneConfig> thisProcessRobotScenes = ListComponent<StartSceneConfig>.Create())
+                    using (ListComponent<StartScene> thisProcessRobotScenes = ListComponent<StartScene>.Create())
                     {
-                        List<StartSceneConfig> robotSceneConfigs = StartSceneConfigCategory.Instance.Robots;
-                        foreach (StartSceneConfig robotSceneConfig in robotSceneConfigs)
+                        List<StartScene> robotSceneConfigs = Tables.Ins.TbStartScene.Robots;
+                        foreach (StartScene robotSceneConfig in robotSceneConfigs)
                         {
                             if (robotSceneConfig.Process != Game.Options.Process)
                             {
@@ -38,7 +39,7 @@ namespace ET
                         for (int i = 0; i < options.Num; ++i)
                         {
                             int index = i % thisProcessRobotScenes.Count;
-                            StartSceneConfig robotSceneConfig = thisProcessRobotScenes[index];
+                            StartScene robotSceneConfig = thisProcessRobotScenes[index];
                             Scene robotScene = Game.Scene.Get(robotSceneConfig.Id);
                             RobotManagerComponent robotManagerComponent = robotScene.GetComponent<RobotManagerComponent>();
                             Scene robot = await robotManagerComponent.NewRobot(Game.Options.Process * 10000 + i);

@@ -1,3 +1,4 @@
+using ET.StartServer;
 using System.Collections;
 using System.Diagnostics;
 
@@ -25,8 +26,8 @@ namespace ET
         public static void Start(this WatcherComponent self, int createScenes = 0)
         {
             string[] localIP = NetworkHelper.GetAddressIPs();
-            var processConfigs = StartProcessConfigCategory.Instance.GetAll();
-            foreach (StartProcessConfig startProcessConfig in processConfigs.Values)
+            var processConfigs = Tables.Ins.TbStartProcess.DataMap;
+            foreach (StartProcess startProcessConfig in processConfigs.Values)
             {
                 if (!WatcherHelper.IsThisMachine(startProcessConfig.InnerIP, localIP))
                 {

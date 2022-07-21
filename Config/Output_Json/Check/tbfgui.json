@@ -1,0 +1,130 @@
+[
+  {
+    "Id": 2,
+    "Name": "背景",
+    "PackageName": "UIBackground",
+    "ComponentName": "UIBackgroundComponent",
+    "Layer": 0,
+    "IsMono": false
+  },
+  {
+    "Id": 3,
+    "Name": "加载",
+    "PackageName": "UILoading",
+    "ComponentName": "UILoadingComponent",
+    "Layer": 7,
+    "IsMono": false
+  },
+  {
+    "Id": 4,
+    "Name": "大厅",
+    "PackageName": "UIPanelLobby",
+    "ComponentName": "UILobbyComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 5,
+    "Name": "登陆",
+    "PackageName": "UIPopupLogin",
+    "ComponentName": "UILoginComponent",
+    "Layer": 1,
+    "IsMono": false
+  },
+  {
+    "Id": 6,
+    "Name": "注册",
+    "PackageName": "UIPopupRegister",
+    "ComponentName": "UIRegisterComponent",
+    "Layer": 1,
+    "IsMono": false
+  },
+  {
+    "Id": 7,
+    "Name": "主页",
+    "PackageName": "UIPanelHomePage",
+    "ComponentName": "UIHomePageComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 8,
+    "Name": "团队",
+    "PackageName": "UIPanelHero",
+    "ComponentName": "UIHeroComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 9,
+    "Name": "冒险",
+    "PackageName": "UIPanelAdventure",
+    "ComponentName": "UIAdventureComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 10,
+    "Name": "竞技",
+    "PackageName": "UIPanelArena",
+    "ComponentName": "UIArenaComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 11,
+    "Name": "战斗",
+    "PackageName": "UIPanelBattle",
+    "ComponentName": "UIBattleComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 12,
+    "Name": "酒馆",
+    "PackageName": "UIPanelPub",
+    "ComponentName": "UIPubComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 13,
+    "Name": "仓库",
+    "PackageName": "UIPanelWareHouse",
+    "ComponentName": "UIWareHouseComponent",
+    "Layer": 1,
+    "IsMono": true
+  },
+  {
+    "Id": 17,
+    "Name": "测试面板",
+    "PackageName": "UIPanelTest",
+    "ComponentName": "UITestComponent",
+    "Layer": 1,
+    "IsMono": false
+  },
+  {
+    "Id": 14,
+    "Name": "节点树视图",
+    "PackageName": "UITreeConsole",
+    "ComponentName": "UITreeConsoleComponent",
+    "Layer": 1,
+    "IsMono": false
+  },
+  {
+    "Id": 15,
+    "Name": "消息弹窗",
+    "PackageName": "UITipsMessageBox",
+    "ComponentName": "UIMessageBoxComponent",
+    "Layer": 4,
+    "IsMono": false
+  },
+  {
+    "Id": 16,
+    "Name": "Tips",
+    "PackageName": "UITipsMessageBox",
+    "ComponentName": "UITextTipsComponent",
+    "Layer": 6,
+    "IsMono": false
+  }
+]

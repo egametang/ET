@@ -4,7 +4,7 @@ namespace ET
 {
     public class AI_XunLuo: AAIHandler
     {
-        public override int Check(AIComponent aiComponent, AIConfig aiConfig)
+        public override int Check(AIComponent aiComponent, AIMeta aiConfig)
         {
             long sec = TimeHelper.ClientNow() / 1000 % 15;
             if (sec < 10)
@@ -14,7 +14,7 @@ namespace ET
             return 1;
         }
 
-        public override async ETTask Execute(AIComponent aiComponent, AIConfig aiConfig, ETCancellationToken cancellationToken)
+        public override async ETTask Execute(AIComponent aiComponent, AIMeta aiConfig, ETCancellationToken cancellationToken)
         {
             Scene zoneScene = aiComponent.DomainScene();
 

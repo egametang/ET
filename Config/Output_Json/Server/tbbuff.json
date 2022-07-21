@@ -1,0 +1,108 @@
+[
+  {
+    "id": 100001,
+    "name": "眩晕",
+    "buff_triggers": [
+      {
+        "id": 1,
+        "condition": {
+          "$type": "Attach"
+        },
+        "meta_buffs": [
+          {
+            "index": 1,
+            "mechanism": {
+              "$type": "Stun",
+              "duration": 1
+            }
+          }
+        ]
+      }
+    ],
+    "desc": "2秒不能行动",
+    "void_caster": {
+      "$type": "None"
+    },
+    "override_type": 2,
+    "add_layer": 1,
+    "reduce_layer": 0,
+    "active_time": 2,
+    "dispel_type": 0,
+    "can_display": true,
+    "buff_group": 2
+  },
+  {
+    "id": 100002,
+    "name": "伤害",
+    "buff_triggers": [
+      {
+        "id": 1,
+        "condition": {
+          "$type": "Attach"
+        },
+        "meta_buffs": [
+          {
+            "index": 1,
+            "mechanism": {
+              "$type": "Damage",
+              "formula": "[Fixed]+[CStrength]*1.5"
+            }
+          }
+        ]
+      }
+    ],
+    "desc": "",
+    "void_caster": {
+      "$type": "None"
+    },
+    "override_type": 2,
+    "add_layer": 0,
+    "reduce_layer": 0,
+    "active_time": 0,
+    "dispel_type": 0,
+    "can_display": true,
+    "buff_group": 2
+  },
+  {
+    "id": 100003,
+    "name": "虚空伤害",
+    "buff_triggers": [
+      {
+        "id": 1,
+        "condition": {
+          "$type": "Attach"
+        },
+        "meta_buffs": [
+          {
+            "index": 1,
+            "mechanism": {
+              "$type": "Damage",
+              "formula": "[Fixed]+[CStrength]*1"
+            }
+          }
+        ]
+      }
+    ],
+    "desc": "",
+    "void_caster": {
+      "$type": "CasterMirror",
+      "attributes": [
+        {
+          "numeric_type": 1001,
+          "formula": "[CStrength]"
+        },
+        {
+          "numeric_type": 1002,
+          "formula": "[CDexterity]"
+        }
+      ]
+    },
+    "override_type": 2,
+    "add_layer": 0,
+    "reduce_layer": 0,
+    "active_time": 0,
+    "dispel_type": 0,
+    "can_display": true,
+    "buff_group": 2
+  }
+]

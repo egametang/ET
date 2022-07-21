@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1001,
+    "name": "游戏指南",
+    "about": "初次游戏请查阅指南",
+    "btn_text": "前往游戏指南",
+    "workers": [
+      {
+        "$type": "ShowMessageBox",
+        "msg": "前往游戏指南"
+      }
+    ]
+  },
+  {
+    "id": 1002,
+    "name": "团队管理",
+    "about": "查看英雄资料",
+    "btn_text": "前往团队管理",
+    "workers": [
+      {
+        "$type": "ShowMessageBox",
+        "msg": "前往团队管理"
+      }
+    ]
+  },
+  {
+    "id": 1003,
+    "name": "仓库",
+    "about": "查看团队仓库",
+    "btn_text": "前往仓库",
+    "workers": [
+      {
+        "$type": "ShowMessageBox",
+        "msg": "前往仓库"
+      }
+    ]
+  },
+  {
+    "id": 1004,
+    "name": "酒馆",
+    "about": "招募新的英雄",
+    "btn_text": "前往酒馆",
+    "workers": [
+      {
+        "$type": "ShowMessageBox",
+        "msg": "前往酒馆"
+      }
+    ]
+  },
+  {
+    "id": 1005,
+    "name": "怪物图鉴",
+    "about": "查看曾经遭遇的怪物资料",
+    "btn_text": "前往怪物图鉴",
+    "workers": [
+      {
+        "$type": "ShowMessageBox",
+        "msg": "前往怪物图鉴"
+      }
+    ]
+  },
+  {
+    "id": 1006,
+    "name": "物品图鉴",
+    "about": "查看曾经获得的物品资料",
+    "btn_text": "前往物品图鉴",
+    "workers": [
+      {
+        "$type": "ShowMessageBox",
+        "msg": "前往物品图鉴"
+      }
+    ]
+  }
+]

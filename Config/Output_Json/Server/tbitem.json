@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1001,
+    "name": "测试物品",
+    "type": 1,
+    "sub_type": 101,
+    "quality": 1,
+    "sale_price": [
+      {
+        "id": 1002,
+        "value": 1
+      },
+      {
+        "id": 1003,
+        "value": 2
+      }
+    ],
+    "pile_limit": 10,
+    "condition_data": [],
+    "condition_item": [],
+    "container_type": 1,
+    "icon": "",
+    "desc": "测试描述文本",
+    "get_source": "冒险\\n商店"
+  },
+  {
+    "id": 1002,
+    "name": "测试物品",
+    "type": 2,
+    "sub_type": 201,
+    "quality": 1,
+    "sale_price": [],
+    "pile_limit": 0,
+    "condition_data": [],
+    "condition_item": [],
+    "container_type": 1,
+    "icon": "",
+    "desc": "测试描述文本",
+    "get_source": "冒险\\n商店"
+  },
+  {
+    "id": 1003,
+    "name": "测试物品",
+    "type": 2,
+    "sub_type": 201,
+    "quality": 1,
+    "sale_price": [],
+    "pile_limit": 1,
+    "condition_data": [],
+    "condition_item": [],
+    "container_type": 1,
+    "icon": "",
+    "desc": "测试描述文本",
+    "get_source": "冒险\\n商店"
+  }
+]

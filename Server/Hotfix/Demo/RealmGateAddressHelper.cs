@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using ET.StartServer;
+using System.Collections.Generic;
 
 
 namespace ET
 {
 	public static class RealmGateAddressHelper
 	{
-		public static StartSceneConfig GetGate(int zone)
+		public static StartScene GetGate(int zone)
 		{
-			List<StartSceneConfig> zoneGates = StartSceneConfigCategory.Instance.Gates[zone];
+			List<StartScene> zoneGates = Tables.Ins.TbStartScene.Gates[zone];
 			
 			int n = RandomHelper.RandomNumber(0, zoneGates.Count);
 

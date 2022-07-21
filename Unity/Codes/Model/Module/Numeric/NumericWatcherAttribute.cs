@@ -4,9 +4,9 @@
 	{
 		public int NumericType { get; }
 
-		public NumericWatcherAttribute(int type)
+		public NumericWatcherAttribute(NumericType type)
 		{
-			this.NumericType = type;
+			this.NumericType = (int)type;
 		}
 	}
 }

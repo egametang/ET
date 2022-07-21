@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS1998: 异步方法缺少 "await" 运算符，将以同步方式运行
+dotnet_diagnostic.CS1998.severity = none

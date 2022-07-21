@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1001,
+    "name": "人类",
+    "size": 3,
+    "speed": 30,
+    "vision": 1,
+    "language": [
+      1
+    ],
+    "attribute_change": [
+      {
+        "id": 0,
+        "value": 2
+      },
+      {
+        "id": 1001,
+        "value": 2
+      },
+      {
+        "id": 1022,
+        "value": 2
+      }
+    ],
+    "skill_change": [
+      {
+        "id": 1001,
+        "value": 2
+      },
+      {
+        "id": 1002,
+        "value": 2
+      }
+    ],
+    "feat_extra": [],
+    "power_extra": [],
+    "desc": "属性调整：任意一项属性+2\\n体型：中型\\n速度：30尺\\n视觉：普通\\n语言：通用语、任选其他一种语言\\n防御加值：强韧、反射、意志豁免+1种族加值\\n额外威能：1级时，额外领悟一个职业常规威能，或者选择种族威能-英雄史诗。\\n额外专长：1级时，额外获得一个满足前置条件的专长。\\n额外技能：1级时，额外受训一个职业技能。",
+    "probability": 2000
+  },
+  {
+    "id": 1002,
+    "name": "精灵",
+    "size": 3,
+    "speed": 40,
+    "vision": 2,
+    "language": [
+      1,
+      3
+    ],
+    "attribute_change": [
+      {
+        "id": 1002,
+        "value": 2
+      },
+      {
+        "id": 1023,
+        "value": 2
+      }
+    ],
+    "skill_change": [
+      {
+        "id": 1001,
+        "value": 2
+      },
+      {
+        "id": 1002,
+        "value": 2
+      }
+    ],
+    "feat_extra": [],
+    "power_extra": [],
+    "desc": "",
+    "probability": 100
+  }
+]

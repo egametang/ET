@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -21,13 +21,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+      <ProjectReference Include="..\..\Tools\Analyzer\Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\Model\Robot.Model.csproj" />
     </ItemGroup>
     
     <ItemGroup>
         <Compile Include="..\..\Server\Hotfix\Demo\Session\InnerMessageDispatcherHelper.cs">
           <Link>Server\Session\InnerMessageDispatcherHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Server\Hotfix\Main\Config\**.cs">
+          <Link>Main\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         <Compile Include="..\..\Server\Hotfix\Demo\Session\SessionStreamDispatcherServerInner.cs">
           <Link>Server\Session\SessionStreamDispatcherServerInner.cs</Link>
@@ -95,6 +98,12 @@
     
     <ItemGroup>
       <Folder Include="Server" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Reference Include="UniTask">
+        <HintPath>..\..\ThirdParty\UniTask\UniTask.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

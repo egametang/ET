@@ -1,0 +1,91 @@
+[
+  {
+    "id": 10001,
+    "name": "常驻池",
+    "desc": "常驻池",
+    "weight_infos": [
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1001
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1002
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1003
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1004
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1005
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1006
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1007
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1008
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1009
+      },
+      {
+        "$type": "Hero",
+        "weight": 10,
+        "hero_id": 1010
+      }
+    ]
+  },
+  {
+    "id": 10002,
+    "name": "周末池",
+    "desc": "周末池",
+    "weight_infos": [
+      {
+        "$type": "Hero",
+        "weight": 20,
+        "hero_id": 1101
+      },
+      {
+        "$type": "Hero",
+        "weight": 20,
+        "hero_id": 1102
+      },
+      {
+        "$type": "Hero",
+        "weight": 20,
+        "hero_id": 1103
+      },
+      {
+        "$type": "Hero",
+        "weight": 20,
+        "hero_id": 1104
+      },
+      {
+        "$type": "Hero",
+        "weight": 20,
+        "hero_id": 1105
+      }
+    ]
+  }
+]

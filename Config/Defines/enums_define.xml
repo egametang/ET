@@ -1,0 +1,36 @@
+<module name="Enums">
+	<enum name="SceneType">
+		<var name="Process" value="0"/>
+		<var name="Manager" value="1"/>
+		<var name="Realm" value="2"/>
+		<var name="Gate" value="3"/>
+		<var name="Http" value="4"/>
+		<var name="Location" value="5"/>
+		<var name="Map" value="6"/>
+		<var name="Account" value="7"/>
+		<var name="LoginCenter" value="8"/>
+		<var name="DB" value="9"/>
+		<var name="UnitCache" value="10"/>
+		
+		<var name="Zone" value="30"/>
+		<var name="Login" value="31"/>
+		<var name="Robot" value="32"/>
+	</enum>
+
+	<externaltype name="et_scene_type" origin_type_name="Enums.SceneType" >
+		<mapper lan="cs" selector="dotnet_cs">
+			<target_type_name>ET.SceneType</target_type_name>
+		</mapper>
+	</externaltype>
+	
+	<enum name="FGUILayer">
+		<var name="Background" alias="背景" value="0"/>
+		<var name="Panel" alias="系统" value="1"/>
+		<var name="Fixed" alias="固定" value="2"/>
+		<var name="Window" alias="窗口" value="3"/>
+		<var name="Popup" alias="弹窗" value="4"/>
+		<var name="Tutorial" alias="引导" value="5"/>
+		<var name="Tips" alias="提示" value="6"/>
+		<var name="Loading" alias="加载" value="7"/>
+	</enum>
+</module>

@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1001,
+    "name": "近战基础攻击",
+    "type": "攻击威能",
+    "class": "通用",
+    "level": 1,
+    "hierarchy": "基础",
+    "use_equip": "武器",
+    "use_weapon": "近战",
+    "action_type": "标准动作",
+    "attack_roll": "力量调整值",
+    "defence_roll": "防御等级"
+  },
+  {
+    "id": 1002,
+    "name": "远程普通攻击",
+    "type": "攻击威能",
+    "class": "通用",
+    "level": 1,
+    "hierarchy": "基础",
+    "use_equip": "武器",
+    "use_weapon": "远程",
+    "action_type": "标准动作",
+    "attack_roll": "敏捷调整值",
+    "defence_roll": "防御等级"
+  },
+  {
+    "id": 101001,
+    "name": "顺势斩",
+    "type": "攻击威能",
+    "class": "战士",
+    "level": 1,
+    "hierarchy": "常规",
+    "use_equip": "武器",
+    "use_weapon": "近战",
+    "action_type": "标准动作",
+    "attack_roll": "力量调整值",
+    "defence_roll": "防御等级"
+  },
+  {
+    "id": 101002,
+    "name": "收割打击",
+    "type": "攻击威能",
+    "class": "战士",
+    "level": 1,
+    "hierarchy": "常规",
+    "use_equip": "武器",
+    "use_weapon": "近战",
+    "action_type": "标准动作",
+    "attack_roll": "力量调整值",
+    "defence_roll": "防御等级"
+  },
+  {
+    "id": 101003,
+    "name": "稳定打击",
+    "type": "攻击威能",
+    "class": "战士",
+    "level": 1,
+    "hierarchy": "常规",
+    "use_equip": "武器",
+    "use_weapon": "近战",
+    "action_type": "标准动作",
+    "attack_roll": "力量调整值+2",
+    "defence_roll": "防御等级"
+  },
+  {
+    "id": 101004,
+    "name": "铁流",
+    "type": "攻击威能",
+    "class": "战士",
+    "level": 1,
+    "hierarchy": "常规",
+    "use_equip": "武器 | 盾牌",
+    "use_weapon": "近战",
+    "action_type": "标准动作",
+    "attack_roll": "力量调整值",
+    "defence_roll": "防御等级"
+  }
+]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ET.StartServer;
+using System;
 
 
 namespace ET
@@ -21,7 +22,7 @@ namespace ET
 			Unit unit = UnitFactory.Create(scene, player.Id, UnitType.Player);
 			unit.AddComponent<UnitGateComponent, long>(session.InstanceId);
 			
-			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Map1");
+			StartScene startSceneConfig = Tables.Ins.TbStartScene.GetBySceneName(session.DomainZone(), "Map1");
 			response.MyId = player.Id;
 			reply();
 			

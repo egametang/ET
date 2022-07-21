@@ -3,7 +3,9 @@
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
-        "Unity.Mono"
+        "Unity.Mono",
+        "Luban",
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"

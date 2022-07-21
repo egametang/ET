@@ -1,3 +1,5 @@
+using ET.StartServer;
+
 namespace ET
 {
     public static class RobotSceneFactory
@@ -9,7 +11,7 @@ namespace ET
             int zone,
             string name,
             SceneType sceneType,
-            StartSceneConfig startSceneConfig = null
+            StartScene startSceneConfig = null
         )
         {
             await ETTask.CompletedTask;

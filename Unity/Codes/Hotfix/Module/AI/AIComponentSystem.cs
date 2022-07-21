@@ -53,9 +53,9 @@ namespace ET
                 return;
             }
 
-            var oneAI = AIConfigCategory.Instance.AIConfigs[self.AIConfigId];
+            var oneAI = Tables.Ins.TbAI.Get(self.AIConfigId);
 
-            foreach (AIConfig aiConfig in oneAI.Values)
+            foreach (AIMeta aiConfig in oneAI.Metas)
             {
 
                 AIDispatcherComponent.Instance.AIHandlers.TryGetValue(aiConfig.Name, out AAIHandler aaiHandler);

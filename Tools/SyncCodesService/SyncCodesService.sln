@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncCodesService", "SyncCodesService\SyncCodesService.csproj", "{519A11D1-4AE8-4F18-B227-6F1734BC4AEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdjustETCsprojs", "dep\AdjustETCsprojs\AdjustETCsprojs\AdjustETCsprojs.csproj", "{A24690AD-07F4-4CD1-8CCA-54A1B673A151}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{519A11D1-4AE8-4F18-B227-6F1734BC4AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{519A11D1-4AE8-4F18-B227-6F1734BC4AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{519A11D1-4AE8-4F18-B227-6F1734BC4AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{519A11D1-4AE8-4F18-B227-6F1734BC4AEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A24690AD-07F4-4CD1-8CCA-54A1B673A151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24690AD-07F4-4CD1-8CCA-54A1B673A151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24690AD-07F4-4CD1-8CCA-54A1B673A151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24690AD-07F4-4CD1-8CCA-54A1B673A151}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2351DFF-583A-4F44-BD37-65F6F5A810F4}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,73 @@
+[
+  {
+    "id": 1001,
+    "name": "战士",
+    "power_type": 1,
+    "weapon_proficiency": [
+      1,
+      2,
+      3
+    ],
+    "armor_proficiency": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "shield_proficiency": [
+      1,
+      2
+    ],
+    "attribute_change": [
+      {
+        "id": 1001,
+        "value": 2
+      },
+      {
+        "id": 1002,
+        "value": 2
+      }
+    ],
+    "hp_init": 15,
+    "hp_levelup": 6,
+    "healing_suges": 9,
+    "skill_lottery": [
+      1001,
+      1002,
+      1003
+    ],
+    "skill_choose": 2,
+    "probability": 1000
+  },
+  {
+    "id": 1002,
+    "name": "法师",
+    "power_type": 2,
+    "weapon_proficiency": [
+      1
+    ],
+    "armor_proficiency": [
+      1
+    ],
+    "shield_proficiency": [
+      1
+    ],
+    "attribute_change": [
+      {
+        "id": 1004,
+        "value": 2
+      }
+    ],
+    "hp_init": 10,
+    "hp_levelup": 4,
+    "healing_suges": 6,
+    "skill_lottery": [
+      1001,
+      1002,
+      1003
+    ],
+    "skill_choose": 2,
+    "probability": 1000
+  }
+]

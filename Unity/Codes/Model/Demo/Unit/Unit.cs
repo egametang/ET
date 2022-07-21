@@ -9,7 +9,7 @@ namespace ET
         public int ConfigId; //配置表id
 
         [BsonIgnore]
-        public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
+        public UnitConfig Config => Tables.Ins.TbUnit.Get(this.ConfigId);
 
         private WrapVector3 position = new WrapVector3(); //坐标
 

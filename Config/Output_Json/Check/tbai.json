@@ -1,0 +1,138 @@
+[
+  {
+    "id": 0,
+    "metas": [
+      {
+        "id": 0,
+        "order": 0,
+        "name": "",
+        "can_repeat": true,
+        "condition": {
+          "$type": "None"
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "metas": [
+      {
+        "id": 101,
+        "order": 1,
+        "name": "AI_CastSkill",
+        "can_repeat": true,
+        "condition": {
+          "$type": "None"
+        },
+        "execute": {
+          "$type": "None"
+        }
+      },
+      {
+        "id": 102,
+        "order": 2,
+        "name": "AI_TurnFallback",
+        "can_repeat": true,
+        "condition": {
+          "$type": "None"
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "metas": [
+      {
+        "id": 201,
+        "order": 1,
+        "name": "AI_CastSkill",
+        "can_repeat": true,
+        "condition": {
+          "$type": "None"
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "metas": [
+      {
+        "id": 101,
+        "order": 1,
+        "name": "AI_Explosion",
+        "can_repeat": false,
+        "condition": {
+          "$type": "None"
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  },
+  {
+    "id": 20001,
+    "metas": [
+      {
+        "id": 101,
+        "order": 1,
+        "name": "Pick_CommonPickSingle",
+        "can_repeat": true,
+        "condition": {
+          "$type": "PickSingle",
+          "target_team": 2
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  },
+  {
+    "id": 20002,
+    "metas": [
+      {
+        "id": 101,
+        "order": 1,
+        "name": "Pick_CommonPickMulti",
+        "can_repeat": true,
+        "condition": {
+          "$type": "PickMulti",
+          "target_team": 2,
+          "target_num": -1
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  },
+  {
+    "id": 20003,
+    "metas": [
+      {
+        "id": 101,
+        "order": 1,
+        "name": "Pick_CommonPickMulti",
+        "can_repeat": true,
+        "condition": {
+          "$type": "PickMulti",
+          "target_team": 2,
+          "target_num": 2
+        },
+        "execute": {
+          "$type": "None"
+        }
+      }
+    ]
+  }
+]

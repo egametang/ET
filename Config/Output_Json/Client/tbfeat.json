@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1001,
+    "name": "乐观精神",
+    "condition_race": 1001,
+    "condition_attribute": [
+      {
+        "id": 1001,
+        "value": 12
+      },
+      {
+        "id": 1003,
+        "value": 15
+      }
+    ],
+    "condition_feature": [],
+    "buff_id": [],
+    "probability": 2000
+  },
+  {
+    "id": 1002,
+    "name": "坚毅",
+    "condition_race": 1001,
+    "condition_attribute": [
+      {
+        "id": 1002,
+        "value": 20
+      }
+    ],
+    "condition_feature": [],
+    "buff_id": [],
+    "probability": 100
+  }
+]

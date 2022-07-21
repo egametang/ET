@@ -24,7 +24,7 @@ namespace ET
     {
         private static long GetLocationSceneId(long key)
         {
-            return StartSceneConfigCategory.Instance.LocationConfig.InstanceId;
+            return Tables.Ins.TbStartScene.LocationConfig.InstanceId;
         }
 
         public static async ETTask Add(this LocationProxyComponent self, long key, long instanceId)

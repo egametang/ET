@@ -41,12 +41,6 @@ namespace ET
 				
                 switch (Game.Options.AppType)
                 {
-                    case AppType.ExcelExporter:
-                    {
-                        Game.Options.Console = 1;
-                        ExcelExporter.Export();
-                        return 0;
-                    }
                     case AppType.Proto2CS:
                     {
                         Game.Options.Console = 1;

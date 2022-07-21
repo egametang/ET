@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 2,
+    "name": "Realm",
+    "outer_port": 10002
+  },
+  {
+    "id": 2,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 3,
+    "name": "Gate1",
+    "outer_port": 10003
+  },
+  {
+    "id": 3,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 3,
+    "name": "Gate2",
+    "outer_port": 10004
+  },
+  {
+    "id": 4,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 5,
+    "name": "Location",
+    "outer_port": 0
+  },
+  {
+    "id": 5,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 6,
+    "name": "Map",
+    "outer_port": 0
+  },
+  {
+    "id": 6,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 7,
+    "name": "Account",
+    "outer_port": 10005
+  },
+  {
+    "id": 7,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 8,
+    "name": "LoginCenter",
+    "outer_port": 0
+  },
+  {
+    "id": 8,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 9,
+    "name": "DB",
+    "outer_port": 0
+  },
+  {
+    "id": 9,
+    "process": 1,
+    "zone": 1,
+    "scene_type": 10,
+    "name": "UnitCache",
+    "outer_port": 0
+  },
+  {
+    "id": 200,
+    "process": 2,
+    "zone": 2,
+    "scene_type": 32,
+    "name": "Robot01",
+    "outer_port": 0
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "level": 1,
+    "name": "F级",
+    "exp": 100
+  },
+  {
+    "level": 2,
+    "name": "E级",
+    "exp": 200
+  },
+  {
+    "level": 3,
+    "name": "D级",
+    "exp": 400
+  },
+  {
+    "level": 4,
+    "name": "C级",
+    "exp": 800
+  },
+  {
+    "level": 5,
+    "name": "B级",
+    "exp": 1600
+  },
+  {
+    "level": 6,
+    "name": "A级",
+    "exp": 3200
+  },
+  {
+    "level": 7,
+    "name": "S级",
+    "exp": 6400
+  },
+  {
+    "level": 8,
+    "name": "SS级",
+    "exp": 12800
+  }
+]

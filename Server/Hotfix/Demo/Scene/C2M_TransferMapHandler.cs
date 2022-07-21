@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ET.StartServer;
+using System;
 
 namespace ET
 {
@@ -20,7 +21,7 @@ namespace ET
 				toMap = "Map1";
 			}
 
-			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(unit.DomainScene().Zone, toMap);
+			StartScene startSceneConfig = Tables.Ins.TbStartScene.GetBySceneName(unit.DomainScene().Zone, toMap);
 			TransferHelper.Transfer(unit, startSceneConfig.InstanceId, toMap).Coroutine();
 			
 			reply();

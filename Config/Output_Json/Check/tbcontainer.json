@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "常规",
+    "type": 1,
+    "Capacity": 1000
+  },
+  {
+    "id": 2,
+    "name": "装备",
+    "type": 1,
+    "Capacity": 100
+  },
+  {
+    "id": 3,
+    "name": "奇物",
+    "type": 1,
+    "Capacity": 100
+  },
+  {
+    "id": 4,
+    "name": "药剂",
+    "type": 1,
+    "Capacity": 100
+  },
+  {
+    "id": 5,
+    "name": "龙晶",
+    "type": 1,
+    "Capacity": 100
+  },
+  {
+    "id": 6,
+    "name": "魔法马车",
+    "type": 2,
+    "Capacity": 100
+  },
+  {
+    "id": 99,
+    "name": "隐藏",
+    "type": 1,
+    "Capacity": 1000
+  }
+]

@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 4205209317
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ec6c15bc2c1985fe313c1d25169ab718
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Bundles/ConfigBin/tbclass.bytes
+- Assets/Bundles/ConfigBin/tbfeat.bytes
+- Assets/Bundles/ConfigBin/tbfgui.bytes
+- Assets/Bundles/ConfigBin/tbitem.bytes
+- Assets/Bundles/ConfigBin/tbequip.bytes
+- Assets/Bundles/ConfigBin/global_tbglobal.bytes
+- Assets/Bundles/ConfigBin/tbrandomname.bytes
+- Assets/Bundles/ConfigBin/tbskillpicktargetweights.bytes
+- Assets/Bundles/ConfigBin/tbai.bytes
+- Assets/Bundles/ConfigBin/tbsystem.bytes
+- Assets/Bundles/ConfigBin/tblottery.bytes
+- Assets/Bundles/ConfigBin/tbskill.bytes
+- Assets/Bundles/ConfigBin/tbrace.bytes
+- Assets/Bundles/ConfigBin/tbspecialty.bytes
+- Assets/Bundles/ConfigBin/tbcontainer.bytes
+- Assets/Bundles/ConfigBin/tbgrouplevel.bytes
+- Assets/Bundles/ConfigBin/tbunit.bytes
+- Assets/Bundles/ConfigBin/tbbuff.bytes
+- Assets/Bundles/ConfigBin/tbpower.bytes
+Dependencies: []

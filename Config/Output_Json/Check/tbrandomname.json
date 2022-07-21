@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1001,
+    "name_before": "英勇的",
+    "name_after": "黑暗之女"
+  },
+  {
+    "id": 1002,
+    "name_before": "胆小的",
+    "name_after": "狂战士"
+  },
+  {
+    "id": 1003,
+    "name_before": "刚毅的",
+    "name_after": "正义巨像"
+  },
+  {
+    "id": 1004,
+    "name_before": "谨慎的",
+    "name_after": "卡牌大师"
+  },
+  {
+    "id": 1005,
+    "name_before": "好学的",
+    "name_after": "德邦总管"
+  },
+  {
+    "id": 1006,
+    "name_before": "小心的",
+    "name_after": "无畏战车"
+  },
+  {
+    "id": 1007,
+    "name_before": "美丽的",
+    "name_after": "诡术妖姬"
+  },
+  {
+    "id": 1008,
+    "name_before": "狂暴的",
+    "name_after": "猩红收割者"
+  },
+  {
+    "id": 1009,
+    "name_before": "正义的",
+    "name_after": "远古恐惧"
+  },
+  {
+    "id": 1010,
+    "name_before": "迷茫的",
+    "name_after": "正义天使"
+  }
+]

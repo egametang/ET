@@ -1,0 +1,141 @@
+[
+  {
+    "id": 1001,
+    "name": "近战基础攻击",
+    "priority": 0,
+    "pick_ai": 20001,
+    "consumes": [],
+    "operations": [
+      {
+        "buff_id": 100002,
+        "custom_values": [
+          {
+            "key": "Fixed",
+            "value": 10
+          }
+        ]
+      }
+    ],
+    "desc": "",
+    "skill_range": 0,
+    "cooldown": 0,
+    "is_passive": false,
+    "x1": [],
+    "x2": [],
+    "x3": [],
+    "x4": []
+  },
+  {
+    "id": 1002,
+    "name": "远程普通攻击",
+    "priority": 0,
+    "pick_ai": 20001,
+    "consumes": [],
+    "operations": [],
+    "desc": "",
+    "skill_range": 0,
+    "cooldown": 0,
+    "is_passive": false,
+    "x1": [],
+    "x2": [],
+    "x3": [],
+    "x4": []
+  },
+  {
+    "id": 101001,
+    "name": "顺势斩",
+    "priority": 0,
+    "pick_ai": 20001,
+    "consumes": [],
+    "operations": [],
+    "desc": "",
+    "skill_range": 0,
+    "cooldown": 0,
+    "is_passive": false,
+    "x1": [],
+    "x2": [],
+    "x3": [],
+    "x4": []
+  },
+  {
+    "id": 101002,
+    "name": "收割打击",
+    "priority": 0,
+    "pick_ai": 20001,
+    "consumes": [],
+    "operations": [],
+    "desc": "",
+    "skill_range": 0,
+    "cooldown": 0,
+    "is_passive": false,
+    "x1": [],
+    "x2": [],
+    "x3": [],
+    "x4": []
+  },
+  {
+    "id": 101003,
+    "name": "稳定打击",
+    "priority": 0,
+    "pick_ai": 20001,
+    "consumes": [],
+    "operations": [],
+    "desc": "",
+    "skill_range": 0,
+    "cooldown": 0,
+    "is_passive": false,
+    "x1": [],
+    "x2": [],
+    "x3": [],
+    "x4": []
+  },
+  {
+    "id": 101004,
+    "name": "铁流",
+    "priority": 0,
+    "pick_ai": 20001,
+    "consumes": [],
+    "operations": [],
+    "desc": "",
+    "skill_range": 0,
+    "cooldown": 0,
+    "is_passive": false,
+    "x1": [
+      [
+        5,
+        0,
+        1
+      ],
+      [
+        2,
+        8,
+        4
+      ]
+    ],
+    "x2": [
+      [
+        5,
+        0,
+        1
+      ],
+      [
+        2,
+        8,
+        4
+      ]
+    ],
+    "x3": [],
+    "x4": [
+      [
+        5,
+        0,
+        1
+      ],
+      [
+        2,
+        8,
+        4
+      ]
+    ]
+  }
+]

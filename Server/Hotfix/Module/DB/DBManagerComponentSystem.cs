@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ET.StartServer;
+using System;
 
 namespace ET
 {
@@ -31,13 +32,13 @@ namespace ET
                 return dbComponent;
             }
 
-            StartZoneConfig startZoneConfig = StartZoneConfigCategory.Instance.Get(zone);
-            if (startZoneConfig.DBConnection == "")
+            StartZone startZoneConfig = Tables.Ins.TbStartZone.Get(zone);
+            if (startZoneConfig.DbConnection == "")
             {
                 throw new Exception($"zone: {zone} not found mongo connect string");
             }
 
-            dbComponent = self.AddChild<DBComponent, string, string, int>(startZoneConfig.DBConnection, startZoneConfig.DBName, zone);
+            dbComponent = self.AddChild<DBComponent, string, string, int>(startZoneConfig.DbConnection, startZoneConfig.DbName, zone);
             self.DBComponents[zone] = dbComponent;
             return dbComponent;
         }

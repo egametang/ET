@@ -44,3 +44,14 @@ MonoBehaviour:
       PackRuleName: PackDirectory
       FilterRuleName: CollectAll
       AssetTags: 
+  - GroupName: Config
+    GroupDesc: "\u914D\u7F6E"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Bundles/ConfigBin
+      CollectorType: 0
+      AddressRuleName: AddressByFileName
+      PackRuleName: PackDirectory
+      FilterRuleName: CollectAll
+      AssetTags: 

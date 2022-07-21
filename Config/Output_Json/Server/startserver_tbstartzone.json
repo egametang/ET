@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "db_connection": "mongodb://127.0.0.1:27017",
+    "db_name": "ET1"
+  },
+  {
+    "id": 2,
+    "db_connection": "mongodb://127.0.0.1:27017",
+    "db_name": "ET2"
+  }
+]
