@@ -1,0 +1,8 @@
+ManifestVersion: 1
+ModuleID: Unity.Mathematics
+ModuleVersion: 1.0.1.0
+ModuleFiles:
+  MathematicsDrawers.cs
+  MathematicsDrawers.cs.meta
+  Sirenix.OdinInspector.Modules.UnityMathematics.asmdef
+  Sirenix.OdinInspector.Modules.UnityMathematics.asmdef.meta

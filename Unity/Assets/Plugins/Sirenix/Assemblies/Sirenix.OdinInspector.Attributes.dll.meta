@@ -1,0 +1,47 @@
+fileFormatVersion: 2
+guid: 47a84ebde4ec47fabb620b30cc7a3e5c
+timeCreated: 1488828285
+licenseType: Free
+PluginImporter:
+  serializedVersion: 1
+  iconMap: {}
+  executionOrder: {}
+  isPreloaded: 0
+  isOverridable: 0
+  platformData:
+    Any:
+      enabled: 1
+      settings:
+        Exclude Android: 0
+        Exclude Editor: 0
+        Exclude Linux: 0
+        Exclude Linux64: 0
+        Exclude LinuxUniversal: 0
+        Exclude N3DS: 0
+        Exclude OSXIntel: 0
+        Exclude OSXIntel64: 0
+        Exclude OSXUniversal: 0
+        Exclude PS4: 0
+        Exclude PSM: 0
+        Exclude PSP2: 0
+        Exclude SamsungTV: 0
+        Exclude Tizen: 0
+        Exclude WebGL: 0
+        Exclude WiiU: 0
+        Exclude Win: 0
+        Exclude Win64: 0
+        Exclude WindowsStoreApps: 0
+        Exclude XboxOne: 0
+        Exclude iOS: 0
+        Exclude tvOS: 0
+    Editor:
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true
+    WindowsStoreApps:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
