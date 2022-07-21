@@ -6,7 +6,6 @@ namespace ET
         {
             Scene currentScene = args.CurrentScene;
             currentScene.AddComponent<UIComponent>();
-            currentScene.AddComponent<ResourcesLoaderComponent>();
         }
     }
 }
