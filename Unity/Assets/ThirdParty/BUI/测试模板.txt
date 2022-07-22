@@ -1,0 +1,6 @@
+using UnityEngine;
+
+public class #CLASS_NAME# : MonoBehaviour
+{
+#FIELDS#
+}

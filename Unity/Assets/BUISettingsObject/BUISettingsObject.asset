@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123a76e78ff644747a67e07a96ec3716, type: 3}
+  m_Name: BUISettingsObject
+  m_EditorClassIdentifier: 
+  templatePath: "D:/Github/Morphling/Unity/Assets/ThirdParty/BUI/\u6D4B\u8BD5\u6A21\u677F.txt"
+  outputFolder: D:/Github/Morphling/Unity/Codes/ModelView/Main/UI
