@@ -108,6 +108,10 @@
   <ItemGroup>
     <Compile Remove="..\..\Unity\Codes\Model\Module\Message\ErrorCode.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UniTask" Version="2.3.1" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
     <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
