@@ -1,10 +1,7 @@
 ManifestFileVersion: 0
-CRC: 1529008426
+CRC: 578334263
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: assets/scenes.bundle
-      Dependencies: {}
-    Info_1:
-      Name: assets/bundles/configbin.bundle
       Dependencies: {}

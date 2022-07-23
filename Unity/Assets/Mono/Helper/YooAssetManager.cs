@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using FairyGUI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +10,9 @@ namespace ET
 {
     public class YooAssetManager : Singleton<YooAssetManager>
     {
-        public async UniTask<T> Load<T>(string location) where T : UnityEngine.Object
+        public async UniTask<T> LoadAsync<T>(string location) where T : UnityEngine.Object
         {
-            var handle = YooAssets.LoadAssetSync<T>(location);
+            var handle = YooAssets.LoadAssetAsync<T>(location);
             await handle.Task;
             T result = handle.AssetObject as T;
             handle.Release();

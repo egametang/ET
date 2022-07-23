@@ -67,226 +67,229 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AIModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ARModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ARModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AndroidJNIModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AndroidJNIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CloudFoundationModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CloudFoundationModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CloudFoundationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DSPGraphModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.DSPGraphModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.DSPGraphModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GIModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.GIModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.GIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GridModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.GridModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HotReloadModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.HotReloadModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.InputModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.LocalizationModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.LocalizationModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ProfilerModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ProfilerModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StreamingModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.StreamingModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.StreamingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubstanceModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SubstanceModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.SubstanceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TLSModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TLSModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TLSModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextCoreModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TextCoreModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TextCoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsNativeModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsNativeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UmbraModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UmbraModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityCurlModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityCurlModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityCurlModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityTestProtocolModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityTestProtocolModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VFXModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VFXModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VFXModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VideoModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VirtualTexturingModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.VirtualTexturingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.WindModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.CoreModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.GraphViewModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.GraphViewModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.GraphViewModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.PackageManagerUIModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.PackageManagerUIModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.PackageManagerUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SceneTemplateModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.SceneTemplateModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.SceneTemplateModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UIElementsModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UIElementsSamplesModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsSamplesModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsSamplesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UIServiceModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UIServiceModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UIServiceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Graphs">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Sirenix.OdinInspector.Editor">
       <HintPath>Assets\Plugins\Sirenix\Assemblies\Sirenix.OdinInspector.Editor.dll</HintPath>
@@ -316,352 +319,352 @@
       <HintPath>Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Core.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Runtime.Serialization.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Xml.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Xml.Linq.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Xml.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Numerics.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics.Vectors">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Numerics.Vectors.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Net.Http.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.IO.Compression.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Microsoft.CSharp.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Microsoft.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Data">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Data.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\Microsoft.Win32.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\netstandard.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="System.AppContext">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.AppContext.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.AppContext.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Concurrent">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.Concurrent.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.Concurrent.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.NonGeneric">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.NonGeneric.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.NonGeneric.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Specialized">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.Specialized.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.Specialized.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Annotations">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.Annotations.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.EventBasedAsync">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.EventBasedAsync.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.EventBasedAsync.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.TypeConverter">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.TypeConverter.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.TypeConverter.dll</HintPath>
     </Reference>
     <Reference Include="System.Console">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Console.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Console.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Common">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Data.Common.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Contracts">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Contracts.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Debug">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Debug.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Debug.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.FileVersionInfo">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.FileVersionInfo.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.FileVersionInfo.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Process">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Process.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Process.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.StackTrace">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.StackTrace.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.StackTrace.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.TextWriterTraceListener">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.TextWriterTraceListener.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.TextWriterTraceListener.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Tools">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Tools.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Tools.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.TraceSource">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.TraceSource.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.TraceSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Drawing.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Drawing.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Dynamic.Runtime">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Dynamic.Runtime.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Dynamic.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Calendars">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.Calendars.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.Calendars.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Extensions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.Extensions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.ZipFile">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.Compression.ZipFile.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.Compression.ZipFile.dll</HintPath>
     </Reference>
     <Reference Include="System.IO">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.DriveInfo">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.DriveInfo.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.DriveInfo.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.Watcher">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.Watcher.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.Watcher.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.IsolatedStorage">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.IsolatedStorage.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.IsolatedStorage.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.MemoryMappedFiles">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.MemoryMappedFiles.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.MemoryMappedFiles.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Pipes">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.Pipes.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.Pipes.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.UnmanagedMemoryStream">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.UnmanagedMemoryStream.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.UnmanagedMemoryStream.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Expressions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Expressions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Expressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Parallel">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Parallel.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Parallel.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Queryable">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Queryable.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Queryable.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Rtc">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Http.Rtc.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Http.Rtc.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.NameResolution">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.NameResolution.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.NameResolution.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.NetworkInformation">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.NetworkInformation.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.NetworkInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Ping">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Ping.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Ping.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Requests">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Requests.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Requests.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Security">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Security.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Security.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Sockets">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Sockets.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Sockets.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebHeaderCollection">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebHeaderCollection.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebHeaderCollection.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebSockets.Client">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebSockets.Client.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebSockets.Client.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebSockets">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebSockets.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebSockets.dll</HintPath>
     </Reference>
     <Reference Include="System.ObjectModel">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ObjectModel.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ObjectModel.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Emit">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Emit.ILGeneration">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.ILGeneration.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.ILGeneration.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Emit.Lightweight">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.Lightweight.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Extensions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Extensions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.Reader">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.Reader.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.Reader.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.ResourceManager">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.ResourceManager.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.Writer">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.Writer.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.Writer.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.VisualC">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.CompilerServices.VisualC.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.CompilerServices.VisualC.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Extensions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Extensions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Handles">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Handles.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Handles.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Numerics">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Numerics.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Formatters">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Formatters.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Formatters.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Json">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Json.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Xml">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Xml.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Claims">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Claims.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Claims.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Algorithms">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Algorithms.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Csp">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Csp.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Csp.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Encoding">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Encoding.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.X509Certificates">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Principal">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Principal.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Principal.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.SecureString">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.SecureString.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.SecureString.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Duplex">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Duplex.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Duplex.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Http">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Http.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.NetTcp">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.NetTcp.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.NetTcp.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Primitives">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Primitives.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Security">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Security.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Security.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.Encoding.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding.Extensions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.Encoding.Extensions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.Encoding.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.RegularExpressions">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.RegularExpressions.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.RegularExpressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Overlapped">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Overlapped.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Overlapped.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Tasks.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Tasks.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Parallel">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Tasks.Parallel.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Tasks.Parallel.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Thread">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Thread.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Thread.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.ThreadPool">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.ThreadPool.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.ThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Timer">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Timer.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Timer.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ValueTuple.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.ReaderWriter">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.ReaderWriter.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XDocument">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XDocument.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XmlDocument">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XmlDocument.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XmlDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XmlSerializer">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XmlSerializer.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XmlSerializer.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath.XDocument">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
+      <HintPath>D:\Apps\Tools\UnityHub\UnityEditors\2020.3.36f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>

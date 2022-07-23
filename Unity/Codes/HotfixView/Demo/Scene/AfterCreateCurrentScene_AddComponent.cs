@@ -5,7 +5,6 @@ namespace ET
         protected override void Run(EventType.AfterCreateCurrentScene args)
         {
             Scene currentScene = args.CurrentScene;
-            currentScene.AddComponent<UIComponent>();
         }
     }
 }

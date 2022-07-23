@@ -2,8 +2,8 @@
     "Summary": {
         "YooVersion": "1.2.0",
         "UnityVersion": "2020.3.36f1c1",
-        "BuildDate": "2022/7/21 22:27:15",
-        "BuildSeconds": 91,
+        "BuildDate": "2022/7/24 2:02:51",
+        "BuildSeconds": 241,
         "BuildTarget": 19,
         "BuildPipeline": 0,
         "BuildMode": 0,
@@ -18,38 +18,38 @@
         "CompressOption": 2,
         "DisableWriteTypeTree": false,
         "IgnoreTypeTreeChanges": true,
-        "AssetFileTotalCount": 33,
-        "AllBundleTotalCount": 4,
-        "AllBundleTotalSize": 2467567,
-        "BuildinBundleTotalCount": 1,
-        "BuildinBundleTotalSize": 4801,
+        "AssetFileTotalCount": 38,
+        "AllBundleTotalCount": 27,
+        "AllBundleTotalSize": 3826120,
+        "BuildinBundleTotalCount": 5,
+        "BuildinBundleTotalSize": 1345321,
         "EncryptedBundleTotalCount": 0,
         "EncryptedBundleTotalSize": 0,
-        "RawBundleTotalCount": 2,
-        "RawBundleTotalSize": 356916
+        "RawBundleTotalCount": 26,
+        "RawBundleTotalSize": 1720205
     },
     "AssetInfos": [
         {
             "Address": "Code.dll",
             "AssetPath": "Assets/Bundles/Code/Code.dll.bytes",
-            "AssetGUID": "238e294b9c9af7f459b1efdbea13d8e9",
+            "AssetGUID": "42cc8439fb2493f4ead8f73dbf1ef7f9",
             "AssetTags": [
                 "csharp"
             ],
             "MainBundleName": "assets/bundles/code/code.dll.rawfile",
-            "MainBundleSize": 239104,
+            "MainBundleSize": 243712,
             "DependBundles": [],
             "DependAssets": []
         },
         {
             "Address": "Code.pdb",
             "AssetPath": "Assets/Bundles/Code/Code.pdb.bytes",
-            "AssetGUID": "77e04ce293847cf499bc440a64cbd095",
+            "AssetGUID": "c85c1db6162b313449aeae1fa0309213",
             "AssetTags": [
                 "csharp"
             ],
             "MainBundleName": "assets/bundles/code/code.pdb.rawfile",
-            "MainBundleSize": 117812,
+            "MainBundleSize": 126972,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -61,7 +61,7 @@
                 "scene"
             ],
             "MainBundleName": "assets/scenes.bundle",
-            "MainBundleSize": 2105850,
+            "MainBundleSize": 2105915,
             "DependBundles": [],
             "DependAssets": [
                 "Assets/Scenes/Map1/Lightmap-0_comp_light.exr",
@@ -80,7 +80,7 @@
                 "scene"
             ],
             "MainBundleName": "assets/scenes.bundle",
-            "MainBundleSize": 2105850,
+            "MainBundleSize": 2105915,
             "DependBundles": [],
             "DependAssets": [
                 "Assets/Scenes/Map2Settings.lighting",
@@ -95,9 +95,11 @@
             "Address": "global_tbglobal",
             "AssetPath": "Assets/Bundles/ConfigBin/global_tbglobal.bytes",
             "AssetGUID": "a634aecce9ca0604eba0915c97088914",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/global_tbglobal.rawfile",
+            "MainBundleSize": 2,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -105,9 +107,11 @@
             "Address": "tbai",
             "AssetPath": "Assets/Bundles/ConfigBin/tbai.bytes",
             "AssetGUID": "3b6390330718d8e4aa9c23a0e6d594c1",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbai.rawfile",
+            "MainBundleSize": 255,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -115,9 +119,11 @@
             "Address": "tbbuff",
             "AssetPath": "Assets/Bundles/ConfigBin/tbbuff.bytes",
             "AssetGUID": "eeac8bbda3d8dc04288a49327fcfe16b",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbbuff.rawfile",
+            "MainBundleSize": 211,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -125,9 +131,11 @@
             "Address": "tbclass",
             "AssetPath": "Assets/Bundles/ConfigBin/tbclass.bytes",
             "AssetGUID": "e3d91adbb0172b04aa07c18e86f6b970",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbclass.rawfile",
+            "MainBundleSize": 77,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -135,9 +143,11 @@
             "Address": "tbcontainer",
             "AssetPath": "Assets/Bundles/ConfigBin/tbcontainer.bytes",
             "AssetGUID": "4ea413ba6415f7e46a679cf704371cbf",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbcontainer.rawfile",
+            "MainBundleSize": 79,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -145,9 +155,11 @@
             "Address": "tbequip",
             "AssetPath": "Assets/Bundles/ConfigBin/tbequip.bytes",
             "AssetGUID": "9596a29fe3f782542817e7692d2b8356",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbequip.rawfile",
+            "MainBundleSize": 12,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -155,9 +167,11 @@
             "Address": "tbfeat",
             "AssetPath": "Assets/Bundles/ConfigBin/tbfeat.bytes",
             "AssetGUID": "75bb8d2a53476424ba33db04d540facc",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbfeat.rawfile",
+            "MainBundleSize": 47,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -165,9 +179,11 @@
             "Address": "tbfgui",
             "AssetPath": "Assets/Bundles/ConfigBin/tbfgui.bytes",
             "AssetGUID": "18c1654aa1e473544851519c96497ad2",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbfgui.rawfile",
+            "MainBundleSize": 709,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -175,9 +191,11 @@
             "Address": "tbgrouplevel",
             "AssetPath": "Assets/Bundles/ConfigBin/tbgrouplevel.bytes",
             "AssetGUID": "531b393c92c046b47808abc320a5f53e",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbgrouplevel.rawfile",
+            "MainBundleSize": 65,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -185,9 +203,11 @@
             "Address": "tbitem",
             "AssetPath": "Assets/Bundles/ConfigBin/tbitem.bytes",
             "AssetGUID": "a94b89f2e5cb46f47ac4bb92cfc7b3a0",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbitem.rawfile",
+            "MainBundleSize": 183,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -195,9 +215,11 @@
             "Address": "tblottery",
             "AssetPath": "Assets/Bundles/ConfigBin/tblottery.bytes",
             "AssetGUID": "73a68f88b1b21964f9328547aa60802b",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tblottery.rawfile",
+            "MainBundleSize": 167,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -205,9 +227,11 @@
             "Address": "tbpower",
             "AssetPath": "Assets/Bundles/ConfigBin/tbpower.bytes",
             "AssetGUID": "e3e52be6131a06c44bd324e4368251de",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbpower.rawfile",
+            "MainBundleSize": 613,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -215,9 +239,11 @@
             "Address": "tbrace",
             "AssetPath": "Assets/Bundles/ConfigBin/tbrace.bytes",
             "AssetGUID": "5962f6915b26d87448a80b6353eade7d",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbrace.rawfile",
+            "MainBundleSize": 504,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -225,9 +251,11 @@
             "Address": "tbrandomname",
             "AssetPath": "Assets/Bundles/ConfigBin/tbrandomname.bytes",
             "AssetGUID": "f42ebc883c494474693e917af3d479d8",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbrandomname.rawfile",
+            "MainBundleSize": 251,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -235,9 +263,11 @@
             "Address": "tbskill",
             "AssetPath": "Assets/Bundles/ConfigBin/tbskill.bytes",
             "AssetGUID": "b5414600e3b99da498e9891ba758a837",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbskill.rawfile",
+            "MainBundleSize": 172,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -245,9 +275,11 @@
             "Address": "tbskillpicktargetweights",
             "AssetPath": "Assets/Bundles/ConfigBin/tbskillpicktargetweights.bytes",
             "AssetGUID": "140ff7bef95f3b84bb147eb8ef46ca2f",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbskillpicktargetweights.rawfile",
+            "MainBundleSize": 47,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -255,9 +287,11 @@
             "Address": "tbspecialty",
             "AssetPath": "Assets/Bundles/ConfigBin/tbspecialty.bytes",
             "AssetGUID": "8ea17ba880ea9714d9c65cab4b763c07",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbspecialty.rawfile",
+            "MainBundleSize": 205,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -265,9 +299,11 @@
             "Address": "tbsystem",
             "AssetPath": "Assets/Bundles/ConfigBin/tbsystem.bytes",
             "AssetGUID": "25de31d133f331f43a78452700518ff0",
-            "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbsystem.rawfile",
+            "MainBundleSize": 472,
             "DependBundles": [],
             "DependAssets": []
         },
@@ -275,9 +311,61 @@
             "Address": "tbunit",
             "AssetPath": "Assets/Bundles/ConfigBin/tbunit.bytes",
             "AssetGUID": "07144263bd5e3fe48a0c200465212a07",
+            "AssetTags": [
+                "config"
+            ],
+            "MainBundleName": "assets/bundles/configbin/tbunit.rawfile",
+            "MainBundleSize": 129,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Atlas_fui",
+            "AssetPath": "Assets/Bundles/FGUI/Atlas_fui.bytes",
+            "AssetGUID": "3eec1edbc32027447b88875d861aa331",
             "AssetTags": [],
-            "MainBundleName": "assets/bundles/configbin.bundle",
-            "MainBundleSize": 4801,
+            "MainBundleName": "assets/bundles/fgui/atlas_fui.rawfile",
+            "MainBundleSize": 84,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Main_atlas0",
+            "AssetPath": "Assets/Bundles/FGUI/Main_atlas0.png",
+            "AssetGUID": "47b43e1eb265415458ac2f5026a1256b",
+            "AssetTags": [],
+            "MainBundleName": "assets/bundles/fgui/main_atlas0.rawfile",
+            "MainBundleSize": 12410,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Main_fui",
+            "AssetPath": "Assets/Bundles/FGUI/Main_fui.bytes",
+            "AssetGUID": "2dc84b04107215a468960471e3af41aa",
+            "AssetTags": [],
+            "MainBundleName": "assets/bundles/fgui/main_fui.rawfile",
+            "MainBundleSize": 1207,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UILoginPanel_atlas0",
+            "AssetPath": "Assets/Bundles/FGUI/UILoginPanel_atlas0.png",
+            "AssetGUID": "44fdf2e94b1a5b840ad901c6ba57eab7",
+            "AssetTags": [],
+            "MainBundleName": "assets/bundles/fgui/uiloginpanel_atlas0.rawfile",
+            "MainBundleSize": 1330370,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UILoginPanel_fui",
+            "AssetPath": "Assets/Bundles/FGUI/UILoginPanel_fui.bytes",
+            "AssetGUID": "0a5f451e02dcff04d9b883ecc5e1a1ec",
+            "AssetTags": [],
+            "MainBundleName": "assets/bundles/fgui/uiloginpanel_fui.rawfile",
+            "MainBundleSize": 1250,
             "DependBundles": [],
             "DependAssets": []
         }
@@ -285,9 +373,9 @@
     "BundleInfos": [
         {
             "BundleName": "assets/bundles/code/code.dll.rawfile",
-            "Hash": "4155ba8d22577be6dde561f46cdf381b",
-            "CRC": "be6293d8",
-            "SizeBytes": 239104,
+            "Hash": "2196a5fb112d64da65e2cee29469d23b",
+            "CRC": "06e42cfc",
+            "SizeBytes": 243712,
             "Tags": [
                 "csharp"
             ],
@@ -295,9 +383,9 @@
         },
         {
             "BundleName": "assets/bundles/code/code.pdb.rawfile",
-            "Hash": "b0c221580d189811d9b0296977d549ca",
-            "CRC": "2ea5b3ec",
-            "SizeBytes": 117812,
+            "Hash": "4e6a6d7b9a8b0014c087ef3ecd88f098",
+            "CRC": "1a2974e0",
+            "SizeBytes": 126972,
             "Tags": [
                 "csharp"
             ],
@@ -305,21 +393,243 @@
         },
         {
             "BundleName": "assets/scenes.bundle",
-            "Hash": "ffb669bc87082624647540c6cbcfd3fb",
-            "CRC": "c5e55387",
-            "SizeBytes": 2105850,
+            "Hash": "48148c9eb3918c2db16a602a9d2f31a5",
+            "CRC": "0788e676",
+            "SizeBytes": 2105915,
             "Tags": [
                 "scene"
             ],
             "Flags": 0
         },
         {
-            "BundleName": "assets/bundles/configbin.bundle",
-            "Hash": "1c25491efb06968941d3bd70a408d55a",
-            "CRC": "4cc047bf",
-            "SizeBytes": 4801,
+            "BundleName": "assets/bundles/configbin/global_tbglobal.rawfile",
+            "Hash": "25daad3d9e60b45043a70c4ab7d3b1c6",
+            "CRC": "be23c258",
+            "SizeBytes": 2,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbai.rawfile",
+            "Hash": "181980127257e4c26ea4e9e68105f41d",
+            "CRC": "ab349265",
+            "SizeBytes": 255,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbbuff.rawfile",
+            "Hash": "9c4200d5ed33da42783aeda904fcda77",
+            "CRC": "fe022ed7",
+            "SizeBytes": 211,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbclass.rawfile",
+            "Hash": "c20315fba5f2a69fb91e2bebd96bbb55",
+            "CRC": "0e087fd6",
+            "SizeBytes": 77,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbcontainer.rawfile",
+            "Hash": "50ef7b8d2375412ec296b7e1b07b9201",
+            "CRC": "9c3297c8",
+            "SizeBytes": 79,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbequip.rawfile",
+            "Hash": "fdd16be3ce6bdad70c0efffe6fe6de0f",
+            "CRC": "88299bf7",
+            "SizeBytes": 12,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbfeat.rawfile",
+            "Hash": "10c19b6772b0172c6eea067e1f362b0d",
+            "CRC": "f02606d3",
+            "SizeBytes": 47,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbfgui.rawfile",
+            "Hash": "6c83cd4684846465db8b302edfc1720a",
+            "CRC": "0bc23ec1",
+            "SizeBytes": 709,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbgrouplevel.rawfile",
+            "Hash": "652eafabe0cd745069a7a51e092731ab",
+            "CRC": "7b7fbc6c",
+            "SizeBytes": 65,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbitem.rawfile",
+            "Hash": "50344520acf30daad7346b94e65ec656",
+            "CRC": "de266cab",
+            "SizeBytes": 183,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tblottery.rawfile",
+            "Hash": "42b67be116f4486803d2f31668244ef2",
+            "CRC": "a75d8ab3",
+            "SizeBytes": 167,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbpower.rawfile",
+            "Hash": "65f30ba2082c636bffdca483b504dda8",
+            "CRC": "9b99f4bb",
+            "SizeBytes": 613,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbrace.rawfile",
+            "Hash": "d9932b4f02bb02c0b3bdc5f9b23d1fdb",
+            "CRC": "dd3aeabb",
+            "SizeBytes": 504,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbrandomname.rawfile",
+            "Hash": "d9068f593042ebc6a31035b3c50651c5",
+            "CRC": "48f0103b",
+            "SizeBytes": 251,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbskill.rawfile",
+            "Hash": "87a7fa5c57b9694f83337cb026a0e4a4",
+            "CRC": "6417d45d",
+            "SizeBytes": 172,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbskillpicktargetweights.rawfile",
+            "Hash": "1443c165b78cc6c96f1ab15b915f858f",
+            "CRC": "fb52b522",
+            "SizeBytes": 47,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbspecialty.rawfile",
+            "Hash": "538cfeea23e173311ee87a7aca369703",
+            "CRC": "7688e6e6",
+            "SizeBytes": 205,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbsystem.rawfile",
+            "Hash": "572de52ae827e46e40599ac2419f0f13",
+            "CRC": "9af4603d",
+            "SizeBytes": 472,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/configbin/tbunit.rawfile",
+            "Hash": "f6f273c950929f3a5e5a107f2133bd69",
+            "CRC": "841c4d38",
+            "SizeBytes": 129,
+            "Tags": [
+                "config"
+            ],
+            "Flags": 4
+        },
+        {
+            "BundleName": "assets/bundles/fgui/atlas_fui.rawfile",
+            "Hash": "5de7aeacd45de2bc5b1cffa00c69fdee",
+            "CRC": "690e6e97",
+            "SizeBytes": 84,
             "Tags": [],
-            "Flags": 2
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/bundles/fgui/main_atlas0.rawfile",
+            "Hash": "4521858094dbf7723befd19efee2c4d9",
+            "CRC": "de620327",
+            "SizeBytes": 12410,
+            "Tags": [],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/bundles/fgui/main_fui.rawfile",
+            "Hash": "1bfa6e6a7cf49fa10d2ea2c81978a21c",
+            "CRC": "1db6439e",
+            "SizeBytes": 1207,
+            "Tags": [],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/bundles/fgui/uiloginpanel_atlas0.rawfile",
+            "Hash": "f3b1d84b981a63543d7e59ced35c4f8e",
+            "CRC": "a69d586f",
+            "SizeBytes": 1330370,
+            "Tags": [],
+            "Flags": 6
+        },
+        {
+            "BundleName": "assets/bundles/fgui/uiloginpanel_fui.rawfile",
+            "Hash": "7bf6ab220a3c360b10e68e25b4f72e1c",
+            "CRC": "3c02b8a1",
+            "SizeBytes": 1250,
+            "Tags": [],
+            "Flags": 6
         }
     ]
 }

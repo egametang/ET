@@ -1,0 +1,24 @@
+{
+  "font": "Microsoft YaHei",
+  "fontSize": 22,
+  "textColor": "#000000",
+  "fontAdjustment": false,
+  "colorScheme": [
+    "自定义颜色 #FF0000"
+  ],
+  "fontSizeScheme": [
+    "自定义字体大小 30"
+  ],
+  "fontScheme": [
+    "默认字体"
+  ],
+  "scrollBars": {
+    "horizontal": "",
+    "vertical": "",
+    "defaultDisplay": "visible"
+  },
+  "tipsRes": "",
+  "buttonClickSound": "",
+  "pivot": "center",
+  "fileName": "Common"
+}

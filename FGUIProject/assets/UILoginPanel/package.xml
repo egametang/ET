@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="brnqjgma">
+  <resources>
+    <component id="bz2i0" name="UILoginPanel.xml" path="/" exported="true"/>
+    <image id="bz2i1" name="opening1.jpg" path="/Images/"/>
+    <image id="bz2i2" name="opening2.jpg" path="/Images/"/>
+    <image id="bz2i3" name="opening3.jpg" path="/Images/"/>
+    <image id="bz2i4" name="opening4.jpg" path="/Images/"/>
+    <image id="bz2i5" name="opening5.jpg" path="/Images/"/>
+    <image id="bz2i6" name="opening5_man.png" path="/Images/"/>
+    <image id="bz2i7" name="big_the_back.jpg" path="/Images/"/>
+    <image id="bz2i8" name="win_back.png" path="/Images/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

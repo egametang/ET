@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="106,42" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_bz2i" name="n0" src="bz2ivb" fileName="Images/home/card_i_button1.png" xy="0,0">
+      <gearDisplay controller="button" pages="0"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n1_bz2i" name="n1" src="bz2ivb" fileName="Images/home/card_i_button1.png" xy="0,0">
+      <gearDisplay controller="button" pages="1"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n2_bz2i" name="n2" src="bz2ius" fileName="Images/home/card_i_button2.png" xy="0,0">
+      <gearDisplay controller="button" pages="2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n3_bz2i" name="n3" src="bz2ius" fileName="Images/home/card_i_button2.png" xy="0,0">
+      <gearDisplay controller="button" pages="3"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <text id="n4_bz2i" name="title" xy="0,0" size="106,42" fontSize="20" color="#b7ebef" align="center" vAlign="middle" autoSize="none" strokeColor="#000000" singleLine="true" text="按钮">
+      <relation target="" sidePair="width-width,height-height"/>
+    </text>
+  </displayList>
+  <Button/>
+</component>

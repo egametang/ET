@@ -55,3 +55,14 @@ MonoBehaviour:
       PackRuleName: PackRawFile
       FilterRuleName: CollectAll
       AssetTags: 
+  - GroupName: FGUI
+    GroupDesc: "\u754C\u9762"
+    AssetTags: 
+    ActiveRuleName: EnableGroup
+    Collectors:
+    - CollectPath: Assets/Bundles/FGUI
+      CollectorType: 0
+      AddressRuleName: AddressByFileName
+      PackRuleName: PackRawFile
+      FilterRuleName: CollectAll
+      AssetTags: 

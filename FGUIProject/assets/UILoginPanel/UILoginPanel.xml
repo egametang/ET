@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="640,960">
+  <displayList>
+    <image id="n0_bz2i" name="n0" src="bz2i4" fileName="Images/opening4.jpg" xy="0,0"/>
+    <image id="n2_bz2i" name="n2" src="bz2i8" fileName="Images/win_back.png" xy="36,247"/>
+    <component id="n1_bz2i" name="btnLogin" src="bz2i1nw" fileName="Components/Buttons/ButtonNormal.xml" pkg="yxqbcojx" xy="267,606"/>
+    <image id="n3_bz2i" name="n3" src="bz2i1he" fileName="Images/home/pageback.png" pkg="yxqbcojx" xy="95,380" size="450,50"/>
+    <image id="n4_bz2i" name="n4" src="bz2i1he" fileName="Images/home/pageback.png" pkg="yxqbcojx" xy="100,475" size="440,45"/>
+    <text id="n5_bz2i" name="inputAccount" xy="95,379" pivot="0.5,0.5" size="450,50" font="Microsoft YaHei" fontSize="22" align="center" vAlign="middle" autoSize="none" singleLine="true" text="" input="true" prompt="输入账号" maxLength="20"/>
+    <text id="n6_bz2i" name="inputPassword" xy="95,472" pivot="0.5,0.5" size="450,50" fontSize="22" align="center" vAlign="middle" autoSize="none" singleLine="true" text="" input="true" prompt="输入密码" maxLength="20" password="true"/>
+  </displayList>
+</component>

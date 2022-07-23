@@ -45,6 +45,8 @@
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Remove="..\..\Unity\Assets\Mono\Core\Extensions\**" />
+
         <Compile Remove="..\..\Unity\Codes\Model\Core\Config\**" />
 
         <Compile Include="..\..\Unity\Codes\Model\Module\Message\OpcodeRangeDefine.cs">

@@ -81,8 +81,8 @@ namespace ET
                     }
                 case CodeMode.HybridCLR:
                     {
-                        TextAsset codeDll = await YooAssetManager.Instance.Load<TextAsset>("Assets/Bundles/Code/Code.dll.bytes");
-                        TextAsset codePdb = await YooAssetManager.Instance.Load<TextAsset>("Assets/Bundles/Code/Code.dll.bytes");
+                        TextAsset codeDll = await YooAssetManager.Instance.LoadAsync<TextAsset>("Assets/Bundles/Code/Code.dll.bytes");
+                        TextAsset codePdb = await YooAssetManager.Instance.LoadAsync<TextAsset>("Assets/Bundles/Code/Code.dll.bytes");
                         byte[] assBytes = codeDll.bytes;
                         byte[] pdbBytes = codePdb.bytes;
                         //TODO load by HybridCLR

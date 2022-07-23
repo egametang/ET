@@ -1,0 +1,30 @@
+﻿using FairyGUI;
+using Cysharp.Threading.Tasks;
+
+namespace ET
+{
+    public partial class #CLASS_NAME# : BaseFGUIWrapper
+    {
+#FIELDS#
+
+        public static string PackageName = #PACKAGE_NAME#;
+
+        public static string ResName = #RES_NAME#;
+
+        public static string Url = #URL#;
+        public static async UniTask<#CLASS_NAME#> CreateAsync(Enums.FGUILayer layer = Enums.FGUILayer.Panel, GComponent root = null, bool show = true)
+        {
+            if (root == null)
+            {
+                root = GRoot.inst;
+            }
+            await FGUI.Instance.AddUIPackageAsync(PackageName);
+            GObject obj = UIPackage.CreateObjectFromURL(Url);
+            root.AddChild(obj);
+            root.Center();
+            #CLASS_NAME# wrapper = obj.displayObject.gameObject.GetOrAddComponent<#CLASS_NAME#>();
+            wrapper.Init(obj.asCom, layer, show);
+            return wrapper;
+        }
+    }
+}
