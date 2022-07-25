@@ -13,13 +13,14 @@ namespace ET.Client
             {
                 const string configBundleName = "config.unity3d";
                 ResourcesComponent.Instance.LoadBundle(configBundleName);
+                
                 Dictionary<string, UnityEngine.Object> keys = ResourcesComponent.Instance.GetBundleAll(configBundleName);
 
-                foreach (var kv in keys)
+                HashSet<Type> configTypes = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+                foreach (Type configType in configTypes)
                 {
-                    TextAsset v = kv.Value as TextAsset;
-                    string key = kv.Key;
-                    output[key] = v.bytes;
+                    TextAsset v = keys[configType.Name] as TextAsset;
+                    output[configType.Name] = v.bytes;
                 }
             }
         }
