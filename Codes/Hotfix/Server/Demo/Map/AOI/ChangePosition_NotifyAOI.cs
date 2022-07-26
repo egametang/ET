@@ -3,12 +3,12 @@
 namespace ET.Server
 {
     [Event(SceneType.Map)]
-    public class ChangePosition_NotifyAOI: AEvent<Unit, ET.EventType.ChangePosition>
+    public class ChangePosition_NotifyAOI: AEvent<ET.EventType.ChangePosition>
     {
-        protected override async ETTask Run(Unit unit, ET.EventType.ChangePosition args)
+        protected override async ETTask Run(Scene scene, ET.EventType.ChangePosition args)
         {
+            Unit unit = args.Unit;
             Vector3 oldPos = args.OldPos;
-            
             int oldCellX = (int) (oldPos.x * 1000) / AOIManagerComponent.CellSize;
             int oldCellY = (int) (oldPos.z * 1000) / AOIManagerComponent.CellSize;
             int newCellX = (int) (unit.Position.x * 1000) / AOIManagerComponent.CellSize;

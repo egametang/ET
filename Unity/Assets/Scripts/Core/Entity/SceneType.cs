@@ -2,6 +2,7 @@
 {
 	public enum SceneType
 	{
+		None = -1,
 		Process = 0,
 		Manager = 1,
 		Realm = 2,

@@ -55,6 +55,7 @@ namespace ET
 
         public struct AfterUnitCreate
         {
+            public Unit Unit;
         }
     }
 }

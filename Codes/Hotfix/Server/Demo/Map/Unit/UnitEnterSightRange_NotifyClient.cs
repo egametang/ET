@@ -2,11 +2,11 @@
 {
     // 进入视野通知
     [Event(SceneType.Map)]
-    public class UnitEnterSightRange_NotifyClient: AEvent<AOIEntity, EventType.UnitEnterSightRange>
+    public class UnitEnterSightRange_NotifyClient: AEvent<EventType.UnitEnterSightRange>
     {
-        protected override async ETTask Run(AOIEntity a, EventType.UnitEnterSightRange args)
+        protected override async ETTask Run(Scene scene, EventType.UnitEnterSightRange args)
         {
-            await ETTask.CompletedTask;
+            AOIEntity a = args.A;
             AOIEntity b = args.B;
             if (a.Id == b.Id)
             {
@@ -22,6 +22,8 @@
             Unit ub = b.GetParent<Unit>();
 
             MessageHelper.NoticeUnitAdd(ua, ub);
+            
+            await ETTask.CompletedTask;
         }
     }
 }

@@ -7,20 +7,20 @@ namespace ET
 		Type GetEventType();
 	}
 	
-	public abstract class AEvent<E, A>: IEvent where E: Entity where A: struct
+	public abstract class AEvent<A>: IEvent where A: struct
 	{
 		public Type GetEventType()
 		{
 			return typeof (A);
 		}
 
-		protected abstract ETTask Run(E entity, A a);
+		protected abstract ETTask Run(Scene scene, A a);
 
-		public async ETTask Handle(E entity, A a)
+		public async ETTask Handle(Scene scene, A a)
 		{
 			try
 			{
-				await Run(entity, a);
+				await Run(scene, a);
 			}
 			catch (Exception e)
 			{
