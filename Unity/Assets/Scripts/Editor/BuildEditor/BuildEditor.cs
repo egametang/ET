@@ -135,6 +135,7 @@ namespace ET
 			
 			if (GUILayout.Button("ExcelExporter"))
 			{
+				Directory.Delete("Assets/Bundles/Config", true);
 				ToolsEditor.ExcelExporter();
 				if (this.globalConfig.CodeMode == CodeMode.ClientServer)
 				{
