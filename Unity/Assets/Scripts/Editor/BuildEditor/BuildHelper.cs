@@ -39,12 +39,8 @@ namespace ET
             if (clearFolder && Directory.Exists(fold))
             {
                 Directory.Delete(fold, true);
-                Directory.CreateDirectory(fold);
             }
-            else
-            {
-                Directory.CreateDirectory(fold);
-            }
+            Directory.CreateDirectory(fold);
 
             UnityEngine.Debug.Log("开始资源打包");
             BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
