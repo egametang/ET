@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if DOTNET
+using System;
 
 namespace ET.Server
 {
@@ -43,3 +44,4 @@ namespace ET.Server
         }
     }
 }
+#endif

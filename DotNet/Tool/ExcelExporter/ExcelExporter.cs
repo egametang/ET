@@ -23,7 +23,7 @@ namespace ET
 
     class HeadInfo
     {
-        public string FieldAttribute;
+        public string FieldCS;
         public string FieldDesc;
         public string FieldName;
         public string FieldType;
@@ -31,7 +31,7 @@ namespace ET
 
         public HeadInfo(string cs, string desc, string name, string type, int index)
         {
-            this.FieldAttribute = cs;
+            this.FieldCS = cs;
             this.FieldDesc = desc;
             this.FieldName = name;
             this.FieldType = type;
@@ -54,6 +54,7 @@ namespace ET
         private static string template;
 
         public const string ClientClassDir = "../Codes/Generate/Client/Config";
+        // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
         public const string ServerClassDir = "../Codes/Generate/Server/Config";
 
         private const string excelDir = "../Excel";
@@ -110,7 +111,9 @@ namespace ET
                     Directory.Delete(ServerClassDir, true);
                 }
 
-                foreach (string path in Directory.GetFiles(excelDir))
+                List<string> files = new List<string>();
+                FileHelper.GetAllFiles(files, excelDir);
+                foreach (string path in files)
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
@@ -126,6 +129,12 @@ namespace ET
                         string[] ss = fileNameWithoutExtension.Split("@");
                         fileNameWithoutCS = ss[0];
                         cs = ss[1];
+                    }
+
+                    // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
+                    if (cs == "c")
+                    {
+                        cs = "cs";
                     }
 
                     if (cs == "")
@@ -231,6 +240,12 @@ namespace ET
                 string[] ss = fileNameWithoutExtension.Split("@");
                 fileNameWithoutCS = ss[0];
                 cs = ss[1];
+            }
+            
+            // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
+            if (cs == "c")
+            {
+                cs = "cs";
             }
 
             if (cs == "")
@@ -388,6 +403,12 @@ namespace ET
                     continue;
                 }
 
+                // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
+                if (fieldCS == "c")
+                {
+                    fieldCS = "cs";
+                }
+                
                 if (fieldCS == "")
                 {
                     fieldCS = "cs";
@@ -395,9 +416,9 @@ namespace ET
 
                 if (table.HeadInfos.TryGetValue(fieldName, out var oldClassField))
                 {
-                    if (oldClassField.FieldAttribute != fieldCS)
+                    if (oldClassField.FieldCS != fieldCS)
                     {
-                        Log.Console($"field cs not same: {worksheet.Name} {fieldName} oldcs: {oldClassField.FieldAttribute} {fieldCS}");
+                        Log.Console($"field cs not same: {worksheet.Name} {fieldName} oldcs: {oldClassField.FieldCS} {fieldCS}");
                     }
 
                     continue;
@@ -431,12 +452,7 @@ namespace ET
                     continue;
                 }
 
-                if (headInfo.FieldType == "json")
-                {
-                    continue;
-                }
-
-                if (!headInfo.FieldAttribute.Contains(configType.ToString()))
+                if (!headInfo.FieldCS.Contains(configType.ToString()))
                 {
                     continue;
                 }
@@ -444,11 +460,6 @@ namespace ET
                 sb.Append($"\t\t/// <summary>{headInfo.FieldDesc}</summary>\n");
                 sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex})]\n");
                 string fieldType = headInfo.FieldType;
-                if (fieldType == "int[][]")
-                {
-                    fieldType = "string[]";
-                }
-
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
@@ -505,6 +516,12 @@ namespace ET
                 {
                     prefix = "cs";
                 }
+                
+                // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
+                if (prefix == "c")
+                {
+                    prefix = "cs";
+                }
 
                 if (!prefix.Contains(configTypeStr))
                 {
@@ -533,7 +550,7 @@ namespace ET
                         continue;
                     }
 
-                    if (headInfo.FieldType == "json")
+                    if (!headInfo.FieldCS.Contains(configTypeStr))
                     {
                         continue;
                     }

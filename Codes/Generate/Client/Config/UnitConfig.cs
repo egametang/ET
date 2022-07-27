@@ -93,9 +93,6 @@ namespace ET
 		/// <summary>身高</summary>
 		[ProtoMember(6)]
 		public int Height { get; set; }
-		/// <summary>体重</summary>
-		[ProtoMember(7)]
-		public int Weight { get; set; }
 
 	}
 }

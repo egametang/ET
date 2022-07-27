@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,15 +9,27 @@ namespace ET.Server
     {
         public void Handle(ConfigComponent configComponent, Dictionary<string, byte[]> output)
         {
-            foreach (string file in Directory.GetFiles($"../Config", "*.bytes"))
+            List<string> startConfigs = new List<string>()
             {
-                string key = Path.GetFileNameWithoutExtension(file);
-                output[key] = File.ReadAllBytes(file);
+                "StartMachineConfigCategory", 
+                "StartProcessConfigCategory", 
+                "StartSceneConfigCategory", 
+                "StartZoneConfigCategory",
+            };
+            HashSet<Type> configTypes = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+            foreach (Type configType in configTypes)
+            {
+                string configFilePath;
+                if (startConfigs.Contains(configType.Name))
+                {
+                    configFilePath = $"../Config/{Game.Options.StartConfig}/{configType.Name}.bytes";    
+                }
+                else
+                {
+                    configFilePath = $"../Config/{configType.Name}.bytes";
+                }
+                output[configType.Name] = File.ReadAllBytes(configFilePath);
             }
-            output["StartMachineConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartMachineConfigCategory.bytes");
-            output["StartProcessConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartProcessConfigCategory.bytes");
-            output["StartSceneConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartSceneConfigCategory.bytes");
-            output["StartZoneConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartZoneConfigCategory.bytes");
         }
     }
     

@@ -10,11 +10,11 @@ namespace ET
     [AttributeUsage(AttributeTargets.Class)]
     public class ComponentOfAttribute : Attribute
     {
-        public Type type;
+        public Type Type;
 
         public ComponentOfAttribute(Type type = null)
         {
-            this.type = type;
+            this.Type = type;
         }
     }
 }

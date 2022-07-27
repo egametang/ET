@@ -14,13 +14,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE2_0;SERVER;NOT_UNITY;APPS</DefineConstants>
+    <DefineConstants>DOTNET</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE2_0;SERVER;NOT_UNITY;APPS</DefineConstants>
+    <DefineConstants>DOTNET</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>

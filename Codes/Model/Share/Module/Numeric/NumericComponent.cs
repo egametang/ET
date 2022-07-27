@@ -60,8 +60,8 @@ namespace ET
 
             if (isPublicEvent)
             {
-                Game.EventSystem.Publish(self.GetParent<Unit>(),
-                    new EventType.NumbericChange() { New = value, Old = oldValue, NumericType = numericType });
+                Game.EventSystem.Publish(self.DomainScene(),
+                    new EventType.NumbericChange() { Unit = self.GetParent<Unit>(), New = value, Old = oldValue, NumericType = numericType });
             }
         }
 
@@ -93,6 +93,7 @@ namespace ET
     {
         public struct NumbericChange
         {
+            public Unit Unit;
             public int NumericType;
             public long Old;
             public long New;

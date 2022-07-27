@@ -63,22 +63,6 @@ namespace ET.Client
     [FriendOf(typeof(ResourcesComponent))]
     public static class AssetBundleHelper
     {
-        public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
-        {
-            var tcs = ETTask<AssetBundle>.Create(true);
-            AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(path);
-            request.completed += operation => { tcs.SetResult(request.assetBundle); };
-            return await tcs;
-        }
-
-        public static async ETTask<UnityEngine.Object[]> UnityLoadAssetAsync(AssetBundle assetBundle)
-        {
-            var tcs = ETTask<UnityEngine.Object[]>.Create(true);
-            AssetBundleRequest request = assetBundle.LoadAllAssetsAsync();
-            request.completed += operation => { tcs.SetResult(request.allAssets); };
-            return await tcs;
-        }
-
         public static string IntToString(this int value)
         {
             string result;
@@ -140,6 +124,7 @@ namespace ET.Client
                 {
                     self.LoadOneBundle("StreamingAssets");
                     self.AssetBundleManifestObject = (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
+                    self.UnloadBundle("StreamingAssets");
                 }
             }
         }
@@ -229,17 +214,6 @@ namespace ET.Client
         public static bool Contains(this ResourcesComponent self, string bundleName)
         {
             return self.bundles.ContainsKey(bundleName);
-        }
-
-        public static Dictionary<string, UnityEngine.Object> GetBundleAll(this ResourcesComponent self, string bundleName)
-        {
-            Dictionary<string, UnityEngine.Object> dict;
-            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
-            {
-                throw new Exception($"not found asset: {bundleName}");
-            }
-
-            return dict;
         }
 
         public static UnityEngine.Object GetAsset(this ResourcesComponent self, string bundleName, string prefab)
@@ -542,7 +516,9 @@ namespace ET.Client
             //     Log.Error("Async load bundle not exist! BundleName : " + p);
             //     return null;
             // }
-            assetBundle = await AssetBundleHelper.UnityLoadBundleAsync(p);
+            AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(p);
+            await assetBundleCreateRequest;
+            assetBundle = assetBundleCreateRequest.assetBundle;
             if (assetBundle == null)
             {
                 // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
@@ -571,7 +547,9 @@ namespace ET.Client
                 if (abInfo.AssetBundle != null && !abInfo.AssetBundle.isStreamedSceneAssetBundle)
                 {
                     // 异步load资源到内存cache住
-                    var assets = await AssetBundleHelper.UnityLoadAssetAsync(abInfo.AssetBundle);
+                    AssetBundleRequest request = abInfo.AssetBundle.LoadAllAssetsAsync();
+                    await request;
+                    UnityEngine.Object[] assets = request.allAssets;
 
                     foreach (UnityEngine.Object asset in assets)
                     {

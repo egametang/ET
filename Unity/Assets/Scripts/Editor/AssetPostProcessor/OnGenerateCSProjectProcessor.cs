@@ -40,7 +40,9 @@ namespace ET
             {
                 return GenerateCustomProject(path, content, 
                     @"..\Codes\Hotfix\Client\**\*.cs Client", 
-                    @"..\Codes\Hotfix\Share\**\*.cs Share");
+                    @"..\Codes\Hotfix\Share\**\*.cs Share",
+                    @"..\Codes\Hotfix\Server\**\*.cs Server"
+                    );
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
@@ -52,10 +54,12 @@ namespace ET
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                return GenerateCustomProject(path, content, 
+                return GenerateCustomProject(path, content,
+                    @"..\Codes\Model\Server\**\*.cs Server",
                     @"..\Codes\Model\Client\**\*.cs Client",
                     @"..\Codes\Model\Share\**\*.cs Share",
-                    @"..\Codes\Generate\Client\**\*.cs Generate");
+                    @"..\Codes\Generate\Server\**\*.cs Generate"
+                    );
             }
 
             if (path.EndsWith("Unity.ModelView.csproj"))

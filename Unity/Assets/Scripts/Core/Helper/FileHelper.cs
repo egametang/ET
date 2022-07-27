@@ -92,29 +92,5 @@ namespace ET
 				}
 			}
 		}
-		
-		public static bool CopyFile(string sourcePath, string targetPath, bool overwrite)
-		{
-			string sourceText = null;
-			string targetText = null;
-
-			if (File.Exists(sourcePath))
-			{
-				sourceText = File.ReadAllText(sourcePath);
-			}
-
-			if (File.Exists(targetPath))
-			{
-				targetText = File.ReadAllText(targetPath);
-			}
-
-			if (sourceText != targetText && File.Exists(sourcePath))
-			{
-				File.Copy(sourcePath, targetPath, overwrite);
-				return true;
-			}
-
-			return false;
-		}
 	}
 }
