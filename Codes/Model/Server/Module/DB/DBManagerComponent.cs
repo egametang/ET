@@ -1,4 +1,4 @@
-﻿#if !UNITY_64
+﻿#if DOTNET
 namespace ET.Server
 {
     

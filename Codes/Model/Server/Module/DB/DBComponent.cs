@@ -1,4 +1,4 @@
-﻿#if !UNITY_64
+﻿#if DOTNET
 using MongoDB.Driver;
 
 namespace ET.Server
