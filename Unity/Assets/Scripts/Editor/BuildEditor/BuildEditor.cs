@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace ET
@@ -135,6 +136,15 @@ namespace ET
 			if (GUILayout.Button("ExcelExporter"))
 			{
 				ToolsEditor.ExcelExporter();
+				if (this.globalConfig.CodeMode == CodeMode.ClientServer)
+				{
+					FileHelper.CopyDirectory("../Config/StartConfig/Localhost", "Assets/Bundles/Config/StartConfig/Localhost");
+					foreach (string file in Directory.GetFiles("../Config/", "*.bytes"))
+					{
+						File.Copy(file, $"Assets/Bundles/Config/{Path.GetFileName(file)}", true);
+					}
+				}
+				Debug.Log("copy config to Assets/Bundles/Config");
 			}
 			
 			if (GUILayout.Button("Proto2CS"))

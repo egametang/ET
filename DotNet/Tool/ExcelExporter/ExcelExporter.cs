@@ -111,7 +111,9 @@ namespace ET
                     Directory.Delete(ServerClassDir, true);
                 }
 
-                foreach (string path in Directory.GetFiles(excelDir))
+                List<string> files = new List<string>();
+                FileHelper.GetAllFiles(files, excelDir);
+                foreach (string path in files)
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
