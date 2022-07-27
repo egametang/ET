@@ -135,8 +135,9 @@ namespace ET
 			
 			if (GUILayout.Button("ExcelExporter"))
 			{
-				Directory.Delete("Assets/Bundles/Config", true);
+				//Directory.Delete("Assets/Bundles/Config", true);
 				ToolsEditor.ExcelExporter();
+				// 如果是ClientServer，那么客户端要使用服务端配置
 				if (this.globalConfig.CodeMode == CodeMode.ClientServer)
 				{
 					FileHelper.CopyDirectory("../Config/StartConfig/Localhost", "Assets/Bundles/Config/StartConfig/Localhost");

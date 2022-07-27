@@ -216,17 +216,6 @@ namespace ET.Client
             return self.bundles.ContainsKey(bundleName);
         }
 
-        public static Dictionary<string, UnityEngine.Object> GetBundleAll(this ResourcesComponent self, string bundleName)
-        {
-            Dictionary<string, UnityEngine.Object> dict;
-            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
-            {
-                throw new Exception($"not found asset: {bundleName}");
-            }
-
-            return dict;
-        }
-
         public static UnityEngine.Object GetAsset(this ResourcesComponent self, string bundleName, string prefab)
         {
             Dictionary<string, UnityEngine.Object> dict;
