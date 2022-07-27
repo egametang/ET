@@ -124,7 +124,7 @@ namespace ET.Client
                 {
                     self.LoadOneBundle("StreamingAssets");
                     self.AssetBundleManifestObject = (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
-                    self.UnloadBundle("StreamingAssets");
+                    self.UnloadBundle("StreamingAssets", false);
                 }
             }
         }
@@ -146,6 +146,11 @@ namespace ET.Client
                 self.IntToStringDict.Clear();
                 self.StringToABDict.Clear();
                 self.BundleNameToLowerDict.Clear();
+                if (self.AssetBundleManifestObject != null)
+                {
+                    UnityEngine.Object.Destroy(self.AssetBundleManifestObject);
+                    self.AssetBundleManifestObject = null;
+                }
             }
         }
 

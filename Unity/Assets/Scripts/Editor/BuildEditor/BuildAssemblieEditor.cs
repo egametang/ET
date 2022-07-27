@@ -50,6 +50,8 @@ namespace ET
                         "../Codes/Hotfix/Share/",
                         "../Codes/Model/Server/",
                         "../Codes/Hotfix/Server/",
+                        "../Codes/Model/Client/",
+                        "../Codes/Hotfix/Client/",
                     };
                     break;
                 case CodeMode.ClientServer:
@@ -98,6 +100,7 @@ namespace ET
                         "../Codes/Generate/Server/",
                         "../Codes/Model/Share/",
                         "../Codes/Model/Server/",
+                        "../Codes/Model/Client/",
                     };
                     break;
                 case CodeMode.ClientServer:
@@ -145,6 +148,7 @@ namespace ET
                     {
                         "../Codes/Hotfix/Share/",
                         "../Codes/Hotfix/Server/",
+                        "../Codes/Hotfix/Client/",
                     };
                     break;
                 case CodeMode.ClientServer:
