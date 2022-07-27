@@ -1,4 +1,5 @@
-﻿namespace ET.Server
+﻿#if !UNITY_64
+namespace ET.Server
 {
     
     public class DBManagerComponent: Entity, IAwake, IDestroy
@@ -8,3 +9,4 @@
         public DBComponent[] DBComponents = new DBComponent[IdGenerater.MaxZone];
     }
 }
+#endif

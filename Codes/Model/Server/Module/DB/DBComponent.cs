@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿#if !UNITY_64
+using MongoDB.Driver;
 
 namespace ET.Server
 {
@@ -14,3 +15,4 @@ namespace ET.Server
         public IMongoDatabase database;
     }
 }
+#endif
