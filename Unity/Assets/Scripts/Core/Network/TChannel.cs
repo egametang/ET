@@ -54,7 +54,7 @@ namespace ET
 			this.ChannelType = ChannelType.Connect;
 			this.Id = id;
 			this.Service = service;
-			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			this.socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			this.socket.NoDelay = true;
 			this.parser = new PacketParser(this.recvBuffer, this.Service);
 			this.innArgs.Completed += this.OnComplete;

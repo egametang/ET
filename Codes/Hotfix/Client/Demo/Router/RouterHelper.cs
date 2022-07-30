@@ -43,7 +43,7 @@ namespace ET.Client
         {
             uint connectId = RandomHelper.RandUInt32();
             
-            using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            using Socket socket = new Socket(routerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             
             int count = 30;
             byte[] sendCache = new byte[512];

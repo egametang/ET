@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace ET
 {
@@ -21,6 +22,11 @@ namespace ET
 				}
 			}
 			return list.ToArray();
+		}
+		
+		public static AddressFamily GetAddressFamily(string url)
+		{
+			return Dns.GetHostEntry(url).AddressList[0].AddressFamily;
 		}
 		
 		public static IPEndPoint ToIPEndPoint(string host, int port)

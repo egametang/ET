@@ -9,22 +9,24 @@ namespace ET.Client
     [FriendOf(typeof(RouterAddressComponent))]
     public static class RouterAddressComponentSystem
     {
-        public class RouterAddressComponentAwakeSystem: AwakeSystem<RouterAddressComponent, string>
+        public class RouterAddressComponentAwakeSystem: AwakeSystem<RouterAddressComponent, string, int>
         {
-            protected override void Awake(RouterAddressComponent self, string routerManagerAddress)
+            protected override void Awake(RouterAddressComponent self, string address, int port)
             {
-                self.RouterManagerAddress = routerManagerAddress;
+                self.RouterManagerHost = address;
+                self.RouterManagerPort = port;
             }
         }
         
         public static async ETTask Init(this RouterAddressComponent self)
         {
+            self.AddressFamily = NetworkHelper.GetAddressFamily(self.RouterManagerHost);
             await self.GetAllRouter();
         }
 
         private static async ETTask GetAllRouter(this RouterAddressComponent self)
         {
-            string url = $"http://{self.RouterManagerAddress}/get_router?v={RandomHelper.RandUInt32()}";
+            string url = $"http://{self.RouterManagerHost}:{self.RouterManagerPort}/get_router?v={RandomHelper.RandUInt32()}";
             Log.Debug($"start get router info: {url}");
             string routerInfo = await HttpClientHelper.Get(url);
             Log.Debug($"recv router info: {routerInfo}");

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Sockets;
 
 namespace ET.Client
 {
@@ -18,8 +19,10 @@ namespace ET.Client
                     RouterAddressComponent routerAddressComponent = clientScene.GetComponent<RouterAddressComponent>();
                     if (routerAddressComponent == null)
                     {
-                        routerAddressComponent = clientScene.AddComponent<RouterAddressComponent, string>(ConstValue.RouterHttpAddress);
+                        routerAddressComponent = clientScene.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                         await routerAddressComponent.Init();
+                        
+                        clientScene.AddComponent<NetKcpComponent, AddressFamily, int>(routerAddressComponent.AddressFamily, CallbackType.SessionStreamDispatcherClientOuter);
                     }
                     string realmAddress = routerAddressComponent.GetRealmAddress(account);
                     

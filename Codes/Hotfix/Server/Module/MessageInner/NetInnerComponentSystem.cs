@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net;
+using System.Net.Sockets;
 
 namespace ET.Server
 {
@@ -15,7 +16,7 @@ namespace ET.Server
                 NetInnerComponent.Instance = self;
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
-                self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Inner);
+                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, AddressFamily.InterNetwork, ServiceType.Inner);
                 self.Service.ErrorCallback += self.OnError;
                 self.Service.ReadCallback += self.OnRead;
 
@@ -31,7 +32,7 @@ namespace ET.Server
                 NetInnerComponent.Instance = self;
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
 
-                self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Inner);
+                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Inner);
                 self.Service.ErrorCallback += self.OnError;
                 self.Service.ReadCallback += self.OnRead;
                 self.Service.AcceptCallback += self.OnAccept;

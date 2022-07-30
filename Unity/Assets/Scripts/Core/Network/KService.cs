@@ -105,7 +105,7 @@ namespace ET
             this.ServiceType = serviceType;
             this.ThreadSynchronizationContext = threadSynchronizationContext;
             this.startTime = TimeHelper.ClientNow();
-            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            this.socket = new Socket(ipEndPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 this.socket.SendBufferSize = Kcp.OneM * 64;
@@ -122,14 +122,12 @@ namespace ET
             }
         }
 
-        public KService(ThreadSynchronizationContext threadSynchronizationContext, ServiceType serviceType)
+        public KService(ThreadSynchronizationContext threadSynchronizationContext, AddressFamily addressFamily, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.ThreadSynchronizationContext = threadSynchronizationContext;
             this.startTime = TimeHelper.ClientNow();
-            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            // 作为客户端不需要修改发送跟接收缓冲区大小
-            this.socket.Bind(new IPEndPoint(IPAddress.Any, 0));
+            this.socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
