@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using System.IO;
 
 namespace ET.Server
 {
@@ -23,9 +24,10 @@ namespace ET.Server
         public static void Broadcast(Unit unit, IActorMessage message)
         {
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
+            (ushort _, MemoryStream memoryStream) = MessageSerializeHelper.MessageToStream(message);
             foreach (AOIEntity u in dict.Values)
             {
-                SendToClient(u.Unit, message);
+                ActorMessageSenderComponent.Instance.Send(u.Unit.GetComponent<UnitGateComponent>().GateSessionActorId, memoryStream);
             }
         }
         

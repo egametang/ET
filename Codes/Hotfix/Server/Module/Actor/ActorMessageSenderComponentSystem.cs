@@ -39,7 +39,7 @@ namespace ET.Server
             protected override void Destroy(ActorMessageSenderComponent self)
             {
                 ActorMessageSenderComponent.Instance = null;
-                TimerComponent.Instance.Remove(ref self.TimeoutCheckTimer);
+                TimerComponent.Instance?.Remove(ref self.TimeoutCheckTimer);
                 self.TimeoutCheckTimer = 0;
                 self.TimeoutActorMessageSenders.Clear();
             }
