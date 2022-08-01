@@ -7,7 +7,7 @@ namespace ET.Client
     [ComponentOf(typeof(Scene))]
     public class RouterAddressComponent: Entity, IAwake<string, int>
     {
-        public AddressFamily AddressFamily { get; set; }
+        public IPAddress RouterManagerIPAddress { get; set; }
         public string RouterManagerHost;
         public int RouterManagerPort;
         public HttpGetRouterResponse Info;

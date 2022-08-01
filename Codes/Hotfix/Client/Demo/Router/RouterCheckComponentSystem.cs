@@ -53,10 +53,10 @@ namespace ET.Client
                     localConn = kChannel.LocalConn;
                     remoteConn = kChannel.RemoteConn;
 
-                    string realAddress = self.GetParent<Session>().RemoteAddress.ToString();
+                    IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
                     Log.Info($"get recvLocalConn start: {self.ClientScene().Id} {realAddress} {localConn} {remoteConn}");
 
-                    (uint recvLocalConn, string routerAddress) = await RouterHelper.GetRouterAddress(self.ClientScene(), realAddress, localConn, remoteConn);
+                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(self.ClientScene(), realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
                         Log.Error($"get recvLocalConn fail: {self.ClientScene().Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
@@ -67,8 +67,7 @@ namespace ET.Client
                     
                     session.LastRecvTime = TimeHelper.ClientNow();
                     
-                    IPEndPoint remoteAddress = NetworkHelper.ToIPEndPoint(routerAddress);
-                    ((KService)session.AService).ChangeAddress(sessionId, remoteAddress);
+                    ((KService)session.AService).ChangeAddress(sessionId, routerAddress);
                 }
                 catch (Exception e)
                 {

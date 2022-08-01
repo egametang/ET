@@ -20,7 +20,7 @@ namespace ET.Client
         
         public static async ETTask Init(this RouterAddressComponent self)
         {
-            self.AddressFamily = NetworkHelper.GetAddressFamily(self.RouterManagerHost);
+            self.RouterManagerIPAddress = NetworkHelper.GetHostAddress(self.RouterManagerHost);
             await self.GetAllRouter();
         }
 
@@ -51,20 +51,34 @@ namespace ET.Client
             await self.GetAllRouter();
         }
 
-        public static string GetAddress(this RouterAddressComponent self)
+        public static IPEndPoint GetAddress(this RouterAddressComponent self)
         {
             if (self.Info.Routers.Count == 0)
             {
                 return null;
             }
 
-            return self.Info.Routers[self.RouterIndex++ % self.Info.Routers.Count];
+            string address = self.Info.Routers[self.RouterIndex++ % self.Info.Routers.Count];
+            string[] ss = address.Split(':');
+            IPAddress ipAddress = IPAddress.Parse(ss[0]);
+            if (self.RouterManagerIPAddress.AddressFamily == AddressFamily.InterNetworkV6)
+            { 
+                ipAddress = ipAddress.MapToIPv6();
+            }
+            return new IPEndPoint(ipAddress, int.Parse(ss[1]));
         }
         
-        public static string GetRealmAddress(this RouterAddressComponent self, string account)
+        public static IPEndPoint GetRealmAddress(this RouterAddressComponent self, string account)
         {
             int v = account.Mode(self.Info.Realms.Count);
-            return self.Info.Realms[v];
+            string address = self.Info.Realms[v];
+            string[] ss = address.Split(':');
+            IPAddress ipAddress = IPAddress.Parse(ss[0]);
+            //if (self.IPAddress.AddressFamily == AddressFamily.InterNetworkV6)
+            //{ 
+            //    ipAddress = ipAddress.MapToIPv6();
+            //}
+            return new IPEndPoint(ipAddress, int.Parse(ss[1]));
         }
     }
 }

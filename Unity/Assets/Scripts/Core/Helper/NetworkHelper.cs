@@ -24,9 +24,20 @@ namespace ET
 			return list.ToArray();
 		}
 		
-		public static AddressFamily GetAddressFamily(string url)
+		// 优先获取IPV4的地址
+		public static IPAddress GetHostAddress(string hostName)
 		{
-			return Dns.GetHostEntry(url).AddressList[0].AddressFamily;
+			IPAddress[] ipAddresses = Dns.GetHostAddresses(hostName);
+			IPAddress returnIpAddress = null;
+			foreach (IPAddress ipAddress in ipAddresses)
+			{
+				returnIpAddress = ipAddress;
+				if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
+				{
+					return ipAddress;
+				}
+			}
+			return returnIpAddress;
 		}
 		
 		public static IPEndPoint ToIPEndPoint(string host, int port)
