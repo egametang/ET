@@ -25,6 +25,22 @@ namespace ET
             ShowNotification("AutoBuildCode Disabled");
         }
 
+        public static List<string> GetPluginsDirs(string relativeDir)
+        {
+            List<string> list = new List<string>();
+            DirectoryInfo di = new DirectoryInfo("../Codes");
+            foreach (var subDi in di.GetDirectories())
+            {
+                string rd = $"../Codes/{subDi.Name}/{relativeDir}";
+                if (!Directory.Exists(rd))
+                {
+                    continue;
+                }
+                list.Add($"../Codes/{relativeDir}");
+            }
+            return list;
+        }
+
         public static void BuildCode(CodeOptimization codeOptimization, GlobalConfig globalConfig)
         {
             List<string> codes;
@@ -41,6 +57,12 @@ namespace ET
                         "../Codes/Hotfix/Client/",
                         "../Codes/HotfixView/Client/"
                     };
+                    codes.AddRange(GetPluginsDirs("Model/Share"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Share"));
+                    codes.AddRange(GetPluginsDirs("Model/Client"));
+                    codes.AddRange(GetPluginsDirs("ModelView/Client"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Client"));
+                    codes.AddRange(GetPluginsDirs("HotfixView/Client"));
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
@@ -53,6 +75,12 @@ namespace ET
                         "../Codes/Model/Client/",
                         "../Codes/Hotfix/Client/",
                     };
+                    codes.AddRange(GetPluginsDirs("Model/Share"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Share"));
+                    codes.AddRange(GetPluginsDirs("Model/Client"));
+                    codes.AddRange(GetPluginsDirs("ModelView/Client"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Client"));
+                    codes.AddRange(GetPluginsDirs("HotfixView/Client"));
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
@@ -67,6 +95,14 @@ namespace ET
                         "../Codes/Model/Server/",
                         "../Codes/Hotfix/Server/",
                     };
+                    codes.AddRange(GetPluginsDirs("Model/Share"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Share"));
+                    codes.AddRange(GetPluginsDirs("Model/Client"));
+                    codes.AddRange(GetPluginsDirs("ModelView/Client"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Client"));
+                    codes.AddRange(GetPluginsDirs("HotfixView/Client"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Server"));
+                    codes.AddRange(GetPluginsDirs("Model/Server"));
                     break;
                 default:
                     throw new Exception("not found enum");
@@ -93,6 +129,9 @@ namespace ET
                         "../Codes/Model/Client/",
                         "../Codes/ModelView/Client/",
                     };
+                    codes.AddRange(GetPluginsDirs("Model/Share"));
+                    codes.AddRange(GetPluginsDirs("Model/Client"));
+                    codes.AddRange(GetPluginsDirs("ModelView/Client"));
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
@@ -102,6 +141,9 @@ namespace ET
                         "../Codes/Model/Server/",
                         "../Codes/Model/Client/",
                     };
+                    codes.AddRange(GetPluginsDirs("Model/Share"));
+                    codes.AddRange(GetPluginsDirs("Model/Client"));
+                    codes.AddRange(GetPluginsDirs("Model/Server"));
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
@@ -112,6 +154,10 @@ namespace ET
                         "../Codes/Generate/Server/",
                         "../Codes/Model/Server/",
                     };
+                    codes.AddRange(GetPluginsDirs("Model/Share"));
+                    codes.AddRange(GetPluginsDirs("Model/Client"));
+                    codes.AddRange(GetPluginsDirs("ModelView/Client"));
+                    codes.AddRange(GetPluginsDirs("Model/Server"));
                     break;
                 default:
                     throw new Exception("not found enum");
@@ -140,8 +186,11 @@ namespace ET
                     {
                         "../Codes/Hotfix/Share/",
                         "../Codes/Hotfix/Client/",
-                        "../Codes/HotfixView/Client/"
+                        "../Codes/HotfixView/Client/",
                     };
+                    codes.AddRange(GetPluginsDirs("Hotfix/Share"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Client"));
+                    codes.AddRange(GetPluginsDirs("HotfixView/Client"));
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
@@ -150,6 +199,9 @@ namespace ET
                         "../Codes/Hotfix/Server/",
                         "../Codes/Hotfix/Client/",
                     };
+                    codes.AddRange(GetPluginsDirs("Hotfix/Share"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Client"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Server"));
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
@@ -159,6 +211,10 @@ namespace ET
                         "../Codes/HotfixView/Client/",
                         "../Codes/Hotfix/Server/",
                     };
+                    codes.AddRange(GetPluginsDirs("Hotfix/Share"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Client"));
+                    codes.AddRange(GetPluginsDirs("HotfixView/Client"));
+                    codes.AddRange(GetPluginsDirs("Hotfix/Server"));
                     break;
                 default:
                     throw new Exception("not found enum");
