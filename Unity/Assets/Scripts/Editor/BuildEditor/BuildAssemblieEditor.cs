@@ -234,7 +234,8 @@ namespace ET
                     {
                         if (compilerMessages[i].type == CompilerMessageType.Error)
                         {
-                            Debug.LogError(compilerMessages[i].message);
+                            string filename = Path.GetFullPath(compilerMessages[i].file);
+                            Debug.LogError($"{compilerMessages[i].message} (at <a href=\"file:///{filename}/\" line=\"{compilerMessages[i].line}\">{Path.GetFileName(filename)}</a>)");
                         }
                     }
                 }
