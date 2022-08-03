@@ -21,6 +21,18 @@
     </PropertyGroup>
     <ItemGroup>
 
+        <Compile Include="..\..\Codes\Plugins\*\Hotfix\Server\**\*.cs">
+            <Link>Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Server', ''))%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Codes\Plugins\*\Hotfix\Client\**\*.cs">
+            <Link>Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Client', ''))%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Codes\Plugins\*\Hotfix\Share\**\*.cs">
+            <Link>Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Share',''))%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Codes\Hotfix\Client\**\*.cs">
             <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile> 

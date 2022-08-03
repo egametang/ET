@@ -19,9 +19,22 @@
         <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>..\..\Bin\</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors> 
     </PropertyGroup>
     <ItemGroup>
+
+        <Compile Include="..\..\Codes\Plugins\*\Model\Server\**\*.cs">
+            <Link>Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Server',''))%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Codes\Plugins\*\Model\Client\**\*.cs">
+            <Link>Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Client',''))%(FileName)%(Extension)</Link>
+        </Compile>
+
+
+        <Compile Include="..\..\Codes\Plugins\*\Model\Share\**\*.cs">
+            <Link>Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Share',''))%(FileName)%(Extension)</Link>
+        </Compile>
 
         <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
             <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>  
