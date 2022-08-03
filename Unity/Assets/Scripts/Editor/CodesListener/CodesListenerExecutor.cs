@@ -14,34 +14,34 @@ public class CodesListenerExecutor
     }
     public static void Refresh()
     {
-        //客户端Model
+        //瀹㈡埛绔疢odel
         RegisterCodeFolder(CodeClass.Client, 
             "Unity.Model.csproj", "../Codes", 
             new Dictionary<string, List<string>>() { 
                 { "Model", new List<string>() { "Client", "Share" } }, 
                 { "Generate", new List<string> { "Client", "Share" } } });
-        //客户端Hotfix
+        //瀹㈡埛绔疕otfix
         RegisterCodeFolder(CodeClass.Client, 
             "Unity.Hotfix.csproj", "../Codes", 
             new Dictionary<string, List<string>>() { 
                 { "Hotfix", new List<string>() { "Client", "Share" } } });
-        //客户端ModelView
+        //瀹㈡埛绔疢odelView
         RegisterCodeFolder(CodeClass.Client, 
             "Unity.ModelView.csproj", "../Codes", 
             new Dictionary<string, List<string>>() { 
                 { "ModelView", new List<string>() { "Client" } } });
-        //客户端HotfixView
+        //瀹㈡埛绔疕otfixView
         RegisterCodeFolder(CodeClass.Client, 
             "Unity.HotfixView.csproj", "../Codes", 
             new Dictionary<string, List<string>>() { 
                 { "HotfixView", new List<string>() { "Client" } } });
-        //服务端Model
+        //鏈嶅姟绔疢odel
         RegisterCodeFolder(CodeClass.Server, 
             "../DotNet/Model/DotNet.Model.csproj", "../Codes", 
             new Dictionary<string, List<string>>() { 
                 { "Model", new List<string>() { "Server", "Share" ,"Client"} }, 
                 { "Generate", new List<string> { "Server", "Share" } } });
-        //服务端Hotfix
+        //鏈嶅姟绔疕otfix
         RegisterCodeFolder(CodeClass.Server, 
             "../DotNet/Hotfix/DotNet.Hotfix.csproj", "../Codes", 
             new Dictionary<string, List<string>>() { 
@@ -97,7 +97,7 @@ public class CodesListenerExecutor
         {
             if (depth == 0 && asmNames.Keys.Contains(dir.Name))
             {
-                //第一层通过，进入第二层
+                //绗竴灞傞�氳繃锛岃繘鍏ョ浜屽眰
                 GetAssemblyCodeFiles(dir, files, asmNames, dir.Name, 1);
             }
             else if (depth == 1 && asmNames.TryGetValue(key, out var second) && second.Contains(dir.Name))

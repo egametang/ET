@@ -8,7 +8,7 @@ using UnityEditor.Build.Content;
 using UnityEngine;
 public class ETProjectBrowser : EditorWindow
 {
-    [MenuItem("ET/ET Project")]
+    //[MenuItem("ET/ET Project")]
     public static ETProjectBrowser Open()
     {
         var window = GetWindow<ETProjectBrowser>("ET Project");
@@ -56,7 +56,7 @@ public class ETProjectBrowser : EditorWindow
     {
         if (_settings == null)
         {
-            if (GUILayout.Button("Çë´´½¨ÅäÖÃÎÄ¼ş"))
+            if (GUILayout.Button("è¯·åˆ›å»ºé…ç½®æ–‡ä»¶"))
             {
                 FileInfo fi = new FileInfo(_settingsAssetPath);
                 if (!fi.Directory.Exists)
@@ -71,17 +71,17 @@ public class ETProjectBrowser : EditorWindow
         if (string.IsNullOrEmpty(_settings.ListenFolderPath))
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label("ÇëÖÁÉÙÖ¸¶¨Ò»¸öET ProjectÄ¿Â¼");
+            GUILayout.Label("è¯·è‡³å°‘æŒ‡å®šä¸€ä¸ªET Projectç›®å½•");
             GUILayout.EndHorizontal();
             return;
         }
         else
         {
-            if (GUILayout.Button("Ë¢ĞÂ¹¤³Ì"))
+            if (GUILayout.Button("åˆ·æ–°å·¥ç¨‹"))
             {
                 Refresh(true);
             }
-            _autoFresh = GUILayout.Toggle(_autoFresh, "¿ªÆô×Ô¶¯Ë¢ĞÂ¹¤³Ì");
+            _autoFresh = GUILayout.Toggle(_autoFresh, "å¼€å¯è‡ªåŠ¨åˆ·æ–°å·¥ç¨‹");
             GUILayout.BeginHorizontal();
             _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
             int _ = 0;
@@ -109,7 +109,7 @@ public class ETProjectBrowser : EditorWindow
                 {
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(10 * node.Level);
-                    if (GUILayout.Button("¡­", GUILayout.MaxWidth(20)))
+                    if (GUILayout.Button("â€¦", GUILayout.MaxWidth(20)))
                     {
                         Event evt = Event.current;
                         Vector2 pos = evt.mousePosition;
@@ -156,7 +156,7 @@ public class ETProjectBrowser : EditorWindow
                     }
                     EditorGUILayout.BeginHorizontal(style);
                     GUILayout.Space(10 * node.Level);
-                    if (GUILayout.Button("¡­", GUILayout.MaxWidth(20)))
+                    if (GUILayout.Button("â€¦", GUILayout.MaxWidth(20)))
                     {
                         Event evt = Event.current;
                         Vector2 pos = evt.mousePosition;
@@ -226,7 +226,7 @@ public class ETProjectBrowser : EditorWindow
         {
             return;
         }
-        //Éî¶ÈÓÅÏÈ,ÎÄ¼ş¼ĞÔÚÉÏÃæ
+        //æ·±åº¦ä¼˜å…ˆ,æ–‡ä»¶å¤¹åœ¨ä¸Šé¢
         foreach (string dir in Directory.GetDirectories(parent.FullName))
         {
             if (_ignoreDirs.Contains(Path.GetFileName(dir)))
