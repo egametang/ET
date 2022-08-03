@@ -1,13 +1,17 @@
+using System.Net.Sockets;
+
 namespace ET.Client
 {
     public static class SceneFactory
     {
-        public static Scene CreateClientScene(int zone, string name, Entity parent)
+        public static async ETTask<Scene> CreateClientScene(int zone, string name, Entity parent)
         {
+            await ETTask.CompletedTask;
+            
             Scene clientScene = EntitySceneFactory.CreateScene(zone, SceneType.Client, name, parent);
             clientScene.AddComponent<ClientSceneFlagComponent>();
-            clientScene.AddComponent<NetKcpComponent, int>(CallbackType.SessionStreamDispatcherClientOuter);
-			clientScene.AddComponent<CurrentScenesComponent>();
+            
+            clientScene.AddComponent<CurrentScenesComponent>();
             clientScene.AddComponent<ObjectWait>();
             clientScene.AddComponent<PlayerComponent>();
             

@@ -15,7 +15,7 @@ namespace ET.Client
 
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
             
-            Scene clientScene = SceneFactory.CreateClientScene(1, "Game", Game.Scene);
+            Scene clientScene = await SceneFactory.CreateClientScene(1, "Game", Game.Scene);
             
             await Game.EventSystem.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }

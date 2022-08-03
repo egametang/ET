@@ -1,0 +1,1 @@
+每个插件一个目录,其中Hotfix Model HotfixView ModelView都可以自动引用，但是Editor目录需要自己复制到Unity工程中去

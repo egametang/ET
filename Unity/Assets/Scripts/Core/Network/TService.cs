@@ -28,7 +28,7 @@ namespace ET
 			this.ServiceType = serviceType;
 			this.ThreadSynchronizationContext = threadSynchronizationContext;
 			
-			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			// 容易出问题，先注释掉，按需开启
 			//this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 			this.innArgs.Completed += this.OnComplete;

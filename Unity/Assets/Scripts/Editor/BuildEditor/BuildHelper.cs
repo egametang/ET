@@ -42,10 +42,10 @@ namespace ET
             }
             Directory.CreateDirectory(fold);
 
-            UnityEngine.Debug.Log("开始资源打包");
+            UnityEngine.Debug.Log("start build assetbundle");
             BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
 
-            UnityEngine.Debug.Log("完成资源打包");
+            UnityEngine.Debug.Log("finish build assetbundle");
 
             if (isContainAB)
             {
@@ -59,9 +59,9 @@ namespace ET
                 string[] levels = {
                     "Assets/Scenes/Init.unity",
                 };
-                UnityEngine.Debug.Log("开始EXE打包");
+                UnityEngine.Debug.Log("start build exe");
                 BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
-                UnityEngine.Debug.Log("完成exe打包");
+                UnityEngine.Debug.Log("finish build exe");
             }
             else
             {

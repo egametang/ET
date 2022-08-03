@@ -7,9 +7,9 @@ namespace ET.Client
     public static class RouterHelper
     {
         // 注册router
-        public static async ETTask<Session> CreateRouterSession(Scene clientScene, string address)
+        public static async ETTask<Session> CreateRouterSession(Scene clientScene, IPEndPoint address)
         {
-            (uint recvLocalConn, string routerAddress) = await GetRouterAddress(clientScene, address, 0, 0);
+            (uint recvLocalConn, IPEndPoint routerAddress) = await GetRouterAddress(clientScene, address, 0, 0);
 
             if (recvLocalConn == 0)
             {
@@ -18,32 +18,32 @@ namespace ET.Client
             
             Log.Info($"get router: {recvLocalConn} {routerAddress}");
 
-            Session routerSession = clientScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(routerAddress), NetworkHelper.ToIPEndPoint(address), recvLocalConn);
+            Session routerSession = clientScene.GetComponent<NetKcpComponent>().Create(routerAddress, address, recvLocalConn);
             routerSession.AddComponent<PingComponent>();
             routerSession.AddComponent<RouterCheckComponent>();
             
             return routerSession;
         }
         
-        public static async ETTask<(uint, string)> GetRouterAddress(Scene clientScene, string address, uint localConn, uint remoteConn)
+        public static async ETTask<(uint, IPEndPoint)> GetRouterAddress(Scene clientScene, IPEndPoint address, uint localConn, uint remoteConn)
         {
             Log.Info($"start get router address: {clientScene.Id} {address} {localConn} {remoteConn}");
             //return (RandomHelper.RandUInt32(), address);
             RouterAddressComponent routerAddressComponent = clientScene.GetComponent<RouterAddressComponent>();
-            string routerInfo = routerAddressComponent.GetAddress();
+            IPEndPoint routerInfo = routerAddressComponent.GetAddress();
             
-            uint recvLocalConn = await Connect(NetworkHelper.ToIPEndPoint(routerInfo), address, localConn, remoteConn);
+            uint recvLocalConn = await Connect(routerInfo, address, localConn, remoteConn);
             
             Log.Info($"finish get router address: {clientScene.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
             return (recvLocalConn, routerInfo);
         }
 
         // 向router申请
-        private static async ETTask<uint> Connect(IPEndPoint routerAddress, string realAddress, uint localConn, uint remoteConn)
+        private static async ETTask<uint> Connect(IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
             uint connectId = RandomHelper.RandUInt32();
             
-            using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            using Socket socket = new Socket(routerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             
             int count = 30;
             byte[] sendCache = new byte[512];
@@ -54,7 +54,7 @@ namespace ET.Client
             sendCache.WriteTo(1, localConn);
             sendCache.WriteTo(5, remoteConn);
             sendCache.WriteTo(9, connectId);
-            byte[] addressBytes = realAddress.ToByteArray();
+            byte[] addressBytes = realAddress.ToString().ToByteArray();
             Array.Copy(addressBytes, 0, sendCache, 13, addressBytes.Length);
 
             Log.Info($"router connect: {connectId} {localConn} {remoteConn} {routerAddress} {realAddress}");

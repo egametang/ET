@@ -11,64 +11,73 @@ namespace ET
     {
         public static string OnGeneratedCSProject(string path, string content)
         {
-            
+          
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\Scripts\\Hotfix\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Scripts\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
             }
-            
+          
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\Scripts\\HotfixView\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Scripts\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
             }
-            
+          
             if (path.EndsWith("Unity.Model.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Scripts\\Model\\Unity.Model.asmdef\" />", string.Empty);
             }
-            
+          
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
                 content =  content.Replace("<Compile Include=\"Assets\\Scripts\\ModelView\\Empty.cs\" />", string.Empty);
                 content =  content.Replace("<None Include=\"Assets\\Scripts\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
             }
-            
+          
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 return GenerateCustomProject(path, content, 
-                    @"..\Codes\Hotfix\Client\**\*.cs Client", 
-                    @"..\Codes\Hotfix\Share\**\*.cs Share",
-                    @"..\Codes\Hotfix\Server\**\*.cs Server"
+                    @"..\Codes\Hotfix\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)", 
+                    @"..\Codes\Hotfix\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Hotfix\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\Hotfix\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Client',''))%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\Hotfix\Share\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Share',''))%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\Hotfix\Server\**\*.cs Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Server',''))%(FileName)%(Extension)"
                     );
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
                 return GenerateCustomProject(path, content, 
-                    @"..\Codes\HotfixView\Client\**\*.cs Client", 
-                    @"..\Codes\HotfixView\Share\**\*.cs Share"); 
+                    @"..\Codes\HotfixView\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)", 
+                    @"..\Codes\HotfixView\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\HotfixView\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('HotfixView\Client',''))%(FileName)%(Extension)"
+                    ); 
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
                 return GenerateCustomProject(path, content,
-                    @"..\Codes\Model\Server\**\*.cs Server",
-                    @"..\Codes\Model\Client\**\*.cs Client",
-                    @"..\Codes\Model\Share\**\*.cs Share",
-                    @"..\Codes\Generate\Server\**\*.cs Generate"
+                    @"..\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Generate\Server\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\Model\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Client',''))%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\Model\Share\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Share',''))%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\Model\Server\**\*.cs Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Server',''))%(FileName)%(Extension)"
                     );
             }
 
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                return GenerateCustomProject(path, content, 
-                    @"..\Codes\ModelView\Client\**\*.cs Client",
-                    @"..\Codes\ModelView\Share\**\*.cs Share");
+                return GenerateCustomProject(path, content,
+                    @"..\Codes\ModelView\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\ModelView\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                    @"..\Codes\Plugins\*\ModelView\Client\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('ModelView\Client',''))%(FileName)%(Extension)"
+                    );
             }
-            
             return content;
         }
 
@@ -89,7 +98,7 @@ namespace ET
                 string linkStr = ss[1];
                 XmlElement compile = newDoc.CreateElement("Compile", newDoc.DocumentElement.NamespaceURI);
                 XmlElement link = newDoc.CreateElement("Link", newDoc.DocumentElement.NamespaceURI);
-                link.InnerText = $"{linkStr}\\%(RecursiveDir)%(FileName)%(Extension)";
+                link.InnerText = linkStr;
                 compile.AppendChild(link);
                 compile.SetAttribute("Include", p);
                 itemGroup.AppendChild(compile);

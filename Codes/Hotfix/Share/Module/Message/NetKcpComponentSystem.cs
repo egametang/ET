@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 
 namespace ET
 {
@@ -8,13 +9,12 @@ namespace ET
     public static class NetKcpComponentSystem
     {
         [ObjectSystem]
-        public class NetKcpComponentAwakeSystem: AwakeSystem<NetKcpComponent, int>
+        public class NetKcpComponentAwakeSystem: AwakeSystem<NetKcpComponent, AddressFamily, int>
         {
-            protected override void Awake(NetKcpComponent self, int sessionStreamDispatcherType)
+            protected override void Awake(NetKcpComponent self, AddressFamily addressFamily, int sessionStreamDispatcherType)
             {
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
-            
-                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
+                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, addressFamily, ServiceType.Outer);
                 self.Service.ErrorCallback += (channelId, error) => self.OnError(channelId, error);
                 self.Service.ReadCallback += (channelId, Memory) => self.OnRead(channelId, Memory);
 

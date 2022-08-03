@@ -7,7 +7,6 @@ using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using Object = UnityEngine.Object;
 
 namespace ET
 {
@@ -65,13 +64,12 @@ namespace ET
 
         private void OnGUI() 
 		{
-			EditorGUILayout.LabelField("打包平台:");
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-			this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
-			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
-			this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
-			this.codeOptimization = (CodeOptimization)EditorGUILayout.EnumPopup("CodeOptimization: ", this.codeOptimization);
-			EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
+			this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
+			this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
+			this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
+			this.codeOptimization = (CodeOptimization)EditorGUILayout.EnumPopup("CodeOptimization ", this.codeOptimization);
+			EditorGUILayout.LabelField("BuildAssetBundleOptions ");
 			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
 			
 			switch (this.codeOptimization)
@@ -91,12 +89,12 @@ namespace ET
 			{
 				if (this.platformType == PlatformType.None)
 				{
-					ShowNotification(new GUIContent("请选择打包平台!"));
+					ShowNotification(new GUIContent("please select platform!"));
 					return;
 				}
 				if (platformType != activePlatform)
 				{
-					switch (EditorUtility.DisplayDialogComplex("警告!", $"当前目标平台为{activePlatform}, 如果切换到{platformType}, 可能需要较长加载时间", "切换", "取消", "不切换"))
+					switch (EditorUtility.DisplayDialogComplex("Warning!", $"current platform is {activePlatform}, if change to {platformType}, may be take a long time", "change", "cancel", "no change"))
 					{
 						case 0:
 							activePlatform = platformType;
@@ -112,7 +110,7 @@ namespace ET
 			}
 			
 			GUILayout.Label("");
-			GUILayout.Label("代码编译：");
+			GUILayout.Label("Code Compile：");
 			
 			this.globalConfig.LoadMode = (LoadMode)EditorGUILayout.EnumPopup("LoadMode: ", this.globalConfig.LoadMode);
 			

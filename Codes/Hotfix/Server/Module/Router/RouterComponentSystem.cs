@@ -14,7 +14,7 @@ namespace ET.Server
         {
             protected override void Awake(RouterComponent self, IPEndPoint outerAddress, string innerIP)
             {
-                self.OuterSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                self.OuterSocket = new Socket(outerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
                 self.OuterSocket.Bind(outerAddress);
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
@@ -22,7 +22,7 @@ namespace ET.Server
                     self.OuterSocket.ReceiveBufferSize = 16 * Kcp.OneM;
                 }
 
-                self.InnerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                self.InnerSocket = new Socket(outerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
                 self.InnerSocket.Bind(new IPEndPoint(IPAddress.Parse(innerIP), 0));
 
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))

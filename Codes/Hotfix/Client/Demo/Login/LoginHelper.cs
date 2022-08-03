@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ET.Client
 {
@@ -18,10 +20,12 @@ namespace ET.Client
                     RouterAddressComponent routerAddressComponent = clientScene.GetComponent<RouterAddressComponent>();
                     if (routerAddressComponent == null)
                     {
-                        routerAddressComponent = clientScene.AddComponent<RouterAddressComponent, string>(ConstValue.RouterHttpAddress);
+                        routerAddressComponent = clientScene.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                         await routerAddressComponent.Init();
+                        
+                        clientScene.AddComponent<NetKcpComponent, AddressFamily, int>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, CallbackType.SessionStreamDispatcherClientOuter);
                     }
-                    string realmAddress = routerAddressComponent.GetRealmAddress(account);
+                    IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);
                     
                     session = await RouterHelper.CreateRouterSession(clientScene, realmAddress);
                     {
@@ -34,7 +38,7 @@ namespace ET.Client
                 }
 
                 // 创建一个gate Session,并且保存到SessionComponent中
-                Session gateSession = await RouterHelper.CreateRouterSession(clientScene, r2CLogin.Address);
+                Session gateSession = await RouterHelper.CreateRouterSession(clientScene, NetworkHelper.ToIPEndPoint(r2CLogin.Address));
                 clientScene.AddComponent<SessionComponent>().Session = gateSession;
 				
                 G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(

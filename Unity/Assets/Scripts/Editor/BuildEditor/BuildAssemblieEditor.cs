@@ -13,16 +13,34 @@ namespace ET
     {
         private const string CodeDir = "Assets/Bundles/Code/";
 
-        public static void SetAutoBuildCode()
+        public static List<string> GetRelativeDirs(List<string> relativeDir)
         {
-            PlayerPrefs.SetInt("AutoBuild", 1);
-            ShowNotification("AutoBuildCode Enabled");
-        }
-        
-        public static void CancelAutoBuildCode()
-        {
-            PlayerPrefs.DeleteKey("AutoBuild");
-            ShowNotification("AutoBuildCode Disabled");
+            List<string> list = new List<string>();
+            
+            foreach (string re in relativeDir)
+            {
+                string rd = $"../Codes/{re}";
+                if (!Directory.Exists(rd))
+                {
+                    continue;
+                }
+                list.Add(rd);
+            }
+            
+            DirectoryInfo di = new DirectoryInfo("../Codes/Plugins");
+            foreach (var subDi in di.GetDirectories())
+            {
+                foreach (string re in relativeDir)
+                {
+                    string rd = $"../Codes/Plugins/{subDi.Name}/{re}";
+                    if (!Directory.Exists(rd))
+                    {
+                        continue;
+                    }
+                    list.Add(rd);
+                }
+            }
+            return list;
         }
 
         public static void BuildCode(CodeOptimization codeOptimization, GlobalConfig globalConfig)
@@ -33,40 +51,43 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "../Codes/Generate/Client/",
-                        "../Codes/Model/Share/",
-                        "../Codes/Hotfix/Share/",
-                        "../Codes/Model/Client/",
-                        "../Codes/ModelView/Client/",
-                        "../Codes/Hotfix/Client/",
-                        "../Codes/HotfixView/Client/"
+                        "Generate/Client",
+                        "Model/Share",
+                        "Hotfix/Share",
+                        "Model/Client",
+                        "ModelView/Client",
+                        "Hotfix/Client",
+                        "HotfixView/Client"
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "../Codes/Generate/Server/",
-                        "../Codes/Model/Share/",
-                        "../Codes/Hotfix/Share/",
-                        "../Codes/Model/Server/",
-                        "../Codes/Hotfix/Server/",
-                        "../Codes/Model/Client/",
-                        "../Codes/Hotfix/Client/",
+                        "Generate/Server",
+                        "Model/Share",
+                        "Hotfix/Share",
+                        "Model/Server",
+                        "Hotfix/Server",
+                        "Model/Client",
+                        "Hotfix/Client",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "../Codes/Generate/Server/",
-                        "../Codes/Model/Share/",
-                        "../Codes/Hotfix/Share/",
-                        "../Codes/Model/Client/",
-                        "../Codes/ModelView/Client/",
-                        "../Codes/Hotfix/Client/",
-                        "../Codes/HotfixView/Client/",
-                        "../Codes/Model/Server/",
-                        "../Codes/Hotfix/Server/",
+                        "Generate/Server",
+                        "Model/Share",
+                        "Hotfix/Share",
+                        "Model/Client",
+                        "ModelView/Client",
+                        "Hotfix/Client",
+                        "HotfixView/Client",
+                        "Model/Server",
+                        "Hotfix/Server",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 default:
                     throw new Exception("not found enum");
@@ -88,30 +109,33 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "../Codes/Generate/Client/",
-                        "../Codes/Model/Share/",
-                        "../Codes/Model/Client/",
-                        "../Codes/ModelView/Client/",
+                        "Generate/Client/",
+                        "Model/Share/",
+                        "Model/Client/",
+                        "ModelView/Client/",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "../Codes/Generate/Server/",
-                        "../Codes/Model/Share/",
-                        "../Codes/Model/Server/",
-                        "../Codes/Model/Client/",
+                        "Generate/Server/",
+                        "Model/Share/",
+                        "Model/Server/",
+                        "Model/Client/",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "../Codes/Model/Share/",
-                        "../Codes/Model/Client/",
-                        "../Codes/ModelView/Client/",
-                        "../Codes/Generate/Server/",
-                        "../Codes/Model/Server/",
+                        "Model/Share/",
+                        "Model/Client/",
+                        "ModelView/Client/",
+                        "Generate/Server/",
+                        "Model/Server/",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 default:
                     throw new Exception("not found enum");
@@ -138,27 +162,30 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "../Codes/Hotfix/Share/",
-                        "../Codes/Hotfix/Client/",
-                        "../Codes/HotfixView/Client/"
+                        "Hotfix/Share/",
+                        "Hotfix/Client/",
+                        "HotfixView/Client/",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "../Codes/Hotfix/Share/",
-                        "../Codes/Hotfix/Server/",
-                        "../Codes/Hotfix/Client/",
+                        "Hotfix/Share/",
+                        "Hotfix/Server/",
+                        "Hotfix/Client/",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "../Codes/Hotfix/Share/",
-                        "../Codes/Hotfix/Client/",
-                        "../Codes/HotfixView/Client/",
-                        "../Codes/Hotfix/Server/",
+                        "Hotfix/Share/",
+                        "Hotfix/Client/",
+                        "HotfixView/Client/",
+                        "Hotfix/Server/",
                     };
+                    codes = GetRelativeDirs(codes);
                     break;
                 default:
                     throw new Exception("not found enum");
@@ -234,7 +261,8 @@ namespace ET
                     {
                         if (compilerMessages[i].type == CompilerMessageType.Error)
                         {
-                            Debug.LogError(compilerMessages[i].message);
+                            string filename = Path.GetFullPath(compilerMessages[i].file);
+                            Debug.LogError($"{compilerMessages[i].message} (at <a href=\"file:///{filename}/\" line=\"{compilerMessages[i].line}\">{Path.GetFileName(filename)}</a>)");
                         }
                     }
                 }

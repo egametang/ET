@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace ET
 {
@@ -21,6 +22,22 @@ namespace ET
 				}
 			}
 			return list.ToArray();
+		}
+		
+		// 优先获取IPV4的地址
+		public static IPAddress GetHostAddress(string hostName)
+		{
+			IPAddress[] ipAddresses = Dns.GetHostAddresses(hostName);
+			IPAddress returnIpAddress = null;
+			foreach (IPAddress ipAddress in ipAddresses)
+			{
+				returnIpAddress = ipAddress;
+				if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
+				{
+					return ipAddress;
+				}
+			}
+			return returnIpAddress;
 		}
 		
 		public static IPEndPoint ToIPEndPoint(string host, int port)
