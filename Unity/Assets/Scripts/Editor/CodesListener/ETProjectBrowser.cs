@@ -22,7 +22,6 @@ public class ETProjectBrowser : EditorWindow
     private TreeNode _root;
     private FileSystemWatcher _watcher;
     private Texture2D _texture;
-    private bool _autoFresh = false;
 
     private void OnEnable()
     {
@@ -77,11 +76,6 @@ public class ETProjectBrowser : EditorWindow
         }
         else
         {
-            if (GUILayout.Button("刷新工程"))
-            {
-                Refresh(true);
-            }
-            _autoFresh = GUILayout.Toggle(_autoFresh, "开启自动刷新工程");
             GUILayout.BeginHorizontal();
             _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
             int _ = 0;
@@ -196,10 +190,10 @@ public class ETProjectBrowser : EditorWindow
     private void Refresh(bool force = false)
     {
         SetTreeNodes(null, null);
-        if (_autoFresh || force)
-        {
-            RefreshCsprojs();
-        }
+        //if (_autoFresh || force)
+        //{
+        //    RefreshCsprojs();
+        //}
     }
     private void RefreshCsprojs()
     {
