@@ -1,9 +1,11 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Diagnostics;
+using MongoDB.Bson.Serialization.Attributes;
 using UnityEngine;
 
 namespace ET
 {
     [ChildOf(typeof(UnitComponent))]
+    [DebuggerDisplay("DebuggerDisplay,nq")]
     public class Unit: Entity, IAwake<int>
     {
         public int ConfigId { get; set; } //配置表id
@@ -48,5 +50,7 @@ namespace ET
                 Game.EventSystem.Publish(this.DomainScene(), new EventType.ChangeRotation() { Unit = this });
             }
         }
+
+        private string DebuggerDisplay => this.Config.Name;
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace ET
+﻿using System.Diagnostics;
+
+namespace ET
 {
     [EnableMethod]
+    [DebuggerDisplay("DebuggerDisplay,nq")]
     public sealed class Scene: Entity
     {
         public int Zone
@@ -95,5 +98,7 @@
                 this.parent.Children.Add(this.Id, this);
             }
         }
+
+        private string DebuggerDisplay => this.SceneType.ToString();
     }
 }
