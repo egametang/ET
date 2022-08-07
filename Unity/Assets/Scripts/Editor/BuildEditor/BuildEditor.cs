@@ -41,7 +41,7 @@ namespace ET
 		[MenuItem("ET/Build Tool")]
 		public static void ShowWindow()
 		{
-			GetWindow(typeof (BuildEditor));
+			GetWindow<BuildEditor>(DockDefine.Types);
 		}
 
         private void OnEnable()
