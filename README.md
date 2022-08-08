@@ -110,7 +110,7 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 群友分享：  
 [行为树与fgui分支(Duke Chiang开发维护)](https://github.com/DukeChiang/ET.git)   
 [ET学习笔记系列(烟雨迷离半世殇写)](https://www.lfzxb.top/)   
-[ET学习笔记系列(咲夜詩写)](https://acgmart.com/unity/)   
+[图形渲染与ET学习笔记(咲夜詩写)](https://acgmart.com/)   
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)  
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
@@ -134,7 +134,7 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
 2. [背包系统](https://gitee.com/ECPS_admin/planc)  
-3. [ET小游戏合集](https://github.com/Acgmart/ET-MultiplyDemos)  
+3. [移动端渲染技术demo](https://github.com/Acgmart/Sekia_TechDemo)  
 
 
 
