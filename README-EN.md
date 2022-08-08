@@ -106,7 +106,7 @@ Related websites :
 Groupies share.  
 [Behavior tree and fgui branching (developed and maintained by Duke Chiang)](https://github.com/DukeChiang/ET.git)   
 [ET Learning Notes Series (written by Smoke and Rain Daze Half World Gothic)](https://www.lfzxb.top/)   
-[ET Learning Notes Series (written by Saki Yoshi)](https://acgmart.com/unity/)   
+[Graphics Programming and ET Learning Notes Series (written by Sekia Shi)](https://acgmart.com/)   
 [Framework server-side operation process](http://www.cnblogs.com/fancybit/p/et1.html)  
 [ET startup configuration](http://www.cnblogs.com/fancybit/p/et2.html)  
 [framework demo introduction](http://www.jianshu.com/p/f2ea0d26c7c1)  
@@ -130,7 +130,7 @@ Commercial projects :
 Groupies demos.  
 1. [Landlord (client-side server)](https://github.com/Viagi/LandlordsCore)  
 2. [Backpack system](https://gitee.com/ECPS_admin/planc)  
-3. [ET mini-game collection](https://github.com/Acgmart/ET-MultiplyDemos)  
+3. [Mobile Rendering Tech-Demo](https://github.com/Acgmart/Sekia_TechDemo)  
 
 
 
