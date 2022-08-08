@@ -32,6 +32,11 @@ namespace ET
 			{
 				case LoadMode.Mono:
 				{
+					if (Define.EnableCodes)
+					{
+						throw new Exception("LoadMode.Mono must remove ENABLE_CODE define, please use ET/ChangeDefine/Remove ENABLE_CODE to Remove define");
+					}
+					
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
 					byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
@@ -48,11 +53,38 @@ namespace ET
 				}
 				case LoadMode.Reload:
 				{
+					if (Define.EnableCodes)
+					{
+						throw new Exception("LoadMode.Reload must remove ENABLE_CODE define, please use ET/ChangeDefine/Remove ENABLE_CODE to Remove define");
+					}
+					
 					byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
 					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					this.LoadHotfix();
+					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
+					start.Run();
+					break;
+				}
+				case LoadMode.Codes:
+				{
+					if (!Define.EnableCodes)
+					{
+						throw new Exception("LoadMode.Codes must add ENABLE_CODE define, please use ET/ChangeDefine/Add ENABLE_CODE to add define");
+					}
+
+					Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
+					Game.EventSystem.Add(types);
+					foreach (Assembly ass in assemblies)
+					{
+						string name = ass.GetName().Name;
+						if (name == "Unity.Codes")
+						{
+							this.assembly = ass;
+						}
+					}
 					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
 					start.Run();
 					break;
