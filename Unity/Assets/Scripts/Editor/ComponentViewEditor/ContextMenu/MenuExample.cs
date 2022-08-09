@@ -1,4 +1,4 @@
-#define ENABLE_CODES
+#if ENABLE_CODES
 
 namespace ET
 {
@@ -13,3 +13,4 @@ namespace ET
         }
     }
 }
+#endif
