@@ -31,9 +31,9 @@ namespace ET
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
-            this.IsRegister = true;
             this.Parent = parent;
             this.Domain = this;
+            this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
@@ -46,9 +46,9 @@ namespace ET
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
-            this.IsRegister = true;
             this.Parent = parent;
             this.Domain = this;
+            this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
@@ -90,7 +90,7 @@ namespace ET
             {
                 if (value == null)
                 {
-                    this.parent = this;
+                    //this.parent = this;
                     return;
                 }
 
@@ -98,7 +98,15 @@ namespace ET
                 this.parent.Children.Add(this.Id, this);
             }
         }
-
-        private string DebuggerDisplay => this.SceneType.ToString();
+        
+#if ENABLE_CODES
+        protected override string ViewGoName
+        {
+            get
+            {
+                return $"{this.GetType().Name} ({this.SceneType})";    
+            }
+        }
+#endif
     }
 }

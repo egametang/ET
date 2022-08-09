@@ -1,3 +1,4 @@
+#if ENABLE_CODES
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -13,7 +14,7 @@ namespace ET
         public override void OnInspectorGUI()
         {
             ComponentView componentView = (ComponentView) target;
-            object component = componentView.Component;
+            Entity component = componentView.Component;
             ComponentViewHelper.Draw(component);
         }
     }
@@ -37,14 +38,18 @@ namespace ET
             }
         }
         
-        public static void Draw(object obj)
+        public static void Draw(Entity entity)
         {
             try
             {
-                FieldInfo[] fields = obj.GetType()
+                FieldInfo[] fields = entity.GetType()
                         .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
                 EditorGUILayout.BeginVertical();
+                
+                EditorGUILayout.LongField("InstanceId: ", entity.InstanceId);
+                
+                EditorGUILayout.LongField("Id: ", entity.Id);
 
                 foreach (FieldInfo fieldInfo in fields)
                 {
@@ -59,7 +64,7 @@ namespace ET
                         continue;
                     }
 
-                    object value = fieldInfo.GetValue(obj);
+                    object value = fieldInfo.GetValue(entity);
 
                     foreach (ITypeDrawer typeDrawer in typeDrawers)
                     {
@@ -74,7 +79,7 @@ namespace ET
                             fieldName = fieldName.Substring(1, fieldName.Length - 17);
                         }
                         value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, null);
-                        fieldInfo.SetValue(obj, value);
+                        fieldInfo.SetValue(entity, value);
                         break;
                     }
                 }
@@ -83,8 +88,9 @@ namespace ET
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log($"component view error: {obj.GetType().FullName} {e}");
+                UnityEngine.Debug.Log($"component view error: {entity.GetType().FullName} {e}");
             }
         }
     }
 }
+#endif

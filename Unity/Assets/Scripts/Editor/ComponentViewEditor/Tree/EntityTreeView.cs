@@ -1,3 +1,4 @@
+#if ENABLE_CODES
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -99,3 +100,4 @@ namespace ET
         }
     }
 }
+#endif

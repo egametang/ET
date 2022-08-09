@@ -52,5 +52,15 @@ namespace ET
         }
 
         private string DebuggerDisplay => this.Config.Name;
+        
+#if ENABLE_CODES
+        protected override string ViewGoName
+        {
+            get
+            {
+                return $"{this.GetType().Name} ({this.Id})";
+            }
+        }
+#endif
     }
 }
