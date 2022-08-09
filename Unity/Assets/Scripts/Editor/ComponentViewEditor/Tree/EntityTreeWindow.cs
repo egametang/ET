@@ -1,4 +1,5 @@
 #if ENABLE_CODES
+using System;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -56,6 +57,11 @@ namespace ET
             VIEW_MONO = null;
         }
 
+        private void OnInspectorUpdate()
+        {
+            this.treeView?.Refresh();
+        }
+
         private void OnGUI()
         {
             this.treeView.searchString = this.searchField.OnGUI(
@@ -77,7 +83,6 @@ namespace ET
                 )
             );
 
-            this.treeView.Reload();
 
             GUILayout.BeginArea(
                 new Rect(

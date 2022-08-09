@@ -1,3 +1,5 @@
+#if ENABLE_CODES
+
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.CSharp.RuntimeBinder;
@@ -5,14 +7,14 @@ using UnityEditor.IMGUI.Controls;
 
 namespace ET
 {
-    public class EntityTreeViewItem : TreeViewItem
+    public class EntityTreeViewItem: TreeViewItem
     {
-        private Entity entity;
+        public Entity entity;
 
         public EntityTreeViewItem(Entity entity, int id)
         {
             this.entity = entity;
-            base.id = id;
+            base.id     = id;
         }
 
         public override string displayName
@@ -28,18 +30,18 @@ namespace ET
 
                 string debugger_name = ReadDebuggerDisplay(entity);
 
-                _displayName = string.IsNullOrEmpty(debugger_name) ? name : $"{name}: ({debugger_name})";
+                _displayName = string.IsNullOrEmpty(debugger_name)? name : $"{name}{debugger_name}";
 
                 return _displayName;
             }
         }
 
         private string _displayName;
-        
+
         // https://stackoverflow.com/a/13650728/37055
         private static object ReadProperty(object target, string propertyName)
         {
-            var args = new[] {CSharpArgumentInfo.Create(0, null)};
+            var args = new[] { CSharpArgumentInfo.Create(0, null) };
             var binder = Binder.GetMember(
                 0,
                 propertyName,
@@ -50,7 +52,7 @@ namespace ET
             return site.Target(site, target);
         }
 
-        private static string ReadDebuggerDisplay(object target, string propertyName = "DebuggerDisplay")
+        private static string ReadDebuggerDisplay(object target, string propertyName = "ViewGoName")
         {
             string debuggerDisplay = string.Empty;
             try
@@ -68,3 +70,4 @@ namespace ET
         }
     }
 }
+#endif
