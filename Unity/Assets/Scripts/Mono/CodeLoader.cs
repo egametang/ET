@@ -28,6 +28,11 @@ namespace ET
 		
 		public void Start()
 		{
+			if (Define.EnableCodes)
+			{
+				this.GlobalConfig.LoadMode = LoadMode.Codes;
+			}
+			
 			switch (this.GlobalConfig.LoadMode)
 			{
 				case LoadMode.Mono:

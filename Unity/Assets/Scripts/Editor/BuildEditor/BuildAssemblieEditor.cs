@@ -19,26 +19,12 @@ namespace ET
             
             foreach (string re in relativeDir)
             {
-                string rd = $"../Codes/{re}";
+                string rd = $"Assets/Scripts/Codes/{re}";
                 if (!Directory.Exists(rd))
                 {
                     continue;
                 }
                 list.Add(rd);
-            }
-            
-            DirectoryInfo di = new DirectoryInfo("../Codes/Plugins");
-            foreach (var subDi in di.GetDirectories())
-            {
-                foreach (string re in relativeDir)
-                {
-                    string rd = $"../Codes/Plugins/{subDi.Name}/{re}";
-                    if (!Directory.Exists(rd))
-                    {
-                        continue;
-                    }
-                    list.Add(rd);
-                }
             }
             return list;
         }
@@ -51,7 +37,7 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "Generate/Client",
+                        "Model/Generate/Client",
                         "Model/Share",
                         "Hotfix/Share",
                         "Model/Client",
@@ -64,7 +50,7 @@ namespace ET
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "Generate/Server",
+                        "Model/Generate/Server",
                         "Model/Share",
                         "Hotfix/Share",
                         "Model/Server",
@@ -77,7 +63,7 @@ namespace ET
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "Generate/Server",
+                        "Model/Generate/Server",
                         "Model/Share",
                         "Hotfix/Share",
                         "Model/Client",
@@ -109,7 +95,7 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "Generate/Client/",
+                        "Model/Generate/Client/",
                         "Model/Share/",
                         "Model/Client/",
                         "ModelView/Client/",
@@ -119,7 +105,7 @@ namespace ET
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "Generate/Server/",
+                        "Model/Generate/Server/",
                         "Model/Share/",
                         "Model/Server/",
                         "Model/Client/",
