@@ -6,17 +6,26 @@ using UnityEngine;
 
 namespace ET
 {
-    public class EntityTreeView : TreeView
+    public class EntityTreeView: TreeView
     {
         private EntityTreeViewItem root;
         private int                id;
 
-        public Dictionary<int, Entity> all = new();
+        private readonly Dictionary<int, Entity> all             = new();
+        private readonly Dictionary<Entity, int> entityHistoryID = new();
 
-        public EntityTreeView(TreeViewState state) : base(state)
+        public EntityTreeView(TreeViewState state): base(state)
         {
             Reload();
             useScrollView = true;
+        }
+
+        public void Refresh()
+        {
+            this.root = BuildRoot() as EntityTreeViewItem;
+            BuildRows(this.root);
+
+            this.Repaint();
         }
 
         protected override TreeViewItem BuildRoot()
@@ -31,7 +40,6 @@ namespace ET
             return this.root;
         }
 
-
         private EntityTreeViewItem PreOrder(Entity root)
         {
             if(root is null)
@@ -39,11 +47,17 @@ namespace ET
                 return null;
             }
 
-            this.id++;
+            if(!this.entityHistoryID.TryGetValue(root, out var itemID))
+            {
+                this.id++;
+                itemID = this.id;
 
-            var item = new EntityTreeViewItem(root, this.id);
+                this.entityHistoryID[root] = itemID;
+            }
 
-            all[this.id] = root;
+            EntityTreeViewItem item = new(root, itemID);
+
+            this.all[itemID] = root;
 
             if(root.Components.Count > 0)
             {
@@ -64,7 +78,6 @@ namespace ET
             return item;
         }
 
-
         /// <summary>
         /// 处理右键内容
         /// </summary>
@@ -81,14 +94,13 @@ namespace ET
             EntityContextMenu.Show(EntityTreeWindow.VIEW_MONO.Component);
         }
 
-
         /// <summary>
         /// 处理左键内容
         /// </summary>
         /// <param name="id"></param>
         protected override void SingleClickedItem(int id)
         {
-            all.TryGetValue(id, out var entity);
+            this.all.TryGetValue(id, out Entity entity);
 
             if(entity is null)
             {
@@ -96,7 +108,10 @@ namespace ET
             }
 
             EntityTreeWindow.VIEW_MONO.Component = entity;
-            Selection.activeObject            = EntityTreeWindow.VIEW_MONO;
+            Selection.activeObject               = null;
+
+            // 刷新 Inspector 显示
+            EditorApplication.delayCall += () => { Selection.activeObject = EntityTreeWindow.VIEW_MONO; };
         }
     }
 }

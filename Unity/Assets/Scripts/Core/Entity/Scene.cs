@@ -3,7 +3,7 @@
 namespace ET
 {
     [EnableMethod]
-    [DebuggerDisplay("DebuggerDisplay,nq")]
+    [DebuggerDisplay("ViewGoName,nq")]
     public sealed class Scene: Entity
     {
         public int Zone
