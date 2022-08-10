@@ -18,6 +18,10 @@ namespace ET
 
     public partial class Entity: DisposeObject
     {
+#if ENABLE_CODES
+        private UnityEngine.GameObject viewGO;
+#endif
+        
         [IgnoreDataMember]
         [BsonIgnore]
         public long InstanceId
@@ -74,8 +78,32 @@ namespace ET
                 }
 
                 EventSystem.Instance.RegisterSystem(this, value);
+                
+#if ENABLE_CODES
+                if (value)
+                {
+                    this.viewGO = new UnityEngine.GameObject(this.ViewGoName);
+                    this.viewGO.AddComponent<ComponentView>().Component = this;
+                    this.viewGO.transform.SetParent(this.Parent == null? 
+                            UnityEngine.GameObject.Find("Global").transform : this.Parent.viewGO.transform);
+                }
+                else
+                {
+                    UnityEngine.Object.Destroy(this.viewGO);
+                }
+#endif
             }
         }
+        
+#if ENABLE_CODES
+        protected virtual string ViewGoName
+        {
+            get
+            {
+                return this.GetType().Name;    
+            }
+        }
+#endif
 
         [IgnoreDataMember]
         [BsonIgnore]

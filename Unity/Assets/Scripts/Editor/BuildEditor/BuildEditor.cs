@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace ET
 		[MenuItem("ET/Build Tool")]
 		public static void ShowWindow()
 		{
-			GetWindow(typeof (BuildEditor));
+			GetWindow<BuildEditor>(DockDefine.Types);
 		}
 
         private void OnEnable()
@@ -118,16 +119,28 @@ namespace ET
 			
 			if (GUILayout.Button("BuildCode"))
 			{
+				if (Define.EnableCodes)
+				{
+					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
+				}
 				BuildAssemblieEditor.BuildCode(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("BuildModel"))
 			{
+				if (Define.EnableCodes)
+				{
+					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
+				}
 				BuildAssemblieEditor.BuildModel(this.codeOptimization, globalConfig);
 			}
 			
 			if (GUILayout.Button("BuildHotfix"))
 			{
+				if (Define.EnableCodes)
+				{
+					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
+				}
 				BuildAssemblieEditor.BuildHotfix(this.codeOptimization, globalConfig);
 			}
 			
