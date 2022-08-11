@@ -122,6 +122,7 @@
      <Compile Include="Assets\Scripts\Codes\Model\Server\Module\Http\HttpHandlerAttribute.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Helper\SceneFactory.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Map\Move\C2M_PathfindingResultHandler.cs" />
+     <Compile Include="Assets\Scripts\Codes\Model\Share\Plugins\Example\ModelShare.cs" />
      <Compile Include="Assets\Scripts\Codes\HotfixView\Client\Demo\Global\GlobalComponentSystem.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Server\Demo\Map\Unit\UnitGateComponent.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Client\Demo\AI\XunLuoPathComponent.cs" />
@@ -133,6 +134,7 @@
      <Compile Include="Assets\Scripts\Codes\Model\Server\Demo\Robot\RobotManagerComponent.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\Timer\TimerComponent.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\Numeric\NumericComponent.cs" />
+     <Compile Include="Assets\Scripts\Codes\Model\Server\Plugins\Example\ModelServer.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Server\Module\RobotCase\RobotCaseComponent.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Module\ActorLocation\ObjectAddRequestHandler.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Generate\Server\Config\StartSceneConfig.cs" />
@@ -209,8 +211,10 @@
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\Log\NLogger.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Client\Demo\Unit\M2C_CreateUnitsHandler.cs" />
      <Compile Include="Assets\Scripts\Codes\ModelView\Client\Module\UI\UIType.cs" />
+     <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Plugins\Example\HotfixServer.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Server\Demo\Map\Recast\RecastFileReader.cs" />
      <Compile Include="Assets\Scripts\Codes\ModelView\Client\Module\UI\UI.cs" />
+     <Compile Include="Assets\Scripts\Codes\Model\Client\Plugins\Example\ModelClient.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Server\Module\Actor\ActorMessageSender.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Map\Unit\UnitFactory.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Robot\RobotManagerComponentSystem.cs" />
@@ -234,6 +238,7 @@
      <Compile Include="Assets\Scripts\Codes\Model\Client\Demo\Helper\PositionHelper.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Gate\R2G_GetLoginKeyHandler.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Share\Module\Message\SessionAcceptTimeoutComponentSystem.cs" />
+     <Compile Include="Assets\Scripts\Codes\Hotfix\Client\Plugins\Example\HotfixClient.cs" />
      <Compile Include="Assets\Scripts\Codes\HotfixView\Client\Demo\UI\UILogin\LoginFinish_RemoveLoginUI.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\Numeric\NumericType.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\Message\NetThreadComponent.cs" />
@@ -279,6 +284,7 @@
      <Compile Include="Assets\Scripts\Codes\Hotfix\Share\Module\Move\MoveComponentSystem.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Generate\Server\Message\InnerMessage.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Share\ConstValue.cs" />
+     <Compile Include="Assets\Scripts\Codes\HotfixView\Client\Plugins\Example\HotfixView.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Generate\Server\Message\MongoOpcode.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\Recast\PathfindingComponent.cs" />
      <Compile Include="Assets\Scripts\Codes\Model\Server\Module\Router\RouterComponent.cs" />
@@ -315,6 +321,7 @@
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Map\Move\MoveHelper.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Module\ActorLocation\LocationComponentSystem.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Client\Demo\AI\AI_XunLuo.cs" />
+     <Compile Include="Assets\Scripts\Codes\Hotfix\Share\Plugins\Example\HotfixShare.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Realm\C2R_LoginHandler.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Map\Transfer\TransferHelper.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Gate\PlayerSystem.cs" />
@@ -330,6 +337,7 @@
      <Compile Include="Assets\Scripts\Codes\Model\Share\Module\AI\AAIHandler.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Demo\Realm\RealmGateAddressHelper.cs" />
      <Compile Include="Assets\Scripts\Codes\Hotfix\Server\Module\ActorLocation\ActorLocationSenderComponentSystem.cs" />
+     <Compile Include="Assets\Scripts\Codes\ModelView\Client\Plugins\Example\ModelView.cs" />
      <None Include="Assets\Scripts\Codes\Unity.Codes.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Apps\Unity\2021.3.6f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

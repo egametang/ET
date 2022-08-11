@@ -19,7 +19,7 @@
         <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>..\..\Bin\</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors> 
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
 
