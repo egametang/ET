@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace ET
+namespace ET.Server
 {
     public class CodeLoader
     {
@@ -15,13 +15,13 @@ namespace ET
         public void LoadHotfix()
         {
             assemblyLoadContext?.Unload();
-            System.GC.Collect();
+            GC.Collect();
             assemblyLoadContext = new AssemblyLoadContext("Hotfix", true);
             byte[] dllBytes = File.ReadAllBytes("./Hotfix.dll");
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly assembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
             
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.GetType().Assembly, assembly);
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Program).Assembly, typeof (Game).Assembly, typeof(Entry).Assembly, assembly);
 			
             Game.EventSystem.Add(types);
         }
