@@ -24,7 +24,7 @@ namespace ET.Server
                 return;
             }
 
-            unit.Domain.GetComponent<AOIManagerComponent>().Move(aoiEntity, newCellX, newCellY);
+            unit.DomainScene().GetComponent<AOIManagerComponent>().Move(aoiEntity, newCellX, newCellY);
             await ETTask.CompletedTask;
         }
     }

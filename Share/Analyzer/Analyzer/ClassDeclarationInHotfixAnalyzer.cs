@@ -13,8 +13,6 @@ namespace ET.Analyzer
 
         private const string Description = "Hotfix程序集中 只能声明含有BaseAttribute子类特性的类或静态类.";
 
-        private const string BaseAttribute = "ET.BaseAttribute";
-
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.ClassDeclarationInHotfixAnalyzerRuleId,
             Title,
             MessageFormat,
@@ -70,7 +68,7 @@ namespace ET.Analyzer
             INamedTypeSymbol? typeSymbol = namedTypeSymbol;
             while (typeSymbol != null)
             {
-                if (typeSymbol.HasBaseAttribute(BaseAttribute))
+                if (typeSymbol.HasBaseAttribute(Definition.BaseAttribute))
                 {
                     return true;
                 }

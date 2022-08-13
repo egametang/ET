@@ -16,14 +16,6 @@ namespace ET.Analyzer
 
         private const string Description = "请使用实体类属性或方法访问其他实体字段.";
 
-        private const string EntityType = "ET.Entity";
-
-        private const string ObjectSystemAttribute = "ET.ObjectSystemAttribute";
-
-        private const string ISystemType = "ET.ISystemType";
-
-        private const string FriendOfAttribute = "ET.FriendOfAttribute";
-
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityFiledAccessAnalyzerRuleId,
             Title,
             MessageFormat,
@@ -69,7 +61,7 @@ namespace ET.Analyzer
                 return;
             }
 
-            if (filedSymbol.ContainingType.BaseType?.ToString() != EntityType)
+            if (filedSymbol.ContainingType.BaseType?.ToString() != Definition.EntityType)
             {
                 return;
             }
@@ -91,7 +83,7 @@ namespace ET.Analyzer
             }
 
             // 实体基类忽略处理
-            if (accessFieldClassSymbol.ToString() == EntityType)
+            if (accessFieldClassSymbol.ToString() == Definition.EntityType)
             {
                 return;
             }
@@ -129,7 +121,7 @@ namespace ET.Analyzer
             }
 
             // 判断是否含有 ObjectSystem Attribute 且继承了接口 ISystemType
-            if (accessFieldClassSymbol.BaseType.HasAttribute(ObjectSystemAttribute) && accessFieldClassSymbol.HasInterface(ISystemType))
+            if (accessFieldClassSymbol.BaseType.HasAttribute(Definition.ObjectSystemAttribute) && accessFieldClassSymbol.HasInterface(Definition.ISystemType))
             {
                 // 获取 accessFieldClassSymbol 父类的实体类型参数
                 ITypeSymbol? entityTypeArgumentSymbol = accessFieldClassSymbol.BaseType.TypeArguments.FirstOrDefault();
@@ -153,7 +145,7 @@ namespace ET.Analyzer
             var attributes = accessFieldTypeSymbol.GetAttributes();
             foreach (AttributeData? attributeData in attributes)
             {
-                if (attributeData.AttributeClass?.ToString() != FriendOfAttribute)
+                if (attributeData.AttributeClass?.ToString() != Definition.FriendOfAttribute)
                 {
                     continue;
                 }

@@ -10,6 +10,7 @@ namespace ET.Server
             ActorMessageSenderComponent.Instance.RunMessage(actorId, iActorResponse);
         }
 
+        [EnableAccessEntiyChild]
         public static void HandleIActorRequest(ushort opcode, long actorId, IActorRequest iActorRequest, Action<IActorResponse> reply)
         {
             Entity entity = Game.EventSystem.Get(actorId);
@@ -62,8 +63,8 @@ namespace ET.Server
             IActorResponse response = ActorHelper.CreateResponse(iActorRequest, error);
             reply.Invoke(response);
         }
-
-
+        
+        [EnableAccessEntiyChild]
         public static void HandleIActorMessage(ushort opcode, long actorId, IActorMessage iActorMessage)
         {
             OpcodeHelper.LogMsg(opcode, actorId, iActorMessage);

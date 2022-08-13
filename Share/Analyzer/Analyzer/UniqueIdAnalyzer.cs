@@ -9,14 +9,7 @@ namespace ET.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UniqueIdAnalyzer : DiagnosticAnalyzer
     {
-
-
-        private const string UniqueIdAttribute = "ET.UniqueIdAttribute";
-        
-
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>ImmutableArray.Create(UniqueIdRangeAnaluzerRule.Rule,UniqueIdDuplicateAnalyzerRule.Rule);
-        
         
         public override void Initialize(AnalysisContext context)
         {
@@ -42,7 +35,7 @@ namespace ET.Analyzer
             }
 
             // 筛选出含有UniqueId标签的类
-            var attr = namedTypeSymbol.GetFirstAttribute(UniqueIdAttribute);
+            var attr = namedTypeSymbol.GetFirstAttribute(Definition.UniqueIdAttribute);
             if (attr==null)
             {
                 return;

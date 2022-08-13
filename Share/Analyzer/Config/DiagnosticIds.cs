@@ -28,5 +28,7 @@
 
         public const string StaticClassCircularDedendencyAnalyzerRuleId = "ET0013";
 
+        public const string DisableUseChildComponentInEntityAnalyzerRuleId = "ET0014";
+
     }
 }
