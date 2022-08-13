@@ -19,7 +19,7 @@
         <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>..\..\Bin\</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors> 
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
 
@@ -49,7 +49,7 @@
         
     </ItemGroup> 
     <ItemGroup> 
-        <ProjectReference Include="..\..\Codes\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Core\DotNet.Core.csproj" />
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>

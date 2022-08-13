@@ -109,7 +109,7 @@ namespace ET
             }
 
             var projectReference = newDoc.CreateElement("ProjectReference", newDoc.DocumentElement.NamespaceURI);
-            projectReference.SetAttribute("Include", @"..\Codes\Analyzer\Share.Analyzer.csproj");
+            projectReference.SetAttribute("Include", @"..\Share\Analyzer\Share.Analyzer.csproj");
             projectReference.SetAttribute("OutputItemType", @"Analyzer");
             projectReference.SetAttribute("ReferenceOutputAssembly", @"false");
 
