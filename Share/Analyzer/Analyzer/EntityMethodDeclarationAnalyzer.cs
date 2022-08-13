@@ -15,10 +15,8 @@ namespace ET.Analyzer
         private const string MessageFormat = "实体类: {0} 不能在类内部声明方法: {1}";
 
         private const string Description = "实体类禁止声明方法.";
-        
-        private const string EntityType = "ET.Entity";
 
-        private const string EnableMethodAttribute = "ET.EnableMethodAttribute";
+        
         
         private static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.EntityMethodDeclarationAnalyzerRuleId,
@@ -56,13 +54,13 @@ namespace ET.Analyzer
             }
 
             // 筛选出实体类
-            if (namedTypeSymbol.BaseType?.ToString() != EntityType)
+            if (namedTypeSymbol.BaseType?.ToString() != Definition.EntityType)
             {
                 return;
             }
 
             // 忽略含有EnableMethod标签的实体类
-            if (namedTypeSymbol.HasAttribute(EnableMethodAttribute))
+            if (namedTypeSymbol.HasAttribute(Definition.EnableMethodAttribute))
             {
                 return;
             }

@@ -11,26 +11,7 @@ namespace ET.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AddChildTypeAnalyzer: DiagnosticAnalyzer
     {
-        private const string Title = "AddChild方法类型约束错误";
-
-        private const string MessageFormat = "Type: {0} 不允许作为实体: {1} 的AddChild函数参数类型! 若要允许该类型作为参数,请使用ChildOfAttribute对child实体类标记父级类型";
-
-        private const string Description = "AddChild方法类型约束错误.";
-
-        private static readonly string[] AddChildMethods = { "AddChild", "AddChildWithId" };
-        
-        private const string EntityType = "ET.Entity";
-
-        private static readonly DiagnosticDescriptor Rule =
-                new DiagnosticDescriptor(DiagnosticIds.AddChildTypeAnalyzerRuleId,
-                    Title,
-                    MessageFormat,
-                    DiagnosticCategories.Hotfix,
-                    DiagnosticSeverity.Error,
-                    true,
-                    Description);
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(AddChildTypeAnalyzerRule.Rule,DisableAccessEntityChildAnalyzerRule.Rule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -59,7 +40,7 @@ namespace ET.Analyzer
             // 筛选出 AddChild函数syntax
             string methodName = memberAccessExpressionSyntax.Name.Identifier.Text;
 
-            if (!AddChildMethods.Contains(methodName))
+            if (!Definition.AddChildMethods.Contains(methodName))
             {
                 return;
             }
@@ -76,13 +57,22 @@ namespace ET.Analyzer
             {
                 return;
             }
-
-            // 只检查Entity的子类
-            if (parentTypeSymbol.BaseType?.ToString()!= EntityType)
+            
+            
+            // 对于Entity基类会报错 除非标记了EnableAccessEntiyChild
+            if (parentTypeSymbol.ToString()==Definition.EntityType)
             {
+                HandleAcessEntityChild(context);
                 return;
             }
 
+            // 非Entity的子类 跳过
+            if (parentTypeSymbol.BaseType?.ToString()!= Definition.EntityType)
+            {
+                return;
+            }
+            
+            
             // 获取 child实体类型
             ISymbol? childTypeSymbol = null;
             // addChild为泛型调用
@@ -96,7 +86,7 @@ namespace ET.Analyzer
 
                 if (childTypeSyntax == null)
                 {
-                    Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
+                    Diagnostic diagnostic = Diagnostic.Create(AddChildTypeAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
                     context.ReportDiagnostic(diagnostic);
                     throw new Exception("childTypeSyntax==null");
                 }
@@ -110,7 +100,7 @@ namespace ET.Analyzer
                         ?.ChildNodes().First();
                 if (firstArgumentSyntax == null)
                 {
-                    Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
+                    Diagnostic diagnostic = Diagnostic.Create(AddChildTypeAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
                     context.ReportDiagnostic(diagnostic);
                     return;
                 }
@@ -139,14 +129,14 @@ namespace ET.Analyzer
                 }
                 else if (firstArgumentSymbol != null)
                 {
-                    Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(),
+                    Diagnostic diagnostic = Diagnostic.Create(AddChildTypeAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(),
                         firstArgumentSymbol.Name, parentTypeSymbol.Name);
                     context.ReportDiagnostic(diagnostic);
                     return;
                 }
                 else
                 {
-                    Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(),
+                    Diagnostic diagnostic = Diagnostic.Create(AddChildTypeAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(),
                         firstArgumentSyntax.GetText(), parentTypeSymbol.Name);
                     context.ReportDiagnostic(diagnostic);
                     return;
@@ -176,7 +166,7 @@ namespace ET.Analyzer
 
             foreach (AttributeData? attributeData in childType.GetAttributes())
             {
-                if (attributeData.AttributeClass?.Name == "ChildOfAttribute")
+                if (attributeData.AttributeClass?.ToString() == Definition.ChildOfAttribute)
                 {
                     hasAttribute = true;
                     availableParentType = attributeData.ConstructorArguments[0].Value as INamedTypeSymbol;
@@ -196,9 +186,44 @@ namespace ET.Analyzer
             }
 
             {
-                Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), childTypeSymbol?.Name,
+                Diagnostic diagnostic = Diagnostic.Create(AddChildTypeAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation(), childTypeSymbol?.Name,
                     parentTypeSymbol?.Name);
                 context.ReportDiagnostic(diagnostic);
+            }
+        }
+
+        private void HandleAcessEntityChild(SyntaxNodeAnalysisContext context)
+        {
+            var memberAccessExpressionSyntax = context.Node as MemberAccessExpressionSyntax;
+            //在方法体内
+            var methodDeclarationSyntax = memberAccessExpressionSyntax?.GetNeareastAncestor<MethodDeclarationSyntax>();
+            if (methodDeclarationSyntax!=null)
+            {
+                var methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclarationSyntax);
+
+                bool? enableAccessEntiyChild = methodSymbol?.GetAttributes().Any(x => x.AttributeClass?.ToString() == Definition.EnableAccessEntiyChildAttribute);
+                if (enableAccessEntiyChild == null || !enableAccessEntiyChild.Value)
+                {
+                    Diagnostic diagnostic = Diagnostic.Create(DisableAccessEntityChildAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
+                    context.ReportDiagnostic(diagnostic);
+                }
+                return;
+            }
+                
+            //在属性内
+            var propertyDeclarationSyntax = memberAccessExpressionSyntax?.GetNeareastAncestor<PropertyDeclarationSyntax>();
+            if (propertyDeclarationSyntax!=null)
+            {
+                var propertySymbol = context.SemanticModel.GetDeclaredSymbol(propertyDeclarationSyntax);
+                
+                bool? enableAccessEntiyChild = propertySymbol?.GetAttributes().Any(x => x.AttributeClass?.ToString() == Definition.EnableAccessEntiyChildAttribute);
+                if (enableAccessEntiyChild == null || !enableAccessEntiyChild.Value)
+                {
+                    Diagnostic diagnostic = Diagnostic.Create(DisableAccessEntityChildAnalyzerRule.Rule, memberAccessExpressionSyntax?.Name.Identifier.GetLocation());
+                    context.ReportDiagnostic(diagnostic);
+                }
+
+                return;
             }
         }
     }

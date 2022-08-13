@@ -13,8 +13,6 @@ namespace ET.Analyzer
 
         private const string Description = "实体类限制多层继承.";
 
-        private const string EntityType = "ET.Entity";
-
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityClassDeclarationAnalyzerRuleId,
             Title,
             MessageFormat,
@@ -42,7 +40,7 @@ namespace ET.Analyzer
                 return;
             }
 
-            if (namedTypeSymbol.BaseType?.BaseType?.ToString() != EntityType)
+            if (namedTypeSymbol.BaseType?.BaseType?.ToString() != Definition.EntityType)
             {
                 return;
             }

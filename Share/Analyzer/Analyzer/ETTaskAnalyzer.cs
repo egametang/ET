@@ -10,8 +10,6 @@ namespace ET.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ETTaskAnalyzer:DiagnosticAnalyzer
     {
-        private const string ETTask = "ETTask";
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => 
                 ImmutableArray.Create(ETTaskInSyncMethodAnalyzerRule.Rule,ETTaskInAsyncMethodAnalyzerRule.Rule);
         
@@ -57,7 +55,7 @@ namespace ET.Analyzer
             }
             
             // 筛选出返回值为ETTask 和ETTask<T>的函数
-            if (namedTypeSymbol.Name!=ETTask)
+            if (namedTypeSymbol.Name!=Definition.ETTask)
             {
                 return;
             }

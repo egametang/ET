@@ -73,4 +73,60 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+
+    public static class AddChildTypeAnalyzerRule
+    {
+        private const string Title = "AddChild方法类型约束错误";
+
+        private const string MessageFormat = "Type: {0} 不允许作为实体: {1} 的AddChild函数参数类型! 若要允许该类型作为参数,请使用ChildOfAttribute对child实体类标记父级类型";
+
+        private const string Description = "AddChild方法类型约束错误.";
+        
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.AddChildTypeAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Hotfix,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    public static class DisableAccessEntityChildAnalyzerRule
+    {
+        private const string Title = "禁止在Entity类中直接调用Child和Component";
+
+        private const string MessageFormat = "禁止在Entity类中直接调用Child和Component";
+
+        private const string Description = "禁止在Entity类中直接调用Child和Component.";
+        
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.DisableUseChildComponentInEntityAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Hotfix,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class EntityComponentAnalyzerRule
+    {
+        private const string Title = "实体类添加或获取组件类型错误";
+
+        private const string MessageFormat = "组件类型: {0} 不允许作为实体: {1} 的组件类型! 若要允许该类型作为参数,请使用ComponentOfAttribute对组件类标记父级实体类型";
+
+        private const string Description = "实体类添加或获取组件类型错误.";
+        
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntityComponentAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Hotfix,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    
 }

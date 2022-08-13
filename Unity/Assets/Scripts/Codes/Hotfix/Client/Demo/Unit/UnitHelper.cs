@@ -11,7 +11,7 @@
         
         public static Unit GetMyUnitFromCurrentScene(Scene currentScene)
         {
-            PlayerComponent playerComponent = currentScene.Parent.Parent.GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = currentScene.Parent.GetParent<Scene>().GetComponent<PlayerComponent>();
             return currentScene.GetComponent<UnitComponent>().Get(playerComponent.MyId);
         }
     }
