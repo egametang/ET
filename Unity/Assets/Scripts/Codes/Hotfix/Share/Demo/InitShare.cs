@@ -1,9 +1,9 @@
 namespace ET
 {
-    [Callback(CallbackType.InitShare)]
-    public class InitShare: IFunc<ETTask>
+    [Callback(InitCallbackId.InitShare)]
+    public class InitShare: ACallbackHandler<InitCallback, ETTask>
     {
-        public async ETTask Handle()
+        public override async ETTask Handle(InitCallback args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();

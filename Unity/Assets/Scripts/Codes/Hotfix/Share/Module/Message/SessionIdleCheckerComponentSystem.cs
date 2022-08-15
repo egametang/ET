@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    [Callback(CallbackType.SessionIdleChecker)]
+    [Callback(TimerCallbackId.SessionIdleChecker)]
     public class SessionIdleChecker: ATimer<SessionIdleCheckerComponent>
     {
         protected override void Run(SessionIdleCheckerComponent self)
@@ -23,7 +23,7 @@ namespace ET
     {
         protected override void Awake(SessionIdleCheckerComponent self, int checkInteral)
         {
-            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, CallbackType.SessionIdleChecker, self);
+            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, TimerCallbackId.SessionIdleChecker, self);
         }
     }
 

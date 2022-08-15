@@ -1,23 +1,8 @@
 ﻿namespace ET
 {
     [UniqueId(1,10000)]
-    public static class CallbackType
+    public class TimerCallbackId
     {
-        public const int SessionStreamDispatcherClientOuter = 1;
-        public const int SessionStreamDispatcherServerOuter = 2;
-        public const int SessionStreamDispatcherServerInner = 3;
-
-        public const int InitShare = 5;
-        public const int InitClient = 6;
-        public const int InitServer = 7;
-
-        public const int GetAllConfigBytes = 11;
-        public const int GetOneConfigBytes = 12;
-
-        public const int RecastFileLoader = 13;
-        
-        
-        
         // 框架层100-200，逻辑层的timer type从200起
         public const int WaitTimer = 100;
         public const int SessionIdleChecker = 101;

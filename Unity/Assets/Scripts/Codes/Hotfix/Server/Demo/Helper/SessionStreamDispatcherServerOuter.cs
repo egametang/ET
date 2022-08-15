@@ -3,11 +3,13 @@ using System.IO;
 
 namespace ET.Server
 {
-    [Callback(CallbackType.SessionStreamDispatcherServerOuter)]
-    public class SessionStreamDispatcherServerOuter: IAction<Session, MemoryStream>
+    [Callback(SessionStreamCallbackId.SessionStreamDispatcherServerOuter)]
+    public class SessionStreamDispatcherServerOuter: ACallbackHandler<SessionStreamCallback>
     {
-        public void Handle(Session session, MemoryStream memoryStream)
+        public override void Handle(SessionStreamCallback args)
         {
+            Session session = args.Session;
+            MemoryStream memoryStream = args.MemoryStream;
             ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
             Type type = OpcodeTypeComponent.Instance.GetType(opcode);
             object message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);

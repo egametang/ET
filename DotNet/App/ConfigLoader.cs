@@ -4,11 +4,12 @@ using System.IO;
 
 namespace ET.Server
 {
-    [Callback(CallbackType.GetAllConfigBytes)]
-    public class GetAllConfigBytes: IAction<ConfigComponent, Dictionary<string, byte[]>>
+    [Callback]
+    public class GetAllConfigBytes: ACallbackHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
     {
-        public void Handle(ConfigComponent configComponent, Dictionary<string, byte[]> output)
+        public override Dictionary<string, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
+            Dictionary<string, byte[]> output = new Dictionary<string, byte[]>();
             List<string> startConfigs = new List<string>()
             {
                 "StartMachineConfigCategory", 
@@ -30,15 +31,17 @@ namespace ET.Server
                 }
                 output[configType.Name] = File.ReadAllBytes(configFilePath);
             }
+
+            return output;
         }
     }
     
-    [Callback(CallbackType.GetOneConfigBytes)]
-    public class GetOneConfigBytes: IFunc<string, byte[]>
+    [Callback]
+    public class GetOneConfigBytes: ACallbackHandler<ConfigComponent.GetOneConfigBytes, byte[]>
     {
-        public byte[] Handle(string configName)
+        public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {
-            byte[] configBytes = File.ReadAllBytes($"../Config/{configName}.bytes");
+            byte[] configBytes = File.ReadAllBytes($"../Config/{args.ConfigName}.bytes");
             return configBytes;
         }
     }

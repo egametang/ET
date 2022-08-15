@@ -3,10 +3,10 @@ using System.IO;
 
 namespace ET.Client
 {
-    [Callback(CallbackType.InitClient)]
-    public class InitClient: IFunc<ETTask>
+    [Callback(InitCallbackId.InitClient)]
+    public class InitClient: ACallbackHandler<InitCallback, ETTask>
     {
-        public async ETTask Handle()
+        public override async ETTask Handle(InitCallback args)
         {
             // 加载配置
             Game.Scene.AddComponent<ResourcesComponent>();

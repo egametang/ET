@@ -1,53 +1,38 @@
 ﻿namespace ET
 {
-
-    public interface IAction
+    public interface ICallback
     {
-        public void Handle();
+        public int Id { get; set; }
     }
-
-    public interface IAction<in A>
+    
+    public interface ICallbackType
     {
-        public void Handle(A a);
+        public System.Type Type { get; }
     }
-
-    public interface IAction<in A, in B>
+    
+    public abstract class ACallbackHandler<A>: ICallbackType where A: struct, ICallback
     {
-        public void Handle(A a, B b);
+        public System.Type Type
+        {
+            get
+            {
+                return typeof (A);
+            }
+        }
+
+        public abstract void Handle(A a);
     }
-
-    public interface IAction<in A, in B, in C>
+    
+    public abstract class ACallbackHandler<A, T>: ICallbackType where A: struct, ICallback
     {
-        public void Handle(A a, B b, C c);
-    }
+        public System.Type Type
+        {
+            get
+            {
+                return typeof (A);
+            }
+        }
 
-    public interface IAction<in A, in B, in C, in D>
-    {
-        public void Handle(A a, B b, C c, D d);
-    }
-
-    public interface IFunc<out T>
-    {
-        public T Handle();
-    }
-
-    public interface IFunc<in A, out T>
-    {
-        public T Handle(A a);
-    }
-
-    public interface IFunc<in A, in B, out T>
-    {
-        public T Handle(A a, B b);
-    }
-
-    public interface IFunc<in A, in B, in C, out T>
-    {
-        public T Handle(A a, B b, C c);
-    }
-
-    public interface IFunc<in A, in B, in C, in D, out T>
-    {
-        public T Handle(A a, B b, C c, D d);
+        public abstract T Handle(A a);
     }
 }

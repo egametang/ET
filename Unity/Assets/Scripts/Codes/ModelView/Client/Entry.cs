@@ -33,19 +33,19 @@ namespace ET.Client
 
 				Options.Instance = new Options();
 
-				await Game.EventSystem.Callback<ETTask>(CallbackType.InitShare);
+				await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitShare});
 				
 				switch (CodeLoader.Instance.GlobalConfig.CodeMode)
 				{
 					case CodeMode.Client:
-						await Game.EventSystem.Callback<ETTask>(CallbackType.InitClient);
+						await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitClient});
 						break;
 					case CodeMode.Server:
-						await Game.EventSystem.Callback<ETTask>(CallbackType.InitServer);
+						await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitServer});
 						break;
 					case CodeMode.ClientServer:
-						await Game.EventSystem.Callback<ETTask>(CallbackType.InitServer);
-						await Game.EventSystem.Callback<ETTask>(CallbackType.InitClient);
+						await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitServer});
+						await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitClient});
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

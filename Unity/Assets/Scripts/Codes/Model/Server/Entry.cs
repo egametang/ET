@@ -9,8 +9,8 @@
         
         private static async ETTask StartAsync()
         {
-            await Game.EventSystem.Callback<ETTask>(CallbackType.InitShare);
-            await Game.EventSystem.Callback<ETTask>(CallbackType.InitServer);
+            await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitShare});
+            await Game.EventSystem.Callback<InitCallback, ETTask>(new InitCallback() {Id = InitCallbackId.InitServer});
         }
     }
 }
