@@ -2,10 +2,10 @@ using System.Net;
 
 namespace ET.Server
 {
-    [Callback(CallbackType.InitServer)]
-    public class InitServer: IFunc<ETTask>
+    [Callback(InitCallbackId.InitServer)]
+    public class InitServer: ACallbackHandler<InitCallback, ETTask>
     {
-        public async ETTask Handle()
+        public override async ETTask Handle(InitCallback args)
         {
             // 发送普通actor消息
             Game.Scene.AddComponent<ActorMessageSenderComponent>();
@@ -25,7 +25,7 @@ namespace ET.Server
             {
                 case AppType.Server:
                 {
-                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, CallbackType.SessionStreamDispatcherServerInner);
+                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, SessionStreamCallbackId.SessionStreamDispatcherServerInner);
 
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
@@ -41,7 +41,7 @@ namespace ET.Server
                     StartMachineConfig startMachineConfig = WatcherHelper.GetThisMachineConfig();
                     WatcherComponent watcherComponent = Game.Scene.AddComponent<WatcherComponent>();
                     watcherComponent.Start(Game.Options.CreateScenes);
-                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"), CallbackType.SessionStreamDispatcherServerInner);
+                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"), SessionStreamCallbackId.SessionStreamDispatcherServerInner);
                     break;
                 }
                 case AppType.GameTool:

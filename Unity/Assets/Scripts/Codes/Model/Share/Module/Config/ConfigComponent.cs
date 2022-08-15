@@ -9,13 +9,14 @@ namespace ET
     [ComponentOf(typeof(Scene))]
     public class ConfigComponent: Entity, IAwake, IDestroy
     {
-        public struct GetAllConfigBytes
+        public struct GetAllConfigBytes: ICallback
         {
-            
+            public int Id { get; set; }
         }
         
-        public struct GetOneConfigBytes
+        public struct GetOneConfigBytes: ICallback
         {
+            public int Id { get; set; }
             public string ConfigName;
         }
         

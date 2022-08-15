@@ -28,10 +28,10 @@ namespace ET.Server
                     scene.AddComponent<HttpComponent, string>($"http://{startSceneConfig.OuterIPPort}/");
                     break;
                 case SceneType.Realm:
-                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.InnerIPOutPort, CallbackType.SessionStreamDispatcherServerOuter);
+                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.InnerIPOutPort, SessionStreamCallbackId.SessionStreamDispatcherServerOuter);
                     break;
                 case SceneType.Gate:
-                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.InnerIPOutPort, CallbackType.SessionStreamDispatcherServerOuter);
+                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.InnerIPOutPort, SessionStreamCallbackId.SessionStreamDispatcherServerOuter);
                     scene.AddComponent<PlayerComponent>();
                     scene.AddComponent<GateSessionKeyComponent>();
                     break;

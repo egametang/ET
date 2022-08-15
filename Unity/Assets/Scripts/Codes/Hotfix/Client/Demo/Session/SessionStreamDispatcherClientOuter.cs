@@ -3,24 +3,24 @@ using System.IO;
 
 namespace ET.Client
 {
-    [Callback(CallbackType.SessionStreamDispatcherClientOuter)]
-    public class SessionStreamDispatcherClientOuter: IAction<Session, MemoryStream>
+    [Callback(SessionStreamCallbackId.SessionStreamDispatcherClientOuter)]
+    public class SessionStreamDispatcherClientOuter: ACallbackHandler<SessionStreamCallback>
     {
-        public void Handle(Session session, MemoryStream memoryStream)
+        public override void Handle(SessionStreamCallback sessionStreamCallback)
         {
-            ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+            ushort opcode = BitConverter.ToUInt16(sessionStreamCallback.MemoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
             Type type = OpcodeTypeComponent.Instance.GetType(opcode);
-            object message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+            object message = MessageSerializeHelper.DeserializeFrom(opcode, type, sessionStreamCallback.MemoryStream);
             
             if (message is IResponse response)
             {
-                session.OnRead(opcode, response);
+                sessionStreamCallback.Session.OnRead(opcode, response);
                 return;
             }
 
-            OpcodeHelper.LogMsg(session.DomainZone(), opcode, message);
+            OpcodeHelper.LogMsg(sessionStreamCallback.Session.DomainZone(), opcode, message);
             // 普通消息或者是Rpc请求消息
-            MessageDispatcherComponent.Instance.Handle(session, opcode, message);
+            MessageDispatcherComponent.Instance.Handle(sessionStreamCallback.Session, opcode, message);
         }
     }
 }

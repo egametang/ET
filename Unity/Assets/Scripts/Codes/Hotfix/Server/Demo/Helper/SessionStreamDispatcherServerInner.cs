@@ -3,11 +3,13 @@ using System.IO;
 
 namespace ET.Server
 {
-    [Callback(CallbackType.SessionStreamDispatcherServerInner)]
-    public class SessionStreamDispatcherServerInner: IAction<Session, MemoryStream>
+    [Callback(SessionStreamCallbackId.SessionStreamDispatcherServerInner)]
+    public class SessionStreamDispatcherServerInner: ACallbackHandler<SessionStreamCallback>
     {
-        public void Handle(Session session, MemoryStream memoryStream)
+        public override void Handle(SessionStreamCallback args)
         {
+            Session session = args.Session;
+            MemoryStream memoryStream = args.MemoryStream;
             ushort opcode = 0;
             try
             {
@@ -101,5 +103,7 @@ namespace ET.Server
                 Log.Error($"InnerMessageDispatcher error: {opcode}\n{e}");
             }
         }
+
+
     }
 }

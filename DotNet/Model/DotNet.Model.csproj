@@ -42,10 +42,6 @@
         <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Generate\Server\**\*.cs">
             <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
-
-        <Compile Update="ConfigLoader.cs">
-          <Link>Server\Module\Config\ConfigLoader.cs</Link>
-        </Compile>
         
     </ItemGroup> 
     <ItemGroup> 

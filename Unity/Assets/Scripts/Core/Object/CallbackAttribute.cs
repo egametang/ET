@@ -2,11 +2,11 @@
 {
     public class CallbackAttribute: BaseAttribute
     {
-        public int Type { get; }
+        public int Id { get; }
 
-        public CallbackAttribute(int type)
+        public CallbackAttribute(int id = 0)
         {
-            this.Type = type;
+            this.Id = id;
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace ET
 {
-    public abstract class ATimer<T>: IAction<object> where T: class
+    public abstract class ATimer<T>: ACallbackHandler<TimerCallback> where T: class
     {
-        public void Handle(object a)
+        public override void Handle(TimerCallback a)
         {
-            this.Run(a as T);
+            this.Run(a.Args as T);
         }
 
         protected abstract void Run(T t);

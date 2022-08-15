@@ -118,7 +118,7 @@ namespace ET
                         "Model/Share/",
                         "Model/Client/",
                         "ModelView/Client/",
-                        "Generate/Server/",
+                        "Model/Generate/Server/",
                         "Model/Server/",
                     };
                     codes = GetRelativeDirs(codes);

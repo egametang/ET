@@ -2,12 +2,12 @@
 
 namespace ET.Server
 {
-    [Callback(CallbackType.RecastFileLoader)]
-    public class RecastFileReader: IFunc<string, byte[]>
+    [Callback]
+    public class RecastFileReader: ACallbackHandler<NavmeshComponent.RecastFileLoader, byte[]>
     {
-        public byte[] Handle(string name)
+        public override byte[] Handle(NavmeshComponent.RecastFileLoader args)
         {
-            return File.ReadAllBytes(Path.Combine("../Config/Recast", name));
+            return File.ReadAllBytes(Path.Combine("../Config/Recast", args.Name));
         }
     }
 }

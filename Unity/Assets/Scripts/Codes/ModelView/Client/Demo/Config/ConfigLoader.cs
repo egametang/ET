@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [Callback(CallbackType.GetAllConfigBytes)]
-    public class GetAllConfigBytes: IAction<ConfigComponent, Dictionary<string, byte[]>>
+    [Callback]
+    public class GetAllConfigBytes: ACallbackHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
     {
-        public void Handle(ConfigComponent configComponent, Dictionary<string, byte[]> output)
+        public override Dictionary<string, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
+            Dictionary<string, byte[]> output = new Dictionary<string, byte[]>();
             using (Game.Scene.AddComponent<ResourcesComponent>())
             {
                 const string configBundleName = "config.unity3d";
@@ -21,13 +22,15 @@ namespace ET.Client
                     output[configType.Name] = v.bytes;
                 }
             }
+
+            return output;
         }
     }
-
-    [Callback(CallbackType.GetOneConfigBytes)]
-    public class GetOneConfigBytes: IFunc<string, byte[]>
+    
+    [Callback]
+    public class GetOneConfigBytes: ACallbackHandler<ConfigComponent.GetOneConfigBytes, byte[]>
     {
-        public byte[] Handle(string configName)
+        public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {
             //TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
             //return v.bytes;
