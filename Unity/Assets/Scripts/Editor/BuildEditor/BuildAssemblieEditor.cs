@@ -84,6 +84,9 @@ namespace ET
             AfterCompiling();
             
             AssetDatabase.Refresh();
+            
+            //反射获取当前Game视图，提示编译完成
+            ShowNotification("Build Code Success");
         }
         
         public static void BuildModel(CodeOptimization codeOptimization, GlobalConfig globalConfig)
@@ -128,6 +131,9 @@ namespace ET
             }
             
             BuildAssemblieEditor.BuildMuteAssembly("Model", codes, Array.Empty<string>(), codeOptimization);
+            
+            //反射获取当前Game视图，提示编译完成
+            ShowNotification("Build Model Success");
         }
         
         
@@ -178,6 +184,9 @@ namespace ET
             }
             
             BuildAssemblieEditor.BuildMuteAssembly(logicFile, codes, new[]{Path.Combine(Define.BuildOutputDir, "Model.dll")}, codeOptimization);
+            
+            //反射获取当前Game视图，提示编译完成
+            ShowNotification("Build Hotfix Success");
         }
 
         private static void BuildMuteAssembly(string assemblyName, List<string> CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
@@ -260,18 +269,16 @@ namespace ET
                 Debug.LogErrorFormat("build fail：" + assemblyBuilder.assemblyPath);
                 return;
             }
+            
+            while (EditorApplication.isCompiling)
+            {
+                // 主线程sleep并不影响编译线程
+                Thread.Sleep(1);
+            }
         }
 
         private static void AfterCompiling()
         {
-            while (EditorApplication.isCompiling)
-            {
-                Debug.Log("Compiling wait1");
-                // 主线程sleep并不影响编译线程
-                Thread.Sleep(1000);
-                Debug.Log("Compiling wait2");
-            }
-            
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
@@ -289,8 +296,6 @@ namespace ET
             Debug.Log("set assetbundle success!");
             
             Debug.Log("build success!");
-            //反射获取当前Game视图，提示编译完成
-            ShowNotification("Build Code Success");
         }
 
         public static void ShowNotification(string tips)
