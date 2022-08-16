@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -400,7 +401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 575235020}
   - component: {fileID: 575235022}
-  - component: {fileID: 575235019}
+  - component: {fileID: 575235023}
   m_Layer: 0
   m_Name: Global
   m_TagString: Untagged
@@ -408,19 +409,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &575235019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575235018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff906ecbbd0163f4094f8fa4e305d39f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalConfig: {fileID: 11400000, guid: a60778dce43da574aa447ab3fcf5d9f7, type: 2}
 --- !u!4 &575235020
 Transform:
   m_ObjectHideFlags: 0
@@ -456,6 +444,19 @@ MonoBehaviour:
   - key: Unit
     gameObject: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b,
       type: 3}
+--- !u!114 &575235023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575235018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b3cb9b07d7917f4cbf5bc2be18e8585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalConfig: {fileID: 11400000, guid: a60778dce43da574aa447ab3fcf5d9f7, type: 2}
 --- !u!1 &630054495
 GameObject:
   m_ObjectHideFlags: 0

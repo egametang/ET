@@ -3,9 +3,9 @@ using System.Threading;
 using CommandLine;
 using NLog;
 
-namespace ET.Server
+namespace ET
 {
-	internal static class Program
+	internal static class Init
 	{
 		private static void Main(string[] args)
 		{
@@ -18,8 +18,6 @@ namespace ET.Server
 				
 				// 异步方法全部会回掉到主线程
 				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
-			
-				
 				
 				// 命令行参数
 				Options options = null;
@@ -28,19 +26,18 @@ namespace ET.Server
 						.WithParsed(o => { options = o; });
 				Options.Instance = options;
 				
-				Game.ILog = new NLogger(Game.Options.AppType.ToString());
+				LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("../Config/NLog/NLog.config");
 				LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
+				LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
+				
+				Game.ILog = new NLogger(Game.Options.AppType.ToString());
 				
 				ETTask.ExceptionHandler += Log.Error;
+			
+				CodeLoader.Instance.Start();
 
-				CodeLoader.Instance.LoadHotfix();
-				
-				MongoHelper.Register(Game.EventSystem.GetTypes());
-				
 				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Game.Options)} ");
-				
-				Entry.Start();
-				
+
 				while (true)
 				{
 					try

@@ -2,10 +2,10 @@ using System.Net;
 
 namespace ET.Server
 {
-    [Callback(InitCallbackId.InitServer)]
-    public class InitServer: ACallbackHandler<InitCallback, ETTask>
+    [Event(SceneType.Process)]
+    public class EntryEvent2_InitServer: AEvent<ET.EventType.EntryEvent2>
     {
-        public override async ETTask Handle(InitCallback args)
+        protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent2 args)
         {
             // 发送普通actor消息
             Game.Scene.AddComponent<ActorMessageSenderComponent>();
