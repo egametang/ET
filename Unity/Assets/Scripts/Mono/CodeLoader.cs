@@ -8,32 +8,35 @@ namespace ET
 {
 	public class CodeLoader: IDisposable
 	{
-		public static CodeLoader Instance = new CodeLoader();
-
-		public Action Update;
-		public Action LateUpdate;
-		public Action OnApplicationQuit;
-
 		private Assembly assembly;
-
-		public GlobalConfig GlobalConfig;
+		
+		private static CodeLoader instance;
+		
+		public static CodeLoader Instance 
+		{
+			get
+			{
+				return instance ??= new CodeLoader();
+			}
+		}
 
 		private CodeLoader()
 		{
 		}
-
+		
 		public void Dispose()
 		{
+			instance = null;
 		}
-		
+
 		public void Start()
 		{
 			if (Define.EnableCodes)
 			{
-				this.GlobalConfig.LoadMode = LoadMode.Codes;
+				Init.Instance.GlobalConfig.LoadMode = LoadMode.Codes;
 			}
 			
-			switch (this.GlobalConfig.LoadMode)
+			switch (Init.Instance.GlobalConfig.LoadMode)
 			{
 				case LoadMode.Mono:
 				{
@@ -52,8 +55,6 @@ namespace ET
 					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly);
 					Game.EventSystem.Add(types);
 					
-					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
-					start.Run();
 					break;
 				}
 				case LoadMode.Reload:
@@ -68,8 +69,6 @@ namespace ET
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					this.LoadHotfix();
-					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
-					start.Run();
 					break;
 				}
 				case LoadMode.Codes:
@@ -90,11 +89,12 @@ namespace ET
 							this.assembly = ass;
 						}
 					}
-					IStaticMethod start = new StaticMethod(assembly, "ET.Client.Entry", "Start");
-					start.Run();
 					break;
 				}
 			}
+			
+			IStaticMethod start = new StaticMethod(assembly, "ET.Entry", "Start");
+			start.Run();
 		}
 
 		// 热重载调用下面两个方法
@@ -102,7 +102,7 @@ namespace ET
 		// Game.EventSystem.Load();
 		public void LoadHotfix()
 		{
-			if (this.GlobalConfig.LoadMode != LoadMode.Reload)
+			if (Init.Instance.GlobalConfig.LoadMode != LoadMode.Reload)
 			{
 				throw new Exception("CodeMode != Reload!");
 			}

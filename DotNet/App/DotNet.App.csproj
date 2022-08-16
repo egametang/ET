@@ -34,10 +34,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Model\DotNet.Model.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="ReloadDllConsoleHandler.cs">
-      <Link>Server\Module\Console\ReloadDllConsoleHandler.cs</Link>
-    </Compile>
-  </ItemGroup>
 </Project>

@@ -4,14 +4,40 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace ET.Server
+namespace ET
 {
-    public class CodeLoader
+    public class CodeLoader: IDisposable
     {
-        public static CodeLoader Instance { get; set; } = new CodeLoader();
-        
         private AssemblyLoadContext assemblyLoadContext;
         
+        private Assembly hotfix;
+        
+        private static CodeLoader instance;
+		
+        public static CodeLoader Instance 
+        {
+            get
+            {
+                return instance ??= new CodeLoader();
+            }
+        }
+
+        private CodeLoader()
+        {
+        }
+		
+        public void Dispose()
+        {
+            instance = null;
+        }
+
+        public void Start()
+        {
+            this.LoadHotfix();
+            
+            Entry.Start();
+        }
+
         public void LoadHotfix()
         {
             assemblyLoadContext?.Unload();
@@ -19,9 +45,9 @@ namespace ET.Server
             assemblyLoadContext = new AssemblyLoadContext("Hotfix", true);
             byte[] dllBytes = File.ReadAllBytes("./Hotfix.dll");
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
-            Assembly assembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
+            this.hotfix = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
             
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Program).Assembly, typeof (Game).Assembly, typeof(Entry).Assembly, assembly);
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Init).Assembly, typeof (Game).Assembly, typeof(Entry).Assembly, this.hotfix);
 			
             Game.EventSystem.Add(types);
         }

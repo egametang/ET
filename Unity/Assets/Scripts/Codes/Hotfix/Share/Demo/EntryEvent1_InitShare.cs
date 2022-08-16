@@ -1,9 +1,9 @@
 namespace ET
 {
-    [Callback(InitCallbackId.InitShare)]
-    public class InitShare: ACallbackHandler<InitCallback, ETTask>
+    [Event(SceneType.Process)]
+    public class EntryEvent1_InitShare: AEvent<EventType.EntryEvent1>
     {
-        public override async ETTask Handle(InitCallback args)
+        protected override async ETTask Run(Scene scene, EventType.EntryEvent1 args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
