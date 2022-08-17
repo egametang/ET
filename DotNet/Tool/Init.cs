@@ -6,7 +6,7 @@ using NLog;
 
 namespace ET.Server
 {
-    internal static class Program
+    internal static class Init
     {
         private static int Main(string[] args)
         {
@@ -22,22 +22,29 @@ namespace ET.Server
 			
             try
             {
+                // 异步方法全部会回掉到主线程
+                SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+				
+                // 命令行参数
+                Options options = null;
+                Parser.Default.ParseArguments<Options>(args)
+                    .WithNotParsed(error => throw new Exception($"命令行格式错误!"))
+                    .WithParsed(o => { options = o; });
+                Options.Instance = options;
+				
+                LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("../Config/NLog/NLog.config");
+                LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
+                LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
+				
+                Game.ILog = new NLogger(Game.Options.AppType.ToString());
+				
+                ETTask.ExceptionHandler += Log.Error;
+                
                 Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly);
                     
                 Game.EventSystem.Add(types);
                 
                 MongoHelper.Register(Game.EventSystem.GetTypes());
-				
-                // 命令行参数
-                Options options = null;
-                Parser.Default.ParseArguments<Options>(args)
-                        .WithNotParsed(error => throw new Exception($"命令行格式错误!"))
-                        .WithParsed(o => { options = o; });
-
-                Options.Instance = options;
-
-                Game.ILog = new NLogger(Game.Options.AppType.ToString());
-                LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
                 Log.Info($"server start........................ {Game.Scene.Id}");
 				
