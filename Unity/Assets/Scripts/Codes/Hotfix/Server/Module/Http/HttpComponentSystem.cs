@@ -100,6 +100,9 @@ namespace ET.Server
                     HttpListenerContext context = await self.Listener.GetContextAsync();
                     self.Handle(context).Coroutine();
                 }
+                catch (ObjectDisposedException)
+                {
+                }
                 catch (Exception e)
                 {
                     Log.Error(e);

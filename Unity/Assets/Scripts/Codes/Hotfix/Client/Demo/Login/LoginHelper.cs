@@ -46,7 +46,7 @@ namespace ET.Client
 
                 Log.Debug("登陆gate成功!");
 
-                await Game.EventSystem.PublishAsync(clientScene, new EventType.LoginFinish());
+                await EventSystem.Instance.PublishAsync(clientScene, new EventType.LoginFinish());
             }
             catch (Exception e)
             {

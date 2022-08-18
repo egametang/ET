@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using CommandLine;
-using NLog;
 
 namespace ET.Server
 {
@@ -14,8 +13,6 @@ namespace ET.Server
             {
                 Log.Error(e.ExceptionObject.ToString());
             };
-
-            ETTask.ExceptionHandler += Log.Error;
             
             // 异步方法全部会回掉到主线程
             SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
@@ -28,37 +25,37 @@ namespace ET.Server
                 // 命令行参数
                 Options options = null;
                 Parser.Default.ParseArguments<Options>(args)
-                    .WithNotParsed(error => throw new Exception($"命令行格式错误!"))
-                    .WithParsed(o => { options = o; });
-                Options.Instance = options;
+                        .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
+                        .WithParsed(o => { options = o; });
 				
-                LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("../Config/NLog/NLog.config");
-                LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
-                LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
-				
-                Game.ILog = new NLogger(Game.Options.AppType.ToString());
-				
+                Game.AddSingleton(options);
+                Game.AddSingleton<TimeInfo>();
+                Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
+                Game.AddSingleton<ObjectPool>();
+                Game.AddSingleton<IdGenerater>();
+                Game.AddSingleton<EventSystem>();
+                Game.AddSingleton<Root>();
+                
                 ETTask.ExceptionHandler += Log.Error;
-                
+
                 Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly);
-                    
-                Game.EventSystem.Add(types);
-                
-                MongoHelper.Register(Game.EventSystem.GetTypes());
+                EventSystem.Instance.Add(types);
+
+                MongoRegister.Init();
 				
                 Log.Info($"server start........................ {Game.Scene.Id}");
 				
-                switch (Game.Options.AppType)
+                switch (Options.Instance.AppType)
                 {
                     case AppType.ExcelExporter:
                     {
-                        Game.Options.Console = 1;
+                        Options.Instance.Console = 1;
                         ExcelExporter.Export();
                         return 0;
                     }
                     case AppType.Proto2CS:
                     {
-                        Game.Options.Console = 1;
+                        Options.Instance.Console = 1;
                         Proto2CS.Export();
                         return 0;
                     }

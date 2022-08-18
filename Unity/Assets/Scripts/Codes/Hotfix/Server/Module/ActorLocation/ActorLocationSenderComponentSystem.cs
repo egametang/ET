@@ -38,7 +38,7 @@ namespace ET.Server
         protected override void Destroy(ActorLocationSenderComponent self)
         {
             ActorLocationSenderComponent.Instance = null;
-            TimerComponent.Instance.Remove(ref self.CheckTimer);
+            TimerComponent.Instance?.Remove(ref self.CheckTimer);
         }
     }
 

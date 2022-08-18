@@ -5,53 +5,69 @@ namespace ET
 {
     public static class Game
     {
-        public static ThreadSynchronizationContext ThreadSynchronizationContext => ThreadSynchronizationContext.Instance;
+        private static readonly Dictionary<Type, ISingleton> singletonTypes = new Dictionary<Type, ISingleton>();
+        private static readonly Stack<ISingleton> singletons = new Stack<ISingleton>();
 
-        public static TimeInfo TimeInfo => TimeInfo.Instance;
+        public static T AddSingleton<T>() where T: Singleton<T>, new()
+        {
+            T singleton = new T();
+            Type singletonType = typeof (T);
+            if (singletonTypes.ContainsKey(singletonType))
+            {
+                throw new Exception($"already exist singleton: {singletonType.Name}");
+            }
+
+            singletonTypes.Add(singletonType, singleton);
+            singletons.Push(singleton);
+            
+            singleton.Register();
+            
+            return singleton;
+        }
         
-        public static EventSystem EventSystem => EventSystem.Instance;
+        public static void AddSingleton(ISingleton singleton)
+        {
+            Type singletonType = singleton.GetType();
+            if (singletonTypes.ContainsKey(singletonType))
+            {
+                throw new Exception($"already exist singleton: {singletonType.Name}");
+            }
 
-        private static Scene scene;
+            singletonTypes.Add(singletonType, singleton);
+            singletons.Push(singleton);
+            
+            singleton.Register();
+        }
+
         public static Scene Scene
         {
             get
             {
-                if (scene != null)
-                {
-                    return scene;
-                }
-                scene = EntitySceneFactory.CreateScene(0, SceneType.Process, "Process");
-                return scene;
+                return Root.Instance.Scene;
             }
         }
 
-        public static ObjectPool ObjectPool => ObjectPool.Instance;
-
-        public static IdGenerater IdGenerater => IdGenerater.Instance;
-
-        public static Options Options => Options.Instance;
-
-        public static ILog ILog { get; set; }
-
         public static void Update()
         {
-            ThreadSynchronizationContext.Update();
-            TimeInfo.Update();
-            EventSystem.Update();
+            ThreadSynchronizationContext.Instance.Update();
+            TimeInfo.Instance.Update();
+            EventSystem.Instance.Update();
         }
         
         public static void LateUpdate()
         {
-            EventSystem.LateUpdate();
+            EventSystem.Instance.LateUpdate();
         }
 
         public static void Close()
         {
-            scene?.Dispose();
-            scene = null;
-            MonoPool.Instance.Dispose();
-            EventSystem.Instance.Dispose();
-            IdGenerater.Instance.Dispose();
+            // 顺序反过来清理
+            while (singletons.Count > 0)
+            {
+                ISingleton iSingleton = singletons.Pop();
+                iSingleton.Destroy();
+            }
+            singletonTypes.Clear();
         }
     }
 }

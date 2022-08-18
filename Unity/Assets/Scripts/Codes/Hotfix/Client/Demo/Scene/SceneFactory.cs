@@ -15,7 +15,7 @@ namespace ET.Client
             clientScene.AddComponent<ObjectWait>();
             clientScene.AddComponent<PlayerComponent>();
             
-            Game.EventSystem.Publish(clientScene, new EventType.AfterCreateClientScene());
+            EventSystem.Instance.Publish(clientScene, new EventType.AfterCreateClientScene());
             return clientScene;
         }
         
@@ -24,7 +24,7 @@ namespace ET.Client
             Scene currentScene = EntitySceneFactory.CreateScene(id, IdGenerater.Instance.GenerateInstanceId(), zone, SceneType.Current, name, currentScenesComponent);
             currentScenesComponent.Scene = currentScene;
             
-            Game.EventSystem.Publish(currentScene, new EventType.AfterCreateCurrentScene());
+            EventSystem.Instance.Publish(currentScene, new EventType.AfterCreateCurrentScene());
             return currentScene;
         }
         

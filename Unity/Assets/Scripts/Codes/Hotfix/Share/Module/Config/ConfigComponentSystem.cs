@@ -27,7 +27,7 @@ namespace ET
 		
 		public static void LoadOneConfig(this ConfigComponent self, Type configType)
 		{
-			byte[] oneConfigBytes = Game.EventSystem.Callback<ConfigComponent.GetOneConfigBytes, byte[]>(new ConfigComponent.GetOneConfigBytes() {ConfigName = configType.FullName});
+			byte[] oneConfigBytes = EventSystem.Instance.Callback<ConfigComponent.GetOneConfigBytes, byte[]>(new ConfigComponent.GetOneConfigBytes() {ConfigName = configType.FullName});
 
 			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 
@@ -37,10 +37,10 @@ namespace ET
 		public static void Load(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
-			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = 
-			Game.EventSystem.Callback<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>(
+			EventSystem.Instance.Callback<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>(
 				new ConfigComponent.GetAllConfigBytes());
 
 			foreach (Type type in types)
@@ -52,10 +52,10 @@ namespace ET
 		public static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
-			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = 
-					Game.EventSystem.Callback<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>(
+					EventSystem.Instance.Callback<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>(
 						new ConfigComponent.GetAllConfigBytes());
 
 			using (ListComponent<Task> listTasks = ListComponent<Task>.Create())

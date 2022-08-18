@@ -44,11 +44,11 @@ namespace ET.Server
             string arguments = $"App.dll" + 
                     $" --Process={startProcessConfig.Id}" +
                     $" --AppType=Server" +  
-                    $" --StartConfig={Game.Options.StartConfig}" +
-                    $" --Develop={Game.Options.Develop}" +
+                    $" --StartConfig={Options.Instance.StartConfig}" +
+                    $" --Develop={Options.Instance.Develop}" +
                     $" --CreateScenes={createScenes}" +
-                    $" --LogLevel={Game.Options.LogLevel}" +
-                    $" --Console={Game.Options.Console}";
+                    $" --LogLevel={Options.Instance.LogLevel}" +
+                    $" --Console={Options.Instance.Console}";
             Log.Debug($"{exe} {arguments}");
             Process process = ProcessHelper.Run(exe, arguments);
             return process;

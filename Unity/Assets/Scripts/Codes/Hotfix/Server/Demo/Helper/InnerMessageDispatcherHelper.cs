@@ -13,7 +13,7 @@ namespace ET.Server
         [EnableAccessEntiyChild]
         public static void HandleIActorRequest(ushort opcode, long actorId, IActorRequest iActorRequest, Action<IActorResponse> reply)
         {
-            Entity entity = Game.EventSystem.Get(actorId);
+            Entity entity = EventSystem.Instance.Get(actorId);
             if (entity == null)
             {
                 FailResponse(iActorRequest, ErrorCore.ERR_NotFoundActor, reply);
@@ -69,7 +69,7 @@ namespace ET.Server
         {
             OpcodeHelper.LogMsg(opcode, actorId, iActorMessage);
 
-            Entity entity = Game.EventSystem.Get(actorId);
+            Entity entity = EventSystem.Instance.Get(actorId);
             if (entity == null)
             {
                 Log.Error($"not found actor: {actorId} {iActorMessage}");

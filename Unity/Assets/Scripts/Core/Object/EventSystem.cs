@@ -7,7 +7,7 @@ namespace ET
 {
     using OneTypeSystems = UnOrderMultiMap<Type, object>;
 
-    public sealed class EventSystem: IDisposable
+    public class EventSystem: Singleton<EventSystem>
     {
         private class TypeSystems
         {
@@ -75,21 +75,6 @@ namespace ET
             }
         }
 
-        private static EventSystem instance;
-
-        public static EventSystem Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new EventSystem();
-                }
-
-                return instance;
-            }
-        }
-
         private readonly Dictionary<long, Entity> allEntities = new();
 
         private readonly Dictionary<string, Type> allTypes = new();
@@ -112,7 +97,7 @@ namespace ET
             Max = 3,
         }
 
-        private EventSystem()
+        public EventSystem()
         {
             for (int i = 0; i < this.twoQueues.Length; i++)
             {
@@ -839,11 +824,6 @@ namespace ET
             }
 
             return sb.ToString();
-        }
-
-        public void Dispose()
-        {
-            instance = null;
         }
     }
 }

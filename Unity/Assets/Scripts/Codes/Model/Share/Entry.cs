@@ -19,16 +19,16 @@
     {
         public static void Start()
         {
-            MongoHelper.Register(Game.EventSystem.GetTypes());
+            MongoRegister.Init();
             
             StartAsync().Coroutine();
         }
         
         private static async ETTask StartAsync()
         {
-            await Game.EventSystem.PublishAsync(Game.Scene, new EventType.EntryEvent1());
-            await Game.EventSystem.PublishAsync(Game.Scene, new EventType.EntryEvent2());
-            await Game.EventSystem.PublishAsync(Game.Scene, new EventType.EntryEvent3());
+            await EventSystem.Instance.PublishAsync(Game.Scene, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(Game.Scene, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(Game.Scene, new EventType.EntryEvent3());
         }
     }
 }

@@ -6,28 +6,9 @@ using UnityEngine;
 
 namespace ET
 {
-	public class CodeLoader: IDisposable
+	public class CodeLoader: Singleton<CodeLoader>
 	{
 		private Assembly assembly;
-		
-		private static CodeLoader instance;
-		
-		public static CodeLoader Instance 
-		{
-			get
-			{
-				return instance ??= new CodeLoader();
-			}
-		}
-
-		private CodeLoader()
-		{
-		}
-		
-		public void Dispose()
-		{
-			instance = null;
-		}
 
 		public void Start()
 		{
@@ -53,7 +34,7 @@ namespace ET
 
 
 					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly);
-					Game.EventSystem.Add(types);
+					EventSystem.Instance.Add(types);
 					
 					break;
 				}
@@ -80,7 +61,7 @@ namespace ET
 
 					Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
-					Game.EventSystem.Add(types);
+					EventSystem.Instance.Add(types);
 					foreach (Assembly ass in assemblies)
 					{
 						string name = ass.GetName().Name;
@@ -99,7 +80,7 @@ namespace ET
 
 		// 热重载调用下面两个方法
 		// CodeLoader.Instance.LoadLogic();
-		// Game.EventSystem.Load();
+		// EventSystem.Instance.Load();
 		public void LoadHotfix()
 		{
 			if (Init.Instance.GlobalConfig.LoadMode != LoadMode.Reload)
@@ -122,7 +103,7 @@ namespace ET
 			
 			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly, hotfixAssembly);
 			
-			Game.EventSystem.Add(types);
+			EventSystem.Instance.Add(types);
 		}
 	}
 }

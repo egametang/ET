@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using CommandLine;
 using UnityEngine;
 
 namespace ET
@@ -22,14 +23,25 @@ namespace ET
 			};
 				
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+
+			// 命令行参数
+			Options options = null;
+			string[] args = "".Split(" ");
+			Parser.Default.ParseArguments<Options>(args)
+				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
+				.WithParsed(o => { options = o; });
 			
-			Game.ILog = new UnityLogger();
-				
+			Game.AddSingleton(options);
+			Game.AddSingleton<TimeInfo>();
+			Game.AddSingleton<Logger>().ILog = new UnityLogger();
+			Game.AddSingleton<ObjectPool>();
+			Game.AddSingleton<IdGenerater>();
+			Game.AddSingleton<EventSystem>();
+			Game.AddSingleton<Root>();
+			
 			ETTask.ExceptionHandler += Log.Error;
 
-			Options.Instance = new Options();
-			
-			CodeLoader.Instance.Start();
+			Game.AddSingleton<CodeLoader>().Start();
 		}
 
 		private void Update()
@@ -45,7 +57,6 @@ namespace ET
 		private void OnApplicationQuit()
 		{
 			Game.Close();
-			CodeLoader.Instance.Dispose();
 		}
 	}
 }

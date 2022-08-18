@@ -2,10 +2,8 @@ using System;
 
 namespace ET
 {
-    public class TimeInfo: IDisposable
+    public class TimeInfo: Singleton<TimeInfo>
     {
-        public static TimeInfo Instance = new TimeInfo();
-
         private int timeZone;
         
         public int TimeZone
@@ -21,15 +19,17 @@ namespace ET
             }
         }
         
-        private readonly DateTime dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        private DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private DateTime dt1970;
+        private DateTime dt;
         
         public long ServerMinusClientTime { private get; set; }
 
         public long FrameTime;
 
-        private TimeInfo()
+        public TimeInfo()
         {
+            this.dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            this.dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             this.FrameTime = this.ClientNow();
         }
 
@@ -70,11 +70,6 @@ namespace ET
         public long Transition(DateTime d)
         {
             return (d.Ticks - dt.Ticks) / 10000;
-        }
-
-        public void Dispose()
-        {
-            Instance = null;
         }
     }
 }
