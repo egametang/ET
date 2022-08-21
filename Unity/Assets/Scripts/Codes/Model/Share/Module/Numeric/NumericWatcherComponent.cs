@@ -29,7 +29,7 @@ namespace ET
         {
             self.allWatchers = new Dictionary<int, List<NumericWatcherInfo>>();
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof(NumericWatcherAttribute));
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(NumericWatcherAttribute));
             foreach (Type type in types)
             {
                 object[] attrs = type.GetCustomAttributes(typeof(NumericWatcherAttribute), false);

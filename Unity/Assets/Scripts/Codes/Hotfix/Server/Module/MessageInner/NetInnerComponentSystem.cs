@@ -61,7 +61,7 @@ namespace ET.Server
             }
 
             session.LastRecvTime = TimeHelper.ClientNow();
-            Game.EventSystem.Callback(new SessionStreamCallback() {Id = self.SessionStreamDispatcherType, Session = session, MemoryStream = memoryStream});
+            EventSystem.Instance.Callback(new SessionStreamCallback() {Id = self.SessionStreamDispatcherType, Session = session, MemoryStream = memoryStream});
         }
 
         public static void OnError(this NetInnerComponent self, long channelId, int error)

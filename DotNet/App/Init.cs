@@ -18,25 +18,27 @@ namespace ET
 				
 				// 异步方法全部会回掉到主线程
 				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+
 				
 				// 命令行参数
 				Options options = null;
 				Parser.Default.ParseArguments<Options>(args)
-						.WithNotParsed(error => throw new Exception($"命令行格式错误!"))
+						.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 						.WithParsed(o => { options = o; });
-				Options.Instance = options;
 				
-				LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("../Config/NLog/NLog.config");
-				LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
-				LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
-				
-				Game.ILog = new NLogger(Game.Options.AppType.ToString());
+				Game.AddSingleton(options);
+				Game.AddSingleton<TimeInfo>();
+				Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
+				Game.AddSingleton<ObjectPool>();
+				Game.AddSingleton<IdGenerater>();
+				Game.AddSingleton<EventSystem>();
+				Game.AddSingleton<Root>();
 				
 				ETTask.ExceptionHandler += Log.Error;
-			
-				CodeLoader.Instance.Start();
 
-				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Game.Options)} ");
+				Game.AddSingleton<CodeLoader>().Start();
+
+				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Options.Instance)} ");
 
 				while (true)
 				{

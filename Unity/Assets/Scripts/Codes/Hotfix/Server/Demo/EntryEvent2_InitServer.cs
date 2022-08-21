@@ -20,14 +20,14 @@ namespace ET.Server
 
             Game.Scene.AddComponent<NavmeshComponent>();
 
-            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
-            switch (Game.Options.AppType)
+            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Options.Instance.Process);
+            switch (Options.Instance.AppType)
             {
                 case AppType.Server:
                 {
                     Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, SessionStreamCallbackId.SessionStreamDispatcherServerInner);
 
-                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
+                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Options.Instance.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
                         await SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
@@ -40,7 +40,7 @@ namespace ET.Server
                 {
                     StartMachineConfig startMachineConfig = WatcherHelper.GetThisMachineConfig();
                     WatcherComponent watcherComponent = Game.Scene.AddComponent<WatcherComponent>();
-                    watcherComponent.Start(Game.Options.CreateScenes);
+                    watcherComponent.Start(Options.Instance.CreateScenes);
                     Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"), SessionStreamCallbackId.SessionStreamDispatcherServerInner);
                     break;
                 }
@@ -48,7 +48,7 @@ namespace ET.Server
                     break;
             }
 
-            if (Game.Options.Console == 1)
+            if (Options.Instance.Console == 1)
             {
                 Game.Scene.AddComponent<ConsoleComponent>();
             }

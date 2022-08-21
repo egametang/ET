@@ -26,7 +26,7 @@ namespace ET
             {
                 Vector3 oldPos = this.position;
                 this.position = value;
-                Game.EventSystem.Publish(this.DomainScene(), new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
+                EventSystem.Instance.Publish(this.DomainScene(), new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
             }
         }
 
@@ -47,7 +47,7 @@ namespace ET
             set
             {
                 this.rotation = value;
-                Game.EventSystem.Publish(this.DomainScene(), new EventType.ChangeRotation() { Unit = this });
+                EventSystem.Instance.Publish(this.DomainScene(), new EventType.ChangeRotation() { Unit = this });
             }
         }
 

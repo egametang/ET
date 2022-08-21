@@ -25,7 +25,7 @@ namespace ET.Client
 				self.UILayers.Add((int)UILayer.Mid, referenceCollector.Get<GameObject>(UILayer.Mid.ToString()).transform);
 				self.UILayers.Add((int)UILayer.High, referenceCollector.Get<GameObject>(UILayer.High.ToString()).transform);
 
-				var uiEvents = Game.EventSystem.GetTypes(typeof (UIEventAttribute));
+				var uiEvents = EventSystem.Instance.GetTypes(typeof (UIEventAttribute));
 				foreach (Type type in uiEvents)
 				{
 					object[] attrs = type.GetCustomAttributes(typeof(UIEventAttribute), false);

@@ -14,7 +14,7 @@ namespace ET.Server
         {
             InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
             this.Process = instanceIdStruct.Process;
-            instanceIdStruct.Process = Game.Options.Process;
+            instanceIdStruct.Process = Options.Instance.Process;
             this.ActorId = instanceIdStruct.ToLong();
         }
     }

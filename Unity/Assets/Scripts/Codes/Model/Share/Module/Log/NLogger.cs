@@ -1,13 +1,17 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 
 namespace ET
 {
     public class NLogger: ILog
     {
-        private readonly Logger logger;
+        private readonly NLog.Logger logger;
 
-        public NLogger(string name)
+        public NLogger(string name, int process, string configPath)
         {
+            LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(configPath);
+            LogManager.Configuration.Variables["appIdFormat"] = $"{process:000000}";
+            LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
             this.logger = LogManager.GetLogger(name);
         }
 

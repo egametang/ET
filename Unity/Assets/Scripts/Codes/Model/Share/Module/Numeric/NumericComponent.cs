@@ -60,7 +60,7 @@ namespace ET
 
             if (isPublicEvent)
             {
-                Game.EventSystem.Publish(self.DomainScene(),
+                EventSystem.Instance.Publish(self.DomainScene(),
                     new EventType.NumbericChange() { Unit = self.GetParent<Unit>(), New = value, Old = oldValue, NumericType = numericType });
             }
         }

@@ -11,6 +11,7 @@ EditorSettings:
   m_PrefabUIEnvironment: {fileID: 0}
   m_SpritePackerMode: 5
   m_SpritePackerPaddingPower: 1
+  m_Bc7TextureCompressor: 0
   m_EtcTextureCompressorBehavior: 0
   m_EtcTextureFastCompressor: 2
   m_EtcTextureNormalCompressor: 2
@@ -30,8 +31,8 @@ EditorSettings:
   m_UseLegacyProbeSampleCount: 1
   m_SerializeInlineMappingsOnOneLine: 0
   m_DisableCookiesInLightmapper: 1
-  m_UseCloudEnlightenBake: 0
   m_AssetPipelineMode: 1
+  m_RefreshImportMode: 0
   m_CacheServerMode: 0
   m_CacheServerEndpoint: 
   m_CacheServerNamespacePrefix: default
@@ -39,3 +40,4 @@ EditorSettings:
   m_CacheServerEnableUpload: 1
   m_CacheServerEnableAuth: 0
   m_CacheServerEnableTls: 0
+  m_CacheServerValidationMode: 2

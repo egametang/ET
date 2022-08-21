@@ -3,46 +3,40 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ObjectPool: IDisposable
+    public class ObjectPool: Singleton<ObjectPool>
     {
-        private readonly Dictionary<Type, Queue<Entity>> pool = new Dictionary<Type, Queue<Entity>>();
+        private readonly Dictionary<Type, Queue<object>> pool = new Dictionary<Type, Queue<object>>();
         
-        public static ObjectPool Instance = new ObjectPool();
-        
-        private ObjectPool()
+        public T Fetch<T>() where T: class
         {
+            return this.Fetch(typeof (T)) as T;
         }
 
-        public Entity Fetch(Type type)
+        public object Fetch(Type type)
         {
-            Queue<Entity> queue = null;
+            Queue<object> queue = null;
             if (!pool.TryGetValue(type, out queue))
             {
-                return Activator.CreateInstance(type) as Entity;
+                return Activator.CreateInstance(type);
             }
 
             if (queue.Count == 0)
             {
-                return Activator.CreateInstance(type) as Entity;
+                return Activator.CreateInstance(type);
             }
             return queue.Dequeue();
         }
 
-        public void Recycle(Entity obj)
+        public void Recycle(object obj)
         {
             Type type = obj.GetType();
-            Queue<Entity> queue = null;
+            Queue<object> queue = null;
             if (!pool.TryGetValue(type, out queue))
             {
-                queue = new Queue<Entity>();
+                queue = new Queue<object>();
                 pool.Add(type, queue);
             }
             queue.Enqueue(obj);
-        }
-
-        public void Dispose()
-        {
-            this.pool.Clear();
         }
     }
 }

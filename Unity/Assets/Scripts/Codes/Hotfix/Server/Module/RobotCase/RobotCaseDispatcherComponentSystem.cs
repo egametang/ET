@@ -30,7 +30,7 @@ namespace ET.Server
         {
             self.Dictionary.Clear();
 
-            HashSet<Type> types = Game.EventSystem.GetTypes(typeof(RobotCaseAttribute));
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(RobotCaseAttribute));
 
             foreach (Type type in types)
             {

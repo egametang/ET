@@ -47,7 +47,7 @@ namespace ET.Server
         {
             self.ActorMessageHandlers.Clear();
 
-            var types = Game.EventSystem.GetTypes(typeof (ActorMessageHandlerAttribute));
+            var types = EventSystem.Instance.GetTypes(typeof (ActorMessageHandlerAttribute));
             foreach (Type type in types)
             {
                 object obj = Activator.CreateInstance(type);

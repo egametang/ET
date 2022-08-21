@@ -98,7 +98,7 @@ namespace ET
                 while (self.timerOutTimer.Count > 0)
                 {
                     long CoroutineLockInstanceId = self.timerOutTimer.Dequeue();
-                    CoroutineLock coroutineLock = Game.EventSystem.Get(CoroutineLockInstanceId) as CoroutineLock;
+                    CoroutineLock coroutineLock = EventSystem.Instance.Get(CoroutineLockInstanceId) as CoroutineLock;
 
                     if (coroutineLock == null)
                     {

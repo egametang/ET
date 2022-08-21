@@ -26,7 +26,7 @@ namespace ET.Server
                         List<StartSceneConfig> robotSceneConfigs = StartSceneConfigCategory.Instance.Robots;
                         foreach (StartSceneConfig robotSceneConfig in robotSceneConfigs)
                         {
-                            if (robotSceneConfig.Process != Game.Options.Process)
+                            if (robotSceneConfig.Process != Options.Instance.Process)
                             {
                                 continue;
                             }
@@ -40,7 +40,7 @@ namespace ET.Server
                             StartSceneConfig robotSceneConfig = thisProcessRobotScenes[index];
                             Scene robotScene = Game.Scene.Get(robotSceneConfig.Id);
                             RobotManagerComponent robotManagerComponent = robotScene.GetComponent<RobotManagerComponent>();
-                            Scene robot = await robotManagerComponent.NewRobot(Game.Options.Process * 10000 + i);
+                            Scene robot = await robotManagerComponent.NewRobot(Options.Instance.Process * 10000 + i);
                             robot.AddComponent<AIComponent, int>(1);
                             Log.Console($"create robot {robot.Zone}");
                             await TimerComponent.Instance.WaitAsync(2000);

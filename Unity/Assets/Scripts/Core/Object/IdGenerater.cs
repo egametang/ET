@@ -139,10 +139,9 @@ namespace ET
         }
     }
 
-    public class IdGenerater: IDisposable
+    public class IdGenerater: Singleton<IdGenerater>
     {
         public const int Mask18bit = 0x03ffff;
-        public static IdGenerater Instance = new IdGenerater();
 
         public const int MaxZone = 1024;
         
@@ -185,22 +184,15 @@ namespace ET
             }
         }
 
-        public void Dispose()
-        {
-            this.epoch2020 = 0;
-            this.epochThisYear = 0;
-            this.value = 0;
-        }
-
         private uint TimeSince2020()
         {
-            uint a = (uint)((Game.TimeInfo.FrameTime - this.epoch2020) / 1000);
+            uint a = (uint)((TimeInfo.Instance.FrameTime - this.epoch2020) / 1000);
             return a;
         }
         
         private uint TimeSinceThisYear()
         {
-            uint a = (uint)((Game.TimeInfo.FrameTime - this.epochThisYear) / 1000);
+            uint a = (uint)((TimeInfo.Instance.FrameTime - this.epochThisYear) / 1000);
             return a;
         }
         
@@ -226,7 +218,7 @@ namespace ET
                 }
             }
 
-            InstanceIdStruct instanceIdStruct = new InstanceIdStruct(this.lastInstanceIdTime, Game.Options.Process, this.instanceIdValue);
+            InstanceIdStruct instanceIdStruct = new InstanceIdStruct(this.lastInstanceIdTime, Options.Instance.Process, this.instanceIdValue);
             return instanceIdStruct.ToLong();
         }
 
@@ -251,7 +243,7 @@ namespace ET
                 }
             }
             
-            IdStruct idStruct = new IdStruct(this.lastIdTime, Game.Options.Process, value);
+            IdStruct idStruct = new IdStruct(this.lastIdTime, Options.Instance.Process, value);
             return idStruct.ToLong();
         }
         
@@ -280,7 +272,7 @@ namespace ET
                 }
             }
 
-            UnitIdStruct unitIdStruct = new UnitIdStruct(zone, Game.Options.Process, this.lastUnitIdTime, this.unitIdValue);
+            UnitIdStruct unitIdStruct = new UnitIdStruct(zone, Options.Instance.Process, this.lastUnitIdTime, this.unitIdValue);
             return unitIdStruct.ToLong();
         }
     }

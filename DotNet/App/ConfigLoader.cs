@@ -17,13 +17,13 @@ namespace ET
                 "StartSceneConfigCategory", 
                 "StartZoneConfigCategory",
             };
-            HashSet<Type> configTypes = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+            HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
             foreach (Type configType in configTypes)
             {
                 string configFilePath;
                 if (startConfigs.Contains(configType.Name))
                 {
-                    configFilePath = $"../Config/{Game.Options.StartConfig}/{configType.Name}.bytes";    
+                    configFilePath = $"../Config/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
                 }
                 else
                 {

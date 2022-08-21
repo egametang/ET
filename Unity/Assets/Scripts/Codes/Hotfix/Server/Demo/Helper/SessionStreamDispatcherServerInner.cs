@@ -22,11 +22,11 @@ namespace ET.Server
                 if (OpcodeTypeComponent.Instance.IsOutrActorMessage(opcode))
                 {
                     InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
-                    instanceIdStruct.Process = Game.Options.Process;
+                    instanceIdStruct.Process = Options.Instance.Process;
                     long realActorId = instanceIdStruct.ToLong();
                     
                     
-                    Entity entity = Game.EventSystem.Get(realActorId);
+                    Entity entity = EventSystem.Instance.Get(realActorId);
                     if (entity == null)
                     {
                         type = OpcodeTypeComponent.Instance.GetType(opcode);
@@ -62,7 +62,7 @@ namespace ET.Server
                     {
                         InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
                         int fromProcess = instanceIdStruct.Process;
-                        instanceIdStruct.Process = Game.Options.Process;
+                        instanceIdStruct.Process = Options.Instance.Process;
                         long realActorId = instanceIdStruct.ToLong();
                         
                         void Reply(IActorResponse response)
@@ -78,7 +78,7 @@ namespace ET.Server
                     case IActorResponse iActorResponse:
                     {
                         InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
-                        instanceIdStruct.Process = Game.Options.Process;
+                        instanceIdStruct.Process = Options.Instance.Process;
                         long realActorId = instanceIdStruct.ToLong();
                         InnerMessageDispatcherHelper.HandleIActorResponse(opcode, realActorId, iActorResponse);
                         return;
@@ -86,7 +86,7 @@ namespace ET.Server
                     case IActorMessage iactorMessage:
                     {
                         InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
-                        instanceIdStruct.Process = Game.Options.Process;
+                        instanceIdStruct.Process = Options.Instance.Process;
                         long realActorId = instanceIdStruct.ToLong();
                         InnerMessageDispatcherHelper.HandleIActorMessage(opcode, realActorId, iactorMessage);
                         return;

@@ -132,7 +132,7 @@ namespace ET
                 case TimerClass.OnceTimer:
                 {
                     int type = timerAction.Type;
-                    Game.EventSystem.Callback(new TimerCallback() {Id = type, Args = timerAction.Object});
+                    EventSystem.Instance.Callback(new TimerCallback() {Id = type, Args = timerAction.Object});
                     break;
                 }
                 case TimerClass.OnceWaitTimer:
@@ -147,7 +147,7 @@ namespace ET
                     int type = timerAction.Type;
                     long tillTime = TimeHelper.ServerNow() + timerAction.Time;
                     self.AddTimer(tillTime, timerAction);
-                    Game.EventSystem.Callback(new TimerCallback() {Id = type, Args = timerAction.Object});
+                    EventSystem.Instance.Callback(new TimerCallback() {Id = type, Args = timerAction.Object});
                     break;
                 }
             }

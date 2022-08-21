@@ -15,7 +15,7 @@ namespace ET.Client
                 // 等待场景切换完成
                 await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_SceneChangeFinish>();
                 
-                Game.EventSystem.Publish(clientScene, new EventType.EnterMapFinish());
+                EventSystem.Instance.Publish(clientScene, new EventType.EnterMapFinish());
             }
             catch (Exception e)
             {

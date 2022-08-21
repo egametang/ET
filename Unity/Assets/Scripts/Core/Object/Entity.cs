@@ -361,7 +361,7 @@ namespace ET
             {
                 if (this.children == null)
                 {
-                    this.children = MonoPool.Instance.Fetch<Dictionary<long, Entity>>();
+                    this.children = ObjectPool.Instance.Fetch<Dictionary<long, Entity>>();
                 }
                 return this.children;
             }
@@ -384,7 +384,7 @@ namespace ET
 
             if (this.children.Count == 0)
             {
-                MonoPool.Instance.Recycle(this.children);
+                ObjectPool.Instance.Recycle(this.children);
                 this.children = null;
             }
 
@@ -398,7 +398,7 @@ namespace ET
                 return;
             }
 
-            this.childrenDB = this.childrenDB ?? MonoPool.Instance.Fetch<HashSet<Entity>>();
+            this.childrenDB = this.childrenDB ?? ObjectPool.Instance.Fetch<HashSet<Entity>>();
 
             this.childrenDB.Add(entity);
         }
@@ -419,7 +419,7 @@ namespace ET
 
             if (this.childrenDB.Count == 0 && this.IsNew)
             {
-                MonoPool.Instance.Recycle(this.childrenDB);
+                ObjectPool.Instance.Recycle(this.childrenDB);
                 this.childrenDB = null;
             }
         }
@@ -441,7 +441,7 @@ namespace ET
             {
                 if (this.components == null)
                 {
-                    this.components = MonoPool.Instance.Fetch<Dictionary<Type, Entity>>();
+                    this.components = ObjectPool.Instance.Fetch<Dictionary<Type, Entity>>();
                 }
                 return this.components;
             }
@@ -466,7 +466,7 @@ namespace ET
                 }
 
                 this.components.Clear();
-                MonoPool.Instance.Recycle(this.components);
+                ObjectPool.Instance.Recycle(this.components);
                 this.components = null;
 
                 // 创建的才需要回到池中,从db中不需要回收
@@ -475,7 +475,7 @@ namespace ET
                     this.componentsDB.Clear();
                     if (this.IsNew)
                     {
-                        MonoPool.Instance.Recycle(this.componentsDB);
+                        ObjectPool.Instance.Recycle(this.componentsDB);
                         this.componentsDB = null;
                     }
                 }
@@ -490,7 +490,7 @@ namespace ET
                 }
 
                 this.children.Clear();
-                MonoPool.Instance.Recycle(this.children);
+                ObjectPool.Instance.Recycle(this.children);
                 this.children = null;
 
                 if (this.childrenDB != null)
@@ -499,7 +499,7 @@ namespace ET
                     // 创建的才需要回到池中,从db中不需要回收
                     if (this.IsNew)
                     {
-                        MonoPool.Instance.Recycle(this.childrenDB);
+                        ObjectPool.Instance.Recycle(this.childrenDB);
                         this.childrenDB = null;
                     }
                 }
@@ -545,7 +545,7 @@ namespace ET
             
             if (this.componentsDB == null)
             {
-                this.componentsDB = MonoPool.Instance.Fetch<HashSet<Entity>>();
+                this.componentsDB = ObjectPool.Instance.Fetch<HashSet<Entity>>();
             }
 
             this.componentsDB.Add(component);
@@ -566,7 +566,7 @@ namespace ET
             this.componentsDB.Remove(component);
             if (this.componentsDB.Count == 0 && this.IsNew)
             {
-                MonoPool.Instance.Recycle(this.componentsDB);
+                ObjectPool.Instance.Recycle(this.componentsDB);
                 this.componentsDB = null;
             }
         }
@@ -588,7 +588,7 @@ namespace ET
 
             if (this.components.Count == 0)
             {
-                MonoPool.Instance.Recycle(this.components);
+                ObjectPool.Instance.Recycle(this.components);
                 this.components = null;
             }
 
@@ -738,7 +738,7 @@ namespace ET
             Entity component;
             if (isFromPool)
             {
-                component = ObjectPool.Instance.Fetch(type);
+                component = (Entity)ObjectPool.Instance.Fetch(type);
             }
             else
             {

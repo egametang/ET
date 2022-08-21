@@ -14,7 +14,7 @@ namespace ET
                     
                     CodeLoader.Instance.LoadHotfix();
                     
-                    Game.EventSystem.Load();
+                    EventSystem.Instance.Load();
                     break;
             }
             

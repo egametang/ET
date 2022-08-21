@@ -15,7 +15,7 @@ namespace ET.Client
                 const string configBundleName = "config.unity3d";
                 ResourcesComponent.Instance.LoadBundle(configBundleName);
                 
-                HashSet<Type> configTypes = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+                HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
                 foreach (Type configType in configTypes)
                 {
                     TextAsset v = ResourcesComponent.Instance.GetAsset(configBundleName, configType.Name) as TextAsset;

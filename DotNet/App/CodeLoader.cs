@@ -6,30 +6,11 @@ using System.Runtime.Loader;
 
 namespace ET
 {
-    public class CodeLoader: IDisposable
+    public class CodeLoader: Singleton<CodeLoader>
     {
         private AssemblyLoadContext assemblyLoadContext;
         
         private Assembly hotfix;
-        
-        private static CodeLoader instance;
-		
-        public static CodeLoader Instance 
-        {
-            get
-            {
-                return instance ??= new CodeLoader();
-            }
-        }
-
-        private CodeLoader()
-        {
-        }
-		
-        public void Dispose()
-        {
-            instance = null;
-        }
 
         public void Start()
         {
@@ -49,7 +30,7 @@ namespace ET
             
             Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Init).Assembly, typeof (Game).Assembly, typeof(Entry).Assembly, this.hotfix);
 			
-            Game.EventSystem.Add(types);
+            EventSystem.Instance.Add(types);
         }
     }
 }
