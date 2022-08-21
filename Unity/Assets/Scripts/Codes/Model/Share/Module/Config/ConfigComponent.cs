@@ -20,6 +20,7 @@ namespace ET
             public string ConfigName;
         }
         
+        [StaticField]
         public static ConfigComponent Instance;
 		
         public Dictionary<Type, object> AllConfig = new Dictionary<Type, object>();

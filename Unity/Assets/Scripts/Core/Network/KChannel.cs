@@ -15,6 +15,7 @@ namespace ET
 	
 	public class KChannel : AChannel
 	{
+		[StaticField]
 		public static readonly Dictionary<IntPtr, KChannel> KcpPtrChannels = new Dictionary<IntPtr, KChannel>();
 		
 		public KService Service;

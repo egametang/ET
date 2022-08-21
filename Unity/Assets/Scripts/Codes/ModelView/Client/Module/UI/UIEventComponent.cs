@@ -10,6 +10,7 @@ namespace ET.Client
 	[ComponentOf(typeof(Scene))]
 	public class UIEventComponent: Entity, IAwake
 	{
+		[StaticField]
 		public static UIEventComponent Instance;
 		
 		public Dictionary<string, AUIEvent> UIEvents = new Dictionary<string, AUIEvent>();

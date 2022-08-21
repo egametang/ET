@@ -10,6 +10,7 @@ namespace ET
     
     public abstract class Singleton<T>: ISingleton, IDisposable where T: Singleton<T>, new()
     {
+        [StaticField]
         private static T instance;
 
         public static T Instance

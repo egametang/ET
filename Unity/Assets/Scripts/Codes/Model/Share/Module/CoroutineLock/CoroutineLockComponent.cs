@@ -181,6 +181,7 @@ namespace ET
     [ComponentOf(typeof(Scene))]
     public class CoroutineLockComponent: Entity, IAwake, IUpdate, IDestroy
     {
+        [StaticField]
         public static CoroutineLockComponent Instance;
 
         public List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);

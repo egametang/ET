@@ -9,6 +9,7 @@ namespace ET
     [Config]
     public partial class StartProcessConfigCategory : ProtoObject, IMerge
     {
+        [StaticField]
         public static StartProcessConfigCategory Instance;
 		
         [ProtoIgnore]

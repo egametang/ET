@@ -22,6 +22,7 @@ namespace ET.Server
     [ComponentOf(typeof(Scene))]
     public class ActorMessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
     {
+        [StaticField]
         public static ActorMessageDispatcherComponent Instance;
 
         public readonly Dictionary<Type, List<ActorMessageDispatcherInfo>> ActorMessageHandlers = new();

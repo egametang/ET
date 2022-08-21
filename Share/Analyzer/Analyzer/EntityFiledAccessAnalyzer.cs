@@ -38,7 +38,7 @@ namespace ET.Analyzer
 
         private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.All))
+            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllModelHotfix))
             {
                 return;
             }

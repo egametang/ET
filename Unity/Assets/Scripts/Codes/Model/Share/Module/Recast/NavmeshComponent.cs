@@ -6,6 +6,7 @@ namespace ET
     [ComponentOf(typeof(Scene))]
     public class NavmeshComponent: Entity, IAwake
     {
+        [StaticField]
         public static NavmeshComponent Instance;
         
         public struct RecastFileLoader: ICallback

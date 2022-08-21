@@ -4,6 +4,7 @@ namespace ET
 {
     public static class JsonHelper
     {
+        [StaticField]
         private static readonly MongoDB.Bson.IO.JsonWriterSettings logDefineSettings = new MongoDB.Bson.IO.JsonWriterSettings() { OutputMode = MongoDB.Bson.IO.JsonOutputMode.RelaxedExtendedJson };
         
         public static string ToJson(object message)

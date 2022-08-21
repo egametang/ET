@@ -2,9 +2,13 @@
 {
     public static class AnalyzeAssembly
     {
+        public const string AppsCore = "Core";
+        
         public const string AppsModel = "Model";
 
         public const string AppsHotfix = "Hotfix";
+
+        public const string UnityCore = "Unity.Core";
 
         public const string UnityModel = "Unity.Model";
 
@@ -18,6 +22,10 @@
 
         public static readonly string[] AllModel = { AppsModel, UnityModel, UnityModelView };
 
-        public static readonly string[] All = { AppsModel, AppsHotfix, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView };
+        public static readonly string[] AllModelHotfix = { AppsModel, AppsHotfix, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView };
+        
+        public static readonly string[] All = { AppsCore, AppsModel, AppsHotfix, UnityCore, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView };
+        
+        
     }
 }

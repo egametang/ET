@@ -9,6 +9,7 @@ namespace ET
     [Config]
     public partial class AIConfigCategory : ProtoObject, IMerge
     {
+        [StaticField]
         public static AIConfigCategory Instance;
 		
         [ProtoIgnore]
