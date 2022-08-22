@@ -5,8 +5,7 @@ namespace ET.Server
     [ComponentOf(typeof(Scene))]
     public class ActorMessageSenderComponent: Entity, IAwake, IDestroy
     {
-        [StaticField]
-        public static long TIMEOUT_TIME = 40 * 1000;
+        public const long TIMEOUT_TIME = 40 * 1000;
 
         public static ActorMessageSenderComponent Instance { get; set; }
 

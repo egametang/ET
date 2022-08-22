@@ -32,11 +32,13 @@ namespace ET
 				.WithParsed(o => { options = o; });
 			
 			Game.AddSingleton(options);
+			Game.AddSingleton<RandomGenerator>();
 			Game.AddSingleton<TimeInfo>();
 			Game.AddSingleton<Logger>().ILog = new UnityLogger();
 			Game.AddSingleton<ObjectPool>();
 			Game.AddSingleton<IdGenerater>();
 			Game.AddSingleton<EventSystem>();
+			Game.AddSingleton<NetServices>();
 			Game.AddSingleton<Root>();
 			
 			ETTask.ExceptionHandler += Log.Error;

@@ -27,7 +27,7 @@
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
-    <ItemGroup>
+    <ItemGroup> 
         <Compile Include="..\..\Unity\Assets\Scripts\Core\**\*.cs">
             <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

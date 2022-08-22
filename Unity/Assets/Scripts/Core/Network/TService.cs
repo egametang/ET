@@ -122,6 +122,8 @@ namespace ET
 		
 		public override void Dispose()
 		{
+			base.Dispose();
+			
 			this.acceptor?.Close();
 			this.acceptor = null;
 			this.innArgs.Dispose();

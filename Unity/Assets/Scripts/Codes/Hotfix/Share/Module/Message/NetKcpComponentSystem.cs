@@ -17,8 +17,6 @@ namespace ET
                 self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, addressFamily, ServiceType.Outer);
                 self.Service.ErrorCallback += (channelId, error) => self.OnError(channelId, error);
                 self.Service.ReadCallback += (channelId, Memory) => self.OnRead(channelId, Memory);
-
-                NetThreadComponent.Instance.Add(self.Service);
             }
         }
 
@@ -33,8 +31,6 @@ namespace ET
                 self.Service.ErrorCallback += (channelId, error) => self.OnError(channelId, error);
                 self.Service.ReadCallback += (channelId, Memory) => self.OnRead(channelId, Memory);
                 self.Service.AcceptCallback += (channelId, IPAddress) => self.OnAccept(channelId, IPAddress);
-
-                NetThreadComponent.Instance.Add(self.Service);
             }
         }
 
@@ -43,8 +39,7 @@ namespace ET
         {
             protected override void Destroy(NetKcpComponent self)
             {
-                NetThreadComponent.Instance.Remove(self.Service);
-                self.Service.Destroy();
+                self.Service.Dispose();
             }
         }
         
@@ -93,7 +88,7 @@ namespace ET
 
         public static Session Create(this NetKcpComponent self, IPEndPoint realIPEndPoint)
         {
-            long channelId = RandomHelper.RandInt64();
+            long channelId = RandomGenerator.Instance.RandInt64();
             Session session = self.AddChildWithId<Session, AService>(channelId, self.Service);
             session.RemoteAddress = realIPEndPoint;
             session.AddComponent<SessionIdleCheckerComponent, int>(NetThreadComponent.checkInteral);

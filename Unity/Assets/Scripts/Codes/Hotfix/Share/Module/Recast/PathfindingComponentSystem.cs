@@ -79,8 +79,8 @@ namespace ET
                 throw new Exception($"pathfinding raduis is too large，cur: {raduis}, max: {PathfindingComponent.FindRandomNavPosMaxRadius}");
             }
             
-            int degrees = RandomHelper.RandomNumber(0, 360);
-            float r = RandomHelper.RandomNumber(0, (int) (raduis * 1000)) / 1000f;
+            int degrees = RandomGenerator.Instance.RandomNumber(0, 360);
+            float r = RandomGenerator.Instance.RandomNumber(0, (int) (raduis * 1000)) / 1000f;
 
             float x = r * Mathf.Cos(MathHelper.DegToRad(degrees));
             float z = r * Mathf.Sin(MathHelper.DegToRad(degrees));
@@ -111,8 +111,8 @@ namespace ET
                 throw new Exception($"pathfinding rectangle is too large，width: {width} height: {height}, max: {PathfindingComponent.FindRandomNavPosMaxRadius}");
             }
             
-            float x = RandomHelper.RandomNumber(-width, width);
-            float z = RandomHelper.RandomNumber(-height, height);
+            float x = RandomGenerator.Instance.RandomNumber(-width, width);
+            float z = RandomGenerator.Instance.RandomNumber(-height, height);
 
             Vector3 findpos = new Vector3(pos.x + x, pos.y, pos.z + z);
 
@@ -131,8 +131,8 @@ namespace ET
                 throw new Exception($"pathfinding raduis is too large，cur: {maxRadius}, max: {PathfindingComponent.FindRandomNavPosMaxRadius}");
             }
             
-            int degrees = RandomHelper.RandomNumber(0, 360);
-            float r = RandomHelper.RandomNumber((int) (minRadius * 1000), (int) (maxRadius * 1000)) / 1000f;
+            int degrees = RandomGenerator.Instance.RandomNumber(0, 360);
+            float r = RandomGenerator.Instance.RandomNumber((int) (minRadius * 1000), (int) (maxRadius * 1000)) / 1000f;
 
             float x = r * Mathf.Cos(MathHelper.DegToRad(degrees));
             float z = r * Mathf.Sin(MathHelper.DegToRad(degrees));

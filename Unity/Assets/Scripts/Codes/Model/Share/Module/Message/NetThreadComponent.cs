@@ -13,7 +13,5 @@ namespace ET
         public const int sendMaxIdleTime = 60000;
 
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; set; }
-        
-        public HashSet<AService> Services = new HashSet<AService>();
     }
 }

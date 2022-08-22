@@ -9,7 +9,7 @@ namespace ET.Server
 		{
 			List<StartSceneConfig> zoneGates = StartSceneConfigCategory.Instance.Gates[zone];
 			
-			int n = RandomHelper.RandomNumber(0, zoneGates.Count);
+			int n = RandomGenerator.Instance.RandomNumber(0, zoneGates.Count);
 
 			return zoneGates[n];
 		}
