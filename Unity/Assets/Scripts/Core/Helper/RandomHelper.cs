@@ -6,8 +6,10 @@ namespace ET
 {
     public static class RandomHelper
     {
+        [StaticField]
         private static readonly Random random = new Random(Guid.NewGuid().GetHashCode());
 
+        [StaticField]
         private static readonly byte[] byte8 = new byte[8];
 
         public static ulong RandUInt64()

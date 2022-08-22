@@ -25,6 +25,7 @@ namespace ET.Server
     {
         public AService Service;
 
+        [StaticField]
         public static NetInnerComponent Instance;
 
         public int SessionStreamDispatcherType { get; set; }

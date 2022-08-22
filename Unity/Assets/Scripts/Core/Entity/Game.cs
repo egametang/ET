@@ -5,7 +5,9 @@ namespace ET
 {
     public static class Game
     {
+        [StaticField]
         private static readonly Dictionary<Type, ISingleton> singletonTypes = new Dictionary<Type, ISingleton>();
+        [StaticField]
         private static readonly Stack<ISingleton> singletons = new Stack<ISingleton>();
 
         public static T AddSingleton<T>() where T: Singleton<T>, new()

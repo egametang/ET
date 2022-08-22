@@ -51,7 +51,8 @@ namespace ET
             //Kcp.KcpSetLog(KcpLog);
             Kcp.KcpSetoutput(KcpOutput);
         }
-
+        
+        [StaticField]
         private static readonly byte[] logBuffer = new byte[1024];
 
 #if ENABLE_IL2CPP

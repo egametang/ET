@@ -9,6 +9,7 @@ namespace ET
     [Config]
     public partial class (ConfigName)Category : ProtoObject, IMerge
     {
+        [StaticField]
         public static (ConfigName)Category Instance;
 		
         [ProtoIgnore]

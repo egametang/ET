@@ -82,6 +82,11 @@ namespace ET
                     @"Assets\Scripts\Codes\Plugins\*\ModelView\Client\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('ModelView\Client',''))%(FileName)%(Extension)"
                     );
             }
+
+            if (path.EndsWith("Unity.Core.csproj"))
+            {
+                return GenerateCustomProject(path, content);
+            }
             return content;
         }
 
