@@ -15,9 +15,6 @@ namespace ET
 	
 	public class KChannel : AChannel
 	{
-		[StaticField]
-		public static readonly Dictionary<IntPtr, KChannel> KcpPtrChannels = new Dictionary<IntPtr, KChannel>();
-		
 		public KService Service;
 		
 		private Socket socket;
@@ -48,7 +45,8 @@ namespace ET
 		
 		private void InitKcp()
 		{
-			KcpPtrChannels.Add(this.kcp, this);
+			this.Service.KcpPtrChannels.Add(this.kcp, this);
+			
 			switch (this.Service.ServiceType)
 			{
 				case ServiceType.Inner:
@@ -101,7 +99,7 @@ namespace ET
 			this.RemoteConn = remoteConn;
 			this.RemoteAddress = remoteEndPoint;
 			this.socket = socket;
-			this.kcp = Kcp.KcpCreate(this.RemoteConn, IntPtr.Zero);
+			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.Service.Id));
 			this.InitKcp();
 			
 			this.lastRecvTime = kService.TimeNow;
@@ -136,7 +134,6 @@ namespace ET
 
 			if (this.kcp != IntPtr.Zero)
 			{
-				KcpPtrChannels.Remove(this.kcp);
 				Kcp.KcpRelease(this.kcp);
 				this.kcp = IntPtr.Zero;
 			}
@@ -152,7 +149,7 @@ namespace ET
 				return;
 			}
 
-			this.kcp = Kcp.KcpCreate(this.RemoteConn, IntPtr.Zero);
+			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.Service.Id));
 			this.InitKcp();
 
 			Log.Info($"channel connected: {this.Id} {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");

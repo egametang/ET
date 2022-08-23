@@ -6,9 +6,21 @@ namespace ET
 {
     public abstract class AService: IDisposable
     {
+        public int Id { get; set; }
+        
         public ServiceType ServiceType { get; protected set; }
         
         public ThreadSynchronizationContext ThreadSynchronizationContext;
+        
+        protected AService()
+        {
+            NetServices.Instance.Add(this);
+        }
+
+        public virtual void Dispose()
+        {
+            NetServices.Instance.Remove(this);
+        }
         
         // localConn放在低32bit
         private long connectIdGenerater = int.MaxValue;
@@ -19,7 +31,7 @@ namespace ET
         
         public uint CreateRandomLocalConn()
         {
-            return (1u << 30) | RandomHelper.RandUInt32();
+            return (1u << 30) | RandomGenerator.Instance.RandUInt32();
         }
 
         // localConn放在低32bit
@@ -30,7 +42,6 @@ namespace ET
         }
 
 
-
         public abstract void Update();
 
         public abstract void Remove(long id);
@@ -38,8 +49,6 @@ namespace ET
         public abstract bool IsDispose();
 
         protected abstract void Get(long id, IPEndPoint address);
-
-        public abstract void Dispose();
 
         protected abstract void Send(long channelId, long actorId, MemoryStream stream);
         
@@ -64,11 +73,6 @@ namespace ET
         public Action<long, IPEndPoint> AcceptCallback;
         public Action<long, int> ErrorCallback;
         public Action<long, MemoryStream> ReadCallback;
-
-        public void Destroy()
-        {
-            this.Dispose();
-        }
 
         public void RemoveChannel(long channelId)
         {

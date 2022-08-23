@@ -27,23 +27,15 @@ namespace ET.Client
         
                             foreach (string abName in list)
                             {
-                                CoroutineLock coroutineLock = null;
-                                try
+                                using CoroutineLock coroutineLock =
+                                        await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
                                 {
-                                    coroutineLock =
-                                            await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
+                                    if (ResourcesComponent.Instance == null)
                                     {
-                                        if (ResourcesComponent.Instance == null)
-                                        {
-                                            return;
-                                        }
-        
-                                        await ResourcesComponent.Instance.UnloadBundleAsync(abName);
+                                        return;
                                     }
-                                }
-                                finally
-                                {
-                                    coroutineLock?.Dispose();
+        
+                                    await ResourcesComponent.Instance.UnloadBundleAsync(abName);
                                 }
                             }
                         }
@@ -55,28 +47,21 @@ namespace ET.Client
         
         public static async ETTask LoadAsync(this ResourcesLoaderComponent self, string ab)
         {
-            CoroutineLock coroutineLock = null;
-            try
+            using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
+                    
+            if (self.IsDisposed)
             {
-                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
-                if (self.IsDisposed)
-                {
-                    Log.Error($"resourceload already disposed {ab}");
-                    return;
-                }
-
-                if (self.LoadedResource.Contains(ab))
-                {
-                    return;
-                }
-
-                self.LoadedResource.Add(ab);
-                await ResourcesComponent.Instance.LoadBundleAsync(ab);
+                Log.Error($"resourceload already disposed {ab}");
+                return;
             }
-            finally
+
+            if (self.LoadedResource.Contains(ab))
             {
-                coroutineLock?.Dispose();
+                return;
             }
+
+            self.LoadedResource.Add(ab);
+            await ResourcesComponent.Instance.LoadBundleAsync(ab);
         }
     }
     

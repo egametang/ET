@@ -4,31 +4,29 @@ using Random = System.Random;
 
 namespace ET
 {
-    public static class RandomHelper
+    public class RandomGenerator: Singleton<RandomGenerator>
     {
-        [StaticField]
-        private static readonly Random random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly Random random = new Random(Guid.NewGuid().GetHashCode());
 
-        [StaticField]
-        private static readonly byte[] byte8 = new byte[8];
+        private readonly byte[] byte8 = new byte[8];
 
-        public static ulong RandUInt64()
+        public ulong RandUInt64()
         {
             random.NextBytes(byte8);
             return BitConverter.ToUInt64(byte8, 0);
         }
 
-        public static int RandInt32()
+        public int RandInt32()
         {
             return random.Next();
         }
 
-        public static uint RandUInt32()
+        public uint RandUInt32()
         {
             return (uint) random.Next();
         }
 
-        public static long RandInt64()
+        public long RandInt64()
         {
             random.NextBytes(byte8);
             return BitConverter.ToInt64(byte8, 0);
@@ -40,13 +38,13 @@ namespace ET
         /// <param name="lower"></param>
         /// <param name="upper"></param>
         /// <returns></returns>
-        public static int RandomNumber(int lower, int upper)
+        public int RandomNumber(int lower, int upper)
         {
             int value = random.Next(lower, upper);
             return value;
         }
 
-        public static long NextLong(long minValue, long maxValue)
+        public long NextLong(long minValue, long maxValue)
         {
             if (minValue > maxValue)
             {
@@ -57,17 +55,17 @@ namespace ET
             return minValue + (long) (random.NextDouble() * num);
         }
 
-        public static bool RandomBool()
+        public bool RandomBool()
         {
             return random.Next(2) == 0;
         }
 
-        public static T RandomArray<T>(this T[] array)
+        public T RandomArray<T>(T[] array)
         {
             return array[RandomNumber(0, array.Length)];
         }
 
-        public static T RandomArray<T>(this List<T> array)
+        public T RandomArray<T>(List<T> array)
         {
             return array[RandomNumber(0, array.Count)];
         }
@@ -77,7 +75,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="arr">要打乱的数组</param>
-        public static void BreakRank<T>(this List<T> arr)
+        public void BreakRank<T>(List<T> arr)
         {
             if (arr == null || arr.Count < 2)
             {
@@ -91,7 +89,7 @@ namespace ET
             }
         }
 
-        public static float RandFloat01()
+        public float RandFloat01()
         {
             int a = RandomNumber(0, 1000000);
             return a / 1000000f;

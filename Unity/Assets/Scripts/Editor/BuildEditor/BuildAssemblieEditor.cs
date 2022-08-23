@@ -145,7 +145,7 @@ namespace ET
                 File.Delete(file);
             }
             
-            int random = RandomHelper.RandomNumber(100000000, 999999999);
+            int random = RandomGenerator.Instance.RandomNumber(100000000, 999999999);
             string logicFile = $"Hotfix_{random}";
             
             List<string> codes;

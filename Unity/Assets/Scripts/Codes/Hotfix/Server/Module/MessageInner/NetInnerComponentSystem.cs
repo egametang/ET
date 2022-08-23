@@ -19,8 +19,6 @@ namespace ET.Server
                 self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, AddressFamily.InterNetwork, ServiceType.Inner);
                 self.Service.ErrorCallback += self.OnError;
                 self.Service.ReadCallback += self.OnRead;
-
-                NetThreadComponent.Instance.Add(self.Service);
             }
         }
 
@@ -36,8 +34,6 @@ namespace ET.Server
                 self.Service.ErrorCallback += self.OnError;
                 self.Service.ReadCallback += self.OnRead;
                 self.Service.AcceptCallback += self.OnAccept;
-
-                NetThreadComponent.Instance.Add(self.Service);
             }
         }
 
@@ -46,8 +42,7 @@ namespace ET.Server
         {
             protected override void Destroy(NetInnerComponent self)
             {
-                NetThreadComponent.Instance.Remove(self.Service);
-                self.Service.Destroy();
+                self.Service.Dispose();
             }
         }
 

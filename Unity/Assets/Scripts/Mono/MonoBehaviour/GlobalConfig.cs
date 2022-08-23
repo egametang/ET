@@ -7,7 +7,6 @@ namespace ET
     {
         Mono = 1,
         Reload = 2,
-        Codes = 3,
     }
 
     public enum CodeMode

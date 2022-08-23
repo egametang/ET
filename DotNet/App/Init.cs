@@ -27,11 +27,13 @@ namespace ET
 						.WithParsed(o => { options = o; });
 				
 				Game.AddSingleton(options);
+				Game.AddSingleton<RandomGenerator>();
 				Game.AddSingleton<TimeInfo>();
 				Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				Game.AddSingleton<ObjectPool>();
 				Game.AddSingleton<IdGenerater>();
 				Game.AddSingleton<EventSystem>();
+				Game.AddSingleton<NetServices>();
 				Game.AddSingleton<Root>();
 				
 				ETTask.ExceptionHandler += Log.Error;

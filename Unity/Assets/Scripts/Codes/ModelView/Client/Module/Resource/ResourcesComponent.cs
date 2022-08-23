@@ -248,16 +248,10 @@ namespace ET.Client
             //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
             foreach (string dependency in dependencies)
             {
-                CoroutineLock coroutineLock = null;
-                try
+                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode()))
                 {
-                    coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode());
                     self.UnloadOneBundle(dependency, unload);
                     await TimerComponent.Instance.WaitFrameAsync();
-                }
-                finally
-                {
-                    coroutineLock?.Dispose();
                 }
             }
             //Log.Debug($"-----------dep unload finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
@@ -429,22 +423,15 @@ namespace ET.Client
             {
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
-                    CoroutineLock coroutineLock = null;
-                    try
+                    using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
+                    
+                    ABInfo abInfo = await self.LoadOneBundleAsync(dependency);
+                    if (abInfo == null || abInfo.RefCount > 1)
                     {
-                        coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
-                        ABInfo abInfo = await self.LoadOneBundleAsync(dependency);
-                        if (abInfo == null || abInfo.RefCount > 1)
-                        {
-                            return;
-                        }
+                        return;
+                    }
 
-                        abInfosList.Add(abInfo);
-                    }
-                    finally
-                    {
-                        coroutineLock?.Dispose();
-                    }
+                    abInfosList.Add(abInfo);
                 }
 
                 // LoadFromFileAsync部分可以并发加载
@@ -539,35 +526,27 @@ namespace ET.Client
         // 加载ab包中的all assets
         private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
-            CoroutineLock coroutineLock = null;
-            try
+            using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
+            
+            if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
             {
-                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
-
-                if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
-                {
-                    return;
-                }
-
-                if (abInfo.AssetBundle != null && !abInfo.AssetBundle.isStreamedSceneAssetBundle)
-                {
-                    // 异步load资源到内存cache住
-                    AssetBundleRequest request = abInfo.AssetBundle.LoadAllAssetsAsync();
-                    await request;
-                    UnityEngine.Object[] assets = request.allAssets;
-
-                    foreach (UnityEngine.Object asset in assets)
-                    {
-                        self.AddResource(abInfo.Name, asset.name, asset);
-                    }
-                }
-
-                abInfo.AlreadyLoadAssets = true;
+                return;
             }
-            finally
+
+            if (abInfo.AssetBundle != null && !abInfo.AssetBundle.isStreamedSceneAssetBundle)
             {
-                coroutineLock?.Dispose();
+                // 异步load资源到内存cache住
+                AssetBundleRequest request = abInfo.AssetBundle.LoadAllAssetsAsync();
+                await request;
+                UnityEngine.Object[] assets = request.allAssets;
+
+                foreach (UnityEngine.Object asset in assets)
+                {
+                    self.AddResource(abInfo.Name, asset.name, asset);
+                }
             }
+
+            abInfo.AlreadyLoadAssets = true;
         }
 
         public static string DebugString(this ResourcesComponent self)

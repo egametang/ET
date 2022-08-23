@@ -41,7 +41,7 @@ namespace ET.Client
         // 向router申请
         private static async ETTask<uint> Connect(IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
-            uint connectId = RandomHelper.RandUInt32();
+            uint connectId = RandomGenerator.Instance.RandUInt32();
             
             using Socket socket = new Socket(routerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             

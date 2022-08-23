@@ -3,7 +3,7 @@
     [ComponentOf(typeof(Scene))]
     public class LocationProxyComponent: Entity, IAwake, IDestroy
     {
-        [StaticField()]
+        [StaticField]
         public static LocationProxyComponent Instance;
     }
 }

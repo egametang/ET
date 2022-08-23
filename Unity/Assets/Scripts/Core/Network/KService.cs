@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +28,8 @@ namespace ET
 
     public sealed class KService: AService
     {
+        public readonly Dictionary<IntPtr, KChannel> KcpPtrChannels = new Dictionary<IntPtr, KChannel>();
+        
         // KService创建的时间
         private readonly long startTime;
 
@@ -52,9 +53,6 @@ namespace ET
             Kcp.KcpSetoutput(KcpOutput);
         }
         
-        [StaticField]
-        private static readonly byte[] logBuffer = new byte[1024];
-
 #if ENABLE_IL2CPP
 		[AOT.MonoPInvokeCallback(typeof(KcpOutput))]
 #endif
@@ -62,8 +60,12 @@ namespace ET
         {
             try
             {
-                Marshal.Copy(bytes, logBuffer, 0, len);
-                Log.Info(logBuffer.ToStr(0, len));
+                unsafe
+                {
+                    //Marshal.Copy(bytes, logBuffer, 0, len);
+                    Span<byte> span = new Span<byte>(bytes.ToPointer(), len);
+                    Log.Info(span.ToString());
+                }
             }
             catch (Exception e)
             {
@@ -82,8 +84,10 @@ namespace ET
                 {
                     return 0;
                 }
-
-                if (!KChannel.KcpPtrChannels.TryGetValue(kcp, out KChannel kChannel))
+                
+                KService kService = NetServices.Instance.Get(user.ToInt32()) as KService;
+                
+                if (!kService.KcpPtrChannels.TryGetValue(kcp, out KChannel kChannel))
                 {
                     return 0;
                 }
@@ -137,6 +141,8 @@ namespace ET
                 uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
                 this.socket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
             }
+            
+            NetServices.Instance.Add(this);
         }
 
         public void ChangeAddress(long id, IPEndPoint address)
@@ -180,6 +186,8 @@ namespace ET
 
         public override void Dispose()
         {
+            base.Dispose();
+            
             foreach (long channelId in this.idChannels.Keys.ToArray())
             {
                 this.Remove(channelId);
@@ -484,6 +492,9 @@ namespace ET
                     this.waitConnectChannels.Remove(kChannel.RemoteConn);
                 }
             }
+
+            this.KcpPtrChannels.Remove(kChannel.kcp);
+            
             kChannel.Dispose();
         }
 

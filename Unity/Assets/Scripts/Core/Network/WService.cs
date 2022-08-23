@@ -71,6 +71,8 @@ namespace ET
 
         public override void Dispose()
         {
+            base.Dispose();
+            
             this.ThreadSynchronizationContext = null;
             this.httpListener?.Close();
             this.httpListener = null;
