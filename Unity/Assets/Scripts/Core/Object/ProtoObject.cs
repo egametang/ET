@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace ET
 {
@@ -15,10 +16,12 @@ namespace ET
         {
         }
         
+        
         public virtual void EndInit()
         {
         }
-
+        
+        
         public virtual void AfterEndInit()
         {
         }
