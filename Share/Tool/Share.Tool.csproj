@@ -55,8 +55,8 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\Core\DotNet.Core.csproj" />
-      <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
+      <ProjectReference Include="..\..\DotNet\Core\DotNet.Core.csproj" />
+      <ProjectReference Include="..\..\DotNet\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
 
 </Project>
