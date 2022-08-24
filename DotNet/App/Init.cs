@@ -20,12 +20,10 @@ namespace ET
 
 				
 				// 命令行参数
-				Options options = null;
 				Parser.Default.ParseArguments<Options>(args)
-						.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-						.WithParsed(o => { options = o; });
+					.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
+					.WithParsed(Game.AddSingleton);
 				
-				Game.AddSingleton(options);
 				Game.AddSingleton<RandomGenerator>();
 				Game.AddSingleton<TimeInfo>();
 				Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
