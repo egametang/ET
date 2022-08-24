@@ -15,10 +15,12 @@ namespace ET
         {
         }
         
+        
         public virtual void EndInit()
         {
         }
-
+        
+        
         public virtual void AfterEndInit()
         {
         }

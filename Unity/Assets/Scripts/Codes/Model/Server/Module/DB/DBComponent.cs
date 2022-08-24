@@ -1,5 +1,4 @@
-﻿#if DOTNET
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace ET.Server
 {
@@ -15,4 +14,3 @@ namespace ET.Server
         public IMongoDatabase database;
     }
 }
-#endif

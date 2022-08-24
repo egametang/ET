@@ -13,22 +13,6 @@ namespace ET
     {
         private const string CodeDir = "Assets/Bundles/Code/";
 
-        public static List<string> GetRelativeDirs(List<string> relativeDir)
-        {
-            List<string> list = new List<string>();
-            
-            foreach (string re in relativeDir)
-            {
-                string rd = $"Assets/Scripts/Codes/{re}";
-                if (!Directory.Exists(rd))
-                {
-                    continue;
-                }
-                list.Add(rd);
-            }
-            return list;
-        }
-
         public static void BuildCode(CodeOptimization codeOptimization, GlobalConfig globalConfig)
         {
             List<string> codes;
@@ -37,49 +21,46 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "Model/Generate/Client",
-                        "Model/Share",
-                        "Hotfix/Share",
-                        "Model/Client",
-                        "ModelView/Client",
-                        "Hotfix/Client",
-                        "HotfixView/Client"
+                        "Assets/Scripts/Codes/Model/Generate/Client",
+                        "Assets/Scripts/Codes/Model/Share",
+                        "Assets/Scripts/Codes/Hotfix/Share",
+                        "Assets/Scripts/Codes/Model/Client",
+                        "Assets/Scripts/Codes/ModelView/Client",
+                        "Assets/Scripts/Codes/Hotfix/Client",
+                        "Assets/Scripts/Codes/HotfixView/Client"
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "Model/Generate/Server",
-                        "Model/Share",
-                        "Hotfix/Share",
-                        "Model/Server",
-                        "Hotfix/Server",
-                        "Model/Client",
-                        "Hotfix/Client",
+                        "Assets/Scripts/Codes/Model/Generate/Server",
+                        "Assets/Scripts/Codes/Model/Share",
+                        "Assets/Scripts/Codes/Hotfix/Share",
+                        "Assets/Scripts/Codes/Model/Server",
+                        "Assets/Scripts/Codes/Hotfix/Server",
+                        "Assets/Scripts/Codes/Model/Client",
+                        "Assets/Scripts/Codes/Hotfix/Client",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "Model/Generate/Server",
-                        "Model/Share",
-                        "Hotfix/Share",
-                        "Model/Client",
-                        "ModelView/Client",
-                        "Hotfix/Client",
-                        "HotfixView/Client",
-                        "Model/Server",
-                        "Hotfix/Server",
+                        "Assets/Scripts/Codes/Model/Generate/Server",
+                        "Assets/Scripts/Codes/Model/Share",
+                        "Assets/Scripts/Codes/Hotfix/Share",
+                        "Assets/Scripts/Codes/Model/Client",
+                        "Assets/Scripts/Codes/ModelView/Client",
+                        "Assets/Scripts/Codes/Hotfix/Client",
+                        "Assets/Scripts/Codes/HotfixView/Client",
+                        "Assets/Scripts/Codes/Model/Server",
+                        "Assets/Scripts/Codes/Hotfix/Server",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 default:
                     throw new Exception("not found enum");
             }
 
-            BuildAssemblieEditor.BuildMuteAssembly("Code", codes, Array.Empty<string>(), codeOptimization);
+            BuildAssemblieEditor.BuildMuteAssembly("Code", codes, Array.Empty<string>(), codeOptimization, globalConfig.CodeMode);
 
             AfterCompiling();
             
@@ -98,39 +79,36 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "Model/Generate/Client/",
-                        "Model/Share/",
-                        "Model/Client/",
-                        "ModelView/Client/",
+                        "Assets/Scripts/Codes/Model/Generate/Client/",
+                        "Assets/Scripts/Codes/Model/Share/",
+                        "Assets/Scripts/Codes/Model/Client/",
+                        "Assets/Scripts/Codes/ModelView/Client/",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "Model/Generate/Server/",
-                        "Model/Share/",
-                        "Model/Server/",
-                        "Model/Client/",
+                        "Assets/Scripts/Codes/Model/Generate/Server/",
+                        "Assets/Scripts/Codes/Model/Share/",
+                        "Assets/Scripts/Codes/Model/Server/",
+                        "Assets/Scripts/Codes/Model/Client/",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "Model/Share/",
-                        "Model/Client/",
-                        "ModelView/Client/",
-                        "Model/Generate/Server/",
-                        "Model/Server/",
+                        "Assets/Scripts/Codes/Model/Share/",
+                        "Assets/Scripts/Codes/Model/Client/",
+                        "Assets/Scripts/Codes/ModelView/Client/",
+                        "Assets/Scripts/Codes/Model/Generate/Server/",
+                        "Assets/Scripts/Codes/Model/Server/",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 default:
                     throw new Exception("not found enum");
             }
             
-            BuildAssemblieEditor.BuildMuteAssembly("Model", codes, Array.Empty<string>(), codeOptimization);
+            BuildAssemblieEditor.BuildMuteAssembly("Model", codes, Array.Empty<string>(), codeOptimization, globalConfig.CodeMode);
             
             //反射获取当前Game视图，提示编译完成
             ShowNotification("Build Model Success");
@@ -154,43 +132,42 @@ namespace ET
                 case CodeMode.Client:
                     codes = new List<string>()
                     {
-                        "Hotfix/Share/",
-                        "Hotfix/Client/",
-                        "HotfixView/Client/",
+                        "Assets/Scripts/Codes/Hotfix/Share/",
+                        "Assets/Scripts/Codes/Hotfix/Client/",
+                        "Assets/Scripts/Codes/HotfixView/Client/",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "Hotfix/Share/",
-                        "Hotfix/Server/",
-                        "Hotfix/Client/",
+                        "Assets/Scripts/Codes/Hotfix/Share/",
+                        "Assets/Scripts/Codes/Hotfix/Server/",
+                        "Assets/Scripts/Codes/Hotfix/Client/",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "Hotfix/Share/",
-                        "Hotfix/Client/",
-                        "HotfixView/Client/",
-                        "Hotfix/Server/",
+                        "Assets/Scripts/Codes/Hotfix/Share/",
+                        "Assets/Scripts/Codes/Hotfix/Client/",
+                        "Assets/Scripts/Codes/HotfixView/Client/",
+                        "Assets/Scripts/Codes/Hotfix/Server/",
                     };
-                    codes = GetRelativeDirs(codes);
                     break;
                 default:
                     throw new Exception("not found enum");
             }
             
-            BuildAssemblieEditor.BuildMuteAssembly(logicFile, codes, new[]{Path.Combine(Define.BuildOutputDir, "Model.dll")}, codeOptimization);
+            BuildAssemblieEditor.BuildMuteAssembly(logicFile, codes, new[]{Path.Combine(Define.BuildOutputDir, "Model.dll")}, codeOptimization, globalConfig.CodeMode);
             
             //反射获取当前Game视图，提示编译完成
             ShowNotification("Build Hotfix Success");
         }
 
-        private static void BuildMuteAssembly(string assemblyName, List<string> CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
-        {
+        private static void BuildMuteAssembly(
+                string assemblyName, List<string> CodeDirectorys, 
+                string[] additionalReferences, CodeOptimization codeOptimization, CodeMode codeMode = CodeMode.Client)
+        {            
             if (!Directory.Exists(Define.BuildOutputDir))
             {
                 Directory.CreateDirectory(Define.BuildOutputDir);
@@ -215,8 +192,24 @@ namespace ET
 
             AssemblyBuilder assemblyBuilder = new AssemblyBuilder(dllPath, scripts.ToArray());
             
+            if (codeMode == CodeMode.Client)
+            {
+                assemblyBuilder.excludeReferences = new string[]
+                {
+                    "DnsClient.dll", 
+                    "MongoDB.Driver.Core.dll", 
+                    "MongoDB.Driver.dll", 
+                    "MongoDB.Driver.Legacy.dll", 
+                    "MongoDB.Libmongocrypt.dll", 
+                    "SharpCompress.dll", 
+                    "System.Buffers.dll",
+                    "System.Runtime.CompilerServices.Unsafe.dll",
+                    "System.Text.Encoding.CodePages.dll"
+                };
+            }
+            
             //启用UnSafe
-            //assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
+            assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
 
             BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 

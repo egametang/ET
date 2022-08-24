@@ -8,7 +8,7 @@ namespace ET
         void Destroy();
     }
     
-    public abstract class Singleton<T>: ISingleton, IDisposable where T: Singleton<T>, new()
+    public abstract class Singleton<T>: DisposeObject, ISingleton where T: Singleton<T>, new()
     {
         [StaticField]
         private static T instance;
@@ -35,10 +35,6 @@ namespace ET
             T t = instance;
             instance = null;
             t.Dispose();
-        }
-
-        public virtual void Dispose()
-        {
         }
     }
 }
