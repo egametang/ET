@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using CommandLine;
-using NLog;
 
 namespace ET
 {

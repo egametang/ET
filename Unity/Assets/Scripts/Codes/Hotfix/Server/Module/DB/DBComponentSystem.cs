@@ -1,5 +1,4 @@
-﻿#if DOTNET
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using MongoDB.Driver;
@@ -251,4 +250,3 @@ namespace ET.Server
 	    #endregion
     }
 }
-#endif
