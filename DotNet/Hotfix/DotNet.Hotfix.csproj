@@ -38,5 +38,10 @@
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Share\Module\Config">
+        <Link>Share\Module\Config</Link>
+      </Folder>
+    </ItemGroup>
 
 </Project>

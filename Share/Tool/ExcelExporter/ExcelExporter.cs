@@ -57,9 +57,9 @@ namespace ET
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
         public const string ServerClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Config";
 
-        private const string excelDir = "../Excel";
+        private const string excelDir = "../Unity/Assets/Config/Excel/";
 
-        private const string jsonDir = "../Excel/Json/{0}/{1}";
+        private const string jsonDir = "../Unity/Assets/Config/Excel/Json/{0}/{1}";
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config/{0}";
         private const string serverProtoDir = "../Config/{0}";
@@ -111,8 +111,7 @@ namespace ET
                     Directory.Delete(ServerClassDir, true);
                 }
 
-                List<string> files = new List<string>();
-                FileHelper.GetAllFiles(files, excelDir);
+                List<string> files = FileHelper.GetAllFiles(excelDir);
                 foreach (string path in files)
                 {
                     string fileName = Path.GetFileName(path);
@@ -182,28 +181,16 @@ namespace ET
                 configAssemblies[(int) ConfigType.c] = DynamicBuild(ConfigType.c);
                 configAssemblies[(int) ConfigType.s] = DynamicBuild(ConfigType.s);
 
-                foreach (string path in Directory.GetFiles(excelDir))
-                {
-                    ExportExcel(path);
-                }
+                List<string> excels = FileHelper.GetAllFiles(excelDir, "*.xlsx");
                 
-                // 多线程导出
-                //List<Task> tasks = new List<Task>();
-                //foreach (string path in Directory.GetFiles(excelDir))
-                //{
-                //    Task task = Task.Run(() => ExportExcel(path));
-                //    tasks.Add(task);
-                //}
-                //Task.WaitAll(tasks.ToArray());
-
-                // 导出StartConfig
-                string startConfigPath = Path.Combine(excelDir, "StartConfig");
-                DirectoryInfo directoryInfo = new DirectoryInfo(startConfigPath);
-                foreach (FileInfo subStartConfig in directoryInfo.GetFiles("*", SearchOption.AllDirectories))
+                List<Task> tasks = new List<Task>();
+                foreach (string path in excels)
                 {
-                    ExportExcel(subStartConfig.FullName);
+                    Task task = Task.Run(() => ExportExcel(path));
+                    tasks.Add(task);
                 }
-
+                Task.WaitAll(tasks.ToArray());
+                
                 Log.Console("Export Excel Sucess!");
             }
             catch (Exception e)
@@ -595,9 +582,6 @@ namespace ET
                     return value;
                 case "string":
                     return $"\"{value}\"";
-                case "AttrConfig":
-                    string[] ss = value.Split(':');
-                    return "{\"_t\":\"AttrConfig\"," + "\"Ks\":" + ss[0] + ",\"Vs\":" + ss[1] + "}";
                 default:
                     throw new Exception($"不支持此类型: {type}");
             }

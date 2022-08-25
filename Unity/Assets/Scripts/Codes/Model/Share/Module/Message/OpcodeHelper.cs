@@ -7,8 +7,8 @@ namespace ET
         [StaticField]
         private static readonly HashSet<ushort> ignoreDebugLogMessageSet = new HashSet<ushort>
         {
-            OuterOpcode.C2G_Ping,
-            OuterOpcode.G2C_Ping,
+            OuterMessage.C2G_Ping,
+            OuterMessage.G2C_Ping,
         };
 
         private static bool IsNeedLogMessage(ushort opcode)
