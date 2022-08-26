@@ -18,7 +18,7 @@ namespace ET
 
     public partial class Entity: DisposeObject
     {
-#if ENABLE_CODES
+#if ENABLE_VIEW
         private UnityEngine.GameObject viewGO;
 #endif
         
@@ -79,10 +79,10 @@ namespace ET
 
                 EventSystem.Instance.RegisterSystem(this, value);
                 
-#if ENABLE_CODES
+#if ENABLE_VIEW
                 if (value)
                 {
-                    this.viewGO = new UnityEngine.GameObject(this.ViewGoName);
+                    this.viewGO = new UnityEngine.GameObject(this.ViewName);
                     this.viewGO.AddComponent<ComponentView>().Component = this;
                     this.viewGO.transform.SetParent(this.Parent == null? 
                             UnityEngine.GameObject.Find("Global").transform : this.Parent.viewGO.transform);
@@ -95,15 +95,13 @@ namespace ET
             }
         }
         
-#if ENABLE_CODES
-        protected virtual string ViewGoName
+        protected virtual string ViewName
         {
             get
             {
                 return this.GetType().Name;    
             }
         }
-#endif
 
         [IgnoreDataMember]
         [BsonIgnore]

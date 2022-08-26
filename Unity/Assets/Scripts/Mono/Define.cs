@@ -22,6 +22,12 @@
         public static bool EnableCodes = false;
 #endif
 		
+#if ENABLE_VIEW
+		public static bool EnableView = true;
+#else
+		public static bool EnableView = false;
+#endif
+		
 		public static UnityEngine.Object LoadAssetAtPath(string s)
 		{
 #if UNITY_EDITOR	

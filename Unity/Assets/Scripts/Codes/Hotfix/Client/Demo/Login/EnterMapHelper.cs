@@ -13,7 +13,7 @@ namespace ET.Client
                 clientScene.GetComponent<PlayerComponent>().MyId = g2CEnterMap.MyId;
                 
                 // 等待场景切换完成
-                await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_SceneChangeFinish>();
+                await clientScene.GetComponent<ObjectWait>().Wait<Wait_SceneChangeFinish>();
                 
                 EventSystem.Instance.Publish(clientScene, new EventType.EnterMapFinish());
             }

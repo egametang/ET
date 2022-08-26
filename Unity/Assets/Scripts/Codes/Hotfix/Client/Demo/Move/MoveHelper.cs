@@ -14,10 +14,10 @@ namespace ET.Client
             ObjectWait objectWait = unit.GetComponent<ObjectWait>();
             
             // 要取消上一次的移动协程
-            objectWait.Notify(new WaitType.Wait_UnitStop() { Error = WaitTypeError.Cancel });
+            objectWait.Notify(new Wait_UnitStop() { Error = WaitTypeError.Cancel });
             
             // 一直等到unit发送stop
-            WaitType.Wait_UnitStop waitUnitStop = await objectWait.Wait<WaitType.Wait_UnitStop>(cancellationToken);
+            Wait_UnitStop waitUnitStop = await objectWait.Wait<Wait_UnitStop>(cancellationToken);
             return waitUnitStop.Error;
         }
         

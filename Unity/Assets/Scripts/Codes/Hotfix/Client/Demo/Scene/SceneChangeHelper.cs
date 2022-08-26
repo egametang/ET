@@ -16,7 +16,7 @@
             EventSystem.Instance.Publish(clientScene, new EventType.SceneChangeStart());
 
             // 等待CreateMyUnit的消息
-            WaitType.Wait_CreateMyUnit waitCreateMyUnit = await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_CreateMyUnit>();
+            Wait_CreateMyUnit waitCreateMyUnit = await clientScene.GetComponent<ObjectWait>().Wait<Wait_CreateMyUnit>();
             M2C_CreateMyUnit m2CCreateMyUnit = waitCreateMyUnit.Message;
             Unit unit = UnitFactory.Create(currentScene, m2CCreateMyUnit.Unit);
             unitComponent.Add(unit);
@@ -26,7 +26,7 @@
             EventSystem.Instance.Publish(currentScene, new EventType.SceneChangeFinish());
 
             // 通知等待场景切换的协程
-            clientScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_SceneChangeFinish());
+            clientScene.GetComponent<ObjectWait>().Notify(new Wait_SceneChangeFinish());
         }
     }
 }

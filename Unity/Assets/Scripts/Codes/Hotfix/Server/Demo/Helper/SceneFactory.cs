@@ -4,13 +4,7 @@ namespace ET.Server
 {
     public static class SceneFactory
     {
-        public static async ETTask<Scene> Create(Entity parent, string name, SceneType sceneType)
-        {
-            long instanceId = IdGenerater.Instance.GenerateInstanceId();
-            return await Create(parent, instanceId, instanceId, parent.DomainZone(), name, sceneType);
-        }
-        
-        public static async ETTask<Scene> Create(Entity parent, long id, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
+        public static async ETTask<Scene> CreateServerScene(Entity parent, long id, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
             await ETTask.CompletedTask;
             Scene scene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name, parent);
