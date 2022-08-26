@@ -23,7 +23,7 @@ namespace ET
 
     public static class InnerProto2CS
     {
-        private const string protoPath = ".";
+        private const string protoDir = "../Unity/Assets/Config/Proto";
         private const string clientMessagePath = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Message/";
         private const string serverMessagePath = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
@@ -32,30 +32,39 @@ namespace ET
         public static void Proto2CS()
         {
             msgOpcode.Clear();
-            Proto2CS("ET", "../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", OpcodeRangeDefine.InnerMinOpcode);
-            GenerateOpcode("ET", "InnerOpcode", serverMessagePath);
-            
-            Proto2CS("ET", "../Proto/MongoMessage.proto", serverMessagePath, "MongoOpcode", OpcodeRangeDefine.MongoMinOpcode);
-            GenerateOpcode("ET", "MongoOpcode", serverMessagePath);
 
-            Proto2CS("ET", "../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", OpcodeRangeDefine.OuterMinOpcode);
-            GenerateOpcode("ET", "OuterOpcode", serverMessagePath);
-
-            Proto2CS("ET", "../Proto/OuterMessage.proto", clientMessagePath, "OuterOpcode", OpcodeRangeDefine.OuterMinOpcode);
-            GenerateOpcode("ET", "OuterOpcode", clientMessagePath);
-        }
-
-        public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode)
-        {
-            if (!Directory.Exists(outputPath))
+            if (Directory.Exists(clientMessagePath))
             {
-                Directory.CreateDirectory(outputPath);
+                Directory.Delete(clientMessagePath, true);
             }
 
-            msgOpcode.Clear();
-            string proto = Path.Combine(protoPath, protoName);
-            string csPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(proto) + ".cs");
+            if (Directory.Exists(serverMessagePath))
+            {
+                Directory.Delete(serverMessagePath, true);
+            }
 
+            List<string> list = FileHelper.GetAllFiles(protoDir, "*proto");
+            foreach (string s in list)
+            {
+                if (!s.EndsWith(".proto"))
+                {
+                    continue;
+                }
+                string fileName = Path.GetFileNameWithoutExtension(s);
+                string[] ss2 = fileName.Split('_');
+                string protoName = ss2[0];
+                string cs = ss2[1];
+                int startOpcode = int.Parse(ss2[2]);
+                ProtoFile2CS(fileName, protoName, cs, startOpcode);
+            }
+        }
+
+        public static void ProtoFile2CS(string fileName, string protoName, string cs, int startOpcode)
+        {
+            string ns = "ET";
+            msgOpcode.Clear();
+            string proto = Path.Combine(protoDir, $"{fileName}.proto");
+            
             string s = File.ReadAllText(proto);
 
             StringBuilder sb = new StringBuilder();
@@ -64,7 +73,7 @@ namespace ET
             sb.Append("using System.Collections.Generic;\n");
             sb.Append($"namespace {ns}\n");
             sb.Append("{\n");
-
+            
             bool isMsgStart = false;
             foreach (string line in s.Split('\n'))
             {
@@ -102,7 +111,7 @@ namespace ET
 
                     msgOpcode.Add(new OpcodeInfo() { Name = msgName, Opcode = ++startOpcode });
 
-                    sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
+                    sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
                     sb.Append($"\tpublic partial class {msgName}: Object");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
@@ -156,39 +165,43 @@ namespace ET
                 }
             }
 
-            sb.Append("}\n");
-            using FileStream txt = new FileStream(csPath, FileMode.Create, FileAccess.ReadWrite);
-            using StreamWriter sw = new StreamWriter(txt);
-            sw.Write(sb.ToString());
-        }
 
-        private static void GenerateOpcode(string ns, string outputFileName, string outputPath)
-        {
-            if (!Directory.Exists(outputPath))
-            {
-                Directory.CreateDirectory(outputPath);
-            }
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"namespace {ns}");
-            sb.AppendLine("{");
-            sb.AppendLine($"\tpublic static partial class {outputFileName}");
-            sb.AppendLine("\t{");
+            sb.Append("\tpublic static class " + protoName + "\n\t{\n");
             foreach (OpcodeInfo info in msgOpcode)
             {
                 sb.AppendLine($"\t\t public const ushort {info.Name} = {info.Opcode};");
             }
 
             sb.AppendLine("\t}");
-            sb.AppendLine("}");
+            
 
-            string csPath = Path.Combine(outputPath, outputFileName + ".cs");
+            sb.Append("}\n");
 
-            using FileStream txt = new FileStream(csPath, FileMode.Create);
+            if (cs.Contains("C"))
+            {
+                GenerateCS(sb, clientMessagePath, proto);
+                GenerateCS(sb, serverMessagePath, proto);
+            }
+            
+            if (cs.Contains("S"))
+            {
+                GenerateCS(sb, serverMessagePath, proto);
+            }
+        }
+
+        private static void GenerateCS(StringBuilder sb, string path, string proto)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string csPath = Path.Combine(path, Path.GetFileNameWithoutExtension(proto) + ".cs");
+            using FileStream txt = new FileStream(csPath, FileMode.Create, FileAccess.ReadWrite);
             using StreamWriter sw = new StreamWriter(txt);
             sw.Write(sb.ToString());
         }
-
+        
         private static void Repeated(StringBuilder sb, string ns, string newline)
         {
             try

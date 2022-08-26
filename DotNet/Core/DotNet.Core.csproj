@@ -20,7 +20,7 @@
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' "> 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">  
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
       <DefineConstants>DOTNET</DefineConstants>
       <OutputPath>..\..\Bin\</OutputPath>
@@ -34,7 +34,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+      <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
 

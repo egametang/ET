@@ -13,8 +13,8 @@ namespace ET
             Game.Scene.AddComponent<NumericWatcherComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<ClientSceneManagerComponent>();
-            
-            await Game.Scene.AddComponent<ConfigComponent>().LoadAsync();
+
+            await Game.AddSingleton<ConfigComponent>().LoadAsync();
         }
     }
 }

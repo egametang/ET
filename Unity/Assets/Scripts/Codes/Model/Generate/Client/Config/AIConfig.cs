@@ -7,11 +7,8 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class AIConfigCategory : ProtoObject, IMerge
+    public partial class AIConfigCategory : ConfigSingleton<AIConfigCategory>, IMerge
     {
-        [StaticField]
-        public static AIConfigCategory Instance;
-		
         [ProtoIgnore]
         [BsonIgnore]
         private Dictionary<int, AIConfig> dict = new Dictionary<int, AIConfig>();
@@ -20,11 +17,6 @@ namespace ET
         [ProtoMember(1)]
         private List<AIConfig> list = new List<AIConfig>();
 		
-        public AIConfigCategory()
-        {
-            Instance = this;
-        }
-        
         public void Merge(object o)
         {
             AIConfigCategory s = o as AIConfigCategory;

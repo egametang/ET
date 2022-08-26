@@ -14,7 +14,7 @@ namespace ET
 
         private readonly WebSocket webSocket;
 
-        private readonly Queue<byte[]> queue = new Queue<byte[]>();
+        private readonly Queue<MemoryStream> queue = new Queue<MemoryStream>();
 
         private bool isSending;
 
@@ -88,9 +88,16 @@ namespace ET
 
         public void Send(MemoryStream stream)
         {
-            byte[] bytes = new byte[stream.Length - stream.Position];
-            Array.Copy(stream.GetBuffer(), stream.Position, bytes, 0, bytes.Length);
-            this.queue.Enqueue(bytes);
+            switch (this.Service.ServiceType)
+            {
+                case ServiceType.Inner:
+                    break;
+                case ServiceType.Outer:
+                    stream.Seek(Packet.ActorIdLength, SeekOrigin.Begin);
+                    break;
+            }
+            
+            this.queue.Enqueue(stream);
 
             if (this.isConnected)
             {
@@ -122,10 +129,10 @@ namespace ET
                         return;
                     }
 
-                    byte[] bytes = this.queue.Dequeue();
+                    MemoryStream bytes = this.queue.Dequeue();
                     try
                     {
-                        await this.webSocket.SendAsync(new ArraySegment<byte>(bytes, 0, bytes.Length), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
+                        await this.webSocket.SendAsync(new ReadOnlyMemory<byte>(bytes.GetBuffer(), (int)bytes.Position, (int)(bytes.Length - bytes.Position)), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
                         if (this.IsDisposed)
                         {
                             return;

@@ -25,7 +25,7 @@
     <ItemGroup>
 
         <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
-            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>  
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link> 
         </Compile> 
 
         <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Server\**\*.cs"> 
@@ -40,7 +40,7 @@
             <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Generate\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Generate\Server\**\*.cs"> 
             <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         
