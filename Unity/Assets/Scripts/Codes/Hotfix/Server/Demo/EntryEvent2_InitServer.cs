@@ -15,7 +15,6 @@ namespace ET.Server
             Game.Scene.AddComponent<LocationProxyComponent>();
             Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
             Game.Scene.AddComponent<ServerSceneManagerComponent>();
-            Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
 
             Game.Scene.AddComponent<NavmeshComponent>();
