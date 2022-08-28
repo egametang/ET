@@ -2,10 +2,10 @@ using System;
 
 namespace ET.Server
 {
-    [RobotCase(RobotCaseType.FirstCase)]
-    public class RobotCase_FirstCase: IRobotCase
+    [Callback(RobotCaseType.FirstCase)]
+    public class RobotCase_FirstCase: ARobotCase
     {
-        public async ETTask Run(RobotCase robotCase)
+        protected override async ETTask Run(RobotCase robotCase)
         {
             using ListComponent<Scene> robots = ListComponent<Scene>.Create();
             

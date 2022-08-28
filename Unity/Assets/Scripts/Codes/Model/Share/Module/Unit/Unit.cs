@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ET
 {
     [ChildOf(typeof(UnitComponent))]
-    [DebuggerDisplay("ViewGoName,nq")]
+    [DebuggerDisplay("ViewName,nq")]
     public class Unit: Entity, IAwake<int>
     {
         public int ConfigId { get; set; } //配置表id
@@ -51,15 +51,12 @@ namespace ET
             }
         }
 
-        
-#if ENABLE_CODES
-        protected override string ViewGoName
+        protected override string ViewName
         {
             get
             {
                 return $"{this.GetType().Name} ({this.Id})";
             }
         }
-#endif
     }
 }

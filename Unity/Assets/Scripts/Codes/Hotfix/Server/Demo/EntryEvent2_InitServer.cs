@@ -14,8 +14,7 @@ namespace ET.Server
             // 访问location server的组件
             Game.Scene.AddComponent<LocationProxyComponent>();
             Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
-            
-            Game.Scene.AddComponent<RobotCaseDispatcherComponent>();
+            Game.Scene.AddComponent<ServerSceneManagerComponent>();
             Game.Scene.AddComponent<RobotCaseComponent>();
 
             Game.Scene.AddComponent<NavmeshComponent>();
@@ -30,7 +29,7 @@ namespace ET.Server
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Options.Instance.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        await SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
+                        await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
                             startConfig.Type, startConfig);
                     }
 

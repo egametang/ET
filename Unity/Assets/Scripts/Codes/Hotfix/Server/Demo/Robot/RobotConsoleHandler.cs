@@ -21,7 +21,7 @@ namespace ET.Server
                     try
                     {
                         RobotLog.Debug($"run case start: {caseType}");
-                        await RobotCaseDispatcherComponent.Instance.Run(caseType, content);
+                        await EventSystem.Instance.Callback<RobotCallbackArgs, ETTask>(new RobotCallbackArgs() {Id = caseType, Content = content});
                         RobotLog.Debug($"run case finish: {caseType}");
                     }
                     catch (Exception e)
@@ -44,7 +44,7 @@ namespace ET.Server
                         try
                         {
                             RobotLog.Debug($"run case start: {caseType}");
-                            await RobotCaseDispatcherComponent.Instance.Run(caseType, content);
+                            await EventSystem.Instance.Callback<RobotCallbackArgs, ETTask>(new RobotCallbackArgs() {Id = caseType, Content = content});
                             RobotLog.Debug($"---------run case finish: {caseType}");
                         }
                         catch (Exception e)

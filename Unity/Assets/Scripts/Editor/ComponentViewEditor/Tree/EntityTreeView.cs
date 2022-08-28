@@ -1,4 +1,4 @@
-#if ENABLE_CODES
+#if ENABLE_VIEW
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ET
+﻿namespace ET
 {
     [FriendOf(typeof(ClientSceneManagerComponent))]
     public static class ClientSceneManagerComponentSystem
@@ -19,7 +17,7 @@ namespace ET
         {
             protected override void Destroy(ClientSceneManagerComponent self)
             {
-                self.ClientScenes.Clear();
+                ClientSceneManagerComponent.Instance = null;
             }
         }
         
@@ -28,20 +26,15 @@ namespace ET
             return ClientSceneManagerComponent.Instance.Get(entity.DomainZone());
         }
         
-        public static void Add(this ClientSceneManagerComponent self, Scene clientScene)
+        public static Scene Get(this ClientSceneManagerComponent self, int id)
         {
-            self.ClientScenes.Add(clientScene.Zone, clientScene);
-        }
-        
-        public static Scene Get(this ClientSceneManagerComponent self, int zone)
-        {
-            self.ClientScenes.TryGetValue(zone, out Scene scene);
+            Scene scene = self.GetChild<Scene>(id);
             return scene;
         }
         
-        public static void Remove(this ClientSceneManagerComponent self, int zone)
+        public static void Remove(this ClientSceneManagerComponent self, int id)
         {
-            self.ClientScenes.Remove(zone);
+            self.RemoveChild(id);
         }
     }
 }

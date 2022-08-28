@@ -20,7 +20,7 @@ namespace ET.Client
 			moveComponent.Stop();
 			unit.Position = pos;
 			unit.Rotation = rotation;
-			unit.GetComponent<ObjectWait>()?.Notify(new WaitType.Wait_UnitStop() {Error = message.Error});
+			unit.GetComponent<ObjectWait>()?.Notify(new Wait_UnitStop() {Error = message.Error});
 			await ETTask.CompletedTask;
 		}
 	}

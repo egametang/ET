@@ -3,7 +3,7 @@
 namespace ET
 {
     [EnableMethod]
-    [DebuggerDisplay("ViewGoName,nq")]
+    [DebuggerDisplay("ViewName,nq")]
     public sealed class Scene: Entity
     {
         public int Zone
@@ -99,14 +99,12 @@ namespace ET
             }
         }
         
-#if ENABLE_CODES
-        protected override string ViewGoName
+        protected override string ViewName
         {
             get
             {
                 return $"{this.GetType().Name} ({this.SceneType})";    
             }
         }
-#endif
     }
 }

@@ -64,7 +64,7 @@ namespace ET.Server
             Scene clientScene = null;
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(zone, name, self);
+                clientScene = await Client.SceneFactory.CreateClientScene(zone, name);
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
@@ -84,7 +84,7 @@ namespace ET.Server
 
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(zone, $"Robot_{zone}", self);
+                clientScene = await Client.SceneFactory.CreateClientScene(zone, $"Robot_{zone}");
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");

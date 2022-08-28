@@ -34,7 +34,7 @@ namespace ET
             }
         }
         
-        public static void Load(this AIDispatcherComponent self)
+        private static void Load(this AIDispatcherComponent self)
         {
             self.AIHandlers.Clear();
             

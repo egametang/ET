@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ET.Server
+﻿namespace ET.Server
 {
     [ChildOf(typeof(RobotCaseComponent))]
     public class RobotCase: Entity, IAwake
