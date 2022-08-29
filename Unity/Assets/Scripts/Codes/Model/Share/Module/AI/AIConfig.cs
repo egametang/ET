@@ -16,7 +16,7 @@ namespace ET
 		{
 			return this.AIConfigs[aiConfigId];
 		}
-		
+
 		public override void AfterEndInit()
 		{
 			foreach (var kv in this.GetAll())
