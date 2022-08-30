@@ -17,13 +17,10 @@ namespace ET
         
         public long NavMesh;
 
-        [NoMemoryCheck]
         public float[] StartPos = new float[3];
 
-        [NoMemoryCheck]
         public float[] EndPos = new float[3];
 
-        [NoMemoryCheck]
         public float[] Result = new float[Recast.MAX_POLYS * 3];
     }
 }

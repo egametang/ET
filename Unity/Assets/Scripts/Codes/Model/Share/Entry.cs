@@ -19,13 +19,13 @@
     {
         public static void Start()
         {
-            MongoRegister.Init();
-            
             StartAsync().Coroutine();
         }
         
         private static async ETTask StartAsync()
         {
+            MongoRegister.Init();
+            
             await EventSystem.Instance.PublishAsync(Game.Scene, new EventType.EntryEvent1());
             await EventSystem.Instance.PublishAsync(Game.Scene, new EventType.EntryEvent2());
             await EventSystem.Instance.PublishAsync(Game.Scene, new EventType.EntryEvent3());

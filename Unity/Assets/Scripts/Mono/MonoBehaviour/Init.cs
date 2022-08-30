@@ -46,6 +46,7 @@ namespace ET
 
 		private void Update()
 		{
+			ThreadSynchronizationContext.Instance.Update();
 			Game.Update();
 		}
 

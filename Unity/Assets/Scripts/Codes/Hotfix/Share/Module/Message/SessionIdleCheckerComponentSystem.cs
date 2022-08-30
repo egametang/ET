@@ -19,11 +19,11 @@ namespace ET
     }
     
     [ObjectSystem]
-    public class SessionIdleCheckerComponentAwakeSystem: AwakeSystem<SessionIdleCheckerComponent, int>
+    public class SessionIdleCheckerComponentAwakeSystem: AwakeSystem<SessionIdleCheckerComponent>
     {
-        protected override void Awake(SessionIdleCheckerComponent self, int checkInteral)
+        protected override void Awake(SessionIdleCheckerComponent self)
         {
-            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, TimerCallbackId.SessionIdleChecker, self);
+            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(SessionIdleCheckerComponentSystem.CheckInteral, TimerCallbackId.SessionIdleChecker, self);
         }
     }
 
@@ -38,6 +38,8 @@ namespace ET
 
     public static class SessionIdleCheckerComponentSystem
     {
+        public const int CheckInteral = 2000;
+        
         public static void Check(this SessionIdleCheckerComponent self)
         {
             Session session = self.GetParent<Session>();

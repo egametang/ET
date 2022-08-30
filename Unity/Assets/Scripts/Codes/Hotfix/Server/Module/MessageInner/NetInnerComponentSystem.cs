@@ -5,7 +5,6 @@ using System.Net.Sockets;
 namespace ET.Server
 {
     [FriendOf(typeof(NetInnerComponent))]
-    [FriendOf(typeof(NetThreadComponent))]
     public static class NetInnerComponentSystem
     {
         [ObjectSystem]
@@ -16,7 +15,7 @@ namespace ET.Server
                 NetInnerComponent.Instance = self;
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
-                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, AddressFamily.InterNetwork, ServiceType.Inner);
+                self.Service = new KService(ThreadSynchronizationContext.Instance, AddressFamily.InterNetwork, ServiceType.Inner);
                 self.Service.ErrorCallback += self.OnError;
                 self.Service.ReadCallback += self.OnRead;
             }
@@ -30,7 +29,7 @@ namespace ET.Server
                 NetInnerComponent.Instance = self;
                 self.SessionStreamDispatcherType = sessionStreamDispatcherType;
 
-                self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Inner);
+                self.Service = new KService(ThreadSynchronizationContext.Instance, address, ServiceType.Inner);
                 self.Service.ErrorCallback += self.OnError;
                 self.Service.ReadCallback += self.OnRead;
                 self.Service.AcceptCallback += self.OnAccept;
