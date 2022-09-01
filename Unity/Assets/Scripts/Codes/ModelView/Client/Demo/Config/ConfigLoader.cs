@@ -10,7 +10,7 @@ namespace ET.Client
         public override Dictionary<string, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
             Dictionary<string, byte[]> output = new Dictionary<string, byte[]>();
-            using (Game.Scene.AddComponent<ResourcesComponent>())
+            using (Root.Instance.Scene.AddComponent<ResourcesComponent>())
             {
                 const string configBundleName = "config.unity3d";
                 ResourcesComponent.Instance.LoadBundle(configBundleName);

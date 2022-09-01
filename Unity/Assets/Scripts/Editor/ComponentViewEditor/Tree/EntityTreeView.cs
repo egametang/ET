@@ -32,7 +32,7 @@ namespace ET
         {
             this.id = 0;
 
-            this.root       = PreOrder(Game.Scene);
+            this.root       = PreOrder(Root.Instance.Scene);
             this.root.depth = -1;
 
             SetupDepthsFromParentsAndChildren(this.root);

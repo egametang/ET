@@ -9,9 +9,9 @@ namespace ET.Client
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent3 args)
         {
             // 加载配置
-            Game.Scene.AddComponent<ResourcesComponent>();
+            Root.Instance.Scene.AddComponent<ResourcesComponent>();
             
-            Game.Scene.AddComponent<GlobalComponent>();
+            Root.Instance.Scene.AddComponent<GlobalComponent>();
 
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
             

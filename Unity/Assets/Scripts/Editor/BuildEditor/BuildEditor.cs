@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-
+using HybridCLR.Editor;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
@@ -85,6 +85,19 @@ namespace ET
 			}
 
 			GUILayout.Space(5);
+
+			if (GUILayout.Button("BuildAOTMetadata"))
+			{
+				const string wolongMetaDir = "Assets/Bundles/AssetBundleSourceData";
+				if (Directory.Exists(wolongMetaDir))
+				{
+					Directory.Delete(wolongMetaDir, true);
+				}
+				AssetBundleBuildHelper.BuildSceneAssetBundleActiveBuildTarget();
+				AssetImporter assetImporter = AssetImporter.GetAtPath(wolongMetaDir);
+				assetImporter.assetBundleName = "assetbundlesourcedata.unity3d";
+				AssetDatabase.SaveAssets();
+			}
 			
 			if (GUILayout.Button("BuildPackage"))
 			{

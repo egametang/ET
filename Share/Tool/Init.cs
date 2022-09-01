@@ -42,7 +42,7 @@ namespace ET.Server
 
                 MongoRegister.Init();
 				
-                Log.Info($"server start........................ {Game.Scene.Id}");
+                Log.Info($"server start........................ {Root.Instance.Scene.Id}");
 				
                 switch (Options.Instance.AppType)
                 {

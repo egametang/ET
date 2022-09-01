@@ -2,14 +2,14 @@
 
 namespace ET
 {
-    public interface ISingleton
+    public interface ISingleton: IDisposable
     {
         void Register();
         void Destroy();
         bool IsDisposed();
     }
     
-    public abstract class Singleton<T>: DisposeObject, ISingleton where T: Singleton<T>, new()
+    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
     {
         private bool isDisposed;
         [StaticField]
@@ -48,6 +48,10 @@ namespace ET
         public bool IsDisposed()
         {
             return this.isDisposed;
+        }
+
+        public virtual void Dispose()
+        {
         }
     }
 }

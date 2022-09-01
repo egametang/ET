@@ -37,7 +37,7 @@ namespace ET
 
 				Game.AddSingleton<CodeLoader>().Start();
 
-				Log.Console($"app start: {Game.Scene.Id} options: {JsonHelper.ToJson(Options.Instance)} ");
+				Log.Console($"app start: {Root.Instance.Scene.Id} options: {JsonHelper.ToJson(Options.Instance)} ");
 
 				while (true)
 				{
@@ -47,6 +47,7 @@ namespace ET
 						ThreadSynchronizationContext.Instance.Update();
 						Game.Update();
 						Game.LateUpdate();
+						Game.FrameFinishUpdate();
 					}
 					catch (Exception e)
 					{
