@@ -1,4 +1,5 @@
 <linker>
+    <assembly fullname="Unity.Core" preserve="all"/>
     <assembly fullname="Unity.Mono" preserve="all"/>
     <assembly fullname="Unity.ThirdParty" preserve="all"/>
     <assembly fullname="UnityEngine" preserve="all"/>

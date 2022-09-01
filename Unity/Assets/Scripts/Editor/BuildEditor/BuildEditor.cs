@@ -86,7 +86,7 @@ namespace ET
 
 			GUILayout.Space(5);
 
-			if (GUILayout.Button("BuildWolongMetaDll"))
+			if (GUILayout.Button("BuildAOTMetadata"))
 			{
 				const string wolongMetaDir = "Assets/Bundles/AssetBundleSourceData";
 				if (Directory.Exists(wolongMetaDir))

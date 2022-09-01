@@ -13,6 +13,8 @@ namespace ET
         private static readonly Queue<ISingleton> updates = new Queue<ISingleton>();
         [StaticField]
         private static readonly Queue<ISingleton> lateUpdates = new Queue<ISingleton>();
+        [StaticField]
+        private static readonly Queue<ETTask> frameFinishTask = new Queue<ETTask>();
 
         public static T AddSingleton<T>() where T: Singleton<T>, new()
         {
@@ -45,12 +47,11 @@ namespace ET
             }
         }
 
-        public static Scene Scene
+        public static async ETTask WaitFrameFinish()
         {
-            get
-            {
-                return Root.Instance.Scene;
-            }
+            ETTask task = ETTask.Create(true);
+            frameFinishTask.Enqueue(task);
+            await task;
         }
 
         public static void Update()
@@ -108,6 +109,15 @@ namespace ET
                 {
                     Log.Error(e);
                 }
+            }
+        }
+
+        public static void FrameFinishUpdate()
+        {
+            while (frameFinishTask.Count > 0)
+            {
+                ETTask task = frameFinishTask.Dequeue();
+                task.SetResult();
             }
         }
 

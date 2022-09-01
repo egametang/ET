@@ -53,6 +53,7 @@ namespace ET
 		private void LateUpdate()
 		{
 			Game.LateUpdate();
+			Game.FrameFinishUpdate();
 		}
 
 		private void OnApplicationQuit()

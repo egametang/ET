@@ -3,7 +3,7 @@
     // 管理根部的Scene
     public class Root: Singleton<Root>
     {
-        public Scene Scene;
+        public Scene Scene { get; }
 
         public Root()
         {

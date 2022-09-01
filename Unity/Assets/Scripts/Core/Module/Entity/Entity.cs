@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
@@ -22,7 +21,6 @@ namespace ET
         private UnityEngine.GameObject viewGO;
 #endif
         
-        [IgnoreDataMember]
         [BsonIgnore]
         public long InstanceId
         {
@@ -34,11 +32,9 @@ namespace ET
         {
         }
 
-        [IgnoreDataMember]
         [BsonIgnore]
         private EntityStatus status = EntityStatus.None;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         private bool IsFromPool
         {
@@ -56,7 +52,6 @@ namespace ET
             }
         }
 
-        [IgnoreDataMember]
         [BsonIgnore]
         protected bool IsRegister
         {
@@ -103,7 +98,6 @@ namespace ET
             }
         }
 
-        [IgnoreDataMember]
         [BsonIgnore]
         private bool IsComponent
         {
@@ -121,7 +115,6 @@ namespace ET
             }
         }
 
-        [IgnoreDataMember]
         [BsonIgnore]
         protected bool IsCreated
         {
@@ -139,7 +132,6 @@ namespace ET
             }
         }
         
-        [IgnoreDataMember]
         [BsonIgnore]
         protected bool IsNew
         {
@@ -157,16 +149,13 @@ namespace ET
             }
         }
 
-        [IgnoreDataMember]
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         protected Entity parent;
 
         // 可以改变parent，但是不能设置为null
-        [IgnoreDataMember]
         [BsonIgnore]
         public Entity Parent
         {
@@ -207,7 +196,6 @@ namespace ET
             }
         }
 
-        [IgnoreDataMember]
         // 该方法只能在AddComponent中调用，其他人不允许调用
         [BsonIgnore]
         private Entity ComponentParent
@@ -263,11 +251,9 @@ namespace ET
             set;
         }
 
-        [IgnoreDataMember]
         [BsonIgnore]
         protected Entity domain;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         public Entity Domain
         {
@@ -342,16 +328,13 @@ namespace ET
             }
         }
 
-		[IgnoreDataMember]
         [BsonElement("Children")]
         [BsonIgnoreIfNull]
         private HashSet<Entity> childrenDB;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         private Dictionary<long, Entity> children;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         public Dictionary<long, Entity> Children
         {
@@ -422,16 +405,13 @@ namespace ET
             }
         }
 
-        [IgnoreDataMember]
         [BsonElement("C")]
         [BsonIgnoreIfNull]
         private HashSet<Entity> componentsDB;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         private Dictionary<Type, Entity> components;
 
-        [IgnoreDataMember]
         [BsonIgnore]
         public Dictionary<Type, Entity> Components
         {
