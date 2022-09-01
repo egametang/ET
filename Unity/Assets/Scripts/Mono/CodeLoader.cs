@@ -42,7 +42,26 @@ namespace ET
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 
+					// wolong补充元数据用
+					if (!Define.IsEditor)
+					{
+						Dictionary<string, UnityEngine.Object> dllMetas = AssetsBundleHelper.LoadBundle("assetbundlesourcedata.unity3d");
+						foreach (var kv in dllMetas)
+						{
+							unsafe
+							{
+								byte[] dllBytes = ((TextAsset)kv.Value).bytes;
+								fixed (byte* ptr = dllBytes)
+								{
+									// 加载assembly对应的dll，会自动为它hook。一旦aot泛型函数的native函数不存在，用解释器版本代码
+									int err = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly((IntPtr)ptr, dllBytes.Length);
+									Log.Info($"LoadMetadataForAOTAssembly:{kv.Key}. ret:{err}");
+								}
+							}
 
+						}
+					}
+					
 					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, this.assembly);
 					EventSystem.Instance.Add(types);
 					
