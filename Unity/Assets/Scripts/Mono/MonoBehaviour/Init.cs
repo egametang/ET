@@ -36,6 +36,8 @@ namespace ET
 			Game.AddSingleton<ObjectPool>();
 			Game.AddSingleton<IdGenerater>();
 			Game.AddSingleton<EventSystem>();
+			Game.AddSingleton<TimerComponent>();
+			Game.AddSingleton<CoroutineLockComponent>();
 			Game.AddSingleton<NetServices>();
 			Game.AddSingleton<Root>();
 			

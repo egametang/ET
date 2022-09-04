@@ -30,8 +30,6 @@ namespace ET
                     useShellExecute = false;
                 }
                 
-                //Log.Debug($"1111111111111111111111111aaaa: {redirectStandardError} {redirectStandardOutput} {useShellExecute}");
-                
                 ProcessStartInfo info = new ProcessStartInfo
                 {
                     FileName = exe,
