@@ -7,6 +7,15 @@ using System.Runtime.InteropServices;
 
 namespace ET
 {
+	[Callback(TimerCoreCallbackId.KChannelUpdateTimeout)]
+	public class KChannleUpdateTimer: ATimer<KChannel>
+	{
+		protected override void Run(KChannel kChannel)
+		{
+			kChannel.Service.AddToUpdate(kChannel);
+		}
+	}
+
 	public struct KcpWaitPacket
 	{
 		public long ActorId;
@@ -187,7 +196,7 @@ namespace ET
 				Log.Info($"kchannel connect {this.Id} {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
 				
 				// 300毫秒后再次update发送connect请求
-				this.Service.AddToUpdateNextTime(timeNow + 300, this.Id);
+				TimerComponent.Instance.NewOnceTimer(TimeHelper.ClientNow() + 300, TimerCoreCallbackId.KChannelUpdateTimeout, this);
 			}
 			catch (Exception e)
 			{
@@ -241,7 +250,8 @@ namespace ET
 			}
 
 			uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
-			this.Service.AddToUpdateNextTime(nextUpdateTime, this.Id);
+			long tillTime = TimeHelper.ClientNow() + nextUpdateTime - this.Service.TimeNow;
+			TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreCallbackId.KChannelUpdateTimeout, this);
 		}
 
 		public void HandleRecv(byte[] date, int offset, int length)
@@ -254,7 +264,7 @@ namespace ET
 			this.IsConnected = true;
 			
 			Kcp.KcpInput(this.kcp, date, offset, length);
-			this.Service.AddToUpdateNextTime(0, this.Id);
+			this.Service.AddToUpdate(this);
 
 			while (true)
 			{
@@ -436,7 +446,7 @@ namespace ET
 				}
 			}
 
-			this.Service.AddToUpdateNextTime(0, this.Id);
+			this.Service.AddToUpdate(this);
 		}
 		
 		public void Send(long actorId, MemoryStream stream)

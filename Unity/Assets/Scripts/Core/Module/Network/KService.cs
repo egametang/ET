@@ -169,15 +169,7 @@ namespace ET
         // 下帧要更新的channel
         private readonly HashSet<long> updateChannels = new HashSet<long>();
 
-        // 下次时间更新的channel
-        private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
-
-        private readonly List<long> timeOutTime = new List<long>();
-
-        // 记录最小时间，不用每次都去MultiMap取第一个值
-        private long minTime;
-
-        private List<long> waitRemoveChannels = new List<long>();
+        private readonly List<long> waitRemoveChannels = new List<long>();
 
         public override bool IsDispose()
         {
@@ -535,27 +527,15 @@ namespace ET
             channel.Send(actorId, stream);
         }
 
-        // 服务端需要看channel的update时间是否已到
-        public void AddToUpdateNextTime(long time, long id)
+        public void AddToUpdate(KChannel kChannel)
         {
-            if (time == 0)
-            {
-                this.updateChannels.Add(id);
-                return;
-            }
-            if (time < this.minTime)
-            {
-                this.minTime = time;
-            }
-            this.timeId.Add(time, id);
+            this.updateChannels.Add(kChannel.Id);
         }
 
         public override void Update()
         {
             this.Recv();
             
-            this.TimerOut();
-
             foreach (long id in updateChannels)
             {
                 KChannel kChannel = this.Get(id);
@@ -605,46 +585,6 @@ namespace ET
             foreach (long channelId in waitRemoveChannels)
             {
                 this.waitConnectChannels.Remove(channelId);
-            }
-        }
-
-        // 计算到期需要update的channel
-        private void TimerOut()
-        {
-            if (this.timeId.Count == 0)
-            {
-                return;
-            }
-
-            uint timeNow = this.TimeNow;
-
-            if (timeNow < this.minTime)
-            {
-                return;
-            }
-
-            this.timeOutTime.Clear();
-
-            foreach (KeyValuePair<long, List<long>> kv in this.timeId)
-            {
-                long k = kv.Key;
-                if (k > timeNow)
-                {
-                    minTime = k;
-                    break;
-                }
-
-                this.timeOutTime.Add(k);
-            }
-
-            foreach (long k in this.timeOutTime)
-            {
-                foreach (long v in this.timeId[k])
-                {
-                    this.updateChannels.Add(v);
-                }
-
-                this.timeId.Remove(k);
             }
         }
     }

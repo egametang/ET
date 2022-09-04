@@ -6,6 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
+using Random = UnityEngine.Random;
 
 namespace ET
 {
@@ -114,7 +115,6 @@ namespace ET
             ShowNotification("Build Model Success");
         }
         
-        
         public static void BuildHotfix(CodeOptimization codeOptimization, GlobalConfig globalConfig)
         {
             string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Hotfix_*");
@@ -122,8 +122,9 @@ namespace ET
             {
                 File.Delete(file);
             }
+
             
-            int random = RandomGenerator.Instance.RandomNumber(100000000, 999999999);
+            int random = Random.Range(100000000, 999999999);
             string logicFile = $"Hotfix_{random}";
             
             List<string> codes;

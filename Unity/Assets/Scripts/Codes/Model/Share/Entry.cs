@@ -1,4 +1,7 @@
-﻿namespace ET
+﻿using System.Timers;
+using ICSharpCode.SharpZipLib.Zip;
+
+namespace ET
 {
     namespace EventType
     {
