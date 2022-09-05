@@ -20,7 +20,7 @@ namespace ET
 				foreach (Assembly ass in assemblies)
 				{
 					string name = ass.GetName().Name;
-					if (name == "Unity.Codes")
+					if (name == "Unity.Model.Codes")
 					{
 						this.assembly = ass;
 					}

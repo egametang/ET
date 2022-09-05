@@ -1,0 +1,22 @@
+{
+    "name": "Unity.Model.Codes",
+    "rootNamespace": "",
+    "references": [
+        "Unity.Mono",
+        "Unity.ThirdParty",
+        "Unity.Core"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ENABLE_CODES"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
