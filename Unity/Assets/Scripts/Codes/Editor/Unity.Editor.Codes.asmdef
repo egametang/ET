@@ -1,0 +1,27 @@
+{
+    "name": "Unity.Editor.Codes",
+    "rootNamespace": "",
+    "references": [
+        "Unity.Mono",
+        "Unity.ThirdParty",
+        "Unity.Core",
+        "Unity.Model.Codes",
+        "Unity.Hotfix.Codes",
+        "Unity.ModelView.Codes",
+        "Unity.HotfixView.Codes",
+        "Unity.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ENABLE_CODES"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -79,3 +79,8 @@ Publish/
 /Unity/Assets/Bundles/AssetBundleOutput
 /Unity/Assets/Bundles/AssetBundleSourceData
 /Unity/Assets/Bundles/AssetBundleSourceData.meta
+/Unity/Unity.Editor.Codes.csproj
+/Unity/Unity.Hotfix.Codes.csproj
+/Unity/Unity.HotfixView.Codes.csproj
+/Unity/Unity.Model.Codes.csproj
+/Unity/Unity.ModelView.Codes.csproj

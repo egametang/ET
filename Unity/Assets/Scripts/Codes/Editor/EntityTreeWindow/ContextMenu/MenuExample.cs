@@ -1,5 +1,3 @@
-#if ENABLE_CODES
-
 namespace ET
 {
     [EntityMenu(typeof (Unit), "打开属性菜单")]
@@ -13,4 +11,3 @@ namespace ET
         }
     }
 }
-#endif
