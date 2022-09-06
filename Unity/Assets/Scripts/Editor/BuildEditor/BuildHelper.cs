@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
-using UnityEditor.Build;
 using UnityEngine;
 
 namespace ET
@@ -11,6 +11,24 @@ namespace ET
         private const string relativeDirPrefix = "../Release";
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
+        
+        
+        [InitializeOnLoadMethod]
+        public static void ReGenerateProjectFiles()
+        {
+            if (Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name== "RiderScriptEditor")
+            {
+                FieldInfo generator = Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().GetField("m_ProjectGeneration", BindingFlags.Static | BindingFlags.NonPublic);
+                var syncMethod = generator.FieldType.GetMethod("Sync");
+                syncMethod.Invoke(generator.GetValue(Unity.CodeEditor.CodeEditor.CurrentEditor), null);
+            }
+            else
+            {
+                Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
+            }
+            
+            Debug.Log("ReGenerateProjectFiles finished.");
+        }
 
         
 #if ENABLE_CODES
