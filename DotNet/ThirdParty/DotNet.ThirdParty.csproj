@@ -18,6 +18,7 @@
       <OutputPath>..\..\Bin\</OutputPath>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <Optimize>true</Optimize>
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

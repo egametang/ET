@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using MongoDB.Bson;
 
 namespace ET.Server
 {
@@ -106,14 +107,13 @@ namespace ET.Server
             // 先序列化好
             int rpcId = ActorMessageSenderComponent.Instance.GetRpcId();
             iActorRequest.RpcId = rpcId;
-            (ushort _, MemoryStream stream) = MessageSerializeHelper.MessageToStream(iActorRequest);
             
             long actorLocationSenderInstanceId = actorLocationSender.InstanceId;
             using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ActorLocationSender, entityId))
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
-                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{stream.ToActorMessage()}");
+                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{iActorRequest}");
                 }
 
                 // 队列中没处理的消息返回跟上个消息一样的报错
@@ -124,7 +124,7 @@ namespace ET.Server
                 
                 try
                 {
-                    return await self.CallInner(actorLocationSender, rpcId, stream);
+                    return await self.CallInner(actorLocationSender, rpcId, iActorRequest);
                 }
                 catch (RpcException)
                 {
@@ -134,12 +134,12 @@ namespace ET.Server
                 catch (Exception e)
                 {
                     self.Remove(actorLocationSender.Id);
-                    throw new Exception($"{stream.ToActorMessage()}", e);
+                    throw new Exception($"{iActorRequest}", e);
                 }
             }
         }
 
-        private static async ETTask<IActorResponse> CallInner(this ActorLocationSenderComponent self, ActorLocationSender actorLocationSender, int rpcId, MemoryStream memoryStream)
+        private static async ETTask<IActorResponse> CallInner(this ActorLocationSenderComponent self, ActorLocationSender actorLocationSender, int rpcId, IActorRequest iActorRequest)
         {
             int failTimes = 0;
             long instanceId = actorLocationSender.InstanceId;
@@ -152,19 +152,18 @@ namespace ET.Server
                     actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
                     {
-                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{memoryStream.ToActorMessage()}");
+                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{iActorRequest}");
                     }
                 }
 
                 if (actorLocationSender.ActorId == 0)
                 {
-                    IActorRequest iActorRequest = (IActorRequest)memoryStream.ToActorMessage();
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
-                IActorResponse response = await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, rpcId, memoryStream, false);
+                IActorResponse response = await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, rpcId, iActorRequest, false);
                 if (actorLocationSender.InstanceId != instanceId)
                 {
-                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{memoryStream.ToActorMessage()}");
+                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iActorRequest}");
                 }
 
                 switch (response.Error)
@@ -185,7 +184,7 @@ namespace ET.Server
                         await TimerComponent.Instance.WaitAsync(500);
                         if (actorLocationSender.InstanceId != instanceId)
                         {
-                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{memoryStream.ToActorMessage()}");
+                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iActorRequest}");
                         }
 
                         actorLocationSender.ActorId = 0;
@@ -193,13 +192,13 @@ namespace ET.Server
                     }
                     case ErrorCore.ERR_ActorTimeout:
                     {
-                        throw new RpcException(response.Error, $"{memoryStream.ToActorMessage()}");
+                        throw new RpcException(response.Error, $"{iActorRequest}");
                     }
                 }
 
                 if (ErrorCore.IsRpcNeedThrowException(response.Error))
                 {
-                    throw new RpcException(response.Error, $"Message: {response.Message} Request: {memoryStream.ToActorMessage()}");
+                    throw new RpcException(response.Error, $"Message: {response.Message} Request: {iActorRequest}");
                 }
 
                 return response;

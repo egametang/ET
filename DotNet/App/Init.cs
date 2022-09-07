@@ -16,15 +16,13 @@ namespace ET
 				};
 				
 				// 异步方法全部会回掉到主线程
-				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+				Game.AddSingleton<MainThreadSynchronizationContext>();
 
-				
 				// 命令行参数
 				Parser.Default.ParseArguments<Options>(args)
 					.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 					.WithParsed(Game.AddSingleton);
 				
-				Game.AddSingleton<RandomGenerator>();
 				Game.AddSingleton<TimeInfo>();
 				Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				Game.AddSingleton<ObjectPool>();
@@ -32,8 +30,6 @@ namespace ET
 				Game.AddSingleton<EventSystem>();
 				Game.AddSingleton<TimerComponent>();
 				Game.AddSingleton<CoroutineLockComponent>();
-				Game.AddSingleton<NetServices>();
-				Game.AddSingleton<Root>();
 				
 				ETTask.ExceptionHandler += Log.Error;
 
@@ -46,7 +42,6 @@ namespace ET
 					try
 					{
 						Thread.Sleep(1);
-						ThreadSynchronizationContext.Instance.Update();
 						Game.Update();
 						Game.LateUpdate();
 						Game.FrameFinishUpdate();

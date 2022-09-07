@@ -17,25 +17,35 @@ namespace ET
 
 		public HashSet<long> NeedStartSend = new HashSet<long>();
 
-		public TService(ThreadSynchronizationContext threadSynchronizationContext, ServiceType serviceType)
+		public ThreadSynchronizationContext ThreadSynchronizationContext;
+
+		public TService(AddressFamily addressFamily, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
-			this.ThreadSynchronizationContext = threadSynchronizationContext;
+			this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
 		}
 
-		public TService(ThreadSynchronizationContext threadSynchronizationContext, IPEndPoint ipEndPoint, ServiceType serviceType)
+		public TService(IPEndPoint ipEndPoint, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
-			this.ThreadSynchronizationContext = threadSynchronizationContext;
+			this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
 			
 			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			// 容易出问题，先注释掉，按需开启
 			//this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 			this.innArgs.Completed += this.OnComplete;
-			this.acceptor.Bind(ipEndPoint);
+			try
+			{
+				this.acceptor.Bind(ipEndPoint);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"bind error: {ipEndPoint}", e);
+			}
+			
 			this.acceptor.Listen(1000);
 			
-			this.ThreadSynchronizationContext.PostNext(this.AcceptAsync);
+			this.ThreadSynchronizationContext.Post(this.AcceptAsync);
 		}
 
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
@@ -52,8 +62,6 @@ namespace ET
 			}
 		}
 
-#region 网络线程
-
 		private void OnAcceptComplete(SocketError socketError, Socket acceptSocket)
 		{
 			if (this.acceptor == null)
@@ -69,12 +77,12 @@ namespace ET
 
 			try
 			{
-				long id = this.CreateAcceptChannelId(0);
+				long id = NetServices.Instance.CreateAcceptChannelId(0);
 				TChannel channel = new TChannel(id, acceptSocket, this);
 				this.idChannels.Add(channel.Id, channel);
 				long channelId = channel.Id;
 				
-				this.OnAccept(channelId, channel.RemoteAddress);
+				NetServices.Instance.OnAccept(this.Id, channelId, channel.RemoteAddress);
 			}
 			catch (Exception exception)
 			{
@@ -85,8 +93,6 @@ namespace ET
 			this.AcceptAsync();
 		}
 		
-
-
 		private void AcceptAsync()
 		{
 			this.innArgs.AcceptSocket = null;
@@ -104,7 +110,7 @@ namespace ET
 			return channel;
 		}
 
-		protected override void Get(long id, IPEndPoint address)
+		public override void Get(long id, IPEndPoint address)
 		{
 			if (this.idChannels.TryGetValue(id, out TChannel _))
 			{
@@ -147,14 +153,14 @@ namespace ET
 			this.idChannels.Remove(id);
 		}
 
-		protected override void Send(long channelId, long actorId, MemoryStream stream)
+		public override void Send(long channelId, long actorId, MemoryStream stream)
 		{
 			try
 			{
 				TChannel aChannel = this.Get(channelId);
 				if (aChannel == null)
 				{
-					this.OnError(channelId, ErrorCore.ERR_SendMessageNotFoundTChannel);
+					NetServices.Instance.OnError(this.Id, channelId, ErrorCore.ERR_SendMessageNotFoundTChannel);
 					return;
 				}
 				aChannel.Send(actorId, stream);
@@ -167,6 +173,8 @@ namespace ET
 		
 		public override void Update()
 		{
+			this.ThreadSynchronizationContext.Update();
+			
 			foreach (long channelId in this.NeedStartSend)
 			{
 				TChannel tChannel = this.Get(channelId);
@@ -179,8 +187,5 @@ namespace ET
 		{
 			return this.ThreadSynchronizationContext == null;
 		}
-		
-#endregion
-		
 	}
 }

@@ -67,7 +67,7 @@ namespace ET.Server
         [EnableAccessEntiyChild]
         public static void HandleIActorMessage(ushort opcode, long actorId, IActorMessage iActorMessage)
         {
-            OpcodeHelper.LogMsg(opcode, actorId, iActorMessage);
+            OpcodeHelper.LogMsg(actorId, iActorMessage);
 
             Entity entity = EventSystem.Instance.Get(actorId);
             if (entity == null)

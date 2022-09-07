@@ -61,7 +61,7 @@ namespace ET
                     
                     Type messageType = iMHandler.GetMessageType();
                     
-                    ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(messageType);
+                    ushort opcode = NetServices.Instance.GetOpcode(messageType);
                     if (opcode == 0)
                     {
                         Log.Error($"消息opcode为0: {messageType.Name}");
@@ -84,9 +84,10 @@ namespace ET
             self.Handlers[opcode].Add(handler);
         }
 
-        public static void Handle(this MessageDispatcherComponent self, Session session, ushort opcode, object message)
+        public static void Handle(this MessageDispatcherComponent self, Session session, object message)
         {
             List<MessageDispatcherInfo> actions;
+            ushort opcode = NetServices.Instance.GetOpcode(message.GetType());
             if (!self.Handlers.TryGetValue(opcode, out actions))
             {
                 Log.Error($"消息没有处理: {opcode} {message}");

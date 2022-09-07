@@ -7,15 +7,6 @@ using System.Runtime.InteropServices;
 
 namespace ET
 {
-	[Callback(TimerCoreCallbackId.KChannelUpdateTimeout)]
-	public class KChannleUpdateTimer: ATimer<KChannel>
-	{
-		protected override void Run(KChannel kChannel)
-		{
-			kChannel.Service.AddToUpdate(kChannel);
-		}
-	}
-
 	public struct KcpWaitPacket
 	{
 		public long ActorId;
@@ -196,7 +187,7 @@ namespace ET
 				Log.Info($"kchannel connect {this.Id} {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
 				
 				// 300毫秒后再次update发送connect请求
-				TimerComponent.Instance.NewOnceTimer(TimeHelper.ClientNow() + 300, TimerCoreCallbackId.KChannelUpdateTimeout, this);
+				this.Service.AddToUpdate(300, this.Id);
 			}
 			catch (Exception e)
 			{
@@ -251,7 +242,7 @@ namespace ET
 
 			uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
 			long tillTime = TimeHelper.ClientNow() + nextUpdateTime - this.Service.TimeNow;
-			TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreCallbackId.KChannelUpdateTimeout, this);
+			this.Service.AddToUpdate(nextUpdateTime, this.Id);
 		}
 
 		public void HandleRecv(byte[] date, int offset, int length)
@@ -264,7 +255,7 @@ namespace ET
 			this.IsConnected = true;
 			
 			Kcp.KcpInput(this.kcp, date, offset, length);
-			this.Service.AddToUpdate(this);
+			this.Service.AddToUpdate(0, this.Id);
 
 			while (true)
 			{
@@ -282,7 +273,6 @@ namespace ET
 					this.OnError((int)SocketError.NetworkReset);
 					return;
 				}
-
 
 				if (this.needReadSplitCount > 0) // 说明消息分片了
 				{
@@ -367,7 +357,7 @@ namespace ET
 				return;
 			}
 			try
-			{
+			{				
 				// 没连接上 kcp不往外发消息, 其实本来没连接上不会调用update，这里只是做一层保护
 				if (!this.IsConnected)
 				{
@@ -400,7 +390,6 @@ namespace ET
 			{
 				return;
 			}
-
 			MemoryStream memoryStream = kcpWaitPacket.MemoryStream;
 			
 			switch (this.Service.ServiceType)
@@ -417,7 +406,6 @@ namespace ET
 					break;
 				}
 			}
-			
 			int count = (int) (memoryStream.Length - memoryStream.Position);
 
 			// 超出maxPacketSize需要分片
@@ -446,41 +434,42 @@ namespace ET
 				}
 			}
 
-			this.Service.AddToUpdate(this);
+			this.Service.AddToUpdate(0, this.Id);
 		}
 		
 		public void Send(long actorId, MemoryStream stream)
 		{
-			if (this.kcp != IntPtr.Zero)
-			{
-				// 检查等待发送的消息，如果超出最大等待大小，应该断开连接
-				int n = Kcp.KcpWaitsnd(this.kcp);
-
-				int maxWaitSize = 0;
-				switch (this.Service.ServiceType)
-				{
-					case ServiceType.Inner:
-						maxWaitSize = Kcp.InnerMaxWaitSize;
-						break;
-					case ServiceType.Outer:
-						maxWaitSize = Kcp.OuterMaxWaitSize;
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
-				
-				if (n > maxWaitSize)
-				{
-					Log.Error($"kcp wait snd too large: {n}: {this.Id} {this.LocalConn} {this.RemoteConn}");
-					this.OnError(ErrorCore.ERR_KcpWaitSendSizeTooLarge);
-					return;
-				}
-			}
-
 			KcpWaitPacket kcpWaitPacket = new KcpWaitPacket() { ActorId = actorId, MemoryStream = stream };
 			if (!this.IsConnected)
 			{
 				this.sendBuffer.Enqueue(kcpWaitPacket);
+				return;
+			}
+			
+			if (this.kcp == IntPtr.Zero)
+			{
+				throw new Exception("kchannel connected but kcp is zero!");
+			}
+			
+			// 检查等待发送的消息，如果超出最大等待大小，应该断开连接
+			int n = Kcp.KcpWaitsnd(this.kcp);
+			int maxWaitSize = 0;
+			switch (this.Service.ServiceType)
+			{
+				case ServiceType.Inner:
+					maxWaitSize = Kcp.InnerMaxWaitSize;
+					break;
+				case ServiceType.Outer:
+					maxWaitSize = Kcp.OuterMaxWaitSize;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+			
+			if (n > maxWaitSize)
+			{
+				Log.Error($"kcp wait snd too large: {n}: {this.Id} {this.LocalConn} {this.RemoteConn}");
+				this.OnError(ErrorCore.ERR_KcpWaitSendSizeTooLarge);
 				return;
 			}
 			this.KcpSend(kcpWaitPacket);
@@ -488,14 +477,43 @@ namespace ET
 		
 		private void OnRead(MemoryStream memoryStream)
 		{
-			this.Service.OnRead(this.Id, memoryStream);
+			try
+			{
+				long channelId = this.Id;
+				object message = null;
+				long actorId = 0;
+				switch (this.Service.ServiceType)
+				{
+					case ServiceType.Outer:
+					{
+						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+						Type type = NetServices.Instance.GetType(opcode);
+						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						break;
+					}
+					case ServiceType.Inner:
+					{
+						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
+						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
+						Type type = NetServices.Instance.GetType(opcode);
+						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						break;
+					}
+				}
+				NetServices.Instance.OnRead(this.Service.Id, channelId, actorId, message);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				this.OnError(ErrorCore.ERR_PacketParserError);
+			}
 		}
 		
 		public void OnError(int error)
 		{
 			long channelId = this.Id;
 			this.Service.Remove(channelId);
-			this.Service.OnError(channelId, error);
+			NetServices.Instance.OnError(this.Service.Id, channelId, error);
 		}
 	}
 }

@@ -22,11 +22,11 @@ namespace ET
     public static class SessionSystem
     {
         [ObjectSystem]
-        public class SessionAwakeSystem: AwakeSystem<Session, AService>
+        public class SessionAwakeSystem: AwakeSystem<Session, int>
         {
-            protected override void Awake(Session self, AService aService)
+            protected override void Awake(Session self, int serviceId)
             {
-                self.AService = aService;
+                self.ServiceId = serviceId;
                 long timeNow = TimeHelper.ClientNow();
                 self.LastRecvTime = timeNow;
                 self.LastSendTime = timeNow;
@@ -42,7 +42,7 @@ namespace ET
         {
             protected override void Destroy(Session self)
             {
-                self.AService.RemoveChannel(self.Id);
+                NetServices.Instance.RemoveChannel(self.ServiceId, self.Id);
             
                 foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
                 {
@@ -55,10 +55,8 @@ namespace ET
             }
         }
         
-        public static void OnRead(this Session self, ushort opcode, IResponse response)
+        public static void OnResponse(this Session self, IResponse response)
         {
-            OpcodeHelper.LogMsg(self.DomainZone(), opcode, response);
-            
             if (!self.requestCallbacks.TryGetValue(response.RpcId, out var action))
             {
                 return;
@@ -119,11 +117,6 @@ namespace ET
             return await rpcInfo.Tcs;
         }
 
-        public static void Reply(this Session self, IResponse message)
-        {
-            self.Send(0, message);
-        }
-
         public static void Send(this Session self, IMessage message)
         {
             self.Send(0, message);
@@ -131,22 +124,21 @@ namespace ET
         
         public static void Send(this Session self, long actorId, IMessage message)
         {
-            (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(message);
-            OpcodeHelper.LogMsg(self.DomainZone(), opcode, message);
-            self.Send(actorId, stream);
+            self.LastSendTime = TimeHelper.ClientNow();
+            NetServices.Instance.SendMessage(self.ServiceId, self.Id, actorId, message);
         }
         
         public static void Send(this Session self, long actorId, MemoryStream memoryStream)
         {
             self.LastSendTime = TimeHelper.ClientNow();
-            self.AService.SendStream(self.Id, actorId, memoryStream);
+            NetServices.Instance.SendStream(self.ServiceId, self.Id, actorId, memoryStream);
         }
     }
 
     [ChildOf]
-    public sealed class Session: Entity, IAwake<AService>, IDestroy
+    public sealed class Session: Entity, IAwake<int>, IDestroy
     {
-        public AService AService { get; set; }
+        public int ServiceId { get; set; }
         
         public static int RpcId
         {

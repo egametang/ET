@@ -13,6 +13,8 @@
 		Router = 7,
 		RouterManager = 8,
 		Robot = 9,
+		BenchmarkClient = 10,
+		BenchmarkServer = 11,
 
 		// 客户端Model层
 		Client = 31,

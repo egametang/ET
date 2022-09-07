@@ -44,25 +44,25 @@ namespace ET.Server
                 self.TimeoutActorMessageSenders.Clear();
             }
         }
-        
-        public static void Run(ActorMessageSender self, IActorResponse response)
+
+        private static void Run(ActorMessageSender self, IActorResponse response)
         {
             if (response.Error == ErrorCore.ERR_ActorTimeout)
             {
-                self.Tcs.SetException(new Exception($"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.MemoryStream.ToActorMessage()}, response: {response}"));
+                self.Tcs.SetException(new Exception($"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
                 return;
             }
 
             if (self.NeedException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
-                self.Tcs.SetException(new Exception($"Rpc error: actorId: {self.ActorId} request: {self.MemoryStream.ToActorMessage()}, response: {response}"));
+                self.Tcs.SetException(new Exception($"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
                 return;
             }
 
             self.Tcs.SetResult(response);
         }
-        
-        public static void Check(this ActorMessageSenderComponent self)
+
+        private static void Check(this ActorMessageSenderComponent self)
         {
             long timeNow = TimeHelper.ServerNow();
             foreach ((int key, ActorMessageSender value) in self.requestCallback)
@@ -82,7 +82,7 @@ namespace ET.Server
                 self.requestCallback.Remove(rpcId);
                 try
                 {
-                    IActorResponse response = ActorHelper.CreateResponse((IActorRequest)actorMessageSender.MemoryStream.ToActorMessage(), ErrorCore.ERR_ActorTimeout);
+                    IActorResponse response = ActorHelper.CreateResponse(actorMessageSender.Request, ErrorCore.ERR_ActorTimeout);
                     Run(actorMessageSender, response);
                 }
                 catch (Exception e)
@@ -103,6 +103,7 @@ namespace ET.Server
             
             ProcessActorId processActorId = new ProcessActorId(actorId);
             Session session = NetInnerComponent.Instance.Get(processActorId.Process);
+
             session.Send(processActorId.ActorId, message);
         }
         
@@ -138,29 +139,27 @@ namespace ET.Server
                 throw new Exception($"actor id is 0: {request}");
             }
 
-            (ushort _, MemoryStream stream) = MessageSerializeHelper.MessageToStream(request);
-
-            return await self.Call(actorId, request.RpcId, stream, needException);
+            return await self.Call(actorId, request.RpcId, request, needException);
         }
         
         public static async ETTask<IActorResponse> Call(
                 this ActorMessageSenderComponent self,
                 long actorId,
                 int rpcId,
-                MemoryStream memoryStream,
+                IActorRequest iActorRequest,
                 bool needException = true
         )
         {
             if (actorId == 0)
             {
-                throw new Exception($"actor id is 0: {memoryStream.ToActorMessage()}");
+                throw new Exception($"actor id is 0: {iActorRequest}");
             }
 
             var tcs = ETTask<IActorResponse>.Create(true);
             
-            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, memoryStream, tcs, needException));
+            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
             
-            self.Send(actorId, memoryStream);
+            self.Send(actorId, iActorRequest);
 
             long beginTime = TimeHelper.ServerFrameTime();
             IActorResponse response = await tcs;
@@ -169,7 +168,7 @@ namespace ET.Server
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                Log.Warning("actor rpc time > 200: {0} {1}", costTime, memoryStream.ToActorMessage());
+                Log.Warning("actor rpc time > 200: {0} {1}", costTime, iActorRequest);
             }
             
             return response;

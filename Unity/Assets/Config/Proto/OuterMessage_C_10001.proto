@@ -250,4 +250,16 @@ message M2C_TransferMap // IActorLocationResponse
 	int32 Error = 91;
 	string Message = 92;
 }
- 
+
+//ResponseType G2C_Benchmark
+message C2G_Benchmark // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_Benchmark // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
