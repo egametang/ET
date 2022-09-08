@@ -13,32 +13,27 @@ namespace ET
             {
                 OpcodeTypeComponent.Instance = self;
                 
-                self.opcodeTypes.Clear();
-                self.typeOpcodes.Clear();
                 self.requestResponse.Clear();
 
                 HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
                 foreach (Type type in types)
                 {
-                    object[] attrs = type.GetCustomAttributes(typeof (MessageAttribute), false);
-                    if (attrs.Length == 0)
+                    object[] att = type.GetCustomAttributes(typeof (MessageAttribute), false);
+                    if (att.Length == 0)
                     {
                         continue;
                     }
 
-                    MessageAttribute messageAttribute = attrs[0] as MessageAttribute;
+                    MessageAttribute messageAttribute = att[0] as MessageAttribute;
                     if (messageAttribute == null)
                     {
                         continue;
                     }
-                
+                    ushort opcode = messageAttribute.Opcode;
 
-                    self.opcodeTypes.Add(messageAttribute.Opcode, type);
-                    self.typeOpcodes.Add(type, messageAttribute.Opcode);
-
-                    if (OpcodeHelper.IsOuterMessage(messageAttribute.Opcode) && typeof (IActorMessage).IsAssignableFrom(type))
+                    if (OpcodeHelper.IsOuterMessage(opcode) && typeof (IActorMessage).IsAssignableFrom(type))
                     {
-                        self.outrActorMessage.Add(messageAttribute.Opcode);
+                        self.outrActorMessage.Add(opcode);
                     }
                 
                     // 检查request response
@@ -50,7 +45,7 @@ namespace ET
                             continue;
                         }
                     
-                        attrs = type.GetCustomAttributes(typeof (ResponseTypeAttribute), false);
+                        var attrs = type.GetCustomAttributes(typeof (ResponseTypeAttribute), false);
                         if (attrs.Length == 0)
                         {
                             Log.Error($"not found responseType: {type}");
@@ -78,16 +73,6 @@ namespace ET
             return self.outrActorMessage.Contains(opcode);
         }
 
-        public static ushort GetOpcode(this OpcodeTypeComponent self, Type type)
-        {
-            return self.typeOpcodes[type];
-        }
-
-        public static Type GetType(this OpcodeTypeComponent self, ushort opcode)
-        {
-            return self.opcodeTypes[opcode];
-        }
-
         public static Type GetResponseType(this OpcodeTypeComponent self, Type request)
         {
             if (!self.requestResponse.TryGetValue(request, out Type response))
@@ -105,9 +90,6 @@ namespace ET
         public static OpcodeTypeComponent Instance;
         
         public HashSet<ushort> outrActorMessage = new HashSet<ushort>();
-        
-        public readonly Dictionary<ushort, Type> opcodeTypes = new Dictionary<ushort, Type>();
-        public readonly Dictionary<Type, ushort> typeOpcodes = new Dictionary<Type, ushort>();
         
         public readonly Dictionary<Type, Type> requestResponse = new Dictionary<Type, Type>();
     }

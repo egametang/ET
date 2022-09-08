@@ -4,9 +4,9 @@ namespace ET
 {
     public static class SessionStreamCallbackId
     {
-        public const int SessionStreamDispatcherClientOuter = 1;
-        public const int SessionStreamDispatcherServerOuter = 2;
-        public const int SessionStreamDispatcherServerInner = 3;
+        public const int NetClient = 1;
+        public const int NetServer = 2;
+        public const int NetInner = 3;
     }
     
     public struct SessionStreamCallback: ICallback
@@ -15,6 +15,8 @@ namespace ET
 
         public Session Session;
 
-        public MemoryStream MemoryStream;
+        public long ActorId;
+        
+        public object Message;
     }
 }

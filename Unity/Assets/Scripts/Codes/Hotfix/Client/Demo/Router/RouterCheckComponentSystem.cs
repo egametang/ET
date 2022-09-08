@@ -40,19 +40,9 @@ namespace ET.Client
                 try
                 {
                     long sessionId = session.Id;
-                    uint localConn = 0;
-                    uint remoteConn = 0;
-                    KService service = session.AService as KService;
-                    KChannel kChannel = service.Get(sessionId);
-                    if (kChannel == null)
-                    {
-                        Log.Warning($"not found remoteConn: {sessionId}");
-                        continue;
-                    }
 
-                    localConn = kChannel.LocalConn;
-                    remoteConn = kChannel.RemoteConn;
-
+                    (uint localConn, uint remoteConn) = await NetServices.Instance.GetKChannelConn(session.ServiceId, sessionId);
+                    
                     IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
                     Log.Info($"get recvLocalConn start: {self.ClientScene().Id} {realAddress} {localConn} {remoteConn}");
 
@@ -67,7 +57,7 @@ namespace ET.Client
                     
                     session.LastRecvTime = TimeHelper.ClientNow();
                     
-                    ((KService)session.AService).ChangeAddress(sessionId, routerAddress);
+                    NetServices.Instance.ChangeAddress(session.ServiceId, sessionId, routerAddress);
                 }
                 catch (Exception e)
                 {

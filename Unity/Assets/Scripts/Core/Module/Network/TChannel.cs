@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -17,6 +18,8 @@ namespace ET
 
 		private readonly CircularBuffer recvBuffer = new CircularBuffer();
 		private readonly CircularBuffer sendBuffer = new CircularBuffer();
+		
+		private readonly ConcurrentQueue<Action> queue = new ConcurrentQueue<Action>();
 
 		private bool isSending;
 
@@ -46,8 +49,6 @@ namespace ET
 					throw new Exception($"socket error: {e.LastOperation}");
 			}
 		}
-
-#region 网络线程
 		
 		public TChannel(long id, IPEndPoint ipEndPoint, TService service)
 		{
@@ -64,7 +65,7 @@ namespace ET
 			this.isConnected = false;
 			this.isSending = false;
 
-			this.Service.ThreadSynchronizationContext.PostNext(this.ConnectAsync);
+			this.Service.ThreadSynchronizationContext.Post(this.ConnectAsync);
 		}
 		
 		public TChannel(long id, Socket socket, TService service)
@@ -83,7 +84,7 @@ namespace ET
 			this.isSending = false;
 			
 			// 下一帧再开始读写
-			this.Service.ThreadSynchronizationContext.PostNext(() =>
+			this.Service.ThreadSynchronizationContext.Post(() =>
 			{
 				this.StartRecv();
 				this.StartSend();
@@ -389,7 +390,27 @@ namespace ET
 			try
 			{
 				long channelId = this.Id;
-				this.Service.OnRead(channelId, memoryStream);
+				object message = null;
+				long actorId = 0;
+				switch (this.Service.ServiceType)
+				{
+					case ServiceType.Outer:
+					{
+						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+						Type type = NetServices.Instance.GetType(opcode);
+						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						break;
+					}
+					case ServiceType.Inner:
+					{
+						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
+						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
+						Type type = NetServices.Instance.GetType(opcode);
+						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						break;
+					}
+				}
+				NetServices.Instance.OnRead(this.Service.Id, channelId, actorId, message);
 			}
 			catch (Exception e)
 			{
@@ -407,10 +428,7 @@ namespace ET
 			
 			this.Service.Remove(channelId);
 			
-			this.Service.OnError(channelId, error);
+			NetServices.Instance.OnError(this.Service.Id, channelId, error);
 		}
-
-#endregion
-
 	}
 }

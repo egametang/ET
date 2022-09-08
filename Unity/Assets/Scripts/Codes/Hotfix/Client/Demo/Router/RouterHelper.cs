@@ -18,7 +18,7 @@ namespace ET.Client
             
             Log.Info($"get router: {recvLocalConn} {routerAddress}");
 
-            Session routerSession = clientScene.GetComponent<NetKcpComponent>().Create(routerAddress, address, recvLocalConn);
+            Session routerSession = clientScene.GetComponent<NetClientComponent>().Create(routerAddress, address, recvLocalConn);
             routerSession.AddComponent<PingComponent>();
             routerSession.AddComponent<RouterCheckComponent>();
             
@@ -41,7 +41,7 @@ namespace ET.Client
         // 向router申请
         private static async ETTask<uint> Connect(IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
-            uint connectId = RandomGenerator.Instance.RandUInt32();
+            uint connectId = RandomGenerator.RandUInt32();
             
             using Socket socket = new Socket(routerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             

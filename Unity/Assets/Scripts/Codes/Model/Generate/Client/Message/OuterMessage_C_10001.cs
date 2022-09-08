@@ -517,6 +517,31 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(G2C_Benchmark))]
+	[Message(OuterMessage.C2G_Benchmark)]
+	[ProtoContract]
+	public partial class C2G_Benchmark: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterMessage.G2C_Benchmark)]
+	[ProtoContract]
+	public partial class G2C_Benchmark: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 	public static class OuterMessage
 	{
 		 public const ushort HttpGetRouterResponse = 10002;
@@ -551,5 +576,7 @@ namespace ET
 		 public const ushort M2C_TestRobotCase = 10031;
 		 public const ushort C2M_TransferMap = 10032;
 		 public const ushort M2C_TransferMap = 10033;
+		 public const ushort C2G_Benchmark = 10034;
+		 public const ushort G2C_Benchmark = 10035;
 	}
 }

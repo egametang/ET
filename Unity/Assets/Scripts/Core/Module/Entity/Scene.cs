@@ -4,6 +4,7 @@ namespace ET
 {
     [EnableMethod]
     [DebuggerDisplay("ViewName,nq")]
+    [ChildOf]
     public sealed class Scene: Entity
     {
         public int Zone

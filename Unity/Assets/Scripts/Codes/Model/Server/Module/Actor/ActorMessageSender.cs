@@ -10,16 +10,16 @@ namespace ET.Server
         // 最近接收或者发送消息的时间
         public long CreateTime { get; }
         
-        public MemoryStream MemoryStream { get; }
+        public IActorRequest Request { get; }
 
         public bool NeedException { get; }
 
         public ETTask<IActorResponse> Tcs { get; }
 
-        public ActorMessageSender(long actorId, MemoryStream memoryStream, ETTask<IActorResponse> tcs, bool needException)
+        public ActorMessageSender(long actorId, IActorRequest iActorRequest, ETTask<IActorResponse> tcs, bool needException)
         {
             this.ActorId = actorId;
-            this.MemoryStream = memoryStream;
+            this.Request = iActorRequest;
             this.CreateTime = TimeHelper.ServerNow();
             this.Tcs = tcs;
             this.NeedException = needException;

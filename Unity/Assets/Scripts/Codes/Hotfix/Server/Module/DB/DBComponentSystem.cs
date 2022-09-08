@@ -42,7 +42,7 @@ namespace ET.Server
 	    public static async ETTask<List<T>> Query<T>(this DBComponent self, Expression<Func<T, bool>> filter, string collection = null)
 			    where T : Entity
 	    {
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.Instance.RandInt64() % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filter);
 
@@ -88,7 +88,7 @@ namespace ET.Server
 
 	    public static async ETTask<List<T>> QueryJson<T>(this DBComponent self, string json, string collection = null) where T : Entity
 	    {
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.Instance.RandInt64() % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    FilterDefinition<T> filterDefinition = new JsonFilterDefinition<T>(json);
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filterDefinition);
@@ -98,7 +98,7 @@ namespace ET.Server
 
 	    public static async ETTask<List<T>> QueryJson<T>(this DBComponent self, long taskId, string json, string collection = null) where T : Entity
 	    {
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.Instance.RandInt64() % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    FilterDefinition<T> filterDefinition = new JsonFilterDefinition<T>(json);
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filterDefinition);
@@ -117,7 +117,7 @@ namespace ET.Server
 			    collection = typeof (T).Name;
 		    }
 		    
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.Instance.RandInt64() % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).InsertManyAsync(list);
 		    }
@@ -228,7 +228,7 @@ namespace ET.Server
 
 	    public static async ETTask<long> Remove<T>(this DBComponent self, Expression<Func<T, bool>> filter, string collection = null) where T : Entity
 	    {
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.Instance.RandInt64() % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    DeleteResult result = await self.GetCollection<T>(collection).DeleteManyAsync(filter);
 

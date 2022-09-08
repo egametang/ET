@@ -29,6 +29,10 @@ namespace ET
         {
             MongoRegister.Init();
             
+            Game.AddSingleton<NetServices>();
+            Game.AddSingleton<Root>();
+            await Game.AddSingleton<ConfigComponent>().LoadAsync();
+
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent1());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent2());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent3());

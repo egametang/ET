@@ -17,7 +17,7 @@ namespace ET.Server
         public static object ToActorMessage(this MemoryStream memoryStream)
         {
             ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), 8);
-            Type type = OpcodeTypeComponent.Instance.GetType(opcode);
+            Type type = NetServices.Instance.GetType(opcode);
 
             if (opcode < OpcodeRangeDefine.PbMaxOpcode)
             {

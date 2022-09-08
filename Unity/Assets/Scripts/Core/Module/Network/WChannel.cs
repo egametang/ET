@@ -35,7 +35,7 @@ namespace ET
 
             isConnected = true;
             
-            this.Service.ThreadSynchronizationContext.PostNext(()=>
+            this.Service.ThreadSynchronizationContext.Post(()=>
             {
                 this.StartRecv().Coroutine();
                 this.StartSend().Coroutine();
@@ -52,7 +52,7 @@ namespace ET
 
             isConnected = false;
             
-            this.Service.ThreadSynchronizationContext.PostNext(()=>this.ConnectAsync(connectUrl).Coroutine());
+            this.Service.ThreadSynchronizationContext.Post(()=>this.ConnectAsync(connectUrl).Coroutine());
         }
 
         public override void Dispose()
@@ -213,7 +213,27 @@ namespace ET
             try
             {
                 long channelId = this.Id;
-                this.Service.OnRead(channelId, memoryStream);
+                object message = null;
+                long actorId = 0;
+                switch (this.Service.ServiceType)
+                {
+                    case ServiceType.Outer:
+                    {
+                        ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+                        Type type = NetServices.Instance.GetType(opcode);
+                        message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+                        break;
+                    }
+                    case ServiceType.Inner:
+                    {
+                        actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
+                        ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
+                        Type type = NetServices.Instance.GetType(opcode);
+                        message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+                        break;
+                    }
+                }
+                NetServices.Instance.OnRead(this.Service.Id, channelId, actorId, message);
             }
             catch (Exception e)
             {
@@ -231,7 +251,7 @@ namespace ET
 			
             this.Service.Remove(channelId);
 			
-            this.Service.OnError(channelId, error);
+            NetServices.Instance.OnError(this.Service.Id, channelId, error);
         }
     }
 }

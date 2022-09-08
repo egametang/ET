@@ -14,18 +14,20 @@ namespace ET
         
         private readonly Dictionary<long, WChannel> channels = new Dictionary<long, WChannel>();
 
-        public WService(ThreadSynchronizationContext threadSynchronizationContext, IEnumerable<string> prefixs)
+        public ThreadSynchronizationContext ThreadSynchronizationContext;
+
+        public WService(IEnumerable<string> prefixs)
         {
-            this.ThreadSynchronizationContext = threadSynchronizationContext;
+            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             
             this.httpListener = new HttpListener();
 
             StartAccept(prefixs).Coroutine();
         }
         
-        public WService(ThreadSynchronizationContext threadSynchronizationContext)
+        public WService()
         {
-            this.ThreadSynchronizationContext = threadSynchronizationContext;
+            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
         }
         
         private long GetId
@@ -101,7 +103,7 @@ namespace ET
 
                         this.channels[channel.Id] = channel;
 
-                        this.OnAccept(channel.Id, channel.RemoteAddress);
+                        NetServices.Instance.OnAccept(this.Id, channel.Id, channel.RemoteAddress);
                     }
                     catch (Exception e)
                     {
@@ -124,12 +126,12 @@ namespace ET
             }
         }
         
-        protected override void Get(long id, IPEndPoint address)
+        public override void Get(long id, IPEndPoint address)
         {
             throw new NotImplementedException();
         }
 
-        protected override void Send(long channelId, long actorId, MemoryStream stream)
+        public override void Send(long channelId, long actorId, MemoryStream stream)
         {
             this.channels.TryGetValue(channelId, out WChannel channel);
             if (channel == null)
@@ -141,6 +143,7 @@ namespace ET
 
         public override void Update()
         {
+            this.ThreadSynchronizationContext.Update();
         }
     }
 }

@@ -105,10 +105,9 @@ namespace ET
 
 #endregion
 
-        public KService(ThreadSynchronizationContext threadSynchronizationContext, IPEndPoint ipEndPoint, ServiceType serviceType)
+        public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
-            this.ThreadSynchronizationContext = threadSynchronizationContext;
             this.startTime = TimeHelper.ClientNow();
             this.socket = new Socket(ipEndPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -127,10 +126,9 @@ namespace ET
             }
         }
 
-        public KService(ThreadSynchronizationContext threadSynchronizationContext, AddressFamily addressFamily, ServiceType serviceType)
+        public KService(AddressFamily addressFamily, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
-            this.ThreadSynchronizationContext = threadSynchronizationContext;
             this.startTime = TimeHelper.ClientNow();
             this.socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
 
@@ -141,22 +139,7 @@ namespace ET
                 uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
                 this.socket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
             }
-            
-            NetServices.Instance.Add(this);
         }
-
-        public void ChangeAddress(long id, IPEndPoint address)
-        {
-            KChannel kChannel = this.Get(id);
-            if (kChannel == null)
-            {
-                return;
-            }
-
-            Log.Info($"channel change address: {id} {address}");
-            kChannel.RemoteAddress = address;
-        }
-
 
         // 保存所有的channel
         private readonly Dictionary<long, KChannel> idChannels = new Dictionary<long, KChannel>();
@@ -168,8 +151,16 @@ namespace ET
 
         // 下帧要更新的channel
         private readonly HashSet<long> updateChannels = new HashSet<long>();
+        
+        // 下次时间更新的channel
+        private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-        private readonly List<long> waitRemoveChannels = new List<long>();
+        private readonly List<long> timeOutTime = new List<long>();
+
+        // 记录最小时间，不用每次都去MultiMap取第一个值
+        private long minTime;
+
+        private List<long> waitRemoveChannels = new List<long>();
 
         public override bool IsDispose()
         {
@@ -214,7 +205,7 @@ namespace ET
 
                 // accept
                 byte flag = this.cache[0];
-                    
+                
                 // conn从100开始，如果为1，2，3则是特殊包
                 uint remoteConn = 0;
                 uint localConn = 0;
@@ -301,13 +292,13 @@ namespace ET
                             this.waitConnectChannels.TryGetValue(remoteConn, out kChannel);
                             if (kChannel == null)
                             {
-                                localConn = CreateRandomLocalConn();
+                                localConn = NetServices.Instance.CreateRandomLocalConn();
                                 // 已存在同样的localConn，则不处理，等待下次sync
                                 if (this.localConnChannels.ContainsKey(localConn))
                                 {
                                     break;
                                 }
-                                long id = this.CreateAcceptChannelId(localConn);
+                                long id = NetServices.Instance.CreateAcceptChannelId(localConn);
                                 if (this.idChannels.ContainsKey(id))
                                 {
                                     break;
@@ -321,7 +312,7 @@ namespace ET
                                 kChannel.RealAddress = realAddress;
 
                                 IPEndPoint realEndPoint = kChannel.RealAddress == null? kChannel.RemoteAddress : NetworkHelper.ToIPEndPoint(kChannel.RealAddress);
-                                this.OnAccept(kChannel.Id, realEndPoint);
+                                NetServices.Instance.OnAccept(this.Id, kChannel.Id, realEndPoint);
                             }
                             if (kChannel.RemoteConn != remoteConn)
                             {
@@ -447,7 +438,7 @@ namespace ET
             return channel;
         }
 
-        protected override void Get(long id, IPEndPoint address)
+        public override void Get(long id, IPEndPoint address)
         {
             if (this.idChannels.TryGetValue(id, out KChannel kChannel))
             {
@@ -517,7 +508,7 @@ namespace ET
             Log.Info($"channel send fin: {localConn} {remoteConn} {address} {error}");
         }
         
-        protected override void Send(long channelId, long actorId, MemoryStream stream)
+        public override void Send(long channelId, long actorId, MemoryStream stream)
         {
             KChannel channel = this.Get(channelId);
             if (channel == null)
@@ -527,14 +518,11 @@ namespace ET
             channel.Send(actorId, stream);
         }
 
-        public void AddToUpdate(KChannel kChannel)
-        {
-            this.updateChannels.Add(kChannel.Id);
-        }
-
         public override void Update()
         {
             this.Recv();
+            
+            this.TimerOut();
             
             foreach (long id in updateChannels)
             {
@@ -586,6 +574,61 @@ namespace ET
             {
                 this.waitConnectChannels.Remove(channelId);
             }
+        }
+        
+        // 计算到期需要update的channel
+        private void TimerOut()
+        {
+            if (this.timeId.Count == 0)
+            {
+                return;
+            }
+
+            uint timeNow = this.TimeNow;
+
+            if (timeNow < this.minTime)
+            {
+                return;
+            }
+
+            this.timeOutTime.Clear();
+
+            foreach (KeyValuePair<long, List<long>> kv in this.timeId)
+            {
+                long k = kv.Key;
+                if (k > timeNow)
+                {
+                    minTime = k;
+                    break;
+                }
+
+                this.timeOutTime.Add(k);
+            }
+
+            foreach (long k in this.timeOutTime)
+            {
+                foreach (long v in this.timeId[k])
+                {
+                    this.updateChannels.Add(v);
+                }
+
+                this.timeId.Remove(k);
+            }
+        }
+        
+        // 服务端需要看channel的update时间是否已到
+        public void AddToUpdate(long time, long id)
+        {
+            if (time == 0)
+            {
+                this.updateChannels.Add(id);
+                return;
+            }
+            if (time < this.minTime)
+            {
+                this.minTime = time;
+            }
+            this.timeId.Add(time, id);
         }
     }
 }

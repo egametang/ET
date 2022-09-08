@@ -262,7 +262,7 @@ namespace ET.Server
                     self.ConnectIdNodes.TryGetValue(connectId, out routerNode);
                     if (routerNode == null)
                     {
-                        outerConn = RandomGenerator.Instance.RandUInt32();
+                        outerConn = RandomGenerator.RandUInt32();
                         routerNode = self.New(realAddress, connectId, outerConn, innerConn, self.CloneAddress());
                         Log.Info($"router create: {realAddress} {connectId} {outerConn} {innerConn} {routerNode.SyncIpEndPoint}");
                         self.OuterNodes.Add(routerNode.OuterConn, routerNode);
