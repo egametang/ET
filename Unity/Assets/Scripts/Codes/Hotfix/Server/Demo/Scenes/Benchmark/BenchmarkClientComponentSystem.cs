@@ -27,7 +27,7 @@ namespace ET.Server
             NetClientComponent netClientComponent = scene.AddComponent<NetClientComponent, AddressFamily>(AddressFamily.InterNetwork);
 
             using Session session = netClientComponent.Create(StartSceneConfigCategory.Instance.BenchmarkServer.OuterIPPort);
-            List<ETTask<IResponse>> list = new List<ETTask<IResponse>>(100000);
+            List<ETTask<IResponse>> list = new List<ETTask<IResponse>>(10000);
             for (int j = 0; j < 100000000; ++j)
             {
                 list.Clear();

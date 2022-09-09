@@ -126,7 +126,7 @@ namespace ET
             }
         }
         
-        public override void Get(long id, IPEndPoint address)
+        public override void Create(long id, IPEndPoint address)
         {
             throw new NotImplementedException();
         }

@@ -317,7 +317,7 @@ namespace ET.Server
                         break;
                     }
 
-                    if (++kcpRouter.SyncCount > 40)
+                    if (++kcpRouter.SyncCount > 10)
                     {
                         self.OnError(kcpRouter.Id, ErrorCore.ERR_KcpRouterSyncCountTooMuchTimes);
                         break;

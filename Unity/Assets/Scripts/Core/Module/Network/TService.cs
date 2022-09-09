@@ -110,7 +110,7 @@ namespace ET
 			return channel;
 		}
 
-		public override void Get(long id, IPEndPoint address)
+		public override void Create(long id, IPEndPoint address)
 		{
 			if (this.idChannels.TryGetValue(id, out TChannel _))
 			{

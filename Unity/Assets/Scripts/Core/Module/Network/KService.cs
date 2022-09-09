@@ -160,7 +160,7 @@ namespace ET
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
 
-        private List<long> waitRemoveChannels = new List<long>();
+        private readonly List<long> waitRemoveChannels = new List<long>();
 
         public override bool IsDispose()
         {
@@ -292,6 +292,7 @@ namespace ET
                             this.waitConnectChannels.TryGetValue(remoteConn, out kChannel);
                             if (kChannel == null)
                             {
+                                // accept的localConn不能与内网进程号的ChannelId冲突，所以设置为一个大的随机数
                                 localConn = NetServices.Instance.CreateRandomLocalConn();
                                 // 已存在同样的localConn，则不处理，等待下次sync
                                 if (this.localConnChannels.ContainsKey(localConn))
@@ -438,7 +439,7 @@ namespace ET
             return channel;
         }
 
-        public override void Get(long id, IPEndPoint address)
+        public override void Create(long id, IPEndPoint address)
         {
             if (this.idChannels.TryGetValue(id, out KChannel kChannel))
             {

@@ -11,8 +11,7 @@ namespace ET.Client
         {
             protected override void Awake(NetClientComponent self, AddressFamily addressFamily)
             {
-                KService kService = new KService(addressFamily, ServiceType.Outer);
-                self.ServiceId = NetThreadComponent.Instance.Add(kService);
+                self.ServiceId = NetServices.Instance.AddService(new KService(addressFamily, ServiceType.Outer));
                 NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
                 NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
             }
@@ -23,7 +22,7 @@ namespace ET.Client
         {
             protected override void Destroy(NetClientComponent self)
             {
-                NetThreadComponent.Instance.Remove(self.ServiceId);
+                NetServices.Instance.RemoveService(self.ServiceId);
             }
         }
 
@@ -63,7 +62,7 @@ namespace ET.Client
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
-            NetServices.Instance.GetChannel(self.ServiceId, session.Id, realIPEndPoint);
+            NetServices.Instance.CreateChannel(self.ServiceId, session.Id, realIPEndPoint);
 
             return session;
         }
@@ -77,7 +76,7 @@ namespace ET.Client
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
-            NetServices.Instance.GetChannel(self.ServiceId, session.Id, routerIPEndPoint);
+            NetServices.Instance.CreateChannel(self.ServiceId, session.Id, routerIPEndPoint);
 
             return session;
         }

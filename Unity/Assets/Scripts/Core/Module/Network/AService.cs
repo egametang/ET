@@ -20,7 +20,7 @@ namespace ET
         
         public abstract bool IsDispose();
 
-        public abstract void Get(long id, IPEndPoint address);
+        public abstract void Create(long id, IPEndPoint address);
 
         public abstract void Send(long channelId, long actorId, MemoryStream stream);
     }

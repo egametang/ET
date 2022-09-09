@@ -245,7 +245,7 @@ namespace ET
         
         private void OnError(int error)
         {
-            Log.Debug($"WChannel error: {error} {this.RemoteAddress}");
+            Log.Info($"WChannel error: {error} {this.RemoteAddress}");
 			
             long channelId = this.Id;
 			
