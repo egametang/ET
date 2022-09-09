@@ -22,7 +22,7 @@ namespace ET.Server
             await TimerComponent.Instance.WaitAsync(1000);
 
             Scene scene = await SceneFactory.CreateServerScene(self, IdGenerater.Instance.GenerateId(), IdGenerater.Instance.GenerateInstanceId(),
-                self.DomainZone(), "bechmark", SceneType.BenchmarkClient);
+                self.DomainZone(), "bechmark", SceneType.Benchmark);
             
             NetClientComponent netClientComponent = scene.AddComponent<NetClientComponent, AddressFamily>(AddressFamily.InterNetwork);
 
