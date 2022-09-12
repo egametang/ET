@@ -6,7 +6,6 @@ using System.Threading;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
-using Random = UnityEngine.Random;
 
 namespace ET
 {
@@ -124,7 +123,7 @@ namespace ET
             }
 
             
-            int random = Random.Range(100000000, 999999999);
+            int random = RandomGenerator.RandomNumber(100000000, 999999999);
             string logicFile = $"Hotfix_{random}";
             
             List<string> codes;
