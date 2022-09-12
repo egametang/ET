@@ -27,6 +27,8 @@ namespace ET
         
         private static async ETTask StartAsync()
         {
+            WinPeriod.Init();
+            
             MongoRegister.Init();
             
             Game.AddSingleton<NetServices>();

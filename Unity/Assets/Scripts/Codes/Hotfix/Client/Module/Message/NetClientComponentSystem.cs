@@ -55,7 +55,7 @@ namespace ET.Client
 
         public static Session Create(this NetClientComponent self, IPEndPoint realIPEndPoint)
         {
-            long channelId = RandomGenerator.RandInt64();
+            long channelId = NetServices.Instance.CreateConnectChannelId();
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = realIPEndPoint;
             if (self.DomainScene().SceneType != SceneType.Benchmark)
@@ -69,7 +69,7 @@ namespace ET.Client
         
         public static Session Create(this NetClientComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
         {
-            long channelId = NetServices.Instance.CreateConnectChannelId(localConn);
+            long channelId = localConn;
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = realIPEndPoint;
             if (self.DomainScene().SceneType != SceneType.Benchmark)

@@ -78,12 +78,6 @@ namespace ET
         {
             return this.typeOpcode.GetKeyByValue(opcode);
         }
-        
-        // 防止与内网进程号的ChannelId冲突，所以设置为一个大的随机数
-        public uint CreateRandomLocalConn()
-        {
-            return (1u << 31) | RandomGenerator.RandUInt32();
-        }
 
 #endregion
 
@@ -96,13 +90,6 @@ namespace ET
         private readonly Dictionary<int, Action<long, int>> errorCallback = new Dictionary<int, Action<long, int>>();
         
         private int serviceIdGenerator;
-        
-        // localConn放在低32bit
-        private long connectIdGenerater = int.MaxValue;
-        public long CreateConnectChannelId(uint localConn)
-        {
-            return (--this.connectIdGenerater << 32) | localConn;
-        }
 
         public async Task<(uint, uint)> GetKChannelConn(int serviceId, long channelId)
         {
@@ -229,6 +216,7 @@ namespace ET
         
         private readonly Dictionary<int, AService> services = new Dictionary<int, AService>();
         private readonly Queue<int> queue = new Queue<int>();
+        public readonly TimerComponent TimerComponent = new TimerComponent();
         
         private void Add(AService aService)
         {
@@ -247,13 +235,6 @@ namespace ET
             {
                 service.Dispose();
             }
-        }
-
-        // localConn放在低32bit
-        private long acceptIdGenerater = 1;
-        public long CreateAcceptChannelId(uint localConn)
-        {
-            return (++this.acceptIdGenerater << 32) | localConn;
         }
 
         private void RunNetThreadOperator()
@@ -353,6 +334,8 @@ namespace ET
             }
             
             this.RunNetThreadOperator();
+            
+            TimerComponent.Update();
         }
 
         public void OnAccept(int serviceId, long channelId, IPEndPoint ipEndPoint)
@@ -374,5 +357,27 @@ namespace ET
         }
 
 #endregion
+
+#region 主线程kcp id生成
+
+        // 这个因为是NetClientComponent中使用，不会与Accept冲突
+        public uint CreateConnectChannelId()
+        {
+            return RandomGenerator.RandUInt32();
+        }
+
+#endregion
+
+#region 网络线程kcp id生成
+
+        // 防止与内网进程号的ChannelId冲突，所以设置为一个大的随机数
+        private uint acceptIdGenerator = uint.MaxValue;
+        public uint CreateAcceptChannelId()
+        {
+            return --this.acceptIdGenerator;
+        }
+
+#endregion
+
     }
 }

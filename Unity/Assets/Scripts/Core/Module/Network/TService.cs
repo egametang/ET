@@ -77,7 +77,7 @@ namespace ET
 
 			try
 			{
-				long id = NetServices.Instance.CreateAcceptChannelId(0);
+				long id = NetServices.Instance.CreateAcceptChannelId();
 				TChannel channel = new TChannel(id, acceptSocket, this);
 				this.idChannels.Add(channel.Id, channel);
 				long channelId = channel.Id;

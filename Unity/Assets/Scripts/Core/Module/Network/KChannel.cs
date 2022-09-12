@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace ET
 {
+
+	
 	public struct KcpWaitPacket
 	{
 		public long ActorId;
@@ -15,7 +17,25 @@ namespace ET
 	
 	public class KChannel : AChannel
 	{
-		public KService Service;
+		[Callback(TimerCoreCallbackId.KServiceConnectTimer)]
+		public class KServiceConnectTimer: ATimer<KChannel>
+		{
+			protected override void Run(KChannel kChannel)
+			{
+				kChannel.Connect();
+			}
+		}
+		
+		[Callback(TimerCoreCallbackId.KServiceNextUpdateTimer)]
+		public class KServiceNextUpdateTimer: ATimer<KChannel>
+		{
+			protected override void Run(KChannel kChannel)
+			{
+				kChannel.Service.AddToUpdate(kChannel.Id);
+			}
+		}
+
+		private readonly KService Service;
 		
 		private Socket socket;
 
@@ -27,12 +47,22 @@ namespace ET
 		
 		public readonly uint CreateTime;
 
-		public uint LocalConn { get; set; }
+		public uint LocalConn
+		{
+			get
+			{
+				return (uint)this.Id; 
+			}
+			private set
+			{
+				this.Id = value;
+			}
+		}
 		public uint RemoteConn { get; set; }
 
 		private readonly byte[] sendCache = new byte[2 * 1024];
 		
-		public bool IsConnected { get; private set; }
+		public bool IsConnected { get; set; }
 
 		public string RealAddress { get; set; }
 		
@@ -66,14 +96,12 @@ namespace ET
 		}
 		
 		// connect
-		public KChannel(long id, uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService)
+		public KChannel(uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService)
 		{
 			this.LocalConn = localConn;
-
-			this.Id = id;
 			this.ChannelType = ChannelType.Connect;
 			
-			Log.Info($"channel create: {this.Id} {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
+			Log.Info($"channel create: {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
 			
 			this.kcp = IntPtr.Zero;
 			this.Service = kService;
@@ -87,12 +115,11 @@ namespace ET
 		}
 
 		// accept
-		public KChannel(long id, uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService)
+		public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService)
 		{
-			this.Id = id;
 			this.ChannelType = ChannelType.Accept;
 			
-			Log.Info($"channel create: {this.Id} {localConn} {remoteConn} {remoteEndPoint} {this.ChannelType}");
+			Log.Info($"channel create: {localConn} {remoteConn} {remoteEndPoint} {this.ChannelType}");
 
 			this.Service = kService;
 			this.LocalConn = localConn;
@@ -116,7 +143,7 @@ namespace ET
 
 			uint localConn = this.LocalConn;
 			uint remoteConn = this.RemoteConn;
-			Log.Info($"channel dispose: {this.Id} {localConn} {remoteConn}");
+			Log.Info($"channel dispose: {localConn} {remoteConn}");
 			
 			long id = this.Id;
 			this.Id = 0;
@@ -152,7 +179,7 @@ namespace ET
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.Service.Id));
 			this.InitKcp();
 
-			Log.Info($"channel connected: {this.Id} {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
+			Log.Info($"channel connected: {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
 			this.IsConnected = true;
 			this.lastRecvTime = this.Service.TimeNow;
 			
@@ -175,7 +202,20 @@ namespace ET
 		{
 			try
 			{
+				if (this.IsConnected)
+				{
+					return;
+				}
+				
 				uint timeNow = this.Service.TimeNow;
+				
+				// 5秒连接超时
+				if (timeNow > this.CreateTime + 5 * 1000)
+				{
+					Log.Error($"kChannel connect timeout: {this.Id} {this.RemoteConn} {timeNow} {this.CreateTime} {this.ChannelType} {this.RemoteAddress}");
+					this.OnError(ErrorCore.ERR_KcpConnectTimeout);
+					return;
+				}
 				
 				this.lastRecvTime = timeNow;
 				
@@ -184,10 +224,11 @@ namespace ET
 				buffer.WriteTo(1, this.LocalConn);
 				buffer.WriteTo(5, this.RemoteConn);
 				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
-				Log.Info($"kchannel connect {this.Id} {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
+				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
 				
 				// 300毫秒后再次update发送connect请求
-				this.Service.AddToUpdate(300, this.Id);
+				long tillTime = TimeHelper.ClientNow() + 300;
+				NetServices.Instance.TimerComponent.NewOnceTimer(tillTime, TimerCoreCallbackId.KServiceConnectTimer, this);
 			}
 			catch (Exception e)
 			{
@@ -206,21 +247,8 @@ namespace ET
 			uint timeNow = this.Service.TimeNow;
 			
 			// 如果还没连接上，发送连接请求
-			if (!this.IsConnected)
+			if (!this.IsConnected && this.ChannelType == ChannelType.Connect)
 			{
-				// 10秒超时没连接上则报错
-				if (timeNow - this.CreateTime > 10000)
-				{
-					Log.Error($"kChannel connect timeout: {this.Id} {this.RemoteConn} {timeNow} {this.CreateTime} {this.ChannelType} {this.RemoteAddress}");
-					this.OnError(ErrorCore.ERR_KcpConnectTimeout);
-					return;
-				}
-				switch (ChannelType)
-				{
-					case ChannelType.Connect:
-						this.Connect();
-						break;
-				}
 				return;
 			}
 
@@ -241,8 +269,8 @@ namespace ET
 			}
 
 			uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
-			long tillTime = TimeHelper.ClientNow() + nextUpdateTime - this.Service.TimeNow;
-			this.Service.AddToUpdate(nextUpdateTime, this.Id);
+			long tillTime = nextUpdateTime - timeNow + TimeHelper.ClientNow();
+			NetServices.Instance.TimerComponent.NewOnceTimer(tillTime, TimerCoreCallbackId.KServiceNextUpdateTimer, this);
 		}
 
 		public void HandleRecv(byte[] date, int offset, int length)
@@ -252,10 +280,8 @@ namespace ET
 				return;
 			}
 
-			this.IsConnected = true;
-			
 			Kcp.KcpInput(this.kcp, date, offset, length);
-			this.Service.AddToUpdate(0, this.Id);
+			this.Service.AddToUpdate(this.Id);
 
 			while (true)
 			{
@@ -434,7 +460,7 @@ namespace ET
 				}
 			}
 
-			this.Service.AddToUpdate(0, this.Id);
+			this.Service.AddToUpdate(this.Id);
 		}
 		
 		public void Send(long actorId, MemoryStream stream)
@@ -468,7 +494,7 @@ namespace ET
 			
 			if (n > maxWaitSize)
 			{
-				Log.Error($"kcp wait snd too large: {n}: {this.Id} {this.LocalConn} {this.RemoteConn}");
+				Log.Error($"kcp wait snd too large: {n}: {this.LocalConn} {this.RemoteConn}");
 				this.OnError(ErrorCore.ERR_KcpWaitSendSizeTooLarge);
 				return;
 			}

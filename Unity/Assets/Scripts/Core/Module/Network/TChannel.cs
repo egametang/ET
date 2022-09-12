@@ -151,7 +151,6 @@ namespace ET
 				}
 			}
 			
-
 			if (!this.isSending)
 			{
 				//this.StartSend();
