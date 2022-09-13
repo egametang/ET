@@ -11,6 +11,7 @@ namespace ET
             OuterMessage.G2C_Ping,
             OuterMessage.C2G_Benchmark,
             OuterMessage.G2C_Benchmark,
+            ushort.MaxValue, // ActorResponse
         };
 
         private static bool IsNeedLogMessage(ushort opcode)

@@ -131,9 +131,9 @@ namespace ET
             this.netThreadOperators.Enqueue(netOperator);
         }
         
-        public void RemoveChannel(int serviceId, long channelId)
+        public void RemoveChannel(int serviceId, long channelId, int error)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId};
+            NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId, ActorId = error};
             this.netThreadOperators.Enqueue(netOperator);
         }
 
@@ -216,7 +216,6 @@ namespace ET
         
         private readonly Dictionary<int, AService> services = new Dictionary<int, AService>();
         private readonly Queue<int> queue = new Queue<int>();
-        public readonly TimerComponent TimerComponent = new TimerComponent();
         
         private void Add(AService aService)
         {
@@ -269,7 +268,7 @@ namespace ET
                         case NetOp.RemoveChannel:
                         {
                             AService service = this.Get(op.ServiceId);
-                            service.Remove(op.ChannelId);
+                            service.Remove(op.ChannelId, (int)op.ActorId);
                             break;
                         }
                         case NetOp.SendStream:
@@ -334,8 +333,6 @@ namespace ET
             }
             
             this.RunNetThreadOperator();
-            
-            TimerComponent.Update();
         }
 
         public void OnAccept(int serviceId, long channelId, IPEndPoint ipEndPoint)

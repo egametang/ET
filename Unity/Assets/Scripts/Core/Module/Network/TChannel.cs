@@ -18,8 +18,6 @@ namespace ET
 
 		private readonly CircularBuffer recvBuffer = new CircularBuffer();
 		private readonly CircularBuffer sendBuffer = new CircularBuffer();
-		
-		private readonly ConcurrentQueue<Action> queue = new ConcurrentQueue<Action>();
 
 		private bool isSending;
 
@@ -31,23 +29,7 @@ namespace ET
 
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
 		{
-			switch (e.LastOperation)
-			{
-				case SocketAsyncOperation.Connect:
-					this.Service.ThreadSynchronizationContext.Post(()=>OnConnectComplete(e));
-					break;
-				case SocketAsyncOperation.Receive:
-					this.Service.ThreadSynchronizationContext.Post(()=>OnRecvComplete(e));
-					break;
-				case SocketAsyncOperation.Send:
-					this.Service.ThreadSynchronizationContext.Post(()=>OnSendComplete(e));
-					break;
-				case SocketAsyncOperation.Disconnect:
-					this.Service.ThreadSynchronizationContext.Post(()=>OnDisconnectComplete(e));
-					break;
-				default:
-					throw new Exception($"socket error: {e.LastOperation}");
-			}
+			this.Service.Queue.Enqueue(new TArgs() {ChannelId = this.Id, SocketAsyncEventArgs = e});
 		}
 		
 		public TChannel(long id, IPEndPoint ipEndPoint, TService service)
@@ -65,7 +47,7 @@ namespace ET
 			this.isConnected = false;
 			this.isSending = false;
 
-			this.Service.ThreadSynchronizationContext.Post(this.ConnectAsync);
+			this.ConnectAsync();
 		}
 		
 		public TChannel(long id, Socket socket, TService service)
@@ -83,12 +65,8 @@ namespace ET
 			this.isConnected = true;
 			this.isSending = false;
 			
-			// 下一帧再开始读写
-			this.Service.ThreadSynchronizationContext.Post(() =>
-			{
-				this.StartRecv();
-				this.StartSend();
-			});
+			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
+			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartRecv, ChannelId = this.Id});
 		}
 		
 		
@@ -100,7 +78,7 @@ namespace ET
 				return;
 			}
 
-			Log.Info($"channel dispose: {this.Id} {this.RemoteAddress}");
+			Log.Info($"channel dispose: {this.Id} {this.RemoteAddress} {this.Error}");
 			
 			long id = this.Id;
 			this.Id = 0;
@@ -154,7 +132,7 @@ namespace ET
 			if (!this.isSending)
 			{
 				//this.StartSend();
-				this.Service.NeedStartSend.Add(this.Id);
+				this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
 			}
 		}
 
@@ -168,13 +146,12 @@ namespace ET
 			OnConnectComplete(this.outArgs);
 		}
 
-		private void OnConnectComplete(object o)
+		public void OnConnectComplete(SocketAsyncEventArgs e)
 		{
 			if (this.socket == null)
 			{
 				return;
 			}
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
 			
 			if (e.SocketError != SocketError.Success)
 			{
@@ -184,17 +161,17 @@ namespace ET
 
 			e.RemoteEndPoint = null;
 			this.isConnected = true;
-			this.StartRecv();
-			this.StartSend();
+			
+			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
+			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartRecv, ChannelId = this.Id});
 		}
 
-		private void OnDisconnectComplete(object o)
+		public void OnDisconnectComplete(SocketAsyncEventArgs e)
 		{
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 			this.OnError((int)e.SocketError);
 		}
 
-		private void StartRecv()
+		public void StartRecv()
 		{
 			while (true)
 			{
@@ -223,7 +200,7 @@ namespace ET
 			}
 		}
 
-		private void OnRecvComplete(object o)
+		public void OnRecvComplete(object o)
 		{
 			this.HandleRecv(o);
 			
@@ -231,7 +208,8 @@ namespace ET
 			{
 				return;
 			}
-			this.StartRecv();
+			
+			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartRecv, ChannelId = this.Id});
 		}
 
 		private void HandleRecv(object o)
@@ -288,12 +266,7 @@ namespace ET
 			}
 		}
 
-		public void Update()
-		{
-			this.StartSend();
-		}
-
-		private void StartSend()
+		public void StartSend()
 		{
 			if(!this.isConnected)
 			{
@@ -346,13 +319,13 @@ namespace ET
 			}
 		}
 
-		private void OnSendComplete(object o)
+		public void OnSendComplete(object o)
 		{
 			HandleSend(o);
 			
 			this.isSending = false;
 			
-			this.StartSend();
+			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
 		}
 
 		private void HandleSend(object o)
@@ -397,7 +370,7 @@ namespace ET
 					{
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
-						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						message = MessageSerializeHelper.DeserializeFrom(type, memoryStream);
 						break;
 					}
 					case ServiceType.Inner:
@@ -405,7 +378,7 @@ namespace ET
 						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
-						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						message = MessageSerializeHelper.DeserializeFrom(type, memoryStream);
 						break;
 					}
 				}

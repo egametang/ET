@@ -18,18 +18,7 @@ namespace ET.Server
         {
             ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), 8);
             Type type = NetServices.Instance.GetType(opcode);
-
-            if (opcode < OpcodeRangeDefine.PbMaxOpcode)
-            {
-                return ProtobufHelper.FromBytes(type, memoryStream.GetBuffer(), 10, (int)memoryStream.Length - 10);
-            }
-
-            if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
-            {
-                return JsonHelper.FromJson(type, memoryStream.GetBuffer().ToStr(10, (int)(memoryStream.Length - 10)));
-            }
-
-            return MongoHelper.FromBson(type, memoryStream.GetBuffer(), 10, (int)memoryStream.Length - 10);
+            return ProtobufHelper.FromBytes(type, memoryStream.GetBuffer(), 10, (int)memoryStream.Length - 10);
         }
     }
 }

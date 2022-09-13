@@ -16,7 +16,7 @@ namespace ET
 
         public abstract void Update();
 
-        public abstract void Remove(long id);
+        public abstract void Remove(long id, int error = 0);
         
         public abstract bool IsDispose();
 

@@ -46,13 +46,15 @@ namespace ET
             return channel;
         }
 
-        public override void Remove(long id)
+        public override void Remove(long id, int error = 0)
         {
             WChannel channel;
             if (!this.channels.TryGetValue(id, out channel))
             {
                 return;
             }
+
+            channel.Error = error;
 
             this.channels.Remove(id);
             channel.Dispose();

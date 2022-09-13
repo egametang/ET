@@ -17,33 +17,13 @@ namespace ET
 	
 	public class KChannel : AChannel
 	{
-		[Callback(TimerCoreCallbackId.KServiceConnectTimer)]
-		public class KServiceConnectTimer: ATimer<KChannel>
-		{
-			protected override void Run(KChannel kChannel)
-			{
-				kChannel.Connect();
-			}
-		}
-		
-		[Callback(TimerCoreCallbackId.KServiceNextUpdateTimer)]
-		public class KServiceNextUpdateTimer: ATimer<KChannel>
-		{
-			protected override void Run(KChannel kChannel)
-			{
-				kChannel.Service.AddToUpdate(kChannel.Id);
-			}
-		}
-
-		private readonly KService Service;
+		public readonly KService Service;
 		
 		private Socket socket;
 
 		public IntPtr kcp { get; private set; }
 
 		private readonly Queue<KcpWaitPacket> sendBuffer = new Queue<KcpWaitPacket>();
-
-		private uint lastRecvTime;
 		
 		public readonly uint CreateTime;
 
@@ -68,7 +48,7 @@ namespace ET
 		
 		private const int maxPacketSize = 10000;
 
-		private MemoryStream ms = new MemoryStream(maxPacketSize);
+		private readonly MemoryStream ms = new MemoryStream(maxPacketSize);
 
 		private MemoryStream readMemory;
 		private int needReadSplitCount;
@@ -107,10 +87,9 @@ namespace ET
 			this.Service = kService;
 			this.RemoteAddress = remoteEndPoint;
 			this.socket = socket;
-			this.lastRecvTime = kService.TimeNow;
 			this.CreateTime = kService.TimeNow;
 
-			this.Connect();
+			this.Connect(this.CreateTime);
 
 		}
 
@@ -129,7 +108,6 @@ namespace ET
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.Service.Id));
 			this.InitKcp();
 			
-			this.lastRecvTime = kService.TimeNow;
 			this.CreateTime = kService.TimeNow;
 		}
 	
@@ -143,7 +121,7 @@ namespace ET
 
 			uint localConn = this.LocalConn;
 			uint remoteConn = this.RemoteConn;
-			Log.Info($"channel dispose: {localConn} {remoteConn}");
+			Log.Info($"channel dispose: {localConn} {remoteConn} {this.Error}");
 			
 			long id = this.Id;
 			this.Id = 0;
@@ -151,9 +129,11 @@ namespace ET
 
 			try
 			{
-				//this.Service.Disconnect(localConn, remoteConn, this.Error, this.RemoteAddress, 3);
+				if (this.Error != ErrorCore.ERR_PeerDisconnect)
+				{
+					this.Service.Disconnect(localConn, remoteConn, this.Error, this.RemoteAddress, 3);
+				}
 			}
-
 			catch (Exception e)
 			{
 				Log.Error(e);
@@ -181,7 +161,6 @@ namespace ET
 
 			Log.Info($"channel connected: {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
 			this.IsConnected = true;
-			this.lastRecvTime = this.Service.TimeNow;
 			
 			while (true)
 			{
@@ -198,7 +177,7 @@ namespace ET
 		/// <summary>
 		/// 发送请求连接消息
 		/// </summary>
-		private void Connect()
+		private void Connect(uint timeNow)
 		{
 			try
 			{
@@ -207,17 +186,13 @@ namespace ET
 					return;
 				}
 				
-				uint timeNow = this.Service.TimeNow;
-				
-				// 5秒连接超时
-				if (timeNow > this.CreateTime + 5 * 1000)
+				// 10秒连接超时
+				if (timeNow > this.CreateTime + KService.ConnectTimeoutTime)
 				{
 					Log.Error($"kChannel connect timeout: {this.Id} {this.RemoteConn} {timeNow} {this.CreateTime} {this.ChannelType} {this.RemoteAddress}");
 					this.OnError(ErrorCore.ERR_KcpConnectTimeout);
 					return;
 				}
-				
-				this.lastRecvTime = timeNow;
 				
 				byte[] buffer = sendCache;
 				buffer.WriteTo(0, KcpProtocalType.SYN);
@@ -227,8 +202,7 @@ namespace ET
 				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
 				
 				// 300毫秒后再次update发送connect请求
-				long tillTime = TimeHelper.ClientNow() + 300;
-				NetServices.Instance.TimerComponent.NewOnceTimer(tillTime, TimerCoreCallbackId.KServiceConnectTimer, this);
+				this.Service.AddToUpdate(timeNow + 300, this.Id);
 			}
 			catch (Exception e)
 			{
@@ -237,18 +211,17 @@ namespace ET
 			}
 		}
 
-		public void Update()
+		public void Update(uint timeNow)
 		{
 			if (this.IsDisposed)
 			{
 				return;
 			}
-
-			uint timeNow = this.Service.TimeNow;
 			
 			// 如果还没连接上，发送连接请求
 			if (!this.IsConnected && this.ChannelType == ChannelType.Connect)
 			{
+				this.Connect(timeNow);
 				return;
 			}
 
@@ -269,8 +242,7 @@ namespace ET
 			}
 
 			uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
-			long tillTime = nextUpdateTime - timeNow + TimeHelper.ClientNow();
-			NetServices.Instance.TimerComponent.NewOnceTimer(tillTime, TimerCoreCallbackId.KServiceNextUpdateTimer, this);
+			this.Service.AddToUpdate(nextUpdateTime, this.Id);
 		}
 
 		public void HandleRecv(byte[] date, int offset, int length)
@@ -281,7 +253,7 @@ namespace ET
 			}
 
 			Kcp.KcpInput(this.kcp, date, offset, length);
-			this.Service.AddToUpdate(this.Id);
+			this.Service.AddToUpdate(0, this.Id);
 
 			while (true)
 			{
@@ -369,7 +341,6 @@ namespace ET
 						this.readMemory.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
 						break;
 				}
-				this.lastRecvTime = this.Service.TimeNow;
 				MemoryStream mem = this.readMemory;
 				this.readMemory = null;
 				this.OnRead(mem);
@@ -460,7 +431,7 @@ namespace ET
 				}
 			}
 
-			this.Service.AddToUpdate(this.Id);
+			this.Service.AddToUpdate(0, this.Id);
 		}
 		
 		public void Send(long actorId, MemoryStream stream)
@@ -514,7 +485,7 @@ namespace ET
 					{
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
-						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						message = MessageSerializeHelper.DeserializeFrom(type, memoryStream);
 						break;
 					}
 					case ServiceType.Inner:
@@ -522,7 +493,7 @@ namespace ET
 						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
-						message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+						message = MessageSerializeHelper.DeserializeFrom(type, memoryStream);
 						break;
 					}
 				}
@@ -538,7 +509,7 @@ namespace ET
 		public void OnError(int error)
 		{
 			long channelId = this.Id;
-			this.Service.Remove(channelId);
+			this.Service.Remove(channelId, error);
 			NetServices.Instance.OnError(this.Service.Id, channelId, error);
 		}
 	}

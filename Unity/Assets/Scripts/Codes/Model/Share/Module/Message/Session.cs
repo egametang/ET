@@ -42,7 +42,7 @@ namespace ET
         {
             protected override void Destroy(Session self)
             {
-                NetServices.Instance.RemoveChannel(self.ServiceId, self.Id);
+                NetServices.Instance.RemoveChannel(self.ServiceId, self.Id, self.Error);
             
                 foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
                 {

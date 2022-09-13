@@ -28,6 +28,8 @@ namespace ET
 
     public sealed class KService: AService
     {
+        public const int ConnectTimeoutTime = 20 * 1000;
+
         public readonly Dictionary<IntPtr, KChannel> KcpPtrChannels = new Dictionary<IntPtr, KChannel>();
         
         // KService创建的时间
@@ -151,13 +153,19 @@ namespace ET
 
         // 保存所有的channel
         private readonly Dictionary<long, KChannel> localConnChannels = new Dictionary<long, KChannel>();
-        private readonly Dictionary<long, KChannel> waitConnectChannels = new Dictionary<long, KChannel>();
+        private readonly Dictionary<long, KChannel> waitAcceptChannels = new Dictionary<long, KChannel>();
 
-        private readonly byte[] cache = new byte[8192];
+        private readonly byte[] cache = new byte[2048];
         private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
+        
+        // 下次时间更新的channel
+        private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
+        private readonly List<long> timeOutTime = new List<long>();
+        // 记录最小时间，不用每次都去MultiMap取第一个值
+        private long minTime;
         
         public override bool IsDispose()
         {
@@ -286,11 +294,11 @@ namespace ET
                             remoteConn = BitConverter.ToUInt32(this.cache, 1);
                             localConn = BitConverter.ToUInt32(this.cache, 5);
 
-                            this.waitConnectChannels.TryGetValue(remoteConn, out kChannel);
+                            this.waitAcceptChannels.TryGetValue(remoteConn, out kChannel);
                             if (kChannel == null)
                             {
                                 // accept的localConn不能与connect的localConn冲突，所以设置为一个大的数
-                                // localConn被人猜出来问题不大，因为remoteConn是随机的第三方并不知道
+                                // localConn被人猜出来问题不大，因为remoteConn是随机的,第三方并不知道
                                 localConn = NetServices.Instance.CreateAcceptChannelId();
                                 // 已存在同样的localConn，则不处理，等待下次sync
                                 if (this.localConnChannels.ContainsKey(localConn))
@@ -299,9 +307,9 @@ namespace ET
                                 }
 
                                 kChannel = new KChannel(localConn, remoteConn, this.socket, this.CloneAddress(), this);
-                                this.waitConnectChannels.Add(kChannel.RemoteConn, kChannel); // 连接上了或者超时后会删除
+                                this.waitAcceptChannels.Add(kChannel.RemoteConn, kChannel); // 连接上了或者超时后会删除
                                 this.localConnChannels.Add(kChannel.LocalConn, kChannel);
-
+                                
                                 kChannel.RealAddress = realAddress;
 
                                 IPEndPoint realEndPoint = kChannel.RealAddress == null? kChannel.RemoteAddress : NetworkHelper.ToIPEndPoint(kChannel.RealAddress);
@@ -410,8 +418,9 @@ namespace ET
                             if (!kChannel.IsConnected)
                             {
                                 kChannel.IsConnected = true;
-                                this.waitConnectChannels.Remove(remoteConn);
+                                this.waitAcceptChannels.Remove(kChannel.RemoteConn);
                             }
+
                             kChannel.HandleRecv(this.cache, 5, messageLength - 5);
                             break;
                     }
@@ -450,20 +459,23 @@ namespace ET
             }
         }
 
-        public override void Remove(long id)
+        public override void Remove(long id, int error = 0)
         {
             if (!this.localConnChannels.TryGetValue(id, out KChannel kChannel))
             {
                 return;
             }
-            Log.Info($"kservice remove channel: {id} {kChannel.LocalConn} {kChannel.RemoteConn}");
+
+            kChannel.Error = error;
+            
+            Log.Info($"kservice remove channel: {id} {kChannel.LocalConn} {kChannel.RemoteConn} {error}");
             this.localConnChannels.Remove(id);
             this.localConnChannels.Remove(kChannel.LocalConn);
-            if (this.waitConnectChannels.TryGetValue(kChannel.RemoteConn, out KChannel waitChannel))
+            if (this.waitAcceptChannels.TryGetValue(kChannel.RemoteConn, out KChannel waitChannel))
             {
                 if (waitChannel.LocalConn == kChannel.LocalConn)
                 {
-                    this.waitConnectChannels.Remove(kChannel.RemoteConn);
+                    this.waitAcceptChannels.Remove(kChannel.RemoteConn);
                 }
             }
 
@@ -472,7 +484,7 @@ namespace ET
             kChannel.Dispose();
         }
 
-        private void Disconnect(uint localConn, uint remoteConn, int error, IPEndPoint address, int times)
+        public void Disconnect(uint localConn, uint remoteConn, int error, IPEndPoint address, int times)
         {
             try
             {
@@ -511,12 +523,49 @@ namespace ET
 
         public override void Update()
         {
-            this.Recv();
+            uint timeNow = this.TimeNow;
             
-            this.UpdateChannel();
+            this.TimerOut(timeNow);
+            
+            this.CheckWaitAcceptChannel(timeNow);
+            
+            this.Recv();
+
+            this.UpdateChannel(timeNow);
         }
 
-        private void UpdateChannel()
+        private readonly List<KChannel> removeWaitAcceptChannels = new List<KChannel>();
+        private void CheckWaitAcceptChannel(uint timeNow)
+        {
+            removeWaitAcceptChannels.Clear();
+            foreach (var kv in this.waitAcceptChannels)
+            {
+                KChannel kChannel = kv.Value;
+                if (kChannel.IsDisposed)
+                {
+                    continue;
+                }
+
+                if (kChannel.IsConnected)
+                {
+                    continue;
+                }
+
+                if (timeNow < kChannel.CreateTime + ConnectTimeoutTime)
+                {
+                    continue;
+                }
+
+                removeWaitAcceptChannels.Add(kChannel);
+            }
+
+            foreach (KChannel kChannel in this.removeWaitAcceptChannels)
+            {
+                kChannel.OnError(ErrorCore.ERR_KcpAcceptTimeout);
+            }
+        }
+
+        private void UpdateChannel(uint timeNow)
         {
             foreach (long id in this.updateIds)
             {
@@ -531,15 +580,62 @@ namespace ET
                     continue;
                 }
 
-                kChannel.Update();
+                kChannel.Update(timeNow);
             }
             this.updateIds.Clear();
         }
         
         // 服务端需要看channel的update时间是否已到
-        public void AddToUpdate(long id)
+        public void AddToUpdate(long time, long id)
         {
-            this.updateIds.Add(id);
+            if (time == 0)
+            {
+                this.updateIds.Add(id);
+                return;
+            }
+            if (time < this.minTime)
+            {
+                this.minTime = time;
+            }
+            this.timeId.Add(time, id);
+        }
+        
+        // 计算到期需要update的channel
+        private void TimerOut(uint timeNow)
+        {
+            if (this.timeId.Count == 0)
+            {
+                return;
+            }
+            
+
+            if (timeNow < this.minTime)
+            {
+                return;
+            }
+
+            this.timeOutTime.Clear();
+
+            foreach (KeyValuePair<long, List<long>> kv in this.timeId)
+            {
+                long k = kv.Key;
+                if (k > timeNow)
+                {
+                    minTime = k;
+                    break;
+                }
+
+                this.timeOutTime.Add(k);
+            }
+
+            foreach (long k in this.timeOutTime)
+            {
+                foreach (long v in this.timeId[k])
+                {
+                    this.updateIds.Add(v);
+                }
+                this.timeId.Remove(k);
+            }
         }
     }
 }

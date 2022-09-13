@@ -12,8 +12,7 @@
                 session.OnResponse(response);
                 return;
             }
-
-            OpcodeHelper.LogMsg(session.DomainZone(), message);
+            
             // 普通消息或者是Rpc请求消息
             MessageDispatcherComponent.Instance.Handle(session, message);
             await ETTask.CompletedTask;

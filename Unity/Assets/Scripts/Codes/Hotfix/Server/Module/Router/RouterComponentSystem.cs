@@ -10,7 +10,7 @@ namespace ET.Server
     public static class RouterComponentSystem
     {
         [ObjectSystem]
-        public class RouterComponentAwakeSystem: AwakeSystem<RouterComponent, IPEndPoint, string>
+        public class RandomGeneratorponentAwakeSystem: AwakeSystem<RouterComponent, IPEndPoint, string>
         {
             protected override void Awake(RouterComponent self, IPEndPoint outerAddress, string innerIP)
             {
@@ -317,7 +317,7 @@ namespace ET.Server
                         break;
                     }
 
-                    if (++kcpRouter.SyncCount > 10)
+                    if (++kcpRouter.SyncCount > 20)
                     {
                         self.OnError(kcpRouter.Id, ErrorCore.ERR_KcpRouterSyncCountTooMuchTimes);
                         break;
