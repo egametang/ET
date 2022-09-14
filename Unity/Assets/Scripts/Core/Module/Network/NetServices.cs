@@ -23,7 +23,6 @@ namespace ET
         OnError = 5,
         CreateChannel = 6,
         RemoveChannel = 7,
-        SendStream = 8,
         SendMessage = 9,
         GetKChannelConn = 10,
         ChangeAddress = 11,
@@ -102,12 +101,6 @@ namespace ET
         public void ChangeAddress(int serviceId, long channelId, IPEndPoint ipEndPoint)
         {
             NetOperator netOperator = new NetOperator() { Op = NetOp.ChangeAddress, ServiceId = serviceId, ChannelId = channelId, Object = ipEndPoint};
-            this.netThreadOperators.Enqueue(netOperator);
-        }
-
-        public void SendStream(int serviceId, long channelId, long actorId, MemoryStream memoryStream)
-        {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.SendStream, ServiceId = serviceId, ChannelId = channelId, ActorId = actorId, Object = memoryStream };
             this.netThreadOperators.Enqueue(netOperator);
         }
         
@@ -271,17 +264,10 @@ namespace ET
                             service.Remove(op.ChannelId, (int)op.ActorId);
                             break;
                         }
-                        case NetOp.SendStream:
-                        {
-                            AService service = this.Get(op.ServiceId);
-                            service.Send(op.ChannelId, op.ActorId, op.Object as MemoryStream);
-                            break;
-                        }
                         case NetOp.SendMessage:
                         {
                             AService service = this.Get(op.ServiceId);
-                            (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(op.Object);
-                            service.Send(op.ChannelId, op.ActorId, stream);
+                            service.Send(op.ChannelId, op.ActorId, op.Object);
                             break;
                         }
                         case NetOp.GetKChannelConn:

@@ -567,7 +567,7 @@ namespace UnityEngine
             to.Normalize();
             float result1;
             Vector3.Dot(ref from, ref to, out result1);
-            result = Mathf.Cos(Mathf.Clamp(result1, -1f, 1f)) * 57.29578f;
+            result = Mathf.Acos(Mathf.Clamp(result1, -1f, 1f)) * 57.29578f;
         }
 
         public static Vector3 operator -(Vector3 value)

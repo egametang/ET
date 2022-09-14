@@ -511,14 +511,16 @@ namespace ET
             Log.Info($"channel send fin: {localConn} {remoteConn} {address} {error}");
         }
         
-        public override void Send(long channelId, long actorId, MemoryStream stream)
+        public override void Send(long channelId, long actorId, object message)
         {
             KChannel channel = this.Get(channelId);
             if (channel == null)
             {
                 return;
             }
-            channel.Send(actorId, stream);
+            
+            MemoryStream memoryStream = this.GetMemoryStream(message);
+            channel.Send(actorId, memoryStream);
         }
 
         public override void Update()

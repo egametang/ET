@@ -127,12 +127,6 @@ namespace ET
             self.LastSendTime = TimeHelper.ClientNow();
             NetServices.Instance.SendMessage(self.ServiceId, self.Id, actorId, message);
         }
-        
-        public static void Send(this Session self, long actorId, MemoryStream memoryStream)
-        {
-            self.LastSendTime = TimeHelper.ClientNow();
-            NetServices.Instance.SendStream(self.ServiceId, self.Id, actorId, memoryStream);
-        }
     }
 
     [ChildOf]

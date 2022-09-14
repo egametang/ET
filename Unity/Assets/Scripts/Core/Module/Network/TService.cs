@@ -161,7 +161,7 @@ namespace ET
 			this.idChannels.Remove(id);
 		}
 
-		public override void Send(long channelId, long actorId, MemoryStream stream)
+		public override void Send(long channelId, long actorId, object message)
 		{
 			try
 			{
@@ -171,7 +171,8 @@ namespace ET
 					NetServices.Instance.OnError(this.Id, channelId, ErrorCore.ERR_SendMessageNotFoundTChannel);
 					return;
 				}
-				aChannel.Send(actorId, stream);
+				MemoryStream memoryStream = this.GetMemoryStream(message);
+				aChannel.Send(actorId, memoryStream);
 			}
 			catch (Exception e)
 			{

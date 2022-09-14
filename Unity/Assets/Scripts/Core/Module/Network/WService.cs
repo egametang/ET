@@ -133,14 +133,15 @@ namespace ET
             throw new NotImplementedException();
         }
 
-        public override void Send(long channelId, long actorId, MemoryStream stream)
+        public override void Send(long channelId, long actorId, object message)
         {
             this.channels.TryGetValue(channelId, out WChannel channel);
             if (channel == null)
             {
                 return;
             }
-            channel.Send(stream);
+            MemoryStream memoryStream = this.GetMemoryStream(message);
+            channel.Send(memoryStream);
         }
 
         public override void Update()
