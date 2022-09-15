@@ -13,8 +13,6 @@
                 session.OnResponse(response);
                 return;
             }
-
-            OpcodeHelper.LogMsg(session.DomainZone(), message);
 			
             // 根据消息接口判断是不是Actor消息，不同的接口做不同的处理
             switch (message)

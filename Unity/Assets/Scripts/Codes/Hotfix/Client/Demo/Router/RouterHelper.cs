@@ -45,7 +45,7 @@ namespace ET.Client
             
             using Socket socket = new Socket(routerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             
-            int count = 30;
+            int count = 20;
             byte[] sendCache = new byte[512];
             byte[] recvCache = new byte[512];
 

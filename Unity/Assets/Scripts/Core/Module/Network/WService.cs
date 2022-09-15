@@ -46,13 +46,15 @@ namespace ET
             return channel;
         }
 
-        public override void Remove(long id)
+        public override void Remove(long id, int error = 0)
         {
             WChannel channel;
             if (!this.channels.TryGetValue(id, out channel))
             {
                 return;
             }
+
+            channel.Error = error;
 
             this.channels.Remove(id);
             channel.Dispose();
@@ -126,19 +128,20 @@ namespace ET
             }
         }
         
-        public override void Get(long id, IPEndPoint address)
+        public override void Create(long id, IPEndPoint address)
         {
             throw new NotImplementedException();
         }
 
-        public override void Send(long channelId, long actorId, MemoryStream stream)
+        public override void Send(long channelId, long actorId, object message)
         {
             this.channels.TryGetValue(channelId, out WChannel channel);
             if (channel == null)
             {
                 return;
             }
-            channel.Send(stream);
+            MemoryStream memoryStream = this.GetMemoryStream(message);
+            channel.Send(memoryStream);
         }
 
         public override void Update()

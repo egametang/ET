@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    public enum NetworkProtocol
+    {
+        TCP,
+        KCP,
+        Websocket,
+    }
+    
     public enum NetOp: byte
     {
         AddService = 1,
@@ -14,9 +21,8 @@ namespace ET
         OnAccept = 3,
         OnRead = 4,
         OnError = 5,
-        GetOrCreate = 6,
+        CreateChannel = 6,
         RemoveChannel = 7,
-        SendStream = 8,
         SendMessage = 9,
         GetKChannelConn = 10,
         ChangeAddress = 11,
@@ -33,50 +39,9 @@ namespace ET
 
     public class NetServices: Singleton<NetServices>
     {
-        private readonly Dictionary<int, AService> services = new Dictionary<int, AService>();
-
-        private readonly Queue<int> queue = new Queue<int>();
-        
-        // 初始化后不变，所以主线程，网络线程都可以读
-        private readonly DoubleMap<Type, ushort> typeOpcode = new DoubleMap<Type, ushort>();
-
         private readonly ConcurrentQueue<NetOperator> netThreadOperators = new ConcurrentQueue<NetOperator>();
         private readonly ConcurrentQueue<NetOperator> mainThreadOperators = new ConcurrentQueue<NetOperator>();
 
-        private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new Dictionary<int, Action<long, IPEndPoint>>();
-        private readonly Dictionary<int, Action<long, long, object>> readCallback = new Dictionary<int, Action<long, long, object>>();
-        private readonly Dictionary<int, Action<long, int>> errorCallback = new Dictionary<int, Action<long, int>>();
-
-#region 线程安全
-
-        public ushort GetOpcode(Type type)
-        {
-            return this.typeOpcode.GetValueByKey(type);
-        }
-
-        public Type GetType(ushort opcode)
-        {
-            return this.typeOpcode.GetKeyByValue(opcode);
-        }
-        
-        public uint CreateRandomLocalConn()
-        {
-            return (1u << 30) | RandomGenerator.RandUInt32();
-        }
-
-#endregion
-
-        
-        
-#region 主线程
-        
-        // localConn放在低32bit
-        private long connectIdGenerater = int.MaxValue;
-        public long CreateConnectChannelId(uint localConn)
-        {
-            return (--this.connectIdGenerater << 32) | localConn;
-        }
-        
         public NetServices()
         {
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
@@ -98,6 +63,33 @@ namespace ET
             }
         }
 
+#region 线程安全
+        
+        // 初始化后不变，所以主线程，网络线程都可以读
+        private readonly DoubleMap<Type, ushort> typeOpcode = new DoubleMap<Type, ushort>();
+
+        public ushort GetOpcode(Type type)
+        {
+            return this.typeOpcode.GetValueByKey(type);
+        }
+
+        public Type GetType(ushort opcode)
+        {
+            return this.typeOpcode.GetKeyByValue(opcode);
+        }
+
+#endregion
+
+        
+        
+#region 主线程
+        
+        private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new Dictionary<int, Action<long, IPEndPoint>>();
+        private readonly Dictionary<int, Action<long, long, object>> readCallback = new Dictionary<int, Action<long, long, object>>();
+        private readonly Dictionary<int, Action<long, int>> errorCallback = new Dictionary<int, Action<long, int>>();
+        
+        private int serviceIdGenerator;
+
         public async Task<(uint, uint)> GetKChannelConn(int serviceId, long channelId)
         {
             TaskCompletionSource<(uint, uint)> tcs = new TaskCompletionSource<(uint, uint)>();
@@ -111,12 +103,6 @@ namespace ET
             NetOperator netOperator = new NetOperator() { Op = NetOp.ChangeAddress, ServiceId = serviceId, ChannelId = channelId, Object = ipEndPoint};
             this.netThreadOperators.Enqueue(netOperator);
         }
-
-        public void SendStream(int serviceId, long channelId, long actorId, MemoryStream memoryStream)
-        {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.SendStream, ServiceId = serviceId, ChannelId = channelId, ActorId = actorId, Object = memoryStream };
-            this.netThreadOperators.Enqueue(netOperator);
-        }
         
         public void SendMessage(int serviceId, long channelId, long actorId, object message)
         {
@@ -124,10 +110,12 @@ namespace ET
             this.netThreadOperators.Enqueue(netOperator);
         }
 
-        public void AddService(AService aService)
+        public int AddService(AService aService)
         {
+            aService.Id = ++this.serviceIdGenerator;
             NetOperator netOperator = new NetOperator() { Op = NetOp.AddService, ServiceId = aService.Id, ChannelId = 0, Object = aService };
             this.netThreadOperators.Enqueue(netOperator);
+            return aService.Id;
         }
         
         public void RemoveService(int serviceId)
@@ -136,15 +124,15 @@ namespace ET
             this.netThreadOperators.Enqueue(netOperator);
         }
         
-        public void RemoveChannel(int serviceId, long channelId)
+        public void RemoveChannel(int serviceId, long channelId, int error)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId};
+            NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId, ActorId = error};
             this.netThreadOperators.Enqueue(netOperator);
         }
 
-        public void GetChannel(int serviceId, long channelId, IPEndPoint address)
+        public void CreateChannel(int serviceId, long channelId, IPEndPoint address)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.GetOrCreate, ServiceId = serviceId, ChannelId = channelId, Object = address};
+            NetOperator netOperator = new NetOperator() { Op = NetOp.CreateChannel, ServiceId = serviceId, ChannelId = channelId, Object = address};
             this.netThreadOperators.Enqueue(netOperator);
         }
 
@@ -219,6 +207,9 @@ namespace ET
 
 #region 网络线程
         
+        private readonly Dictionary<int, AService> services = new Dictionary<int, AService>();
+        private readonly Queue<int> queue = new Queue<int>();
+        
         private void Add(AService aService)
         {
             this.services[aService.Id] = aService;
@@ -236,13 +227,6 @@ namespace ET
             {
                 service.Dispose();
             }
-        }
-
-        // localConn放在低32bit
-        private long acceptIdGenerater = 1;
-        public long CreateAcceptChannelId(uint localConn)
-        {
-            return (++this.acceptIdGenerater << 32) | localConn;
         }
 
         private void RunNetThreadOperator()
@@ -268,29 +252,22 @@ namespace ET
                             this.Remove(op.ServiceId);
                             break;
                         }
-                        case NetOp.GetOrCreate:
+                        case NetOp.CreateChannel:
                         {
                             AService service = this.Get(op.ServiceId);
-                            service.Get(op.ChannelId, op.Object as IPEndPoint);
+                            service.Create(op.ChannelId, op.Object as IPEndPoint);
                             break;
                         }
                         case NetOp.RemoveChannel:
                         {
                             AService service = this.Get(op.ServiceId);
-                            service.Remove(op.ChannelId);
-                            break;
-                        }
-                        case NetOp.SendStream:
-                        {
-                            AService service = this.Get(op.ServiceId);
-                            service.Send(op.ChannelId, op.ActorId, op.Object as MemoryStream);
+                            service.Remove(op.ChannelId, (int)op.ActorId);
                             break;
                         }
                         case NetOp.SendMessage:
                         {
                             AService service = this.Get(op.ServiceId);
-                            (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(op.Object);
-                            service.Send(op.ChannelId, op.ActorId, stream);
+                            service.Send(op.ChannelId, op.ActorId, op.Object);
                             break;
                         }
                         case NetOp.GetKChannelConn:
@@ -363,5 +340,27 @@ namespace ET
         }
 
 #endregion
+
+#region 主线程kcp id生成
+
+        // 这个因为是NetClientComponent中使用，不会与Accept冲突
+        public uint CreateConnectChannelId()
+        {
+            return RandomGenerator.RandUInt32();
+        }
+
+#endregion
+
+#region 网络线程kcp id生成
+
+        // 防止与内网进程号的ChannelId冲突，所以设置为一个大的随机数
+        private uint acceptIdGenerator = uint.MaxValue;
+        public uint CreateAcceptChannelId()
+        {
+            return --this.acceptIdGenerator;
+        }
+
+#endregion
+
     }
 }

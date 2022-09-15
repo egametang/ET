@@ -15,7 +15,6 @@ namespace ET
 
                 // 网络线程
                 self.thread = new Thread(self.NetThreadUpdate);
-                
                 self.thread.Start();
             }
         }
@@ -36,6 +35,7 @@ namespace ET
             {
                 NetThreadComponent.Instance = null;
                 self.isStop = true;
+                self.thread.Join(1000);
             }
         }
 
@@ -53,18 +53,6 @@ namespace ET
                 NetServices.Instance.UpdateInNetThread();
                 Thread.Sleep(1);
             }
-        }
-
-        public static int Add(this NetThreadComponent self, AService service)
-        {
-            service.Id = ++self.serviceIdGenerator;
-            NetServices.Instance.AddService(service);
-            return service.Id;
-        }
-        
-        public static void Remove(this NetThreadComponent self, int serviceId)
-        {
-            NetServices.Instance.RemoveService(serviceId);
         }
     }
 }

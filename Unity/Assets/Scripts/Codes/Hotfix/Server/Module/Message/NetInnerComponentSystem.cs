@@ -13,8 +13,20 @@ namespace ET.Server
             {
                 NetInnerComponent.Instance = self;
             
-                KService kService = new KService(AddressFamily.InterNetwork, ServiceType.Inner);
-                self.ServiceId = NetThreadComponent.Instance.Add(kService);
+                switch (self.InnerProtocol)
+                {
+                    case NetworkProtocol.TCP:
+                    {
+                        self.ServiceId = NetServices.Instance.AddService(new TService(AddressFamily.InterNetwork, ServiceType.Inner));
+                        break;
+                    }
+                    case NetworkProtocol.KCP:
+                    {
+                        self.ServiceId = NetServices.Instance.AddService(new KService(AddressFamily.InterNetwork, ServiceType.Inner));
+                        break;
+                    }
+                }
+                
                 NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
                 NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
             }
@@ -26,9 +38,21 @@ namespace ET.Server
             protected override void Awake(NetInnerComponent self, IPEndPoint address)
             {
                 NetInnerComponent.Instance = self;
-
-                KService kService = new KService(address, ServiceType.Inner);
-                self.ServiceId = NetThreadComponent.Instance.Add(kService);
+                
+                switch (self.InnerProtocol)
+                {
+                    case NetworkProtocol.TCP:
+                    {
+                        self.ServiceId = NetServices.Instance.AddService(new TService(address, ServiceType.Inner));
+                        break;
+                    }
+                    case NetworkProtocol.KCP:
+                    {
+                        self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Inner));
+                        break;
+                    }
+                }
+                
                 NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
                 NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
                 NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
@@ -40,7 +64,7 @@ namespace ET.Server
         {
             protected override void Destroy(NetInnerComponent self)
             {
-                NetThreadComponent.Instance.Remove(self.ServiceId);
+                NetServices.Instance.RemoveService(self.ServiceId);
             }
         }
 
@@ -79,22 +103,11 @@ namespace ET.Server
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
 
-        // 这个channelId是由CreateConnectChannelId生成的
-        public static Session Create(this NetInnerComponent self, IPEndPoint ipEndPoint)
-        {
-            uint localConn = NetServices.Instance.CreateRandomLocalConn();
-            long channelId = NetServices.Instance.CreateConnectChannelId(localConn);
-            Session session = self.CreateInner(channelId, ipEndPoint);
-            return session;
-        }
-
         private static Session CreateInner(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
-
             session.RemoteAddress = ipEndPoint;
-
-            NetServices.Instance.GetChannel(self.ServiceId, channelId, ipEndPoint);
+            NetServices.Instance.CreateChannel(self.ServiceId, channelId, ipEndPoint);
 
             //session.AddComponent<InnerPingComponent>();
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
@@ -106,12 +119,13 @@ namespace ET.Server
         public static Session Get(this NetInnerComponent self, long channelId)
         {
             Session session = self.GetChild<Session>(channelId);
-            if (session == null)
+            if (session != null)
             {
-                IPEndPoint ipEndPoint = StartProcessConfigCategory.Instance.Get((int) channelId).InnerIPPort;
-                session = self.CreateInner(channelId, ipEndPoint);
+                return session;
             }
 
+            IPEndPoint ipEndPoint = StartProcessConfigCategory.Instance.Get((int) channelId).InnerIPPort;
+            session = self.CreateInner(channelId, ipEndPoint);
             return session;
         }
     }

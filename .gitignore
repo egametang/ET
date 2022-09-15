@@ -56,7 +56,8 @@ Server/.DS_Store
 /Unity/Assets/Bundles/Code/Code.pdb.bytes
 /Unity/Assets/Bundles/Code/Code.pdb.bytes.meta
 /Unity/Assembly-CSharp.csproj
-/Unity/Assets/Config/Excel/~$*.xlsx
+~$*.xlsx
+~$*.xlsx.meta
 /.vscode
 /Unity/UserSettings/Search.settings
 /Unity/Unity.Hotfix.csproj

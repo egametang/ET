@@ -10,8 +10,7 @@ namespace ET.Server
         {
             protected override void Awake(NetServerComponent self, IPEndPoint address)
             {
-                KService kService = new KService(address, ServiceType.Outer);
-                self.ServiceId = NetThreadComponent.Instance.Add(kService);
+                self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Outer));
                 NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
                 NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
                 NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
@@ -23,7 +22,7 @@ namespace ET.Server
         {
             protected override void Destroy(NetServerComponent self)
             {
-                NetThreadComponent.Instance.Remove(self.ServiceId);
+                NetServices.Instance.RemoveService(self.ServiceId);
             }
         }
 
@@ -52,12 +51,6 @@ namespace ET.Server
                 // 客户端连接，2秒检查一次recv消息，10秒没有消息则断开
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
-        }
-
-        public static Session Get(this NetServerComponent self, long id)
-        {
-            Session session = self.GetChild<Session>(id);
-            return session;
         }
         
         private static void OnRead(this NetServerComponent self, long channelId, long actorId, object message)

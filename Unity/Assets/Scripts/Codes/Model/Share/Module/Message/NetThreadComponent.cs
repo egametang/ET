@@ -7,8 +7,7 @@ namespace ET
     {
         [StaticField]
         public static NetThreadComponent Instance;
-
-        public int serviceIdGenerator;
+        
         public Thread thread;
         public bool isStop;
     }

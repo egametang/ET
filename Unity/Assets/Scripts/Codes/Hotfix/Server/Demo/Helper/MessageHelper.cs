@@ -24,10 +24,10 @@ namespace ET.Server
         public static void Broadcast(Unit unit, IActorMessage message)
         {
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
-            (ushort _, MemoryStream memoryStream) = MessageSerializeHelper.MessageToStream(message);
+            // 网络底层做了优化，同一个消息不会多次序列化
             foreach (AOIEntity u in dict.Values)
             {
-                ActorMessageSenderComponent.Instance.Send(u.Unit.GetComponent<UnitGateComponent>().GateSessionActorId, memoryStream);
+                ActorMessageSenderComponent.Instance.Send(u.Unit.GetComponent<UnitGateComponent>().GateSessionActorId, message);
             }
         }
         

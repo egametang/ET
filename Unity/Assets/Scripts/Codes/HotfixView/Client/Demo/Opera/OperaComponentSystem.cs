@@ -33,10 +33,11 @@ namespace ET.Client
                 if (Physics.Raycast(ray, out hit, 1000, self.mapMask))
                 {
                     self.ClickPoint = hit.point;
-                    self.frameClickMap.X = self.ClickPoint.x;
-                    self.frameClickMap.Y = self.ClickPoint.y;
-                    self.frameClickMap.Z = self.ClickPoint.z;
-                    self.ClientScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
+                    C2M_PathfindingResult c2MPathfindingResult = new C2M_PathfindingResult();
+                    c2MPathfindingResult.X = self.ClickPoint.x;
+                    c2MPathfindingResult.Y = self.ClickPoint.y;
+                    c2MPathfindingResult.Z = self.ClickPoint.z;
+                    self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2MPathfindingResult);
                 }
             }
 

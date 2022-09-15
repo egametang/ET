@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 
 namespace ET.Server
 {
@@ -30,6 +27,8 @@ namespace ET.Server
     public class NetInnerComponent: Entity, IAwake<IPEndPoint>, IAwake, IDestroy
     {
         public int ServiceId;
+        
+        public NetworkProtocol InnerProtocol = NetworkProtocol.KCP;
 
         [StaticField]
         public static NetInnerComponent Instance;

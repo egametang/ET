@@ -36,6 +36,12 @@ namespace ET
                 queue = new Queue<object>();
                 pool.Add(type, queue);
             }
+
+            // 一种对象最大为1000个
+            if (queue.Count > 1000)
+            {
+                return;
+            }
             queue.Enqueue(obj);
         }
     }

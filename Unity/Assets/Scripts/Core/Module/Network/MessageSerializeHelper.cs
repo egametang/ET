@@ -5,33 +5,20 @@ namespace ET
 {
     public static class MessageSerializeHelper
     {
-        public static object DeserializeFrom(ushort opcode, Type type, MemoryStream memoryStream)
+        public static object DeserializeFrom(Type type, MemoryStream memoryStream)
         {
-            if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
-            {
-                return JsonHelper.FromJson(type, memoryStream.GetBuffer().ToStr((int)memoryStream.Position, (int)(memoryStream.Length - memoryStream.Position)));
-            }
-            
             return ProtobufHelper.FromStream(type, memoryStream);
         }
 
-        public static void SerializeTo(ushort opcode, object obj, MemoryStream memoryStream)
+        public static void SerializeTo(object obj, MemoryStream memoryStream)
         {
             try
             {
-                if (opcode >= OpcodeRangeDefine.JsonMinOpcode)
-                {
-                    string s = JsonHelper.ToJson(obj);
-                    byte[] bytes = s.ToUtf8();
-                    memoryStream.Write(bytes, 0, bytes.Length);
-                    return;
-                }
-                
                 ProtobufHelper.ToStream(obj, memoryStream);
             }
             catch (Exception e)
             {
-                throw new Exception($"SerializeTo error: {opcode}", e);
+                throw new Exception($"SerializeTo error: {obj}", e);
             }
 
         }
@@ -63,7 +50,7 @@ namespace ET
             
             stream.GetBuffer().WriteTo(headOffset, opcode);
             
-            MessageSerializeHelper.SerializeTo(opcode, message, stream);
+            MessageSerializeHelper.SerializeTo(message, stream);
             
             stream.Seek(0, SeekOrigin.Begin);
             return (opcode, stream);

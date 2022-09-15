@@ -32,10 +32,10 @@ namespace ET
 				Game.AddSingleton<CoroutineLockComponent>();
 				
 				ETTask.ExceptionHandler += Log.Error;
+				
+				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
 
 				Game.AddSingleton<CodeLoader>().Start();
-
-				Log.Console($"app start: {Root.Instance.Scene.Id} options: {JsonHelper.ToJson(Options.Instance)} ");
 
 				while (true)
 				{

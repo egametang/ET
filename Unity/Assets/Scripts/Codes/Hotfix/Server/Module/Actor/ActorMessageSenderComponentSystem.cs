@@ -106,19 +106,6 @@ namespace ET.Server
 
             session.Send(processActorId.ActorId, message);
         }
-        
-        public static void Send(this ActorMessageSenderComponent self, long actorId, MemoryStream memoryStream)
-        {
-            if (actorId == 0)
-            {
-                throw new Exception($"actor id is 0: {memoryStream.ToActorMessage()}");
-            }
-            
-            ProcessActorId processActorId = new ProcessActorId(actorId);
-            Session session = NetInnerComponent.Instance.Get(processActorId.Process);
-            session.Send(processActorId.ActorId, memoryStream);
-        }
-
 
         public static int GetRpcId(this ActorMessageSenderComponent self)
         {

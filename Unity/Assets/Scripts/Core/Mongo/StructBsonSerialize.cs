@@ -37,15 +37,31 @@ namespace ET
 
             bsonReader.ReadStartDocument();
 
-            while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
+            while (bsonReader.State != BsonReaderState.EndOfDocument)
             {
-                string name = bsonReader.ReadName(Utf8NameDecoder.Instance);
-
-                FieldInfo field = actualType.GetField(name,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (field != null)
+                switch (bsonReader.State)
                 {
-                    object value = BsonSerializer.Deserialize(bsonReader, field.FieldType);
-                    field.SetValue(obj, value);
+                    case BsonReaderState.Name:
+                    {
+                        string name = bsonReader.ReadName(Utf8NameDecoder.Instance);
+                        FieldInfo field = actualType.GetField(name);
+                        if (field != null)
+                        {
+                            object value = BsonSerializer.Deserialize(bsonReader, field.FieldType);
+                            field.SetValue(obj, value);
+                        }
+                        break;
+                    }
+                    case BsonReaderState.Type:
+                    {
+                        bsonReader.ReadBsonType();
+                        break;
+                    }
+                    case BsonReaderState.Value:
+                    {
+                        bsonReader.SkipValue();
+                        break;
+                    }
                 }
             }
 

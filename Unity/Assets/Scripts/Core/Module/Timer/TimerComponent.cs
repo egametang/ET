@@ -274,7 +274,7 @@ namespace ET
         {
             if (tillTime < TimeHelper.ClientNow())
             {
-                Log.Warning($"new once time too small: {tillTime}");
+                Log.Error($"new once time too small: {tillTime}");
             }
 
             TimerAction timer = TimerAction.Create(TimerClass.OnceTimer, tillTime, type, args);
