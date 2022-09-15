@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -8,7 +8,7 @@ namespace ET.Server
 	{
 		protected override async ETTask Run(Unit unit, C2M_PathfindingResult message)
 		{
-			Vector3 target = new Vector3(message.X, message.Y, message.Z);
+			float3 target = new float3(message.X, message.Y, message.Z);
 
 			unit.FindPathMoveToAsync(target).Coroutine();
 			

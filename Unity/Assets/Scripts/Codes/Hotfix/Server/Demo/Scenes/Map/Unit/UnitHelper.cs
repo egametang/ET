@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -14,11 +14,11 @@ namespace ET.Server
             unitInfo.UnitId = unit.Id;
             unitInfo.ConfigId = unit.ConfigId;
             unitInfo.Type = (int)unit.Type;
-            Vector3 position = unit.Position;
+            float3 position = unit.Position;
             unitInfo.X = position.x;
             unitInfo.Y = position.y;
             unitInfo.Z = position.z;
-            Vector3 forward = unit.Forward;
+            float3 forward = unit.Forward;
             unitInfo.ForwardX = forward.x;
             unitInfo.ForwardY = forward.y;
             unitInfo.ForwardZ = forward.z;
@@ -31,7 +31,7 @@ namespace ET.Server
                     unitInfo.MoveInfo = new MoveInfo();
                     for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
                     {
-                        Vector3 pos = moveComponent.Targets[i];
+                        float3 pos = moveComponent.Targets[i];
                         unitInfo.MoveInfo.X.Add(pos.x);
                         unitInfo.MoveInfo.Y.Add(pos.y);
                         unitInfo.MoveInfo.Z.Add(pos.z);

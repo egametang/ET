@@ -309,8 +309,7 @@ namespace ET
             while (count-- > 0)
             {
                 int serviceId = this.queue.Dequeue();
-                AService service = this.services[serviceId];
-                if (service == null)
+                if (!this.services.TryGetValue(serviceId, out AService service))
                 {
                     continue;
                 }

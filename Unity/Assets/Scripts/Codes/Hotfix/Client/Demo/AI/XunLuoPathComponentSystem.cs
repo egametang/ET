@@ -1,11 +1,11 @@
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Client
 {
     [FriendOf(typeof(XunLuoPathComponent))]
     public static class XunLuoPathComponentSystem
     {
-        public static Vector3 GetCurrent(this XunLuoPathComponent self)
+        public static float3 GetCurrent(this XunLuoPathComponent self)
         {
             return self.path[self.Index];
         }

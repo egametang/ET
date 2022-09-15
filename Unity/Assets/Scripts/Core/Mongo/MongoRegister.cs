@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET
 {
@@ -20,9 +20,9 @@ namespace ET
 
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
-            BsonSerializer.RegisterSerializer(typeof(Vector3), new StructBsonSerialize<Vector3>());
-            BsonSerializer.RegisterSerializer(typeof(Vector4), new StructBsonSerialize<Vector4>());
-            BsonSerializer.RegisterSerializer(typeof(Quaternion), new StructBsonSerialize<Quaternion>());
+            BsonSerializer.RegisterSerializer(typeof(float3), new StructBsonSerialize<float3>());
+            BsonSerializer.RegisterSerializer(typeof(float4), new StructBsonSerialize<float4>());
+            BsonSerializer.RegisterSerializer(typeof(quaternion), new StructBsonSerialize<quaternion>());
 
             Dictionary<string, Type> types = EventSystem.Instance.GetTypes();
             foreach (Type type in types.Values)

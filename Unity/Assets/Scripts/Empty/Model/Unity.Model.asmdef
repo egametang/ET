@@ -4,7 +4,8 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Mono",
-        "Unity.Core"
+        "Unity.Core",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace ET.Client
 {
     public class AI_Attack: AAIHandler

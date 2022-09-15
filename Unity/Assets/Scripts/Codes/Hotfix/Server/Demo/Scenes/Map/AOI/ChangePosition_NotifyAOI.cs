@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -8,7 +8,7 @@ namespace ET.Server
         protected override async ETTask Run(Scene scene, ET.EventType.ChangePosition args)
         {
             Unit unit = args.Unit;
-            Vector3 oldPos = args.OldPos;
+            float3 oldPos = args.OldPos;
             int oldCellX = (int) (oldPos.x * 1000) / AOIManagerComponent.CellSize;
             int oldCellY = (int) (oldPos.z * 1000) / AOIManagerComponent.CellSize;
             int newCellX = (int) (unit.Position.x * 1000) / AOIManagerComponent.CellSize;

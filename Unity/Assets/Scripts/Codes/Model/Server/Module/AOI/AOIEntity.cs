@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
     [ComponentOf(typeof(Unit))]
-    public class AOIEntity: Entity, IAwake<int, Vector3>, IDestroy
+    public class AOIEntity: Entity, IAwake<int, float3>, IDestroy
     {
         public Unit Unit => this.GetParent<Unit>();
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -23,7 +23,7 @@ namespace ET.Server
 			
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<PathfindingComponent, string>(scene.Name);
-			unit.Position = new Vector3(-10, 0, -10);
+			unit.Position = new float3(-10, 0, -10);
 			
 			unit.AddComponent<MailBoxComponent>();
 			
@@ -33,7 +33,7 @@ namespace ET.Server
 			MessageHelper.SendToClient(unit, m2CCreateUnits);
 			
 			// 加入aoi
-			unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
+			unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);
 
 			response.NewInstanceId = unit.InstanceId;
 			

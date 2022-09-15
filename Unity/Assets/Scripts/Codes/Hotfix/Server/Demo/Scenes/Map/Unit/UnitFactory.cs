@@ -1,5 +1,5 @@
 ﻿using System;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -14,7 +14,7 @@ namespace ET.Server
                 {
                     Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 1001);
                     unit.AddComponent<MoveComponent>();
-                    unit.Position = new Vector3(-10, 0, -10);
+                    unit.Position = new float3(-10, 0, -10);
 			
                     NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
                     numericComponent.Set(NumericType.Speed, 6f); // 速度是6米每秒
@@ -22,7 +22,7 @@ namespace ET.Server
                     
                     unitComponent.Add(unit);
                     // 加入aoi
-                    unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
+                    unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);
                     return unit;
                 }
                 default:

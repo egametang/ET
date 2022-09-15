@@ -7,7 +7,8 @@
         "Unity.Core",
         "Unity.Model.Codes",
         "Unity.Hotfix.Codes",
-        "Unity.ModelView.Codes"
+        "Unity.ModelView.Codes",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [
         "Editor"

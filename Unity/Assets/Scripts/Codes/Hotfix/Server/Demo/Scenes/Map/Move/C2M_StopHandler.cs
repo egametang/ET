@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace ET.Server
+﻿namespace ET.Server
 {
 	[ActorMessageHandler(SceneType.Map)]
 	public class C2M_StopHandler : AMActorLocationHandler<Unit, C2M_Stop>
