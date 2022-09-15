@@ -5,7 +5,8 @@
         "Unity.Mono",
         "Unity.ThirdParty",
         "Unity.Core",
-        "Unity.Model.Codes"
+        "Unity.Model.Codes",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [
         "Editor"

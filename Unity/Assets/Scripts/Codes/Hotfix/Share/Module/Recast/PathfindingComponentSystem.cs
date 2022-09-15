@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET
 {
@@ -32,7 +32,7 @@ namespace ET
             }
         }
         
-        public static void Find(this PathfindingComponent self, Vector3 start, Vector3 target, List<Vector3> result)
+        public static void Find(this PathfindingComponent self, float3 start, float3 target, List<float3> result)
         {
             if (self.NavMesh == 0)
             {
@@ -52,22 +52,22 @@ namespace ET
             for (int i = 0; i < n; ++i)
             {
                 int index = i * 3;
-                result.Add(new Vector3(-self.Result[index], self.Result[index + 1], self.Result[index + 2]));
+                result.Add(new float3(-self.Result[index], self.Result[index + 1], self.Result[index + 2]));
             }
             //Log.Debug($"finish find path: {self.GetParent<Unit>().Id} {result.ListToString()}");
         }
 
-        public static void FindWithAdjust(this PathfindingComponent self, Vector3 start, Vector3 target, List<Vector3> result,float adjustRaduis)
+        public static void FindWithAdjust(this PathfindingComponent self, float3 start, float3 target, List<float3> result,float adjustRaduis)
         {
             self.Find(start, target, result);
             for (int i = 0; i < result.Count; i++)
             {
-                Vector3 adjust = self.FindRandomPointWithRaduis(result[i], adjustRaduis);
+                float3 adjust = self.FindRandomPointWithRaduis(result[i], adjustRaduis);
                 result[i] = adjust;
             }
         }
         
-        public static Vector3 FindRandomPointWithRaduis(this PathfindingComponent self, Vector3 pos, float raduis)
+        public static float3 FindRandomPointWithRaduis(this PathfindingComponent self, float3 pos, float raduis)
         {
             if (self.NavMesh == 0)
             {
@@ -82,10 +82,10 @@ namespace ET
             int degrees = RandomGenerator.RandomNumber(0, 360);
             float r = RandomGenerator.RandomNumber(0, (int) (raduis * 1000)) / 1000f;
 
-            float x = r * Mathf.Cos(MathHelper.DegToRad(degrees));
-            float z = r * Mathf.Sin(MathHelper.DegToRad(degrees));
+            float x = r * math.cos(math.radians(degrees)); 
+            float z = r * math.sin(math.radians(degrees));
 
-            Vector3 findpos = new Vector3(pos.x + x, pos.y, pos.z + z);
+            float3 findpos = new float3(pos.x + x, pos.y, pos.z + z);
 
             return self.RecastFindNearestPoint(findpos);
         }
@@ -99,7 +99,7 @@ namespace ET
         /// <param name="height"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static Vector3 FindRandomPointWithRectangle(this PathfindingComponent self, Vector3 pos, int width, int height)
+        public static float3 FindRandomPointWithRectangle(this PathfindingComponent self, float3 pos, int width, int height)
         {
             if (self.NavMesh == 0)
             {
@@ -114,12 +114,12 @@ namespace ET
             float x = RandomGenerator.RandomNumber(-width, width);
             float z = RandomGenerator.RandomNumber(-height, height);
 
-            Vector3 findpos = new Vector3(pos.x + x, pos.y, pos.z + z);
+            float3 findpos = new float3(pos.x + x, pos.y, pos.z + z);
 
             return self.RecastFindNearestPoint(findpos);
         }
         
-        public static Vector3 FindRandomPointWithRaduis(this PathfindingComponent self, Vector3 pos, float minRadius, float maxRadius)
+        public static float3 FindRandomPointWithRaduis(this PathfindingComponent self, float3 pos, float minRadius, float maxRadius)
         {
             if (self.NavMesh == 0)
             {
@@ -134,15 +134,15 @@ namespace ET
             int degrees = RandomGenerator.RandomNumber(0, 360);
             float r = RandomGenerator.RandomNumber((int) (minRadius * 1000), (int) (maxRadius * 1000)) / 1000f;
 
-            float x = r * Mathf.Cos(MathHelper.DegToRad(degrees));
-            float z = r * Mathf.Sin(MathHelper.DegToRad(degrees));
+            float x = r * math.cos(math.radians(degrees));
+            float z = r * math.sin(math.radians(degrees));
 
-            Vector3 findpos = new Vector3(pos.x + x, pos.y, pos.z + z);
+            float3 findpos = new float3(pos.x + x, pos.y, pos.z + z);
 
             return self.RecastFindNearestPoint(findpos);
         }
 
-        public static Vector3 RecastFindNearestPoint(this PathfindingComponent self, Vector3 pos)
+        public static float3 RecastFindNearestPoint(this PathfindingComponent self, float3 pos)
         {
             if (self.NavMesh == 0)
             {
@@ -159,7 +159,7 @@ namespace ET
                 throw new Exception($"RecastFindNearestPoint fail, 可能是位置配置有问题: sceneName:{self.DomainScene().Name} {pos} {self.Name} {self.GetParent<Unit>().Id} {self.GetParent<Unit>().Config.Id} {self.EndPos.ArrayToString()}");
             }
             
-            return new Vector3(-self.EndPos[0], self.EndPos[1], self.EndPos[2]);
+            return new float3(-self.EndPos[0], self.EndPos[1], self.EndPos[2]);
         }
     }
 }

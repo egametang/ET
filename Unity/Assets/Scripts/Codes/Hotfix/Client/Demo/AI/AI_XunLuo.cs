@@ -1,4 +1,4 @@
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Client
 {
@@ -29,7 +29,7 @@ namespace ET.Client
             while (true)
             {
                 XunLuoPathComponent xunLuoPathComponent = myUnit.GetComponent<XunLuoPathComponent>();
-                Vector3 nextTarget = xunLuoPathComponent.GetCurrent();
+                float3 nextTarget = xunLuoPathComponent.GetCurrent();
                 int ret = await myUnit.MoveToAsync(nextTarget, cancellationToken);
                 if (ret != 0)
                 {

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
 
 namespace ET
 {
@@ -7,7 +7,7 @@ namespace ET
         public struct ChangePosition
         {
             public Unit Unit;
-            public Vector3 OldPos;
+            public float3 OldPos;
         }
 
         public struct ChangeRotation

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
-using UnityEngine;
+using System.Numerics;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
     public static class MoveHelper
     {
         // 可以多次调用，多次调用的话会取消上一次的协程
-        public static async ETTask FindPathMoveToAsync(this Unit unit, Vector3 target, ETCancellationToken cancellationToken = null)
+        public static async ETTask FindPathMoveToAsync(this Unit unit, float3 target, ETCancellationToken cancellationToken = null)
         {
             float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
             if (speed < 0.01)
@@ -15,11 +16,11 @@ namespace ET.Server
                 return;
             }
 
-            using var list = ListComponent<Vector3>.Create();
+            using var list = ListComponent<float3>.Create();
             
             unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, list);
 
-            List<Vector3> path = list;
+            List<float3> path = list;
             if (path.Count < 2)
             {
                 unit.SendStop(0);
@@ -31,7 +32,7 @@ namespace ET.Server
             m2CPathfindingResult.Id = unit.Id;
             for (int i = 0; i < list.Count; ++i)
             {
-                Vector3 vector3 = list[i];
+                float3 vector3 = list[i];
                 m2CPathfindingResult.Xs.Add(vector3.x);
                 m2CPathfindingResult.Ys.Add(vector3.y);
                 m2CPathfindingResult.Zs.Add(vector3.z);
@@ -61,10 +62,10 @@ namespace ET.Server
                 Y = unit.Position.y,
                 Z = unit.Position.z,
 						
-                A = unit.Rotation.x,
-                B = unit.Rotation.y,
-                C = unit.Rotation.z,
-                W = unit.Rotation.w,
+                A = unit.Rotation.value.x,
+                B = unit.Rotation.value.y,
+                C = unit.Rotation.value.z,
+                W = unit.Rotation.value.w,
             });
         }
     }

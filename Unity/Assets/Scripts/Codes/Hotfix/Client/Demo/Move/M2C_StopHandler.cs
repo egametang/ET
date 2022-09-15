@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
 
 namespace ET.Client
 {
@@ -13,8 +13,8 @@ namespace ET.Client
 				return;
 			}
 
-			Vector3 pos = new Vector3(message.X, message.Y, message.Z);
-			Quaternion rotation = new Quaternion(message.A, message.B, message.C, message.W);
+			float3 pos = new float3(message.X, message.Y, message.Z);
+			quaternion rotation = new quaternion(message.A, message.B, message.C, message.W);
 
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
 			moveComponent.Stop();

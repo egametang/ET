@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET
 {
@@ -24,7 +24,7 @@ namespace ET
         }
     
         [ObjectSystem]
-        public class MoveComponentDestroySystem: DestroySystem<MoveComponent>
+        public class DestroySystem: DestroySystem<MoveComponent>
         {
             protected override void Destroy(MoveComponent self)
             {
@@ -33,12 +33,12 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class MoveComponentAwakeSystem: AwakeSystem<MoveComponent>
+        public class AwakeSystem: AwakeSystem<MoveComponent>
         {
             protected override void Awake(MoveComponent self)
             {
                 self.StartTime = 0;
-                self.StartPos = Vector3.zero;
+                self.StartPos = float3.zero;
                 self.NeedTime = 0;
                 self.MoveTimer = 0;
                 self.tcs = null;
@@ -68,7 +68,7 @@ namespace ET
             
             Unit unit = self.GetParent<Unit>();
 
-            using ListComponent<Vector3> path = ListComponent<Vector3>.Create();
+            using ListComponent<float3> path = ListComponent<float3>.Create();
             
             self.MoveForward(true);
                 
@@ -81,11 +81,11 @@ namespace ET
             return true;
         }
 
-        public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<Vector3> target, float speed, int turnTime = 100, ETCancellationToken cancellationToken = null)
+        public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<float3> target, float speed, int turnTime = 100, ETCancellationToken cancellationToken = null)
         {
             self.Stop();
 
-            foreach (Vector3 v in target)
+            foreach (float3 v in target)
             {
                 self.Targets.Add(v);
             }
@@ -122,7 +122,7 @@ namespace ET
             return moveRet;
         }
 
-        public static void MoveForward(this MoveComponent self, bool needCancel)
+        private static void MoveForward(this MoveComponent self, bool needCancel)
         {
             Unit unit = self.GetParent<Unit>();
             
@@ -151,7 +151,7 @@ namespace ET
                     float amount = moveTime * 1f / self.NeedTime;
                     if (amount > 0)
                     {
-                        Vector3 newPos = Vector3.Lerp(self.StartPos, self.NextTarget, amount);
+                        float3 newPos = math.lerp(self.StartPos, self.NextTarget, amount);
                         unit.Position = newPos;
                     }
                     
@@ -159,7 +159,11 @@ namespace ET
                     if (self.TurnTime > 0)
                     {
                         amount = moveTime * 1f / self.TurnTime;
-                        Quaternion q = Quaternion.Slerp(self.From, self.To, amount);
+                        if (amount > 1)
+                        {
+                            amount = 1f;
+                        }
+                        quaternion q = math.slerp(self.From, self.To, amount);
                         unit.Rotation = q;
                     }
                 }
@@ -208,8 +212,8 @@ namespace ET
             ++self.N;
 
             // 时间计算用服务端的位置, 但是移动要用客户端的位置来插值
-            Vector3 v = self.GetFaceV();
-            float distance = v.magnitude;
+            float3 v = self.GetFaceV();
+            float distance = math.length(v);
             
             // 插值的起始点要以unit的真实位置来算
             self.StartPos = unit.Position;
@@ -217,13 +221,12 @@ namespace ET
             self.StartTime += self.NeedTime;
             
             self.NeedTime = (long) (distance / self.Speed * 1000);
-
             
             if (self.TurnTime > 0)
             {
                 // 要用unit的位置
-                Vector3 faceV = self.GetFaceV();
-                if (faceV.sqrMagnitude < 0.0001f)
+                float3 faceV = self.GetFaceV();
+                if (math.lengthsq(faceV) < 0.0001f)
                 {
                     return;
                 }
@@ -236,7 +239,7 @@ namespace ET
 
                 if (Math.Abs(faceV.x) > 0.01 || Math.Abs(faceV.z) > 0.01)
                 {
-                    self.To = Quaternion.LookRotation(faceV, Vector3.up);
+                    self.To = quaternion.LookRotation(faceV, math.up());
                 }
 
                 return;
@@ -244,7 +247,7 @@ namespace ET
             
             if (self.TurnTime == 0) // turn time == 0 立即转向
             {
-                Vector3 faceV = self.GetFaceV();
+                float3 faceV = self.GetFaceV();
                 if (self.IsTurnHorizontal)
                 {
                     faceV.y = 0;
@@ -252,18 +255,18 @@ namespace ET
 
                 if (Math.Abs(faceV.x) > 0.01 || Math.Abs(faceV.z) > 0.01)
                 {
-                    self.To = Quaternion.LookRotation(faceV, Vector3.up);
+                    self.To = quaternion.LookRotation(faceV, math.up());
                     unit.Rotation = self.To;
                 }
             }
         }
 
-        private static Vector3 GetFaceV(this MoveComponent self)
+        private static float3 GetFaceV(this MoveComponent self)
         {
             return self.NextTarget - self.PreTarget;
         }
 
-        public static bool FlashTo(this MoveComponent self, Vector3 target)
+        public static bool FlashTo(this MoveComponent self, float3 target)
         {
             Unit unit = self.GetParent<Unit>();
             unit.Position = target;
@@ -280,10 +283,10 @@ namespace ET
             self.Clear();
         }
 
-        public static void Clear(this MoveComponent self)
+        private static void Clear(this MoveComponent self)
         {
             self.StartTime = 0;
-            self.StartPos = Vector3.zero;
+            self.StartPos = float3.zero;
             self.BeginTime = 0;
             self.NeedTime = 0;
             TimerComponent.Instance?.Remove(ref self.MoveTimer);

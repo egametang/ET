@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -8,9 +8,9 @@ namespace ET.Server
     public static class AOIEntitySystem
     {
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<AOIEntity, int, Vector3>
+        public class AwakeSystem: AwakeSystem<AOIEntity, int, float3>
         {
-            protected override void Awake(AOIEntity self, int distance, Vector3 pos)
+            protected override void Awake(AOIEntity self, int distance, float3 pos)
             {
                 self.ViewDistance = distance;
                 self.DomainScene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
