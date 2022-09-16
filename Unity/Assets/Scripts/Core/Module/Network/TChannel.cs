@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -46,8 +45,8 @@ namespace ET
 			this.RemoteAddress = ipEndPoint;
 			this.isConnected = false;
 			this.isSending = false;
-
-			this.ConnectAsync();
+			
+			this.Service.Queue.Enqueue(new TArgs(){Op = TcpOp.ConnectRemote,ChannelId = this.Id});
 		}
 		
 		public TChannel(long id, Socket socket, TService service)
@@ -136,7 +135,7 @@ namespace ET
 			}
 		}
 
-		private void ConnectAsync()
+		public void ConnectAsync()
 		{
 			this.outArgs.RemoteEndPoint = this.RemoteAddress;
 			if (this.socket.ConnectAsync(this.outArgs))
@@ -200,7 +199,7 @@ namespace ET
 			}
 		}
 
-		public void OnRecvComplete(object o)
+		public void OnRecvComplete(SocketAsyncEventArgs o)
 		{
 			this.HandleRecv(o);
 			
@@ -212,14 +211,12 @@ namespace ET
 			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartRecv, ChannelId = this.Id});
 		}
 
-		private void HandleRecv(object o)
+		private void HandleRecv(SocketAsyncEventArgs e)
 		{
 			if (this.socket == null)
 			{
 				return;
 			}
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
-
 			if (e.SocketError != SocketError.Success)
 			{
 				this.OnError((int)e.SocketError);
@@ -319,7 +316,7 @@ namespace ET
 			}
 		}
 
-		public void OnSendComplete(object o)
+		public void OnSendComplete(SocketAsyncEventArgs o)
 		{
 			HandleSend(o);
 			
@@ -328,14 +325,12 @@ namespace ET
 			this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
 		}
 
-		private void HandleSend(object o)
+		private void HandleSend(SocketAsyncEventArgs e)
 		{
 			if (this.socket == null)
 			{
 				return;
 			}
-			
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
 
 			if (e.SocketError != SocketError.Success)
 			{

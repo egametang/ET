@@ -12,7 +12,7 @@ namespace ET
 	{
 		StartSend,
 		StartRecv,
-		SocketAsyncEventArgs,
+		ConnectRemote,
 	}
 	
 	public struct TArgs
@@ -205,6 +205,12 @@ namespace ET
 						{
 							TChannel tChannel = this.Get(result.ChannelId);
 							tChannel.StartRecv();
+							break;
+						}
+						case TcpOp.ConnectRemote:
+						{
+							TChannel tChannel = this.Get(result.ChannelId);
+							tChannel.ConnectAsync();
 							break;
 						}
 					}
