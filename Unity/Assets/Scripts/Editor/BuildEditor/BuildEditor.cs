@@ -147,16 +147,6 @@ namespace ET
 			{
 				//Directory.Delete("Assets/Bundles/Config", true);
 				ToolsEditor.ExcelExporter();
-				// 如果是ClientServer，那么客户端要使用服务端配置
-				if (this.globalConfig.CodeMode == CodeMode.ClientServer)
-				{
-					FileHelper.CopyDirectory("../Config/StartConfig/Localhost", "Assets/Bundles/Config/StartConfig/Localhost");
-					foreach (string file in Directory.GetFiles("../Config/", "*.bytes"))
-					{
-						File.Copy(file, $"Assets/Bundles/Config/{Path.GetFileName(file)}", true);
-					}
-				}
-				Debug.Log("copy config to Assets/Bundles/Config");
 			}
 			
 			if (GUILayout.Button("Proto2CS"))

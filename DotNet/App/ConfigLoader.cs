@@ -23,11 +23,11 @@ namespace ET
                 string configFilePath;
                 if (startConfigs.Contains(configType.Name))
                 {
-                    configFilePath = $"../Config/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
+                    configFilePath = $"../Config/Excel/s/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
                 }
                 else
                 {
-                    configFilePath = $"../Config/{configType.Name}.bytes";
+                    configFilePath = $"../Config/Excel/s/{configType.Name}.bytes";
                 }
                 output[configType.Name] = File.ReadAllBytes(configFilePath);
             }

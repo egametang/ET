@@ -72,7 +72,7 @@ namespace ET
                         @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Generate\Server\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Plugins\*\Model\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Client',''))%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Plugins\*\Model\Share\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Share',''))%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Plugins\*\Model\Server\**\*.cs Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Server',''))%(FileName)%(Extension)");

@@ -45,7 +45,7 @@ namespace ET
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "Assets/Scripts/Codes/Model/Generate/Server",
+                        "Assets/Scripts/Codes/Model/Generate/ClientServer",
                         "Assets/Scripts/Codes/Model/Share",
                         "Assets/Scripts/Codes/Hotfix/Share",
                         "Assets/Scripts/Codes/Model/Client",
@@ -100,7 +100,7 @@ namespace ET
                         "Assets/Scripts/Codes/Model/Share/",
                         "Assets/Scripts/Codes/Model/Client/",
                         "Assets/Scripts/Codes/ModelView/Client/",
-                        "Assets/Scripts/Codes/Model/Generate/Server/",
+                        "Assets/Scripts/Codes/Model/Generate/ClientServer/",
                         "Assets/Scripts/Codes/Model/Server/",
                     };
                     break;
