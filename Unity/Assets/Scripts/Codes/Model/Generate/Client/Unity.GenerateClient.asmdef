@@ -1,5 +1,5 @@
 {
-    "name": "Unity.Ignore",
+    "name": "Unity.GenerateClient",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

@@ -85,3 +85,5 @@ Publish/
 /Unity/Unity.HotfixView.Codes.csproj
 /Unity/Unity.Model.Codes.csproj
 /Unity/Unity.ModelView.Codes.csproj
+/Unity/Unity.GenerateClient.csproj
+/Unity/Unity.GenerateServer.csproj
