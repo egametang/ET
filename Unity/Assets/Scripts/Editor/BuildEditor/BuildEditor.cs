@@ -149,13 +149,9 @@ namespace ET
 				ToolsEditor.ExcelExporter();
 				
 				// 设置ab包
-				List<string> files = FileHelper.GetAllFiles("Assets/Bundles/Config");
-				foreach (string path in files)
-				{
-					string fileName = Path.GetFileName(path);
-					AssetImporter assetImporter1 = AssetImporter.GetAtPath($"Assets/Bundles/Config/{fileName}");
-					assetImporter1.assetBundleName = "Config.unity3d";
-				}
+				AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
+				assetImporter.assetBundleName = "Config.unity3d";
+				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
 			}
 			
