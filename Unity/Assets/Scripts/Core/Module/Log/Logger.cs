@@ -36,7 +36,7 @@ namespace ET
                 return;
             }
             StackTrace st = new StackTrace(2, true);
-            Logger.Instance.Trace($"{msg}\n{st}");
+            this.iLog.Trace($"{msg}\n{st}");
         }
 
         public void Debug(string msg)
