@@ -71,11 +71,7 @@ Server/.DS_Store
 /Unity/Unity.Codes.csproj
 /Unity/Unity.Ignore.csproj
 Publish/
-/Unity/HybridCLRData/LocalIl2CppData
-/Unity/HybridCLRData/hybridclr_repo
-/Unity/HybridCLRData/il2cpp_plus_repo
-/Unity/HybridCLRData/AssembliesPostIl2CppStrip
-/Unity/HybridCLRData/HotFixDlls
+/Unity/Assets/Bundles/Code/*
 /Unity/Assets/Bundles/AssetBundleOutput.meta
 /Unity/Assets/Bundles/AssetBundleOutput
 /Unity/Assets/Bundles/AssetBundleSourceData

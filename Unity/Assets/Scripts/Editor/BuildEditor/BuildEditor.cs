@@ -112,17 +112,20 @@ namespace ET
 			GUILayout.Label("");
 			GUILayout.Label("Code Compile：");
 			
-			this.globalConfig.LoadMode = (LoadMode)EditorGUILayout.EnumPopup("LoadMode: ", this.globalConfig.LoadMode);
-			
 			this.globalConfig.CodeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
 			
-			if (GUILayout.Button("BuildCode"))
+			if (GUILayout.Button("BuildModelAndHotfix"))
 			{
 				if (Define.EnableCodes)
 				{
 					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
 				}
-				BuildAssemblieEditor.BuildCode(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
+
+				AfterCompiling();
+				
+				ShowNotification("Build Model And Hotfix Success!");
 			}
 			
 			if (GUILayout.Button("BuildModel"))
@@ -131,7 +134,11 @@ namespace ET
 				{
 					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
 				}
-				BuildAssemblieEditor.BuildModel(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
+
+				AfterCompiling();
+				
+				ShowNotification("Build Model Success!");
 			}
 			
 			if (GUILayout.Button("BuildHotfix"))
@@ -140,7 +147,11 @@ namespace ET
 				{
 					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
 				}
-				BuildAssemblieEditor.BuildHotfix(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
+
+				AfterCompiling();
+				
+				ShowNotification("Build Hotfix Success!");
 			}
 			
 			if (GUILayout.Button("ExcelExporter"))
@@ -159,10 +170,27 @@ namespace ET
 			{
 				ToolsEditor.Proto2CS();
 			}
-			
-
 
 			GUILayout.Space(5);
+		}
+		
+		private static void AfterCompiling()
+		{
+			Directory.CreateDirectory(BuildAssembliesHelper.CodeDir);
+
+			// 设置ab包
+			AssetImporter assetImporter = AssetImporter.GetAtPath("Assets/Bundles/Code");
+			assetImporter.assetBundleName = "Code.unity3d";
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+            
+			Debug.Log("build success!");
+		}
+		
+		public static void ShowNotification(string tips)
+		{
+			EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
+			game?.ShowNotification(new GUIContent($"{tips}"));
 		}
 	}
 }
