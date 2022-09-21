@@ -12,7 +12,7 @@ namespace ET
 	{
 		StartSend,
 		StartRecv,
-		ConnectRemote,
+		Connect,
 	}
 	
 	public struct TArgs
@@ -198,19 +198,28 @@ namespace ET
 						case TcpOp.StartSend:
 						{
 							TChannel tChannel = this.Get(result.ChannelId);
-							tChannel.StartSend();
+							if (tChannel == null)
+							{
+								tChannel.StartSend();
+							}
 							break;
 						}
 						case TcpOp.StartRecv:
 						{
 							TChannel tChannel = this.Get(result.ChannelId);
-							tChannel.StartRecv();
+							if (tChannel == null)
+							{
+								tChannel.StartRecv();
+							}
 							break;
 						}
-						case TcpOp.ConnectRemote:
+						case TcpOp.Connect:
 						{
 							TChannel tChannel = this.Get(result.ChannelId);
-							tChannel.ConnectAsync();
+							if (tChannel != null)
+							{
+								tChannel.ConnectAsync();
+							}
 							break;
 						}
 					}
@@ -229,25 +238,38 @@ namespace ET
 					case SocketAsyncOperation.Connect:
 					{
 						TChannel tChannel = this.Get(result.ChannelId);
-						tChannel.OnConnectComplete(e);
+						if (tChannel != null)
+						{
+							tChannel.OnConnectComplete(e);
+						}
+
 						break;
 					}
 					case SocketAsyncOperation.Disconnect:
 					{
 						TChannel tChannel = this.Get(result.ChannelId);
-						tChannel.OnDisconnectComplete(e);
+						if (tChannel != null)
+						{
+							tChannel.OnDisconnectComplete(e);
+						}
 						break;
 					}
 					case SocketAsyncOperation.Receive:
 					{
 						TChannel tChannel = this.Get(result.ChannelId);
-						tChannel.OnRecvComplete(e);
+						if (tChannel != null)
+						{
+							tChannel.OnRecvComplete(e);
+						}
 						break;
 					}
 					case SocketAsyncOperation.Send:
 					{
 						TChannel tChannel = this.Get(result.ChannelId);
-						tChannel.OnSendComplete(e);
+						if (tChannel != null)
+						{
+							tChannel.OnSendComplete(e);
+						}
 						break;
 					}
 					default:

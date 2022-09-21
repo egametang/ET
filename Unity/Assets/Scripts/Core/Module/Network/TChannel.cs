@@ -46,7 +46,7 @@ namespace ET
 			this.isConnected = false;
 			this.isSending = false;
 			
-			this.Service.Queue.Enqueue(new TArgs(){Op = TcpOp.ConnectRemote,ChannelId = this.Id});
+			this.Service.Queue.Enqueue(new TArgs(){Op = TcpOp.Connect,ChannelId = this.Id});
 		}
 		
 		public TChannel(long id, Socket socket, TService service)

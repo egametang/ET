@@ -218,7 +218,9 @@ namespace ET
 
         public AService Get(int id)
         {
-            return this.services[id];
+            AService aService;
+            this.services.TryGetValue(id, out aService);
+            return aService;
         }
         
         private void Remove(int id)
@@ -255,19 +257,28 @@ namespace ET
                         case NetOp.CreateChannel:
                         {
                             AService service = this.Get(op.ServiceId);
-                            service.Create(op.ChannelId, op.Object as IPEndPoint);
+                            if (service != null)
+                            {
+                                service.Create(op.ChannelId, op.Object as IPEndPoint);
+                            }
                             break;
                         }
                         case NetOp.RemoveChannel:
                         {
                             AService service = this.Get(op.ServiceId);
-                            service.Remove(op.ChannelId, (int)op.ActorId);
+                            if (service != null)
+                            {
+                                service.Remove(op.ChannelId, (int)op.ActorId);
+                            }
                             break;
                         }
                         case NetOp.SendMessage:
                         {
                             AService service = this.Get(op.ServiceId);
-                            service.Send(op.ChannelId, op.ActorId, op.Object);
+                            if (service != null)
+                            {
+                                service.Send(op.ChannelId, op.ActorId, op.Object);
+                            }
                             break;
                         }
                         case NetOp.GetKChannelConn:
@@ -276,7 +287,15 @@ namespace ET
                             try
                             {
                                 AService service = this.Get(op.ServiceId);
+                                if (service == null)
+                                {
+                                    break;
+                                }
                                 KChannel kChannel = (service as KService).Get(op.ChannelId);
+                                if (kChannel == null)
+                                {
+                                    break;
+                                }
                                 tcs.SetResult((kChannel.LocalConn, kChannel.RemoteConn));
                             }
                             catch (Exception e)
@@ -288,7 +307,15 @@ namespace ET
                         case NetOp.ChangeAddress:
                         {
                             AService service = this.Get(op.ServiceId);
+                            if (service == null)
+                            {
+                                break;
+                            }
                             KChannel kChannel = (service as KService).Get(op.ChannelId);
+                            if (kChannel == null)
+                            {
+                                break;
+                            }
                             kChannel.RemoteAddress = op.Object as IPEndPoint;
                             break;
                         }
