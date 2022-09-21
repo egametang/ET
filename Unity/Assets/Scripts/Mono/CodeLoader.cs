@@ -45,9 +45,6 @@ namespace ET
 					pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
 				}
 			
-				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
-				pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
-			
 				assembly = Assembly.Load(assBytes, pdbBytes);
 				this.LoadHotfix();
 			
