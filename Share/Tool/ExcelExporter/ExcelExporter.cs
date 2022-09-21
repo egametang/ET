@@ -289,6 +289,8 @@ namespace ET
             string classPath = GetClassDir(configType);
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
             List<string> protoNames = new List<string>();
+            if (!Directory.Exists(classPath))
+                return null;
             foreach (string classFile in Directory.GetFiles(classPath, "*.cs"))
             {
                 protoNames.Add(Path.GetFileNameWithoutExtension(classFile));
