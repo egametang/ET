@@ -50,6 +50,7 @@ namespace ET
             {
                 objects.Add(asset.name, asset);
             }
+            assetBundle.Unload(false);
             return objects;
         }
     }
