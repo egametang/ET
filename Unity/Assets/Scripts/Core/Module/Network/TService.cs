@@ -198,7 +198,7 @@ namespace ET
 						case TcpOp.StartSend:
 						{
 							TChannel tChannel = this.Get(result.ChannelId);
-							if (tChannel == null)
+							if (tChannel != null)
 							{
 								tChannel.StartSend();
 							}
@@ -207,7 +207,7 @@ namespace ET
 						case TcpOp.StartRecv:
 						{
 							TChannel tChannel = this.Get(result.ChannelId);
-							if (tChannel == null)
+							if (tChannel != null)
 							{
 								tChannel.StartRecv();
 							}
