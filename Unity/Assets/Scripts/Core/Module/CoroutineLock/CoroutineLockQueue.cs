@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockQueue: IDisposable
+    public class CoroutineLockQueue
     {
         private int type;
         private long key;
@@ -65,13 +65,9 @@ namespace ET
             }
         }
 
-        public void Dispose()
+        public void Recycle()
         {
-            while (this.queue.Count > 0)
-            {
-                WaitCoroutineLock waitCoroutineLock = this.queue.Dequeue();
-                waitCoroutineLock.Dispose();
-            }
+            this.queue.Clear();
             this.key = 0;
             this.type = 0;
             this.currentCoroutineLock = null;

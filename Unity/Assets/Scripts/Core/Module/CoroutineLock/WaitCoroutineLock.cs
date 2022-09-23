@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ET
 {
@@ -15,11 +16,11 @@ namespace ET
         }
     }
     
-    public class WaitCoroutineLock: IDisposable
+    public class WaitCoroutineLock
     {
         public static WaitCoroutineLock Create()
         {
-            WaitCoroutineLock waitCoroutineLock = ObjectPool.Instance.Fetch<WaitCoroutineLock>();
+            WaitCoroutineLock waitCoroutineLock = new WaitCoroutineLock();
             waitCoroutineLock.tcs = ETTask<CoroutineLock>.Create(true);
             return waitCoroutineLock;
         }
@@ -56,12 +57,6 @@ namespace ET
         public async ETTask<CoroutineLock> Wait()
         {
             return await this.tcs;
-        }
-
-        public void Dispose()
-        {
-            this.tcs = null;
-            ObjectPool.Instance.Recycle(this);
         }
     }
 }
