@@ -298,24 +298,6 @@ namespace ET
 
 	}
 
-	[Message(InnerMessage.M2M_UnitTransferResponse)]
-	[ProtoContract]
-	public partial class M2M_UnitTransferResponse: Object, IActorResponse
-	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
-		public int Error { get; set; }
-
-		[ProtoMember(3)]
-		public string Message { get; set; }
-
-		[ProtoMember(4)]
-		public long NewInstanceId { get; set; }
-
-	}
-
 	[Message(InnerMessage.G2M_SessionDisconnect)]
 	[ProtoContract]
 	public partial class G2M_SessionDisconnect: Object, IActorLocationMessage
@@ -352,10 +334,28 @@ namespace ET
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
-		public byte[] Unit { get; set; }
+		public long OldInstanceId { get; set; }
 
 		[ProtoMember(3)]
+		public byte[] Unit { get; set; }
+
+		[ProtoMember(4)]
 		public List<byte[]> Entitys = new List<byte[]>();
+
+	}
+
+	[Message(InnerMessage.M2M_UnitTransferResponse)]
+	[ProtoContract]
+	public partial class M2M_UnitTransferResponse: Object, IActorResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
 
 	}
 
@@ -380,9 +380,9 @@ namespace ET
 		 public const ushort ObjectGetResponse = 20018;
 		 public const ushort R2G_GetLoginKey = 20019;
 		 public const ushort G2R_GetLoginKey = 20020;
-		 public const ushort M2M_UnitTransferResponse = 20021;
-		 public const ushort G2M_SessionDisconnect = 20022;
-		 public const ushort ObjectQueryResponse = 20023;
-		 public const ushort M2M_UnitTransferRequest = 20024;
+		 public const ushort G2M_SessionDisconnect = 20021;
+		 public const ushort ObjectQueryResponse = 20022;
+		 public const ushort M2M_UnitTransferRequest = 20023;
+		 public const ushort M2M_UnitTransferResponse = 20024;
 	}
 }
