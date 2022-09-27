@@ -5,25 +5,7 @@ namespace ET
 {
     public static class MessageSerializeHelper
     {
-        public static object DeserializeFrom(Type type, MemoryStream memoryStream)
-        {
-            return ProtobufHelper.FromStream(type, memoryStream);
-        }
-
-        public static void SerializeTo(object obj, MemoryStream memoryStream)
-        {
-            try
-            {
-                ProtobufHelper.ToStream(obj, memoryStream);
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"SerializeTo error: {obj}", e);
-            }
-
-        }
-
-        public static MemoryStream GetStream(int count = 0)
+        private static MemoryStream GetStream(int count = 0)
         {
             MemoryStream stream;
             if (count > 0)
@@ -50,7 +32,7 @@ namespace ET
             
             stream.GetBuffer().WriteTo(headOffset, opcode);
             
-            MessageSerializeHelper.SerializeTo(message, stream);
+            SerializerHelper.ToStream(message, stream);
             
             stream.Seek(0, SeekOrigin.Begin);
             return (opcode, stream);

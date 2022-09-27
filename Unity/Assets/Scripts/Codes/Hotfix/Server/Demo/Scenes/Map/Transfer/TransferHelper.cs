@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace ET.Server
 {
@@ -10,7 +11,7 @@ namespace ET.Server
             long unitId = unit.Id;
             long unitInstanceId = unit.InstanceId;
             
-            M2M_UnitTransferRequest request = new M2M_UnitTransferRequest();
+            M2M_UnitTransferRequest request = new M2M_UnitTransferRequest() {Entitys = new List<byte[]>()};
             request.OldInstanceId = unitInstanceId;
             request.Unit = unit.ToBson();
             foreach (Entity entity in unit.Components.Values)

@@ -34,9 +34,7 @@ namespace ET.Client
                 {
                     self.ClickPoint = hit.point;
                     C2M_PathfindingResult c2MPathfindingResult = new C2M_PathfindingResult();
-                    c2MPathfindingResult.X = self.ClickPoint.x;
-                    c2MPathfindingResult.Y = self.ClickPoint.y;
-                    c2MPathfindingResult.Z = self.ClickPoint.z;
+                    c2MPathfindingResult.Position = self.ClickPoint;
                     self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2MPathfindingResult);
                 }
             }

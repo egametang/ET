@@ -1,159 +1,158 @@
 syntax = "proto3";
+// using 
+
 package ET;
 
 //ResponseType ObjectQueryResponse
 message ObjectQueryRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Key = 1;
-	int64 InstanceId = 2;
+	int32 RpcId = 1;
+	int64 Key = 2;
+	int64 InstanceId = 3;
 }
 
 //ResponseType A2M_Reload
 message M2A_Reload // IActorRequest
 {
-	int32 RpcId = 90;
+	int32 RpcId = 1;
 }
 
 message A2M_Reload // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType G2G_LockResponse
 message G2G_LockRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Id = 1;
-	string Address = 2;
+	int32 RpcId = 1;
+	int64 Id = 2;
+	string Address = 3;
 }
 
 message G2G_LockResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType G2G_LockReleaseResponse
 message G2G_LockReleaseRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Id = 1;
-	string Address = 2;
+	int32 RpcId = 1;
+	int64 Id = 2;
+	string Address = 3;
 }
 
 message G2G_LockReleaseResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType ObjectAddResponse
 message ObjectAddRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Key = 1;
-	int64 InstanceId = 2;
+	int32 RpcId = 1;
+	int64 Key = 2;
+	int64 InstanceId = 3;
 }
 
 message ObjectAddResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType ObjectLockResponse
 message ObjectLockRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Key = 1;
-	int64 InstanceId = 2;
-	int32 Time = 3;
+	int32 RpcId = 1;
+	int64 Key = 2;
+	int64 InstanceId = 3;
+	int32 Time = 4;
 }
 message ObjectLockResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType ObjectUnLockResponse
 message ObjectUnLockRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Key = 1;
-	int64 OldInstanceId = 2;
-	int64 InstanceId = 3;
+	int32 RpcId = 1;
+	int64 Key = 2;
+	int64 OldInstanceId = 3;
+	int64 InstanceId = 4;
 }
 message ObjectUnLockResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType ObjectRemoveResponse
 message ObjectRemoveRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Key = 1;
+	int32 RpcId = 1;
+	int64 Key = 2;
 }
 message ObjectRemoveResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
 }
 
 //ResponseType ObjectGetResponse
 message ObjectGetRequest // IActorRequest
 {
-	int32 RpcId = 90;
-	int64 Key = 1;
+	int32 RpcId = 1;
+	int64 Key = 2;
 }
 message ObjectGetResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-
-	int64 InstanceId = 1;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 InstanceId = 4;
 }
 
 //ResponseType G2R_GetLoginKey
 message R2G_GetLoginKey // IActorRequest
 {
-	int32 RpcId = 90;
-	string Account = 1;
+	int32 RpcId = 1;
+	string Account = 2;
 }
 
 message G2R_GetLoginKey // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-
-	int64 Key = 1;
-	int64 GateId = 2;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 Key = 4;
+	int64 GateId = 5;
 }
 
 message G2M_SessionDisconnect // IActorLocationMessage
 {
-	int32 RpcId = 90;
+	int32 RpcId = 1;
 }
 
 message ObjectQueryResponse // IActorResponse
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-
-	bytes entity = 1;
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	bytes Entity = 4;
 }
 
 //ResponseType M2M_UnitTransferResponse

@@ -119,7 +119,7 @@ namespace ET
 
                     sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
-                    sb.Append($"\tpublic partial class {msgName}: Object");
+                    sb.Append($"\tpublic partial class {msgName}: ProtoObject");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
                         sb.Append($", {parentClass}\n");
@@ -223,7 +223,7 @@ namespace ET
                 int n = int.Parse(ss[4]);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
-                sb.Append($"\t\tpublic List<{type}> {name} = new List<{type}>();\n\n");
+                sb.Append($"\t\tpublic List<{type}> {name};\n\n");
             }
             catch (Exception e)
             {

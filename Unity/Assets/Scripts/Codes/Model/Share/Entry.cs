@@ -27,6 +27,7 @@
             WinPeriod.Init();
             
             MongoRegister.Init();
+            ProtobufRegister.Init();
             
             Game.AddSingleton<NetServices>();
             Game.AddSingleton<Root>();

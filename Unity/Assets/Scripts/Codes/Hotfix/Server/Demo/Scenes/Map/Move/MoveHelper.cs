@@ -16,30 +16,26 @@ namespace ET.Server
                 return;
             }
 
-            using var list = ListComponent<float3>.Create();
+            List<float3> list = new List<float3>();
             
             unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, list);
 
-            List<float3> path = list;
-            if (path.Count < 2)
+            if (list.Count < 2)
             {
                 unit.SendStop(0);
                 return;
             }
                 
             // 广播寻路路径
-            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
+            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult() {Points = new List<float3>()};
             m2CPathfindingResult.Id = unit.Id;
             for (int i = 0; i < list.Count; ++i)
             {
-                float3 vector3 = list[i];
-                m2CPathfindingResult.Xs.Add(vector3.x);
-                m2CPathfindingResult.Ys.Add(vector3.y);
-                m2CPathfindingResult.Zs.Add(vector3.z);
+                m2CPathfindingResult.Points = list;
             }
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
 
-            bool ret = await unit.GetComponent<MoveComponent>().MoveToAsync(path, speed);
+            bool ret = await unit.GetComponent<MoveComponent>().MoveToAsync(list, speed);
             if (ret) // 如果返回false，说明被其它移动取消了，这时候不需要通知客户端stop
             {
                 unit.SendStop(0);
@@ -58,14 +54,8 @@ namespace ET.Server
             {
                 Error = error,
                 Id = unit.Id, 
-                X = unit.Position.x,
-                Y = unit.Position.y,
-                Z = unit.Position.z,
-						
-                A = unit.Rotation.value.x,
-                B = unit.Rotation.value.y,
-                C = unit.Rotation.value.z,
-                W = unit.Rotation.value.w,
+                Position = unit.Position,
+                Rotation = unit.Rotation,
             });
         }
     }

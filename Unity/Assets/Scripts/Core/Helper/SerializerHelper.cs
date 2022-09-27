@@ -1,16 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using ProtoBuf.Meta;
 
 namespace ET
 {
-    public static class ProtobufHelper
+    public static class SerializerHelper
     {
 		public static object FromBytes(Type type, byte[] bytes, int index, int count)
 		{
 			using MemoryStream stream = new MemoryStream(bytes, index, count);
-			object o = RuntimeTypeModel.Default.Deserialize(stream, null, type);
+			object o = ProtoBuf.Serializer.Deserialize(type, stream);
 			if (o is ISupportInitialize supportInitialize)
 			{
 				supportInitialize.EndInit();
@@ -25,14 +24,14 @@ namespace ET
 			return stream.ToArray();
 		}
 
-        public static void ToStream(object message, MemoryStream stream)
+        public static void ToStream(object message, Stream stream)
         {
             ProtoBuf.Serializer.Serialize(stream, message);
         }
 
-        public static object FromStream(Type type, MemoryStream stream)
+        public static object FromStream(Type type, Stream stream)
         {
-	        object o = RuntimeTypeModel.Default.Deserialize(stream, null, type);
+	        object o = ProtoBuf.Serializer.Deserialize(type, stream);
 	        if (o is ISupportInitialize supportInitialize)
 	        {
 		        supportInitialize.EndInit();

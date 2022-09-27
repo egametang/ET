@@ -13,12 +13,5 @@ namespace ET.Server
             response.RpcId = iActorRequest.RpcId;
             return response;
         }
-
-        public static object ToActorMessage(this MemoryStream memoryStream)
-        {
-            ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), 8);
-            Type type = NetServices.Instance.GetType(opcode);
-            return ProtobufHelper.FromBytes(type, memoryStream.GetBuffer(), 10, (int)memoryStream.Length - 10);
-        }
     }
 }

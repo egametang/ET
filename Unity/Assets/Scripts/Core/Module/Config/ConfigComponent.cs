@@ -38,7 +38,7 @@ namespace ET
 			
 			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(0, new GetOneConfigBytes() {ConfigName = configType.FullName});
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializerHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;
 			singleton.Register();
 			
@@ -90,7 +90,7 @@ namespace ET
 		{
 			byte[] oneConfigBytes = configBytes[configType.Name];
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializerHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			
 			lock (this)
 			{
