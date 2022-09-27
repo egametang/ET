@@ -4,7 +4,7 @@ using MongoDB.Bson;
 
 namespace ET.Server
 {
-    [Callback(TimerCallbackId.ActorLocationSenderChecker)]
+    [Invoke(TimerInvokeType.ActorLocationSenderChecker)]
     public class ActorLocationSenderChecker: ATimer<ActorLocationSenderComponent>
     {
         protected override void Run(ActorLocationSenderComponent self)
@@ -29,7 +29,7 @@ namespace ET.Server
 
             // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
             // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
-            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerCallbackId.ActorLocationSenderChecker, self);
+            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
         }
     }
 

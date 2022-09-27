@@ -9,10 +9,8 @@ namespace ET
         [StaticField]
         public static NavmeshComponent Instance;
         
-        public struct RecastFileLoader: ICallback
+        public struct RecastFileLoader
         {
-            public int Id { get; set; }
-            
             public string Name { get; set; }
         }
         

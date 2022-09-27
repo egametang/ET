@@ -48,9 +48,8 @@ namespace ET
         }
     }
 
-    public struct TimerCallback: ICallback
+    public struct TimerCallback
     {
-        public int Id { get; set; }
         public object Args;
     }
 
@@ -139,7 +138,7 @@ namespace ET
             {
                 case TimerClass.OnceTimer:
                 {
-                    EventSystem.Instance.Callback(new TimerCallback() { Id = timerAction.Type, Args = timerAction.Object });
+                    EventSystem.Instance.Invoke(timerAction.Type, new TimerCallback() { Args = timerAction.Object });
                     timerAction.Recycle();
                     break;
                 }
@@ -155,7 +154,7 @@ namespace ET
                     long timeNow = GetNow();
                     timerAction.StartTime = timeNow;
                     this.AddTimer(timerAction);
-                    EventSystem.Instance.Callback(new TimerCallback() { Id = timerAction.Type, Args = timerAction.Object });
+                    EventSystem.Instance.Invoke(timerAction.Type, new TimerCallback() { Args = timerAction.Object });
                     break;
                 }
             }

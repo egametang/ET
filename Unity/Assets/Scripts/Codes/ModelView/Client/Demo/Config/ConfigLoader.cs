@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [Callback]
-    public class GetAllConfigBytes: ACallbackHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
+    [Invoke]
+    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
     {
         public override Dictionary<string, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
@@ -71,8 +71,8 @@ namespace ET.Client
         }
     }
     
-    [Callback]
-    public class GetOneConfigBytes: ACallbackHandler<ConfigComponent.GetOneConfigBytes, byte[]>
+    [Invoke]
+    public class GetOneConfigBytes: AInvokeHandler<ConfigComponent.GetOneConfigBytes, byte[]>
     {
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {

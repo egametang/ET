@@ -4,14 +4,17 @@ namespace ET
 {
 	public interface IEvent
 	{
-		Type GetEventType();
+		Type Type { get; }
 	}
 	
 	public abstract class AEvent<A>: IEvent where A: struct
 	{
-		public Type GetEventType()
+		public Type Type
 		{
-			return typeof (A);
+			get
+			{
+				return typeof (A);
+			}
 		}
 
 		protected abstract ETTask Run(Scene scene, A a);

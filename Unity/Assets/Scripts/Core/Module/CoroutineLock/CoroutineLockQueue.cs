@@ -41,7 +41,7 @@ namespace ET
             if (time > 0)
             {
                 long tillTime = TimeHelper.ClientFrameTime() + time;
-                TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreCallbackId.CoroutineTimeout, waitCoroutineLock);
+                TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreInvokeType.CoroutineTimeout, waitCoroutineLock);
             }
             this.currentCoroutineLock = await waitCoroutineLock.Wait();
             return this.currentCoroutineLock;

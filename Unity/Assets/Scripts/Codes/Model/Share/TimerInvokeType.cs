@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
-    [UniqueId(1,10000)]
-    public static class TimerCallbackId
+    [UniqueId(100, 10000)]
+    public static class TimerInvokeType
     {
         // 框架层100-200，逻辑层的timer type从200起
         public const int WaitTimer = 100;

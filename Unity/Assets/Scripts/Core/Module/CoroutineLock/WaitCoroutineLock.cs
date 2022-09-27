@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace ET
 {
-    [Callback(TimerCoreCallbackId.CoroutineTimeout)]
+    [Invoke(TimerCoreInvokeType.CoroutineTimeout)]
     public class WaitCoroutineLockTimer: ATimer<WaitCoroutineLock>
     {
         protected override void Run(WaitCoroutineLock waitCoroutineLock)
