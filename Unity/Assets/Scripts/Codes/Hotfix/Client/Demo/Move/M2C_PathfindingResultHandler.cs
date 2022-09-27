@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Unity.Mathematics;
+﻿
 
 namespace ET.Client
 {
@@ -12,10 +11,7 @@ namespace ET.Client
 
 			float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
 
-			using (ListComponent<float3> list = ListComponent<float3>.Create())
-			{
-				await unit.GetComponent<MoveComponent>().MoveToAsync(message.Points, speed);
-			}
+			await unit.GetComponent<MoveComponent>().MoveToAsync(message.Points, speed);
 		}
 	}
 }

@@ -22,11 +22,12 @@ namespace ET.Server
             {
                 if (!moveComponent.IsArrived())
                 {
-                    unitInfo.MoveInfo = new MoveInfo();
+                    unitInfo.MoveInfo = new MoveInfo() { Points = new List<float3>() };
+                    unitInfo.MoveInfo.Points.Add(unit.Position);
                     for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
                     {
                         float3 pos = moveComponent.Targets[i];
-                        unitInfo.MoveInfo.Position.Add(pos);
+                        unitInfo.MoveInfo.Points.Add(pos);
                     }
                 }
             }

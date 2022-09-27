@@ -22,12 +22,10 @@ namespace ET.Client
 	        unit.AddComponent<MoveComponent>();
 	        if (unitInfo.MoveInfo != null)
 	        {
-		        if (unitInfo.MoveInfo.Position.Count > 0)
+		        if (unitInfo.MoveInfo.Points.Count > 0)
 				{
-					using ListComponent<float3> list = ListComponent<float3>.Create();
-					list.Add(unit.Position);
-					list.AddRange(unitInfo.MoveInfo.Position);
-					unit.MoveToAsync(list).Coroutine();
+					unitInfo.MoveInfo.Points[0] = unit.Position;
+					unit.MoveToAsync(unitInfo.MoveInfo.Points).Coroutine();
 				}
 	        }
 

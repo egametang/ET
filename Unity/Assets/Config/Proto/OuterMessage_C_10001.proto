@@ -59,7 +59,7 @@ message G2C_EnterMap // IResponse
 
 message MoveInfo
 {
-	repeated Unity.Mathematics.float3 Position = 1;
+	repeated Unity.Mathematics.float3 Points = 1;
 	Unity.Mathematics.quaternion Rotation = 2;
 	int32 TurnSpeed = 3;
 }

@@ -120,7 +120,7 @@ namespace ET
 	public partial class MoveInfo: ProtoObject
 	{
 		[ProtoMember(1)]
-		public List<Unity.Mathematics.float3> Position;
+		public List<Unity.Mathematics.float3> Points;
 
 		[ProtoMember(2)]
 		public Unity.Mathematics.quaternion Rotation { get; set; }

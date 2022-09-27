@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Numerics;
 using Unity.Mathematics;
 
 namespace ET.Server
@@ -27,12 +26,8 @@ namespace ET.Server
             }
                 
             // 广播寻路路径
-            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult() {Points = new List<float3>()};
+            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult() { Points = list };
             m2CPathfindingResult.Id = unit.Id;
-            for (int i = 0; i < list.Count; ++i)
-            {
-                m2CPathfindingResult.Points = list;
-            }
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
 
             bool ret = await unit.GetComponent<MoveComponent>().MoveToAsync(list, speed);
