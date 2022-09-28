@@ -6,7 +6,7 @@ namespace ET
     [FriendOf(typeof(AIDispatcherComponent))]
     public static class AIComponentSystem
     {
-        [Callback(TimerCallbackId.AITimer)]
+        [Invoke(TimerInvokeType.AITimer)]
         public class AITimer: ATimer<AIComponent>
         {
             protected override void Run(AIComponent self)
@@ -28,7 +28,7 @@ namespace ET
             protected override void Awake(AIComponent self, int aiConfigId)
             {
                 self.AIConfigId = aiConfigId;
-                self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerCallbackId.AITimer, self);
+                self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
             }
         }
 

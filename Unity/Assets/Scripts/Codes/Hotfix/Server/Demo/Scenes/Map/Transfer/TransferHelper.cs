@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace ET.Server
 {
@@ -6,11 +7,12 @@ namespace ET.Server
     {
         public static async ETTask Transfer(Unit unit, long sceneInstanceId, string sceneName)
         {
-            // 通知客户端开始切场景
-            M2C_StartSceneChange m2CStartSceneChange = new M2C_StartSceneChange() {SceneInstanceId = sceneInstanceId, SceneName = sceneName};
-            MessageHelper.SendToClient(unit, m2CStartSceneChange);
+            // location加锁
+            long unitId = unit.Id;
+            long unitInstanceId = unit.InstanceId;
             
-            M2M_UnitTransferRequest request = new M2M_UnitTransferRequest();
+            M2M_UnitTransferRequest request = new M2M_UnitTransferRequest() {Entitys = new List<byte[]>()};
+            request.OldInstanceId = unitInstanceId;
             request.Unit = unit.ToBson();
             foreach (Entity entity in unit.Components.Values)
             {
@@ -19,15 +21,10 @@ namespace ET.Server
                     request.Entitys.Add(entity.ToBson());
                 }
             }
-            // 删除Mailbox,让发给Unit的ActorLocation消息重发
-            unit.RemoveComponent<MailBoxComponent>();
-            
-            // location加锁
-            long oldInstanceId = unit.InstanceId;
-            await LocationProxyComponent.Instance.Lock(unit.Id, unit.InstanceId);
-            M2M_UnitTransferResponse response = await ActorMessageSenderComponent.Instance.Call(sceneInstanceId, request) as M2M_UnitTransferResponse;
-            await LocationProxyComponent.Instance.UnLock(unit.Id, oldInstanceId, response.NewInstanceId);
             unit.Dispose();
+            
+            await LocationProxyComponent.Instance.Lock(unitId, unitInstanceId);
+            await ActorMessageSenderComponent.Instance.Call(sceneInstanceId, request);
         }
     }
 }

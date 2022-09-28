@@ -34,11 +34,11 @@
         <Link>ETTask/%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ShareLib\Kcp\Kcp.cs">
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Kcp\Kcp.cs">
       <Link>Kcp\Kcp.cs</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ShareLib\Recast\Recast.cs">
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Recast\Recast.cs">
       <Link>Recast\Recast.cs</Link>
     </Compile>
 

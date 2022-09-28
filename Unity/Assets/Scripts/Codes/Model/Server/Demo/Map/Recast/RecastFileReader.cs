@@ -2,8 +2,8 @@
 
 namespace ET.Server
 {
-    [Callback]
-    public class RecastFileReader: ACallbackHandler<NavmeshComponent.RecastFileLoader, byte[]>
+    [Invoke]
+    public class RecastFileReader: AInvokeHandler<NavmeshComponent.RecastFileLoader, byte[]>
     {
         public override byte[] Handle(NavmeshComponent.RecastFileLoader args)
         {

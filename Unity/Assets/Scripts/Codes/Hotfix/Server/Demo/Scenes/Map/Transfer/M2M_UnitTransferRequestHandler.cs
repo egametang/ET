@@ -8,7 +8,8 @@ namespace ET.Server
 	{
 		protected override async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response, Action reply)
 		{
-			await ETTask.CompletedTask;
+			reply();
+			
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = MongoHelper.FromBson<Unit>(request.Unit);
 			
@@ -26,18 +27,21 @@ namespace ET.Server
 			unit.Position = new float3(-10, 0, -10);
 			
 			unit.AddComponent<MailBoxComponent>();
+
+			// 通知客户端开始切场景
+			M2C_StartSceneChange m2CStartSceneChange = new M2C_StartSceneChange() {SceneInstanceId = scene.InstanceId, SceneName = scene.Name};
+			MessageHelper.SendToClient(unit, m2CStartSceneChange);
 			
 			// 通知客户端创建My Unit
 			M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
-			m2CCreateUnits.Unit = Server.UnitHelper.CreateUnitInfo(unit);
+			m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
 			MessageHelper.SendToClient(unit, m2CCreateUnits);
 			
 			// 加入aoi
 			unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);
-
-			response.NewInstanceId = unit.InstanceId;
 			
-			reply();
+			// 解锁location，可以接收发给Unit的消息
+			await LocationProxyComponent.Instance.UnLock(unit.Id, request.OldInstanceId, unit.InstanceId);
 		}
 	}
 }

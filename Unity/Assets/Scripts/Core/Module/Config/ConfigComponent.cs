@@ -9,14 +9,12 @@ namespace ET
     /// </summary>
     public class ConfigComponent: Singleton<ConfigComponent>
     {
-        public struct GetAllConfigBytes: ICallback
+        public struct GetAllConfigBytes
         {
-            public int Id { get; set; }
         }
         
-        public struct GetOneConfigBytes: ICallback
+        public struct GetOneConfigBytes
         {
-            public int Id { get; set; }
             public string ConfigName;
         }
 		
@@ -38,9 +36,9 @@ namespace ET
 				oneConfig.Destroy();
 			}
 			
-			byte[] oneConfigBytes = EventSystem.Instance.Callback<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
+			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(0, new GetOneConfigBytes() {ConfigName = configType.FullName});
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializerHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;
 			singleton.Register();
 			
@@ -54,7 +52,7 @@ namespace ET
 			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = 
-			EventSystem.Instance.Callback<GetAllConfigBytes, Dictionary<string, byte[]>>(
+			EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<string, byte[]>>(0, 
 				new GetAllConfigBytes());
 
 			foreach (Type type in types)
@@ -69,7 +67,7 @@ namespace ET
 			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = 
-					EventSystem.Instance.Callback<GetAllConfigBytes, Dictionary<string, byte[]>>(
+					EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<string, byte[]>>(0,
 						new GetAllConfigBytes());
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
@@ -92,7 +90,7 @@ namespace ET
 		{
 			byte[] oneConfigBytes = configBytes[configType.Name];
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializerHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			
 			lock (this)
 			{

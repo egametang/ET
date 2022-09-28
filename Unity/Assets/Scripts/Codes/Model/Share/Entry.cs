@@ -1,7 +1,4 @@
-﻿using System.Timers;
-using ICSharpCode.SharpZipLib.Zip;
-
-namespace ET
+﻿namespace ET
 {
     namespace EventType
     {
@@ -30,6 +27,7 @@ namespace ET
             WinPeriod.Init();
             
             MongoRegister.Init();
+            ProtobufRegister.Init();
             
             Game.AddSingleton<NetServices>();
             Game.AddSingleton<Root>();

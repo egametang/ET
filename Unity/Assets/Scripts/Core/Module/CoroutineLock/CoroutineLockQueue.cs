@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockQueue: IDisposable
+    public class CoroutineLockQueue
     {
         private int type;
         private long key;
@@ -41,7 +41,7 @@ namespace ET
             if (time > 0)
             {
                 long tillTime = TimeHelper.ClientFrameTime() + time;
-                TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreCallbackId.CoroutineTimeout, waitCoroutineLock);
+                TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreInvokeType.CoroutineTimeout, waitCoroutineLock);
             }
             this.currentCoroutineLock = await waitCoroutineLock.Wait();
             return this.currentCoroutineLock;
@@ -65,13 +65,9 @@ namespace ET
             }
         }
 
-        public void Dispose()
+        public void Recycle()
         {
-            while (this.queue.Count > 0)
-            {
-                WaitCoroutineLock waitCoroutineLock = this.queue.Dequeue();
-                waitCoroutineLock.Dispose();
-            }
+            this.queue.Clear();
             this.key = 0;
             this.type = 0;
             this.currentCoroutineLock = null;

@@ -4,8 +4,8 @@ using System.IO;
 
 namespace ET
 {
-    [Callback]
-    public class GetAllConfigBytes: ACallbackHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
+    [Invoke]
+    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
     {
         public override Dictionary<string, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
@@ -23,11 +23,11 @@ namespace ET
                 string configFilePath;
                 if (startConfigs.Contains(configType.Name))
                 {
-                    configFilePath = $"../Config/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
+                    configFilePath = $"../Config/Excel/s/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
                 }
                 else
                 {
-                    configFilePath = $"../Config/{configType.Name}.bytes";
+                    configFilePath = $"../Config/Excel/s/{configType.Name}.bytes";
                 }
                 output[configType.Name] = File.ReadAllBytes(configFilePath);
             }
@@ -36,8 +36,8 @@ namespace ET
         }
     }
     
-    [Callback]
-    public class GetOneConfigBytes: ACallbackHandler<ConfigComponent.GetOneConfigBytes, byte[]>
+    [Invoke]
+    public class GetOneConfigBytes: AInvokeHandler<ConfigComponent.GetOneConfigBytes, byte[]>
     {
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {

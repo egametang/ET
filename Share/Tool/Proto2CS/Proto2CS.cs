@@ -26,6 +26,7 @@ namespace ET
         private const string protoDir = "../Unity/Assets/Config/Proto";
         private const string clientMessagePath = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Message/";
         private const string serverMessagePath = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Message/";
+        private const string clientServerMessagePath = "../Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 
@@ -41,6 +42,11 @@ namespace ET
             if (Directory.Exists(serverMessagePath))
             {
                 Directory.Delete(serverMessagePath, true);
+            }
+            
+            if (Directory.Exists(clientServerMessagePath))
+            {
+                Directory.Delete(clientServerMessagePath, true);
             }
 
             List<string> list = FileHelper.GetAllFiles(protoDir, "*proto");
@@ -113,7 +119,7 @@ namespace ET
 
                     sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
-                    sb.Append($"\tpublic partial class {msgName}: Object");
+                    sb.Append($"\tpublic partial class {msgName}: ProtoObject");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
                         sb.Append($", {parentClass}\n");
@@ -181,11 +187,13 @@ namespace ET
             {
                 GenerateCS(sb, clientMessagePath, proto);
                 GenerateCS(sb, serverMessagePath, proto);
+                GenerateCS(sb, clientServerMessagePath, proto);
             }
             
             if (cs.Contains("S"))
             {
                 GenerateCS(sb, serverMessagePath, proto);
+                GenerateCS(sb, clientServerMessagePath, proto);
             }
         }
 
@@ -215,7 +223,7 @@ namespace ET
                 int n = int.Parse(ss[4]);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
-                sb.Append($"\t\tpublic List<{type}> {name} = new List<{type}>();\n\n");
+                sb.Append($"\t\tpublic List<{type}> {name};\n\n");
             }
             catch (Exception e)
             {

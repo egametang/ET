@@ -14,30 +14,26 @@ namespace ET.Server
             unitInfo.UnitId = unit.Id;
             unitInfo.ConfigId = unit.ConfigId;
             unitInfo.Type = (int)unit.Type;
-            float3 position = unit.Position;
-            unitInfo.X = position.x;
-            unitInfo.Y = position.y;
-            unitInfo.Z = position.z;
-            float3 forward = unit.Forward;
-            unitInfo.ForwardX = forward.x;
-            unitInfo.ForwardY = forward.y;
-            unitInfo.ForwardZ = forward.z;
+            unitInfo.Position = unit.Position;
+            unitInfo.Forward = unit.Forward;
 
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
             if (moveComponent != null)
             {
                 if (!moveComponent.IsArrived())
                 {
-                    unitInfo.MoveInfo = new MoveInfo();
+                    unitInfo.MoveInfo = new MoveInfo() { Points = new List<float3>() };
+                    unitInfo.MoveInfo.Points.Add(unit.Position);
                     for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
                     {
                         float3 pos = moveComponent.Targets[i];
-                        unitInfo.MoveInfo.X.Add(pos.x);
-                        unitInfo.MoveInfo.Y.Add(pos.y);
-                        unitInfo.MoveInfo.Z.Add(pos.z);
+                        unitInfo.MoveInfo.Points.Add(pos);
                     }
                 }
             }
+
+            unitInfo.Ks = new List<int>();
+            unitInfo.Vs = new List<long>();
 
             foreach ((int key, long value) in nc.NumericDic)
             {

@@ -13,13 +13,10 @@ namespace ET.Client
 				return;
 			}
 
-			float3 pos = new float3(message.X, message.Y, message.Z);
-			quaternion rotation = new quaternion(message.A, message.B, message.C, message.W);
-
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
 			moveComponent.Stop();
-			unit.Position = pos;
-			unit.Rotation = rotation;
+			unit.Position = message.Position;
+			unit.Rotation = message.Rotation;
 			unit.GetComponent<ObjectWait>()?.Notify(new Wait_UnitStop() {Error = message.Error});
 			await ETTask.CompletedTask;
 		}

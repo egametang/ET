@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Server
 {
-    [Callback(RobotCaseType.FirstCase)]
+    [Invoke(RobotCaseType.FirstCase)]
     public class RobotCase_FirstCase: ARobotCase
     {
         protected override async ETTask Run(RobotCase robotCase)

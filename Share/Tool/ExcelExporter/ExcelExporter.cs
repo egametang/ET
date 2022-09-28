@@ -19,6 +19,7 @@ namespace ET
     {
         c = 0,
         s = 1,
+        cs = 2,
     }
 
     class HeadInfo
@@ -53,17 +54,19 @@ namespace ET
     {
         private static string template;
 
-        public const string ClientClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Config";
+        private const string ClientClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Config";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        public const string ServerClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Config";
+        private const string ServerClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Config";
+
+        private const string CSClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config";
 
         private const string excelDir = "../Unity/Assets/Config/Excel/";
 
         private const string jsonDir = "../Unity/Assets/Config/Excel/Json/{0}/{1}";
 
-        private const string clientProtoDir = "../Unity/Assets/Bundles/Config/{0}";
-        private const string serverProtoDir = "../Config/{0}";
-        private static Assembly[] configAssemblies = new Assembly[2];
+        private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
+        private const string serverProtoDir = "../Config/Excel/{0}/{1}";
+        private static Assembly[] configAssemblies = new Assembly[3];
 
         private static Dictionary<string, Table> tables = new Dictionary<string, Table>();
         private static Dictionary<string, ExcelPackage> packages = new Dictionary<string, ExcelPackage>();
@@ -130,12 +133,6 @@ namespace ET
                         cs = ss[1];
                     }
 
-                    // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-                    if (cs == "c")
-                    {
-                        cs = "cs";
-                    }
-
                     if (cs == "")
                     {
                         cs = "cs";
@@ -170,16 +167,17 @@ namespace ET
                     {
                         ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.c);
                     }
-
                     if (kv.Value.S)
                     {
                         ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.s);
                     }
+                    ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.cs);
                 }
 
                 // 动态编译生成的配置代码
                 configAssemblies[(int) ConfigType.c] = DynamicBuild(ConfigType.c);
                 configAssemblies[(int) ConfigType.s] = DynamicBuild(ConfigType.s);
+                configAssemblies[(int) ConfigType.cs] = DynamicBuild(ConfigType.cs);
 
                 List<string> excels = FileHelper.GetAllFiles(excelDir, "*.xlsx");
                 
@@ -190,6 +188,12 @@ namespace ET
                     tasks.Add(task);
                 }
                 Task.WaitAll(tasks.ToArray());
+                
+                if (Directory.Exists(clientProtoDir))
+                {
+                    Directory.Delete(clientProtoDir, true);
+                }
+                FileHelper.CopyDirectory("../Config/Excel/c", clientProtoDir);
                 
                 Log.Console("Export Excel Sucess!");
             }
@@ -229,12 +233,6 @@ namespace ET
                 cs = ss[1];
             }
             
-            // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-            if (cs == "c")
-            {
-                cs = "cs";
-            }
-
             if (cs == "")
             {
                 cs = "cs";
@@ -261,16 +259,13 @@ namespace ET
                 ExportExcelJson(p, fileNameWithoutCS, table, ConfigType.s, relativePath);
                 ExportExcelProtobuf(ConfigType.s, protoName, relativePath);
             }
+            ExportExcelJson(p, fileNameWithoutCS, table, ConfigType.cs, relativePath);
+            ExportExcelProtobuf(ConfigType.cs, protoName, relativePath);
         }
 
         private static string GetProtoDir(ConfigType configType, string relativeDir)
         {
-            if (configType == ConfigType.c)
-            {
-                return string.Format(clientProtoDir, relativeDir);
-            }
-
-            return string.Format(serverProtoDir, relativeDir);
+            return string.Format(serverProtoDir, configType.ToString(), relativeDir);
         }
 
         private static Assembly GetAssembly(ConfigType configType)
@@ -280,12 +275,12 @@ namespace ET
 
         private static string GetClassDir(ConfigType configType)
         {
-            if (configType == ConfigType.c)
+            return configType switch
             {
-                return ClientClassDir;
-            }
-
-            return ServerClassDir;
+                ConfigType.c => ClientClassDir,
+                ConfigType.s => ServerClassDir,
+                _ => CSClassDir
+            };
         }
         
         // 动态编译生成的cs代码
@@ -389,12 +384,6 @@ namespace ET
                     table.HeadInfos[fieldName] = null;
                     continue;
                 }
-
-                // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-                if (fieldCS == "c")
-                {
-                    fieldCS = "cs";
-                }
                 
                 if (fieldCS == "")
                 {
@@ -439,7 +428,7 @@ namespace ET
                     continue;
                 }
 
-                if (!headInfo.FieldCS.Contains(configType.ToString()))
+                if (configType != ConfigType.cs && !headInfo.FieldCS.Contains(configType.ToString()))
                 {
                     continue;
                 }
@@ -504,13 +493,7 @@ namespace ET
                     prefix = "cs";
                 }
                 
-                // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-                if (prefix == "c")
-                {
-                    prefix = "cs";
-                }
-
-                if (!prefix.Contains(configTypeStr))
+                if (configType != ConfigType.cs && !prefix.Contains(configTypeStr))
                 {
                     continue;
                 }
@@ -537,7 +520,7 @@ namespace ET
                         continue;
                     }
 
-                    if (!headInfo.FieldCS.Contains(configTypeStr))
+                    if (configType != ConfigType.cs && !headInfo.FieldCS.Contains(configTypeStr))
                     {
                         continue;
                     }

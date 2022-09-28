@@ -12,6 +12,12 @@
 
 # [分析器说明](https://www.yuque.com/u28961999/yms0nt/)
 
+# ET7.1 发布! 
+1. 网络改成独立线程，序列化反序列化都在网络线程处理，主线程压力大大减轻。并且重新整理了网络层代码，更优美了  
+2. 集成Unity.Mathematic数学库，逻辑层客户端跟服务端都使用这一套数学库，这样服务端跟客户端完全统一了  
+3. ENABLE_CODES模式下拆分成4个程序集，解决分析器失效的问题  
+4. Game管理的Singleton增加ISingletonUpdate跟ISingletonLateUpdate接口，实现相应的接口即可执行对应的Update跟LateUpdate方法，Game类解除了跟EventSystem等单间类的耦合关系  
+
 # ET7 发布! 18岁亦菲
 1. 调整结构，机器人工程与服务器合并，更易使用，一个进程同时可以做server，也能创建机器人，真正的ALL IN ONE! -- 已实现  
 2. 客户端跟服务端合并，服务端代码全部放在了客户端，客户端中可以带一个服务端，开发超级方便，服务端发布的时候可以选择发布成Dotnet也可以发布成UnityServer，终极All IN ONE  -- 已实现  
