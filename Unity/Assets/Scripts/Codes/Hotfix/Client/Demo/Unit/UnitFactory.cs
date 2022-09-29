@@ -14,10 +14,11 @@ namespace ET.Client
 	        unit.Forward = unitInfo.Forward;
 	        
 	        NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
-	        for (int i = 0; i < unitInfo.Ks.Count; ++i)
-	        {
-		        numericComponent.Set(unitInfo.Ks[i], unitInfo.Vs[i]);
-	        }
+
+			foreach (var kv in unitInfo.KV)
+			{
+				numericComponent.Set(kv.Key, kv.Value);
+			}
 	        
 	        unit.AddComponent<MoveComponent>();
 	        if (unitInfo.MoveInfo != null)

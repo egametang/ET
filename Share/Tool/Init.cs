@@ -36,7 +36,8 @@ namespace ET.Server
                 Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly);
                 EventSystem.Instance.Add(types);
 
-                MongoRegister.Init();
+                MongoHelper.Init();
+                ProtobufHelper.Init();
 				
                 Log.Info($"server start........................ {Root.Instance.Scene.Id}");
 				

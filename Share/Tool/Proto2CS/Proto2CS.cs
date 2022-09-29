@@ -159,7 +159,11 @@ namespace ET
 
                     if (newline.Trim() != "" && newline != "}")
                     {
-                        if (newline.StartsWith("repeated"))
+                        if (newline.StartsWith("map<"))
+                        {
+                            Map(sb, ns, newline);
+                        }
+                        else if (newline.StartsWith("repeated"))
                         {
                             Repeated(sb, ns, newline);
                         }
@@ -209,6 +213,24 @@ namespace ET
             using StreamWriter sw = new StreamWriter(txt);
             sw.Write(sb.ToString());
         }
+
+        private static void Map(StringBuilder sb, string ns, string newline)
+        {
+            int start = newline.IndexOf("<") + 1;
+            int end = newline.IndexOf(">");
+            string types = newline.Substring(start, end - start);
+            string[] ss = types.Split(",");
+            string keyType = ConvertType(ss[0].Trim());
+            string valueType = ConvertType(ss[1].Trim());
+            string tail = newline.Substring(end + 1);
+            ss = tail.Trim().Replace(";", "").Split(" ");
+            string v = ss[0];
+            string n = ss[2];
+            
+            sb.Append("\t\t[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]\n");
+            sb.Append($"\t\t[ProtoMember({n})]\n");
+            sb.Append($"\t\tpublic Dictionary<{keyType}, {valueType}> {v} {{ get; set; }}\n");
+        }
         
         private static void Repeated(StringBuilder sb, string ns, string newline)
         {
@@ -223,7 +245,7 @@ namespace ET
                 int n = int.Parse(ss[4]);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
-                sb.Append($"\t\tpublic List<{type}> {name};\n\n");
+                sb.Append($"\t\tpublic List<{type}> {name} {{ get; set; }}\n\n");
             }
             catch (Exception e)
             {

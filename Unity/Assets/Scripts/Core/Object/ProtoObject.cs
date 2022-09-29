@@ -7,8 +7,8 @@ namespace ET
     {
         public object Clone()
         {
-            byte[] bytes = SerializerHelper.ToBytes(this);
-            return SerializerHelper.FromBytes(this.GetType(), bytes, 0, bytes.Length);
+            byte[] bytes = SerializeHelper.Serialize(this);
+            return SerializeHelper.Deserialize(this.GetType(), bytes, 0, bytes.Length);
         }
         
         public virtual void BeginInit()

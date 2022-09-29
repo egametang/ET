@@ -341,7 +341,7 @@ namespace ET
 		public byte[] Unit { get; set; }
 
 		[ProtoMember(4)]
-		public List<byte[]> Entitys;
+		public List<byte[]> Entitys { get; set; }
 
 	}
 

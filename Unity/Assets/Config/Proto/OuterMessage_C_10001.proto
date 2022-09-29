@@ -71,9 +71,8 @@ message UnitInfo
 	int32 Type = 3;
 	Unity.Mathematics.float3 Position = 4;
 	Unity.Mathematics.float3 Forward = 5;
-	repeated int32 Ks = 6;
-	repeated int64 Vs = 7;
-	MoveInfo MoveInfo = 8;
+	map<int32, int64> KV = 6;
+	MoveInfo MoveInfo = 7;
 }
 
 message M2C_CreateUnits // IActorMessage
