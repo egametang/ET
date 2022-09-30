@@ -13,7 +13,6 @@ namespace ET
 
 	/// <summary>
 	/// 反序列化后执行的System
-	/// 要小心使用这个System，因为对象假如要保存到数据库，到dbserver也会进行反序列化，那么也会执行该System
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	[ObjectSystem]
@@ -27,6 +26,11 @@ namespace ET
 		public Type SystemType()
 		{
 			return typeof(IDeserializeSystem);
+		}
+
+		public InstanceQueueIndex GetInstanceQueueIndex()
+		{
+			return InstanceQueueIndex.None;
 		}
 
 		public Type Type()

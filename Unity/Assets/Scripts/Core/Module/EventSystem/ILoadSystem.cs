@@ -29,6 +29,11 @@ namespace ET
 			return typeof(ILoadSystem);
 		}
 
+		public InstanceQueueIndex GetInstanceQueueIndex()
+		{
+			return InstanceQueueIndex.Load;
+		}
+
 		protected abstract void Load(T self);
 	}
 }

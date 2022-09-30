@@ -113,8 +113,8 @@ namespace ET
             ResultCallback<T> tcs = new ResultCallback<T>();
             async ETTask WaitTimeout()
             {
-                bool retV = await TimerComponent.Instance.WaitAsync(timeout, cancellationToken);
-                if (!retV)
+                await TimerComponent.Instance.WaitAsync(timeout, cancellationToken);
+                if (cancellationToken.IsCancel())
                 {
                     return;
                 }

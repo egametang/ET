@@ -25,6 +25,11 @@ namespace ET
 			return typeof(IDestroySystem);
 		}
 
+		public InstanceQueueIndex GetInstanceQueueIndex()
+		{
+			return InstanceQueueIndex.None;
+		}
+
 		public Type Type()
 		{
 			return typeof(T);

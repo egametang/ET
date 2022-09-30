@@ -18,7 +18,7 @@ namespace ET
             this.actions?.Remove(callback);
         }
 
-        public bool IsCancel()
+        public bool IsDispose()
         {
             return this.actions == null;
         }
