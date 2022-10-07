@@ -5,7 +5,6 @@ namespace ET.Client
     public struct NetClientComponentOnRead
     {
         public Session Session;
-        public long ActorId;
         public object Message;
     }
     

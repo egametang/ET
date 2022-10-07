@@ -64,7 +64,7 @@ namespace ET.Server
             
             OpcodeHelper.LogMsg(self.DomainZone(), message);
 			
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetServerComponentOnRead() {Session = session, ActorId = actorId, Message = message});
+            EventSystem.Instance.Publish(Root.Instance.Scene, new NetServerComponentOnRead() {Session = session, Message = message});
         }
     }
 }

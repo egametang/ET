@@ -61,7 +61,7 @@ namespace ET
 			{
 				case ServiceType.Inner:
 					Kcp.KcpNodelay(kcp, 1, 10, 2, 1);
-					Kcp.KcpWndsize(kcp, ushort.MaxValue, ushort.MaxValue);
+					Kcp.KcpWndsize(kcp, 1024, 1024);
 					Kcp.KcpSetmtu(kcp, 1400); // 默认1400
 					Kcp.KcpSetminrto(kcp, 30);
 					break;

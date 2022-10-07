@@ -1,7 +1,6 @@
 using System;
-using NLog;
 
-namespace ET.Server
+namespace ET
 {
     [ConsoleHandler(ConsoleMode.ReloadConfig)]
     public class ReloadConfigConsoleHandler: IConsoleHandler

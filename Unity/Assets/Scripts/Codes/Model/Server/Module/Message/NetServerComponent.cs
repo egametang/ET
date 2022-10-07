@@ -5,7 +5,6 @@ namespace ET.Server
     public struct NetServerComponentOnRead
     {
         public Session Session;
-        public long ActorId;
         public object Message;
     }
     

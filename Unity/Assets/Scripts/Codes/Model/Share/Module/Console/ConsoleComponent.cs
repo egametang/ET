@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ET.Server
+namespace ET
 {
     public static class ConsoleMode
     {

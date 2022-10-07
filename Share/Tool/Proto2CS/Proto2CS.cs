@@ -93,7 +93,7 @@ namespace ET
                 if (newline.StartsWith("//ResponseType"))
                 {
                     string responseType = line.Split(" ")[1].TrimEnd('\r', '\n');
-                    sb.AppendLine($"\t[ResponseType(nameof({responseType}))]");
+                    sb.Append($"\t[ResponseType(nameof({responseType}))]\n");
                     continue;
                 }
 
@@ -153,7 +153,7 @@ namespace ET
 
                     if (newline.Trim().StartsWith("//"))
                     {
-                        sb.AppendLine(newline);
+                        sb.Append($"{newline}\n");
                         continue;
                     }
 
@@ -179,10 +179,10 @@ namespace ET
             sb.Append("\tpublic static class " + protoName + "\n\t{\n");
             foreach (OpcodeInfo info in msgOpcode)
             {
-                sb.AppendLine($"\t\t public const ushort {info.Name} = {info.Opcode};");
+                sb.Append($"\t\t public const ushort {info.Name} = {info.Opcode};\n");
             }
 
-            sb.AppendLine("\t}");
+            sb.Append("\t}\n");
             
 
             sb.Append("}\n");

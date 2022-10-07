@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ET.Server
+namespace ET
 {
     [FriendOf(typeof(ConsoleComponent))]
     [FriendOf(typeof(ModeContex))]
