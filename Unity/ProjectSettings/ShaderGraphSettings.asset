@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 247994e1f5a72c2419c26a37e9334c01, type: 3}
+  m_Script: {fileID: 11500000, guid: de02f9e1d18f588468e474319d09a723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LastMaterialVersion: 5
+  customInterpolatorErrorThreshold: 32
+  customInterpolatorWarningThreshold: 16
