@@ -75,12 +75,15 @@ namespace ET.Server
             {
                 return;
             }
+            
+            session.LastRecvTime = TimeHelper.ClientFrameTime();
 
-            session.LastRecvTime = TimeHelper.ClientNow();
-            
-            OpcodeHelper.LogMsg(self.DomainZone(), message);
-            
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetInnerComponentOnRead() {Session = session, ActorId = actorId, Message = message});
+            self.HandleMessage(actorId, message);
+        }
+
+        public static void HandleMessage(this NetInnerComponent self, long actorId, object message)
+        {
+            EventSystem.Instance.Publish(Root.Instance.Scene, new NetInnerComponentOnRead() { ActorId = actorId, Message = message });
         }
 
         private static void OnError(this NetInnerComponent self, long channelId, int error)

@@ -22,12 +22,11 @@ namespace ET.Client
             return waitUnitStop.Error;
         }
         
-        public static async ETTask<bool> MoveToAsync(this Unit unit, List<float3> path)
+        public static async ETTask MoveToAsync(this Unit unit, List<float3> path)
         {
             float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-            bool ret = await moveComponent.MoveToAsync(path, speed);
-            return ret;
+            await moveComponent.MoveToAsync(path, speed);
         }
     }
 }

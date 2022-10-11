@@ -33,25 +33,4 @@
             set;
         }
     }
-
-    public class ErrorResponse: IResponse
-    {
-        public int Error
-        {
-            get;
-            set;
-        }
-
-        public string Message
-        {
-            get;
-            set;
-        }
-
-        public int RpcId
-        {
-            get;
-            set;
-        }
-    }
 }

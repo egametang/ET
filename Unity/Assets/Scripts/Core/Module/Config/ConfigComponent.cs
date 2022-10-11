@@ -38,7 +38,7 @@ namespace ET
 			
 			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(0, new GetOneConfigBytes() {ConfigName = configType.FullName});
 
-			object category = SerializerHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;
 			singleton.Register();
 			
@@ -49,32 +49,26 @@ namespace ET
 		public void Load()
 		{
 			this.allConfig.Clear();
-			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
-			
-			Dictionary<string, byte[]> configBytes = 
-			EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<string, byte[]>>(0, 
-				new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(0, new GetAllConfigBytes());
 
-			foreach (Type type in types)
+			foreach (Type type in configBytes.Keys)
 			{
-				this.LoadOneInThread(type, configBytes);
+				byte[] oneConfigBytes = configBytes[type];
+				this.LoadOneInThread(type, oneConfigBytes);
 			}
 		}
 		
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();
-			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
-			
-			Dictionary<string, byte[]> configBytes = 
-					EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<string, byte[]>>(0,
-						new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(0, new GetAllConfigBytes());
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			
-			foreach (Type type in types)
+			foreach (Type type in configBytes.Keys)
 			{
-				Task task = Task.Run(() => LoadOneInThread(type, configBytes));
+				byte[] oneConfigBytes = configBytes[type];
+				Task task = Task.Run(() => LoadOneInThread(type, oneConfigBytes));
 				listTasks.Add(task);
 			}
 
@@ -86,11 +80,9 @@ namespace ET
 			}
 		}
 		
-		private void LoadOneInThread(Type configType, Dictionary<string, byte[]> configBytes)
+		private void LoadOneInThread(Type configType, byte[] oneConfigBytes)
 		{
-			byte[] oneConfigBytes = configBytes[configType.Name];
-
-			object category = SerializerHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			
 			lock (this)
 			{

@@ -32,7 +32,7 @@ namespace ET
             
             stream.GetBuffer().WriteTo(headOffset, opcode);
             
-            SerializerHelper.ToStream(message, stream);
+            SerializeHelper.Serialize(message, stream);
             
             stream.Seek(0, SeekOrigin.Begin);
             return (opcode, stream);

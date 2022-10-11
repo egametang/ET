@@ -61,7 +61,7 @@ namespace ET
 			{
 				case ServiceType.Inner:
 					Kcp.KcpNodelay(kcp, 1, 10, 2, 1);
-					Kcp.KcpWndsize(kcp, ushort.MaxValue, ushort.MaxValue);
+					Kcp.KcpWndsize(kcp, 1024, 1024);
 					Kcp.KcpSetmtu(kcp, 1400); // 默认1400
 					Kcp.KcpSetminrto(kcp, 30);
 					break;
@@ -485,7 +485,7 @@ namespace ET
 					{
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
-						message = SerializerHelper.FromStream(type, memoryStream);
+						message = SerializeHelper.Deserialize(type, memoryStream);
 						break;
 					}
 					case ServiceType.Inner:
@@ -493,7 +493,7 @@ namespace ET
 						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
-						message = SerializerHelper.FromStream(type, memoryStream);
+						message = SerializeHelper.Deserialize(type, memoryStream);
 						break;
 					}
 				}

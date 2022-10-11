@@ -38,7 +38,7 @@ namespace ET.Client
             
             OpcodeHelper.LogMsg(self.DomainZone(), message);
             
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetClientComponentOnRead() {Session = session, ActorId = actorId, Message = message});
+            EventSystem.Instance.Publish(Root.Instance.Scene, new NetClientComponentOnRead() {Session = session, Message = message});
         }
 
         private static void OnError(this NetClientComponent self, long channelId, int error)

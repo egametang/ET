@@ -8,10 +8,10 @@ namespace ET
 	public partial class HttpGetRouterResponse: ProtoObject
 	{
 		[ProtoMember(1)]
-		public List<string> Realms;
+		public List<string> Realms { get; set; }
 
 		[ProtoMember(2)]
-		public List<string> Routers;
+		public List<string> Routers { get; set; }
 
 	}
 
@@ -120,7 +120,7 @@ namespace ET
 	public partial class MoveInfo: ProtoObject
 	{
 		[ProtoMember(1)]
-		public List<Unity.Mathematics.float3> Points;
+		public List<Unity.Mathematics.float3> Points { get; set; }
 
 		[ProtoMember(2)]
 		public Unity.Mathematics.quaternion Rotation { get; set; }
@@ -149,13 +149,10 @@ namespace ET
 		[ProtoMember(5)]
 		public Unity.Mathematics.float3 Forward { get; set; }
 
+		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
 		[ProtoMember(6)]
-		public List<int> Ks;
-
+		public Dictionary<int, long> KV { get; set; }
 		[ProtoMember(7)]
-		public List<long> Vs;
-
-		[ProtoMember(8)]
 		public MoveInfo MoveInfo { get; set; }
 
 	}
@@ -165,7 +162,7 @@ namespace ET
 	public partial class M2C_CreateUnits: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public List<UnitInfo> Units;
+		public List<UnitInfo> Units { get; set; }
 
 	}
 
@@ -195,7 +192,7 @@ namespace ET
 	public partial class M2C_RemoveUnits: ProtoObject, IActorMessage
 	{
 		[ProtoMember(2)]
-		public List<long> Units;
+		public List<long> Units { get; set; }
 
 	}
 
@@ -231,7 +228,7 @@ namespace ET
 		public Unity.Mathematics.float3 Position { get; set; }
 
 		[ProtoMember(3)]
-		public List<Unity.Mathematics.float3> Points;
+		public List<Unity.Mathematics.float3> Points { get; set; }
 
 	}
 

@@ -334,7 +334,7 @@ namespace ET
                 StringBuilder stringBuilder = new StringBuilder();
                 foreach (Diagnostic t in emitResult.Diagnostics)
                 {
-                    stringBuilder.AppendLine(t.GetMessage());
+                    stringBuilder.Append($"{t.GetMessage()}\n");
                 }
 
                 throw new Exception($"动态编译失败:\n{stringBuilder}");
@@ -451,7 +451,7 @@ namespace ET
         static void ExportExcelJson(ExcelPackage p, string name, Table table, ConfigType configType, string relativeDir)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("{\"list\":[");
+            sb.Append("{\"list\":[\n");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
                 if (worksheet.Name.StartsWith("#"))
@@ -462,7 +462,7 @@ namespace ET
                 ExportSheetJson(worksheet, name, table.HeadInfos, configType, sb);
             }
 
-            sb.AppendLine("]}");
+            sb.Append("]}\n");
 
             string dir = string.Format(jsonDir, configType.ToString(), relativeDir);
             if (!Directory.Exists(dir))

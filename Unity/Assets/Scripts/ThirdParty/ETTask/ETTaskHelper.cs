@@ -5,6 +5,15 @@ namespace ET
 {
     public static class ETTaskHelper
     {
+        public static bool IsCancel(this ETCancellationToken self)
+        {
+            if (self == null)
+            {
+                return false;
+            }
+            return self.IsDispose();
+        }
+        
         private class CoroutineBlocker
         {
             private int count;
@@ -211,11 +220,6 @@ namespace ET
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
-            }
-
-            if (cancellationToken == null)
-            {
-                return true;
             }
 
             return !cancellationToken.IsCancel();

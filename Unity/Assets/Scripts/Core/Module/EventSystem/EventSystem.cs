@@ -5,10 +5,15 @@ using System.Text;
 
 namespace ET
 {
-    using OneTypeSystems = UnOrderMultiMap<Type, object>;
-
     public class EventSystem: Singleton<EventSystem>, ISingletonUpdate, ISingletonLateUpdate
     {
+        private class OneTypeSystems
+        {
+            public readonly UnOrderMultiMap<Type, object> Map = new();
+            // 这里不用hash，数量比较少，直接for循环速度更快
+            public readonly bool[] QueueFlag = new bool[(int)InstanceQueueIndex.Max];
+        }
+        
         private class TypeSystems
         {
             private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
@@ -42,7 +47,7 @@ namespace ET
                     return null;
                 }
 
-                if (!oneTypeSystems.TryGetValue(systemType, out List<object> systems))
+                if (!oneTypeSystems.Map.TryGetValue(systemType, out List<object> systems))
                 {
                     return null;
                 }
@@ -76,15 +81,7 @@ namespace ET
 
         private TypeSystems typeSystems = new();
 
-        private readonly Queue<long>[] queues = new Queue<long>[(int)QueueEnum.Max];
-
-        private enum QueueEnum
-        {
-            Update = 0,
-            LateUpdate = 1,
-            Load = 2,
-            Max = 3,
-        }
+        private readonly Queue<long>[] queues = new Queue<long>[(int)InstanceQueueIndex.Max];
 
         public EventSystem()
         {
@@ -151,7 +148,12 @@ namespace ET
                 if (obj is ISystemType iSystemType)
                 {
                     OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
-                    oneTypeSystems.Add(iSystemType.SystemType(), obj);
+                    oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
+                    InstanceQueueIndex index = iSystemType.GetInstanceQueueIndex();
+                    if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
+                    {
+                        oneTypeSystems.QueueFlag[(int)index] = true;
+                    }
                 }
             }
 
@@ -252,27 +254,13 @@ namespace ET
             {
                 return;
             }
-            
-            if (component is ILoad)
+            for (int i = 0; i < oneTypeSystems.QueueFlag.Length; ++i)
             {
-                if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
+                if (!oneTypeSystems.QueueFlag[i])
                 {
-                    this.queues[(int)QueueEnum.Load].Enqueue(component.InstanceId);
+                    continue;
                 }
-            }
-            if (component is IUpdate)
-            {
-                if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
-                {
-                    this.queues[(int)QueueEnum.Update].Enqueue(component.InstanceId);
-                }
-            }
-            if (component is ILateUpdate)
-            {
-                if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
-                {
-                    this.queues[(int)QueueEnum.LateUpdate].Enqueue(component.InstanceId);
-                }
+                this.queues[i].Enqueue(component.InstanceId);
             }
         }
 
@@ -505,7 +493,7 @@ namespace ET
 
         public void Load()
         {
-            Queue<long> queue = this.queues[(int)QueueEnum.Load];
+            Queue<long> queue = this.queues[(int)InstanceQueueIndex.Load];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -571,7 +559,7 @@ namespace ET
 
         public void Update()
         {
-            Queue<long> queue = this.queues[(int)QueueEnum.Update];
+            Queue<long> queue = this.queues[(int)InstanceQueueIndex.Update];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -611,7 +599,7 @@ namespace ET
 
         public void LateUpdate()
         {
-            Queue<long> queue = this.queues[(int)QueueEnum.LateUpdate];
+            Queue<long> queue = this.queues[(int)InstanceQueueIndex.LateUpdate];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -685,7 +673,7 @@ namespace ET
             }
         }
 
-        public void Publish<T>(Scene scene, T a)where T : struct
+        public void Publish<T>(Scene scene, T a) where T : struct
         {
             List<EventInfo> iEvents;
             if (!this.allEvents.TryGetValue(typeof (T), out iEvents))

@@ -32,13 +32,11 @@ namespace ET.Server
                 }
             }
 
-            unitInfo.Ks = new List<int>();
-            unitInfo.Vs = new List<long>();
+            unitInfo.KV = new Dictionary<int, long>();
 
             foreach ((int key, long value) in nc.NumericDic)
             {
-                unitInfo.Ks.Add(key);
-                unitInfo.Vs.Add(value);
+                unitInfo.KV.Add(key, value);
             }
 
             return unitInfo;

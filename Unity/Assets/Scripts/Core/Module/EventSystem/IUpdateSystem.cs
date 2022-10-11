@@ -29,6 +29,11 @@ namespace ET
 			return typeof(IUpdateSystem);
 		}
 
+		public InstanceQueueIndex GetInstanceQueueIndex()
+		{
+			return InstanceQueueIndex.Update;
+		}
+
 		protected abstract void Update(T self);
 	}
 }

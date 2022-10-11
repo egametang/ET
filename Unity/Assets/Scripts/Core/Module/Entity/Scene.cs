@@ -20,7 +20,6 @@ namespace ET
         public string Name
         {
             get;
-            set;
         }
 
         public Scene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
@@ -60,25 +59,10 @@ namespace ET
             Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
-        public Scene Get(long id)
-        {
-            if (this.Children == null)
-            {
-                return null;
-            }
-
-            if (!this.Children.TryGetValue(id, out Entity entity))
-            {
-                return null;
-            }
-
-            return entity as Scene;
-        }
-
         public new Entity Domain
         {
             get => this.domain;
-            set => this.domain = value;
+            private set => this.domain = value;
         }
 
         public new Entity Parent
@@ -87,7 +71,7 @@ namespace ET
             {
                 return this.parent;
             }
-            set
+            private set
             {
                 if (value == null)
                 {

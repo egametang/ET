@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ET
@@ -49,7 +50,7 @@ namespace ET
             this.TryGetValue(t, out list);
             if (list == null)
             {
-                return new K[0];
+                return Array.Empty<K>();
             }
             return list.ToArray();
         }

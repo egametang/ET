@@ -18,7 +18,6 @@ namespace ET.Server
     
     public struct NetInnerComponentOnRead
     {
-        public Session Session;
         public long ActorId;
         public object Message;
     }

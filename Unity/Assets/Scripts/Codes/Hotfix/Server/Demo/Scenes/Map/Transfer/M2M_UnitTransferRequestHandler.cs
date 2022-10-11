@@ -11,14 +11,14 @@ namespace ET.Server
 			reply();
 			
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
-			Unit unit = MongoHelper.FromBson<Unit>(request.Unit);
+			Unit unit = MongoHelper.Deserialize<Unit>(request.Unit);
 			
 			unitComponent.AddChild(unit);
 			unitComponent.Add(unit);
 
 			foreach (byte[] bytes in request.Entitys)
 			{
-				Entity entity = MongoHelper.FromBson<Entity>(bytes);
+				Entity entity = MongoHelper.Deserialize<Entity>(bytes);
 				unit.AddComponent(entity);
 			}
 			

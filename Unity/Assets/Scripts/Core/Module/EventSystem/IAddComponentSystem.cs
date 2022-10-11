@@ -24,6 +24,11 @@ namespace ET
 			return typeof(IAddComponentSystem);
 		}
 
+		public InstanceQueueIndex GetInstanceQueueIndex()
+		{
+			return InstanceQueueIndex.None;
+		}
+
 		public Type Type()
 		{
 			return typeof(T);

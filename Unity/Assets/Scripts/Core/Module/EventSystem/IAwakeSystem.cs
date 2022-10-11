@@ -60,6 +60,11 @@ namespace ET
             return typeof(IAwakeSystem);
         }
 
+        public InstanceQueueIndex GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
+        }
+
         public void Run(object o)
         {
             this.Awake((T)o);
@@ -79,6 +84,11 @@ namespace ET
         public Type SystemType()
         {
             return typeof(IAwakeSystem<A>);
+        }
+
+        public InstanceQueueIndex GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
         }
 
         public void Run(object o, A a)
@@ -102,6 +112,11 @@ namespace ET
             return typeof(IAwakeSystem<A, B>);
         }
 
+        public InstanceQueueIndex GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
+        }
+
         public void Run(object o, A a, B b)
         {
             this.Awake((T)o, a, b);
@@ -123,6 +138,11 @@ namespace ET
             return typeof(IAwakeSystem<A, B, C>);
         }
 
+        public InstanceQueueIndex GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
+        }
+
         public void Run(object o, A a, B b, C c)
         {
             this.Awake((T)o, a, b, c);
@@ -142,6 +162,11 @@ namespace ET
         public Type SystemType()
         {
             return typeof(IAwakeSystem<A, B, C, D>);
+        }
+
+        public InstanceQueueIndex GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
         }
 
         public void Run(object o, A a, B b, C c, D d)

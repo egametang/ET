@@ -5,24 +5,27 @@ namespace ET.Server
     [Event(SceneType.Process)]
     public class NetInnerComponentOnReadEvent: AEvent<NetInnerComponentOnRead>
     {
+        [EnableAccessEntiyChild]
         protected override async ETTask Run(Scene scene, NetInnerComponentOnRead args)
         {
-            ushort opcode = 0;
             try
             {
-                Session session = args.Session;
                 long actorId = args.ActorId;
                 object message = args.Message;
 
-                opcode = NetServices.Instance.GetOpcode(message.GetType());
-                InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
+                InstanceIdStruct instanceIdStruct = new(actorId);
                 int fromProcess = instanceIdStruct.Process;
                 instanceIdStruct.Process = Options.Instance.Process;
                 long realActorId = instanceIdStruct.ToLong();
-
+                
                 // 收到actor消息,放入actor队列
                 switch (message)
                 {
+                    case IActorResponse iActorResponse:
+                    {
+                        ActorMessageSenderComponent.Instance.RunMessage(realActorId, iActorResponse);
+                        break;
+                    }
                     case IActorRequest iActorRequest:
                     {
                         void Reply(IActorResponse response)
@@ -31,54 +34,100 @@ namespace ET.Server
                             // 发回真实的actorId 做查问题使用
                             replySession.Send(realActorId, response);
                         }
-                        InnerMessageDispatcherHelper.HandleIActorRequest(opcode, realActorId, iActorRequest, Reply);
-                        return;
-                    }
-                    case IActorResponse iActorResponse:
-                    {
-                        InnerMessageDispatcherHelper.HandleIActorResponse(opcode, realActorId, iActorResponse);
-                        return;
-                    }
-                    case IActorMessage iactorMessage:
-                    {
-                        // 内网收到外网消息，有可能是gateUnit消息，还有可能是gate广播消息
-                        if (OpcodeTypeComponent.Instance.IsOutrActorMessage(opcode))
+                        
+                        Entity entity = EventSystem.Instance.Get(realActorId);
+                        if (entity == null)
                         {
-                            Entity entity = EventSystem.Instance.Get(realActorId);
-                            if (entity == null)
+                            IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                            Reply(response);
+                            break;
+                        }
+
+                        MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+                        if (mailBoxComponent == null)
+                        {
+                            Log.Warning($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorRequest}");
+                            IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                            Reply(response);
+                            break;
+                        }
+
+                        switch (mailBoxComponent.MailboxType)
+                        {
+                            case MailboxType.MessageDispatcher:
                             {
-                                Log.Error($"not found actor: {session.DomainScene().Name}  {opcode} {realActorId} {message}");
-                                return;
+                                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
+                                {
+                                    if (entity.InstanceId != realActorId)
+                                    {
+                                        IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                                        Reply(response);
+                                        break;
+                                    }
+                                    await ActorMessageDispatcherComponent.Instance.Handle(entity, iActorRequest, Reply);
+                                }
+                                break;
                             }
-                    
-                            if (entity is Session gateSession)
+                            case MailboxType.UnOrderMessageDispatcher:
                             {
-                                // 发送给客户端
-                                gateSession.Send(0, iactorMessage);
-                                return;
+                                await ActorMessageDispatcherComponent.Instance.Handle(entity, iActorRequest, Reply);
+                                break;
                             }
                         }
+                        break;
+                    }
+                    case IActorMessage iActorMessage:
+                    {
+                        Entity entity = EventSystem.Instance.Get(realActorId);
+                        if (entity == null)
+                        {
+                            Log.Error($"not found actor: {scene.Name} {realActorId} {message}");
+                            break;
+                        }
                         
-                        InnerMessageDispatcherHelper.HandleIActorMessage(opcode, realActorId, iactorMessage);
-                        return;
-                    }
-                    case IResponse iResponse:
-                    {
-                        session.OnResponse(iResponse);
-                        return;
-                    }
-                    default:
-                    {
-                        MessageDispatcherComponent.Instance.Handle(session, message);
+                        MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+                        if (mailBoxComponent == null)
+                        {
+                            Log.Error($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorMessage}");
+                            break;
+                        }
+
+                        switch (mailBoxComponent.MailboxType)
+                        {
+                            case MailboxType.MessageDispatcher:
+                            {
+                                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
+                                {
+                                    if (entity.InstanceId != realActorId)
+                                    {
+                                        break;
+                                    }
+                                    await ActorMessageDispatcherComponent.Instance.Handle(entity, iActorMessage, null);
+                                }
+                                break;
+                            }
+                            case MailboxType.UnOrderMessageDispatcher:
+                            {
+                                await ActorMessageDispatcherComponent.Instance.Handle(entity, iActorMessage, null);
+                                break;
+                            }
+                            case MailboxType.GateSession:
+                            {
+                                if (entity is Session gateSession)
+                                {
+                                    // 发送给客户端
+                                    gateSession.Send(0, iActorMessage);
+                                }
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
-
-                await ETTask.CompletedTask;
             }
             catch (Exception e)
             {
-                Log.Error($"InnerMessageDispatcher error: {opcode}\n{e}");
+                Log.Error($"InnerMessageDispatcher error: {args.Message.GetType().Name}\n{e}");
             }
         }
     }

@@ -18,7 +18,7 @@ namespace ET.Client
         {
             Scene clientScene = aiComponent.DomainScene();
 
-            Unit myUnit = Client.UnitHelper.GetMyUnitFromClientScene(clientScene);
+            Unit myUnit = UnitHelper.GetMyUnitFromClientScene(clientScene);
             if (myUnit == null)
             {
                 return;
@@ -30,8 +30,8 @@ namespace ET.Client
             {
                 XunLuoPathComponent xunLuoPathComponent = myUnit.GetComponent<XunLuoPathComponent>();
                 float3 nextTarget = xunLuoPathComponent.GetCurrent();
-                int ret = await myUnit.MoveToAsync(nextTarget, cancellationToken);
-                if (ret != 0)
+                await myUnit.MoveToAsync(nextTarget, cancellationToken);
+                if (cancellationToken.IsCancel())
                 {
                     return;
                 }

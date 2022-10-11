@@ -62,6 +62,7 @@ namespace ET
                 CoroutineLock coroutineLock = CoroutineLock.Create(type, key, level);
 
                 waitCoroutineLock.SetResult(coroutineLock);
+                break;
             }
         }
 
