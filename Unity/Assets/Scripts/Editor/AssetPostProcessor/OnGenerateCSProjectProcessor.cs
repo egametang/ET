@@ -46,12 +46,7 @@ namespace ET
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
 
                     content = GenerateCustomProject(path, content,
-                        @"Assets\Scripts\Codes\Hotfix\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Hotfix\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Hotfix\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\Hotfix\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Client',''))%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\Hotfix\Share\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Share',''))%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\Hotfix\Server\**\*.cs Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Hotfix\Server',''))%(FileName)%(Extension)");
+                        @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
                 }
 
                 if (path.EndsWith("Unity.HotfixView.csproj"))
@@ -59,9 +54,7 @@ namespace ET
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\HotfixView\\Empty.cs\" />", string.Empty);
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
                     content = GenerateCustomProject(path, content,
-                        @"Assets\Scripts\Codes\HotfixView\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\HotfixView\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\HotfixView\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('HotfixView\Client',''))%(FileName)%(Extension)");
+                        @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
                 }
 
                 if (path.EndsWith("Unity.Model.csproj"))
@@ -72,10 +65,7 @@ namespace ET
                         @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\Model\Client\**\*.cs Client\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Client',''))%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\Model\Share\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Share',''))%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\Model\Server\**\*.cs Server\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('Model\Server',''))%(FileName)%(Extension)");
+                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)");
                 }
 
                 if (path.EndsWith("Unity.ModelView.csproj"))
@@ -83,9 +73,7 @@ namespace ET
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\ModelView\\Empty.cs\" />", string.Empty);
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
                     content = GenerateCustomProject(path, content,
-                        @"Assets\Scripts\Codes\ModelView\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\ModelView\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Plugins\*\ModelView\Client\**\*.cs Share\Plugins\$([System.String]::new(%(RecursiveDir)).Replace('ModelView\Client',''))%(FileName)%(Extension)");
+                        @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
                 }
             }
             return content;

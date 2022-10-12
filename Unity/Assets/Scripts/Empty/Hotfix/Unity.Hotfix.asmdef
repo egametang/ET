@@ -4,9 +4,9 @@
     "references": [
         "Unity.Model",
         "Unity.ThirdParty",
-        "Unity.Mono",
         "Unity.Core",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Unity.Loader"
     ],
     "includePlatforms": [
         "Editor"

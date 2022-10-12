@@ -3,7 +3,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>ET</RootNamespace>
         <LangVersion>10</LangVersion>
-        <AssemblyName>Model</AssemblyName>
+        <AssemblyName>Loader</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -24,28 +24,11 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Server\**\*.cs"> 
-            <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Client\**\*.cs"> 
-            <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-        
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Share\**\*.cs">
-            <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Generate\Server\**\*.cs"> 
-            <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
         
     </ItemGroup> 
     <ItemGroup> 
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Core\DotNet.Core.csproj" />
-        <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
 </Project>

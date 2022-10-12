@@ -2,10 +2,9 @@
     "name": "Unity.Editor",
     "rootNamespace": "",
     "references": [
-        "Unity.Mono",
         "Unity.ThirdParty",
         "Unity.Core",
-        "Unity.Codes"
+        "Unity.Loader"
     ],
     "includePlatforms": [
         "Editor"

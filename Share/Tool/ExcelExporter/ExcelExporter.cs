@@ -62,7 +62,7 @@ namespace ET
 
         private const string excelDir = "../Unity/Assets/Config/Excel/";
 
-        private const string jsonDir = "../Unity/Assets/Config/Excel/Json/{0}/{1}";
+        private const string jsonDir = "../Config/Json/{0}/{1}";
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
         private const string serverProtoDir = "../Config/Excel/{0}/{1}";

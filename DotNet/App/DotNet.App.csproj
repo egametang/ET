@@ -28,12 +28,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Model\DotNet.Model.csproj" />
   </ItemGroup>
 </Project>
