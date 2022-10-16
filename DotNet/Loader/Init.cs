@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using CommandLine;
 
 namespace ET
@@ -36,26 +35,26 @@ namespace ET
 				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
 
 				Game.AddSingleton<CodeLoader>().Start();
-
-				while (true)
-				{
-					try
-					{
-						Thread.Sleep(1);
-						Game.Update();
-						Game.LateUpdate();
-						Game.FrameFinishUpdate();
-					}
-					catch (Exception e)
-					{
-						Log.Error(e);
-					}
-				}
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
 			}
+		}
+
+		public static void Update()
+		{
+			Game.Update();
+		}
+
+		public static void LateUpdate()
+		{
+			Game.LateUpdate();
+		}
+
+		public static void FrameFinishUpdate()
+		{
+			Game.FrameFinishUpdate();
 		}
 	}
 }

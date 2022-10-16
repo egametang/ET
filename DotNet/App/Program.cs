@@ -1,4 +1,7 @@
-﻿namespace ET
+﻿using System;
+using System.Threading;
+
+namespace ET
 {
     public static class Program
     {
@@ -13,6 +16,21 @@
             //的组件可以写在Core中
             Entry.Init();
             Init.Start();
+            
+            while (true)
+            {
+                Thread.Sleep(1);
+                try
+                {
+                    Init.Update();
+                    Init.LateUpdate();
+                    Init.FrameFinishUpdate();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
         }
     }
 }
