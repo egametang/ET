@@ -564,6 +564,8 @@ namespace ET
 
                     return value;
                 case "string":
+                    value = value.Replace("\\", "\\\\");
+                    value = value.Replace("\"", "\\\"");
                     return $"\"{value}\"";
                 default:
                     throw new Exception($"不支持此类型: {type}");
