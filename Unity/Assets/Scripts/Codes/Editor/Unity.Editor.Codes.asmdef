@@ -1,6 +1,6 @@
 {
     "name": "Unity.Editor.Codes",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",

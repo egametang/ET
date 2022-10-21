@@ -8,7 +8,7 @@ namespace ET
 	
 	public interface IDeserializeSystem: ISystemType
 	{
-		void Run(object o);
+		void Run(Entity o);
 	}
 
 	/// <summary>
@@ -16,24 +16,24 @@ namespace ET
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	[ObjectSystem]
-	public abstract class DeserializeSystem<T> : IDeserializeSystem where T: IDeserialize
+	public abstract class DeserializeSystem<T> : IDeserializeSystem where T: Entity, IDeserialize
 	{
-		public void Run(object o)
+		void IDeserializeSystem.Run(Entity o)
 		{
 			this.Deserialize((T)o);
 		}
-		
-		public Type SystemType()
+
+		Type ISystemType.SystemType()
 		{
 			return typeof(IDeserializeSystem);
 		}
 
-		public InstanceQueueIndex GetInstanceQueueIndex()
+		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
 		{
 			return InstanceQueueIndex.None;
 		}
 
-		public Type Type()
+		Type ISystemType.Type()
 		{
 			return typeof(T);
 		}

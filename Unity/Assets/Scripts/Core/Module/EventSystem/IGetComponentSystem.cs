@@ -12,28 +12,28 @@ namespace ET
 	
 	public interface IGetComponentSystem: ISystemType
 	{
-		void Run(object o, Entity component);
+		void Run(Entity o, Entity component);
 	}
 
 	[ObjectSystem]
-	public abstract class GetComponentSystem<T> : IGetComponentSystem where T: IGetComponent
+	public abstract class GetComponentSystem<T> : IGetComponentSystem where T: Entity, IGetComponent
 	{
-		public void Run(object o, Entity component)
+		void IGetComponentSystem.Run(Entity o, Entity component)
 		{
 			this.GetComponent((T)o, component);
 		}
-		
-		public Type SystemType()
+
+		Type ISystemType.SystemType()
 		{
 			return typeof(IGetComponentSystem);
 		}
 
-		public InstanceQueueIndex GetInstanceQueueIndex()
+		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
 		{
 			return InstanceQueueIndex.None;
 		}
 
-		public Type Type()
+		Type ISystemType.Type()
 		{
 			return typeof(T);
 		}

@@ -1,6 +1,6 @@
 {
     "name": "Unity.Model.Codes",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
@@ -18,5 +18,5 @@
         "ENABLE_CODES"
     ],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }

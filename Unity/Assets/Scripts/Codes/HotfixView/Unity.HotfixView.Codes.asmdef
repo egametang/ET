@@ -1,6 +1,6 @@
 {
     "name": "Unity.HotfixView.Codes",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",

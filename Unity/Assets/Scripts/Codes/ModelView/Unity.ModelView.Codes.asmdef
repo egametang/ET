@@ -1,6 +1,6 @@
 {
     "name": "Unity.ModelView.Codes",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",

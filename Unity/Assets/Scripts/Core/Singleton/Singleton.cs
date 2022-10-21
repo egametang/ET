@@ -23,7 +23,7 @@ namespace ET
             }
         }
 
-        public void Register()
+        void ISingleton.Register()
         {
             if (instance != null)
             {
@@ -32,7 +32,7 @@ namespace ET
             instance = (T)this;
         }
 
-        public void Destroy()
+        void ISingleton.Destroy()
         {
             if (this.isDisposed)
             {
@@ -45,7 +45,7 @@ namespace ET
             t.Dispose();
         }
 
-        public bool IsDisposed()
+        bool ISingleton.IsDisposed()
         {
             return this.isDisposed;
         }
