@@ -1,4 +1,4 @@
-# [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
+# English: please use your browser to translate to english  
 
 # __讨论QQ群 : 474643097__  
 
