@@ -53,14 +53,18 @@
 
             if (time > 0)
             {
-                long lockInfoInstanceId = lockInfo.InstanceId;
-                await TimerComponent.Instance.WaitAsync(time);
-                if (lockInfo.InstanceId != lockInfoInstanceId)
+                async ETTask TimeWaitAsync()
                 {
-                    return;
+                    long lockInfoInstanceId = lockInfo.InstanceId;
+                    await TimerComponent.Instance.WaitAsync(time);
+                    if (lockInfo.InstanceId != lockInfoInstanceId)
+                    {
+                        return;
+                    }
+                    Log.Info($"location timeout unlock key: {key} instanceId: {instanceId} newInstanceId: {instanceId}");
+                    self.UnLock(key, instanceId, instanceId);
                 }
-
-                self.UnLock(key, instanceId, instanceId);
+                TimeWaitAsync().Coroutine();
             }
         }
 

@@ -7,7 +7,7 @@ namespace ET
     {
         protected override async ETTask Run(Scene scene, ObjectLockRequest request, ObjectLockResponse response, Action reply)
         {
-            scene.GetComponent<LocationComponent>().Lock(request.Key, request.InstanceId, request.Time).Coroutine();
+            await scene.GetComponent<LocationComponent>().Lock(request.Key, request.InstanceId, request.Time);
 
             reply();
 

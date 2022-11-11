@@ -49,12 +49,11 @@ namespace ET
             
             this.state = AwaiterStatus.Pending;
             this.callback = null;
-            queue.Enqueue(this);
-            // 太多了，回收一下
             if (queue.Count > 1000)
             {
-                queue.Clear();
+                return;
             }
+            queue.Enqueue(this);
         }
 
         private bool fromPool;
@@ -195,12 +194,11 @@ namespace ET
             this.callback = null;
             this.value = default;
             this.state = AwaiterStatus.Pending;
-            queue.Enqueue(this);
-            // 太多了，回收一下
             if (queue.Count > 1000)
             {
-                queue.Clear();
+                return;
             }
+            queue.Enqueue(this);
         }
 
         private bool fromPool;
