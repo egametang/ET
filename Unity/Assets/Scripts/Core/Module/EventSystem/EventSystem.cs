@@ -91,51 +91,26 @@ namespace ET
             }
         }
 
-        private static List<Type> GetBaseAttributes(Dictionary<string, Type> addTypes)
+        public void Add(Dictionary<string, Type> addTypes)
         {
-            List<Type> attributeTypes = new List<Type>();
-            foreach (Type type in addTypes.Values)
+            this.allTypes.Clear();
+            this.types.Clear();
+            
+            foreach ((string fullName, Type type) in addTypes)
             {
+                this.allTypes[fullName] = type;
+                
                 if (type.IsAbstract)
                 {
                     continue;
                 }
+                
+                // 记录所有的有BaseAttribute标记的的类型
+                object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
 
-                if (type.IsSubclassOf(typeof (BaseAttribute)))
+                foreach (object o in objects)
                 {
-                    attributeTypes.Add(type);
-                }
-            }
-
-            return attributeTypes;
-        }
-
-        public void Add(Dictionary<string, Type> addTypes)
-        {
-            this.allTypes.Clear();
-            foreach (Type addType in addTypes.Values)
-            {
-                this.allTypes[addType.FullName] = addType;
-            }
-
-            this.types.Clear();
-            List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
-            foreach (Type baseAttributeType in baseAttributeTypes)
-            {
-                foreach (Type type in addTypes.Values)
-                {
-                    if (type.IsAbstract)
-                    {
-                        continue;
-                    }
-
-                    object[] objects = type.GetCustomAttributes(baseAttributeType, true);
-                    if (objects.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    this.types.Add(baseAttributeType, type);
+                    this.types.Add(o.GetType(), type);
                 }
             }
 
