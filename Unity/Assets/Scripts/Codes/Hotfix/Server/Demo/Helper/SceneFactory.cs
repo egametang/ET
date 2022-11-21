@@ -19,8 +19,9 @@ namespace ET.Server
                         startSceneConfig.StartProcessConfig.InnerIP
                     );
                     break;
-                case SceneType.RouterManager:
-                    scene.AddComponent<HttpComponent, string>($"http://{startSceneConfig.OuterIPPort}/");
+                case SceneType.RouterManager: // 正式发布请用CDN代替RouterManager
+                    // 云服务器在防火墙那里做端口映射
+                    scene.AddComponent<HttpComponent, string>($"http://+:{startSceneConfig.OuterPort}/");
                     break;
                 case SceneType.Realm:
                     scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
