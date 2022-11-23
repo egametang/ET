@@ -15,8 +15,9 @@ namespace ET
 		None,
 		Android,
 		IOS,
-		PC,
+		Windows,
 		MacOS,
+		Linux
 	}
 	
 	public enum BuildType
@@ -56,6 +57,8 @@ namespace ET
 			activePlatform = PlatformType.PC;
 #elif UNITY_STANDALONE_OSX
 			activePlatform = PlatformType.MacOS;
+#elif UNITY_STANDALONE_LINUX
+			activePlatform = PlatformType.Linux;
 #else
 			activePlatform = PlatformType.None;
 #endif

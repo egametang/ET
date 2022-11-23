@@ -115,7 +115,7 @@ namespace ET
             string exeName = programName;
             switch (type)
             {
-                case PlatformType.PC:
+                case PlatformType.Windows:
                     buildTarget = BuildTarget.StandaloneWindows64;
                     exeName += ".exe";
                     break;
@@ -128,6 +128,10 @@ namespace ET
                     break;
                 case PlatformType.MacOS:
                     buildTarget = BuildTarget.StandaloneOSX;
+                    break;
+                
+                case PlatformType.Linux:
+                    buildTarget = BuildTarget.StandaloneLinux64;
                     break;
             }
 
@@ -162,7 +166,7 @@ namespace ET
             }
             else
             {
-                if (isContainAB && type == PlatformType.PC)
+                if (isContainAB && type == PlatformType.Windows)
                 {
                     string targetPath = Path.Combine(relativeDirPrefix, $"{programName}_Data/StreamingAssets/");
                     FileHelper.CleanDirectory(targetPath);
