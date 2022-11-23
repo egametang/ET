@@ -6,7 +6,7 @@ namespace ET
     {
         public static void ExcelExporter()
         {
-#if UNITY_EDITOR_OSX
+#if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
             const string tools = "./Tool";
 #else
             const string tools = ".\\Tool.exe";
@@ -16,7 +16,7 @@ namespace ET
         
         public static void Proto2CS()
         {
-#if UNITY_EDITOR_OSX
+#if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
             const string tools = "./Tool";
 #else
             const string tools = ".\\Tool.exe";
