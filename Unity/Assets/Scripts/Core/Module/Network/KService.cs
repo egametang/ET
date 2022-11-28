@@ -184,7 +184,27 @@ namespace ET
             this.socket.Close();
             this.socket = null;
         }
+
+        public override (uint, uint) GetChannelConn(long channelId)
+        {
+            KChannel kChannel = this.Get(channelId);
+            if (kChannel == null)
+            {
+                throw new Exception($"GetChannelConn conn not found KChannel! {channelId}");
+            }
+            return (kChannel.LocalConn, kChannel.RemoteConn);
+        }
         
+        public override void ChangeAddress(long channelId, IPEndPoint newIPEndPoint)
+        {
+            KChannel kChannel = this.Get(channelId);
+            if (kChannel == null)
+            {
+                return;
+            }
+            kChannel.RemoteAddress = newIPEndPoint;
+        }
+
         private IPEndPoint CloneAddress()
         {
             IPEndPoint ip = (IPEndPoint) this.ipEndPoint;

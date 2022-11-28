@@ -40,5 +40,14 @@ namespace ET
         public abstract void Create(long id, IPEndPoint address);
 
         public abstract void Send(long channelId, long actorId, object message);
+
+        public virtual (uint, uint) GetChannelConn(long channelId)
+        {
+            throw new Exception($"default conn throw Exception! {channelId}");
+        }
+        
+        public virtual void ChangeAddress(long channelId, IPEndPoint ipEndPoint)
+        {
+        }
     }
 }
