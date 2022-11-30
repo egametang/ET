@@ -35,7 +35,7 @@ namespace ET.Server
                             replySession.Send(realActorId, response);
                         }
                         
-                        Entity entity = EventSystem.Instance.Get(realActorId);
+                        Entity entity = Root.Instance.Get(realActorId);
                         if (entity == null)
                         {
                             IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
@@ -78,7 +78,7 @@ namespace ET.Server
                     }
                     case IActorMessage iActorMessage:
                     {
-                        Entity entity = EventSystem.Instance.Get(realActorId);
+                        Entity entity = Root.Instance.Get(realActorId);
                         if (entity == null)
                         {
                             Log.Error($"not found actor: {scene.Name} {realActorId} {message}");

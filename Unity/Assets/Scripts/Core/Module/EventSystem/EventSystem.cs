@@ -69,8 +69,6 @@ namespace ET
             }
         }
         
-        private readonly Dictionary<long, Entity> allEntities = new();
-
         private readonly Dictionary<string, Type> allTypes = new();
 
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
@@ -212,16 +210,8 @@ namespace ET
             return this.allTypes[typeName];
         }
 
-        public void RegisterSystem(Entity component, bool isRegister = true)
+        public void RegisterSystem(Entity component)
         {
-            if (!isRegister)
-            {
-                this.Remove(component.InstanceId);
-                return;
-            }
-
-            this.allEntities.Add(component.InstanceId, component);
-
             Type type = component.GetType();
 
             OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
@@ -237,23 +227,6 @@ namespace ET
                 }
                 this.queues[i].Enqueue(component.InstanceId);
             }
-        }
-
-        public void Remove(long instanceId)
-        {
-            this.allEntities.Remove(instanceId);
-        }
-
-        public Entity Get(long instanceId)
-        {
-            Entity component = null;
-            this.allEntities.TryGetValue(instanceId, out component);
-            return component;
-        }
-
-        public bool IsRegister(long instanceId)
-        {
-            return this.allEntities.ContainsKey(instanceId);
         }
 
         public void Deserialize(Entity component)
@@ -473,8 +446,8 @@ namespace ET
             while (count-- > 0)
             {
                 long instanceId = queue.Dequeue();
-                Entity component;
-                if (!this.allEntities.TryGetValue(instanceId, out component))
+                Entity component = Root.Instance.Get(instanceId);
+                if (component == null)
                 {
                     continue;
                 }
@@ -539,8 +512,8 @@ namespace ET
             while (count-- > 0)
             {
                 long instanceId = queue.Dequeue();
-                Entity component;
-                if (!this.allEntities.TryGetValue(instanceId, out component))
+                Entity component = Root.Instance.Get(instanceId);
+                if (component == null)
                 {
                     continue;
                 }
@@ -579,8 +552,8 @@ namespace ET
             while (count-- > 0)
             {
                 long instanceId = queue.Dequeue();
-                Entity component;
-                if (!this.allEntities.TryGetValue(instanceId, out component))
+                Entity component = Root.Instance.Get(instanceId);
+                if (component == null)
                 {
                     continue;
                 }
@@ -718,65 +691,6 @@ namespace ET
             }
             
             return aInvokeHandler.Handle(args);
-        }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new();
-            HashSet<Type> noParent = new HashSet<Type>();
-            Dictionary<Type, int> typeCount = new Dictionary<Type, int>();
-
-            HashSet<Type> noDomain = new HashSet<Type>();
-
-            foreach (var kv in this.allEntities)
-            {
-                Type type = kv.Value.GetType();
-                if (kv.Value.Parent == null)
-                {
-                    noParent.Add(type);
-                }
-
-                if (kv.Value.Domain == null)
-                {
-                    noDomain.Add(type);
-                }
-
-                if (typeCount.ContainsKey(type))
-                {
-                    typeCount[type]++;
-                }
-                else
-                {
-                    typeCount[type] = 1;
-                }
-            }
-
-            sb.AppendLine("not set parent type: ");
-            foreach (Type type in noParent)
-            {
-                sb.AppendLine($"\t{type.Name}");
-            }
-
-            sb.AppendLine("not set domain type: ");
-            foreach (Type type in noDomain)
-            {
-                sb.AppendLine($"\t{type.Name}");
-            }
-
-            IOrderedEnumerable<KeyValuePair<Type, int>> orderByDescending = typeCount.OrderByDescending(s => s.Value);
-
-            sb.AppendLine("Entity Count: ");
-            foreach (var kv in orderByDescending)
-            {
-                if (kv.Value == 1)
-                {
-                    continue;
-                }
-
-                sb.AppendLine($"\t{kv.Key.Name}: {kv.Value}");
-            }
-
-            return sb.ToString();
         }
     }
 }

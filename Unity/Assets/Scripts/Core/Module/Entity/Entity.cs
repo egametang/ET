@@ -72,8 +72,17 @@ namespace ET
                     this.status &= ~EntityStatus.IsRegister;
                 }
 
-                EventSystem.Instance.RegisterSystem(this, value);
                 
+                if (!value)
+                {
+                    Root.Instance.Remove(this.InstanceId);
+                }
+                else
+                {
+                    Root.Instance.Add(this);
+                    EventSystem.Instance.RegisterSystem(this);
+                }
+
 #if ENABLE_VIEW && UNITY_EDITOR
                 if (value)
                 {

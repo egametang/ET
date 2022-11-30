@@ -35,6 +35,11 @@ namespace ET
             singletons.Push(singleton);
             
             singleton.Register();
+
+            if (singleton is ISingletonAwake awake)
+            {
+                awake.Awake();
+            }
             
             if (singleton is ISingletonUpdate)
             {

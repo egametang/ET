@@ -40,9 +40,8 @@ namespace ET
             }
             this.isDisposed = true;
             
-            T t = instance;
+            instance.Dispose();
             instance = null;
-            t.Dispose();
         }
 
         bool ISingleton.IsDisposed()
