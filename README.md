@@ -12,11 +12,29 @@
 
 # [分析器说明](https://www.yuque.com/u28961999/yms0nt/)
 
-# ET7.1 发布! 
-1. 网络改成独立线程，序列化反序列化都在网络线程处理，主线程压力大大减轻。并且重新整理了网络层代码，更优美了  
-2. 集成Unity.Mathematic数学库，逻辑层客户端跟服务端都使用这一套数学库，这样服务端跟客户端完全统一了  
-3. ENABLE_CODES模式下拆分成4个程序集，解决分析器失效的问题  
-4. Game管理的Singleton增加ISingletonUpdate跟ISingletonLateUpdate接口，实现相应的接口即可执行对应的Update跟LateUpdate方法，Game类解除了跟EventSystem等单间类的耦合关系  
+# Benchmark
+100W Ping Pong 平均耗时4秒左右，平均每秒收发20W的消息。这个网络性能远远超过主线程的需求，大家可以自己测试一下，测试方法：
+Unity Menu->ServerTools select Benchmark, Start Watcher。然后在Logs目录，打开Debug日志等一会所有连接完成就能看到下面的日志了。
+2022-12-02 22:19:48.9837 (C2G_BenchmarkHandler.cs:13) benchmark count: 1000001 
+2022-12-02 22:19:53.4621 (C2G_BenchmarkHandler.cs:13) benchmark count: 2000001 
+2022-12-02 22:19:57.0416 (C2G_BenchmarkHandler.cs:13) benchmark count: 3000001 
+2022-12-02 22:20:00.6186 (C2G_BenchmarkHandler.cs:13) benchmark count: 4000001 
+2022-12-02 22:20:04.1384 (C2G_BenchmarkHandler.cs:13) benchmark count: 5000001 
+2022-12-02 22:20:08.2236 (C2G_BenchmarkHandler.cs:13) benchmark count: 6000001 
+2022-12-02 22:20:12.2842 (C2G_BenchmarkHandler.cs:13) benchmark count: 7000001 
+2022-12-02 22:20:15.8544 (C2G_BenchmarkHandler.cs:13) benchmark count: 8000001 
+2022-12-02 22:20:19.4085 (C2G_BenchmarkHandler.cs:13) benchmark count: 9000001 
+2022-12-02 22:20:24.2969 (C2G_BenchmarkHandler.cs:13) benchmark count: 10000001
+2022-12-02 22:20:41.1448 (C2G_BenchmarkHandler.cs:13) benchmark count: 11000001
+2022-12-02 22:20:44.7174 (C2G_BenchmarkHandler.cs:13) benchmark count: 12000001
+2022-12-02 22:20:48.3188 (C2G_BenchmarkHandler.cs:13) benchmark count: 13000001
+2022-12-02 22:20:51.7793 (C2G_BenchmarkHandler.cs:13) benchmark count: 14000001
+2022-12-02 22:20:55.3379 (C2G_BenchmarkHandler.cs:13) benchmark count: 15000001
+2022-12-02 22:20:58.8810 (C2G_BenchmarkHandler.cs:13) benchmark count: 16000001
+2022-12-02 22:21:02.5156 (C2G_BenchmarkHandler.cs:13) benchmark count: 17000001
+2022-12-02 22:21:06.0132 (C2G_BenchmarkHandler.cs:13) benchmark count: 18000001
+2022-12-02 22:21:09.5320 (C2G_BenchmarkHandler.cs:13) benchmark count: 19000001
+
 
 # ET7 发布! 18岁亦菲
 1. 调整结构，机器人工程与服务器合并，更易使用，一个进程同时可以做server，也能创建机器人，真正的ALL IN ONE! -- 已实现  
@@ -27,6 +45,11 @@
 6. 各种事件跟网络消息订阅带上DomainSceneType，更精确，更不容易出错 -- 已实现  
 7. sj兄弟添加了各种分析器，分析器保证了写出的代码必须符合ET规范，否则编译不通过！（这点ET6也增加上了） -- 已实现  
 8. ET7已经去除客户端热更新，请大家自己选择接入,接入huatuo或者ILRuntime都非常简单, 注意！(不要混淆客户端热更新跟服务端热更新，服务端热更新，ET一直都有)  
+9. 网络改成独立线程，序列化反序列化都在网络线程处理，主线程压力大大减轻。并且重新整理了网络层代码，更优美了  
+10. 集成Unity.Mathematic数学库，逻辑层客户端跟服务端都使用这一套数学库，这样服务端跟客户端完全统一了  
+11. ENABLE_CODES模式下拆分成4个程序集，解决分析器失效的问题  
+12. Game管理的Singleton增加ISingletonUpdate跟ISingletonLateUpdate接口，实现相应的接口即可执行对应的Update跟LateUpdate方法，Game类解除了跟EventSystem等单间类的耦合关系  
+13. Actor消息判断如果是发向自己的进程则不用通过网络，直接处理即可，大大提升性能  
 
 
 # ET6 发布！ET6相比ET5有巨大变化，可以说是凤姐变亦菲，6.0拥有如下惊人的特点
