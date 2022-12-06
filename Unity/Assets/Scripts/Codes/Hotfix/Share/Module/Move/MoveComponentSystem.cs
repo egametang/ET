@@ -28,7 +28,7 @@ namespace ET
         {
             protected override void Destroy(MoveComponent self)
             {
-                self.Clear();
+                self.MoveFinish(true);
             }
         }
 
@@ -172,10 +172,7 @@ namespace ET
                     unit.Position = self.NextTarget;
                     unit.Rotation = self.To;
 
-                    var tcs = self.tcs;
-                    self.tcs = null;
-                    self.Clear();
-                    tcs?.SetResult(ret);
+                    self.MoveFinish(ret);
                     return;
                 }
 
@@ -269,11 +266,16 @@ namespace ET
                 self.MoveForward(ret);
             }
 
-            self.Clear();
+            self.MoveFinish(ret);
         }
 
-        private static void Clear(this MoveComponent self)
+        private static void MoveFinish(this MoveComponent self, bool ret)
         {
+            if (self.StartTime == 0)
+            {
+                return;
+            }
+            
             self.StartTime = 0;
             self.StartPos = float3.zero;
             self.BeginTime = 0;
@@ -289,7 +291,7 @@ namespace ET
             {
                 var tcs = self.tcs;
                 self.tcs = null;
-                tcs.SetResult(false);
+                tcs.SetResult(ret);
             }
         }
     }
