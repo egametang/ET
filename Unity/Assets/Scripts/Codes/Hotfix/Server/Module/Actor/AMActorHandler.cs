@@ -2,21 +2,20 @@
 
 namespace ET.Server
 {
+    [EnableClass]
     public abstract class AMActorHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorMessage
     {
         protected abstract ETTask Run(E entity, Message message);
 
-        public async ETTask Handle(Entity entity, object actorMessage, Action<IActorResponse> reply)
+        public async ETTask Handle(Entity entity, int fromProcess, object actorMessage)
         {
-            Message msg = actorMessage as Message;
-            if (msg == null)
+            if (actorMessage is not Message msg)
             {
                 Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
                 return;
             }
 
-            E e = entity as E;
-            if (e == null)
+            if (entity is not E e)
             {
                 Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof (E).Name} --{typeof (Message).Name}");
                 return;

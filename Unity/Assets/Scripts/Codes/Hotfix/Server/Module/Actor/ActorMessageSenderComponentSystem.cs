@@ -168,7 +168,7 @@ namespace ET.Server
             return response;
         }
 
-        public static void RunMessage(this ActorMessageSenderComponent self, long actorId, IActorResponse response)
+        public static void HandleIActorResponse(this ActorMessageSenderComponent self, IActorResponse response)
         {
             ActorMessageSender actorMessageSender;
             if (!self.requestCallback.TryGetValue(response.RpcId, out actorMessageSender))

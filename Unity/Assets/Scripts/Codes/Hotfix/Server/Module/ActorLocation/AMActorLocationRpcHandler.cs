@@ -2,48 +2,41 @@
 
 namespace ET.Server
 {
-    public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : class, IActorRequest where Response : class, IActorResponse
+    [EnableClass]
+    public abstract class AMActorLocationRpcHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : class, IActorLocationRequest where Response : class, IActorLocationResponse
     {
-        protected abstract ETTask Run(E unit, Request request, Response response, Action reply);
+        protected abstract ETTask Run(E unit, Request request, Response response);
 
-        public async ETTask Handle(Entity entity, object actorMessage, Action<IActorResponse> reply)
+        public async ETTask Handle(Entity entity, int fromProcess, object actorMessage)
         {
             try
             {
-                Request request = actorMessage as Request;
-                if (request == null)
+                if (actorMessage is not Request request)
                 {
                     Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
                     return;
                 }
 
-                E ee = entity as E;
-                if (ee == null)
+                if (entity is not E ee)
                 {
                     Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof (E).Name} --{typeof (Request).Name}");
                     return;
                 }
 
-                int rpcId = request.RpcId;
                 Response response = Activator.CreateInstance<Response>();
-
-                void Reply()
-                {
-                    response.RpcId = rpcId;
-                    reply.Invoke(response);
-                }
+                response.RpcId = request.RpcId;
 
                 try
                 {
-                    await this.Run(ee, request, response, Reply);
+                    await this.Run(ee, request, response);
                 }
                 catch (Exception exception)
                 {
                     Log.Error(exception);
                     response.Error = ErrorCore.ERR_RpcFail;
                     response.Message = exception.ToString();
-                    Reply();
                 }
+                ActorHandleHelper.Reply(fromProcess, response);
             }
             catch (Exception e)
             {
@@ -53,11 +46,6 @@ namespace ET.Server
 
         public Type GetRequestType()
         {
-            if (typeof (IActorLocationRequest).IsAssignableFrom(typeof (Request)))
-            {
-                Log.Error($"message is IActorLocationMessage but handler is AMActorRpcHandler: {typeof (Request)}");
-            }
-
             return typeof (Request);
         }
 
