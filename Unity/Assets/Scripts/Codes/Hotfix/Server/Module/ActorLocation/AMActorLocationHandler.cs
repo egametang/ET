@@ -9,8 +9,7 @@ namespace ET.Server
 
         public async ETTask Handle(Entity entity, int fromProcess, object actorMessage)
         {
-            Message msg = actorMessage as Message;
-            if (msg == null)
+            if (actorMessage is not Message message)
             {
                 Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
                 return;
@@ -21,12 +20,11 @@ namespace ET.Server
                 Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof (E).Name} --{typeof (Message).Name}");
                 return;
             }
-
-            IActorResponse response = (IActorResponse) Activator.CreateInstance(GetResponseType());
-            response.RpcId = msg.RpcId;
+            
+            ActorResponse response = new() {RpcId = message.RpcId};
             ActorHandleHelper.Reply(fromProcess, response);
 
-            await this.Run(e, msg);
+            await this.Run(e, message);
         }
 
         public Type GetRequestType()

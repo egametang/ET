@@ -23,9 +23,9 @@ namespace ET.Server
                     return;
                 }
 
+                int rpcId = request.RpcId;
                 Response response = Activator.CreateInstance<Response>();
-                response.RpcId = request.RpcId;
-
+                
                 try
                 {
                     await this.Run(ee, request, response);
@@ -36,6 +36,7 @@ namespace ET.Server
                     response.Error = ErrorCore.ERR_RpcFail;
                     response.Message = exception.ToString();
                 }
+                response.RpcId = rpcId;
                 ActorHandleHelper.Reply(fromProcess, response);
             }
             catch (Exception e)

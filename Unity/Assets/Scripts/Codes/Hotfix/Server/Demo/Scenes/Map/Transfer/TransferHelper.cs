@@ -5,6 +5,14 @@ namespace ET.Server
 {
     public static class TransferHelper
     {
+        public static async ETTask TransferAtFrameFinish(Unit unit, long sceneInstanceId, string sceneName)
+        {
+            await Game.WaitFrameFinish();
+
+            await TransferHelper.Transfer(unit, sceneInstanceId, sceneName);
+        }
+        
+
         public static async ETTask Transfer(Unit unit, long sceneInstanceId, string sceneName)
         {
             // location加锁

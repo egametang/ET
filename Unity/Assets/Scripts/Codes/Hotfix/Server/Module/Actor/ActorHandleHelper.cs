@@ -1,4 +1,6 @@
-﻿namespace ET.Server
+﻿using System;
+
+namespace ET.Server
 {
     public static class ActorHandleHelper
     {
@@ -69,6 +71,9 @@
                     await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
                     break;
                 }
+                case MailboxType.GateSession:
+                default:
+                    throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorRequest}");
             }
         }
         
@@ -121,10 +126,12 @@
                     if (entity is Session gateSession)
                     {
                         // 发送给客户端
-                        gateSession.Send(0, iActorMessage);
+                        gateSession.Send(iActorMessage);
                     }
                     break;
                 }
+                default:
+                    throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorMessage}");
             }
         }
     }

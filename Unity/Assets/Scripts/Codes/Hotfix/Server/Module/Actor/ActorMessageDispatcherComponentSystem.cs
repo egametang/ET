@@ -38,12 +38,12 @@ namespace ET.Server
             }
         }
         
-        public static void Awake(this ActorMessageDispatcherComponent self)
+        private static void Awake(this ActorMessageDispatcherComponent self)
         {
             self.Load();
         }
 
-        public static void Load(this ActorMessageDispatcherComponent self)
+        private static void Load(this ActorMessageDispatcherComponent self)
         {
             self.ActorMessageHandlers.Clear();
 
@@ -76,7 +76,7 @@ namespace ET.Server
                         }
                     }
 
-                    ActorMessageDispatcherInfo actorMessageDispatcherInfo = new ActorMessageDispatcherInfo(actorMessageHandlerAttribute.SceneType, imHandler);
+                    ActorMessageDispatcherInfo actorMessageDispatcherInfo = new(actorMessageHandlerAttribute.SceneType, imHandler);
 
                     self.RegisterHandler(messageType, actorMessageDispatcherInfo);
                 }
