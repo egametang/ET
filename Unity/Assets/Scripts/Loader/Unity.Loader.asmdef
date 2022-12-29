@@ -3,7 +3,8 @@
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
-        "Unity.Core"
+        "Unity.Core",
+        "HybridCLR.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

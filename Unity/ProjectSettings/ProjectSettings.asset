@@ -41,12 +41,6 @@ PlayerSettings:
     height: 1
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
-  m_ShowUnitySplashAds: 0
-  m_AdsAndroidGameId: 
-  m_AdsIosGameId: 
-  m_ShowSplashAdsSlogan: 0
-  m_SloganImage: {fileID: 0}
-  m_SloganHeight: 150
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
@@ -91,11 +85,6 @@ PlayerSettings:
   hideHomeButton: 0
   submitAnalytics: 1
   usePlayerLog: 1
-  autoStreaming: 0
-  useAnimationStreaming: 0
-  useFontStreaming: 0
-  autoStreamingId: 
-  instantGameAppId: 
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
@@ -260,7 +249,7 @@ PlayerSettings:
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 5
+  AndroidTargetArchitectures: 2
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
@@ -483,6 +472,7 @@ PlayerSettings:
       m_Kind: 4
       m_SubKind: App Store
   m_BuildTargetBatching: []
+  m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs:
   - m_BuildTarget: MacStandaloneSupport
     m_GraphicsJobs: 0
@@ -579,6 +569,8 @@ PlayerSettings:
   - m_BuildTarget: tvOS
     m_Enabled: 0
     m_Devices: []
+  m_DefaultShaderChunkSizeInMB: 16
+  m_DefaultShaderChunkCount: 0
   openGLRequireES31: 1
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
@@ -745,6 +737,7 @@ PlayerSettings:
   switchNetworkInterfaceManagerInitializeEnabled: 1
   switchPlayerConnectionEnabled: 1
   switchUseNewStyleFilepaths: 0
+  switchUseLegacyFmodPriorities: 1
   switchUseMicroSleepForYield: 1
   switchEnableRamDiskSupport: 0
   switchMicroSleepForYieldTime: 25
@@ -844,19 +837,20 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
+  webGLPowerPreference: 2
   scriptingDefineSymbols:
     Android: NETSTANDARD2_0;UNITY
     Server: NETSTANDARD2_0;UNITY
-    Standalone: NETSTANDARD2_0;UNITY;ENABLE_VIEW
+    Standalone: NETSTANDARD2_0;UNITY
     WebGL: NETSTANDARD2_0;UNITY
     iPhone: NETSTANDARD2_0;UNITY
   additionalCompilerArguments: {}
   platformArchitecture:
     iPhone: 1
   scriptingBackend:
-    Android: 0
+    Android: 1
     Server: 0
-    Standalone: 0
+    Standalone: 1
     iPhone: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
@@ -865,6 +859,7 @@ PlayerSettings:
   allowUnsafeCode: 1
   useDeterministicCompilation: 1
   enableRoslynAnalyzers: 1
+  selectedPlatform: 0
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 0
@@ -952,8 +947,9 @@ PlayerSettings:
   luminVersion:
     m_VersionCode: 1
     m_VersionName: 
-  apiCompatibilityLevel: 6
+  apiCompatibilityLevel: 3
   activeInputHandler: 0
+  windowsGamepadBackendHint: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []

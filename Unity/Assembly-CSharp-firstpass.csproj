@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <_TargetFrameworkDirectories>non_empty_path_generated_by_unity.rider.package</_TargetFrameworkDirectories>
+    <_FullFrameworkReferenceAssemblyPaths>non_empty_path_generated_by_unity.rider.package</_FullFrameworkReferenceAssemblyPaths>
+    <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{09b46226-3263-561e-d797-c9025c53bdd6}</ProjectGuid>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>.</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\Bin\Debug\Unity.Rider.Editor\</OutputPath>
+    <DefineConstants>UNITY_EDITOR</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169,0649</NoWarn>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+    <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
+    <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
+  </PropertyGroup>
+  <ItemGroup>
+     <Folder Include="Assets/Plugins/Android" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/win/native" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/linux" />
+     <Folder Include="Assets/Plugins/MacOS" />
+     <Folder Include="Assets/Plugins" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes" />
+     <Folder Include="Assets/Plugins/Android/libs/x86" />
+     <Folder Include="Assets/Plugins/MacOS/x86_64" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/win" />
+     <Folder Include="Assets/Plugins/MongoDB" />
+     <Folder Include="Assets/Plugins/Android/libs/arm64-v8a" />
+     <Folder Include="Assets/Plugins/MacOS/arm64" />
+     <Folder Include="Assets/Plugins/Android/libs/armeabi-v7a" />
+     <Folder Include="Assets/Plugins/iOS" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/osx" />
+     <Folder Include="Assets/Plugins/x86" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/linux/native" />
+     <Folder Include="Assets/Plugins/Android/libs" />
+     <Folder Include="Assets/Plugins/x86_64" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/osx/native" />
+     <Reference Include="UnityEngine">
+     <HintPath>/Applications/Unity/Hub/Editor/2021.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.CoreModule">
+     <HintPath>/Applications/Unity/Hub/Editor/2021.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEditor">
+     <HintPath>/Applications/Unity/Hub/Editor/2021.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.dll</HintPath>
+     </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

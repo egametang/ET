@@ -44,6 +44,8 @@ namespace ET
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
 					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					
+					HybridCLRHelper.Load();
 				}
 				else
 				{
