@@ -25,7 +25,16 @@ MonoBehaviour:
   externalHotUpdateAssembliyDirs:
   - Temp/Bin/Debug
   strippedAOTDllOutputRootDir: HybridCLRData/AssembliesPostIl2CppStrip
-  patchAOTAssemblies: []
+  patchAOTAssemblies:
+  - Unity.ThirdParty.dll
+  - Unity.Loader.dll
+  - Unity.Core.dll
+  - MongoDB.Bson.dll
+  - CommandLine.dll
+  - NLog.dll
+  - mscorlib.dll
+  - System.dll
+  - System.Core.dll
   collectAssetReferenceTypes: 0
   outputLinkFile: Scripts/Loader/Plugins/HybridCLR/Generated/link.xml
   outputAOTGenericReferenceFile: Scripts/Loader/Plugins/HybridCLR/Generated/AOTGenericReferences.cs
