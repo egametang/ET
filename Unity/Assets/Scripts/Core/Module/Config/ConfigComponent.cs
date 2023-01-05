@@ -73,11 +73,6 @@ namespace ET
 			}
 
 			await Task.WhenAll(listTasks.ToArray());
-
-			foreach (ISingleton category in this.allConfig.Values)
-			{
-				category.Register();
-			}
 		}
 		
 		private void LoadOneInThread(Type configType, byte[] oneConfigBytes)
@@ -86,7 +81,9 @@ namespace ET
 			
 			lock (this)
 			{
-				this.allConfig[configType] = category as ISingleton;	
+				ISingleton singleton = category as ISingleton;
+				singleton.Register();
+				this.allConfig[configType] = singleton;
 			}
 		}
 	}
