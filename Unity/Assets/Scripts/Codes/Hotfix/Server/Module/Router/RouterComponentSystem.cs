@@ -68,6 +68,7 @@ namespace ET.Server
                 if (timeNow - self.LastCheckTime > 1000)
                 {
                     self.CheckConnectTimeout(timeNow);
+                    self.LastCheckTime = timeNow;
                 }
             }
         }
