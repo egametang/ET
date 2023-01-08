@@ -31,9 +31,6 @@ namespace ET
 						this.model = ass;
 					}
 				}
-				
-				IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
-				start.Run();
 			}
 			else
 			{
@@ -44,8 +41,11 @@ namespace ET
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
 					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
-					
-					HybridCLRHelper.Load();
+
+					if (Define.EnableIL2CPP)
+					{
+						HybridCLRHelper.Load();
+					}
 				}
 				else
 				{
@@ -55,10 +55,10 @@ namespace ET
 			
 				this.model = Assembly.Load(assBytes, pdbBytes);
 				this.LoadHotfix();
-			
-				IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
-				start.Run();
 			}
+			
+			IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
+			start.Run();
 		}
 
 		// 热重载调用该方法
