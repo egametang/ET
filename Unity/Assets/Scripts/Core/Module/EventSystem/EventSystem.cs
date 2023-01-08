@@ -692,5 +692,15 @@ namespace ET
             
             return aInvokeHandler.Handle(args);
         }
+        
+        public void Invoke<A>(A args) where A: struct
+        {
+            Invoke(0, args);
+        }
+        
+        public T Invoke<A, T>(A args) where A: struct
+        {
+            return Invoke<A, T>(0, args);
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace ET
 				oneConfig.Destroy();
 			}
 			
-			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(0, new GetOneConfigBytes() {ConfigName = configType.FullName});
+			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
 
 			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;
@@ -49,7 +49,7 @@ namespace ET
 		public void Load()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(0, new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
 
 			foreach (Type type in configBytes.Keys)
 			{
@@ -61,7 +61,7 @@ namespace ET
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(0, new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			
