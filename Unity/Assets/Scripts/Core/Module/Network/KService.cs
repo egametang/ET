@@ -126,14 +126,8 @@ namespace ET
             {
                 throw new Exception($"bind error: {ipEndPoint}", e);
             }
-            
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                const uint IOC_IN = 0x80000000;
-                const uint IOC_VENDOR = 0x18000000;
-                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-                this.socket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
-            }
+
+            NetworkHelper.SetSioUdpConnReset(this.socket);
         }
 
         public KService(AddressFamily addressFamily, ServiceType serviceType)
@@ -142,13 +136,7 @@ namespace ET
             this.startTime = TimeHelper.ClientNow();
             this.socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                const uint IOC_IN = 0x80000000;
-                const uint IOC_VENDOR = 0x18000000;
-                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-                this.socket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
-            }
+            NetworkHelper.SetSioUdpConnReset(this.socket);
         }
 
         // 保存所有的channel
