@@ -74,5 +74,32 @@ namespace ET
         {
             Logger.Instance.Console(message, args);
         }
+        
+#if DOTNET
+        public static void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
+        {
+            Trace(message.ToStringAndClear());
+        }
+
+        public static void Warning(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
+        {
+            Warning(message.ToStringAndClear());
+        }
+
+        public static void Info(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
+        {
+            Info(message.ToStringAndClear());
+        }
+
+        public static void Debug(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
+        {
+            Debug(message.ToStringAndClear());
+        }
+
+        public static void Error(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
+        {
+            Error(message.ToStringAndClear());
+        }
+#endif
     }
 }
