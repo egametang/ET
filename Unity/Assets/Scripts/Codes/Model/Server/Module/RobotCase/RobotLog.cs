@@ -2,19 +2,26 @@ namespace ET.Server
 {
 	public static class RobotLog
 	{
-		public static void Debug(string msg)
+#if DOTNET
+		public static void Debug(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
 		{
-			Log.Info(msg);
+			Logger.Instance.Debug(message.ToStringAndClear());
 		}
 		
-		public static void Debug(string msg, params object[] args)
+		public static void Console(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
 		{
-			Log.Info(msg, args);
+			Logger.Instance.Console(message.ToStringAndClear());
+		}
+#endif
+		
+		public static void Debug(string msg)
+		{
+			Logger.Instance.Debug(msg);
 		}
 
 		public static void Console(string msg)
 		{
-			Log.Console(msg);
+			Logger.Instance.Console(msg);
 		}
 	}
 }
