@@ -181,13 +181,10 @@ namespace ET
 
                 List<string> excels = FileHelper.GetAllFiles(excelDir, "*.xlsx");
                 
-                List<Task> tasks = new List<Task>();
                 foreach (string path in excels)
                 {
-                    Task task = Task.Run(() => ExportExcel(path));
-                    tasks.Add(task);
+                    ExportExcel(path);
                 }
-                Task.WaitAll(tasks.ToArray());
                 
                 if (Directory.Exists(clientProtoDir))
                 {
@@ -594,7 +591,7 @@ namespace ET
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
             string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
-            string[] ss = Directory.GetFiles(p, $"{protoName}_*.txt");
+            string[] ss = Directory.GetFiles(p, $"{protoName}*.txt");
             List<string> jsonPaths = ss.ToList();
             jsonPaths.Add(Path.Combine(string.Format(jsonDir, configType, relativeDir), $"{protoName}.txt"));
 
