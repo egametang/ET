@@ -1,12 +1,12 @@
 {
     "name": "Unity.Hotfix.Codes",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
-        "Unity.Mono",
         "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Model.Codes",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Unity.Loader"
     ],
     "includePlatforms": [
         "Editor"
@@ -20,5 +20,5 @@
         "ENABLE_CODES"
     ],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }

@@ -21,7 +21,7 @@ namespace ET
                 return ptr;
             }
 
-            byte[] buffer = EventSystem.Instance.Invoke<NavmeshComponent.RecastFileLoader, byte[]>(0, new NavmeshComponent.RecastFileLoader() {Name = name});
+            byte[] buffer = EventSystem.Instance.Invoke<NavmeshComponent.RecastFileLoader, byte[]>(new NavmeshComponent.RecastFileLoader() {Name = name});
             if (buffer.Length == 0)
             {
                 throw new Exception($"no nav data: {name}");

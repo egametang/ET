@@ -162,13 +162,13 @@ namespace ET.Server
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                Log.Warning("actor rpc time > 200: {0} {1}", costTime, iActorRequest);
+                Log.Warning($"actor rpc time > 200: {costTime} {iActorRequest}");
             }
             
             return response;
         }
 
-        public static void RunMessage(this ActorMessageSenderComponent self, long actorId, IActorResponse response)
+        public static void HandleIActorResponse(this ActorMessageSenderComponent self, IActorResponse response)
         {
             ActorMessageSender actorMessageSender;
             if (!self.requestCallback.TryGetValue(response.RpcId, out actorMessageSender))

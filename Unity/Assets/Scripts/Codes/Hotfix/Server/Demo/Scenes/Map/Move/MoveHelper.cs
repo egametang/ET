@@ -11,7 +11,7 @@ namespace ET.Server
             float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
             if (speed < 0.01)
             {
-                unit.SendStop(-1);
+                unit.SendStop(2);
                 return;
             }
 
@@ -21,7 +21,7 @@ namespace ET.Server
 
             if (list.Count < 2)
             {
-                unit.SendStop(0);
+                unit.SendStop(3);
                 return;
             }
                 
@@ -41,10 +41,11 @@ namespace ET.Server
 
         public static void Stop(this Unit unit, int error)
         {
-            unit.GetComponent<MoveComponent>().Stop();
+            unit.GetComponent<MoveComponent>().Stop(error == 0);
             unit.SendStop(error);
         }
 
+        // error: 0表示协程走完正常停止
         public static void SendStop(this Unit unit, int error)
         {
             MessageHelper.Broadcast(unit, new M2C_Stop()

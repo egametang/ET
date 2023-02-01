@@ -1,15 +1,15 @@
 {
     "name": "Unity.Editor.Codes",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
-        "Unity.Mono",
         "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Model.Codes",
         "Unity.Hotfix.Codes",
         "Unity.ModelView.Codes",
         "Unity.HotfixView.Codes",
-        "Unity.Editor"
+        "Unity.Editor",
+        "Unity.Loader"
     ],
     "includePlatforms": [
         "Editor"

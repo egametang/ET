@@ -30,16 +30,9 @@ namespace ET.Server
                     self.InnerSocket.SendBufferSize = 16 * Kcp.OneM;
                     self.InnerSocket.ReceiveBufferSize = 16 * Kcp.OneM;
                 }
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    const uint IOC_IN = 0x80000000;
-                    const uint IOC_VENDOR = 0x18000000;
-                    uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-
-                    self.OuterSocket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
-                    self.InnerSocket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
-                }
+                
+                NetworkHelper.SetSioUdpConnReset(self.OuterSocket);
+                NetworkHelper.SetSioUdpConnReset(self.InnerSocket);
             }
         }
 
@@ -68,6 +61,7 @@ namespace ET.Server
                 if (timeNow - self.LastCheckTime > 1000)
                 {
                     self.CheckConnectTimeout(timeNow);
+                    self.LastCheckTime = timeNow;
                 }
             }
         }

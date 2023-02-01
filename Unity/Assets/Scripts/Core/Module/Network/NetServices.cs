@@ -24,7 +24,7 @@ namespace ET
         CreateChannel = 6,
         RemoveChannel = 7,
         SendMessage = 9,
-        GetKChannelConn = 10,
+        GetChannelConn = 10,
         ChangeAddress = 11,
     }
     
@@ -90,10 +90,10 @@ namespace ET
         
         private int serviceIdGenerator;
 
-        public async Task<(uint, uint)> GetKChannelConn(int serviceId, long channelId)
+        public async Task<(uint, uint)> GetChannelConn(int serviceId, long channelId)
         {
             TaskCompletionSource<(uint, uint)> tcs = new TaskCompletionSource<(uint, uint)>();
-            NetOperator netOperator = new NetOperator() { Op = NetOp.GetKChannelConn, ServiceId = serviceId, ChannelId = channelId, Object = tcs};
+            NetOperator netOperator = new NetOperator() { Op = NetOp.GetChannelConn, ServiceId = serviceId, ChannelId = channelId, Object = tcs};
             this.netThreadOperators.Enqueue(netOperator);
             return await tcs.Task;
         }
@@ -281,7 +281,7 @@ namespace ET
                             }
                             break;
                         }
-                        case NetOp.GetKChannelConn:
+                        case NetOp.GetChannelConn:
                         {
                             var tcs = op.Object as TaskCompletionSource<ValueTuple<uint, uint>>;
                             try
@@ -291,12 +291,8 @@ namespace ET
                                 {
                                     break;
                                 }
-                                KChannel kChannel = (service as KService).Get(op.ChannelId);
-                                if (kChannel == null)
-                                {
-                                    break;
-                                }
-                                tcs.SetResult((kChannel.LocalConn, kChannel.RemoteConn));
+
+                                tcs.SetResult(service.GetChannelConn(op.ChannelId));
                             }
                             catch (Exception e)
                             {
@@ -311,12 +307,7 @@ namespace ET
                             {
                                 break;
                             }
-                            KChannel kChannel = (service as KService).Get(op.ChannelId);
-                            if (kChannel == null)
-                            {
-                                break;
-                            }
-                            kChannel.RemoteAddress = op.Object as IPEndPoint;
+                            service.ChangeAddress(op.ChannelId, op.Object as IPEndPoint);
                             break;
                         }
                         default:

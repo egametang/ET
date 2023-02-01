@@ -41,7 +41,7 @@ namespace ET.Client
                 {
                     long sessionId = session.Id;
 
-                    (uint localConn, uint remoteConn) = await NetServices.Instance.GetKChannelConn(session.ServiceId, sessionId);
+                    (uint localConn, uint remoteConn) = await NetServices.Instance.GetChannelConn(session.ServiceId, sessionId);
                     
                     IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
                     Log.Info($"get recvLocalConn start: {self.ClientScene().Id} {realAddress} {localConn} {remoteConn}");

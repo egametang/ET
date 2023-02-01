@@ -8,28 +8,28 @@ namespace ET
 	
 	public interface ILoadSystem: ISystemType
 	{
-		void Run(object o);
+		void Run(Entity o);
 	}
 
 	[ObjectSystem]
-	public abstract class LoadSystem<T> : ILoadSystem where T: ILoad
+	public abstract class LoadSystem<T> : ILoadSystem where T: Entity, ILoad
 	{
-		public void Run(object o)
+		void ILoadSystem.Run(Entity o)
 		{
 			this.Load((T)o);
 		}
-		
-		public Type Type()
+
+		Type ISystemType.Type()
 		{
 			return typeof(T);
 		}
-		
-		public Type SystemType()
+
+		Type ISystemType.SystemType()
 		{
 			return typeof(ILoadSystem);
 		}
 
-		public InstanceQueueIndex GetInstanceQueueIndex()
+		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
 		{
 			return InstanceQueueIndex.Load;
 		}

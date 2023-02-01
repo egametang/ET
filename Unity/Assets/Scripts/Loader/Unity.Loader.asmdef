@@ -1,0 +1,20 @@
+{
+    "name": "Unity.Loader",
+    "rootNamespace": "ET",
+    "references": [
+        "Unity.ThirdParty",
+        "Unity.Core",
+        "HybridCLR.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

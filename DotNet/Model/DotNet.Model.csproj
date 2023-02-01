@@ -25,10 +25,6 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
-            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link> 
-        </Compile> 
-
         <Compile Include="..\..\Unity\Assets\Scripts\Codes\Model\Server\**\*.cs"> 
             <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
@@ -49,6 +45,7 @@
     <ItemGroup> 
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Core\DotNet.Core.csproj" />
+        <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
 </Project>

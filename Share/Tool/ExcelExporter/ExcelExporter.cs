@@ -62,7 +62,7 @@ namespace ET
 
         private const string excelDir = "../Unity/Assets/Config/Excel/";
 
-        private const string jsonDir = "../Unity/Assets/Config/Excel/Json/{0}/{1}";
+        private const string jsonDir = "../Config/Json/{0}/{1}";
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
         private const string serverProtoDir = "../Config/Excel/{0}/{1}";
@@ -181,13 +181,10 @@ namespace ET
 
                 List<string> excels = FileHelper.GetAllFiles(excelDir, "*.xlsx");
                 
-                List<Task> tasks = new List<Task>();
                 foreach (string path in excels)
                 {
-                    Task task = Task.Run(() => ExportExcel(path));
-                    tasks.Add(task);
+                    ExportExcel(path);
                 }
-                Task.WaitAll(tasks.ToArray());
                 
                 if (Directory.Exists(clientProtoDir))
                 {
@@ -564,6 +561,8 @@ namespace ET
 
                     return value;
                 case "string":
+                    value = value.Replace("\\", "\\\\");
+                    value = value.Replace("\"", "\\\"");
                     return $"\"{value}\"";
                 default:
                     throw new Exception($"不支持此类型: {type}");
@@ -592,7 +591,7 @@ namespace ET
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
             string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
-            string[] ss = Directory.GetFiles(p, $"{protoName}_*.txt");
+            string[] ss = Directory.GetFiles(p, $"{protoName}*.txt");
             List<string> jsonPaths = ss.ToList();
             jsonPaths.Add(Path.Combine(string.Format(jsonDir, configType, relativeDir), $"{protoName}.txt"));
 

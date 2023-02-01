@@ -14,7 +14,7 @@ namespace ET
             {
                 try
                 {
-                    self.MoveForward(false);
+                    self.MoveForward(true);
                 }
                 catch (Exception e)
                 {
@@ -28,7 +28,7 @@ namespace ET
         {
             protected override void Destroy(MoveComponent self)
             {
-                self.Clear();
+                self.MoveFinish(true);
             }
         }
 
@@ -70,7 +70,7 @@ namespace ET
 
             using ListComponent<float3> path = ListComponent<float3>.Create();
             
-            self.MoveForward(true);
+            self.MoveForward(false);
                 
             path.Add(unit.Position); // 第一个是Unit的pos
             for (int i = self.N; i < self.Targets.Count; ++i)
@@ -84,7 +84,7 @@ namespace ET
         // 该方法不需要用cancelToken的方式取消，因为即使不传入cancelToken，多次调用该方法也要取消之前的移动协程,上层可以stop取消
         public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<float3> target, float speed, int turnTime = 100)
         {
-            self.Stop();
+            self.Stop(false);
 
             foreach (float3 v in target)
             {
@@ -109,7 +109,8 @@ namespace ET
             return moveRet;
         }
 
-        private static void MoveForward(this MoveComponent self, bool needCancel)
+        // ret: 停止的时候，移动协程的返回值
+        private static void MoveForward(this MoveComponent self, bool ret)
         {
             Unit unit = self.GetParent<Unit>();
             
@@ -171,10 +172,7 @@ namespace ET
                     unit.Position = self.NextTarget;
                     unit.Rotation = self.To;
 
-                    var tcs = self.tcs;
-                    self.tcs = null;
-                    self.Clear();
-                    tcs?.SetResult(!needCancel);
+                    self.MoveFinish(ret);
                     return;
                 }
 
@@ -260,18 +258,24 @@ namespace ET
             return true;
         }
 
-        public static void Stop(this MoveComponent self)
+        // ret: 停止的时候，移动协程的返回值
+        public static void Stop(this MoveComponent self, bool ret)
         {
             if (self.Targets.Count > 0)
             {
-                self.MoveForward(true);
+                self.MoveForward(ret);
             }
 
-            self.Clear();
+            self.MoveFinish(ret);
         }
 
-        private static void Clear(this MoveComponent self)
+        private static void MoveFinish(this MoveComponent self, bool ret)
         {
+            if (self.StartTime == 0)
+            {
+                return;
+            }
+            
             self.StartTime = 0;
             self.StartPos = float3.zero;
             self.BeginTime = 0;
@@ -287,7 +291,7 @@ namespace ET
             {
                 var tcs = self.tcs;
                 self.tcs = null;
-                tcs.SetResult(false);
+                tcs.SetResult(ret);
             }
         }
     }

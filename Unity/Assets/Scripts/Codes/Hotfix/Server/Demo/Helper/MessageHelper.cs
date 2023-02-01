@@ -9,14 +9,14 @@ namespace ET.Server
     {
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
         {
-            M2C_CreateUnits createUnits = new M2C_CreateUnits();
+            M2C_CreateUnits createUnits = new M2C_CreateUnits() { Units = new List<UnitInfo>() };
             createUnits.Units.Add(UnitHelper.CreateUnitInfo(sendUnit));
             MessageHelper.SendToClient(unit, createUnits);
         }
         
         public static void NoticeUnitRemove(Unit unit, Unit sendUnit)
         {
-            M2C_RemoveUnits removeUnits = new M2C_RemoveUnits();
+            M2C_RemoveUnits removeUnits = new M2C_RemoveUnits() {Units = new List<long>()};
             removeUnits.Units.Add(sendUnit.Id);
             MessageHelper.SendToClient(unit, removeUnits);
         }

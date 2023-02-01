@@ -99,11 +99,13 @@ namespace ET
                     throw new Exception("not found enum");
             }
 
-            BuildAssembliesHelper.BuildMuteAssembly(logicFile, codes, new[] { Path.Combine(Define.BuildOutputDir, "Model.dll") }, codeOptimization,
+            BuildAssembliesHelper.BuildMuteAssembly("Hotfix", codes, new[] { Path.Combine(Define.BuildOutputDir, "Model.dll") }, codeOptimization,
                 globalConfig.CodeMode);
 
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"{logicFile}.dll"), Path.Combine(CodeDir, $"Hotfix.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"{logicFile}.pdb"), Path.Combine(CodeDir, $"Hotfix.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(CodeDir, $"Hotfix.dll.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(CodeDir, $"Hotfix.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.dll"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.pdb"), true);
             Debug.Log("copy Hotfix.dll to Bundles/Code success!");
         }
 

@@ -126,14 +126,8 @@ namespace ET
             {
                 throw new Exception($"bind error: {ipEndPoint}", e);
             }
-            
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                const uint IOC_IN = 0x80000000;
-                const uint IOC_VENDOR = 0x18000000;
-                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-                this.socket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
-            }
+
+            NetworkHelper.SetSioUdpConnReset(this.socket);
         }
 
         public KService(AddressFamily addressFamily, ServiceType serviceType)
@@ -142,13 +136,7 @@ namespace ET
             this.startTime = TimeHelper.ClientNow();
             this.socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                const uint IOC_IN = 0x80000000;
-                const uint IOC_VENDOR = 0x18000000;
-                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-                this.socket.IOControl((int) SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
-            }
+            NetworkHelper.SetSioUdpConnReset(this.socket);
         }
 
         // 保存所有的channel
@@ -184,7 +172,27 @@ namespace ET
             this.socket.Close();
             this.socket = null;
         }
+
+        public override (uint, uint) GetChannelConn(long channelId)
+        {
+            KChannel kChannel = this.Get(channelId);
+            if (kChannel == null)
+            {
+                throw new Exception($"GetChannelConn conn not found KChannel! {channelId}");
+            }
+            return (kChannel.LocalConn, kChannel.RemoteConn);
+        }
         
+        public override void ChangeAddress(long channelId, IPEndPoint newIPEndPoint)
+        {
+            KChannel kChannel = this.Get(channelId);
+            if (kChannel == null)
+            {
+                return;
+            }
+            kChannel.RemoteAddress = newIPEndPoint;
+        }
+
         private IPEndPoint CloneAddress()
         {
             IPEndPoint ip = (IPEndPoint) this.ipEndPoint;

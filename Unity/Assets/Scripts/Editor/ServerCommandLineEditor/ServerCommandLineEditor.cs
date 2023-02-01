@@ -21,7 +21,7 @@ namespace ET
             GetWindow<ServerCommandLineEditor>(DockDefine.Types);
         }
         
-        private int selectStartConfigIndex;
+        private int selectStartConfigIndex = 1;
         private string[] startConfigs;
         private string startConfig;
         private DevelopMode developMode;
@@ -37,7 +37,6 @@ namespace ET
             selectStartConfigIndex = EditorGUILayout.Popup(selectStartConfigIndex, this.startConfigs);
             this.startConfig = this.startConfigs[this.selectStartConfigIndex];
             this.developMode = (DevelopMode) EditorGUILayout.EnumPopup("起服模式：", this.developMode);
-            int develop = (int) this.developMode;
 
             string dotnet = "dotnet.exe";
             

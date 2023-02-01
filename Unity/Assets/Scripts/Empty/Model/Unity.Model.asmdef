@@ -3,7 +3,6 @@
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
-        "Unity.Mono",
         "Unity.Core",
         "Unity.Mathematics"
     ],
@@ -17,5 +16,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }

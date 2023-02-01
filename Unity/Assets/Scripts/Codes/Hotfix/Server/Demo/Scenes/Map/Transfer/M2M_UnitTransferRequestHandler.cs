@@ -6,10 +6,8 @@ namespace ET.Server
 	[ActorMessageHandler(SceneType.Map)]
 	public class M2M_UnitTransferRequestHandler : AMActorRpcHandler<Scene, M2M_UnitTransferRequest, M2M_UnitTransferResponse>
 	{
-		protected override async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response, Action reply)
+		protected override async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response)
 		{
-			reply();
-			
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = MongoHelper.Deserialize<Unit>(request.Unit);
 			

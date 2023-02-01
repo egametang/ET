@@ -1,0 +1,5 @@
+{"list":[
+{"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":1,"SceneType":"BenchmarkServer","Name":"BenchmarkServer","OuterPort":30001},
+{"_t":"StartSceneConfig","_id":2,"Process":2,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient1","OuterPort":30002},
+{"_t":"StartSceneConfig","_id":3,"Process":3,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient2","OuterPort":30003},
+]}

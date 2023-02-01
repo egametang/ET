@@ -38,12 +38,12 @@ namespace ET.Server
             }
         }
         
-        public static void Awake(this ActorMessageDispatcherComponent self)
+        private static void Awake(this ActorMessageDispatcherComponent self)
         {
             self.Load();
         }
 
-        public static void Load(this ActorMessageDispatcherComponent self)
+        private static void Load(this ActorMessageDispatcherComponent self)
         {
             self.ActorMessageHandlers.Clear();
 
@@ -76,7 +76,7 @@ namespace ET.Server
                         }
                     }
 
-                    ActorMessageDispatcherInfo actorMessageDispatcherInfo = new ActorMessageDispatcherInfo(actorMessageHandlerAttribute.SceneType, imHandler);
+                    ActorMessageDispatcherInfo actorMessageDispatcherInfo = new(actorMessageHandlerAttribute.SceneType, imHandler);
 
                     self.RegisterHandler(messageType, actorMessageDispatcherInfo);
                 }
@@ -93,11 +93,7 @@ namespace ET.Server
             self.ActorMessageHandlers[type].Add(handler);
         }
 
-        /// <summary>
-        /// 分发actor消息
-        /// </summary>
-        public static async ETTask Handle(
-            this ActorMessageDispatcherComponent self, Entity entity, object message, Action<IActorResponse> reply)
+        public static async ETTask Handle(this ActorMessageDispatcherComponent self, Entity entity, int fromProcess, object message)
         {
             List<ActorMessageDispatcherInfo> list;
             if (!self.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
@@ -112,7 +108,7 @@ namespace ET.Server
                 {
                     continue;
                 }
-                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, message, reply);   
+                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, fromProcess, message);   
             }
         }
     }

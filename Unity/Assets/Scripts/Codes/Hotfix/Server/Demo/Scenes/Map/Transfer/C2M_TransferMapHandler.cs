@@ -5,7 +5,7 @@ namespace ET.Server
 	[ActorMessageHandler(SceneType.Map)]
 	public class C2M_TransferMapHandler : AMActorLocationRpcHandler<Unit, C2M_TransferMap, M2C_TransferMap>
 	{
-		protected override async ETTask Run(Unit unit, C2M_TransferMap request, M2C_TransferMap response, Action reply)
+		protected override async ETTask Run(Unit unit, C2M_TransferMap request, M2C_TransferMap response)
 		{
 			await ETTask.CompletedTask;
 
@@ -21,9 +21,8 @@ namespace ET.Server
 			}
 
 			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(unit.DomainScene().Zone, toMap);
-			TransferHelper.Transfer(unit, startSceneConfig.InstanceId, toMap).Coroutine();
 			
-			reply();
+			TransferHelper.TransferAtFrameFinish(unit, startSceneConfig.InstanceId, toMap).Coroutine();
 		}
 	}
 }
