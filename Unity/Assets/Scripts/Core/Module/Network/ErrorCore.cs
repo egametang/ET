@@ -47,7 +47,7 @@
         
         public const int ERR_KcpRouterTimeout = 110401;
         public const int ERR_KcpRouterTooManyPackets = 110402;
-        public const int ERR_KcpRouterSame = 110402;
+        public const int ERR_KcpRouterSame = 110403;
         public const int ERR_KcpRouterConnectFail = 110404;
         public const int ERR_KcpRouterRouterSyncCountTooMuchTimes = 110405;
         public const int ERR_KcpRouterSyncCountTooMuchTimes = 110406;
