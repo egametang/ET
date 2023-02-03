@@ -593,7 +593,6 @@ namespace ET
             string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
             string[] ss = Directory.GetFiles(p, $"{protoName}*.txt");
             List<string> jsonPaths = ss.ToList();
-            jsonPaths.Add(Path.Combine(string.Format(jsonDir, configType, relativeDir), $"{protoName}.txt"));
 
             jsonPaths.Sort();
             jsonPaths.Reverse();
