@@ -32,7 +32,7 @@ namespace ET.Server
                 }
                 catch (HttpListenerException e)
                 {
-                    throw new Exception($"请现在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
+                    throw new Exception($"请先在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
                 }
             }
         }
