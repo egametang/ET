@@ -145,4 +145,24 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+    
+    public static class ETCancellationTokenAnalyzerRule
+    {
+        private const string Title = "含有ETCancellationToken参数的异步函数内调用await表达式必须提前判断CancelToken.IsCancel";
+
+        private const string MessageFormat = "含有ETCancellationToken参数的异步函数内调用await表达式必须提前判断CancelToken.IsCancel";
+
+        private const string Description = "含有ETCancellationToken参数的异步函数内调用await表达式必须提前判断CancelToken.IsCancel.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.ETCancellationTokenAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All, 
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    
 }

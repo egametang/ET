@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -230,6 +231,94 @@ namespace ET.Analyzer
                 }
             }
             return null ;
+        }
+        
+        /// <summary>
+        /// 判断函数是否是否含有指定类型的参数
+        /// </summary>
+        public static bool HasParameterType(this IMethodSymbol methodSymbol, string parameterType, out IParameterSymbol? cencelTokenSymbol)
+        {
+            foreach (var parameterSymbol in methodSymbol.Parameters)
+            {
+                if (parameterSymbol.Type.ToString() == parameterType)
+                {
+                    cencelTokenSymbol = parameterSymbol;
+                    return true;
+                }
+            }
+            cencelTokenSymbol = null;
+            return false;
+        }
+
+        /// <summary>
+        /// 获取所有指定类型的子节点
+        /// </summary>
+        public static IEnumerable<T> DescendantNodes<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
+        {
+            foreach (var descendantNode in syntaxNode.DescendantNodes())
+            {
+                if (descendantNode is T node)
+                {
+                    yield return node;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取与该语法节点同层级的上一个节点
+        /// </summary>
+        public static SyntaxNode? PreviousNode(this SyntaxNode syntaxNode)
+        {
+            if (syntaxNode.Parent==null)
+            {
+                return null;
+            }
+            
+            int index = 0;
+            foreach (var childNode in syntaxNode.Parent.ChildNodes())
+            {
+                if (childNode == syntaxNode)
+                {
+                    break;
+                }
+                index++;
+            }
+
+            if (index==0)
+            {
+                return null;
+            }
+            
+            return syntaxNode.Parent.ChildNodes().ElementAt(index-1);
+        }
+
+        /// <summary>
+        /// 获取与该语法节点同层级的下一个节点
+        /// </summary>
+        public static SyntaxNode? NextNode(this SyntaxNode syntaxNode)
+        {
+            if (syntaxNode.Parent==null)
+            {
+                return null;
+            }
+            
+            int index = 0;
+            
+            foreach (var childNode in syntaxNode.Parent.ChildNodes())
+            {
+                if (childNode == syntaxNode)
+                {
+                    break;
+                }
+                index++;
+            }
+
+            if (index == syntaxNode.Parent.ChildNodes().Count()-1)
+            {
+                return null;
+            }
+            
+            return syntaxNode.Parent.ChildNodes().ElementAt(index+1);
         }
     }
 }

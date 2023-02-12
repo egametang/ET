@@ -32,5 +32,7 @@
 
         public const string StaticFieldDeclarationAnalyzerRule = "ET0015";
 
+        public const string ETCancellationTokenAnalyzerRuleId = "ET0016";
+
     }
 }

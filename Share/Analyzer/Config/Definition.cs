@@ -29,6 +29,10 @@
         public const string EnableAccessEntiyChildAttribute = "ET.EnableAccessEntiyChildAttribute";
 
         public const string StaticFieldAttribute = "ET.StaticFieldAttribute";
+
+        public const string ETCancellationToken = "ET.ETCancellationToken";
+
+        public const string ETTaskCompleteTask = "ETTask.CompletedTask";
     }
 }
 
