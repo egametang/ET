@@ -114,7 +114,7 @@ namespace ET
             async ETTask WaitTimeout()
             {
                 await TimerComponent.Instance.WaitAsync(timeout, cancellationToken);
-                if (cancellationToken.IsCancel())
+                if (cancellationToken != null && cancellationToken.IsCancel())
                 {
                     return;
                 }
