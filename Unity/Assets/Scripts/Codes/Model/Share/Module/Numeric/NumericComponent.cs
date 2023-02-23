@@ -24,7 +24,7 @@ namespace ET
 
         public static void Set(this NumericComponent self, int nt, float value)
         {
-            self[nt] = (int)(value * 10000);
+            self[nt] = (long)(value * 10000);
         }
 
         public static void Set(this NumericComponent self, int nt, int value)
