@@ -10,7 +10,7 @@ namespace ET.Server
     public static class RouterComponentSystem
     {
         [ObjectSystem]
-        public class RandomGeneratorponentAwakeSystem: AwakeSystem<RouterComponent, IPEndPoint, string>
+        public class RouterComponentAwakeSystem: AwakeSystem<RouterComponent, IPEndPoint, string>
         {
             protected override void Awake(RouterComponent self, IPEndPoint outerAddress, string innerIP)
             {
