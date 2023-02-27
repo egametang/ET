@@ -10,7 +10,6 @@ namespace ET
         [StaticField]
         [ThreadStatic]
         private static Random random;
-
         [StaticField]
         private static readonly Random _global = new Random();
 
