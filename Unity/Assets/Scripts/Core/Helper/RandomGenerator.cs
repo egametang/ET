@@ -11,9 +11,23 @@ namespace ET
         [ThreadStatic]
         private static Random random;
 
+        [StaticField]
+        private static readonly Random _global = new Random();
+
         private static Random GetRandom()
         {
-            return random ??= new Random(Guid.NewGuid().GetHashCode());
+            if (random == null)
+            {
+                lock (_global)
+                {
+                    if (random == null)
+                    {
+                        int seed = _global.Next();
+                        random = new Random(seed);
+                    }
+                }
+            }
+            return random;
         }
 
         public static ulong RandUInt64()
