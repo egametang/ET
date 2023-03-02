@@ -146,13 +146,13 @@ namespace ET.Analyzer
                     Description);
     }
     
-    public static class ETCancellationTokenAnalyzerRule
+    public static class CheckETCancellTokenAfterAwaitAnalyzerRule
     {
-        private const string Title = "含有ETCancellationToken参数的异步函数内调用await表达式必须提前判断CancelToken.IsCancel";
+        private const string Title = "含有ETCancelToken参数的异步函数内调用await表达式后必须判断CancelToken.IsCancel";
 
-        private const string MessageFormat = "含有ETCancellationToken参数的异步函数内调用await表达式必须提前判断CancelToken.IsCancel";
+        private const string MessageFormat = "含有ETCancelToken参数的异步函数内调用await表达式后必须判断CancelToken.IsCancel";
 
-        private const string Description = "含有ETCancellationToken参数的异步函数内调用await表达式必须提前判断CancelToken.IsCancel.";
+        private const string Description = "含有ETCancelToken参数的异步函数内调用await表达式后必须判断CancelToken.IsCancel.";
 
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.ETCancellationTokenAnalyzerRuleId,
@@ -164,5 +164,21 @@ namespace ET.Analyzer
                     Description);
     }
     
+    public static class AwaitExpressionCancelTokenParamAnalyzerRule
+    {
+        private const string Title = "含有ETCancelToken参数的异步函数内调用await表达式必须传入同一个CancelToken";
     
+        private const string MessageFormat = "含有ETCancelToken参数的异步函数内调用await表达式必须传入同一个CancelToken";
+    
+        private const string Description = "含有ETCancelToken参数的异步函数内调用await表达式必须传入同一个CancelToken.";
+    
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.AwaitExpressionCancelTokenParamAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All, 
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }
