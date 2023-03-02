@@ -6,6 +6,8 @@
         
         public const string ETTask = "ETTask";
 
+        public const string ETTaskFullName = "ET.ETTask";
+
         public static readonly string[] AddChildMethods = { "AddChild", "AddChildWithId" };
 
         public static readonly string[] ComponentMethod = {"AddComponent","GetComponent"};
@@ -29,6 +31,10 @@
         public const string EnableAccessEntiyChildAttribute = "ET.EnableAccessEntiyChildAttribute";
 
         public const string StaticFieldAttribute = "ET.StaticFieldAttribute";
+
+        public const string ETCancellationToken = "ET.ETCancellationToken";
+
+        public const string ETTaskCompleteTask = "ETTask.CompletedTask";
     }
 }
 
