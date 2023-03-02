@@ -19,6 +19,10 @@ namespace ET.Client
             
             // 一直等到unit发送stop
             Wait_UnitStop waitUnitStop = await objectWait.Wait<Wait_UnitStop>(cancellationToken);
+            if (cancellationToken.IsCancel())
+            {
+                return WaitTypeError.Cancel;
+            }
             return waitUnitStop.Error;
         }
         
