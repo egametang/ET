@@ -36,5 +36,11 @@
 
         public const string AwaitExpressionCancelTokenParamAnalyzerRuleId = "ET0017";
 
+        public const string AsyncMethodWithCancelTokenParamAnalyzerRuleId = "ET0018";
+
+        public const string ExpressionWithCancelTokenParamAnalyzerRuleId = "ET0019";
+
+        public const string ETTaslAsyncMethodHasCancelTokenAnalyzerRuleId = "ET0020";
+
     }
 }
