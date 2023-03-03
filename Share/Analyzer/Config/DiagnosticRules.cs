@@ -236,5 +236,4 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-
 }

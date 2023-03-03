@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 
 namespace ET.Analyzer
 {
@@ -24,7 +25,7 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            //context.RegisterSyntaxNodeAction(this.AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(this.AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
         }
 
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
@@ -66,9 +67,9 @@ namespace ET.Analyzer
             // 检测是否含有cancelToken参数
             if (!methodSymbol.HasParameterType(Definition.ETCancellationToken, out IParameterSymbol? cancelTokenSymbol) || cancelTokenSymbol == null)
             {
-                Diagnostic diagnostic = Diagnostic.Create(ETTaslAsyncMethodHasCancelTokenAnalyzerRule.Rule,
-                    methodDeclarationSyntax.ParameterList.GetLocation());
-                context.ReportDiagnostic(diagnostic);
+                // Diagnostic diagnostic = Diagnostic.Create(ETTaslAsyncMethodHasCancelTokenAnalyzerRule.Rule,
+                //     methodDeclarationSyntax.ParameterList.GetLocation());
+                // context.ReportDiagnostic(diagnostic);
                 return;
             }
 
