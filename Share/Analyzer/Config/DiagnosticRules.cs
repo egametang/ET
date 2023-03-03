@@ -181,4 +181,60 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+    
+    public static class AsyncMethodWithCancelTokenParamAnalyzerRule
+    {
+        private const string Title = "异步函数声明处的ETCancelToken参数禁止声明默认值";
+    
+        private const string MessageFormat = "异步函数声明处的ETCancelToken参数禁止声明默认值";
+    
+        private const string Description = "异步函数声明处的ETCancelToken参数禁止声明默认值.";
+    
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.AsyncMethodWithCancelTokenParamAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    
+    public static class ExpressionWithCancelTokenParamAnalyzerRule
+    {
+        private const string Title = "函数调用处的ETCancelToken参数禁止传入null";
+    
+        private const string MessageFormat = "函数调用处的ETCancelToken参数禁止传入null";
+    
+        private const string Description = "函数调用处的ETCancelToken参数禁止传入null.";
+    
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.ExpressionWithCancelTokenParamAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class ETTaslAsyncMethodHasCancelTokenAnalyzerRule
+    {
+        private const string Title = "返回ETTask的异步函数必须含有ETCancelToken参数";
+    
+        private const string MessageFormat = "返回ETTask的异步函数必须含有ETCancelToken参数";
+    
+        private const string Description = "返回ETTask的异步函数必须含有ETCancelToken参数.";
+    
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.ETTaslAsyncMethodHasCancelTokenAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
 }
