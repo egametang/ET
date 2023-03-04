@@ -13,13 +13,15 @@
                 return;
             }
 
-            Unit ua = a.Unit;
+            Unit ua = a.GetParent<Unit>();
             if (ua.Type != UnitType.Player)
             {
                 return;
             }
 
-            MessageHelper.NoticeUnitAdd(ua, b.Unit);
+            Unit ub = b.GetParent<Unit>();
+
+            MessageHelper.NoticeUnitAdd(ua, ub);
             
             await ETTask.CompletedTask;
         }
