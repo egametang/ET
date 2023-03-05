@@ -4,6 +4,103 @@ namespace ET
 {
     public static class Log
     {
+#if UNITY
+        public static void Trace(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
+            else
+            {
+                Logger.Instance.Trace(msg);
+            }
+        }
+
+        public static void Debug(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
+            else
+            {
+                Logger.Instance.Debug(msg);
+            }
+        }
+
+        public static void Info(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
+            else
+            {
+                Logger.Instance.Info(msg);
+            }
+        }
+
+        public static void TraceInfo(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
+            else
+            {
+                Logger.Instance.Trace(msg);
+            }
+        }
+
+        public static void Warning(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogWarning(msg);
+            }
+            else
+            {
+                Logger.Instance.Warning(msg);
+            }
+        }
+
+        public static void Error(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogError(msg);
+            }
+            else
+            {
+                Logger.Instance.Error(msg);
+            }
+        }
+
+        public static void Error(Exception msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogError(msg);
+            }
+            else
+            {
+                Logger.Instance.Error(msg);
+            }
+        }
+
+        public static void Console(string msg)
+        {
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
+            else
+            {
+                Logger.Instance.Console(msg);
+            }
+        }
+#else
         public static void Trace(string msg)
         {
             Logger.Instance.Trace(msg);
@@ -34,15 +131,17 @@ namespace ET
             Logger.Instance.Error(msg);
         }
 
-        public static void Error(Exception e)
+        public static void Error(Exception msg)
         {
-            Logger.Instance.Error(e);
+            Logger.Instance.Error(msg);
         }
 
-        public static void Console(string message)
+        public static void Console(string msg)
         {
-            Logger.Instance.Console(message);
+            Logger.Instance.Console(msg);
         }
+#endif
+        
         
 #if DOTNET
         public static void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
