@@ -4,144 +4,101 @@ namespace ET
 {
     public static class Log
     {
+        public static void Trace(string msg)
+        {
 #if UNITY
-        public static void Trace(string msg)
-        {
             if (!UnityEngine.Application.isPlaying)
             {
                 UnityEngine.Debug.Log(msg);
+                return;
             }
-            else
-            {
-                Logger.Instance.Trace(msg);
-            }
-        }
-
-        public static void Debug(string msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.Log(msg);
-            }
-            else
-            {
-                Logger.Instance.Debug(msg);
-            }
-        }
-
-        public static void Info(string msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.Log(msg);
-            }
-            else
-            {
-                Logger.Instance.Info(msg);
-            }
-        }
-
-        public static void TraceInfo(string msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.Log(msg);
-            }
-            else
-            {
-                Logger.Instance.Trace(msg);
-            }
-        }
-
-        public static void Warning(string msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.LogWarning(msg);
-            }
-            else
-            {
-                Logger.Instance.Warning(msg);
-            }
-        }
-
-        public static void Error(string msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.LogError(msg);
-            }
-            else
-            {
-                Logger.Instance.Error(msg);
-            }
-        }
-
-        public static void Error(Exception msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.LogError(msg);
-            }
-            else
-            {
-                Logger.Instance.Error(msg);
-            }
-        }
-
-        public static void Console(string msg)
-        {
-            if (!UnityEngine.Application.isPlaying)
-            {
-                UnityEngine.Debug.Log(msg);
-            }
-            else
-            {
-                Logger.Instance.Console(msg);
-            }
-        }
-#else
-        public static void Trace(string msg)
-        {
+#endif
             Logger.Instance.Trace(msg);
         }
 
         public static void Debug(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif
             Logger.Instance.Debug(msg);
         }
 
         public static void Info(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return；
+            }
+#endif
             Logger.Instance.Info(msg);
         }
 
         public static void TraceInfo(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif
             Logger.Instance.Trace(msg);
         }
 
         public static void Warning(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogWarning(msg);
+                return；
+            }
+#endif
             Logger.Instance.Warning(msg);
         }
 
         public static void Error(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogError(msg);
+                return;
+            }
+#endif      
             Logger.Instance.Error(msg);
         }
 
         public static void Error(Exception msg)
         {
+#if UNITY     
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogError(msg);
+                return;
+            }
+ #endif          
             Logger.Instance.Error(msg);
         }
 
         public static void Console(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif  
             Logger.Instance.Console(msg);
         }
-#endif
-        
         
 #if DOTNET
         public static void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
