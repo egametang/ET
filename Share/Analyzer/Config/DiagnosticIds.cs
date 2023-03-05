@@ -40,7 +40,5 @@
 
         public const string ExpressionWithCancelTokenParamAnalyzerRuleId = "ET0019";
 
-        public const string ETTaslAsyncMethodHasCancelTokenAnalyzerRuleId = "ET0020";
-
     }
 }
