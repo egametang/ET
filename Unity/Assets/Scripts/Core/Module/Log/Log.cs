@@ -6,42 +6,98 @@ namespace ET
     {
         public static void Trace(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif
             Logger.Instance.Trace(msg);
         }
 
         public static void Debug(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif
             Logger.Instance.Debug(msg);
         }
 
         public static void Info(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return；
+            }
+#endif
             Logger.Instance.Info(msg);
         }
 
         public static void TraceInfo(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif
             Logger.Instance.Trace(msg);
         }
 
         public static void Warning(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogWarning(msg);
+                return；
+            }
+#endif
             Logger.Instance.Warning(msg);
         }
 
         public static void Error(string msg)
         {
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogError(msg);
+                return;
+            }
+#endif      
             Logger.Instance.Error(msg);
         }
 
-        public static void Error(Exception e)
+        public static void Error(Exception msg)
         {
-            Logger.Instance.Error(e);
+#if UNITY     
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.LogError(msg);
+                return;
+            }
+ #endif          
+            Logger.Instance.Error(msg);
         }
 
-        public static void Console(string message)
+        public static void Console(string msg)
         {
-            Logger.Instance.Console(message);
+#if UNITY
+            if (!UnityEngine.Application.isPlaying)
+            {
+                UnityEngine.Debug.Log(msg);
+                return;
+            }
+#endif  
+            Logger.Instance.Console(msg);
         }
         
 #if DOTNET
