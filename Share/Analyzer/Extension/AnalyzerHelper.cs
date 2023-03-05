@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.FlowAnalysis;
+using Exception = System.Exception;
 
 namespace ET.Analyzer
 {
@@ -319,6 +324,40 @@ namespace ET.Analyzer
             }
             
             return syntaxNode.Parent.ChildNodes().ElementAt(index+1);
+        }
+        
+        /// <summary>
+        /// 获取await表达式所在的控制流block
+        /// </summary>
+        public static BasicBlock? GetAwaitStatementControlFlowBlock(StatementSyntax statementSyntax,AwaitExpressionSyntax awaitExpressionSyntax ,SemanticModel semanticModel)
+        {
+            // 跳过 return 表达式
+            if (statementSyntax.IsKind(SyntaxKind.ReturnStatement))
+            {
+                return null;
+            }
+            
+            var methodSyntax = statementSyntax.GetNeareastAncestor<MethodDeclarationSyntax>();
+            if (methodSyntax==null)
+            {
+                return null;
+            }
+
+            // 构建表达式所在函数的控制流图
+            var controlFlowGraph = ControlFlowGraph.Create(methodSyntax, semanticModel);
+
+            if (controlFlowGraph==null)
+            {
+                return null;
+            }
+
+            if (statementSyntax is LocalDeclarationStatementSyntax)
+            {
+                return null;
+            }
+            
+            BasicBlock? block = controlFlowGraph.Blocks.FirstOrDefault(x => x.Operations.Any(y => y.Syntax.Contains(statementSyntax)));
+            return block;
         }
     }
 }
