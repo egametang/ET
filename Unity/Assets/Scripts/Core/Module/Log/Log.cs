@@ -34,7 +34,7 @@ namespace ET
             if (!UnityEngine.Application.isPlaying)
             {
                 UnityEngine.Debug.Log(msg);
-                return；
+                return;
             }
 #endif
             Logger.Instance.Info(msg);
@@ -58,7 +58,7 @@ namespace ET
             if (!UnityEngine.Application.isPlaying)
             {
                 UnityEngine.Debug.LogWarning(msg);
-                return；
+                return;
             }
 #endif
             Logger.Instance.Warning(msg);
