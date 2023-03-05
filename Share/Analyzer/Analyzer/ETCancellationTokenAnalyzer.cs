@@ -26,7 +26,7 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(this.AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
+            //context.RegisterSyntaxNodeAction(this.AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
         }
 
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
