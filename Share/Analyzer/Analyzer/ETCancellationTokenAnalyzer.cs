@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,7 +15,7 @@ namespace ET.Analyzer
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
             CheckETCancellTokenAfterAwaitAnalyzerRule.Rule,
             AwaitExpressionCancelTokenParamAnalyzerRule.Rule, AsyncMethodWithCancelTokenParamAnalyzerRule.Rule,
-            ExpressionWithCancelTokenParamAnalyzerRule.Rule, ETTaslAsyncMethodHasCancelTokenAnalyzerRule.Rule);
+            ExpressionWithCancelTokenParamAnalyzerRule.Rule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -64,12 +65,11 @@ namespace ET.Analyzer
                 return;
             }
 
+            bool isGenericReturnTYpe = methodDeclarationSyntax.ReturnType.IsKind(SyntaxKind.GenericName);
+
             // 检测是否含有cancelToken参数
             if (!methodSymbol.HasParameterType(Definition.ETCancellationToken, out IParameterSymbol? cancelTokenSymbol) || cancelTokenSymbol == null)
             {
-                // Diagnostic diagnostic = Diagnostic.Create(ETTaslAsyncMethodHasCancelTokenAnalyzerRule.Rule,
-                //     methodDeclarationSyntax.ParameterList.GetLocation());
-                // context.ReportDiagnostic(diagnostic);
                 return;
             }
 
@@ -101,13 +101,6 @@ namespace ET.Analyzer
                     continue;
                 }
 
-                // await函数调用后 是否判断了canceltoken
-                if (!this.HasCheckCancelTokenAfterAwait(awaitExpressionSyntax, cancelTokenSymbol, context))
-                {
-                    Diagnostic diagnostic = Diagnostic.Create(CheckETCancellTokenAfterAwaitAnalyzerRule.Rule, awaitExpressionSyntax.GetLocation());
-                    context.ReportDiagnostic(diagnostic);
-                }
-
                 // 跳过await字段的表达式
                 InvocationExpressionSyntax? awaitInvocationSyntax = awaitExpressionSyntax.Expression as InvocationExpressionSyntax;
                 if (awaitInvocationSyntax == null)
@@ -121,25 +114,112 @@ namespace ET.Analyzer
                     Diagnostic diagnostic = Diagnostic.Create(AwaitExpressionCancelTokenParamAnalyzerRule.Rule, awaitExpressionSyntax.GetLocation());
                     context.ReportDiagnostic(diagnostic);
                 }
+
+                StatementSyntax? statementSyntax = awaitExpressionSyntax.GetNeareastAncestor<StatementSyntax>();
+                if (statementSyntax == null)
+                {
+                    continue;
+                }
+
+                BasicBlock? block = AnalyzerHelper.GetAwaitStatementControlFlowBlock(statementSyntax, awaitExpressionSyntax, context.SemanticModel);
+
+                if (block == null)
+                {
+                    if (statementSyntax.IsKind(SyntaxKind.LocalDeclarationStatement) &&
+                        !HasCheckCancelTokenAfterAwaitForLocalDeclaration(statementSyntax, cancelTokenSymbol, context))
+                    {
+                        Diagnostic diagnostic =
+                                Diagnostic.Create(CheckETCancellTokenAfterAwaitAnalyzerRule.Rule, awaitExpressionSyntax.GetLocation());
+                        context.ReportDiagnostic(diagnostic);
+                        //throw new Exception($"block == null {statementSyntax.IsKind(SyntaxKind.LocalDeclarationStatement)} file {awaitExpressionSyntax.SyntaxTree.FilePath}");
+                    }
+
+                    continue;
+                }
+
+                bool isMethodExitPoint = IsMethodExitPoint(block, statementSyntax, out int statementIndex);
+
+                if (isMethodExitPoint)
+                {
+                    if (!isGenericReturnTYpe)
+                    {
+                        continue;
+                    }
+
+                    Diagnostic diagnostic = Diagnostic.Create(CheckETCancellTokenAfterAwaitAnalyzerRule.Rule, awaitExpressionSyntax.GetLocation());
+                    context.ReportDiagnostic(diagnostic);
+                    continue;
+                }
+
+                // await函数调用后 是否判断了canceltoken
+                if (!this.HasCheckCancelTokenAfterAwaitForExpression(statementSyntax, cancelTokenSymbol, block, statementIndex, context))
+                {
+                    Diagnostic diagnostic = Diagnostic.Create(CheckETCancellTokenAfterAwaitAnalyzerRule.Rule, awaitExpressionSyntax.GetLocation());
+                    context.ReportDiagnostic(diagnostic);
+                }
             }
+        }
+
+        private bool IsMethodExitPoint(BasicBlock block, StatementSyntax statementSyntax, out int statementIndex)
+        {
+            IOperation statementOperation = block.Operations.First(x => x.Syntax.Contains(statementSyntax));
+            // 如果表达式在block最后一个，是出口函数则跳过 否则报错
+            statementIndex = block.Operations.IndexOf(statementOperation);
+            if (statementIndex == block.Operations.Length - 1)
+            {
+                return block.FallThroughSuccessor?.Destination?.Kind == BasicBlockKind.Exit;
+            }
+
+            return false;
         }
 
         /// <summary>
         /// 调用await函数后，是否判断了所在函数传入的canceltoken参数是否取消 
         /// </summary>
-        private bool HasCheckCancelTokenAfterAwait(AwaitExpressionSyntax awaitExpression, IParameterSymbol cancelTokenSymbol,
+        private bool HasCheckCancelTokenAfterAwaitForExpression(StatementSyntax statementSyntax, IParameterSymbol cancelTokenSymbol, BasicBlock block,
+        int statementIndex,
+        SyntaxNodeAnalysisContext context)
+        {
+            // 判断表达式是否为block最后一个
+            if (block.Operations.Length - 1 == statementIndex)
+            {
+                return false;
+            }
+
+            // 检查await表达式的下一个表达式是否为判断 cancelToken.IsCancel()
+            StatementSyntax? nextStatement =
+                    block.Operations[statementIndex + 1].Syntax.DescendantNodesAndSelf().OfType<StatementSyntax>().FirstOrDefault();
+            if (nextStatement == null)
+            {
+                return false;
+            }
+
+            return IsCheckCancelTokenStatement(nextStatement, cancelTokenSymbol);
+        }
+
+        /// <summary>
+        /// 调用await函数后，是否判断了所在函数传入的canceltoken参数是否取消
+        /// LocalDeclaration 表达式 无法使用控制流图
+        /// </summary>
+        private bool HasCheckCancelTokenAfterAwaitForLocalDeclaration(StatementSyntax statementSyntax, IParameterSymbol cancelTokenSymbol,
         SyntaxNodeAnalysisContext context)
         {
             // 检查await表达式的下一个表达式是否为判断 cancelToken.IsCancel()
-            StatementSyntax? statementSyntax = awaitExpression.GetNeareastAncestor<StatementSyntax>();
-
-            if (statementSyntax == null)
+            StatementSyntax? nextStatement = statementSyntax.NextNode() as StatementSyntax;
+            if (nextStatement == null)
             {
-                return true;
+                return false;
             }
 
-            SyntaxNode? nextNode = statementSyntax.NextNode();
-            if (nextNode is not IfStatementSyntax ifStatementSyntax)
+            return IsCheckCancelTokenStatement(nextStatement, cancelTokenSymbol);
+        }
+
+        /// <summary>
+        /// 判断下个表达式是否为检查canceltoken
+        /// </summary>
+        private bool IsCheckCancelTokenStatement(StatementSyntax nextStatement, IParameterSymbol cancelTokenSymbol)
+        {
+            if (nextStatement is not IfStatementSyntax ifStatementSyntax)
             {
                 return false;
             }
