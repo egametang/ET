@@ -59,12 +59,9 @@ namespace ET
         private static async ETTask WaitExitAsync(Process process)
         {
             await process.WaitForExitAsync();
-#if UNITY
             Log.Info($"process exit, exitcode: {process.ExitCode} {process.StandardOutput.ReadToEnd()} {process.StandardError.ReadToEnd()}");
-#endif
         }
         
-#if UNITY
         private static async Task WaitForExitAsync(this Process self)
         {
             if (!self.HasExited)
@@ -104,6 +101,5 @@ namespace ET
                 self.Exited -= Handler;
             }
         }
-#endif
     }
 }
