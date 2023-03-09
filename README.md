@@ -46,7 +46,7 @@ Unity Menu->ServerTools select Benchmark, Start Watcher。然后在Logs目录，
 5. 增加软路由，可以防各种网络攻击而不影响正常玩家，网游必备！-- 已实现  
 6. 各种事件跟网络消息订阅带上DomainSceneType，更精确，更不容易出错 -- 已实现  
 7. sj兄弟添加了各种分析器，分析器保证了写出的代码必须符合ET规范，否则编译不通过！（这点ET6也增加上了） -- 已实现  
-8. ET7已经去除客户端热更新，请大家自己选择接入,接入huatuo或者ILRuntime都非常简单, 注意！(不要混淆客户端热更新跟服务端热更新，服务端热更新，ET一直都有)  
+8. ET7集成了huatuo热更新库。 注意！(不要混淆客户端热更新跟服务端热更新，服务端热更新，ET一直都有)  
 9. 网络改成独立线程，序列化反序列化都在网络线程处理，主线程压力大大减轻。并且重新整理了网络层代码，更优美了  
 10. 集成Unity.Mathematic数学库，逻辑层客户端跟服务端都使用这一套数学库，这样服务端跟客户端完全统一了  
 11. ENABLE_CODES模式下拆分成4个程序集，解决分析器失效的问题  
@@ -157,11 +157,12 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
-2. [魔法点点2](https://www.taptap.com/app/227804)  
-3. [养不大](https://www.taptap.com/app/71064)  
-4. 天天躲猫猫2（ios2019春节下载排行19）  
-5. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
-6. [五星麻将](https://github.com/wufanjoin/fivestar)  
+2. [神选誓约](https://www.taptap.cn/app/248095)  
+3. [魔法点点2](https://www.taptap.com/app/227804)  
+4. [养不大](https://www.taptap.com/app/71064)  
+5. 天天躲猫猫2（ios2019春节下载排行19）  
+6. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+7. [五星麻将](https://github.com/wufanjoin/fivestar)  
 
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
