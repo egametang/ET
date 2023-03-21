@@ -5,6 +5,8 @@ namespace ET.Server
     {
         public const int FirstCase = 1;
 
+        public const int SecondCase = 2;
+
         public const int MaxCaseType = 10000;
     }
 }
