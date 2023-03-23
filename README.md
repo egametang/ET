@@ -1,8 +1,35 @@
-# English: please use your browser to translate to english  
-
-# 熊猫的课程：网络游戏架构设计上线啦，有需要请加QQ:80081771
+# English: please use your browser to translate to english
 
 # __讨论QQ群 : 474643097__  
+
+# 熊猫的课程：《网络游戏架构设计》已经完结，有需要请加QQ:80081771 课程详细介绍了ET框架的设计思路跟细节，以下是课程目录:
+01. 代码结构
+02. All In one-01
+03. All In one-02
+04. 单间管理器
+05. 多线程单线程跟task await async的关系
+06. ETTask-01
+07. ETTask-02
+08. 计时器
+09. 协程锁
+10. 协程同步
+11. Id-Time-ObjectPool
+12. 日志 Options ConfigComponent
+13. why not 继承，多态，组合?
+14. 实体组件系统
+15. EventSystem
+16. 序列化反序列化
+17. Network
+18. TCP
+19. KCP
+20. NetComponent跟Session
+21. 软路由
+22. Actor
+23. ActorLocation
+24. 机器人框架测试用例框架
+25. AI框架
+26. 架构设计细节
+27. 分析器
 
 # [ET论坛](https://et-framework.cn)  
 
