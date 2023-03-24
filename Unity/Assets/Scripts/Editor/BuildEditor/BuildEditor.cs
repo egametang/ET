@@ -92,7 +92,7 @@ namespace ET
 			{
 				if (this.platformType == PlatformType.None)
 				{
-					BuildHelper.ShowNotification(new GUIContent("please select platform!"));
+					BuildHelper.ShowNotification("please select platform!");
 					return;
 				}
 				if (platformType != activePlatform)
