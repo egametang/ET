@@ -92,7 +92,7 @@ namespace ET
 			{
 				if (this.platformType == PlatformType.None)
 				{
-					ShowNotification(new GUIContent("please select platform!"));
+					BuildHelper.ShowNotification(new GUIContent("please select platform!"));
 					return;
 				}
 				if (platformType != activePlatform)
@@ -113,49 +113,63 @@ namespace ET
 			}
 			
 			GUILayout.Label("");
+			 
+#if ENABLE_CODES
+			if (GUILayout.Button("Remove ENABLE_CODES"))
+				BuildHelper.EnableDefineSymbols("ENABLE_CODES", false);
+#else
+			if (GUILayout.Button("Add ENABLE_CODES"))
+				BuildHelper.EnableDefineSymbols("ENABLE_CODES", true);
+#endif
+
+#if ENABLE_VIEW
+			if (GUILayout.Button("Remove ENABLE_VIEW"))
+				BuildHelper.EnableDefineSymbols("ENABLE_VIEW", false);
+#else
+			if (GUILayout.Button("Add ENABLE_VIEW"))
+				BuildHelper.EnableDefineSymbols("ENABLE_VIEW", true);
+#endif
+			
 			GUILayout.Label("Code Compile：");
 			
 			this.globalConfig.CodeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
 			
-			if (GUILayout.Button("BuildModelAndHotfix"))
+			if (Define.EnableCodes)
 			{
-				if (Define.EnableCodes)
+				GUILayout.Label("now in ENABLE_CODES mode, do not need Build!");
+			}
+			else
+			{
+				if (GUILayout.Button("BuildModelAndHotfix"))
 				{
-					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-				}
-				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
-				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
+					BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
+					BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
 
-				AfterCompiling();
+					AfterCompiling();
 				
-				ShowNotification("Build Model And Hotfix Success!");
+					BuildHelper.ShowNotification("Build Model And Hotfix Success!");
+				}
+			
+				if (GUILayout.Button("BuildModel"))
+				{
+					BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
+
+					AfterCompiling();
+				
+					BuildHelper.ShowNotification("Build Model Success!");
+				}
+			
+				if (GUILayout.Button("BuildHotfix"))
+				{
+					BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
+
+					AfterCompiling();
+				
+					BuildHelper.ShowNotification("Build Hotfix Success!");
+				}
 			}
 			
-			if (GUILayout.Button("BuildModel"))
-			{
-				if (Define.EnableCodes)
-				{
-					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-				}
-				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
-
-				AfterCompiling();
-				
-				ShowNotification("Build Model Success!");
-			}
 			
-			if (GUILayout.Button("BuildHotfix"))
-			{
-				if (Define.EnableCodes)
-				{
-					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-				}
-				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
-
-				AfterCompiling();
-				
-				ShowNotification("Build Hotfix Success!");
-			}
 			
 			if (GUILayout.Button("ExcelExporter"))
 			{
@@ -190,10 +204,5 @@ namespace ET
 			Debug.Log("build success!");
 		}
 		
-		public static void ShowNotification(string tips)
-		{
-			EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-			game?.ShowNotification(new GUIContent($"{tips}"));
-		}
 	}
 }
