@@ -30,6 +30,10 @@
 
     <ItemGroup>
 
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\TrueSync\**\*.cs">
+        <Link>TrueSync/%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ETTask\**\*.cs">
         <Link>ETTask/%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
