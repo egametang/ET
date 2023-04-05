@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType G2C_Match
+message C2G_Match // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_Match // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+

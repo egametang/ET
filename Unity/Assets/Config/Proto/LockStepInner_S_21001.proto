@@ -1,0 +1,44 @@
+syntax = "proto3";
+package ET;
+
+// 请求匹配
+//ResponseType Match2G_Match
+message G2Match_Match // IActorRequest
+{
+	int32 RpcId = 1;
+	
+	int64 Id = 2;
+	
+	int64 InstanceId = 3;
+}
+
+message Match2G_Match // IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+//ResponseType Map2Match_GetRoom
+message Match2Map_GetRoom // IActorRequest
+{
+	int32 RpcId = 1;
+}
+
+message Map2Match_GetRoom // IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	
+	// 房间的instanceId
+	int64 InstanceId = 4;
+}
+
+message Match2G_NotifyMatchSuccess // IActorMessage
+{
+	int32 RpcId = 1;
+
+	// 房间的instanceId
+	int64 InstanceId = 2;
+}

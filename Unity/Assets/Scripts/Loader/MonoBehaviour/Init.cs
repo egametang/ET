@@ -23,6 +23,7 @@ namespace ET
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.AddSingleton);
+			Options.Instance.StartConfig = "StartConfig/LockStep";
 			
 			Game.AddSingleton<TimeInfo>();
 			Game.AddSingleton<Logger>().ILog = new UnityLogger();

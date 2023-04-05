@@ -19,8 +19,12 @@ namespace ET
         public List<StartSceneConfig> Routers = new List<StartSceneConfig>();
         
         public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
+        
+        public List<StartSceneConfig> Maps = new List<StartSceneConfig>();
 
         public StartSceneConfig BenchmarkServer;
+
+        public StartSceneConfig Match;
         
         public List<StartSceneConfig> GetByProcess(int process)
         {
@@ -63,6 +67,12 @@ namespace ET
                         break;
                     case SceneType.BenchmarkServer:
                         this.BenchmarkServer = startSceneConfig;
+                        break;
+                    case SceneType.Map:
+                        this.Maps.Add(startSceneConfig);
+                        break;
+                    case SceneType.Match:
+                        this.Match = startSceneConfig;
                         break;
                 }
             }

@@ -35,6 +35,8 @@ namespace ET.Client
 				
                 G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(
                     new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId});
+                
+                clientScene.GetComponent<PlayerComponent>().MyId = g2CLoginGate.PlayerId;
 
                 Log.Debug("登陆gate成功!");
 
