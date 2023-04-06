@@ -107,7 +107,8 @@ namespace ET.Server
             iActorRequest.RpcId = rpcId;
             
             long actorLocationSenderInstanceId = actorLocationSender.InstanceId;
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ActorLocationSender, entityId))
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
+            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
