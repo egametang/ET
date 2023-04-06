@@ -32,10 +32,12 @@ namespace ET.Server
             }
             
             // 申请一个房间
-            StartSceneConfig startSceneConfig = RandomGenerator.RandomArray(StartSceneConfigCategory.Instance.Robots);
+            StartSceneConfig startSceneConfig = RandomGenerator.RandomArray(StartSceneConfigCategory.Instance.Maps);
+            
+            Log.Debug($"11111111111111111111111111111111111111");
             Map2Match_GetRoom map2MatchGetRoom = await ActorMessageSenderComponent.Instance.Call(
                 startSceneConfig.InstanceId, new Match2Map_GetRoom()) as Map2Match_GetRoom;
-
+            Log.Debug($"11111111111111111111111111111111111112");
             for (int i = 0; i < MatchCount; ++i)
             {
                 ActorMessageSenderComponent.Instance.Send(
