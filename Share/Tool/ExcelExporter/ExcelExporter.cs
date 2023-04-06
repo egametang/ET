@@ -599,8 +599,33 @@ namespace ET
             foreach (string jsonPath in jsonPaths)
             {
                 string json = File.ReadAllText(jsonPath);
-                object deserialize = BsonSerializer.Deserialize(json, type);
-                final.Merge(deserialize);
+                try
+                {
+                    object deserialize = BsonSerializer.Deserialize(json, type);
+                    final.Merge(deserialize);
+                }
+                catch
+                {
+                    #region 为了定位该文件中具体那一行出现了异常
+                    List<string> list = new List<string>(json.Split('\n'));
+                    if (list.Count > 0)
+                        list.RemoveAt(0);
+                    if (list.Count > 0)
+                        list.RemoveAt(list.Count-1);
+                    foreach (string s in list)
+                    {
+                        try
+                        {
+                            BsonSerializer.Deserialize(s.Substring(0, s.Length-1), subType);
+                        }
+                        catch (Exception)
+                        {
+                            Log.Console($"json : {s}");
+                            throw;
+                        }
+                    }
+                    #endregion
+                }
             }
 
             string path = Path.Combine(dir, $"{protoName}Category.bytes");

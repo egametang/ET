@@ -26,13 +26,13 @@
             return ClientSceneManagerComponent.Instance.Get(entity.DomainZone());
         }
         
-        public static Scene Get(this ClientSceneManagerComponent self, int id)
+        public static Scene Get(this ClientSceneManagerComponent self, long id)
         {
             Scene scene = self.GetChild<Scene>(id);
             return scene;
         }
         
-        public static void Remove(this ClientSceneManagerComponent self, int id)
+        public static void Remove(this ClientSceneManagerComponent self, long id)
         {
             self.RemoveChild(id);
         }
