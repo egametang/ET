@@ -8,8 +8,6 @@ message G2Match_Match // IActorRequest
 	int32 RpcId = 1;
 	
 	int64 Id = 2;
-	
-	int64 InstanceId = 3;
 }
 
 message Match2G_Match // IActorResponse
@@ -23,7 +21,7 @@ message Match2G_Match // IActorResponse
 message Match2Map_GetRoom // IActorRequest
 {
 	int32 RpcId = 1;
-	map<int64, int64> PlayerInfo = 2;
+	repeated int64 PlayerIds = 2;
 }
 
 message Map2Match_GetRoom // IActorResponse

@@ -10,10 +10,9 @@ namespace ET.Server
         {
             protected override void Awake(RoomComponent self, Match2Map_GetRoom match2MapGetRoom)
             {
-                foreach (var kv in match2MapGetRoom.PlayerInfo)
+                foreach (long id in match2MapGetRoom.PlayerIds)
                 {
-                    RoomPlayer roomPlayer = self.AddChildWithId<RoomPlayer>(kv.Key);
-                    roomPlayer.SessionInstanceId = kv.Value;
+                    RoomPlayer roomPlayer = self.AddChildWithId<RoomPlayer>(id);
                 }
             }
         }

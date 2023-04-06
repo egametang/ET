@@ -130,9 +130,9 @@ namespace ET.Server
                 }
                 case MailboxType.GateSession:
                 {
-                    if (entity is Player player)
+                    if (entity is PlayerSessionComponent playerSessionComponent)
                     {
-                        player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorMessage);
+                        playerSessionComponent.Session?.Send(iActorMessage);
                     }
                     break;
                 }

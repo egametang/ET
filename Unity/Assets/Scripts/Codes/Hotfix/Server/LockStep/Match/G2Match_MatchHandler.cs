@@ -9,7 +9,7 @@ namespace ET.Server
 		protected override async ETTask Run(Scene scene, G2Match_Match request, Match2G_Match response)
 		{
 			MatchComponent matchComponent = scene.GetComponent<MatchComponent>();
-			matchComponent.Match((request.Id, request.InstanceId)).Coroutine();
+			matchComponent.Match(request.Id).Coroutine();
 			await ETTask.CompletedTask;
 		}
 	}

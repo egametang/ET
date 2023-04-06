@@ -15,9 +15,6 @@ namespace ET
 		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(3)]
-		public long InstanceId { get; set; }
-
 	}
 
 	[Message(LockStepInner.Match2G_Match)]
@@ -43,9 +40,9 @@ namespace ET
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
 		[ProtoMember(2)]
-		public Dictionary<long, long> PlayerInfo { get; set; }
+		public List<long> PlayerIds { get; set; }
+
 	}
 
 	[Message(LockStepInner.Map2Match_GetRoom)]

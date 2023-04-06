@@ -31,10 +31,13 @@ namespace ET
 // 匹配成功，通知客户端切换场景
 	[Message(LockStepOuter.Match2G_NotifyMatchSuccess)]
 	[ProtoContract]
-	public partial class Match2G_NotifyMatchSuccess: ProtoObject, IActorMessage
+	public partial class Match2G_NotifyMatchSuccess: ProtoObject, IActorLocationMessage
 	{
-// 房间的instanceId
 		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+// 房间的instanceId
+		[ProtoMember(2)]
 		public long InstanceId { get; set; }
 
 	}
@@ -67,9 +70,12 @@ namespace ET
 // 房间通知客户端进入战斗
 	[Message(LockStepOuter.Room2C_EnterMap)]
 	[ProtoContract]
-	public partial class Room2C_EnterMap: ProtoObject, IActorMessage
+	public partial class Room2C_EnterMap: ProtoObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
 		public List<LockStepUnitInfo> UnitInfo { get; set; }
 
 	}

@@ -15,10 +15,11 @@ message G2C_Match // IResponse
 }
 
 // 匹配成功，通知客户端切换场景
-message Match2G_NotifyMatchSuccess // IActorMessage
+message Match2G_NotifyMatchSuccess // IActorLocationMessage
 {
+	int32 RpcId = 1;
 	// 房间的instanceId
-	int64 InstanceId = 1;
+	int64 InstanceId = 2;
 }
 
 // 客户端通知房间切换场景完成
@@ -35,8 +36,9 @@ message LockStepUnitInfo
 }
 
 // 房间通知客户端进入战斗
-message Room2C_EnterMap // IActorMessage
+message Room2C_EnterMap // IActorLocationMessage
 {
-	repeated LockStepUnitInfo UnitInfo = 1;
+	int32 RpcId = 1;
+	repeated LockStepUnitInfo UnitInfo = 2;
 }
 
