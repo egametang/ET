@@ -26,6 +26,8 @@ namespace ET.Analyzer
             DiagnosticSeverity.Error, true, Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        
+        private object lockObj = new object();
 
         public override void Initialize(AnalysisContext context)
         {
@@ -97,9 +99,12 @@ namespace ET.Analyzer
 
             string methodClassTypeName = methodSymbol.ContainingType.ToString();
 
-            if (!staticClassSet.Contains(selfClassTypeName))
+            lock (this.lockObj)
             {
-                staticClassSet.Add(selfClassTypeName);
+                if (!staticClassSet.Contains(selfClassTypeName))
+                {
+                    staticClassSet.Add(selfClassTypeName);
+                }
             }
 
             // 筛选出对其他静态类的函数调用
@@ -118,10 +123,15 @@ namespace ET.Analyzer
                 dependencyMap[methodClassTypeName] = new HashSet<string>();
             }
 
-            if (!dependencyMap[methodClassTypeName].Contains(selfClassTypeName))
+            var set = dependencyMap[methodClassTypeName];
+            lock (set)
             {
-                dependencyMap[methodClassTypeName].Add(selfClassTypeName);
+                if (!set.Contains(selfClassTypeName))
+                {
+                    set.Add(selfClassTypeName);
+                }
             }
+            
         }
 
         /// <summary>
