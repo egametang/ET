@@ -31,7 +31,7 @@ namespace ET.Server
             }
             unit.Dispose();
             
-            await LocationProxyComponent.Instance.Lock(unitId, unitInstanceId);
+            await LocationProxyComponent.Instance.Lock(LocationType.Unit, unitId, unitInstanceId);
             await ActorMessageSenderComponent.Instance.Call(sceneInstanceId, request);
         }
     }
