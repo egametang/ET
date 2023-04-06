@@ -43,6 +43,9 @@ namespace ET
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
+		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+		[ProtoMember(2)]
+		public Dictionary<long, long> PlayerInfo { get; set; }
 	}
 
 	[Message(LockStepInner.Map2Match_GetRoom)]
@@ -64,25 +67,11 @@ namespace ET
 
 	}
 
-	[Message(LockStepInner.Match2G_NotifyMatchSuccess)]
-	[ProtoContract]
-	public partial class Match2G_NotifyMatchSuccess: ProtoObject, IActorMessage
-	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-// 房间的instanceId
-		[ProtoMember(2)]
-		public long InstanceId { get; set; }
-
-	}
-
 	public static class LockStepInner
 	{
 		 public const ushort G2Match_Match = 21002;
 		 public const ushort Match2G_Match = 21003;
 		 public const ushort Match2Map_GetRoom = 21004;
 		 public const ushort Map2Match_GetRoom = 21005;
-		 public const ushort Match2G_NotifyMatchSuccess = 21006;
 	}
 }

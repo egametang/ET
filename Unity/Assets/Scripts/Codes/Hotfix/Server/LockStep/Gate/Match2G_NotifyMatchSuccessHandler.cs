@@ -8,6 +8,9 @@ namespace ET.Server
 	{
 		protected override async ETTask Run(Player player, Match2G_NotifyMatchSuccess message)
 		{
+			player.AddComponent<PlayerRoomComponent>().RoomInstanceId = message.InstanceId;
+			
+			player.GetComponent<PlayerSessionComponent>().Session.Send(message);
 			await ETTask.CompletedTask;
 		}
 	}

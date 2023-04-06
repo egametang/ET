@@ -8,6 +8,7 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
+using TrueSync;
 using Unity.Mathematics;
 
 namespace ET
@@ -93,6 +94,12 @@ namespace ET
             RegisterStruct<float3>();
             RegisterStruct<float4>();
             RegisterStruct<quaternion>();
+            
+            RegisterStruct<FP>();
+            RegisterStruct<TSVector>();
+            RegisterStruct<TSVector2>();
+            RegisterStruct<TSVector4>();
+            RegisterStruct<TSQuaternion>();
 
             Dictionary<string, Type> types = EventSystem.Instance.GetTypes();
             foreach (Type type in types.Values)

@@ -14,3 +14,29 @@ message G2C_Match // IResponse
 	string Message = 3;
 }
 
+// 匹配成功，通知客户端切换场景
+message Match2G_NotifyMatchSuccess // IActorMessage
+{
+	// 房间的instanceId
+	int64 InstanceId = 1;
+}
+
+// 客户端通知房间切换场景完成
+message C2Room_ChangeSceneFinish // IActorRoom
+{
+	int64 PlayerId = 1;
+}
+
+message LockStepUnitInfo
+{
+	int64 PlayerId = 1;
+	TrueSync.TSVector Position = 2;
+	TrueSync.TSQuaternion Rotation = 3;
+}
+
+// 房间通知客户端进入战斗
+message Room2C_EnterMap // IActorMessage
+{
+	repeated LockStepUnitInfo UnitInfo = 1;
+}
+

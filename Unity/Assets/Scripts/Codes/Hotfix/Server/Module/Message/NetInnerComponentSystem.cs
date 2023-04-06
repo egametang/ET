@@ -83,7 +83,6 @@ namespace ET.Server
 
         public static void HandleMessage(this NetInnerComponent self, long actorId, object message)
         {
-            OpcodeHelper.LogMsg(self.DomainScene(), message);
             EventSystem.Instance.Publish(Root.Instance.Scene, new NetInnerComponentOnRead() { ActorId = actorId, Message = message });
         }
 

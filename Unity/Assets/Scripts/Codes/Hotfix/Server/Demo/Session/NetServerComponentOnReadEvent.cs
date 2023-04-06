@@ -17,6 +17,14 @@
             // 根据消息接口判断是不是Actor消息，不同的接口做不同的处理,比如需要转发给Chat Scene，可以做一个IChatMessage接口
             switch (message)
             {
+                case IActorRoom actorRoom:
+                {
+                    Player player = session.GetComponent<SessionPlayerComponent>().Player;
+                    long roomInstanceId = player.GetComponent<PlayerRoomComponent>().RoomInstanceId;
+                    actorRoom.PlayerId = player.Id;
+                    ActorMessageSenderComponent.Instance.Send(roomInstanceId, actorRoom);
+                    break;
+                }
                 case IActorLocationMessage actorLocationMessage:
                 {
                     long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;

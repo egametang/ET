@@ -23,6 +23,7 @@ message Match2G_Match // IActorResponse
 message Match2Map_GetRoom // IActorRequest
 {
 	int32 RpcId = 1;
+	map<int64, int64> PlayerInfo = 2;
 }
 
 message Map2Match_GetRoom // IActorResponse
@@ -33,12 +34,4 @@ message Map2Match_GetRoom // IActorResponse
 	
 	// 房间的instanceId
 	int64 InstanceId = 4;
-}
-
-message Match2G_NotifyMatchSuccess // IActorMessage
-{
-	int32 RpcId = 1;
-
-	// 房间的instanceId
-	int64 InstanceId = 2;
 }

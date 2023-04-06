@@ -5,12 +5,12 @@
 	{
 		protected override async ETTask Run(Session session, C2G_Match request, G2C_Match response)
 		{
-			Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
+			Player player = session.GetComponent<SessionPlayerComponent>().Player;
 
 			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Match;
 
 			await ActorMessageSenderComponent.Instance.Call(startSceneConfig.InstanceId,
-				new G2Match_Match() { InstanceId = player.InstanceId, Id = player.Id });
+				new G2Match_Match() { InstanceId = player.InstanceId, Id = session.InstanceId });
 		}
 	}
 }
