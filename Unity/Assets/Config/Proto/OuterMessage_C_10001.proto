@@ -75,24 +75,28 @@ message UnitInfo
 	MoveInfo MoveInfo = 7;
 }
 
-message M2C_CreateUnits // IActorMessage
+message M2C_CreateUnits // IActorLocationMessage
 {
-	repeated UnitInfo Units = 1;
+	int32 RpcId = 1;
+	repeated UnitInfo Units = 2;
 }
 
-message M2C_CreateMyUnit // IActorMessage
+message M2C_CreateMyUnit // IActorLocationMessage
 {
-	UnitInfo Unit = 1;
+	int32 RpcId = 1;
+	UnitInfo Unit = 2;
 }
 
-message M2C_StartSceneChange // IActorMessage
+message M2C_StartSceneChange // IActorLocationMessage
 {
-	int64 SceneInstanceId = 1;
-	string SceneName = 2;	
+	int32 RpcId = 1;
+	int64 SceneInstanceId = 2;
+	string SceneName = 3;	
 }
 
-message M2C_RemoveUnits // IActorMessage
+message M2C_RemoveUnits // IActorLocationMessage
 {
+	int32 RpcId = 1;
 	repeated int64 Units = 2;
 }
 
@@ -107,19 +111,21 @@ message C2M_Stop // IActorLocationMessage
 	int32 RpcId = 1;
 }
 
-message M2C_PathfindingResult // IActorMessage
+message M2C_PathfindingResult // IActorLocationMessage
 {
-	int64 Id = 1;
-	Unity.Mathematics.float3 Position = 2;
-	repeated Unity.Mathematics.float3 Points = 3;
-}
-
-message M2C_Stop // IActorMessage
-{
-	int32 Error = 1;
+	int32 RpcId = 1;
 	int64 Id = 2;
 	Unity.Mathematics.float3 Position = 3;
-	Unity.Mathematics.quaternion Rotation = 4;
+	repeated Unity.Mathematics.float3 Points = 4;
+}
+
+message M2C_Stop // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	int64 Id = 3;
+	Unity.Mathematics.float3 Position = 4;
+	Unity.Mathematics.quaternion Rotation = 5;
 }
 
 //ResponseType G2C_Ping
@@ -216,7 +222,7 @@ message C2M_TestRobotCase2 // IActorLocationMessage
 	int32 N = 2;
 }
 
-message M2C_TestRobotCase2 // IActorMessage
+message M2C_TestRobotCase2 // IActorLocationMessage
 {
 	int32 RpcId = 1;
 	int32 N = 2;

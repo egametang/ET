@@ -39,7 +39,7 @@ namespace ET.Server
                     scene.AddComponent<AOIManagerComponent>();
                     break;
                 case SceneType.Location:
-                    scene.AddComponent<LocationComponent>();
+                    scene.AddComponent<LocationManagerComoponent>();
                     break;
                 case SceneType.Robot:
                     scene.AddComponent<RobotManagerComponent>();

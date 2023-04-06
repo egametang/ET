@@ -1,7 +1,20 @@
 ﻿namespace ET.Server
 {
-	public class SessionInfoComponent : Entity
+	[ComponentOf(typeof(Player))]
+	public class SessionInfoComponent : Entity, IAwake
 	{
-		public Session Session;
+		private long sessionInstanceId;
+
+		public Session Session
+		{
+			get
+			{
+				return Root.Instance.Get(this.sessionInstanceId) as Session;
+			}
+			set
+			{
+				this.sessionInstanceId = value.InstanceId;
+			}
+		}
 	}
 }

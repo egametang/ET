@@ -5,21 +5,11 @@ namespace ET
 {
     public class CoroutineLockComponent: Singleton<CoroutineLockComponent>, ISingletonUpdate
     {
-        private readonly List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);
+        private readonly Dictionary<int, CoroutineLockQueueType> dictionary = new();
         private readonly Queue<(int, long, int)> nextFrameRun = new Queue<(int, long, int)>();
-
-        public CoroutineLockComponent()
-        {
-            for (int i = 0; i < CoroutineLockType.Max; ++i)
-            {
-                CoroutineLockQueueType coroutineLockQueueType = new CoroutineLockQueueType(i);
-                this.list.Add(coroutineLockQueueType);
-            }
-        }
 
         public override void Dispose()
         {
-            this.list.Clear();
             this.nextFrameRun.Clear();
         }
 
@@ -46,13 +36,23 @@ namespace ET
 
         public async ETTask<CoroutineLock> Wait(int coroutineLockType, long key, int time = 60000)
         {
-            CoroutineLockQueueType coroutineLockQueueType = this.list[coroutineLockType];
+            CoroutineLockQueueType coroutineLockQueueType;
+            if (!this.dictionary.TryGetValue(coroutineLockType, out coroutineLockQueueType))
+            {
+                coroutineLockQueueType = new CoroutineLockQueueType(coroutineLockType);
+                this.dictionary.Add(coroutineLockType, coroutineLockQueueType);
+            }
             return await coroutineLockQueueType.Wait(key, time);
         }
 
         private void Notify(int coroutineLockType, long key, int level)
         {
-            CoroutineLockQueueType coroutineLockQueueType = this.list[coroutineLockType];
+            CoroutineLockQueueType coroutineLockQueueType;
+            if (!this.dictionary.TryGetValue(coroutineLockType, out coroutineLockQueueType))
+            {
+                return;
+            }
+            
             coroutineLockQueueType.Notify(key, level);
         }
     }

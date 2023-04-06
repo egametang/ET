@@ -58,8 +58,9 @@ message G2G_LockReleaseResponse // IActorResponse
 message ObjectAddRequest // IActorRequest
 {
 	int32 RpcId = 1;
-	int64 Key = 2;
-	int64 InstanceId = 3;
+	int32 Type = 2;
+	int64 Key = 3;
+	int64 InstanceId = 4;
 }
 
 message ObjectAddResponse // IActorResponse
@@ -73,9 +74,10 @@ message ObjectAddResponse // IActorResponse
 message ObjectLockRequest // IActorRequest
 {
 	int32 RpcId = 1;
-	int64 Key = 2;
-	int64 InstanceId = 3;
-	int32 Time = 4;
+	int32 Type = 2;
+	int64 Key = 3;
+	int64 InstanceId = 4;
+	int32 Time = 5;
 }
 message ObjectLockResponse // IActorResponse
 {
@@ -88,9 +90,10 @@ message ObjectLockResponse // IActorResponse
 message ObjectUnLockRequest // IActorRequest
 {
 	int32 RpcId = 1;
-	int64 Key = 2;
-	int64 OldInstanceId = 3;
-	int64 InstanceId = 4;
+	int32 Type = 2;
+	int64 Key = 3;
+	int64 OldInstanceId = 4;
+	int64 InstanceId = 5;
 }
 message ObjectUnLockResponse // IActorResponse
 {
@@ -103,7 +106,8 @@ message ObjectUnLockResponse // IActorResponse
 message ObjectRemoveRequest // IActorRequest
 {
 	int32 RpcId = 1;
-	int64 Key = 2;
+	int32 Type = 2;
+	int64 Key = 3;
 }
 message ObjectRemoveResponse // IActorResponse
 {
@@ -116,14 +120,16 @@ message ObjectRemoveResponse // IActorResponse
 message ObjectGetRequest // IActorRequest
 {
 	int32 RpcId = 1;
-	int64 Key = 2;
+	int32 Type = 2;
+	int64 Key = 3;
 }
 message ObjectGetResponse // IActorResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
-	int64 InstanceId = 4;
+	int32 Type = 4;
+	int64 InstanceId = 5;
 }
 
 //ResponseType G2R_GetLoginKey
