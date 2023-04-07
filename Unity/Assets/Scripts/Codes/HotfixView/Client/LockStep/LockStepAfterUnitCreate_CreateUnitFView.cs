@@ -17,6 +17,8 @@ namespace ET.Client
             go.transform.position = args.UnitF.Position.ToVector();
 
             unitFViewComponent.AddChild<UnitFView, GameObject>(go);
+
+            await ETTask.CompletedTask;
         }
     }
 }
