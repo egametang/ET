@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using MongoDB.Bson;
@@ -121,11 +122,19 @@ namespace ET
 
         public static string ToJson(object obj)
         {
+            if (obj is ISupportInitialize supportInitialize)
+            {
+                supportInitialize.BeginInit();
+            }
             return obj.ToJson(defaultSettings);
         }
 
         public static string ToJson(object obj, JsonWriterSettings settings)
         {
+            if (obj is ISupportInitialize supportInitialize)
+            {
+                supportInitialize.BeginInit();
+            }
             return obj.ToJson(settings);
         }
 
@@ -148,11 +157,19 @@ namespace ET
 
         public static byte[] Serialize(object obj)
         {
+            if (obj is ISupportInitialize supportInitialize)
+            {
+                supportInitialize.BeginInit();
+            }
             return obj.ToBson();
         }
 
         public static void Serialize(object message, MemoryStream stream)
         {
+            if (message is ISupportInitialize supportInitialize)
+            {
+                supportInitialize.BeginInit();
+            }
             using (BsonBinaryWriter bsonWriter = new BsonBinaryWriter(stream, BsonBinaryWriterSettings.Defaults))
             {
                 BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
