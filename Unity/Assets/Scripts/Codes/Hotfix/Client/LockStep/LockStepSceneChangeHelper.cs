@@ -11,7 +11,7 @@ namespace ET.Client
             CurrentScenesComponent currentScenesComponent = clientScene.GetComponent<CurrentScenesComponent>();
             currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
             Scene currentScene = SceneFactory.CreateCurrentScene(sceneInstanceId, clientScene.Zone, sceneName, currentScenesComponent);
-            UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
+            UnitFComponent unitComponent = currentScene.AddComponent<UnitFComponent>();
 
             // 等待表现层订阅的事件完成
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.LockStepSceneChangeStart());
@@ -23,11 +23,10 @@ namespace ET.Client
 
             foreach (LockStepUnitInfo lockStepUnitInfo in waitRoom2CEnterMap.Message.UnitInfo)
             {
-                FUnit unit = unitComponent.AddChild<FUnit>();
-                unit.Position = lockStepUnitInfo.Position;
-                unit.Rotation = lockStepUnitInfo.Rotation;
+                UnitFFactory.Create(currentScene, lockStepUnitInfo);
             }
-            
+
+            EventSystem.Instance.Publish(currentScene, new EventType.LockStepSceneInitFinish());
         }
     }
 }

@@ -6,8 +6,13 @@
         {
         }
         
-        public struct LockStepSceneChangeFinish
+        public struct LockStepSceneInitFinish
         {
+        }
+
+        public struct LockStepAfterUnitCreate
+        {
+            public UnitF UnitF;
         }
     }
 }

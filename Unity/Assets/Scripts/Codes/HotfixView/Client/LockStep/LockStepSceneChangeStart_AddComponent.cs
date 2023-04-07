@@ -5,16 +5,22 @@ namespace ET.Client
     [Event(SceneType.Client)]
     public class LockStepSceneChangeStart_AddComponent: AEvent<EventType.LockStepSceneChangeStart>
     {
-        protected override async ETTask Run(Scene scene, EventType.LockStepSceneChangeStart args)
+        protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneChangeStart args)
         {
-            Scene currentScene = scene.CurrentScene();
+            Scene currentScene = clientScene.CurrentScene();
+            
+            // 创建loading界面
+            
+            // 删除大厅UI
+            await UIHelper.Remove(clientScene, UIType.UILobby);
             
             // 加载场景资源
             await ResourcesComponent.Instance.LoadBundleAsync($"{currentScene.Name}.unity3d");
             // 切换到map场景
 
             await SceneManager.LoadSceneAsync(currentScene.Name);
-			
+
+            currentScene.AddComponent<UnitFViewComponent>();
 
             currentScene.AddComponent<OperaComponent>();
         }
