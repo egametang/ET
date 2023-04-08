@@ -7,7 +7,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene scene, ObjectRemoveRequest request, ObjectRemoveResponse response)
         {
-            await scene.GetComponent<LocationComponent>().Remove(request.Key);
+            await scene.GetComponent<LocationManagerComoponent>().Get(request.Type).Remove(request.Key);
         }
     }
 }

@@ -21,30 +21,25 @@ namespace ET.Server
             MessageHelper.SendToClient(unit, removeUnits);
         }
         
-        public static void Broadcast(Unit unit, IActorMessage message)
+        public static void Broadcast(Unit unit, IActorLocationMessage message)
         {
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
             // 网络底层做了优化，同一个消息不会多次序列化
             foreach (AOIEntity u in dict.Values)
             {
-                ActorMessageSenderComponent.Instance.Send(u.Unit.GetComponent<UnitGateComponent>().GateSessionActorId, message);
+                ActorLocationSenderComponent.Instance.Get(LocationType.Player).Send(u.Unit.Id, message);
             }
         }
         
-        public static void SendToClient(Unit unit, IActorMessage message)
+        public static void SendToClient(Unit unit, IActorLocationMessage message)
         {
-            SendActor(unit.GetComponent<UnitGateComponent>().GateSessionActorId, message);
+            SendToLocationActor(LocationType.Player, unit.Id, message);
         }
         
         
-        /// <summary>
-        /// 发送协议给ActorLocation
-        /// </summary>
-        /// <param name="id">注册Actor的Id</param>
-        /// <param name="message"></param>
-        public static void SendToLocationActor(long id, IActorLocationMessage message)
+        public static void SendToLocationActor(int locationType, long id, IActorLocationMessage message)
         {
-            ActorLocationSenderComponent.Instance.Send(id, message);
+            ActorLocationSenderComponent.Instance.Get(locationType).Send(id, message);
         }
         
         /// <summary>
@@ -55,28 +50,6 @@ namespace ET.Server
         public static void SendActor(long actorId, IActorMessage message)
         {
             ActorMessageSenderComponent.Instance.Send(actorId, message);
-        }
-        
-        /// <summary>
-        /// 发送RPC协议给Actor
-        /// </summary>
-        /// <param name="actorId">注册Actor的InstanceId</param>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public static async ETTask<IActorResponse> CallActor(long actorId, IActorRequest message)
-        {
-            return await ActorMessageSenderComponent.Instance.Call(actorId, message);
-        }
-        
-        /// <summary>
-        /// 发送RPC协议给ActorLocation
-        /// </summary>
-        /// <param name="id">注册Actor的Id</param>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public static async ETTask<IActorResponse> CallLocationActor(long id, IActorLocationRequest message)
-        {
-            return await ActorLocationSenderComponent.Instance.Call(id, message);
         }
     }
 }

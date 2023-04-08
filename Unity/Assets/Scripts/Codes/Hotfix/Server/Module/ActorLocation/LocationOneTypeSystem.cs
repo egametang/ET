@@ -1,4 +1,6 @@
-﻿namespace ET.Server
+﻿using System;
+
+namespace ET.Server
 {
     [ObjectSystem]
     public class LockInfoAwakeSystem: AwakeSystem<LockInfo, long, CoroutineLock>
@@ -20,31 +22,43 @@
         }
     }
     
-    [FriendOf(typeof(LocationComponent))]
+    [FriendOf(typeof(LocationOneType))]
     [FriendOf(typeof(LockInfo))]
-    public static class LocationComponentSystem
+    public static class LocationOneTypeSystem
     {
-        public static async ETTask Add(this LocationComponent self, long key, long instanceId)
+        [ObjectSystem]
+        public class LocationOneTypeAwakeSystem: AwakeSystem<LocationOneType, int>
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
+            protected override void Awake(LocationOneType self, int locationType)
+            {
+                self.LocationType = locationType;
+            }
+        }
+        
+        public static async ETTask Add(this LocationOneType self, long key, long instanceId)
+        {
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
+            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, key))
             {
                 self.locations[key] = instanceId;
                 Log.Info($"location add key: {key} instanceId: {instanceId}");
             }
         }
 
-        public static async ETTask Remove(this LocationComponent self, long key)
+        public static async ETTask Remove(this LocationOneType self, long key)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
+            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, key))
             {
                 self.locations.Remove(key);
                 Log.Info($"location remove key: {key}");
             }
         }
 
-        public static async ETTask Lock(this LocationComponent self, long key, long instanceId, int time = 0)
+        public static async ETTask Lock(this LocationOneType self, long key, long instanceId, int time = 0)
         {
-            CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key);
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
+            CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(coroutineLockType, key);
 
             LockInfo lockInfo = self.AddChild<LockInfo, long, CoroutineLock>(instanceId, coroutineLock);
             self.lockInfos.Add(key, lockInfo);
@@ -68,7 +82,7 @@
             }
         }
 
-        public static void UnLock(this LocationComponent self, long key, long oldInstanceId, long newInstanceId)
+        public static void UnLock(this LocationOneType self, long key, long oldInstanceId, long newInstanceId)
         {
             if (!self.lockInfos.TryGetValue(key, out LockInfo lockInfo))
             {
@@ -92,14 +106,37 @@
             lockInfo.Dispose();
         }
 
-        public static async ETTask<long> Get(this LocationComponent self, long key)
+        public static async ETTask<long> Get(this LocationOneType self, long key)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
+            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, key))
             {
                 self.locations.TryGetValue(key, out long instanceId);
                 Log.Info($"location get key: {key} instanceId: {instanceId}");
                 return instanceId;
             }
+        }
+    }
+
+
+    [FriendOf(typeof (LocationManagerComoponent))]
+    public static class LocationComoponentSystem
+    {
+        [ObjectSystem]
+        public class AwakeSystem: AwakeSystem<LocationManagerComoponent>
+        {
+            protected override void Awake(LocationManagerComoponent self)
+            {
+                for (int i = 0; i < self.LocationOneTypes.Length; ++i)
+                {
+                    self.LocationOneTypes[i] = self.AddChild<LocationOneType, int>(i);
+                }
+            }
+        }
+        
+        public static LocationOneType Get(this LocationManagerComoponent self, int locationType)
+        {
+            return self.LocationOneTypes[locationType];
         }
     }
 }

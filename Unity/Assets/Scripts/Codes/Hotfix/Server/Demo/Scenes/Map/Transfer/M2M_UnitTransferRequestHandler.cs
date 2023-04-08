@@ -39,7 +39,7 @@ namespace ET.Server
 			unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);
 			
 			// 解锁location，可以接收发给Unit的消息
-			await LocationProxyComponent.Instance.UnLock(unit.Id, request.OldInstanceId, unit.InstanceId);
+			await LocationProxyComponent.Instance.UnLock(LocationType.Unit, unit.Id, request.OldInstanceId, unit.InstanceId);
 		}
 	}
 }
