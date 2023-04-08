@@ -20,13 +20,9 @@ namespace ET
 #if ENABLE_VIEW && UNITY_EDITOR
         private UnityEngine.GameObject viewGO;
 #endif
-        
+
         [BsonIgnore]
-        public long InstanceId
-        {
-            get;
-            protected set;
-        }
+        public long InstanceId { get; protected set; }
 
         protected Entity()
         {
@@ -71,8 +67,7 @@ namespace ET
                 {
                     this.status &= ~EntityStatus.IsRegister;
                 }
-				
-				
+
                 if (!value)
                 {
                     Root.Instance.Remove(this.InstanceId);
@@ -82,7 +77,7 @@ namespace ET
                     Root.Instance.Add(this);
                     EventSystem.Instance.RegisterSystem(this);
                 }
-                
+
 #if ENABLE_VIEW && UNITY_EDITOR
                 if (value)
                 {
@@ -98,12 +93,12 @@ namespace ET
 #endif
             }
         }
-        
+
         protected virtual string ViewName
         {
             get
             {
-                return this.GetType().Name;    
+                return this.GetType().Name;
             }
         }
 
@@ -140,7 +135,7 @@ namespace ET
                 }
             }
         }
-        
+
         [BsonIgnore]
         protected bool IsNew
         {
@@ -175,7 +170,7 @@ namespace ET
                 {
                     throw new Exception($"cant set parent null: {this.GetType().Name}");
                 }
-                
+
                 if (value == this)
                 {
                     throw new Exception($"cant set parent self: {this.GetType().Name}");
@@ -195,9 +190,10 @@ namespace ET
                         Log.Error($"重复设置了Parent: {this.GetType().Name} parent: {this.parent.GetType().Name}");
                         return;
                     }
+
                     this.parent.RemoveFromChildren(this);
                 }
-                
+
                 this.parent = value;
                 this.IsComponent = false;
                 this.parent.AddToChildren(this);
@@ -229,18 +225,18 @@ namespace ET
                 {
                     throw new Exception($"cant set parent null: {this.GetType().Name}");
                 }
-                
+
                 if (value == this)
                 {
                     throw new Exception($"cant set parent self: {this.GetType().Name}");
                 }
-                
+
                 // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
                 if (value.Domain == null)
                 {
                     throw new Exception($"cant set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
                 }
-                
+
                 if (this.parent != null) // 之前有parent
                 {
                     // parent相同，不设置
@@ -249,6 +245,7 @@ namespace ET
                         Log.Error($"重复设置了Parent: {this.GetType().Name} parent: {this.parent.GetType().Name}");
                         return;
                     }
+
                     this.parent.RemoveFromComponents(this);
                 }
 
@@ -268,11 +265,7 @@ namespace ET
         [BsonDefaultValue(0L)]
         [BsonElement]
         [BsonId]
-        public long Id
-        {
-            get;
-            set;
-        }
+        public long Id { get; set; }
 
         [BsonIgnore]
         protected Entity domain;
@@ -290,20 +283,20 @@ namespace ET
                 {
                     throw new Exception($"domain cant set null: {this.GetType().Name}");
                 }
-                
+
                 if (this.domain == value)
                 {
                     return;
                 }
-                
+
                 Entity preDomain = this.domain;
                 this.domain = value;
-                
+
                 if (preDomain == null)
                 {
                     this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
                     this.IsRegister = true;
-                    
+
                     // 反序列化出来的需要设置父子关系
                     if (this.componentsDB != null)
                     {
@@ -437,7 +430,7 @@ namespace ET
                     }
                 }
             }
-            
+
             // 清理Component
             if (this.components != null)
             {
@@ -485,11 +478,12 @@ namespace ET
             this.parent = null;
 
             base.Dispose();
-            
+
             if (this.IsFromPool)
             {
                 ObjectPool.Instance.Recycle(this);
             }
+
             status = EntityStatus.None;
         }
 
@@ -514,16 +508,17 @@ namespace ET
             }
         }
 
-        public K GetChild<K>(long id) where K: Entity
+        public K GetChild<K>(long id) where K : Entity
         {
             if (this.children == null)
             {
                 return null;
             }
+
             this.children.TryGetValue(id, out Entity child);
             return child as K;
         }
-        
+
         public void RemoveChild(long id)
         {
             if (this.children == null)
@@ -535,7 +530,7 @@ namespace ET
             {
                 return;
             }
-            
+
             this.children.Remove(id);
             child.Dispose();
         }
@@ -641,7 +636,7 @@ namespace ET
             {
                 return null;
             }
-            
+
             // 如果有IGetComponent接口，则触发GetComponentSystem
             if (this is IGetComponent)
             {
@@ -650,18 +645,19 @@ namespace ET
 
             return component;
         }
-        
+
         private static Entity Create(Type type, bool isFromPool)
         {
             Entity component;
             if (isFromPool)
             {
-                component = (Entity)ObjectPool.Instance.Fetch(type);
+                component = (Entity) ObjectPool.Instance.Fetch(type);
             }
             else
             {
                 component = Activator.CreateInstance(type) as Entity;
             }
+
             component.IsFromPool = isFromPool;
             component.IsCreated = true;
             component.IsNew = true;
@@ -683,6 +679,7 @@ namespace ET
             {
                 EventSystem.Instance.AddComponent(this, component);
             }
+
             return component;
         }
 
@@ -697,11 +694,12 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component);
-            
+
             if (this is IAddComponent)
             {
                 EventSystem.Instance.AddComponent(this, component);
             }
+
             return component;
         }
 
@@ -717,11 +715,12 @@ namespace ET
             component.Id = id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component);
-            
+
             if (this is IAddComponent)
             {
                 EventSystem.Instance.AddComponent(this, component);
             }
+
             return component as K;
         }
 
@@ -737,11 +736,12 @@ namespace ET
             component.Id = id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1);
-            
+
             if (this is IAddComponent)
             {
                 EventSystem.Instance.AddComponent(this, component);
             }
+
             return component as K;
         }
 
@@ -757,11 +757,12 @@ namespace ET
             component.Id = id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1, p2);
-            
+
             if (this is IAddComponent)
             {
                 EventSystem.Instance.AddComponent(this, component);
             }
+
             return component as K;
         }
 
@@ -777,11 +778,12 @@ namespace ET
             component.Id = id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1, p2, p3);
-            
+
             if (this is IAddComponent)
             {
                 EventSystem.Instance.AddComponent(this, component);
             }
+
             return component as K;
         }
 
@@ -804,7 +806,7 @@ namespace ET
         {
             return this.AddComponentWithId<K, P1, P2, P3>(this.Id, p1, p2, p3, isFromPool);
         }
-        
+
         public Entity AddChild(Entity entity)
         {
             entity.Parent = this;
@@ -912,7 +914,7 @@ namespace ET
         public override void BeginInit()
         {
             this.componentsDB?.Clear();
-            if (this.components!=null && this.components.Count!=0)
+            if (this.components != null && this.components.Count != 0)
             {
                 foreach (Entity entity in this.components.Values)
                 {
@@ -923,19 +925,13 @@ namespace ET
 
                     this.componentsDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
                     this.componentsDB.Add(entity);
-                
+
                     entity.BeginInit();
                 }
             }
 
-            if (this.componentsDB != null && this.componentsDB.Count == 0)
-            {
-                ObjectPool.Instance.Recycle(this.componentsDB);
-                this.componentsDB = null;
-            }
-            
             this.childrenDB?.Clear();
-            if (this.children!=null && this.children.Count!=0)
+            if (this.children != null && this.children.Count != 0)
             {
                 foreach (Entity entity in this.children.Values)
                 {
@@ -943,17 +939,12 @@ namespace ET
                     {
                         continue;
                     }
+
                     this.childrenDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
                     this.childrenDB.Add(entity);
-                
+
                     entity.BeginInit();
                 }
-            }
-
-            if (this.childrenDB != null && this.childrenDB.Count == 0)
-            {
-                ObjectPool.Instance.Recycle(this.childrenDB);
-                this.childrenDB = null;
             }
         }
     }
