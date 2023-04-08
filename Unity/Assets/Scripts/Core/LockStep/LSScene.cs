@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
     [EnableMethod]
-    [DebuggerDisplay("ViewName,nq")]
     [ChildOf]
-    public class Scene: Entity
+    public class LSScene: LSEntity
     {
         public int Zone
         {
@@ -22,7 +22,7 @@ namespace ET
             get;
         }
 
-        public Scene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
+        public LSScene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
             this.Id = instanceId;
             this.InstanceId = instanceId;
@@ -37,7 +37,7 @@ namespace ET
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
-        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
+        public LSScene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
             this.Id = id;
             this.InstanceId = instanceId;
@@ -59,12 +59,14 @@ namespace ET
             Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
+        [BsonIgnore]
         public new Entity Domain
         {
             get => this.domain;
             private set => this.domain = value;
         }
 
+        [BsonIgnore]
         public new Entity Parent
         {
             get
@@ -83,13 +85,28 @@ namespace ET
                 this.parent.Children.Add(this.Id, this);
             }
         }
-        
-        protected override string ViewName
+
+        [BsonElement]
+        private long idGenerator;
+
+        public long GetId()
         {
-            get
-            {
-                return $"{this.GetType().Name} ({this.SceneType})";    
-            }
+            return ++this.idGenerator;
+        }
+
+        public FixedUpdater FixedUpdater { get; set; }
+    }
+
+    public static class LSSceneHelper
+    {
+        public static LSScene DomainScene(this LSEntity entity)
+        {
+            return entity.Domain as LSScene;
+        }
+        
+        public static long GetId(this LSEntity entity)
+        {
+            return entity.DomainScene().GetId();
         }
     }
 }

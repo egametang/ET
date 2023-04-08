@@ -8,11 +8,13 @@ namespace ET.Server
         public static async ETTask<Scene> CreateRoom(this RoomManagerComponent self, Match2Map_GetRoom match2MapGetRoom)
         {
             long instanceId = IdGenerater.Instance.GenerateInstanceId();
-            Scene room = await SceneFactory.CreateServerScene(
+            Scene scene = await SceneFactory.CreateServerScene(
                 self, instanceId, instanceId, 
                 self.DomainZone(), "Room", SceneType.Room);
+
+            scene.AddComponent<RoomComponent, Match2Map_GetRoom>(match2MapGetRoom);
             
-            return room;
+            return scene;
         }
     }
 }

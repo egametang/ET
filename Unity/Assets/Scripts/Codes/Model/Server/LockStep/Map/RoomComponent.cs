@@ -6,5 +6,19 @@ namespace ET.Server
     public class RoomComponent: Entity, IAwake<Match2Map_GetRoom>
     {
         public int AlreadyJoinRoomCount;
+
+        private long sceneInstanceId;
+        
+        public LSScene LsScene
+        {
+            get
+            {
+                return Root.Instance.Get(this.sceneInstanceId) as LSScene;
+            }
+            set
+            {
+                this.sceneInstanceId = value.InstanceId;
+            }
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace ET
 		Benchmark = 1 << 13,
 		Match = 1 << 14,
 		Room = 1 << 15,
+		LockStep = 1 << 16,
 
 		// 客户端Model层
 		Client = 1 << 30,

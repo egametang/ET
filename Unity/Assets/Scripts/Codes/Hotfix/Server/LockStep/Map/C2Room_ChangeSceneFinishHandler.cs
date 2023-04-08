@@ -7,10 +7,10 @@ namespace ET.Server
     [FriendOf(typeof (RoomComponent))]
     public class C2Room_ChangeSceneFinishHandler: AMActorHandler<Scene, C2Room_ChangeSceneFinish>
     {
-        protected override async ETTask Run(Scene scene, C2Room_ChangeSceneFinish message)
+        protected override async ETTask Run(Scene room, C2Room_ChangeSceneFinish message)
         {
-            RoomComponent roomComponent = scene.GetComponent<RoomComponent>();
-            RoomPlayer roomPlayer = scene.GetComponent<RoomComponent>().GetChild<RoomPlayer>(message.PlayerId);
+            RoomComponent roomComponent = room.GetComponent<RoomComponent>();
+            RoomPlayer roomPlayer = room.GetComponent<RoomComponent>().GetChild<RoomPlayer>(message.PlayerId);
             roomPlayer.IsJoinRoom = true;
             roomComponent.AlreadyJoinRoomCount++;
 
@@ -34,7 +34,7 @@ namespace ET.Server
                     });
                 }
 
-                RoomMessageHelper.BroadCast(scene, room2CEnterMap);
+                RoomMessageHelper.BroadCast(room, room2CEnterMap);
             }
 
             await ETTask.CompletedTask;

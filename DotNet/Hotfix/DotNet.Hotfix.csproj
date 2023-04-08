@@ -40,10 +40,5 @@
         <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Server\LockStep\Map">
-        <Link>Server\LockStep\Map</Link>
-      </Folder>
-    </ItemGroup>
 
 </Project>

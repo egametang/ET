@@ -52,8 +52,6 @@ namespace ET.Server
                 case SceneType.Match:
                     scene.AddComponent<MatchComponent>();
                     break;
-                case SceneType.Room:
-                    break;
             }
 
             return scene;
