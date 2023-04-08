@@ -912,17 +912,20 @@ namespace ET
         public override void BeginInit()
         {
             this.componentsDB?.Clear();
-            foreach (Entity entity in this.components.Values)
+            if (this.components!=null && this.components.Count!=0)
             {
-                if (entity is not ISerializeToEntity)
+                foreach (Entity entity in this.components.Values)
                 {
-                    continue;
-                }
+                    if (entity is not ISerializeToEntity)
+                    {
+                        continue;
+                    }
 
-                this.componentsDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
-                this.componentsDB.Add(entity);
+                    this.componentsDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
+                    this.componentsDB.Add(entity);
                 
-                entity.BeginInit();
+                    entity.BeginInit();
+                }
             }
 
             if (this.componentsDB != null && this.componentsDB.Count == 0)
@@ -932,18 +935,21 @@ namespace ET
             }
             
             this.childrenDB?.Clear();
-            foreach (Entity entity in this.children.Values)
+            if (this.children!=null && this.children.Count!=0)
             {
-                if (entity is not ISerializeToEntity)
+                foreach (Entity entity in this.children.Values)
                 {
-                    continue;
-                }
-                this.childrenDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
-                this.childrenDB.Add(entity);
+                    if (entity is not ISerializeToEntity)
+                    {
+                        continue;
+                    }
+                    this.childrenDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
+                    this.childrenDB.Add(entity);
                 
-                entity.BeginInit();
+                    entity.BeginInit();
+                }
             }
-            
+
             if (this.childrenDB != null && this.childrenDB.Count == 0)
             {
                 ObjectPool.Instance.Recycle(this.childrenDB);
