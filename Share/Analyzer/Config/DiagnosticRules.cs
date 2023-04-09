@@ -218,4 +218,91 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+
+    public static class EntityClassDeclarationAnalyzerRule
+    {
+        private const string Title = "实体类限制多层继承";
+
+        private const string MessageFormat = "类: {0} 不能继承Entiy的子类 请直接继承Entity";
+
+        private const string Description = "实体类限制多层继承.";
+
+        public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticIds.EntityClassDeclarationAnalyzerRuleId,
+            Title,
+            MessageFormat,
+            DiagnosticCategories.All,
+            DiagnosticSeverity.Error, true, Description);
+    }
+
+    public static class EntityDelegateDeclarationAnalyzerRule
+    {
+        private const string Title = "实体类禁止声明委托字段或属性";
+
+        private const string MessageFormat = "实体类: {0} 不能在类内部声明委托字段或属性: {1}";
+
+        private const string Description = "实体类禁止声明委托字段或属性.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.DelegateAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class EntityFieldDeclarationInEntityAnalyzerRule
+    {
+        private const string Title = "实体类禁止声明实体字段";
+
+        private const string MessageFormat = "实体类: {0} 不能在类内部声明实体字段: {1}";
+
+        private const string Description = "实体类禁止声明实体字段.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntityFieldDeclarationInEntityAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class AsyncMethodReturnTypeAnalyzerRule
+    {
+        private const string Title = "禁止声明返回值为void的异步方法";
+
+        private const string MessageFormat = "禁止声明返回值为void的异步方法";
+
+        private const string Description = "禁止声明返回值为void的异步方法.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.AsyncMethodReturnTypeAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class ClientClassInServerAnalyzerRule
+    {
+        private const string Title = "禁止在Server程序集内引用ET.Client命名空间";
+
+        private const string MessageFormat = "禁止在Server程序集内引用ET.Client命名空间";
+
+        private const string Description = "禁止在Server程序集内引用ET.Client命名空间.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.ClientClassInServerAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

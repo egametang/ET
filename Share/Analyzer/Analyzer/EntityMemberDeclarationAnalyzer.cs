@@ -1,30 +1,15 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ET.Analyzer
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class EntityDelegateDeclarationAnalyzer: DiagnosticAnalyzer
+    public class EntityMemberDeclarationAnalyzer: DiagnosticAnalyzer
     {
-        private const string Title = "实体类禁止声明委托字段或属性";
-
-        private const string MessageFormat = "实体类: {0} 不能在类内部声明委托字段或属性: {1}";
-
-        private const string Description = "实体类禁止声明委托字段或属性.";
-
-        private static readonly DiagnosticDescriptor Rule =
-                new DiagnosticDescriptor(DiagnosticIds.DelegateAnalyzerRuleId,
-                    Title,
-                    MessageFormat,
-                    DiagnosticCategories.Model,
-                    DiagnosticSeverity.Error,
-                    true,
-                    Description);
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>ImmutableArray.Create(EntityDelegateDeclarationAnalyzerRule.Rule,EntityFieldDeclarationInEntityAnalyzerRule.Rule);
         
         public override void Initialize(AnalysisContext context)
         {
@@ -55,6 +40,15 @@ namespace ET.Analyzer
                 return;
             }
 
+            AnalyzeDelegateMember(context, namedTypeSymbol);
+            AnalyzeEntityMember(context, namedTypeSymbol);
+        }
+
+        /// <summary>
+        /// 检查委托成员
+        /// </summary>
+        private void AnalyzeDelegateMember(SymbolAnalysisContext context,INamedTypeSymbol namedTypeSymbol)
+        {
             foreach (var member in namedTypeSymbol.GetMembers())
             {
                 
@@ -73,13 +67,42 @@ namespace ET.Analyzer
                 }
             }
             
-
             void ReportDiagnostic(ISymbol symbol,string delegateName)
             {
                 foreach (var syntaxReference in symbol.DeclaringSyntaxReferences)
                 {
                     var syntax = syntaxReference.GetSyntax();
-                    Diagnostic diagnostic = Diagnostic.Create(Rule, syntax.GetLocation(),namedTypeSymbol.Name,delegateName);
+                    Diagnostic diagnostic = Diagnostic.Create(EntityDelegateDeclarationAnalyzerRule.Rule, syntax.GetLocation(),namedTypeSymbol.Name,delegateName);
+                    context.ReportDiagnostic(diagnostic);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 检查实体成员
+        /// </summary>
+        private void AnalyzeEntityMember(SymbolAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
+        {
+            foreach (var member in namedTypeSymbol.GetMembers())
+            {
+                if (member is not IFieldSymbol fieldSymbol)
+                {
+                    continue;
+                }
+
+                // 忽略静态字段 允许单例实体类
+                if (fieldSymbol.IsStatic)
+                {
+                    continue;
+                }
+                if (fieldSymbol.Type.ToString()== Definition.EntityType || fieldSymbol.Type.BaseType?.ToString()== Definition.EntityType)
+                {
+                    var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault();
+                    if (syntaxReference==null)
+                    {
+                        continue;
+                    }
+                    Diagnostic diagnostic = Diagnostic.Create(EntityFieldDeclarationInEntityAnalyzerRule.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,fieldSymbol.Name);
                     context.ReportDiagnostic(diagnostic);
                 }
             }
