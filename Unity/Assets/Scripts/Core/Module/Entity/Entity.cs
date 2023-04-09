@@ -161,10 +161,10 @@ namespace ET
 
         // 可以改变parent，但是不能设置为null
         [BsonIgnore]
-        public Entity Parent
+        public virtual Entity Parent
         {
             get => this.parent;
-            private set
+            protected set
             {
                 if (value == null)
                 {
@@ -271,13 +271,13 @@ namespace ET
         protected Entity domain;
 
         [BsonIgnore]
-        public Entity Domain
+        public virtual Entity Domain
         {
             get
             {
                 return this.domain;
             }
-            private set
+            protected set
             {
                 if (value == null)
                 {

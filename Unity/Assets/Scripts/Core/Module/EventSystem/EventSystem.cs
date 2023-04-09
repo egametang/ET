@@ -5,57 +5,69 @@ using System.Text;
 
 namespace ET
 {
-    public class EventSystem: Singleton<EventSystem>, ISingletonUpdate, ISingletonLateUpdate
+    public class TypeSystems
     {
-        private class OneTypeSystems
+        public class OneTypeSystems
         {
+            public OneTypeSystems(int count)
+            {
+                this.QueueFlag = new bool[count];
+            }
+            
             public readonly UnOrderMultiMap<Type, object> Map = new();
             // 这里不用hash，数量比较少，直接for循环速度更快
-            public readonly bool[] QueueFlag = new bool[(int)InstanceQueueIndex.Max];
+            public readonly bool[] QueueFlag;
+        }
+
+        private readonly int count;
+
+        public TypeSystems(int count)
+        {
+            this.count = count;
         }
         
-        private class TypeSystems
+        private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
+
+        public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
         {
-            private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
-
-            public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
+            OneTypeSystems systems = null;
+            this.typeSystemsMap.TryGetValue(type, out systems);
+            if (systems != null)
             {
-                OneTypeSystems systems = null;
-                this.typeSystemsMap.TryGetValue(type, out systems);
-                if (systems != null)
-                {
-                    return systems;
-                }
-
-                systems = new OneTypeSystems();
-                this.typeSystemsMap.Add(type, systems);
                 return systems;
             }
 
-            public OneTypeSystems GetOneTypeSystems(Type type)
-            {
-                OneTypeSystems systems = null;
-                this.typeSystemsMap.TryGetValue(type, out systems);
-                return systems;
-            }
-
-            public List<object> GetSystems(Type type, Type systemType)
-            {
-                OneTypeSystems oneTypeSystems = null;
-                if (!this.typeSystemsMap.TryGetValue(type, out oneTypeSystems))
-                {
-                    return null;
-                }
-
-                if (!oneTypeSystems.Map.TryGetValue(systemType, out List<object> systems))
-                {
-                    return null;
-                }
-
-                return systems;
-            }
+            systems = new OneTypeSystems(this.count);
+            this.typeSystemsMap.Add(type, systems);
+            return systems;
         }
 
+        public OneTypeSystems GetOneTypeSystems(Type type)
+        {
+            OneTypeSystems systems = null;
+            this.typeSystemsMap.TryGetValue(type, out systems);
+            return systems;
+        }
+
+        public List<object> GetSystems(Type type, Type systemType)
+        {
+            OneTypeSystems oneTypeSystems = null;
+            if (!this.typeSystemsMap.TryGetValue(type, out oneTypeSystems))
+            {
+                return null;
+            }
+
+            if (!oneTypeSystems.Map.TryGetValue(systemType, out List<object> systems))
+            {
+                return null;
+            }
+
+            return systems;
+        }
+    }
+    
+    public class EventSystem: Singleton<EventSystem>, ISingletonUpdate, ISingletonLateUpdate
+    {
         private class EventInfo
         {
             public IEvent IEvent { get; }
@@ -77,9 +89,9 @@ namespace ET
         
         private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
-        private TypeSystems typeSystems;
+        public TypeSystems TypeSystems;
 
-        private readonly Queue<long>[] queues = new Queue<long>[(int)InstanceQueueIndex.Max];
+        private readonly Queue<long>[] queues = new Queue<long>[InstanceQueueIndex.Max];
 
         public EventSystem()
         {
@@ -112,7 +124,7 @@ namespace ET
                 }
             }
 
-            this.typeSystems = new TypeSystems();
+            this.TypeSystems = new TypeSystems(InstanceQueueIndex.Max);
 
             foreach (Type type in this.GetTypes(typeof (ObjectSystemAttribute)))
             {
@@ -120,12 +132,12 @@ namespace ET
 
                 if (obj is ISystemType iSystemType)
                 {
-                    OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+                    TypeSystems.OneTypeSystems oneTypeSystems = this.TypeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                     oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
-                    InstanceQueueIndex index = iSystemType.GetInstanceQueueIndex();
+                    int index = iSystemType.GetInstanceQueueIndex();
                     if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
                     {
-                        oneTypeSystems.QueueFlag[(int)index] = true;
+                        oneTypeSystems.QueueFlag[index] = true;
                     }
                 }
             }
@@ -210,11 +222,11 @@ namespace ET
             return this.allTypes[typeName];
         }
 
-        public void RegisterSystem(Entity component)
+        public virtual void RegisterSystem(Entity component)
         {
             Type type = component.GetType();
 
-            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
+            TypeSystems.OneTypeSystems oneTypeSystems = this.TypeSystems.GetOneTypeSystems(type);
             if (oneTypeSystems == null)
             {
                 return;
@@ -231,7 +243,7 @@ namespace ET
 
         public void Deserialize(Entity component)
         {
-            List<object> iDeserializeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
+            List<object> iDeserializeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
             if (iDeserializeSystems == null)
             {
                 return;
@@ -258,7 +270,7 @@ namespace ET
         // GetComponentSystem
         public void GetComponent(Entity entity, Entity component)
         {
-            List<object> iGetSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
+            List<object> iGetSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
             if (iGetSystem == null)
             {
                 return;
@@ -285,7 +297,7 @@ namespace ET
         // AddComponentSystem
         public void AddComponent(Entity entity, Entity component)
         {
-            List<object> iAddSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
+            List<object> iAddSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
             if (iAddSystem == null)
             {
                 return;
@@ -311,7 +323,7 @@ namespace ET
 
         public void Awake(Entity component)
         {
-            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
             if (iAwakeSystems == null)
             {
                 return;
@@ -337,7 +349,7 @@ namespace ET
 
         public void Awake<P1>(Entity component, P1 p1)
         {
-            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -363,7 +375,7 @@ namespace ET
 
         public void Awake<P1, P2>(Entity component, P1 p1, P2 p2)
         {
-            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -389,7 +401,7 @@ namespace ET
 
         public void Awake<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
         {
-            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -415,7 +427,7 @@ namespace ET
 
         public void Awake<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
         {
-            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3, P4>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3, P4>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -441,7 +453,7 @@ namespace ET
 
         public void Load()
         {
-            Queue<long> queue = this.queues[(int)InstanceQueueIndex.Load];
+            Queue<long> queue = this.queues[InstanceQueueIndex.Load];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -457,7 +469,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iLoadSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ILoadSystem));
+                List<object> iLoadSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (ILoadSystem));
                 if (iLoadSystems == null)
                 {
                     continue;
@@ -481,7 +493,7 @@ namespace ET
 
         public void Destroy(Entity component)
         {
-            List<object> iDestroySystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
+            List<object> iDestroySystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
             if (iDestroySystems == null)
             {
                 return;
@@ -507,7 +519,7 @@ namespace ET
 
         public void Update()
         {
-            Queue<long> queue = this.queues[(int)InstanceQueueIndex.Update];
+            Queue<long> queue = this.queues[InstanceQueueIndex.Update];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -523,7 +535,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
+                List<object> iUpdateSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
                 if (iUpdateSystems == null)
                 {
                     continue;
@@ -547,7 +559,7 @@ namespace ET
 
         public void LateUpdate()
         {
-            Queue<long> queue = this.queues[(int)InstanceQueueIndex.LateUpdate];
+            Queue<long> queue = this.queues[InstanceQueueIndex.LateUpdate];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -563,7 +575,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iLateUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
+                List<object> iLateUpdateSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
                 if (iLateUpdateSystems == null)
                 {
                     continue;

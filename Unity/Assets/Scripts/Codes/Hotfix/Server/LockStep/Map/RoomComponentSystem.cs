@@ -16,8 +16,7 @@ namespace ET.Server
                 }
                 
                 // 创建LockStep场景
-                LSScene lsScene = new LSScene(IdGenerater.Instance.GenerateInstanceId(), self.DomainZone(), SceneType.LockStep, "LockStep", self);
-                self.LsScene = lsScene;
+                self.LsScene = new LSScene(IdGenerater.Instance.GenerateId());
             }
         }
     }

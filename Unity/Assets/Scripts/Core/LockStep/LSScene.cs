@@ -1,71 +1,44 @@
-using System.Diagnostics;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace ET
 {
+    public static class LSSceneSystem
+    {
+        public class DeserializeSystem: DeserializeSystem<LSScene>
+        {
+            protected override void Deserialize(LSScene self)
+            {
+                self.Updater.Parent = self;
+            }
+        }
+
+        public static LSScene DomainScene(this LSEntity entity)
+        {
+            return entity.Domain as LSScene;
+        }
+
+        public static long GetId(this LSEntity entity)
+        {
+            return entity.DomainScene().GetId();
+        }
+    }
+
     [EnableMethod]
     [ChildOf]
-    public class LSScene: LSEntity
+    public class LSScene: LSEntity, IDeserialize
     {
-        public int Zone
-        {
-            get;
-        }
-
-        public SceneType SceneType
-        {
-            get;
-        }
-
-        public string Name
-        {
-            get;
-        }
-
-        public LSScene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
-        {
-            this.Id = instanceId;
-            this.InstanceId = instanceId;
-            this.Zone = zone;
-            this.SceneType = sceneType;
-            this.Name = name;
-            this.IsCreated = true;
-            this.IsNew = true;
-            this.Parent = parent;
-            this.Domain = this;
-            this.IsRegister = true;
-            Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
-        }
-
-        public LSScene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
+        public LSScene(long id)
         {
             this.Id = id;
-            this.InstanceId = instanceId;
-            this.Zone = zone;
-            this.SceneType = sceneType;
-            this.Name = name;
+            this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
             this.IsCreated = true;
             this.IsNew = true;
-            this.Parent = parent;
-            this.Domain = this;
             this.IsRegister = true;
-            Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
+            Log.Info($"LSScene create: {this.Id} {this.InstanceId}");
         }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            
-            Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
-        }
-
-        [BsonIgnore]
-        public new Entity Domain
-        {
-            get => this.domain;
-            private set => this.domain = value;
-        }
-
+        
         [BsonIgnore]
         public new Entity Parent
         {
@@ -73,16 +46,44 @@ namespace ET
             {
                 return this.parent;
             }
-            private set
+            set
             {
-                if (value == null)
-                {
-                    //this.parent = this;
-                    return;
-                }
+                value?.AddChild(this);
+                this.Domain = this;
+            }
+        }
 
-                this.parent = value;
-                this.parent.Children.Add(this.Id, this);
+        private readonly Dictionary<long, LSEntity> allLSEntities = new();
+
+        [BsonElement]
+        public LSUpdater Updater = new();
+
+        public LSEntity Get(long id)
+        {
+            this.allLSEntities.TryGetValue(id, out LSEntity entity);
+            return entity;
+        }
+
+        public void Remove(long id)
+        {
+            this.allLSEntities.Remove(id);
+        }
+
+        public void RegisterSystem(LSEntity entity)
+        {
+            this.allLSEntities.Add(entity.Id, entity);
+
+            Type type = entity.GetType();
+
+            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.TypeSystems.GetOneTypeSystems(type);
+            if (oneTypeSystems == null)
+            {
+                return;
+            }
+
+            if (oneTypeSystems.QueueFlag[LSQueneUpdateIndex.LSUpdate])
+            {
+                this.Updater.Add(entity);
             }
         }
 
@@ -92,21 +93,6 @@ namespace ET
         public long GetId()
         {
             return ++this.idGenerator;
-        }
-
-        public FixedUpdater FixedUpdater { get; set; }
-    }
-
-    public static class LSSceneHelper
-    {
-        public static LSScene DomainScene(this LSEntity entity)
-        {
-            return entity.Domain as LSScene;
-        }
-        
-        public static long GetId(this LSEntity entity)
-        {
-            return entity.DomainScene().GetId();
         }
     }
 }

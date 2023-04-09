@@ -17,6 +17,7 @@ namespace ET.Server
             }
             set
             {
+                value.Parent = this;
                 this.sceneInstanceId = value.InstanceId;
             }
         }
