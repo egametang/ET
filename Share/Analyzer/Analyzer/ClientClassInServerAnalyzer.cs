@@ -15,7 +15,7 @@ namespace ET.Analyzer
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(AnalyzeNode, SyntaxKind.UsingDirective);
+            //context.RegisterSyntaxNodeAction(AnalyzeNode, SyntaxKind.UsingDirective);
         }
 
         private static void AnalyzeNode(SyntaxNodeAnalysisContext context)

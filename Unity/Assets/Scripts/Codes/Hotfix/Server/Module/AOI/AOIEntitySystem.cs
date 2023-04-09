@@ -30,7 +30,6 @@ namespace ET.Server
                 self.BeSeeUnits.Clear();
                 self.SubEnterCells.Clear();
                 self.SubLeaveCells.Clear();
-                self.Cell = null;
             }
         }
         
