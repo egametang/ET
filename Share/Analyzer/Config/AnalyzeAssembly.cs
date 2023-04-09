@@ -42,7 +42,11 @@
             UnityCore, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView, 
             UnityModelCodes, UnityModelViewCodes, UnityHotfixCodes, UnityHotfixViewCodes
         };
-        
-        
+
+        public static readonly string[] ServerModelHotfix =
+        {
+            DotNetModel,DotNetHotfix,
+        };
+
     }
 }

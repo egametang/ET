@@ -35,6 +35,10 @@
         public const string ETCancellationToken = "ET.ETCancellationToken";
 
         public const string ETTaskCompleteTask = "ETTask.CompletedTask";
+
+        public const string ETClientNameSpace = "ET.Client";
+
+        public const string ClientDirInServer = @"Unity\Assets\Scripts\Codes\Hotfix\Client\";
     }
 }
 

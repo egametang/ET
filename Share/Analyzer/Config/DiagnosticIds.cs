@@ -40,5 +40,11 @@
 
         public const string ExpressionWithCancelTokenParamAnalyzerRuleId = "ET0019";
 
+        public const string EntityFieldDeclarationInEntityAnalyzerRuleId = "ET0020";
+
+        public const string AsyncMethodReturnTypeAnalyzerRuleId = "ET0021";
+
+        public const string ClientClassInServerAnalyzerRuleId = "ET0022";
+
     }
 }
