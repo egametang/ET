@@ -9,31 +9,32 @@ namespace ET.Server
     {
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
         {
-            M2C_CreateUnits createUnits = new M2C_CreateUnits() { Units = new List<UnitInfo>() };
+            M2C_CreateUnits createUnits = new() { Units = new List<UnitInfo>() };
             createUnits.Units.Add(UnitHelper.CreateUnitInfo(sendUnit));
             MessageHelper.SendToClient(unit, createUnits);
         }
         
         public static void NoticeUnitRemove(Unit unit, Unit sendUnit)
         {
-            M2C_RemoveUnits removeUnits = new M2C_RemoveUnits() {Units = new List<long>()};
+            M2C_RemoveUnits removeUnits = new() {Units = new List<long>()};
             removeUnits.Units.Add(sendUnit.Id);
             MessageHelper.SendToClient(unit, removeUnits);
         }
         
-        public static void Broadcast(Unit unit, IActorLocationMessage message)
+        public static void Broadcast(Unit unit, IActorMessage message)
         {
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
             // 网络底层做了优化，同一个消息不会多次序列化
+            ActorLocationSenderOneType oneTypeLocationType = ActorLocationSenderComponent.Instance.Get(LocationType.Player);
             foreach (AOIEntity u in dict.Values)
             {
-                ActorLocationSenderComponent.Instance.Get(LocationType.Player).Send(u.Unit.Id, message);
+                oneTypeLocationType.Send(u.Unit.Id, message);
             }
         }
         
-        public static void SendToClient(Unit unit, IActorLocationMessage message)
+        public static void SendToClient(Unit unit, IActorMessage message)
         {
-            SendToLocationActor(LocationType.Player, unit.Id, message);
+            ActorLocationSenderComponent.Instance.Get(LocationType.Player).Send(unit.Id, message);
         }
         
         

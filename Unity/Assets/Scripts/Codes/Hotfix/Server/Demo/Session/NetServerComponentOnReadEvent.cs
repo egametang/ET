@@ -17,6 +17,12 @@
             // 根据消息接口判断是不是Actor消息，不同的接口做不同的处理,比如需要转发给Chat Scene，可以做一个IChatMessage接口
             switch (message)
             {
+                case IActorLocationMessage actorLocationMessage:
+                {
+                    long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;
+                    ActorLocationSenderComponent.Instance.Get(LocationType.Unit).Send(unitId, actorLocationMessage);
+                    break;
+                }
                 case IActorLocationRequest actorLocationRequest: // gate session收到actor rpc消息，先向actor 发送rpc请求，再将请求结果返回客户端
                 {
                     long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;
@@ -29,12 +35,6 @@
                     {
                         session.Send(iResponse);
                     }
-                    break;
-                }
-                case IActorLocationMessage actorLocationMessage:
-                {
-                    long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;
-                    ActorLocationSenderComponent.Instance.Get(LocationType.Unit).Send(unitId, actorLocationMessage);
                     break;
                 }
                 case IActorRequest actorRequest:  // 分发IActorRequest消息，目前没有用到，需要的自己添加

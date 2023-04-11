@@ -44,8 +44,8 @@ namespace ET.Server
                 TimerComponent.Instance?.Remove(ref self.CheckTimer);
             }
         }
-        
-        public static void Check(this ActorLocationSenderOneType self)
+
+        private static void Check(this ActorLocationSenderOneType self)
         {
             using (ListComponent<long> list = ListComponent<long>.Create())
             {
@@ -92,13 +92,91 @@ namespace ET.Server
 
             actorMessageSender.Dispose();
         }
+        
+        // 发给不会改变位置的actorlocation用这个，这种actor消息不会阻塞发送队列，性能更高
+        // 发送过去找不到actor不会重试,用此方法，你得保证actor提前注册好了location
+        public static void Send(this ActorLocationSenderOneType self, long entityId, IActorMessage message)
+        {
+            self.SendInner(entityId, message).Coroutine();
+        }
+        
+        private static async ETTask SendInner(this ActorLocationSenderOneType self, long entityId, IActorMessage message)
+        {
+            ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
-        public static void Send(this ActorLocationSenderOneType self, long entityId, IActorRequest message)
+            if (actorLocationSender.ActorId != 0)
+            {
+                actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
+                ActorMessageSenderComponent.Instance.Send(actorLocationSender.ActorId, message);
+                return;
+            }
+            
+            long instanceId = actorLocationSender.InstanceId;
+            
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
+            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, entityId))
+            {
+                if (actorLocationSender.InstanceId != instanceId)
+                {
+                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{message}");
+                }
+                
+                if (actorLocationSender.ActorId == 0)
+                {
+                    actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
+                    if (actorLocationSender.InstanceId != instanceId)
+                    {
+                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{message}");
+                    }
+                }
+                
+                actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
+                ActorMessageSenderComponent.Instance.Send(actorLocationSender.ActorId, message);
+            }
+        }
+
+        // 发给不会改变位置的actorlocation用这个，这种actor消息不会阻塞发送队列，性能更高，发送过去找不到actor不会重试
+        // 发送过去找不到actor不会重试,用此方法，你得保证actor提前注册好了location
+        public static async ETTask<IActorResponse> Call(this ActorLocationSenderOneType self, long entityId, IActorRequest request)
+        {
+            ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
+
+            if (actorLocationSender.ActorId != 0)
+            {
+                actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
+                return await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, request);
+            }
+            
+            long instanceId = actorLocationSender.InstanceId;
+            
+            int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
+            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, entityId))
+            {
+                if (actorLocationSender.InstanceId != instanceId)
+                {
+                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{request}");
+                }
+
+                if (actorLocationSender.ActorId == 0)
+                {
+                    actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
+                    if (actorLocationSender.InstanceId != instanceId)
+                    {
+                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{request}");
+                    }
+                }
+            }
+
+            actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
+            return await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, request);
+        }
+
+        public static void Send(this ActorLocationSenderOneType self, long entityId, IActorLocationMessage message)
         {
             self.Call(entityId, message).Coroutine();
         }
 
-        public static async ETTask<IActorResponse> Call(this ActorLocationSenderOneType self, long entityId, IActorRequest iActorRequest)
+        public static async ETTask<IActorResponse> Call(this ActorLocationSenderOneType self, long entityId, IActorLocationRequest iActorRequest)
         {
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 

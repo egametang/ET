@@ -20,9 +20,9 @@ message C2M_TestRequest // IActorLocationRequest
 	string request = 2;
 }
 
-message M2C_TestResponse // IActorLocationResponse
+message M2C_TestResponse // IActorResponse
 {
-	int32 RpcId = 1;
+    int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
 	string response = 4;
@@ -75,29 +75,25 @@ message UnitInfo
 	MoveInfo MoveInfo = 7;
 }
 
-message M2C_CreateUnits // IActorLocationMessage
+message M2C_CreateUnits // IActorMessage
 {
-	int32 RpcId = 1;
-	repeated UnitInfo Units = 2;
+	repeated UnitInfo Units = 1;
 }
 
-message M2C_CreateMyUnit // IActorLocationMessage
+message M2C_CreateMyUnit // IActorMessage
 {
-	int32 RpcId = 1;
-	UnitInfo Unit = 2;
+	UnitInfo Unit = 1;
 }
 
-message M2C_StartSceneChange // IActorLocationMessage
+message M2C_StartSceneChange // IActorMessage
 {
-	int32 RpcId = 1;
-	int64 SceneInstanceId = 2;
-	string SceneName = 3;	
+	int64 SceneInstanceId = 1;
+	string SceneName = 2;	
 }
 
-message M2C_RemoveUnits // IActorLocationMessage
+message M2C_RemoveUnits // IActorMessage
 {
-	int32 RpcId = 1;
-	repeated int64 Units = 2;
+	repeated int64 Units = 1;
 }
 
 message C2M_PathfindingResult // IActorLocationMessage
@@ -111,21 +107,19 @@ message C2M_Stop // IActorLocationMessage
 	int32 RpcId = 1;
 }
 
-message M2C_PathfindingResult // IActorLocationMessage
+message M2C_PathfindingResult // IActorMessage
 {
-	int32 RpcId = 1;
-	int64 Id = 2;
-	Unity.Mathematics.float3 Position = 3;
-	repeated Unity.Mathematics.float3 Points = 4;
+	int64 Id = 1;
+	Unity.Mathematics.float3 Position = 2;
+	repeated Unity.Mathematics.float3 Points = 3;
 }
 
-message M2C_Stop // IActorLocationMessage
+message M2C_Stop // IActorMessage
 {
-	int32 RpcId = 1;
-	int32 Error = 2;
-	int64 Id = 3;
-	Unity.Mathematics.float3 Position = 4;
-	Unity.Mathematics.quaternion Rotation = 5;
+	int32 Error = 1;
+	int64 Id = 2;
+	Unity.Mathematics.float3 Position = 3;
+	Unity.Mathematics.quaternion Rotation = 4;
 }
 
 //ResponseType G2C_Ping
@@ -214,18 +208,6 @@ message M2C_TestRobotCase // IActorLocationResponse
 	int32 Error = 2;
 	string Message = 3;
 	int32 N = 4;
-}
-
-message C2M_TestRobotCase2 // IActorLocationMessage
-{
-	int32 RpcId = 1;
-	int32 N = 2;
-}
-
-message M2C_TestRobotCase2 // IActorLocationMessage
-{
-	int32 RpcId = 1;
-	int32 N = 2;
 }
 
 //ResponseType M2C_TransferMap

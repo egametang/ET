@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public interface IActorLocationMessage: IActorRequest
+    public interface IActorLocationMessage: IActorLocationRequest
     {
     }
 
