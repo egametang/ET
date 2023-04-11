@@ -42,7 +42,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_TestResponse)]
 	[ProtoContract]
-	public partial class M2C_TestResponse: ProtoObject, IActorLocationResponse
+	public partial class M2C_TestResponse: ProtoObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -159,51 +159,39 @@ namespace ET
 
 	[Message(OuterMessage.M2C_CreateUnits)]
 	[ProtoContract]
-	public partial class M2C_CreateUnits: ProtoObject, IActorLocationMessage
+	public partial class M2C_CreateUnits: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public List<UnitInfo> Units { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_CreateMyUnit)]
 	[ProtoContract]
-	public partial class M2C_CreateMyUnit: ProtoObject, IActorLocationMessage
+	public partial class M2C_CreateMyUnit: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public UnitInfo Unit { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_StartSceneChange)]
 	[ProtoContract]
-	public partial class M2C_StartSceneChange: ProtoObject, IActorLocationMessage
+	public partial class M2C_StartSceneChange: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public long SceneInstanceId { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public string SceneName { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_RemoveUnits)]
 	[ProtoContract]
-	public partial class M2C_RemoveUnits: ProtoObject, IActorLocationMessage
+	public partial class M2C_RemoveUnits: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public List<long> Units { get; set; }
 
 	}
@@ -231,39 +219,33 @@ namespace ET
 
 	[Message(OuterMessage.M2C_PathfindingResult)]
 	[ProtoContract]
-	public partial class M2C_PathfindingResult: ProtoObject, IActorLocationMessage
+	public partial class M2C_PathfindingResult: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		public List<Unity.Mathematics.float3> Points { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_Stop)]
 	[ProtoContract]
-	public partial class M2C_Stop: ProtoObject, IActorLocationMessage
+	public partial class M2C_Stop: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
-		[ProtoMember(5)]
+		[ProtoMember(4)]
 		public Unity.Mathematics.quaternion Rotation { get; set; }
 
 	}

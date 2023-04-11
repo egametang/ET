@@ -71,16 +71,6 @@ namespace ET.Server
                     await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
                     break;
                 }
-                case MailboxType.GateSession:
-                {
-                    if (entity is Player player)
-                    {
-                        player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorRequest);
-                    }
-                    IActorResponse response = ActorHelper.CreateResponse(iActorRequest, 0);
-                    Reply(fromProcess, response);
-                    break;
-                }
                 default:
                     throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorRequest}");
             }
@@ -132,6 +122,10 @@ namespace ET.Server
                 }
                 case MailboxType.GateSession:
                 {
+                    if (entity is Player player)
+                    {
+                        player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorMessage);
+                    }
                     break;
                 }
                 default:
