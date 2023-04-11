@@ -210,6 +210,18 @@ message M2C_TestRobotCase // IActorLocationResponse
 	int32 N = 4;
 }
 
+message C2M_TestRobotCase2 // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
+message M2C_TestRobotCase2 // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
 //ResponseType M2C_TransferMap
 message C2M_TransferMap // IActorLocationRequest
 {
