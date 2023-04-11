@@ -89,7 +89,7 @@ namespace ET
         
         private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
-        public TypeSystems TypeSystems;
+        private TypeSystems typeSystems;
 
         private readonly Queue<long>[] queues = new Queue<long>[InstanceQueueIndex.Max];
 
@@ -124,7 +124,7 @@ namespace ET
                 }
             }
 
-            this.TypeSystems = new TypeSystems(InstanceQueueIndex.Max);
+            this.typeSystems = new TypeSystems(InstanceQueueIndex.Max);
 
             foreach (Type type in this.GetTypes(typeof (ObjectSystemAttribute)))
             {
@@ -132,7 +132,7 @@ namespace ET
 
                 if (obj is ISystemType iSystemType)
                 {
-                    TypeSystems.OneTypeSystems oneTypeSystems = this.TypeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+                    TypeSystems.OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                     oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
                     int index = iSystemType.GetInstanceQueueIndex();
                     if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
@@ -226,7 +226,7 @@ namespace ET
         {
             Type type = component.GetType();
 
-            TypeSystems.OneTypeSystems oneTypeSystems = this.TypeSystems.GetOneTypeSystems(type);
+            TypeSystems.OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
             if (oneTypeSystems == null)
             {
                 return;
@@ -243,7 +243,7 @@ namespace ET
 
         public void Deserialize(Entity component)
         {
-            List<object> iDeserializeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
+            List<object> iDeserializeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
             if (iDeserializeSystems == null)
             {
                 return;
@@ -270,7 +270,7 @@ namespace ET
         // GetComponentSystem
         public void GetComponent(Entity entity, Entity component)
         {
-            List<object> iGetSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
+            List<object> iGetSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
             if (iGetSystem == null)
             {
                 return;
@@ -297,7 +297,7 @@ namespace ET
         // AddComponentSystem
         public void AddComponent(Entity entity, Entity component)
         {
-            List<object> iAddSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
+            List<object> iAddSystem = this.typeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
             if (iAddSystem == null)
             {
                 return;
@@ -323,7 +323,7 @@ namespace ET
 
         public void Awake(Entity component)
         {
-            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
+            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
             if (iAwakeSystems == null)
             {
                 return;
@@ -349,7 +349,7 @@ namespace ET
 
         public void Awake<P1>(Entity component, P1 p1)
         {
-            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
+            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -375,7 +375,7 @@ namespace ET
 
         public void Awake<P1, P2>(Entity component, P1 p1, P2 p2)
         {
-            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
+            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -401,7 +401,7 @@ namespace ET
 
         public void Awake<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
         {
-            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
+            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -427,7 +427,7 @@ namespace ET
 
         public void Awake<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
         {
-            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3, P4>));
+            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3, P4>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -469,7 +469,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iLoadSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (ILoadSystem));
+                List<object> iLoadSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ILoadSystem));
                 if (iLoadSystems == null)
                 {
                     continue;
@@ -493,7 +493,7 @@ namespace ET
 
         public void Destroy(Entity component)
         {
-            List<object> iDestroySystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
+            List<object> iDestroySystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
             if (iDestroySystems == null)
             {
                 return;
@@ -535,7 +535,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iUpdateSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
+                List<object> iUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
                 if (iUpdateSystems == null)
                 {
                     continue;
@@ -575,7 +575,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iLateUpdateSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
+                List<object> iLateUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
                 if (iLateUpdateSystems == null)
                 {
                     continue;
