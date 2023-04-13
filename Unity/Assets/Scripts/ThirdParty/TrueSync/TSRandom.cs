@@ -1,4 +1,5 @@
 ﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TrueSync {
 
@@ -16,29 +17,14 @@ namespace TrueSync {
         private const uint UPPER_MASK = 0x80000000U;
         private const uint LOWER_MASK = 0x7fffffffU;
         private const int MAX_RAND_INT = 0x7fffffff;
+        [BsonElement]
         private uint[] mag01 = { 0x0U, MATRIX_A };
+        [BsonElement]
         private uint[] mt = new uint[N];
+        [BsonElement]
         private int mti = N + 1;
 
-        /**
-         *  @brief Static instance of {@link TSRandom} with seed 1.
-         **/
-        public static TSRandom instance;
-
-        internal static void Init() {
-            instance = New(1);
-        }
-
-        /**
-         *  @brief Generates a new instance based on a given seed.
-         **/
-        public static TSRandom New(int seed) {
-            TSRandom r = new TSRandom(seed);
-            return r;
-        }
-
         private TSRandom() {
-            init_genrand((uint)DateTime.Now.Millisecond);
         }
 
         private TSRandom(int seed) {
@@ -64,8 +50,8 @@ namespace TrueSync {
         /**
          *  @brief Returns a random integer.
          **/
-        public static int CallNext() {
-            return instance.Next();
+        public int CallNext() {
+            return this.Next();
         }
 
         /**
@@ -102,15 +88,15 @@ namespace TrueSync {
         /**
          *  @brief Returns a integer between a min value [inclusive] and a max value [exclusive].
          **/
-        public static int Range(int minValue, int maxValue) {
-            return instance.Next(minValue, maxValue);
+        public int Range(int minValue, int maxValue) {
+            return this.Next(minValue, maxValue);
         }
 
         /**
          *  @brief Returns a {@link FP} between a min value [inclusive] and a max value [inclusive].
          **/
-        public static FP Range(float minValue, float maxValue) {
-            return instance.Next(minValue, maxValue);
+        public FP Range(float minValue, float maxValue) {
+            return this.Next(minValue, maxValue);
         }
 
         /**
@@ -123,16 +109,16 @@ namespace TrueSync {
         /**
          *  @brief Returns a {@link FP} between 0.0 [inclusive] and 1.0 [inclusive].
          **/
-        public static FP value {
+        public FP value {
             get {
-                return instance.NextFP();
+                return this.NextFP();
             }
         }
 
         /**
          *  @brief Returns a random {@link TSVector} representing a point inside a sphere with radius 1.
          **/
-        public static TSVector insideUnitSphere {
+        public TSVector insideUnitSphere {
             get {
                 return new TSVector(value, value, value);
             }

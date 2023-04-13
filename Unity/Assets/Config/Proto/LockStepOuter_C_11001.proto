@@ -36,9 +36,8 @@ message LockStepUnitInfo
 }
 
 // 房间通知客户端进入战斗
-message Room2C_EnterMap // IActorLocationMessage
+message Room2C_EnterMap // IActorMessage
 {
-	int32 RpcId = 1;
 	repeated LockStepUnitInfo UnitInfo = 2;
 }
 

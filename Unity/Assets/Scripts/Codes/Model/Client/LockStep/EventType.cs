@@ -10,7 +10,7 @@
         {
         }
 
-        public struct LockStepAfterUnitCreate
+        public struct LSAfterUnitCreate
         {
             public UnitF UnitF;
         }

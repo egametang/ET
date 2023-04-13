@@ -3,12 +3,14 @@ namespace ET.Server
 
     public static class RoomMessageHelper
     {
-        public static void BroadCast(Scene room, IActorLocationMessage message)
+        public static void BroadCast(Scene roomScene, IActorMessage message)
         {
-            RoomComponent roomComponent = room.GetComponent<RoomComponent>();
-            foreach (var kv in roomComponent.Children)
+            RoomServerComponent roomServerComponent = roomScene.GetComponent<RoomServerComponent>();
+            
+            foreach (var kv in roomServerComponent.Children)
             {
                 RoomPlayer roomPlayer = kv.Value as RoomPlayer;
+                
                 ActorLocationSenderComponent.Instance.Get(LocationType.GateSession).Send(roomPlayer.Id, message);
             }
         }

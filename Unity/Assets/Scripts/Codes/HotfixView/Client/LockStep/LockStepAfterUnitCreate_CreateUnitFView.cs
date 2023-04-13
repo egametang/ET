@@ -3,12 +3,18 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [Event(SceneType.Current)]
-    public class LockStepAfterUnitCreate_CreateUnitFView: AEvent<LockStepAfterUnitCreate>
+    [Event(SceneType.LockStepClient)]
+    public class LockStepAfterUnitCreate_CreateUnitFView: AEvent<LSAfterUnitCreate>
     {
-        protected override async ETTask Run(Scene currentScene, LockStepAfterUnitCreate args)
+        protected override async ETTask Run(Scene lsScene, LSAfterUnitCreate args)
         {
+            Scene currentScene = lsScene.Parent.DomainScene();
             UnitFViewComponent unitFViewComponent = currentScene.GetComponent<UnitFViewComponent>();
+
+            if (unitFViewComponent == null)
+            {
+                return;
+            }
             
             GameObject bundleGameObject = (GameObject)ResourcesComponent.Instance.GetAsset("Unit.unity3d", "Unit");
             GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");

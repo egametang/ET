@@ -70,11 +70,8 @@ namespace ET
 // 房间通知客户端进入战斗
 	[Message(LockStepOuter.Room2C_EnterMap)]
 	[ProtoContract]
-	public partial class Room2C_EnterMap: ProtoObject, IActorLocationMessage
+	public partial class Room2C_EnterMap: ProtoObject, IActorMessage
 	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
 		[ProtoMember(2)]
 		public List<LockStepUnitInfo> UnitInfo { get; set; }
 

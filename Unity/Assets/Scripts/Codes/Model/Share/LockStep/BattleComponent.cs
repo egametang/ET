@@ -1,15 +1,11 @@
-using System.Collections.Generic;
-
-namespace ET.Server
+namespace ET
 {
     [ComponentOf(typeof(Scene))]
-    public class RoomComponent: Entity, IAwake<Match2Map_GetRoom>
+    public class BattleComponent: Entity, IAwake
     {
-        public int AlreadyJoinRoomCount;
-
         private long sceneInstanceId;
         
-        public LSScene LsScene
+        public LSScene LSScene
         {
             get
             {

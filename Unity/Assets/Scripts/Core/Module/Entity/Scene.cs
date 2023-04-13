@@ -1,10 +1,6 @@
-﻿using System.Diagnostics;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace ET
+﻿namespace ET
 {
     [EnableMethod]
-    [DebuggerDisplay("ViewName,nq")]
     [ChildOf]
     public class Scene: Entity
     {
@@ -23,7 +19,12 @@ namespace ET
             get;
         }
 
-        public Scene(long instanceId, int zone, SceneType sceneType, string name)
+        public Scene()
+        {
+            
+        }
+
+        public Scene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
             this.Id = instanceId;
             this.InstanceId = instanceId;
@@ -32,11 +33,13 @@ namespace ET
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
+            this.Parent = parent;
+            this.Domain = this;
             this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
-        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
             this.Id = id;
             this.InstanceId = instanceId;
@@ -45,6 +48,8 @@ namespace ET
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
+            this.Parent = parent;
+            this.Domain = this;
             this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
@@ -56,25 +61,27 @@ namespace ET
             Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
-        [BsonIgnore]
+        public new Entity Domain
+        {
+            get => this.domain;
+            private set => this.domain = value;
+        }
+
         public new Entity Parent
         {
             get
             {
                 return this.parent;
             }
-            set
+            protected set
             {
-                value?.AddChild(this);
-                this.Domain = this;
-            }
-        }
-        
-        protected override string ViewName
-        {
-            get
-            {
-                return $"{this.GetType().Name} ({this.SceneType})";    
+                if (value == null)
+                {
+                    return;
+                }
+
+                this.parent = value;
+                this.parent.Children.Add(this.Id, this);
             }
         }
     }

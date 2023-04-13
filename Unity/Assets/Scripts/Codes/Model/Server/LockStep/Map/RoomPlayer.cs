@@ -1,7 +1,7 @@
 namespace ET.Server
 {
 
-    [ChildOf(typeof (RoomComponent))]
+    [ChildOf(typeof (RoomServerComponent))]
     public class RoomPlayer: Entity, IAwake
     {
         public bool IsJoinRoom { get; set; }

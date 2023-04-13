@@ -10,8 +10,7 @@ namespace ET.Server
 		{
 			RoomManagerComponent roomManagerComponent = scene.GetComponent<RoomManagerComponent>();
 			Scene roomScene = await roomManagerComponent.CreateRoom(request);
-			roomScene.AddComponent<RoomComponent, Match2Map_GetRoom>(request);
-			response.InstanceId = scene.InstanceId;
+			response.InstanceId = roomScene.InstanceId;
 			await ETTask.CompletedTask;
 		}
 	}
