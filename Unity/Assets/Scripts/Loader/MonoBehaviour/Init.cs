@@ -32,7 +32,7 @@ namespace ET
 			Game.AddSingleton<EventSystem>();
 			Game.AddSingleton<TimerComponent>();
 			Game.AddSingleton<CoroutineLockComponent>();
-			
+
 			ETTask.ExceptionHandler += Log.Error;
 
 			Game.AddSingleton<CodeLoader>().Start();

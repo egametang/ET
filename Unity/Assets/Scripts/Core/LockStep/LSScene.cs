@@ -39,13 +39,15 @@ namespace ET
         {
         }
         
-        public LSScene(long id, int zone, SceneType sceneType, string name): base(id, IdGenerater.Instance.GenerateInstanceId(), zone, sceneType, name, null)
+        public LSScene(long id, int zone, SceneType sceneType, string name): base(id, IdGenerater.Instance.GenerateInstanceId(), zone, sceneType, name)
         {
             this.Updater.Parent = this;
             
             Log.Info($"LSScene create: {this.Id} {this.InstanceId}");
         }
-        
+
+        #region AddComponent And AddChild
+
         public new K AddComponent<K>(bool isFromPool = false) where K : LSEntity, IAwake, new()
         {
             return this.AddComponentWithId<K>(this.GetId(), isFromPool);
@@ -85,20 +87,9 @@ namespace ET
         {
             return this.AddChildWithId<T, A, B, C>(this.GetId(), a, b, c, isFromPool);
         }
-        
-        [BsonIgnore]
-        public new Entity Parent
-        {
-            get
-            {
-                return this.parent;
-            }
-            set
-            {
-                base.Parent = value;
-            }
-        }
 
+        #endregion
+        
         private readonly Dictionary<long, LSEntity> allLSEntities = new();
 
         [BsonElement]

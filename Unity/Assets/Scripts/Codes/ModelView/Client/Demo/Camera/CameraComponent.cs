@@ -2,30 +2,30 @@
 
 namespace ET.Client
 {
+	[ComponentOf(typeof(Scene))]
 	public class CameraComponent : Entity, IAwake, ILateUpdate
 	{
 		// 战斗摄像机
-		public Camera mainCamera;
+		private Camera camera;
 
-		private long unitInstanceId;
+		public Transform Transform;
 
-		public Unit Unit
+		public long MyId
+		{
+			get;
+			set;
+		}
+
+		public Camera Camera
 		{
 			get
 			{
-				return Root.Instance.Get(this.unitInstanceId) as Unit;
+				return this.camera;
 			}
 			set
 			{
-				this.unitInstanceId = value.InstanceId;
-			}
-		}
-
-		public Camera MainCamera
-		{
-			get
-			{
-				return this.mainCamera;
+				this.camera = value;
+				this.Transform = this.camera.transform;
 			}
 		}
 	}

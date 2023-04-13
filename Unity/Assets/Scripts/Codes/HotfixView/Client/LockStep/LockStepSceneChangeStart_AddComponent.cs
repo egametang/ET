@@ -23,6 +23,8 @@ namespace ET.Client
             currentScene.AddComponent<UnitFViewComponent>();
 
             currentScene.AddComponent<OperaComponent>();
+
+            currentScene.AddComponent<CameraComponent>();
         }
     }
 }

@@ -4,7 +4,7 @@ using TrueSync;
 namespace ET
 {
     [ChildOf(typeof(UnitFComponent))]
-    public class UnitF: Entity, IAwake, ISerializeToEntity
+    public class UnitF: LSEntity, IAwake, ISerializeToEntity
     {
         public TSVector Position
         {

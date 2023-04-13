@@ -13,7 +13,7 @@ namespace ET
             }
             set
             {
-                value.Parent = this;
+                this.AddChild(value);
                 this.sceneInstanceId = value.InstanceId;
             }
         }

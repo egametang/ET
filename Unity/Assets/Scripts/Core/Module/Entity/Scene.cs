@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     [EnableMethod]
     [ChildOf]
@@ -24,22 +26,7 @@
             
         }
 
-        public Scene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
-        {
-            this.Id = instanceId;
-            this.InstanceId = instanceId;
-            this.Zone = zone;
-            this.SceneType = sceneType;
-            this.Name = name;
-            this.IsCreated = true;
-            this.IsNew = true;
-            this.Parent = parent;
-            this.Domain = this;
-            this.IsRegister = true;
-            Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
-        }
-
-        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
+        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
         {
             this.Id = id;
             this.InstanceId = instanceId;
@@ -48,9 +35,9 @@
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
-            this.Parent = parent;
-            this.Domain = this;
+            this.IsScene = true;
             this.IsRegister = true;
+            this.domain = this;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
@@ -60,28 +47,12 @@
             
             Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
-
-        public new Entity Domain
-        {
-            get => this.domain;
-            private set => this.domain = value;
-        }
-
-        public new Entity Parent
+        
+        protected override string ViewName
         {
             get
             {
-                return this.parent;
-            }
-            protected set
-            {
-                if (value == null)
-                {
-                    return;
-                }
-
-                this.parent = value;
-                this.parent.Children.Add(this.Id, this);
+                return $"{this.GetType().Name} ({this.SceneType})";
             }
         }
     }

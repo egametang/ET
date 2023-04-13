@@ -13,6 +13,7 @@ namespace ET
         IsComponent = 1 << 2,
         IsCreated = 1 << 3,
         IsNew = 1 << 4,
+        IsScene = 1 << 5,
     }
 
     public partial class Entity: DisposeObject
@@ -44,6 +45,23 @@ namespace ET
                 else
                 {
                     this.status &= ~EntityStatus.IsFromPool;
+                }
+            }
+        }
+        
+        [BsonIgnore]
+        protected bool IsScene
+        {
+            get => (this.status & EntityStatus.IsScene) == EntityStatus.IsScene;
+            set
+            {
+                if (value)
+                {
+                    this.status |= EntityStatus.IsScene;
+                }
+                else
+                {
+                    this.status &= ~EntityStatus.IsScene;
                 }
             }
         }
@@ -103,7 +121,7 @@ namespace ET
         }
 
         [BsonIgnore]
-        private bool IsComponent
+        protected bool IsComponent
         {
             get => (this.status & EntityStatus.IsComponent) == EntityStatus.IsComponent;
             set
@@ -197,7 +215,8 @@ namespace ET
                 this.parent = value;
                 this.IsComponent = false;
                 this.parent.AddToChildren(this);
-                this.Domain = this.parent.domain;
+
+                this.Domain = this.IsScene? this : this.parent.domain;
 
 #if ENABLE_VIEW && UNITY_EDITOR
                 this.viewGO.GetComponent<ComponentView>().Component = this;
@@ -294,7 +313,11 @@ namespace ET
 
                 if (preDomain == null)
                 {
-                    this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                    if (this.InstanceId == 0)
+                    {
+                        this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                    }
+
                     this.IsRegister = true;
 
                     // 反序列化出来的需要设置父子关系
@@ -383,7 +406,7 @@ namespace ET
 
         [BsonElement("C")]
         [BsonIgnoreIfNull]
-        private List<Entity> componentsDB;
+        protected List<Entity> componentsDB;
 
         [BsonIgnore]
         private SortedDictionary<string, Entity> components;
