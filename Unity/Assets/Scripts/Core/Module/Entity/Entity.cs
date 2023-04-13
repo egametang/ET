@@ -258,7 +258,7 @@ namespace ET
                 this.parent = value;
                 this.IsComponent = true;
                 this.parent.AddToComponents(this);
-                this.Domain = this.parent.domain;
+                this.Domain = this is IScene? this as IScene : this.parent.domain;
             }
         }
 

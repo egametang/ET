@@ -19,11 +19,11 @@ namespace ET
 
 		protected abstract ETTask Run(S scene, A a);
 
-		public async ETTask Handle(IScene scene, A a)
+		public async ETTask Handle(S scene, A a)
 		{
 			try
 			{
-				await Run(scene as S, a);
+				await Run(scene, a);
 			}
 			catch (Exception e)
 			{
