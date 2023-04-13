@@ -13,7 +13,11 @@ namespace ET
         IsComponent = 1 << 2,
         IsCreated = 1 << 3,
         IsNew = 1 << 4,
-        IsScene = 1 << 5,
+    }
+
+    public interface IScene
+    {
+        SceneType SceneType { get; set; }
     }
 
     public partial class Entity: DisposeObject
@@ -45,23 +49,6 @@ namespace ET
                 else
                 {
                     this.status &= ~EntityStatus.IsFromPool;
-                }
-            }
-        }
-        
-        [BsonIgnore]
-        protected bool IsScene
-        {
-            get => (this.status & EntityStatus.IsScene) == EntityStatus.IsScene;
-            set
-            {
-                if (value)
-                {
-                    this.status |= EntityStatus.IsScene;
-                }
-                else
-                {
-                    this.status &= ~EntityStatus.IsScene;
                 }
             }
         }
@@ -216,7 +203,7 @@ namespace ET
                 this.IsComponent = false;
                 this.parent.AddToChildren(this);
 
-                this.Domain = this.IsScene? this : this.parent.domain;
+                this.Domain = this is IScene? this as IScene : this.parent.domain;
 
 #if ENABLE_VIEW && UNITY_EDITOR
                 this.viewGO.GetComponent<ComponentView>().Component = this;
@@ -284,13 +271,13 @@ namespace ET
         [BsonDefaultValue(0L)]
         [BsonElement]
         [BsonId]
-        public long Id { get; set; }
+        public long Id { get; protected set; }
 
         [BsonIgnore]
-        protected Entity domain;
+        protected IScene domain;
 
         [BsonIgnore]
-        public virtual Entity Domain
+        public virtual IScene Domain
         {
             get
             {
@@ -308,7 +295,7 @@ namespace ET
                     return;
                 }
 
-                Entity preDomain = this.domain;
+                IScene preDomain = this.domain;
                 this.domain = value;
 
                 if (preDomain == null)

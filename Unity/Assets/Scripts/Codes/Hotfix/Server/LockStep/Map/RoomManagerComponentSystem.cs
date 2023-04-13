@@ -14,7 +14,7 @@ namespace ET.Server
             
             scene.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
             BattleComponent battleComponent = scene.AddComponent<BattleComponent>();
-            battleComponent.LSScene = new LSScene(1, scene.DomainZone(), SceneType.LockStepClient, "LockStepServer");
+            battleComponent.LSScene = new LSScene(SceneType.LockStepClient);
             return scene;
         }
     }

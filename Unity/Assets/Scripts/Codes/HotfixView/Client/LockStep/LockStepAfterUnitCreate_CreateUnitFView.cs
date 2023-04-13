@@ -4,9 +4,9 @@ using UnityEngine;
 namespace ET.Client
 {
     [Event(SceneType.LockStepClient)]
-    public class LockStepAfterUnitCreate_CreateUnitFView: AEvent<LSAfterUnitCreate>
+    public class LockStepAfterUnitCreate_CreateUnitFView: AEvent<LSScene, LSAfterUnitCreate>
     {
-        protected override async ETTask Run(Scene lsScene, LSAfterUnitCreate args)
+        protected override async ETTask Run(LSScene lsScene, LSAfterUnitCreate args)
         {
             Scene currentScene = lsScene.Parent.DomainScene();
             UnitFViewComponent unitFViewComponent = currentScene.GetComponent<UnitFViewComponent>();

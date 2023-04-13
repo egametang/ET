@@ -597,7 +597,7 @@ namespace ET
             }
         }
 
-        public async ETTask PublishAsync<T>(Scene scene, T a) where T : struct
+        public async ETTask PublishAsync<S, T>(S scene, T a) where S: class, IScene where T : struct
         {
             List<EventInfo> iEvents;
             if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
@@ -614,7 +614,7 @@ namespace ET
                     continue;
                 }
                     
-                if (!(eventInfo.IEvent is AEvent<T> aEvent))
+                if (!(eventInfo.IEvent is AEvent<S, T> aEvent))
                 {
                     Log.Error($"event error: {eventInfo.IEvent.GetType().Name}");
                     continue;
@@ -633,7 +633,7 @@ namespace ET
             }
         }
 
-        public void Publish<T>(Scene scene, T a) where T : struct
+        public void Publish<S, T>(S scene, T a) where S: class, IScene where T : struct
         {
             List<EventInfo> iEvents;
             if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
@@ -650,7 +650,7 @@ namespace ET
                 }
 
                 
-                if (!(eventInfo.IEvent is AEvent<T> aEvent))
+                if (!(eventInfo.IEvent is AEvent<S, T> aEvent))
                 {
                     Log.Error($"event error: {eventInfo.IEvent.GetType().Name}");
                     continue;

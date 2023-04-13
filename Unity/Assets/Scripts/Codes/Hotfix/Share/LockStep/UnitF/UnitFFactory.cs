@@ -2,7 +2,7 @@
 {
     public static class UnitFFactory
     {
-        public static UnitF Init(Scene lsScene, LockStepUnitInfo unitInfo)
+        public static UnitF Init(LSScene lsScene, LockStepUnitInfo unitInfo)
         {
 	        UnitFComponent unitComponent = lsScene.AddComponent<UnitFComponent>();
 	        UnitF unit = unitComponent.AddChildWithId<UnitF>(unitInfo.PlayerId);

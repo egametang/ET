@@ -44,7 +44,7 @@ namespace ET
             return this.AddChildWithId<T, A, B, C>(this.GetId(), a, b, c, isFromPool);
         }
 
-        public override Entity Domain
+        public override IScene Domain
         {
             get
             {

@@ -4,7 +4,7 @@ namespace ET
 {
     [EnableMethod]
     [ChildOf]
-    public class Scene: Entity
+    public class Scene: Entity, IScene
     {
         public int Zone
         {
@@ -14,6 +14,7 @@ namespace ET
         public SceneType SceneType
         {
             get;
+            set;
         }
 
         public string Name
@@ -23,7 +24,6 @@ namespace ET
 
         public Scene()
         {
-            
         }
 
         public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
@@ -35,7 +35,6 @@ namespace ET
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
-            this.IsScene = true;
             this.IsRegister = true;
             this.domain = this;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
