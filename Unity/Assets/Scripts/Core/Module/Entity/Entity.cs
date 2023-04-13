@@ -15,6 +15,11 @@ namespace ET
         IsNew = 1 << 4,
     }
 
+    public interface IScene
+    {
+        SceneType SceneType { get; set; }
+    }
+
     public partial class Entity: DisposeObject
     {
 #if ENABLE_VIEW && UNITY_EDITOR
@@ -103,7 +108,7 @@ namespace ET
         }
 
         [BsonIgnore]
-        private bool IsComponent
+        protected bool IsComponent
         {
             get => (this.status & EntityStatus.IsComponent) == EntityStatus.IsComponent;
             set
@@ -161,10 +166,10 @@ namespace ET
 
         // 可以改变parent，但是不能设置为null
         [BsonIgnore]
-        public Entity Parent
+        public virtual Entity Parent
         {
             get => this.parent;
-            private set
+            protected set
             {
                 if (value == null)
                 {
@@ -197,7 +202,8 @@ namespace ET
                 this.parent = value;
                 this.IsComponent = false;
                 this.parent.AddToChildren(this);
-                this.Domain = this.parent.domain;
+
+                this.Domain = this is IScene? this as IScene : this.parent.domain;
 
 #if ENABLE_VIEW && UNITY_EDITOR
                 this.viewGO.GetComponent<ComponentView>().Component = this;
@@ -252,7 +258,7 @@ namespace ET
                 this.parent = value;
                 this.IsComponent = true;
                 this.parent.AddToComponents(this);
-                this.Domain = this.parent.domain;
+                this.Domain = this is IScene? this as IScene : this.parent.domain;
             }
         }
 
@@ -265,19 +271,19 @@ namespace ET
         [BsonDefaultValue(0L)]
         [BsonElement]
         [BsonId]
-        public long Id { get; set; }
+        public long Id { get; protected set; }
 
         [BsonIgnore]
-        protected Entity domain;
+        protected IScene domain;
 
         [BsonIgnore]
-        public Entity Domain
+        public virtual IScene Domain
         {
             get
             {
                 return this.domain;
             }
-            private set
+            protected set
             {
                 if (value == null)
                 {
@@ -289,12 +295,16 @@ namespace ET
                     return;
                 }
 
-                Entity preDomain = this.domain;
+                IScene preDomain = this.domain;
                 this.domain = value;
 
                 if (preDomain == null)
                 {
-                    this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                    if (this.InstanceId == 0)
+                    {
+                        this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                    }
+
                     this.IsRegister = true;
 
                     // 反序列化出来的需要设置父子关系
@@ -383,7 +393,7 @@ namespace ET
 
         [BsonElement("C")]
         [BsonIgnoreIfNull]
-        private List<Entity> componentsDB;
+        protected List<Entity> componentsDB;
 
         [BsonIgnore]
         private SortedDictionary<string, Entity> components;
@@ -857,18 +867,7 @@ namespace ET
             return component;
         }
 
-        public T AddChild<T, A, B, C, D>(A a, B b, C c, D d, bool isFromPool = false) where T : Entity, IAwake<A, B, C, D>
-        {
-            Type type = typeof (T);
-            T component = (T) Entity.Create(type, isFromPool);
-            component.Id = IdGenerater.Instance.GenerateId();
-            component.Parent = this;
-
-            EventSystem.Instance.Awake(component, a, b, c, d);
-            return component;
-        }
-
-        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity, IAwake, new()
+        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity, IAwake
         {
             Type type = typeof (T);
             T component = Entity.Create(type, isFromPool) as T;

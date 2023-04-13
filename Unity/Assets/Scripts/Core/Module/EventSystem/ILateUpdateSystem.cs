@@ -29,7 +29,7 @@ namespace ET
 			return typeof(ILateUpdateSystem);
 		}
 
-		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+		int ISystemType.GetInstanceQueueIndex()
 		{
 			return InstanceQueueIndex.LateUpdate;
 		}

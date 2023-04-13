@@ -8,7 +8,7 @@ namespace ET.Server
     [HttpHandler(SceneType.RouterManager, "/get_router")]
     public class HttpGetRouterHandler : IHttpHandler
     {
-        public async ETTask Handle(Entity domain, HttpListenerContext context)
+        public async ETTask Handle(Scene scene, HttpListenerContext context)
         {
             HttpGetRouterResponse response = new HttpGetRouterResponse();
             response.Realms = new List<string>();

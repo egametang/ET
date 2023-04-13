@@ -60,7 +60,7 @@ namespace ET
             return typeof(IAwakeSystem);
         }
 
-        InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+        int ISystemType.GetInstanceQueueIndex()
         {
             return InstanceQueueIndex.None;
         }
@@ -86,7 +86,7 @@ namespace ET
             return typeof(IAwakeSystem<A>);
         }
 
-        InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+        int ISystemType.GetInstanceQueueIndex()
         {
             return InstanceQueueIndex.None;
         }
@@ -112,7 +112,7 @@ namespace ET
             return typeof(IAwakeSystem<A, B>);
         }
 
-        InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+        int ISystemType.GetInstanceQueueIndex()
         {
             return InstanceQueueIndex.None;
         }
@@ -138,7 +138,7 @@ namespace ET
             return typeof(IAwakeSystem<A, B, C>);
         }
 
-        InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+        int ISystemType.GetInstanceQueueIndex()
         {
             return InstanceQueueIndex.None;
         }
@@ -164,7 +164,7 @@ namespace ET
             return typeof(IAwakeSystem<A, B, C, D>);
         }
 
-        InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+        int ISystemType.GetInstanceQueueIndex()
         {
             return InstanceQueueIndex.None;
         }

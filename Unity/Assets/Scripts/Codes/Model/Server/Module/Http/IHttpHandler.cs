@@ -4,6 +4,6 @@ namespace ET.Server
 {
     public interface IHttpHandler
     {
-        ETTask Handle(Entity domain, HttpListenerContext context);
+        ETTask Handle(Scene scene, HttpListenerContext context);
     }
 }
