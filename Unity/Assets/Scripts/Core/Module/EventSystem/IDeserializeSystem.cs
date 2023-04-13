@@ -28,7 +28,7 @@ namespace ET
 			return typeof(IDeserializeSystem);
 		}
 
-		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
+		int ISystemType.GetInstanceQueueIndex()
 		{
 			return InstanceQueueIndex.None;
 		}

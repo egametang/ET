@@ -117,7 +117,7 @@ namespace ET.Server
                 IHttpHandler handler;
                 if (self.dispatcher.TryGetValue(context.Request.Url.AbsolutePath, out handler))
                 {
-                    await handler.Handle(self.Domain, context);
+                    await handler.Handle(self.DomainScene(), context);
                 }
             }
             catch (Exception e)
