@@ -2,7 +2,7 @@
 
 namespace ET
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class)]
 	public class BaseAttribute: Attribute
 	{
 	}
