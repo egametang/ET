@@ -194,7 +194,9 @@ namespace ET
                         Log.Error($"not found timer action: {type}");
                         return;
                     }
-                    timer.Handle(timerAction.Object);
+                    object obj = timerAction.Object;
+                    self.Remove(timerAction.Id);
+                    timer.Handle(obj);
                     break;
                 }
                 case TimerClass.OnceWaitTimer:
