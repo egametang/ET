@@ -128,7 +128,7 @@ namespace ET.Server
                 {
                     if (entity is Player player)
                     {
-                        player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorMessage);
+                        player.GetComponent<PlayerSessionComponent>()?.Session?.Send(iActorMessage);
                     }
                     break;
                 }

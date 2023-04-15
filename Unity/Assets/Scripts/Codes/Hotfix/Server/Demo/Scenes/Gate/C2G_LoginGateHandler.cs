@@ -21,7 +21,7 @@ namespace ET.Server
 
 			PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
 			Player player = playerComponent.AddChild<Player, string>(account);
-			player.AddComponent<SessionInfoComponent>().Session = session;
+			player.AddComponent<PlayerSessionComponent>().Session = session;
 			player.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 			await player.AddLocation(LocationType.Player);
 			

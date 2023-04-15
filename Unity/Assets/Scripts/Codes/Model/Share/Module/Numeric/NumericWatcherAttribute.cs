@@ -1,5 +1,8 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
+	[AttributeUsage(AttributeTargets.Class)]
 	public class NumericWatcherAttribute : BaseAttribute
 	{
 		public SceneType SceneType { get; }

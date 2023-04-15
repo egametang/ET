@@ -609,7 +609,7 @@ namespace ET
             
             foreach (EventInfo eventInfo in iEvents)
             {
-                if (((ulong)scene.SceneType & (ulong)eventInfo.SceneType) == 0)
+                if (!scene.SceneType.HasSameFlag(eventInfo.SceneType))
                 {
                     continue;
                 }
@@ -644,7 +644,7 @@ namespace ET
             SceneType sceneType = scene.SceneType;
             foreach (EventInfo eventInfo in iEvents)
             {
-                if (((ulong)sceneType & (ulong)eventInfo.SceneType) == 0)
+                if (!sceneType.HasSameFlag(eventInfo.SceneType))
                 {
                     continue;
                 }

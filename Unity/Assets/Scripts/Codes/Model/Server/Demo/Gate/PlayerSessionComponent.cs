@@ -1,7 +1,7 @@
 ﻿namespace ET.Server
 {
 	[ComponentOf(typeof(Player))]
-	public class SessionInfoComponent : Entity, IAwake
+	public class PlayerSessionComponent : Entity, IAwake
 	{
 		private long sessionInstanceId;
 
