@@ -36,7 +36,7 @@ namespace ET.Server
             int fromProcess = instanceIdStruct.Process;
             instanceIdStruct.Process = Options.Instance.Process;
             long realActorId = instanceIdStruct.ToLong();
-            
+
             Entity entity = Root.Instance.Get(realActorId);
             if (entity == null)
             {
@@ -99,8 +99,6 @@ namespace ET.Server
                 Log.Error($"not found actor: {realActorId} {iActorMessage}");
                 return;
             }
-            
-            OpcodeHelper.LogMsg(entity.DomainScene(), iActorMessage);
             
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
