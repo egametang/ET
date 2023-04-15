@@ -104,7 +104,7 @@ namespace ET.Server
             SceneType sceneType = entity.DomainScene().SceneType;
             foreach (ActorMessageDispatcherInfo actorMessageDispatcherInfo in list)
             {
-                if (actorMessageDispatcherInfo.SceneType != sceneType)
+                if (!actorMessageDispatcherInfo.SceneType.HasSameFlag(sceneType))
                 {
                     continue;
                 }

@@ -59,7 +59,7 @@ namespace ET
             SceneType unitDomainSceneType = unit.DomainScene().SceneType;
             foreach (NumericWatcherInfo numericWatcher in list)
             {
-                if (numericWatcher.SceneType != unitDomainSceneType)
+                if (!numericWatcher.SceneType.HasSameFlag(unitDomainSceneType))
                 {
                     continue;
                 }
