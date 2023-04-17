@@ -9,7 +9,6 @@ namespace ET.Client
             await ETTask.CompletedTask;
             
             Scene clientScene = EntitySceneFactory.CreateScene(zone, SceneType.Client, name, ClientSceneManagerComponent.Instance);
-            clientScene.AddComponent<CurrentScenesComponent>();
             clientScene.AddComponent<ObjectWait>();
             clientScene.AddComponent<PlayerComponent>();
             

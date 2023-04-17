@@ -7,7 +7,7 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneChangeStart args)
         {
-            Scene currentScene = clientScene.CurrentScene();
+            BattleScene battleScene = clientScene.GetComponent<BattleScene>();
             
             // 创建loading界面
             
@@ -15,16 +15,12 @@ namespace ET.Client
             await UIHelper.Remove(clientScene, UIType.UILobby);
             
             // 加载场景资源
-            await ResourcesComponent.Instance.LoadBundleAsync($"{currentScene.Name}.unity3d");
+            await ResourcesComponent.Instance.LoadBundleAsync($"{battleScene.Name}.unity3d");
             // 切换到map场景
 
-            await SceneManager.LoadSceneAsync(currentScene.Name);
+            await SceneManager.LoadSceneAsync(battleScene.Name);
 
-            currentScene.AddComponent<UnitFViewComponent>();
-
-            currentScene.AddComponent<OperaComponent>();
-
-            currentScene.AddComponent<CameraComponent>();
+            battleScene.AddComponent<UnitFViewComponent>();
         }
     }
 }

@@ -75,7 +75,7 @@ namespace ET
             this.allLSEntities.Remove(id);
         }
 
-        public void RegisterSystem(LSEntity entity)
+        public void RegisterSystem(LSEntity entity) 
         {
             this.allLSEntities.Add(entity.Id, entity);
 

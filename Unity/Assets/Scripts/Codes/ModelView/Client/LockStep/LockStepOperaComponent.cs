@@ -1,7 +1,7 @@
 namespace ET
 {
-    [ComponentOf(typeof(Scene))]
-    public class LockStepOperaComponent: Entity, IUpdate
+    [ComponentOf(typeof(BattleScene))]
+    public class LockStepOperaComponent: Entity, IAwake, IUpdate
     {
     }
 }

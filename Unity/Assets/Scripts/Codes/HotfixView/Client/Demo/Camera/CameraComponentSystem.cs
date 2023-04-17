@@ -36,13 +36,13 @@ namespace ET.Client
 			{
 				Vector3 pos = unit.Position.ToVector();
 				Vector3 cameraPos = self.Transform.position;
-				self.Transform.position = new Vector3(pos.x, cameraPos.y, pos.z - 1);
+				self.Transform.position = new Vector3(pos.x, cameraPos.y, pos.z - 10);
 			}
 		}
 		
 		private static UnitF GetMyUnit(this CameraComponent self)
 		{
-			return self.DomainScene().GetComponent<BattleComponent>().LSScene.Get(self.MyId) as UnitF;
+			return self.GetParent<BattleScene>().GetMyUnitF();
 		}
 	}
 }

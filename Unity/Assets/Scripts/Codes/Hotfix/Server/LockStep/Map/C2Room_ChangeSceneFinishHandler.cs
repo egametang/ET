@@ -34,7 +34,7 @@ namespace ET.Server
                     });
                 }
                 
-                roomScene.GetComponent<BattleComponent>().InitUnit(room2CEnterMap.UnitInfo);
+                roomScene.GetComponent<BattleScene>().InitUnit(room2CEnterMap.UnitInfo);
 
                 RoomMessageHelper.BroadCast(roomScene, room2CEnterMap);
             }

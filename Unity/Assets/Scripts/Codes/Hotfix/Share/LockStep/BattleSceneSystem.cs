@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public static class BattleComponentSystem
+    public static class BattleSceneSystem
     {
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<BattleComponent>
+        public class AwakeSystem: AwakeSystem<BattleScene>
         {
-            protected override void Awake(BattleComponent self)
+            protected override void Awake(BattleScene self)
             {
             }
         }
 
-        public static void InitUnit(this BattleComponent self, List<LockStepUnitInfo> unitInfos)
+        public static void InitUnit(this BattleScene self, List<LockStepUnitInfo> unitInfos)
         {
             foreach (LockStepUnitInfo lockStepUnitInfo in unitInfos)
             {

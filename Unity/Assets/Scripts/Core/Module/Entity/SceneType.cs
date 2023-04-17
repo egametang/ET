@@ -23,6 +23,7 @@ namespace ET
 		Room = 1 << 15,
 		LockStepClient = 1 << 16,
 		LockStepServer = 1 << 17,
+		Battle = 1 << 18,
 
 		// 客户端Model层
 		Client = 1 << 30,

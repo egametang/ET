@@ -13,8 +13,8 @@ namespace ET.Server
                 self.DomainZone(), "Room", SceneType.Room);
             
             scene.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
-            BattleComponent battleComponent = scene.AddComponent<BattleComponent>();
-            battleComponent.LSScene = new LSScene(SceneType.LockStepClient);
+            BattleScene battleScene = scene.AddComponent<BattleScene>();
+            battleScene.LSScene = new LSScene(SceneType.LockStepClient);
             return scene;
         }
     }
