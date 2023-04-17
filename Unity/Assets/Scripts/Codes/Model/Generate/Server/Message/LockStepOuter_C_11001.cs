@@ -98,6 +98,18 @@ namespace ET
 
 	}
 
+	[Message(LockStepOuter.OneFrameMessages)]
+	[ProtoContract]
+	public partial class OneFrameMessages: ProtoObject, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int Frame { get; set; }
+
+		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+		[ProtoMember(2)]
+		public Dictionary<long, FrameMessage> Messages { get; set; }
+	}
+
 	public static class LockStepOuter
 	{
 		 public const ushort C2G_Match = 11002;
@@ -107,5 +119,6 @@ namespace ET
 		 public const ushort LockStepUnitInfo = 11006;
 		 public const ushort Room2C_EnterMap = 11007;
 		 public const ushort FrameMessage = 11008;
+		 public const ushort OneFrameMessages = 11009;
 	}
 }

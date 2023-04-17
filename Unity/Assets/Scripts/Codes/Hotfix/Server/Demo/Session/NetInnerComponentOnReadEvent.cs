@@ -26,11 +26,6 @@ namespace ET.Server
                 // 收到actor消息,放入actor队列
                 switch (message)
                 {
-                    case FrameMessage frameMessage:
-                    {
-                        FrameMessageHelper.HandleFrameMessage(fromProcess, realActorId, frameMessage);
-                        break;
-                    }
                     case IActorRequest iActorRequest:
                     {
                         await ActorHandleHelper.HandleIActorRequest(fromProcess, realActorId, iActorRequest);

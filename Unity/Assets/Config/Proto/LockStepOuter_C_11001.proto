@@ -50,3 +50,9 @@ message FrameMessage // IActorMessage
 	int32 Button = 4;
 }
 
+message OneFrameMessages // IActorMessage
+{
+	int32 Frame = 1;
+	map<int64, FrameMessage> Messages = 2;
+}
+

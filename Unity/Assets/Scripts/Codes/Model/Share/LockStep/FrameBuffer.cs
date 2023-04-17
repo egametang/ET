@@ -3,59 +3,49 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class OneFrameMessage
-    {
-        private readonly SortedList<long, FrameMessage> messages = new (ConstValue.MatchCount);
-
-        public SortedList<long, FrameMessage> Messages
-        {
-            get
-            {
-                return this.messages;
-            }
-        }
-    }
-    
     public class FrameBuffer
     {
         private const int TotalFrameCount = 256;
-        private int NowFrameCount;
-        private readonly List<OneFrameMessage> MessageBuffer = new(TotalFrameCount);
-        private readonly List<byte[]> DataBuffer = new(TotalFrameCount);
+        private int nowFrameCount;
+        private readonly List<OneFrameMessages> messageBuffer = new(TotalFrameCount);
+        private readonly List<byte[]> dataBuffer = new(TotalFrameCount);
         
-        public FrameBuffer()
+        private void CheckFrame(int frame)
         {
-            for (int i = 0; i < TotalFrameCount; i++)
+            if (frame > this.nowFrameCount)
             {
-                this.MessageBuffer.Add(new OneFrameMessage());
+                throw new Exception($"frame > max frame: {frame} {this.nowFrameCount}");
+            }
+            if (frame < this.nowFrameCount + 1 - TotalFrameCount || frame < 0)
+            {
+                throw new Exception($"frame < min frame: {frame} {this.nowFrameCount + 1 - TotalFrameCount}");
             }
         }
 
-        public void AddFrameMessage(FrameMessage message)
+        public void AddFrameMessage(OneFrameMessages message)
         {
-            this.MessageBuffer[message.Frame % TotalFrameCount].Messages.Add(message.PlayerId, message);
-            if (message.Frame > this.NowFrameCount)
+            this.messageBuffer[message.Frame % TotalFrameCount] = message;
+            if (message.Frame > this.nowFrameCount)
             {
-                this.NowFrameCount = message.Frame;
+                this.nowFrameCount = message.Frame;
             }
         }
         
-        public OneFrameMessage GetFrameMessage(int frame)
+        public OneFrameMessages GetFrameMessage(int frame)
         {
-            if (frame > this.NowFrameCount)
-            {
-                throw new Exception($"frame > max frame: {frame} {this.NowFrameCount}");
-            }
-            if (frame < this.NowFrameCount - TotalFrameCount || frame < 0)
-            {
-                throw new Exception($"frame < min frame: {frame} {this.NowFrameCount - 255}");
-            }
-            return this.MessageBuffer[frame % TotalFrameCount];
+            CheckFrame(frame);
+            return this.messageBuffer[frame % TotalFrameCount];
         }
 
         public void SaveDate(int frame, byte[] data)
         {
-            this.DataBuffer[frame % TotalFrameCount] = data;
+            this.dataBuffer[frame % TotalFrameCount] = data;
+        }
+
+        public byte[] GetDate(int frame)
+        {
+            CheckFrame(frame);
+            return this.dataBuffer[frame % TotalFrameCount];
         }
     }
 }

@@ -1,20 +1,12 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 namespace ET
 {
     [FriendOf(typeof(BattleScene))]
     public static class BattleSceneSystem
     {
-        [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<BattleScene>
-        {
-            protected override void Awake(BattleScene self)
-            {
-                
-            }
-        }
-        
         [ObjectSystem]
         public class UpdateSystem : UpdateSystem<BattleScene>
         {
@@ -23,8 +15,8 @@ namespace ET
                 long timeNow = TimeHelper.ServerFrameTime();
                 if (timeNow > self.StartTime + self.Frame * 50)
                 {
-                    OneFrameMessage oneFrameMessage = self.FrameBuffer.GetFrameMessage(self.Frame);
-                    self.Update(oneFrameMessage);
+                    OneFrameMessages oneFrameMessages = self.FrameBuffer.GetFrameMessage(self.Frame);
+                    self.Update(oneFrameMessages);
                     ++self.Frame;
                 }
             }
@@ -41,7 +33,7 @@ namespace ET
             }
         }
 
-        public static void Update(this BattleScene self, OneFrameMessage oneFrameMessage)
+        public static void Update(this BattleScene self, OneFrameMessages oneFrameMessages)
         {
             // 保存当前帧场景数据
             self.FrameBuffer.SaveDate(self.Frame, MongoHelper.Serialize(self.LSScene));
@@ -51,6 +43,15 @@ namespace ET
             
             
             self.LSScene.Updater.Update();
+        }
+
+        // 回滚
+        public static void Rollback(this BattleScene self, int frame)
+        {
+            byte[] dataBuffer = self.FrameBuffer.GetDate(frame);
+            self.LSScene.Dispose();
+            LSScene lsScene = MongoHelper.Deserialize<LSScene>(dataBuffer);
+            self.LSScene = lsScene;
         }
     }
 }
