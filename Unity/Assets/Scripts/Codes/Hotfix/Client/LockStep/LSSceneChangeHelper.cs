@@ -20,7 +20,7 @@ namespace ET.Client
             WaitType.Wait_Room2C_EnterMap waitRoom2CEnterMap = await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_EnterMap>();
 
             battleScene.LSScene = new LSScene(SceneType.LockStepClient);
-            battleScene.InitUnit(waitRoom2CEnterMap.Message.UnitInfo);
+            battleScene.Init(waitRoom2CEnterMap.Message);
 
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(clientScene, new EventType.LockStepSceneInitFinish());

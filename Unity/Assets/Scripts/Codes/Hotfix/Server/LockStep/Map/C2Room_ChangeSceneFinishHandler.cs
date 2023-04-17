@@ -23,7 +23,7 @@ namespace ET.Server
             {
                 await TimerComponent.Instance.WaitAsync(1000);
 
-                Room2C_EnterMap room2CEnterMap = new Room2C_EnterMap() {UnitInfo = new List<LockStepUnitInfo>()};
+                Room2C_EnterMap room2CEnterMap = new Room2C_EnterMap() {StartTime = TimeHelper.ServerFrameTime(), UnitInfo = new List<LockStepUnitInfo>()};
                 foreach (var kv in roomServerComponent.Children)
                 {
                     room2CEnterMap.UnitInfo.Add(new LockStepUnitInfo()
@@ -34,7 +34,7 @@ namespace ET.Server
                     });
                 }
                 
-                roomScene.GetComponent<BattleScene>().InitUnit(room2CEnterMap.UnitInfo);
+                roomScene.GetComponent<BattleScene>().Init(room2CEnterMap);
 
                 RoomMessageHelper.BroadCast(roomScene, room2CEnterMap);
             }

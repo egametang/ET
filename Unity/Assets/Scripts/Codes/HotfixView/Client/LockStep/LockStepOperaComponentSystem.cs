@@ -1,4 +1,4 @@
-using System;
+using TrueSync;
 using UnityEngine;
 
 namespace ET.Client
@@ -10,25 +10,25 @@ namespace ET.Client
         {
             protected override void Update(LockStepOperaComponent self)
             {
-                int degree = 0;
+                TSVector2 v = new();
                 if (Input.GetKeyDown(KeyCode.W))
                 {
-                    degree = 90;
+                    v.y += 1;
                 }
                 
                 if (Input.GetKeyDown(KeyCode.A))
                 {
-                    degree = 180;
+                    v.x -= 1;
                 }
                 
                 if (Input.GetKeyDown(KeyCode.S))
                 {
-                    degree = 270;
+                    v.y -= 1;
                 }
                 
                 if (Input.GetKeyDown(KeyCode.D))
                 {
-                    degree = 360;
+                    v.x += 1;
                 }
             }
         }

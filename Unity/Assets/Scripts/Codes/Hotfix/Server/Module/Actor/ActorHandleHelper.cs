@@ -30,14 +30,9 @@ namespace ET.Server
         /// 分发actor消息
         /// </summary>
         [EnableAccessEntiyChild]
-        public static async ETTask HandleIActorRequest(long actorId, IActorRequest iActorRequest)
+        public static async ETTask HandleIActorRequest(int fromProcess, long actorId, IActorRequest iActorRequest)
         {
-            InstanceIdStruct instanceIdStruct = new(actorId);
-            int fromProcess = instanceIdStruct.Process;
-            instanceIdStruct.Process = Options.Instance.Process;
-            long realActorId = instanceIdStruct.ToLong();
-
-            Entity entity = Root.Instance.Get(realActorId);
+            Entity entity = Root.Instance.Get(actorId);
             if (entity == null)
             {
                 IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
@@ -50,7 +45,7 @@ namespace ET.Server
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Warning($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorRequest}");
+                Log.Warning($"actor not found mailbox: {entity.GetType().Name} {actorId} {iActorRequest}");
                 IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 Reply(fromProcess, response);
                 return;
@@ -60,9 +55,9 @@ namespace ET.Server
             {
                 case MailboxType.MessageDispatcher:
                 {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
                     {
-                        if (entity.InstanceId != realActorId)
+                        if (entity.InstanceId != actorId)
                         {
                             IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                             Reply(fromProcess, response);
@@ -86,24 +81,19 @@ namespace ET.Server
         /// 分发actor消息
         /// </summary>
         [EnableAccessEntiyChild]
-        public static async ETTask HandleIActorMessage(long actorId, IActorMessage iActorMessage)
+        public static async ETTask HandleIActorMessage(int fromProcess, long actorId, IActorMessage iActorMessage)
         {
-            InstanceIdStruct instanceIdStruct = new(actorId);
-            int fromProcess = instanceIdStruct.Process;
-            instanceIdStruct.Process = Options.Instance.Process;
-            long realActorId = instanceIdStruct.ToLong();
-            
-            Entity entity = Root.Instance.Get(realActorId);
+            Entity entity = Root.Instance.Get(actorId);
             if (entity == null)
             {
-                Log.Error($"not found actor: {realActorId} {iActorMessage}");
+                Log.Error($"not found actor: {actorId} {iActorMessage}");
                 return;
             }
             
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Error($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorMessage}");
+                Log.Error($"actor not found mailbox: {entity.GetType().Name} {actorId} {iActorMessage}");
                 return;
             }
 
@@ -111,9 +101,9 @@ namespace ET.Server
             {
                 case MailboxType.MessageDispatcher:
                 {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
                     {
-                        if (entity.InstanceId != realActorId)
+                        if (entity.InstanceId != actorId)
                         {
                             break;
                         }

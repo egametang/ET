@@ -72,8 +72,29 @@ namespace ET
 	[ProtoContract]
 	public partial class Room2C_EnterMap: ProtoObject, IActorMessage
 	{
+		[ProtoMember(1)]
+		public long StartTime { get; set; }
+
 		[ProtoMember(2)]
 		public List<LockStepUnitInfo> UnitInfo { get; set; }
+
+	}
+
+	[Message(LockStepOuter.FrameMessage)]
+	[ProtoContract]
+	public partial class FrameMessage: ProtoObject, IActorMessage
+	{
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(2)]
+		public int Frame { get; set; }
+
+		[ProtoMember(3)]
+		public TrueSync.TSVector2 V { get; set; }
+
+		[ProtoMember(4)]
+		public int Button { get; set; }
 
 	}
 
@@ -85,5 +106,6 @@ namespace ET
 		 public const ushort C2Room_ChangeSceneFinish = 11005;
 		 public const ushort LockStepUnitInfo = 11006;
 		 public const ushort Room2C_EnterMap = 11007;
+		 public const ushort FrameMessage = 11008;
 	}
 }

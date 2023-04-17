@@ -38,6 +38,15 @@ message LockStepUnitInfo
 // 房间通知客户端进入战斗
 message Room2C_EnterMap // IActorMessage
 {
+	int64 StartTime = 1;
 	repeated LockStepUnitInfo UnitInfo = 2;
+}
+
+message FrameMessage // IActorMessage
+{
+	int64 PlayerId = 1;
+	int32 Frame = 2;
+	TrueSync.TSVector2 V = 3;
+	int32 Button = 4;
 }
 

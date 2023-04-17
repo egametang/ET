@@ -11,28 +11,34 @@ namespace ET.Server
             {
                 long actorId = args.ActorId;
                 object message = args.Message;
+
+                if (message is IActorResponse iActorResponse)
+                {
+                    ActorHandleHelper.HandleIActorResponse(iActorResponse);
+                    return;
+                }
+                
+                InstanceIdStruct instanceIdStruct = new(actorId);
+                int fromProcess = instanceIdStruct.Process;
+                instanceIdStruct.Process = Options.Instance.Process;
+                long realActorId = instanceIdStruct.ToLong();
                 
                 // 收到actor消息,放入actor队列
                 switch (message)
                 {
-                    case IFrameMessage iFrameMessage:
+                    case FrameMessage frameMessage:
                     {
-                        FrameMessageHelper.HandleIFrameMessage(iFrameMessage);
-                        break;
-                    }
-                    case IActorResponse iActorResponse:
-                    {
-                        ActorHandleHelper.HandleIActorResponse(iActorResponse);
+                        FrameMessageHelper.HandleFrameMessage(fromProcess, realActorId, frameMessage);
                         break;
                     }
                     case IActorRequest iActorRequest:
                     {
-                        await ActorHandleHelper.HandleIActorRequest(actorId, iActorRequest);
+                        await ActorHandleHelper.HandleIActorRequest(fromProcess, realActorId, iActorRequest);
                         break;
                     }
                     case IActorMessage iActorMessage:
                     {
-                        await ActorHandleHelper.HandleIActorMessage(actorId, iActorMessage);
+                        await ActorHandleHelper.HandleIActorMessage(fromProcess, realActorId, iActorMessage);
                         break;
                     }
                 }
