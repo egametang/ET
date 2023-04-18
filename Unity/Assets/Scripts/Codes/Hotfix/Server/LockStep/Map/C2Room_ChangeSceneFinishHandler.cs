@@ -14,12 +14,12 @@ namespace ET.Server
             roomPlayer.IsJoinRoom = true;
             roomServerComponent.AlreadyJoinRoomCount++;
 
-            if (roomServerComponent.AlreadyJoinRoomCount <= ConstValue.MatchCount)
+            if (roomServerComponent.AlreadyJoinRoomCount <= LSConstValue.MatchCount)
             {
                 // 通知给已加进来的客户端每个玩家的进度
             }
 
-            if (roomServerComponent.AlreadyJoinRoomCount == ConstValue.MatchCount)
+            if (roomServerComponent.AlreadyJoinRoomCount == LSConstValue.MatchCount)
             {
                 await TimerComponent.Instance.WaitAsync(1000);
 

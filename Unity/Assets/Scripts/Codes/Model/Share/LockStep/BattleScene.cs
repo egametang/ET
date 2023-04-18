@@ -8,18 +8,18 @@ namespace ET
         public SceneType SceneType { get; set; } = SceneType.Battle;
         public string Name { get; set; }
         
-        private long lsSceneInstanceId;
+        private long lsWorldInstanceId;
         
-        public LSScene LSScene
+        public LSWorld LSWorld
         {
             get
             {
-                return Root.Instance.Get(this.lsSceneInstanceId) as LSScene;
+                return Root.Instance.Get(this.lsWorldInstanceId) as LSWorld;
             }
             set
             {
                 this.AddChild(value);
-                this.lsSceneInstanceId = value.InstanceId;
+                this.lsWorldInstanceId = value.InstanceId;
             }
         }
 

@@ -31,16 +31,16 @@ namespace ET.Client
 		private static void LateUpdate(this CameraComponent self)
 		{
 			// 摄像机每帧更新位置
-			UnitF unit = self.GetMyUnit();
-			if (unit != null)
+			LSUnit lsUnit = self.GetMyUnit();
+			if (lsUnit != null)
 			{
-				Vector3 pos = unit.Position.ToVector();
+				Vector3 pos = lsUnit.Position.ToVector();
 				Vector3 cameraPos = self.Transform.position;
 				self.Transform.position = new Vector3(pos.x, cameraPos.y, pos.z - 10);
 			}
 		}
 		
-		private static UnitF GetMyUnit(this CameraComponent self)
+		private static LSUnit GetMyUnit(this CameraComponent self)
 		{
 			return self.GetParent<BattleScene>().GetMyUnitF();
 		}

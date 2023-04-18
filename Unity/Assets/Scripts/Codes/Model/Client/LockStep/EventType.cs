@@ -12,7 +12,7 @@
 
         public struct LSAfterUnitCreate
         {
-            public UnitF UnitF;
+            public LSUnit LsUnit;
         }
     }
 }

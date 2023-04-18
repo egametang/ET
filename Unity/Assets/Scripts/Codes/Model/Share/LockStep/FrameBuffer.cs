@@ -24,11 +24,12 @@ namespace ET
 
         public void AddFrameMessage(OneFrameMessages message)
         {
-            this.messageBuffer[message.Frame % TotalFrameCount] = message;
-            if (message.Frame > this.nowFrameCount)
+            if (message.Frame != this.nowFrameCount + 1)
             {
-                this.nowFrameCount = message.Frame;
+                return;
             }
+            this.nowFrameCount = message.Frame;
+            this.messageBuffer[message.Frame % TotalFrameCount] = message;
         }
         
         public OneFrameMessages GetFrameMessage(int frame)

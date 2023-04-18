@@ -25,7 +25,7 @@ namespace ET.Server
             
             self.waitMatchPlayers.Add(playerId);
 
-            if (self.waitMatchPlayers.Count < ConstValue.MatchCount)
+            if (self.waitMatchPlayers.Count < LSConstValue.MatchCount)
             {
                 return;
             }

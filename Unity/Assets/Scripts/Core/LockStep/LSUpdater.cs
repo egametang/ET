@@ -7,7 +7,7 @@ namespace ET
     public class LSUpdater
     {
         [BsonIgnore]
-        public LSScene Parent { get; set; }
+        public LSWorld Parent { get; set; }
         
         public int Frame { get; private set; }
         

@@ -3,8 +3,8 @@ using TrueSync;
 
 namespace ET
 {
-    [ChildOf(typeof(UnitFComponent))]
-    public class UnitF: LSEntity, IAwake, ISerializeToEntity
+    [ChildOf(typeof(LSUnitComponent))]
+    public class LSUnit: LSEntity, IAwake, ISerializeToEntity
     {
         public TSVector Position
         {

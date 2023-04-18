@@ -8,25 +8,25 @@ namespace ET
     public static class LSSceneSystem
     {
         [ObjectSystem]
-        public class LSSceneAwakeSystem: AwakeSystem<LSScene>
+        public class LSSceneAwakeSystem: AwakeSystem<LSWorld>
         {
-            protected override void Awake(LSScene self)
+            protected override void Awake(LSWorld self)
             {
                 self.Updater.Parent = self;
             }
         }
         
-        public class DeserializeSystem: DeserializeSystem<LSScene>
+        public class DeserializeSystem: DeserializeSystem<LSWorld>
         {
-            protected override void Deserialize(LSScene self)
+            protected override void Deserialize(LSWorld self)
             {
                 self.Updater.Parent = self;
             }
         }
 
-        public static LSScene DomainScene(this LSEntity entity)
+        public static LSWorld DomainScene(this LSEntity entity)
         {
-            return entity.Domain as LSScene;
+            return entity.Domain as LSWorld;
         }
 
         public static long GetId(this LSEntity entity)
@@ -42,13 +42,13 @@ namespace ET
 
     [EnableMethod]
     [ChildOf]
-    public class LSScene: LSEntity, IAwake, IScene, IDeserialize
+    public class LSWorld: LSEntity, IAwake, IScene, IDeserialize
     {
-        public LSScene()
+        public LSWorld()
         {
         }
         
-        public LSScene(SceneType sceneType)
+        public LSWorld(SceneType sceneType)
         {
             this.Id = this.GetId();
 

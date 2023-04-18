@@ -29,29 +29,29 @@ namespace ET
             
             foreach (LockStepUnitInfo lockStepUnitInfo in room2CEnterMap.UnitInfo)
             {
-                UnitFFactory.Init(self.LSScene, lockStepUnitInfo);
+                UnitFFactory.Init(self.LSWorld, lockStepUnitInfo);
             }
         }
 
         public static void Update(this BattleScene self, OneFrameMessages oneFrameMessages)
         {
             // 保存当前帧场景数据
-            self.FrameBuffer.SaveDate(self.Frame, MongoHelper.Serialize(self.LSScene));
+            self.FrameBuffer.SaveDate(self.Frame, MongoHelper.Serialize(self.LSWorld));
             
             
             // 处理Message
             
             
-            self.LSScene.Updater.Update();
+            self.LSWorld.Updater.Update();
         }
 
         // 回滚
         public static void Rollback(this BattleScene self, int frame)
         {
             byte[] dataBuffer = self.FrameBuffer.GetDate(frame);
-            self.LSScene.Dispose();
-            LSScene lsScene = MongoHelper.Deserialize<LSScene>(dataBuffer);
-            self.LSScene = lsScene;
+            self.LSWorld.Dispose();
+            LSWorld lsWorld = MongoHelper.Deserialize<LSWorld>(dataBuffer);
+            self.LSWorld = lsWorld;
         }
     }
 }
