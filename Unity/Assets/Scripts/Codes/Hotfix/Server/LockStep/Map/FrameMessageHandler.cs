@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ET.Server
 {
     [ActorMessageHandler(SceneType.Room)]
@@ -9,7 +11,7 @@ namespace ET.Server
             if (oneFrameMessages != null)
             {
                 BattleScene battleScene = roomScene.GetComponent<BattleScene>();
-                battleScene.FrameBuffer.AddFrameMessage(oneFrameMessages);
+                battleScene.FrameBuffer.AddRealFrame(oneFrameMessages);
             }
             
             RoomMessageHelper.BroadCast(roomScene, oneFrameMessages);

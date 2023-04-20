@@ -5,36 +5,47 @@ namespace ET
 {
     public class FrameBuffer
     {
-        private const int TotalFrameCount = 256;
-        private int nowFrameCount;
+        public int NowFrame { get; set; }
+        
+        public int RealFrame { get; set; }
+        
+        public int PredictionCount { get; set; }
+        
+        private const int TotalFrameCount = 128;
+        
         private readonly List<OneFrameMessages> messageBuffer = new(TotalFrameCount);
         private readonly List<byte[]> dataBuffer = new(TotalFrameCount);
         
-        private void CheckFrame(int frame)
+        private bool CheckFrame(int frame)
         {
-            if (frame > this.nowFrameCount)
+            if (frame > this.RealFrame)
             {
-                throw new Exception($"frame > max frame: {frame} {this.nowFrameCount}");
+                return false;
             }
-            if (frame < this.nowFrameCount + 1 - TotalFrameCount || frame < 0)
+            if (frame < this.RealFrame + 1 - TotalFrameCount || frame < 0)
             {
-                throw new Exception($"frame < min frame: {frame} {this.nowFrameCount + 1 - TotalFrameCount}");
+                return false;
             }
+
+            return true;
         }
 
-        public void AddFrameMessage(OneFrameMessages message)
+        public void AddRealFrame(OneFrameMessages message)
         {
-            if (message.Frame != this.nowFrameCount + 1)
+            if (message.Frame != this.RealFrame + 1)
             {
-                return;
+                throw new Exception($"add real frame error: {message.Frame} {this.RealFrame}");
             }
-            this.nowFrameCount = message.Frame;
+            this.RealFrame = message.Frame;
             this.messageBuffer[message.Frame % TotalFrameCount] = message;
         }
         
-        public OneFrameMessages GetFrameMessage(int frame)
+        public OneFrameMessages GetFrame(int frame)
         {
-            CheckFrame(frame);
+            if (!CheckFrame(frame))
+            {
+                return null;
+            }
             return this.messageBuffer[frame % TotalFrameCount];
         }
 
@@ -45,7 +56,10 @@ namespace ET
 
         public byte[] GetDate(int frame)
         {
-            CheckFrame(frame);
+            if (!CheckFrame(frame))
+            {
+                return null;
+            }
             return this.dataBuffer[frame % TotalFrameCount];
         }
     }

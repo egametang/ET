@@ -5,5 +5,6 @@ namespace ET.Server
     public class RoomPlayer: Entity, IAwake
     {
         public bool IsJoinRoom { get; set; }
+        public int Slot { get; set; }
     }
 }

@@ -23,20 +23,20 @@ namespace ET.Server
             {
                 await TimerComponent.Instance.WaitAsync(1000);
 
-                Room2C_EnterMap room2CEnterMap = new Room2C_EnterMap() {StartTime = TimeHelper.ServerFrameTime(), UnitInfo = new List<LockStepUnitInfo>()};
-                foreach (var kv in roomServerComponent.Children)
+                Room2C_BattleStart room2CBattleStart = new() {StartTime = TimeHelper.ServerFrameTime()};
+                foreach (RoomPlayer rp in roomServerComponent.Children.Values)
                 {
-                    room2CEnterMap.UnitInfo.Add(new LockStepUnitInfo()
+                    room2CBattleStart.UnitInfo[rp.Slot] = new LockStepUnitInfo()
                     {
-                        PlayerId = kv.Key, 
+                        PlayerId = rp.Id, 
                         Position = new TSVector(10, 0, 10), 
                         Rotation = TSQuaternion.identity
-                    });
+                    };
                 }
                 
-                roomScene.GetComponent<BattleScene>().Init(room2CEnterMap);
+                roomScene.GetComponent<BattleScene>().Init(room2CBattleStart);
 
-                RoomMessageHelper.BroadCast(roomScene, room2CEnterMap);
+                RoomMessageHelper.BroadCast(roomScene, room2CBattleStart);
             }
 
             await ETTask.CompletedTask;

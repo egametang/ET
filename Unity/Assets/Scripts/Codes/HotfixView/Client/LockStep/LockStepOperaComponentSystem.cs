@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    [FriendOf(typeof(BattleSceneClientUpdater))]
     public static class LockStepOperaComponentSystem
     {
-        [ObjectSystem]
+        [FriendOf(typeof(BattleSceneClientUpdater))]
         public class UpdateSystem: UpdateSystem<LockStepOperaComponent>
         {
             protected override void Update(LockStepOperaComponent self)
@@ -30,6 +31,9 @@ namespace ET.Client
                 {
                     v.x += 1;
                 }
+
+                BattleSceneClientUpdater battleSceneClientUpdater = self.GetParent<BattleScene>().GetComponent<BattleSceneClientUpdater>();
+                battleSceneClientUpdater.InputInfo.V = v;
             }
         }
     }

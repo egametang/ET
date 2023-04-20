@@ -19,18 +19,18 @@ namespace ET.Server
                 oneFrameMessages = new OneFrameMessages
                 {
                     Frame = message.Frame,
-                    Messages = new Dictionary<long, FrameMessage>()
                 };
                 self.FrameMessages.Add(oneFrameMessages.Frame, oneFrameMessages);
             }
-            oneFrameMessages.Messages.Add(message.PlayerId, message);
+
+            oneFrameMessages.InputInfos[message.PlayerId] = message.InputInfo;
 
             if (oneFrameMessages.Frame > self.NowFrame)
             {
                 return null;   
             }
 
-            if (oneFrameMessages.Messages.Count != LSConstValue.MatchCount)
+            if (oneFrameMessages.InputInfos.Count != LSConstValue.MatchCount)
             {
                 return null;
             }

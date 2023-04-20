@@ -1,42 +1,25 @@
-using System;
-using System.Collections.Generic;
-using NUnit.Framework.Constraints;
-
 namespace ET
 {
     [FriendOf(typeof(BattleScene))]
     public static class BattleSceneSystem
     {
-        [ObjectSystem]
-        public class UpdateSystem : UpdateSystem<BattleScene>
+        public static void Init(this BattleScene self, Room2C_BattleStart room2CBattleStart)
         {
-            protected override void Update(BattleScene self)
-            {
-                long timeNow = TimeHelper.ServerFrameTime();
-                if (timeNow > self.StartTime + self.Frame * 50)
-                {
-                    OneFrameMessages oneFrameMessages = self.FrameBuffer.GetFrameMessage(self.Frame);
-                    self.Update(oneFrameMessages);
-                    ++self.Frame;
-                }
-            }
-        }
-        
+            self.StartTime = room2CBattleStart.StartTime;
 
-        public static void Init(this BattleScene self, Room2C_EnterMap room2CEnterMap)
-        {
-            self.StartTime = room2CEnterMap.StartTime;
-            
-            foreach (LockStepUnitInfo lockStepUnitInfo in room2CEnterMap.UnitInfo)
+            for (int i = 0; i < room2CBattleStart.UnitInfo.Count; ++i)
             {
-                UnitFFactory.Init(self.LSWorld, lockStepUnitInfo);
+                LockStepUnitInfo unitInfo = room2CBattleStart.UnitInfo[i];
+                UnitFFactory.Init(self.LSWorld, unitInfo);
+                self.SlotIds.Add(i, unitInfo.PlayerId);
             }
         }
+
 
         public static void Update(this BattleScene self, OneFrameMessages oneFrameMessages)
         {
             // 保存当前帧场景数据
-            self.FrameBuffer.SaveDate(self.Frame, MongoHelper.Serialize(self.LSWorld));
+            self.FrameBuffer.SaveDate(self.FrameBuffer.NowFrame, MongoHelper.Serialize(self.LSWorld));
             
             
             // 处理Message

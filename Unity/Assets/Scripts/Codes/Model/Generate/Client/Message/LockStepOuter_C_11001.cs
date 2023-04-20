@@ -68,9 +68,9 @@ namespace ET
 	}
 
 // 房间通知客户端进入战斗
-	[Message(LockStepOuter.Room2C_EnterMap)]
+	[Message(LockStepOuter.Room2C_BattleStart)]
 	[ProtoContract]
-	public partial class Room2C_EnterMap: ProtoObject, IActorMessage
+	public partial class Room2C_BattleStart: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		public long StartTime { get; set; }
@@ -80,21 +80,30 @@ namespace ET
 
 	}
 
+	[Message(LockStepOuter.LSInputInfo)]
+	[ProtoContract]
+	public partial class LSInputInfo: ProtoObject
+	{
+		[ProtoMember(1)]
+		public TrueSync.TSVector2 V { get; set; }
+
+		[ProtoMember(2)]
+		public int Button { get; set; }
+
+	}
+
 	[Message(LockStepOuter.FrameMessage)]
 	[ProtoContract]
 	public partial class FrameMessage: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public long PlayerId { get; set; }
-
-		[ProtoMember(2)]
 		public int Frame { get; set; }
 
-		[ProtoMember(3)]
-		public TrueSync.TSVector2 V { get; set; }
+		[ProtoMember(2)]
+		public long PlayerId { get; set; }
 
-		[ProtoMember(4)]
-		public int Button { get; set; }
+		[ProtoMember(3)]
+		public LSInputInfo InputInfo { get; set; }
 
 	}
 
@@ -107,7 +116,7 @@ namespace ET
 
 		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
 		[ProtoMember(2)]
-		public Dictionary<long, FrameMessage> Messages { get; set; }
+		public Dictionary<long, LSInputInfo> InputInfos { get; set; }
 	}
 
 	public static class LockStepOuter
@@ -117,8 +126,9 @@ namespace ET
 		 public const ushort Match2G_NotifyMatchSuccess = 11004;
 		 public const ushort C2Room_ChangeSceneFinish = 11005;
 		 public const ushort LockStepUnitInfo = 11006;
-		 public const ushort Room2C_EnterMap = 11007;
-		 public const ushort FrameMessage = 11008;
-		 public const ushort OneFrameMessages = 11009;
+		 public const ushort Room2C_BattleStart = 11007;
+		 public const ushort LSInputInfo = 11008;
+		 public const ushort FrameMessage = 11009;
+		 public const ushort OneFrameMessages = 11010;
 	}
 }
