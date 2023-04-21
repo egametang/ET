@@ -10,7 +10,7 @@ namespace ET
             for (int i = 0; i < room2CBattleStart.UnitInfo.Count; ++i)
             {
                 LockStepUnitInfo unitInfo = room2CBattleStart.UnitInfo[i];
-                UnitFFactory.Init(self.LSWorld, unitInfo);
+                LSUnitFactory.Init(self.LSWorld, unitInfo);
             }
         }
 

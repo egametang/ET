@@ -25,7 +25,7 @@ namespace ET.Client
 
                     Vector3 pos = child.Transform.position;
                     Vector3 to = unit.Position.ToVector();
-                    float t = (to - pos).magnitude / 6f;
+                    float t = (to - pos).magnitude / 9f;
                     
                     child.Transform.position = Vector3.Lerp(pos, unit.Position.ToVector(), Time.deltaTime / t);
                 }

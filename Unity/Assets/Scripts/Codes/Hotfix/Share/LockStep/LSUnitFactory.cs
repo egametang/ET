@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public static class UnitFFactory
+    public static class LSUnitFactory
     {
         public static LSUnit Init(LSWorld lsWorld, LockStepUnitInfo unitInfo)
         {
