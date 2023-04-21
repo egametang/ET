@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ET
@@ -37,7 +38,7 @@ namespace ET
         public object Object; // 参数
     }
 
-    public class NetServices: Singleton<NetServices>
+    public class NetServices: Singleton<NetServices>, ISingletonUpdate
     {
         private readonly ConcurrentQueue<NetOperator> netThreadOperators = new ConcurrentQueue<NetOperator>();
         private readonly ConcurrentQueue<NetOperator> mainThreadOperators = new ConcurrentQueue<NetOperator>();
@@ -61,6 +62,21 @@ namespace ET
 
                 this.typeOpcode.Add(type, messageAttribute.Opcode);
             }
+            
+#if !SINGLE_THREAD
+            // 网络线程
+            this.thread = new Thread(this.NetThreadUpdate);
+            this.thread.Start();
+#endif
+        }
+
+        public void Destroy()
+        {
+            
+#if !SINGLE_THREAD
+            this.isStop = true;            
+            this.thread.Join(1000);
+#endif
         }
 
 #region 线程安全
@@ -151,7 +167,7 @@ namespace ET
             this.errorCallback.Add(serviceId, action);
         }
         
-        public void UpdateInMainThread()
+        private void UpdateInMainThread()
         {
             while (true)
             {
@@ -210,6 +226,7 @@ namespace ET
         private readonly Dictionary<int, AService> services = new Dictionary<int, AService>();
         private readonly Queue<int> queue = new Queue<int>();
         
+        
         private void Add(AService aService)
         {
             this.services[aService.Id] = aService;
@@ -230,6 +247,22 @@ namespace ET
                 service.Dispose();
             }
         }
+
+#if !SINGLE_THREAD
+        
+        private bool isStop;
+        private readonly Thread thread;
+        
+        // 网络线程Update
+        private void NetThreadUpdate()
+        {
+            while (!this.isStop)
+            {
+                this.UpdateInNetThread();
+                Thread.Sleep(1);
+            }
+        }
+#endif
 
         private void RunNetThreadOperator()
         {
@@ -321,7 +354,7 @@ namespace ET
             }
         }
         
-        public void UpdateInNetThread()
+        private void UpdateInNetThread()
         {
             int count = this.queue.Count;
             while (count-- > 0)
@@ -379,5 +412,12 @@ namespace ET
 
 #endregion
 
+        public void Update()
+        {
+#if SINGLE_THREAD
+            UpdateInNetThread();
+#endif
+            UpdateInMainThread();
+        }
     }
 }

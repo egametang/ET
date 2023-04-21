@@ -839,11 +839,11 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: NETSTANDARD2_0;UNITY
-    Server: NETSTANDARD2_0;UNITY
-    Standalone: NETSTANDARD2_0;UNITY;ENABLE_CODES;ENABLE_VIEW
-    WebGL: NETSTANDARD2_0;UNITY
-    iPhone: NETSTANDARD2_0;UNITY
+    Android: UNITY;SINGLE_THREAD
+    Server: UNITY
+    Standalone: UNITY;SINGLE_THREAD
+    WebGL: UNITY
+    iPhone: UNITY;SINGLE_THREAD
   additionalCompilerArguments: {}
   platformArchitecture:
     iPhone: 1
@@ -859,7 +859,7 @@ PlayerSettings:
   allowUnsafeCode: 1
   useDeterministicCompilation: 1
   enableRoslynAnalyzers: 1
-  selectedPlatform: 0
+  selectedPlatform: 3
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 0
