@@ -9,8 +9,6 @@ namespace ET
         [BsonIgnore]
         public LSWorld Parent { get; set; }
         
-        public int Frame { get; private set; }
-        
         private SortedSet<long> updateIds = new();
 
         private Queue<long> addUpdateIds = new();
@@ -19,9 +17,6 @@ namespace ET
 
         public void Update()
         {
-            ++this.Frame;
-
-            // 让id保持从小到大update，后加进来的在一帧后面Update
             while (this.addUpdateIds.Count > 0)
             {
                 this.updateIds.Add(this.addUpdateIds.Dequeue());

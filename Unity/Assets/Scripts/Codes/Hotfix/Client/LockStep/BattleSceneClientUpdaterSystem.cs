@@ -30,7 +30,7 @@ namespace ET.Client
             if (frameBuffer.NowFrame < frameBuffer.RealFrame + frameBuffer.PredictionCount)
             {
                 int j = 0;
-                for (int i = frameBuffer.NowFrame; i < frameBuffer.RealFrame + frameBuffer.PredictionCount; ++i)
+                for (int i = frameBuffer.NowFrame; i <= frameBuffer.RealFrame + frameBuffer.PredictionCount; ++i)
                 {
                     if (++j % 5 == 0)
                     {

@@ -11,21 +11,27 @@ namespace ET
             {
                 LockStepUnitInfo unitInfo = room2CBattleStart.UnitInfo[i];
                 UnitFFactory.Init(self.LSWorld, unitInfo);
-                self.SlotIds.Add(i, unitInfo.PlayerId);
             }
         }
 
 
         public static void Update(this BattleScene self, OneFrameMessages oneFrameMessages)
         {
+            // 设置输入到每个LSUnit身上
+            LSWorld lsWorld = self.LSWorld;
+            LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
+            foreach (var kv in oneFrameMessages.InputInfos)
+            {
+                LSUnit lsUnit = unitComponent.GetChild<LSUnit>(kv.Key);
+                LSInputInfo lsInputInfo = lsUnit.GetComponent<LSUnitInputComponent>().LSInputInfo;
+                lsInputInfo.V = kv.Value.V;
+                lsInputInfo.Button = kv.Value.Button;
+            }
+            
+            lsWorld.Updater.Update();
+            
             // 保存当前帧场景数据
             self.FrameBuffer.SaveDate(self.FrameBuffer.NowFrame, MongoHelper.Serialize(self.LSWorld));
-            
-            
-            // 处理Message
-            
-            
-            self.LSWorld.Updater.Update();
         }
 
         // 回滚
