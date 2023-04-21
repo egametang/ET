@@ -841,9 +841,9 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: UNITY;SINGLE_THREAD
     Server: UNITY
-    Standalone: UNITY;SINGLE_THREAD
+    Standalone: UNITY;SINGLE_THREAD;ENABLE_CODES
     WebGL: UNITY
-    iPhone: UNITY;SINGLE_THREAD
+    iPhone: UNITY;SINGLE_THREAD;ENABLE_CODES
   additionalCompilerArguments: {}
   platformArchitecture:
     iPhone: 1

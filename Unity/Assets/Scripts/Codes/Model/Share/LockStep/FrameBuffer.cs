@@ -6,15 +6,24 @@ namespace ET
     public class FrameBuffer
     {
         public int NowFrame { get; set; }
-        
-        public int RealFrame { get; set; }
+
+        public int RealFrame { get; set; } = -1;
         
         public int PredictionCount { get; set; }
         
         private const int TotalFrameCount = 128;
         
-        private readonly List<OneFrameMessages> messageBuffer = new(TotalFrameCount);
+        private readonly List<OneFrameMessages> messageBuffer = new List<OneFrameMessages>(TotalFrameCount);
         private readonly List<byte[]> dataBuffer = new(TotalFrameCount);
+
+        public FrameBuffer()
+        {
+            for (int i = 0; i < this.dataBuffer.Capacity; ++i)
+            {
+                this.messageBuffer.Add(null);
+                this.dataBuffer.Add(null);
+            }
+        }
         
         private bool CheckFrame(int frame)
         {

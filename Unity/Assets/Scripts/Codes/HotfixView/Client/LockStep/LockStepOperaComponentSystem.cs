@@ -12,22 +12,22 @@ namespace ET.Client
             protected override void Update(LockStepOperaComponent self)
             {
                 TSVector2 v = new();
-                if (Input.GetKeyDown(KeyCode.W))
+                if (Input.GetKey(KeyCode.W))
                 {
                     v.y += 1;
                 }
                 
-                if (Input.GetKeyDown(KeyCode.A))
+                if (Input.GetKey(KeyCode.A))
                 {
                     v.x -= 1;
                 }
                 
-                if (Input.GetKeyDown(KeyCode.S))
+                if (Input.GetKey(KeyCode.S))
                 {
                     v.y -= 1;
                 }
                 
-                if (Input.GetKeyDown(KeyCode.D))
+                if (Input.GetKey(KeyCode.D))
                 {
                     v.x += 1;
                 }

@@ -26,12 +26,12 @@ namespace ET.Server
                 Room2C_BattleStart room2CBattleStart = new() {StartTime = TimeHelper.ServerFrameTime()};
                 foreach (RoomPlayer rp in roomServerComponent.Children.Values)
                 {
-                    room2CBattleStart.UnitInfo[rp.Slot] = new LockStepUnitInfo()
+                    room2CBattleStart.UnitInfo.Add(new LockStepUnitInfo()
                     {
                         PlayerId = rp.Id, 
                         Position = new TSVector(10, 0, 10), 
                         Rotation = TSQuaternion.identity
-                    };
+                    });
                 }
                 
                 roomScene.GetComponent<BattleScene>().Init(room2CBattleStart);

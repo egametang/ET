@@ -16,6 +16,11 @@ namespace ET
                 {
                     TypeSystems.OneTypeSystems oneTypeSystems = this.TypeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                     oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
+                    int index = iSystemType.GetInstanceQueueIndex();
+                    if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
+                    {
+                        oneTypeSystems.QueueFlag[index] = true;
+                    }
                 }
             }
         }

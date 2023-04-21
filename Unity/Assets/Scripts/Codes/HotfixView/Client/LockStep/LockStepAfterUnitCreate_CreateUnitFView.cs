@@ -9,9 +9,9 @@ namespace ET.Client
         protected override async ETTask Run(LSWorld lsWorld, LSAfterUnitCreate args)
         {
             BattleScene battleScene = lsWorld.GetParent<BattleScene>();
-            UnitFViewComponent unitFViewComponent = battleScene.GetComponent<UnitFViewComponent>();
+            LSUnitViewComponent lsUnitViewComponent = battleScene.GetComponent<LSUnitViewComponent>();
 
-            if (unitFViewComponent == null)
+            if (lsUnitViewComponent == null)
             {
                 return;
             }
@@ -22,7 +22,7 @@ namespace ET.Client
             GameObject go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);
             go.transform.position = args.LsUnit.Position.ToVector();
 
-            unitFViewComponent.AddChild<UnitFView, GameObject>(go);
+            lsUnitViewComponent.AddChildWithId<LSUnitView, GameObject>(args.LsUnit.Id, go);
 
             await ETTask.CompletedTask;
         }

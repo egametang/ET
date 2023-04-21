@@ -6,9 +6,11 @@
         {
 	        LSUnitComponent lsUnitComponent = lsWorld.AddComponent<LSUnitComponent>();
 	        LSUnit lsUnit = lsUnitComponent.AddChildWithId<LSUnit>(unitInfo.PlayerId);
-	        
+			
 	        lsUnit.Position = unitInfo.Position;
 	        lsUnit.Rotation = unitInfo.Rotation;
+
+			lsUnit.AddComponent<LSUnitInputComponent>();
 	        
 	        EventSystem.Instance.Publish(lsUnit.DomainScene(), new EventType.LSAfterUnitCreate() {LsUnit = lsUnit});
             return lsUnit;

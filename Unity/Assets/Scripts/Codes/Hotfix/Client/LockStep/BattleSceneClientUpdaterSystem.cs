@@ -1,4 +1,5 @@
 using System;
+using MongoDB.Bson;
 
 namespace ET.Client
 {
@@ -25,39 +26,22 @@ namespace ET.Client
             {
                 return;
             }
-
-            // 执行到PredictionFrame, 每次update最多执行5帧
-            if (frameBuffer.NowFrame < frameBuffer.RealFrame + frameBuffer.PredictionCount)
-            {
-                int j = 0;
-                for (int i = frameBuffer.NowFrame; i <= frameBuffer.RealFrame + frameBuffer.PredictionCount; ++i)
-                {
-                    if (++j % 5 == 0)
-                    {
-                        break;
-                    }
-
-                    ++frameBuffer.NowFrame;
-                    OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, i);
-                    battleScene.Update(oneFrameMessages);
-                }
-            }
+            
+            OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
+            battleScene.Update(oneFrameMessages);
+            ++frameBuffer.NowFrame;
         }
 
         private static OneFrameMessages GetOneFrameMessages(this BattleSceneClientUpdater self, int frame)
         {
             BattleScene battleScene = self.GetParent<BattleScene>();
             FrameBuffer frameBuffer = battleScene.FrameBuffer;
-            if (frame != frameBuffer.NowFrame + 1)
-            {
-                throw new Exception($"get frame error: {frame} {frameBuffer.NowFrame} {frameBuffer.RealFrame}");
-            }
-
+            
             if (frame <= frameBuffer.RealFrame)
             {
                 return frameBuffer.GetFrame(frame);
             }
-
+            
             // predict
             return GetPredictionOneFrameMessage(self, frame);
         }
@@ -67,18 +51,22 @@ namespace ET.Client
         {
             BattleScene battleScene = self.GetParent<BattleScene>();
             OneFrameMessages preFrame = battleScene.FrameBuffer.GetFrame(frame - 1);
-            if (preFrame == null)
-            {
-                return null;
-            }
-
-            OneFrameMessages predictionFrame = MongoHelper.Clone(preFrame);
-
+            OneFrameMessages predictionFrame  = preFrame != null? MongoHelper.Clone(preFrame) : new OneFrameMessages();
             predictionFrame.Frame = frame;
 
             PlayerComponent playerComponent = battleScene.GetParent<Scene>().GetComponent<PlayerComponent>();
             long myId = playerComponent.MyId;
-            predictionFrame.InputInfos[myId] = self.InputInfo;
+
+            FrameMessage frameMessage = new() { InputInfo = new LSInputInfo(), Frame = frame };
+            frameMessage.InputInfo.V = self.InputInfo.V;
+            frameMessage.InputInfo.Button = self.InputInfo.Button;
+
+            predictionFrame.InputInfos[myId] = frameMessage.InputInfo;
+            
+            
+            self.Parent.GetParent<Scene>().GetComponent<SessionComponent>().Session.Send(frameMessage);
+            
+            
             return predictionFrame;
         }
     }

@@ -20,7 +20,7 @@ namespace ET.Client
 
             await SceneManager.LoadSceneAsync(battleScene.Name);
 
-            battleScene.AddComponent<UnitFViewComponent>();
+            battleScene.AddComponent<LSUnitViewComponent>();
         }
     }
 }

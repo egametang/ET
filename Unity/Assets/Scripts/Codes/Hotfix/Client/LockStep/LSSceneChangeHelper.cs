@@ -21,6 +21,8 @@ namespace ET.Client
 
             battleScene.LSWorld = new LSWorld(SceneType.LockStepClient);
             battleScene.Init(waitRoom2CEnterMap.Message);
+            
+            battleScene.AddComponent<BattleSceneClientUpdater>();
 
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(clientScene, new EventType.LockStepSceneInitFinish());

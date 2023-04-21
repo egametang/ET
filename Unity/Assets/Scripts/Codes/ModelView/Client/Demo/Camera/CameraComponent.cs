@@ -22,5 +22,23 @@ namespace ET.Client
 				this.Transform = this.camera.transform;
 			}
 		}
+
+		private long unitViewInstanceId;
+
+		public LSUnitView MyUnitView
+		{
+			get
+			{
+				return Root.Instance.Get(this.unitViewInstanceId) as LSUnitView;
+			}
+			set
+			{
+				if (value == null)
+				{
+					return;
+				}
+				this.unitViewInstanceId = value.InstanceId;
+			}
+		}
 	}
 }
