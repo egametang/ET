@@ -20,7 +20,7 @@ namespace ET
 		BenchmarkServer = 1 << 12,
 		Benchmark = 1 << 13,
 		Match = 1 << 14,
-		Battle = 1 << 15,
+		Room = 1 << 15,
 		LockStepClient = 1 << 16,
 		LockStepServer = 1 << 17,
 

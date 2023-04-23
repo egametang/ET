@@ -8,8 +8,8 @@ namespace ET.Client
     {
         protected override async ETTask Run(LSWorld lsWorld, LSAfterUnitCreate args)
         {
-            BattleScene battleScene = lsWorld.GetParent<BattleScene>();
-            LSUnitViewComponent lsUnitViewComponent = battleScene.GetComponent<LSUnitViewComponent>();
+            Room room = lsWorld.GetParent<Room>();
+            LSUnitViewComponent lsUnitViewComponent = room.GetComponent<LSUnitViewComponent>();
 
             if (lsUnitViewComponent == null)
             {

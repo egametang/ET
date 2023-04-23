@@ -1,11 +1,11 @@
 namespace ET.Client
 {
     [MessageHandler(SceneType.Client)]
-    public class Room2C_EnterMapHandler: AMHandler<Battle2C_BattleStart>
+    public class Room2C_EnterMapHandler: AMHandler<Room2C_Start>
     {
-        protected override async ETTask Run(Session session, Battle2C_BattleStart message)
+        protected override async ETTask Run(Session session, Room2C_Start message)
         {
-            session.DomainScene().GetComponent<ObjectWait>().Notify(new WaitType.Wait_Room2C_EnterMap() {Message = message});
+            session.DomainScene().GetComponent<ObjectWait>().Notify(new WaitType.Wait_Room2C_Start() {Message = message});
             await ETTask.CompletedTask;
         }
     }

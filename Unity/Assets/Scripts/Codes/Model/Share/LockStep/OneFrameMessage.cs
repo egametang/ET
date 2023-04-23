@@ -83,9 +83,9 @@ namespace ET
         }
     }
     
-    public partial class Battle2C_BattleStart
+    public partial class Room2C_Start
     {
-        public Battle2C_BattleStart()
+        public Room2C_Start()
         {
             this.UnitInfo = new List<LockStepUnitInfo>(LSConstValue.MatchCount);
         }

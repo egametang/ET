@@ -18,7 +18,7 @@ namespace ET.Client
         {
             protected override void Update(LSUnitViewComponent self)
             {
-                LSWorld lsWorld = self.GetParent<BattleScene>().LSWorld;
+                LSWorld lsWorld = self.GetParent<Room>().LSWorld;
                 foreach (LSUnitView child in self.Children.Values)
                 {
                     LSUnit unit = lsWorld.Get(child.Id) as LSUnit;

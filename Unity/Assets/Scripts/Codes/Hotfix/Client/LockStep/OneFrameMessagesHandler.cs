@@ -7,8 +7,8 @@ namespace ET.Client
     {
         protected override async ETTask Run(Session session, OneFrameMessages message)
         {
-            BattleScene battleScene = session.DomainScene().GetComponent<BattleScene>();
-            FrameBuffer frameBuffer = battleScene.FrameBuffer;
+            Room room = session.DomainScene().GetComponent<Room>();
+            FrameBuffer frameBuffer = room.FrameBuffer;
             if (message.Frame != frameBuffer.RealFrame + 1)
             {
                 throw new Exception($"recv oneframeMessage frame error: {message.Frame} {frameBuffer.RealFrame}");
@@ -20,7 +20,7 @@ namespace ET.Client
             if (message != predictionMessage)
             {
                 // 回滚到frameBuffer.RealFrame
-                battleScene.Rollback(frameBuffer.RealFrame);
+                room.Rollback(frameBuffer.RealFrame);
                 frameBuffer.AddRealFrame(message);
             }
             else

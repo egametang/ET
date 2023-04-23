@@ -6,7 +6,7 @@ namespace ET.Client
     [FriendOf(typeof (BattleSceneClientUpdater))]
     public static class BattleSceneClientUpdaterSystem
     {
-        [FriendOf(typeof (BattleScene))]
+        [FriendOf(typeof (Room))]
         public class UpdateSystem: UpdateSystem<BattleSceneClientUpdater>
         {
             protected override void Update(BattleSceneClientUpdater self)
@@ -17,12 +17,12 @@ namespace ET.Client
 
         private static void Update(this BattleSceneClientUpdater self)
         {
-            BattleScene battleScene = self.GetParent<BattleScene>();
+            Room room = self.GetParent<Room>();
 
-            FrameBuffer frameBuffer = battleScene.FrameBuffer;
+            FrameBuffer frameBuffer = room.FrameBuffer;
 
             long timeNow = TimeHelper.ServerFrameTime();
-            if (timeNow < battleScene.StartTime + frameBuffer.NowFrame * LSConstValue.UpdateInterval)
+            if (timeNow < room.StartTime + frameBuffer.NowFrame * LSConstValue.UpdateInterval)
             {
                 return;
             }
@@ -33,14 +33,14 @@ namespace ET.Client
             }
             
             OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
-            battleScene.Update(oneFrameMessages);
+            room.Update(oneFrameMessages);
             ++frameBuffer.NowFrame;
         }
 
         private static OneFrameMessages GetOneFrameMessages(this BattleSceneClientUpdater self, int frame)
         {
-            BattleScene battleScene = self.GetParent<BattleScene>();
-            FrameBuffer frameBuffer = battleScene.FrameBuffer;
+            Room room = self.GetParent<Room>();
+            FrameBuffer frameBuffer = room.FrameBuffer;
             
             if (frame <= frameBuffer.RealFrame)
             {
@@ -54,9 +54,9 @@ namespace ET.Client
         // 获取预测一帧的消息
         private static OneFrameMessages GetPredictionOneFrameMessage(this BattleSceneClientUpdater self, int frame)
         {
-            BattleScene battleScene = self.GetParent<BattleScene>();
-            Scene clientScene = battleScene.GetParent<Scene>();
-            OneFrameMessages preFrame = battleScene.FrameBuffer.GetFrame(frame - 1);
+            Room room = self.GetParent<Room>();
+            Scene clientScene = room.GetParent<Scene>();
+            OneFrameMessages preFrame = room.FrameBuffer.GetFrame(frame - 1);
             OneFrameMessages predictionFrame  = preFrame != null? MongoHelper.Clone(preFrame) : new OneFrameMessages();
             predictionFrame.Frame = frame;
 
@@ -69,7 +69,7 @@ namespace ET.Client
 
             predictionFrame.InputInfos[myId] = frameMessage.InputInfo;
             
-            battleScene.FrameBuffer.AddFrame(predictionFrame);
+            room.FrameBuffer.AddFrame(predictionFrame);
             
             clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
 

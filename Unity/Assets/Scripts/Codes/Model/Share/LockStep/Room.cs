@@ -5,9 +5,9 @@ namespace ET
 {
     [ChildOf]
     [ComponentOf]
-    public class BattleScene: Entity, IScene, IAwake, IUpdate
+    public class Room: Entity, IScene, IAwake, IUpdate
     {
-        public SceneType SceneType { get; set; } = SceneType.Battle;
+        public SceneType SceneType { get; set; } = SceneType.Room;
         public string Name { get; set; }
         
         private long lsWorldInstanceId;

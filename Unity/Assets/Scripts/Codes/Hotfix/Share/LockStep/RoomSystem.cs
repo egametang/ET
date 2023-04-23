@@ -1,9 +1,9 @@
 namespace ET
 {
-    [FriendOf(typeof(BattleScene))]
-    public static class BattleSceneSystem
+    [FriendOf(typeof(Room))]
+    public static class RoomSystem
     {
-        public static void Init(this BattleScene self, Battle2C_BattleStart room2CBattleStart)
+        public static void Init(this Room self, Room2C_Start room2CBattleStart)
         {
             self.StartTime = room2CBattleStart.StartTime;
 
@@ -15,7 +15,7 @@ namespace ET
         }
 
 
-        public static void Update(this BattleScene self, OneFrameMessages oneFrameMessages)
+        public static void Update(this Room self, OneFrameMessages oneFrameMessages)
         {
             // 保存当前帧场景数据
             self.FrameBuffer.SaveDate(self.FrameBuffer.NowFrame, MongoHelper.Serialize(self.LSWorld));
@@ -35,7 +35,7 @@ namespace ET
         }
 
         // 回滚
-        public static void Rollback(this BattleScene self, int frame)
+        public static void Rollback(this Room self, int frame)
         {
             Log.Debug($"Battle Scene roll back to {frame}");
             self.LSWorld.Dispose();

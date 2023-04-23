@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-	[ComponentOf(typeof(BattleScene))]
+	[ComponentOf(typeof(Room))]
 	public class CameraComponent : Entity, IAwake, ILateUpdate
 	{
 		// 战斗摄像机

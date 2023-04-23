@@ -5,21 +5,21 @@ namespace ET.Server
 
     public static class BattleSceneManagerComponentSystem
     {
-        public static async ETTask<BattleScene> CreateBattleScene(this BattleSceneManagerComponent self, Match2Map_GetRoom request)
+        public static async ETTask<Room> CreateBattleScene(this BattleSceneManagerComponent self, Match2Map_GetRoom request)
         {
             await ETTask.CompletedTask;
             
-            BattleScene battleScene = self.AddChild<BattleScene>();
+            Room room = self.AddChild<Room>();
             
-            battleScene.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
+            room.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
             
-            battleScene.AddComponent<ServerFrameRecvComponent>();
+            room.AddComponent<ServerFrameRecvComponent>();
 
-            battleScene.LSWorld = new LSWorld(SceneType.LockStepClient);
+            room.LSWorld = new LSWorld(SceneType.LockStepServer);
 
-            battleScene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
+            room.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
             
-            return battleScene;
+            return room;
         }
     }
 }

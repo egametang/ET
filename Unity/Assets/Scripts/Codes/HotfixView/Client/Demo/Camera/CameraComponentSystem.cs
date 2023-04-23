@@ -35,7 +35,7 @@ namespace ET.Client
 			LSUnitView lsUnit = self.MyUnitView;
 			if (lsUnit == null)
 			{
-				self.MyUnitView = self.GetParent<BattleScene>().GetComponent<LSUnitViewComponent>().GetMyLsUnitView();
+				self.MyUnitView = self.GetParent<Room>().GetComponent<LSUnitViewComponent>().GetMyLsUnitView();
 			}
 
 			if (lsUnit == null)

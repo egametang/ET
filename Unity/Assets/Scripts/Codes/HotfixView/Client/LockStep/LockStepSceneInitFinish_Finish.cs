@@ -5,11 +5,11 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneInitFinish args)
         {
-            BattleScene battleScene = clientScene.GetComponent<BattleScene>();
+            Room room = clientScene.GetComponent<Room>();
             
-            battleScene.AddComponent<CameraComponent>();
+            room.AddComponent<CameraComponent>();
             
-            battleScene.AddComponent<LockStepOperaComponent>();
+            room.AddComponent<LockStepOperaComponent>();
             await ETTask.CompletedTask;
         }
     }

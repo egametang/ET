@@ -6,23 +6,23 @@ namespace ET.Client
         // 场景切换协程
         public static async ETTask SceneChangeTo(Scene clientScene, string sceneName, long sceneInstanceId)
         {
-            clientScene.RemoveComponent<BattleScene>();
+            clientScene.RemoveComponent<Room>();
 
-            BattleScene battleScene = clientScene.AddComponent<BattleScene>();
-            battleScene.Name = sceneName;
+            Room room = clientScene.AddComponent<Room>();
+            room.Name = sceneName;
 
             // 等待表现层订阅的事件完成
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.LockStepSceneChangeStart());
 
-            clientScene.GetComponent<SessionComponent>().Session.Send(new C2Battle_ChangeSceneFinish());
+            clientScene.GetComponent<SessionComponent>().Session.Send(new C2Room_ChangeSceneFinish());
             
             // 等待Room2C_EnterMap消息
-            WaitType.Wait_Room2C_EnterMap waitRoom2CEnterMap = await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_EnterMap>();
+            WaitType.Wait_Room2C_Start waitRoom2CStart = await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_Start>();
 
-            battleScene.LSWorld = new LSWorld(SceneType.LockStepClient);
-            battleScene.Init(waitRoom2CEnterMap.Message);
+            room.LSWorld = new LSWorld(SceneType.LockStepClient);
+            room.Init(waitRoom2CStart.Message);
             
-            battleScene.AddComponent<BattleSceneClientUpdater>();
+            room.AddComponent<BattleSceneClientUpdater>();
 
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(clientScene, new EventType.LockStepSceneInitFinish());

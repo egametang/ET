@@ -32,7 +32,7 @@ namespace ET.Client
                     v.x += 1;
                 }
 
-                BattleSceneClientUpdater battleSceneClientUpdater = self.GetParent<BattleScene>().GetComponent<BattleSceneClientUpdater>();
+                BattleSceneClientUpdater battleSceneClientUpdater = self.GetParent<Room>().GetComponent<BattleSceneClientUpdater>();
                 battleSceneClientUpdater.InputInfo.V = v;
             }
         }
