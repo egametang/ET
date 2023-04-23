@@ -3,9 +3,9 @@ using System;
 namespace ET.Server
 {
 
-    public static class BattleSceneManagerComponentSystem
+    public static class RoomManagerComponentSystem
     {
-        public static async ETTask<Room> CreateBattleScene(this BattleSceneManagerComponent self, Match2Map_GetRoom request)
+        public static async ETTask<Room> CreateBattleScene(this RoomManagerComponent self, Match2Map_GetRoom request)
         {
             await ETTask.CompletedTask;
             

@@ -8,8 +8,8 @@ namespace ET.Server
 	{
 		protected override async ETTask Run(Scene scene, Match2Map_GetRoom request, Map2Match_GetRoom response)
 		{
-			BattleSceneManagerComponent battleSceneManagerComponent = scene.GetComponent<BattleSceneManagerComponent>();
-			Room room = await battleSceneManagerComponent.CreateBattleScene(request);
+			RoomManagerComponent roomManagerComponent = scene.GetComponent<RoomManagerComponent>();
+			Room room = await roomManagerComponent.CreateBattleScene(request);
 			response.InstanceId = room.InstanceId;
 			await ETTask.CompletedTask;
 		}
