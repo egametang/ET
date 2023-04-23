@@ -3,14 +3,14 @@ using TrueSync;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Room)]
+    [ActorMessageHandler(SceneType.Battle)]
     [FriendOf(typeof (RoomServerComponent))]
-    public class C2Room_ChangeSceneFinishHandler: AMActorHandler<Scene, C2Room_ChangeSceneFinish>
+    public class C2Room_ChangeSceneFinishHandler: AMActorHandler<BattleScene, C2Battle_ChangeSceneFinish>
     {
-        protected override async ETTask Run(Scene roomScene, C2Room_ChangeSceneFinish message)
+        protected override async ETTask Run(BattleScene battleScene, C2Battle_ChangeSceneFinish message)
         {
-            RoomServerComponent roomServerComponent = roomScene.GetComponent<RoomServerComponent>();
-            RoomPlayer roomPlayer = roomScene.GetComponent<RoomServerComponent>().GetChild<RoomPlayer>(message.PlayerId);
+            RoomServerComponent roomServerComponent = battleScene.GetComponent<RoomServerComponent>();
+            RoomPlayer roomPlayer = battleScene.GetComponent<RoomServerComponent>().GetChild<RoomPlayer>(message.PlayerId);
             roomPlayer.IsJoinRoom = true;
             roomServerComponent.AlreadyJoinRoomCount++;
 
@@ -23,7 +23,7 @@ namespace ET.Server
             {
                 await TimerComponent.Instance.WaitAsync(1000);
 
-                Room2C_BattleStart room2CBattleStart = new() {StartTime = TimeHelper.ServerFrameTime()};
+                Battle2C_BattleStart room2CBattleStart = new() {StartTime = TimeHelper.ServerFrameTime()};
                 foreach (RoomPlayer rp in roomServerComponent.Children.Values)
                 {
                     room2CBattleStart.UnitInfo.Add(new LockStepUnitInfo()
@@ -34,9 +34,9 @@ namespace ET.Server
                     });
                 }
                 
-                roomScene.GetComponent<BattleScene>().Init(room2CBattleStart);
+                battleScene.Init(room2CBattleStart);
 
-                RoomMessageHelper.BroadCast(roomScene, room2CBattleStart);
+                RoomMessageHelper.BroadCast(battleScene, room2CBattleStart);
             }
 
             await ETTask.CompletedTask;

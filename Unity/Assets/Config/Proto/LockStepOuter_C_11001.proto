@@ -23,7 +23,7 @@ message Match2G_NotifyMatchSuccess // IActorLocationMessage
 }
 
 // 客户端通知房间切换场景完成
-message C2Room_ChangeSceneFinish // IActorRoom
+message C2Battle_ChangeSceneFinish // IActorRoom
 {
 	int64 PlayerId = 1;
 }
@@ -36,7 +36,7 @@ message LockStepUnitInfo
 }
 
 // 房间通知客户端进入战斗
-message Room2C_BattleStart // IActorMessage
+message Battle2C_BattleStart // IActorMessage
 {
 	int64 StartTime = 1;
 	repeated LockStepUnitInfo UnitInfo = 2;

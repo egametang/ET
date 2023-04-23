@@ -6,7 +6,7 @@ namespace ET
         {
             public int Error { get; set; }
 
-            public Room2C_BattleStart Message;
+            public Battle2C_BattleStart Message;
         }
     }
 }

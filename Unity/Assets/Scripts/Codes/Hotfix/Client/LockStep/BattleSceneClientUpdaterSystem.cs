@@ -22,7 +22,12 @@ namespace ET.Client
             FrameBuffer frameBuffer = battleScene.FrameBuffer;
 
             long timeNow = TimeHelper.ServerFrameTime();
-            if (timeNow < battleScene.StartTime + battleScene.FrameBuffer.NowFrame * LSConstValue.UpdateInterval)
+            if (timeNow < battleScene.StartTime + frameBuffer.NowFrame * LSConstValue.UpdateInterval)
+            {
+                return;
+            }
+
+            if (frameBuffer.NowFrame > frameBuffer.RealFrame + frameBuffer.PredictionCount)
             {
                 return;
             }
@@ -50,11 +55,12 @@ namespace ET.Client
         private static OneFrameMessages GetPredictionOneFrameMessage(this BattleSceneClientUpdater self, int frame)
         {
             BattleScene battleScene = self.GetParent<BattleScene>();
+            Scene clientScene = battleScene.GetParent<Scene>();
             OneFrameMessages preFrame = battleScene.FrameBuffer.GetFrame(frame - 1);
             OneFrameMessages predictionFrame  = preFrame != null? MongoHelper.Clone(preFrame) : new OneFrameMessages();
             predictionFrame.Frame = frame;
 
-            PlayerComponent playerComponent = battleScene.GetParent<Scene>().GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
             long myId = playerComponent.MyId;
 
             FrameMessage frameMessage = new() { InputInfo = new LSInputInfo(), Frame = frame };
@@ -63,10 +69,10 @@ namespace ET.Client
 
             predictionFrame.InputInfos[myId] = frameMessage.InputInfo;
             
+            battleScene.FrameBuffer.AddFrame(predictionFrame);
             
-            self.Parent.GetParent<Scene>().GetComponent<SessionComponent>().Session.Send(frameMessage);
-            
-            
+            clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
+
             return predictionFrame;
         }
     }

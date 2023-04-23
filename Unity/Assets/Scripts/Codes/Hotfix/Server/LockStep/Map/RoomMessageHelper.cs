@@ -3,9 +3,9 @@ namespace ET.Server
 
     public static class RoomMessageHelper
     {
-        public static void BroadCast(Scene roomScene, IActorMessage message)
+        public static void BroadCast(BattleScene battleScene, IActorMessage message)
         {
-            RoomServerComponent roomServerComponent = roomScene.GetComponent<RoomServerComponent>();
+            RoomServerComponent roomServerComponent = battleScene.GetComponent<RoomServerComponent>();
             
             foreach (var kv in roomServerComponent.Children)
             {

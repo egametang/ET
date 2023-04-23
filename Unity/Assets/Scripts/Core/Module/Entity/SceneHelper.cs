@@ -11,5 +11,10 @@ namespace ET
         {
             return entity.Domain as Scene;
         }
+        
+        public static SceneType DomainSceneType(this Entity entity)
+        {
+            return entity.Domain.SceneType;
+        }
     }
 }

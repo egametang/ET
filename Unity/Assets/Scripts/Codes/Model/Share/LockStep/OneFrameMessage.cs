@@ -56,13 +56,24 @@ namespace ET
                 return false;
             }
 
-            for (int i = 0; i < LSConstValue.MatchCount; ++i)
+            if (a.InputInfos.Count != b.InputInfos.Count)
             {
-                if (a.InputInfos[i] != b.InputInfos[i])
+                return false;
+            }
+
+            foreach (var kv in a.InputInfos)
+            {
+                if (!b.InputInfos.TryGetValue(kv.Key, out LSInputInfo inputInfo))
+                {
+                    return false;
+                }
+
+                if (kv.Value != inputInfo)
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -72,9 +83,9 @@ namespace ET
         }
     }
     
-    public partial class Room2C_BattleStart
+    public partial class Battle2C_BattleStart
     {
-        public Room2C_BattleStart()
+        public Battle2C_BattleStart()
         {
             this.UnitInfo = new List<LockStepUnitInfo>(LSConstValue.MatchCount);
         }

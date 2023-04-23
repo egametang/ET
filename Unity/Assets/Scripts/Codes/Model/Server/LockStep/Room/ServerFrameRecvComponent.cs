@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf(typeof(BattleScene))]
     public class ServerFrameRecvComponent: Entity, IAwake
     {
         public int NowFrame;

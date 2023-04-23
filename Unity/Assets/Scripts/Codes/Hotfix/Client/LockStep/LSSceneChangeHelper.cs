@@ -14,7 +14,7 @@ namespace ET.Client
             // 等待表现层订阅的事件完成
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.LockStepSceneChangeStart());
 
-            clientScene.GetComponent<SessionComponent>().Session.Send(new C2Room_ChangeSceneFinish());
+            clientScene.GetComponent<SessionComponent>().Session.Send(new C2Battle_ChangeSceneFinish());
             
             // 等待Room2C_EnterMap消息
             WaitType.Wait_Room2C_EnterMap waitRoom2CEnterMap = await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_EnterMap>();

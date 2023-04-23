@@ -8,8 +8,8 @@ namespace ET
         public int NowFrame { get; set; }
 
         public int RealFrame { get; set; } = -1;
-        
-        public int PredictionCount { get; set; }
+
+        public int PredictionCount { get; set; } = 3;
         
         private const int TotalFrameCount = 128;
         
@@ -24,20 +24,6 @@ namespace ET
                 this.dataBuffer.Add(null);
             }
         }
-        
-        private bool CheckFrame(int frame)
-        {
-            if (frame > this.RealFrame)
-            {
-                return false;
-            }
-            if (frame < this.RealFrame + 1 - TotalFrameCount || frame < 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
 
         public void AddRealFrame(OneFrameMessages message)
         {
@@ -46,12 +32,22 @@ namespace ET
                 throw new Exception($"add real frame error: {message.Frame} {this.RealFrame}");
             }
             this.RealFrame = message.Frame;
+            AddFrame(message);
+        }
+
+        public void AddFrame(OneFrameMessages message)
+        {
             this.messageBuffer[message.Frame % TotalFrameCount] = message;
         }
         
         public OneFrameMessages GetFrame(int frame)
         {
-            if (!CheckFrame(frame))
+            if (frame < 0)
+            {
+                return null;
+            }
+
+            if (frame > this.RealFrame + this.PredictionCount)
             {
                 return null;
             }
@@ -65,10 +61,6 @@ namespace ET
 
         public byte[] GetDate(int frame)
         {
-            if (!CheckFrame(frame))
-            {
-                return null;
-            }
             return this.dataBuffer[frame % TotalFrameCount];
         }
     }

@@ -3,7 +3,8 @@ using TrueSync;
 
 namespace ET
 {
-    [ComponentOf(typeof(Scene))]
+    [ChildOf]
+    [ComponentOf]
     public class BattleScene: Entity, IScene, IAwake, IUpdate
     {
         public SceneType SceneType { get; set; } = SceneType.Battle;

@@ -2,19 +2,18 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Room)]
-    public class FrameMessageHandler: AMActorHandler<Scene, FrameMessage>
+    [ActorMessageHandler(SceneType.Battle)]
+    public class FrameMessageHandler: AMActorHandler<BattleScene, FrameMessage>
     {
-        protected override async ETTask Run(Scene roomScene, FrameMessage message)
+        protected override async ETTask Run(BattleScene battleScene, FrameMessage message)
         {
-            OneFrameMessages oneFrameMessages = roomScene.GetComponent<ServerFrameRecvComponent>().Add(message);
+            OneFrameMessages oneFrameMessages = battleScene.GetComponent<ServerFrameRecvComponent>().Add(message);
             if (oneFrameMessages != null)
             {
-                BattleScene battleScene = roomScene.GetComponent<BattleScene>();
                 battleScene.FrameBuffer.AddRealFrame(oneFrameMessages);
             }
             
-            RoomMessageHelper.BroadCast(roomScene, oneFrameMessages);
+            RoomMessageHelper.BroadCast(battleScene, oneFrameMessages);
             await ETTask.CompletedTask;
         }
     }

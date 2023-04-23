@@ -43,9 +43,9 @@ namespace ET
 	}
 
 // 客户端通知房间切换场景完成
-	[Message(LockStepOuter.C2Room_ChangeSceneFinish)]
+	[Message(LockStepOuter.C2Battle_ChangeSceneFinish)]
 	[ProtoContract]
-	public partial class C2Room_ChangeSceneFinish: ProtoObject, IActorRoom
+	public partial class C2Battle_ChangeSceneFinish: ProtoObject, IActorRoom
 	{
 		[ProtoMember(1)]
 		public long PlayerId { get; set; }
@@ -68,9 +68,9 @@ namespace ET
 	}
 
 // 房间通知客户端进入战斗
-	[Message(LockStepOuter.Room2C_BattleStart)]
+	[Message(LockStepOuter.Battle2C_BattleStart)]
 	[ProtoContract]
-	public partial class Room2C_BattleStart: ProtoObject, IActorMessage
+	public partial class Battle2C_BattleStart: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		public long StartTime { get; set; }
@@ -124,9 +124,9 @@ namespace ET
 		 public const ushort C2G_Match = 11002;
 		 public const ushort G2C_Match = 11003;
 		 public const ushort Match2G_NotifyMatchSuccess = 11004;
-		 public const ushort C2Room_ChangeSceneFinish = 11005;
+		 public const ushort C2Battle_ChangeSceneFinish = 11005;
 		 public const ushort LockStepUnitInfo = 11006;
-		 public const ushort Room2C_BattleStart = 11007;
+		 public const ushort Battle2C_BattleStart = 11007;
 		 public const ushort LSInputInfo = 11008;
 		 public const ushort FrameMessage = 11009;
 		 public const ushort OneFrameMessages = 11010;
