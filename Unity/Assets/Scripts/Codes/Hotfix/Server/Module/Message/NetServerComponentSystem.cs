@@ -44,7 +44,7 @@ namespace ET.Server
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = ipEndPoint;
 
-            if (self.DomainScene().SceneType != SceneType.BenchmarkServer)
+            if (self.Domain.SceneType != SceneType.BenchmarkServer)
             {
                 // 挂上这个组件，5秒就会删除session，所以客户端验证完成要删除这个组件。该组件的作用就是防止外挂一直连接不发消息也不进行权限验证
                 session.AddComponent<SessionAcceptTimeoutComponent>();

@@ -62,7 +62,7 @@ namespace ET.Server
 
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
 
-            SceneType sceneType = self.GetParent<Scene>().SceneType;
+            SceneType sceneType = (self.Parent as IScene).SceneType;
 
             foreach (Type type in types)
             {
