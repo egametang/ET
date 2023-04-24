@@ -2,14 +2,6 @@ using System;
 
 namespace ET
 {
-    [UniqueId(-1, 1)]
-    public static class LSQueneUpdateIndex
-    {
-        public const int None = -1;
-        public const int LSUpdate = 0;
-        public const int Max = 1;
-    }
-    
     public interface ILSUpdate
     {
     }

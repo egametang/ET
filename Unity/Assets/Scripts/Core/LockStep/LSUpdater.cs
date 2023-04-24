@@ -22,7 +22,6 @@ namespace ET
                 this.updateIds.Add(this.addUpdateIds.Dequeue());
             }
 
-            TypeSystems typeSystems = LSSington.Instance.TypeSystems;
             foreach (long id in this.updateIds)
             {
                 LSEntity entity = this.Parent.Get(id);
@@ -32,23 +31,7 @@ namespace ET
                     continue;
                 }
                 
-                List<object> iLSUpdateSystems = typeSystems.GetSystems(entity.GetType(), typeof (ILSUpdateSystem));
-                if (iLSUpdateSystems == null)
-                {
-                    continue;
-                }
-
-                foreach (ILSUpdateSystem iLSUpdateSystem in iLSUpdateSystems)
-                {
-                    try
-                    {
-                        iLSUpdateSystem.Run(entity);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
-                }
+                LSSington.Instance.LSUpdate(entity);
             }
 
             while (this.removeUpdateIds.Count > 0)

@@ -81,7 +81,7 @@ namespace ET
 
             Type type = entity.GetType();
 
-            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.TypeSystems.GetOneTypeSystems(type);
+            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(type);
             if (oneTypeSystems == null)
             {
                 return;

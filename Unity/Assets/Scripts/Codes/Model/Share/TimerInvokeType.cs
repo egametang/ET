@@ -14,6 +14,6 @@
         public const int AITimer = 202;
         public const int SessionAcceptTimeout = 203;
         
-        public const int BattleSceneUpdate = 301;
+        public const int RoomUpdate = 301;
     }
 }

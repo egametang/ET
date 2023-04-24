@@ -243,6 +243,11 @@ namespace ET
 
         public void Deserialize(Entity component)
         {
+            if (component is not IDeserialize)
+            {
+                return;
+            }
+            
             List<object> iDeserializeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
             if (iDeserializeSystems == null)
             {
@@ -349,6 +354,11 @@ namespace ET
 
         public void Awake<P1>(Entity component, P1 p1)
         {
+            if (component is not IAwake<P1>)
+            {
+                return;
+            }
+            
             List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
             if (iAwakeSystems == null)
             {
@@ -375,6 +385,11 @@ namespace ET
 
         public void Awake<P1, P2>(Entity component, P1 p1, P2 p2)
         {
+            if (component is not IAwake<P1, P2>)
+            {
+                return;
+            }
+            
             List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
             if (iAwakeSystems == null)
             {
@@ -401,6 +416,11 @@ namespace ET
 
         public void Awake<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
         {
+            if (component is not IAwake<P1, P2, P3>)
+            {
+                return;
+            }
+            
             List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
             if (iAwakeSystems == null)
             {
@@ -425,32 +445,6 @@ namespace ET
             }
         }
 
-        public void Awake<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
-        {
-            List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3, P4>));
-            if (iAwakeSystems == null)
-            {
-                return;
-            }
-
-            foreach (IAwakeSystem<P1, P2, P3, P4> aAwakeSystem in iAwakeSystems)
-            {
-                if (aAwakeSystem == null)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    aAwakeSystem.Run(component, p1, p2, p3, p4);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
-            }
-        }
-
         public void Load()
         {
             Queue<long> queue = this.queues[InstanceQueueIndex.Load];
@@ -465,6 +459,11 @@ namespace ET
                 }
 
                 if (component.IsDisposed)
+                {
+                    continue;
+                }
+
+                if (component is not ILoad)
                 {
                     continue;
                 }
@@ -493,6 +492,11 @@ namespace ET
 
         public void Destroy(Entity component)
         {
+            if (component is not IDestroy)
+            {
+                return;
+            }
+            
             List<object> iDestroySystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
             if (iDestroySystems == null)
             {
@@ -534,6 +538,11 @@ namespace ET
                 {
                     continue;
                 }
+                
+                if (component is not IUpdate)
+                {
+                    continue;
+                }
 
                 List<object> iUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
                 if (iUpdateSystems == null)
@@ -571,6 +580,11 @@ namespace ET
                 }
 
                 if (component.IsDisposed)
+                {
+                    continue;
+                }
+                
+                if (component is not ILateUpdate)
                 {
                     continue;
                 }

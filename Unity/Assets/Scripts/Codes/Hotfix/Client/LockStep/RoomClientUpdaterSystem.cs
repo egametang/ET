@@ -3,41 +3,38 @@ using MongoDB.Bson;
 
 namespace ET.Client
 {
-    [FriendOf(typeof (BattleSceneClientUpdater))]
-    public static class BattleSceneClientUpdaterSystem
+    [FriendOf(typeof (RoomClientUpdater))]
+    public static class RoomClientUpdaterSystem
     {
         [FriendOf(typeof (Room))]
-        public class UpdateSystem: UpdateSystem<BattleSceneClientUpdater>
+        public class UpdateSystem: UpdateSystem<RoomClientUpdater>
         {
-            protected override void Update(BattleSceneClientUpdater self)
+            protected override void Update(RoomClientUpdater self)
             {
                 self.Update();
             }
         }
 
-        private static void Update(this BattleSceneClientUpdater self)
+        private static void Update(this RoomClientUpdater self)
         {
             Room room = self.GetParent<Room>();
-
             FrameBuffer frameBuffer = room.FrameBuffer;
-
             long timeNow = TimeHelper.ServerFrameTime();
-            if (timeNow < room.StartTime + frameBuffer.NowFrame * LSConstValue.UpdateInterval)
-            {
-                return;
-            }
 
-            if (frameBuffer.NowFrame > frameBuffer.RealFrame + frameBuffer.PredictionCount)
+            for (int i = 0; i < 5; ++i)
             {
-                return;
+                if (timeNow < room.StartTime + frameBuffer.NowFrame * LSConstValue.UpdateInterval)
+                {
+                    break;
+                }
+                
+                OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
+                room.Update(oneFrameMessages);
+                ++frameBuffer.NowFrame;
             }
-            
-            OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
-            room.Update(oneFrameMessages);
-            ++frameBuffer.NowFrame;
         }
 
-        private static OneFrameMessages GetOneFrameMessages(this BattleSceneClientUpdater self, int frame)
+        private static OneFrameMessages GetOneFrameMessages(this RoomClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
@@ -52,7 +49,7 @@ namespace ET.Client
         }
 
         // 获取预测一帧的消息
-        private static OneFrameMessages GetPredictionOneFrameMessage(this BattleSceneClientUpdater self, int frame)
+        private static OneFrameMessages GetPredictionOneFrameMessage(this RoomClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
             Scene clientScene = room.GetParent<Scene>();

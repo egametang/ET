@@ -22,7 +22,7 @@ namespace ET.Client
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(waitRoom2CStart.Message);
             
-            room.AddComponent<BattleSceneClientUpdater>();
+            room.AddComponent<RoomClientUpdater>();
 
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(clientScene, new EventType.LockStepSceneInitFinish());

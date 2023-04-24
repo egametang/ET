@@ -5,7 +5,7 @@ namespace ET.Server
 
     public static class RoomManagerComponentSystem
     {
-        public static async ETTask<Room> CreateBattleScene(this RoomManagerComponent self, Match2Map_GetRoom request)
+        public static async ETTask<Room> CreateServerRoom(this RoomManagerComponent self, Match2Map_GetRoom request)
         {
             await ETTask.CompletedTask;
             

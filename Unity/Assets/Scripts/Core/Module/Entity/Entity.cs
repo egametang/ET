@@ -407,6 +407,24 @@ namespace ET
             }
         }
 
+        public int ComponentsCount()
+        {
+            if (this.components == null)
+            {
+                return 0;
+            }
+            return this.components.Count;
+        }
+        
+        public int ChildrenCount()
+        {
+            if (this.children == null)
+            {
+                return 0;
+            }
+            return this.children.Count;
+        }
+
         public override void Dispose()
         {
             if (this.IsDisposed)
