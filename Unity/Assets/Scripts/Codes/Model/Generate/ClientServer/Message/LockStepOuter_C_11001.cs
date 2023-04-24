@@ -80,9 +80,9 @@ namespace ET
 
 	}
 
-	[Message(LockStepOuter.LSInputInfo)]
+	[Message(LockStepOuter.LSInput)]
 	[ProtoContract]
-	public partial class LSInputInfo: ProtoObject
+	public partial class LSInput: ProtoObject
 	{
 		[ProtoMember(1)]
 		public TrueSync.TSVector2 V { get; set; }
@@ -103,7 +103,7 @@ namespace ET
 		public long PlayerId { get; set; }
 
 		[ProtoMember(3)]
-		public LSInputInfo InputInfo { get; set; }
+		public LSInput Input { get; set; }
 
 	}
 
@@ -116,7 +116,7 @@ namespace ET
 
 		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
 		[ProtoMember(2)]
-		public Dictionary<long, LSInputInfo> InputInfos { get; set; }
+		public Dictionary<long, LSInput> Inputs { get; set; }
 	}
 
 	public static class LockStepOuter
@@ -127,7 +127,7 @@ namespace ET
 		 public const ushort C2Room_ChangeSceneFinish = 11005;
 		 public const ushort LockStepUnitInfo = 11006;
 		 public const ushort Room2C_Start = 11007;
-		 public const ushort LSInputInfo = 11008;
+		 public const ushort LSInput = 11008;
 		 public const ushort FrameMessage = 11009;
 		 public const ushort OneFrameMessages = 11010;
 	}

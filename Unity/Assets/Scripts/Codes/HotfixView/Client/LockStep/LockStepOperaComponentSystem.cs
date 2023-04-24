@@ -33,7 +33,7 @@ namespace ET.Client
                 }
 
                 RoomClientUpdater roomClientUpdater = self.GetParent<Room>().GetComponent<RoomClientUpdater>();
-                roomClientUpdater.InputInfo.V = v;
+                roomClientUpdater.Input.V = v;
             }
         }
     }

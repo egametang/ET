@@ -42,7 +42,7 @@ message Room2C_Start // IActorMessage
 	repeated LockStepUnitInfo UnitInfo = 2;
 }
 
-message LSInputInfo
+message LSInput
 {
 	TrueSync.TSVector2 V = 1;
 	int32 Button = 2;
@@ -52,12 +52,12 @@ message FrameMessage // IActorMessage
 {
 	int32 Frame = 1;
 	int64 PlayerId = 2;
-	LSInputInfo InputInfo = 3;
+	LSInput Input = 3;
 }
 
 message OneFrameMessages // IActorMessage
 {
 	int32 Frame = 1;
-	map<int64, LSInputInfo> InputInfos = 2;
+	map<int64, LSInput> Inputs = 2;
 }
 

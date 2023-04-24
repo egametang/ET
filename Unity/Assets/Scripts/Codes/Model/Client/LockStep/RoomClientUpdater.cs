@@ -5,6 +5,6 @@ namespace ET.Client
     [ComponentOf(typeof(Room))]
     public class RoomClientUpdater: Entity, IAwake, IUpdate
     {
-        public LSInputInfo InputInfo = new LSInputInfo();
+        public LSInput Input = new();
     }
 }

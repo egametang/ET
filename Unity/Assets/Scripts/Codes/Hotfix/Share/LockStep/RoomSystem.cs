@@ -23,12 +23,12 @@ namespace ET
             // 设置输入到每个LSUnit身上
             LSWorld lsWorld = self.LSWorld;
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
-            foreach (var kv in oneFrameMessages.InputInfos)
+            foreach (var kv in oneFrameMessages.Inputs)
             {
                 LSUnit lsUnit = unitComponent.GetChild<LSUnit>(kv.Key);
-                LSInputInfo lsInputInfo = lsUnit.GetComponent<LSUnitInputComponent>().LSInputInfo;
-                lsInputInfo.V = kv.Value.V;
-                lsInputInfo.Button = kv.Value.Button;
+                LSInput lsInput = lsUnit.GetComponent<LSInputComponent>().LSInput;
+                lsInput.V = kv.Value.V;
+                lsInput.Button = kv.Value.Button;
             }
             
             lsWorld.Updater.Update();

@@ -7,7 +7,7 @@ namespace ET
     {
         protected bool Equals(OneFrameMessages other)
         {
-            return this.Frame == other.Frame && Equals(this.InputInfos, other.InputInfos);
+            return this.Frame == other.Frame && Equals(this.Inputs, other.Inputs);
         }
 
         public override bool Equals(object obj)
@@ -32,12 +32,12 @@ namespace ET
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Frame, this.InputInfos);
+            return HashCode.Combine(this.Frame, this.Inputs);
         }
 
         public OneFrameMessages()
         {
-            this.InputInfos = new Dictionary<long, LSInputInfo>(LSConstValue.MatchCount);
+            this.Inputs = new Dictionary<long, LSInput>(LSConstValue.MatchCount);
         }
 
         public static bool operator==(OneFrameMessages a, OneFrameMessages b)
@@ -56,14 +56,14 @@ namespace ET
                 return false;
             }
 
-            if (a.InputInfos.Count != b.InputInfos.Count)
+            if (a.Inputs.Count != b.Inputs.Count)
             {
                 return false;
             }
 
-            foreach (var kv in a.InputInfos)
+            foreach (var kv in a.Inputs)
             {
-                if (!b.InputInfos.TryGetValue(kv.Key, out LSInputInfo inputInfo))
+                if (!b.Inputs.TryGetValue(kv.Key, out LSInput inputInfo))
                 {
                     return false;
                 }

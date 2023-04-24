@@ -62,7 +62,7 @@ namespace ET
 
                 if (newIsRegister)
                 {
-                    this.DomainScene().RegisterSystem(this);
+                    this.DomainScene().Add(this);
                 }
                 else
                 {

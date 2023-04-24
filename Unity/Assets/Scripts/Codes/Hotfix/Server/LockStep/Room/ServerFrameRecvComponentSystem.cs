@@ -23,14 +23,14 @@ namespace ET.Server
                 self.FrameMessages.Add(oneFrameMessages.Frame, oneFrameMessages);
             }
 
-            oneFrameMessages.InputInfos[message.PlayerId] = message.InputInfo;
+            oneFrameMessages.Inputs[message.PlayerId] = message.Input;
 
             if (oneFrameMessages.Frame > self.NowFrame)
             {
                 return null;   
             }
 
-            if (oneFrameMessages.InputInfos.Count != LSConstValue.MatchCount)
+            if (oneFrameMessages.Inputs.Count != LSConstValue.MatchCount)
             {
                 return null;
             }

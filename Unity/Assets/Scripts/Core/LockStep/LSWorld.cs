@@ -75,13 +75,11 @@ namespace ET
             this.allLSEntities.Remove(id);
         }
 
-        public void RegisterSystem(LSEntity entity) 
+        public void Add(LSEntity entity) 
         {
             this.allLSEntities.Add(entity.Id, entity);
 
-            Type type = entity.GetType();
-
-            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(type);
+            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(entity.GetType());
             if (oneTypeSystems == null)
             {
                 return;

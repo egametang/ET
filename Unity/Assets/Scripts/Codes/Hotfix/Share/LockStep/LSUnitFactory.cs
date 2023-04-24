@@ -10,7 +10,7 @@
 	        lsUnit.Position = unitInfo.Position;
 	        lsUnit.Rotation = unitInfo.Rotation;
 
-			lsUnit.AddComponent<LSUnitInputComponent>();
+			lsUnit.AddComponent<LSInputComponent>();
 	        
 	        EventSystem.Instance.Publish(lsUnit.DomainScene(), new EventType.LSAfterUnitCreate() {LsUnit = lsUnit});
             return lsUnit;

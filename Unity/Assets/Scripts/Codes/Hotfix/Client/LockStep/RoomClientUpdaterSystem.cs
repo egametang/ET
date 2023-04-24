@@ -60,11 +60,11 @@ namespace ET.Client
             PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
             long myId = playerComponent.MyId;
 
-            FrameMessage frameMessage = new() { InputInfo = new LSInputInfo(), Frame = frame };
-            frameMessage.InputInfo.V = self.InputInfo.V;
-            frameMessage.InputInfo.Button = self.InputInfo.Button;
+            FrameMessage frameMessage = new() { Input = new LSInput(), Frame = frame };
+            frameMessage.Input.V = self.Input.V;
+            frameMessage.Input.Button = self.Input.Button;
 
-            predictionFrame.InputInfos[myId] = frameMessage.InputInfo;
+            predictionFrame.Inputs[myId] = frameMessage.Input;
             
             room.FrameBuffer.AddFrame(predictionFrame);
             

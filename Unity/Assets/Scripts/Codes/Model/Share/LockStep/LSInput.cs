@@ -3,9 +3,9 @@ using TrueSync;
 
 namespace ET
 {
-    public partial class LSInputInfo
+    public partial class LSInput
     {
-        protected bool Equals(LSInputInfo other)
+        protected bool Equals(LSInput other)
         {
             return this.V.Equals(other.V) && this.Button == other.Button;
         }
@@ -27,7 +27,7 @@ namespace ET
                 return false;
             }
 
-            return Equals((LSInputInfo) obj);
+            return Equals((LSInput) obj);
         }
 
         public override int GetHashCode()
@@ -35,7 +35,7 @@ namespace ET
             return HashCode.Combine(this.V, this.Button);
         }
 
-        public static bool operator==(LSInputInfo a, LSInputInfo b)
+        public static bool operator==(LSInput a, LSInput b)
         {
             if (a.V != b.V)
             {
@@ -50,7 +50,7 @@ namespace ET
             return true;
         }
 
-        public static bool operator !=(LSInputInfo a, LSInputInfo b)
+        public static bool operator !=(LSInput a, LSInput b)
         {
             return !(a == b);
         }
