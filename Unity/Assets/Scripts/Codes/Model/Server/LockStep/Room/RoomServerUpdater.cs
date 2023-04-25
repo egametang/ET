@@ -3,9 +3,9 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [ComponentOf(typeof(Room))]
-    public class ServerFrameRecvComponent: Entity, IAwake
+    public class RoomServerUpdater: Entity, IAwake, IUpdate
     {
-        public int NowFrame;
+        public int NowFrame { get; set; }
         public Dictionary<long, OneFrameMessages> FrameMessages = new ();
     }
 }

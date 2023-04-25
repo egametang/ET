@@ -4,12 +4,12 @@ using UnityEngine;
 namespace ET.Client
 {
     [FriendOf(typeof(RoomClientUpdater))]
-    public static class LockStepOperaComponentSystem
+    public static class LSOperaComponentSystem
     {
         [FriendOf(typeof(RoomClientUpdater))]
-        public class UpdateSystem: UpdateSystem<LockStepOperaComponent>
+        public class UpdateSystem: UpdateSystem<LSOperaComponent>
         {
-            protected override void Update(LockStepOperaComponent self)
+            protected override void Update(LSOperaComponent self)
             {
                 TSVector2 v = new();
                 if (Input.GetKey(KeyCode.W))
@@ -33,7 +33,7 @@ namespace ET.Client
                 }
 
                 RoomClientUpdater roomClientUpdater = self.GetParent<Room>().GetComponent<RoomClientUpdater>();
-                roomClientUpdater.Input.V = v;
+                roomClientUpdater.Input.V = v.normalized;
             }
         }
     }

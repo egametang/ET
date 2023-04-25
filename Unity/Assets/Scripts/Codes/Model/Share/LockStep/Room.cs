@@ -28,5 +28,7 @@ namespace ET
         public long StartTime { get; set; }
 
         public FrameBuffer FrameBuffer { get; } = new();
+
+        public FixedTimeCounter FixedTimeCounter { get; set; }
     }
 }

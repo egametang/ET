@@ -9,7 +9,7 @@ namespace ET.Client
             
             room.AddComponent<CameraComponent>();
             
-            room.AddComponent<LockStepOperaComponent>();
+            room.AddComponent<LSOperaComponent>();
             await ETTask.CompletedTask;
         }
     }

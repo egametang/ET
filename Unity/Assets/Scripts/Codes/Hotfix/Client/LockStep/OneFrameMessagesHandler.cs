@@ -20,21 +20,9 @@ namespace ET.Client
             if (message != predictionMessage)
             {
                 // 回滚到frameBuffer.RealFrame
-                room.Rollback(frameBuffer.RealFrame);
-                frameBuffer.AddRealFrame(message);
+                LSHelper.Rollback(room, frameBuffer.RealFrame + 1);
             }
-            else
-            {
-                frameBuffer.AddRealFrame(message);
-            }
-
-            PingComponent pingComponent = session.GetComponent<PingComponent>();
-            int prediction = (int) (pingComponent.Ping / 2f / LSConstValue.UpdateInterval) + 1;
-            if (prediction < 3)
-            {
-                prediction = 3;
-            }
-            frameBuffer.PredictionCount = prediction;
+            frameBuffer.AddRealFrame(message);
             await ETTask.CompletedTask;
         }
     }

@@ -7,13 +7,16 @@ namespace ET.Server
     {
         protected override async ETTask Run(Room room, FrameMessage message)
         {
-            OneFrameMessages oneFrameMessages = room.GetComponent<ServerFrameRecvComponent>().Add(message);
-            if (oneFrameMessages != null)
+            RoomServerUpdater roomServerUpdater = room.GetComponent<RoomServerUpdater>();
+            roomServerUpdater.Add(message);
+
+            if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)
             {
-                room.FrameBuffer.AddRealFrame(oneFrameMessages);
+                long nowFrameTime = room.FixedTimeCounter.FrameTime(message.Frame);
+                int diffTime = (int)(nowFrameTime - TimeHelper.ServerFrameTime());
+
+                ActorLocationSenderComponent.Instance.Get(LocationType.GateSession).Send(message.PlayerId, new Room2C_AdjustUpdateTime() {DiffTime = diffTime});
             }
-            
-            RoomMessageHelper.BroadCast(room, oneFrameMessages);
             await ETTask.CompletedTask;
         }
     }

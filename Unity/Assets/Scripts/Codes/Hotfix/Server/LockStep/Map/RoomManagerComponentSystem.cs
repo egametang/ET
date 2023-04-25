@@ -12,8 +12,6 @@ namespace ET.Server
             Room room = self.AddChild<Room>();
             
             room.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
-            
-            room.AddComponent<ServerFrameRecvComponent>();
 
             room.LSWorld = new LSWorld(SceneType.LockStepServer);
 

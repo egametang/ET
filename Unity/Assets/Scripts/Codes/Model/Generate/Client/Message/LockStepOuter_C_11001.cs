@@ -119,6 +119,15 @@ namespace ET
 		public Dictionary<long, LSInput> Inputs { get; set; }
 	}
 
+	[Message(LockStepOuter.Room2C_AdjustUpdateTime)]
+	[ProtoContract]
+	public partial class Room2C_AdjustUpdateTime: ProtoObject, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int DiffTime { get; set; }
+
+	}
+
 	public static class LockStepOuter
 	{
 		 public const ushort C2G_Match = 11002;
@@ -130,5 +139,6 @@ namespace ET
 		 public const ushort LSInput = 11008;
 		 public const ushort FrameMessage = 11009;
 		 public const ushort OneFrameMessages = 11010;
+		 public const ushort Room2C_AdjustUpdateTime = 11011;
 	}
 }

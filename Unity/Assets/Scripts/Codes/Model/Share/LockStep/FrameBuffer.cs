@@ -8,12 +8,10 @@ namespace ET
         public int NowFrame { get; set; }
 
         public int RealFrame { get; set; } = -1;
-
-        public int PredictionCount { get; set; } = 3;
         
         private const int TotalFrameCount = 128;
         
-        private readonly List<OneFrameMessages> messageBuffer = new List<OneFrameMessages>(TotalFrameCount);
+        private readonly List<OneFrameMessages> messageBuffer = new(TotalFrameCount);
         private readonly List<byte[]> dataBuffer = new(TotalFrameCount);
 
         public FrameBuffer()
@@ -47,7 +45,7 @@ namespace ET
                 return null;
             }
 
-            if (frame > this.RealFrame + this.PredictionCount)
+            if (frame > this.RealFrame && frame > this.NowFrame)
             {
                 return null;
             }

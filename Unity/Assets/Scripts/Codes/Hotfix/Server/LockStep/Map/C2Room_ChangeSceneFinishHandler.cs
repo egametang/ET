@@ -35,6 +35,8 @@ namespace ET.Server
                 }
                 
                 room.Init(room2CStart);
+                
+                room.AddComponent<RoomServerUpdater>();
 
                 RoomMessageHelper.BroadCast(room, room2CStart);
             }

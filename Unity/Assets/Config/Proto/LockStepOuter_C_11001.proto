@@ -61,3 +61,8 @@ message OneFrameMessages // IActorMessage
 	map<int64, LSInput> Inputs = 2;
 }
 
+message Room2C_AdjustUpdateTime // IActorMessage
+{
+	int32 DiffTime = 1;
+}
+

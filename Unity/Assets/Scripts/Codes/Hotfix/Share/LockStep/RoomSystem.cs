@@ -3,9 +3,13 @@ namespace ET
     [FriendOf(typeof(Room))]
     public static class RoomSystem
     {
+        
+        
         public static void Init(this Room self, Room2C_Start room2CStart)
         {
             self.StartTime = room2CStart.StartTime;
+            
+            self.FixedTimeCounter = new FixedTimeCounter(self.StartTime, 0, LSConstValue.UpdateInterval);
 
             for (int i = 0; i < room2CStart.UnitInfo.Count; ++i)
             {
@@ -32,17 +36,6 @@ namespace ET
             }
             
             lsWorld.Updater.Update();
-        }
-
-        // 回滚
-        public static void Rollback(this Room self, int frame)
-        {
-            Log.Debug($"Room Scene roll back to {frame}");
-            self.LSWorld.Dispose();
-            byte[] dataBuffer = self.FrameBuffer.GetDate(frame);
-            self.LSWorld = MongoHelper.Deserialize<LSWorld>(dataBuffer);
-            
-            RollbackHelper.Rollback(self);
         }
     }
 }

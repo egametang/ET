@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using MongoDB.Bson;
 
 namespace ET.Client
@@ -6,6 +7,15 @@ namespace ET.Client
     [FriendOf(typeof (RoomClientUpdater))]
     public static class RoomClientUpdaterSystem
     {
+        public class AwakeSystem: AwakeSystem<RoomClientUpdater>
+        {
+            protected override void Awake(RoomClientUpdater self)
+            {
+                Room room = self.GetParent<Room>();
+                self.MyId = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
+            }
+        }
+        
         [FriendOf(typeof (Room))]
         public class UpdateSystem: UpdateSystem<RoomClientUpdater>
         {
@@ -20,18 +30,18 @@ namespace ET.Client
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             long timeNow = TimeHelper.ServerFrameTime();
-
-            for (int i = 0; i < 5; ++i)
+            Scene clientScene = room.GetParent<Scene>();
+            if (!room.FixedTimeCounter.IsTimeout(timeNow, frameBuffer.NowFrame))
             {
-                if (timeNow < room.StartTime + frameBuffer.NowFrame * LSConstValue.UpdateInterval)
-                {
-                    break;
-                }
-                
-                OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
-                room.Update(oneFrameMessages);
-                ++frameBuffer.NowFrame;
+                return;
             }
+            
+            OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
+            room.Update(oneFrameMessages);
+            ++frameBuffer.NowFrame;
+
+            LSInput lsInput = new LSInput() { V = self.Input.V, Button = self.Input.Button };
+            clientScene.GetComponent<SessionComponent>().Session.Send(new FrameMessage() {Frame = oneFrameMessages.Frame, Input = lsInput});
         }
 
         private static OneFrameMessages GetOneFrameMessages(this RoomClientUpdater self, int frame)
@@ -52,24 +62,41 @@ namespace ET.Client
         private static OneFrameMessages GetPredictionOneFrameMessage(this RoomClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
-            Scene clientScene = room.GetParent<Scene>();
             OneFrameMessages preFrame = room.FrameBuffer.GetFrame(frame - 1);
             OneFrameMessages predictionFrame  = preFrame != null? MongoHelper.Clone(preFrame) : new OneFrameMessages();
             predictionFrame.Frame = frame;
 
-            PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
-            long myId = playerComponent.MyId;
-
-            FrameMessage frameMessage = new() { Input = new LSInput(), Frame = frame };
-            frameMessage.Input.V = self.Input.V;
-            frameMessage.Input.Button = self.Input.Button;
-
-            predictionFrame.Inputs[myId] = frameMessage.Input;
+            predictionFrame.Inputs[self.MyId] = new() {V = self.Input.V, Button = self.Input.Button};
             
             room.FrameBuffer.AddFrame(predictionFrame);
             
-            clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
+            return predictionFrame;
+        }
+        
+        // 获取预测一帧的消息
+        private static OneFrameMessages GetRePredictionOneFrameMessage(this RoomClientUpdater self, int frame)
+        {
+            Room room = self.GetParent<Room>();
+            FrameBuffer frameBuffer = room.FrameBuffer;
+            OneFrameMessages preFrame = frameBuffer.GetFrame(frame - 1);
+            OneFrameMessages predictionFrame = frameBuffer.GetFrame(frame);
+            foreach (var kv in predictionFrame.Inputs)
+            {
+                if (kv.Key == self.MyId)
+                {
+                    continue;
+                }
 
+                LSInput preInput = preFrame.Inputs[kv.Key];
+                kv.Value.V = preInput.V;
+                kv.Value.Button = preInput.Button;
+            }
+
+            LSInput oldMyInput = frameBuffer.GetFrame(predictionFrame.Frame).Inputs[self.MyId];
+
+            predictionFrame.Inputs[self.MyId] = oldMyInput;
+            
+            predictionFrame.Frame = frame;
             return predictionFrame;
         }
     }

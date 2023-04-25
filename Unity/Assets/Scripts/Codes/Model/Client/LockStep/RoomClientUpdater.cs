@@ -6,5 +6,7 @@ namespace ET.Client
     public class RoomClientUpdater: Entity, IAwake, IUpdate
     {
         public LSInput Input = new();
+        
+        public long MyId;
     }
 }
