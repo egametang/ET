@@ -18,7 +18,7 @@ namespace ET
 		private readonly byte[] cache = new byte[8];
 		public const int InnerPacketSizeLength = 4;
 		public const int OuterPacketSizeLength = 2;
-		public MemoryStream MemoryStream;
+		public MemoryBuffer MemoryStream;
 
 		public PacketParser(CircularBuffer buffer, AService service)
 		{
@@ -75,7 +75,7 @@ namespace ET
 							return false;
 						}
 
-						MemoryStream memoryStream = new MemoryStream(this.packetSize);
+						MemoryBuffer memoryStream = new MemoryBuffer(this.packetSize);
 						this.buffer.Read(memoryStream, this.packetSize);
 						//memoryStream.SetLength(this.packetSize - Packet.MessageIndex);
 						this.MemoryStream = memoryStream;

@@ -352,7 +352,7 @@ namespace ET
 			}
 		}
 		
-		private void OnRead(MemoryStream memoryStream)
+		private void OnRead(MemoryBuffer memoryStream)
 		{
 			try
 			{

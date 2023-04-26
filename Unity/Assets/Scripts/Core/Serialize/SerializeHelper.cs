@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System;
+using MemoryPack;
 
 namespace ET
 {
@@ -7,22 +8,22 @@ namespace ET
     {
 		public static object Deserialize(Type type, byte[] bytes, int index, int count)
 		{
-			return ProtobufHelper.Deserialize(type, bytes, index, count);
+			return MemoryPackHelper.Deserialize(type, bytes, index, count);
 		}
 
         public static byte[] Serialize(object message)
 		{
-			return ProtobufHelper.Serialize(message);
+			return MemoryPackHelper.Serialize(message);
 		}
 
-        public static void Serialize(object message, Stream stream)
+        public static void Serialize(object message, MemoryBuffer stream)
         {
-            ProtobufHelper.Serialize(message, stream);
+			MemoryPackHelper.Serialize(message, stream);
         }
 
-        public static object Deserialize(Type type, Stream stream)
+        public static object Deserialize(Type type, MemoryBuffer stream)
         {
-	        return ProtobufHelper.Deserialize(type, stream);
+	        return MemoryPackHelper.Deserialize(type, stream);
         }
     }
 }

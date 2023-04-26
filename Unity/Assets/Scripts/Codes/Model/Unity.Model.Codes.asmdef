@@ -4,11 +4,10 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "MemoryPack"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
@@ -18,5 +17,5 @@
         "ENABLE_CODES"
     ],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

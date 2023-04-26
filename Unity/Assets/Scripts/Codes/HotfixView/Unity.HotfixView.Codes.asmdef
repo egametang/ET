@@ -8,11 +8,10 @@
         "Unity.Hotfix.Codes",
         "Unity.ModelView.Codes",
         "Unity.Mathematics",
-        "Unity.Loader"
+        "Unity.Loader",
+        "MemoryPack"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

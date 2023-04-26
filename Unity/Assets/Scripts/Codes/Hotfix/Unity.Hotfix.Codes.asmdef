@@ -6,11 +6,10 @@
         "Unity.Core",
         "Unity.Model.Codes",
         "Unity.Mathematics",
-        "Unity.Loader"
+        "Unity.Loader",
+        "MemoryPack"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
@@ -20,5 +19,5 @@
         "ENABLE_CODES"
     ],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

@@ -48,9 +48,9 @@ namespace ET
 		
 		private const int maxPacketSize = 10000;
 
-		private readonly MemoryStream ms = new MemoryStream(maxPacketSize);
+		private readonly MemoryBuffer ms = new MemoryBuffer(maxPacketSize);
 
-		private MemoryStream readMemory;
+		private MemoryBuffer readMemory;
 		private int needReadSplitCount;
 		
 		private void InitKcp()
@@ -323,7 +323,7 @@ namespace ET
 								this.OnError(ErrorCore.ERR_KcpSplitCountError);
 								return;
 							}
-							this.readMemory = new MemoryStream(this.needReadSplitCount);
+							this.readMemory = new MemoryBuffer(this.needReadSplitCount);
 							this.readMemory.SetLength(this.needReadSplitCount);
 							this.readMemory.Seek(0, SeekOrigin.Begin);
 							continue;
@@ -341,7 +341,7 @@ namespace ET
 						this.readMemory.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
 						break;
 				}
-				MemoryStream mem = this.readMemory;
+				MemoryBuffer mem = this.readMemory;
 				this.readMemory = null;
 				this.OnRead(mem);
 			}
@@ -472,7 +472,7 @@ namespace ET
 			this.KcpSend(kcpWaitPacket);
 		}
 		
-		private void OnRead(MemoryStream memoryStream)
+		private void OnRead(MemoryBuffer memoryStream)
 		{
 			try
 			{

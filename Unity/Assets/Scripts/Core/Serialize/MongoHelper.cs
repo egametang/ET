@@ -170,6 +170,7 @@ namespace ET
             {
                 supportInitialize.BeginInit();
             }
+            
             using (BsonBinaryWriter bsonWriter = new BsonBinaryWriter(stream, BsonBinaryWriterSettings.Defaults))
             {
                 BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
