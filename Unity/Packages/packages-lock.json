@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.memorypack": {
+      "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "09eb5f1535d0d01dee98c84fa110c21a436bd896"
+    },
     "com.focus-creative-games.hybridclr_unity": {
       "version": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
       "depth": 0,
@@ -24,7 +31,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.17",
+      "version": "3.0.21",
       "depth": 0,
       "source": "registry",
       "dependencies": {

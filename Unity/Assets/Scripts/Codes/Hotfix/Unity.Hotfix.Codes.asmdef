@@ -6,7 +6,8 @@
         "Unity.Core",
         "Unity.Model.Codes",
         "Unity.Mathematics",
-        "Unity.Loader"
+        "Unity.Loader",
+        "MemoryPack"
     ],
     "includePlatforms": [
         "Editor"
