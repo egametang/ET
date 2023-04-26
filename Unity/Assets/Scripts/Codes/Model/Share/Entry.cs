@@ -18,18 +18,6 @@ namespace ET
         } 
     }
     
-    [MemoryPackable]
-    public partial class BB
-    {
-        public int a;
-    }
-
-    [MemoryPackable]
-    public partial class AA
-    {
-        public int a;
-    }
-
     public static class Entry
     {
         public static void Init()

@@ -4,6 +4,8 @@
 	{
 		public const string BuildOutputDir = "./Temp/Bin/Debug";
 
+		public const bool UseMemoryPack = false;
+
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;
 #else

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using CommandLine;
 using UnityEngine;
 
@@ -33,6 +32,12 @@ namespace ET
 			Game.AddSingleton<CoroutineLockComponent>();
 			
 			ETTask.ExceptionHandler += Log.Error;
+
+			if (SerializeHelper.UseMemoryPack && !Define.EnableCodes)
+			{
+				Log.Error("MemoryPack must use ENABLE_CODES mode");
+				return;
+			}
 
 			Game.AddSingleton<CodeLoader>().Start();
 		}
