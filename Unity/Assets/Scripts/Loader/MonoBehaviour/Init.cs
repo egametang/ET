@@ -33,11 +33,11 @@ namespace ET
 			
 			ETTask.ExceptionHandler += Log.Error;
 
-			if (SerializeHelper.UseMemoryPack && !Define.EnableCodes)
-			{
-				Log.Error("MemoryPack must use ENABLE_CODES mode");
-				return;
-			}
+			//if (SerializeHelper.UseMemoryPack && !Define.EnableCodes)
+			//{
+			//	Log.Error("MemoryPack must use ENABLE_CODES mode");
+			//	return;
+			//}
 
 			Game.AddSingleton<CodeLoader>().Start();
 		}

@@ -7,7 +7,7 @@ namespace ET
 {
     public static class SerializeHelper
 	{
-		public const bool UseMemoryPack = false;
+		public const bool UseMemoryPack = true;
 		
 		public static object Deserialize(Type type, byte[] bytes, int index, int count)
 		{

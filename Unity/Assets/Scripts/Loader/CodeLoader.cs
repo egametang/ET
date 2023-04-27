@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+#pragma warning disable CS0162
 
 namespace ET
 {
@@ -49,14 +50,30 @@ namespace ET
 				}
 				else
 				{
-					assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
-					pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
+					if (SerializeHelper.UseMemoryPack)
+					{
+						assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Unity.AllCodes", "Unity.AllCodes.dll"));
+						pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Unity.AllCodes", "Unity.AllCodes.pdb"));
+					}
+					else
+					{
+						assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
+						pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
+					}
 				}
 			
 				this.model = Assembly.Load(assBytes, pdbBytes);
-				this.LoadHotfix();
+
+				if (SerializeHelper.UseMemoryPack)
+				{
+					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Init).Assembly, this.model);
+					EventSystem.Instance.Add(types);
+				}
+				else
+				{
+					this.LoadHotfix();
+				}
 			}
-			
 			IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
 			start.Run();
 		}

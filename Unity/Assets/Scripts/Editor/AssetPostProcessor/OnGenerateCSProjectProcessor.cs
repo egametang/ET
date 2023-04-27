@@ -75,6 +75,22 @@ namespace ET
                     content = GenerateCustomProject(path, content,
                         @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
                 }
+                
+                if (path.EndsWith("Unity.AllCodes.csproj"))
+                {
+                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\AllCodes\\Empty.cs\" />", string.Empty);
+                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\Hotfix\\Unity.AllCodes.asmdef\" />", string.Empty);
+
+                    content = GenerateCustomProject(path, content,
+                        @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
+                        );
+                }
             }
             return content;
         }
