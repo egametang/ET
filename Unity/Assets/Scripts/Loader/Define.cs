@@ -2,9 +2,8 @@
 {
 	public static class Define
 	{
-		public const string BuildOutputDir = "./Temp/Bin/Debug";
-
-		public const bool UseMemoryPack = false;
+		public const string CodeDir = "Assets/Bundles/Code/";
+		public const string BuildOutputDir = "Temp/Bin/Debug";
 
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;

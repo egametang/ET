@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+#pragma warning disable CS0162
 
 namespace ET
 {
@@ -129,6 +130,11 @@ namespace ET
 				{
 					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
 				}
+				if (SerializeHelper.UseMemoryPack)
+				{
+					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
+				}
+				
 				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
 				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
 
@@ -143,6 +149,10 @@ namespace ET
 				{
 					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
 				}
+				if (SerializeHelper.UseMemoryPack)
+				{
+					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
+				}
 				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
 
 				AfterCompiling();
@@ -155,6 +165,10 @@ namespace ET
 				if (Define.EnableCodes)
 				{
 					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
+				}
+				if (SerializeHelper.UseMemoryPack)
+				{
+					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
 				}
 				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
 
@@ -185,7 +199,7 @@ namespace ET
 		
 		private static void AfterCompiling()
 		{
-			Directory.CreateDirectory(BuildAssembliesHelper.CodeDir);
+			Directory.CreateDirectory(Define.CodeDir);
 
 			// 设置ab包
 			AssetImporter assetImporter = AssetImporter.GetAtPath("Assets/Bundles/Code");

@@ -50,16 +50,8 @@ namespace ET
 				}
 				else
 				{
-					if (SerializeHelper.UseMemoryPack)
-					{
-						assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Unity.AllCodes", "Unity.AllCodes.dll"));
-						pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Unity.AllCodes", "Unity.AllCodes.pdb"));
-					}
-					else
-					{
-						assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
-						pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
-					}
+					assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
+					pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
 				}
 			
 				this.model = Assembly.Load(assBytes, pdbBytes);
@@ -100,6 +92,9 @@ namespace ET
 				string logicName = Path.GetFileNameWithoutExtension(logicFiles[0]);
 				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.dll"));
 				pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.pdb"));
+				
+				//assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"));
+				//pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"));
 			}
 
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
