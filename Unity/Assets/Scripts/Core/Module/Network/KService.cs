@@ -527,8 +527,7 @@ namespace ET
                 return;
             }
             
-            MemoryStream memoryStream = this.GetMemoryStream(message);
-            channel.Send(actorId, memoryStream);
+            channel.Send(actorId, message);
         }
 
         public override void Update()

@@ -90,7 +90,7 @@ namespace ET
 			this.socket = null;
 		}
 
-		public void Send(long actorId, MemoryStream stream)
+		public void Send(long actorId, MemoryBuffer stream)
 		{
 			if (this.IsDisposed)
 			{
@@ -127,6 +127,8 @@ namespace ET
 					break;
 				}
 			}
+			
+			this.Service.Recycle(stream);
 			
 			if (!this.isSending)
 			{

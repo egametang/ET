@@ -140,7 +140,7 @@ namespace ET
             {
                 return;
             }
-            MemoryStream memoryStream = this.GetMemoryStream(message);
+            MemoryStream memoryStream = this.Fetch(message);
             channel.Send(memoryStream);
         }
 

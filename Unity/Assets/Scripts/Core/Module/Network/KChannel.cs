@@ -12,7 +12,7 @@ namespace ET
 	public struct KcpWaitPacket
 	{
 		public long ActorId;
-		public MemoryStream MemoryStream;
+		public MemoryBuffer MemoryStream;
 	}
 	
 	public class KChannel : AChannel
@@ -387,7 +387,7 @@ namespace ET
 			{
 				return;
 			}
-			MemoryStream memoryStream = kcpWaitPacket.MemoryStream;
+			MemoryBuffer memoryStream = kcpWaitPacket.MemoryStream;
 			
 			switch (this.Service.ServiceType)
 			{
@@ -432,11 +432,16 @@ namespace ET
 			}
 
 			this.Service.AddToUpdate(0, this.Id);
+			
+			// 回收MemoryBuffer，减少GC
+			this.Service.Recycle(memoryStream);
 		}
 		
-		public void Send(long actorId, MemoryStream stream)
+		public void Send(long actorId, object message)
 		{
-			KcpWaitPacket kcpWaitPacket = new KcpWaitPacket() { ActorId = actorId, MemoryStream = stream };
+			MemoryBuffer stream = this.Service.Fetch(message);
+			MessageSerializeHelper.MessageToStream(stream, message);
+			KcpWaitPacket kcpWaitPacket = new() { ActorId = actorId, MemoryStream = stream };
 			if (!this.IsConnected)
 			{
 				this.sendBuffer.Enqueue(kcpWaitPacket);
@@ -469,6 +474,7 @@ namespace ET
 				this.OnError(ErrorCore.ERR_KcpWaitSendSizeTooLarge);
 				return;
 			}
+
 			this.KcpSend(kcpWaitPacket);
 		}
 		

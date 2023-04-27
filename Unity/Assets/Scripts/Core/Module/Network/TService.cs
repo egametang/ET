@@ -171,7 +171,7 @@ namespace ET
 					NetServices.Instance.OnError(this.Id, channelId, ErrorCore.ERR_SendMessageNotFoundTChannel);
 					return;
 				}
-				MemoryStream memoryStream = this.GetMemoryStream(message);
+				MemoryBuffer memoryStream = this.Fetch(message);
 				aChannel.Send(actorId, memoryStream);
 			}
 			catch (Exception e)
