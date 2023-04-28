@@ -86,8 +86,10 @@ namespace ET
 
         #region 线程安全
 
+        private readonly MessagePool messagePool = new();
+
         // 初始化后不变，所以主线程，网络线程都可以读
-        private readonly DoubleMap<Type, ushort> typeOpcode = new DoubleMap<Type, ushort>();
+        private readonly DoubleMap<Type, ushort> typeOpcode = new();
 
         public ushort GetOpcode(Type type)
         {
@@ -97,6 +99,25 @@ namespace ET
         public Type GetType(ushort opcode)
         {
             return this.typeOpcode.GetKeyByValue(opcode);
+        }
+
+        public MessageObject FetchMessage(Type type)
+        {
+            return this.messagePool.Fetch(type);
+        }
+        
+        public T FetchMessage<T>() where T: MessageObject
+        {
+            return this.messagePool.Fetch<T>();
+        }
+
+        public void RecycleMessage(MessageObject obj)
+        {
+            if (obj == null)
+            {
+                return;
+            }
+            this.messagePool.Recycle(obj);
         }
 
         #endregion
@@ -142,7 +163,7 @@ namespace ET
             ToNetThread(ref netOperator);
         }
 
-        public void SendMessage(int serviceId, long channelId, long actorId, object message)
+        public void SendMessage(int serviceId, long channelId, long actorId, MessageObject message)
         {
             NetOperator netOperator = new NetOperator()
             {
@@ -261,10 +282,10 @@ namespace ET
 
         #region 网络线程
 
-        private readonly Dictionary<int, AService> services = new Dictionary<int, AService>();
-        private readonly Queue<int> queue = new Queue<int>();
+        private readonly Dictionary<int, AService> services = new();
+        private readonly Queue<int> queue = new();
 
-        private readonly Queue<MemoryBuffer> pool = new Queue<MemoryBuffer>();
+        private readonly Queue<MemoryBuffer> pool = new();
 
         public MemoryBuffer Fetch()
         {
@@ -273,11 +294,16 @@ namespace ET
                 return this.pool.Dequeue();
             }
 
-            return new MemoryBuffer();
+            MemoryBuffer memoryBuffer = new() { IsFromPool = true };
+            return memoryBuffer;
         }
 
         public void Recycle(MemoryBuffer memoryBuffer)
         {
+            if (!memoryBuffer.IsFromPool)
+            {
+                return;
+            }
             if (memoryBuffer.Capacity > 128) // 太大的不回收，GC
             {
                 return;
@@ -374,7 +400,7 @@ namespace ET
                         AService service = this.Get(op.ServiceId);
                         if (service != null)
                         {
-                            service.Send(op.ChannelId, op.ActorId, op.Object);
+                            service.Send(op.ChannelId, op.ActorId, op.Object as MessageObject);
                         }
 
                         break;

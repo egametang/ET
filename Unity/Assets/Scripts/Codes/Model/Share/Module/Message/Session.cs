@@ -126,7 +126,7 @@ namespace ET
         {
             self.LastSendTime = TimeHelper.ClientNow();
             OpcodeHelper.LogMsg(self.DomainZone(), message);
-            NetServices.Instance.SendMessage(self.ServiceId, self.Id, actorId, message);
+            NetServices.Instance.SendMessage(self.ServiceId, self.Id, actorId, message as MessageObject);
         }
     }
 

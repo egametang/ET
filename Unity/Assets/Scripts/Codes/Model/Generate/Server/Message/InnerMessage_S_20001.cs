@@ -9,7 +9,7 @@ namespace ET
 	[Message(InnerMessage.ObjectQueryRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectQueryRequest: ProtoObject, IActorRequest
+	public partial class ObjectQueryRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -29,7 +29,7 @@ namespace ET
 	[Message(InnerMessage.M2A_Reload)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2A_Reload: ProtoObject, IActorRequest
+	public partial class M2A_Reload: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -40,7 +40,7 @@ namespace ET
 	[Message(InnerMessage.A2M_Reload)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class A2M_Reload: ProtoObject, IActorResponse
+	public partial class A2M_Reload: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -60,7 +60,7 @@ namespace ET
 	[Message(InnerMessage.G2G_LockRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2G_LockRequest: ProtoObject, IActorRequest
+	public partial class G2G_LockRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -79,7 +79,7 @@ namespace ET
 	[Message(InnerMessage.G2G_LockResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2G_LockResponse: ProtoObject, IActorResponse
+	public partial class G2G_LockResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -99,7 +99,7 @@ namespace ET
 	[Message(InnerMessage.G2G_LockReleaseRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2G_LockReleaseRequest: ProtoObject, IActorRequest
+	public partial class G2G_LockReleaseRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -118,7 +118,7 @@ namespace ET
 	[Message(InnerMessage.G2G_LockReleaseResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2G_LockReleaseResponse: ProtoObject, IActorResponse
+	public partial class G2G_LockReleaseResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -138,7 +138,7 @@ namespace ET
 	[Message(InnerMessage.ObjectAddRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectAddRequest: ProtoObject, IActorRequest
+	public partial class ObjectAddRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -161,7 +161,7 @@ namespace ET
 	[Message(InnerMessage.ObjectAddResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectAddResponse: ProtoObject, IActorResponse
+	public partial class ObjectAddResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -181,7 +181,7 @@ namespace ET
 	[Message(InnerMessage.ObjectLockRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectLockRequest: ProtoObject, IActorRequest
+	public partial class ObjectLockRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -208,7 +208,7 @@ namespace ET
 	[Message(InnerMessage.ObjectLockResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectLockResponse: ProtoObject, IActorResponse
+	public partial class ObjectLockResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -228,7 +228,7 @@ namespace ET
 	[Message(InnerMessage.ObjectUnLockRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectUnLockRequest: ProtoObject, IActorRequest
+	public partial class ObjectUnLockRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -255,7 +255,7 @@ namespace ET
 	[Message(InnerMessage.ObjectUnLockResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectUnLockResponse: ProtoObject, IActorResponse
+	public partial class ObjectUnLockResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -275,7 +275,7 @@ namespace ET
 	[Message(InnerMessage.ObjectRemoveRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectRemoveRequest: ProtoObject, IActorRequest
+	public partial class ObjectRemoveRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -294,7 +294,7 @@ namespace ET
 	[Message(InnerMessage.ObjectRemoveResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectRemoveResponse: ProtoObject, IActorResponse
+	public partial class ObjectRemoveResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -314,7 +314,7 @@ namespace ET
 	[Message(InnerMessage.ObjectGetRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectGetRequest: ProtoObject, IActorRequest
+	public partial class ObjectGetRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -333,7 +333,7 @@ namespace ET
 	[Message(InnerMessage.ObjectGetResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectGetResponse: ProtoObject, IActorResponse
+	public partial class ObjectGetResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -361,7 +361,7 @@ namespace ET
 	[Message(InnerMessage.R2G_GetLoginKey)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class R2G_GetLoginKey: ProtoObject, IActorRequest
+	public partial class R2G_GetLoginKey: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -376,7 +376,7 @@ namespace ET
 	[Message(InnerMessage.G2R_GetLoginKey)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2R_GetLoginKey: ProtoObject, IActorResponse
+	public partial class G2R_GetLoginKey: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -403,7 +403,7 @@ namespace ET
 	[Message(InnerMessage.G2M_SessionDisconnect)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2M_SessionDisconnect: ProtoObject, IActorLocationMessage
+	public partial class G2M_SessionDisconnect: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -414,7 +414,7 @@ namespace ET
 	[Message(InnerMessage.ObjectQueryResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class ObjectQueryResponse: ProtoObject, IActorResponse
+	public partial class ObjectQueryResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -438,7 +438,7 @@ namespace ET
 	[Message(InnerMessage.M2M_UnitTransferRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2M_UnitTransferRequest: ProtoObject, IActorRequest
+	public partial class M2M_UnitTransferRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -461,7 +461,7 @@ namespace ET
 	[Message(InnerMessage.M2M_UnitTransferResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2M_UnitTransferResponse: ProtoObject, IActorResponse
+	public partial class M2M_UnitTransferResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]

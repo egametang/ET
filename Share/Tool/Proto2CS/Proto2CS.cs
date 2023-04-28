@@ -121,7 +121,7 @@ namespace ET
                     sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
                     sb.Append($"\t[MemoryPackable]\n");
-                    sb.Append($"\tpublic partial class {msgName}: ProtoObject");
+                    sb.Append($"\tpublic partial class {msgName}: MessageObject");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
                         sb.Append($", {parentClass}\n");

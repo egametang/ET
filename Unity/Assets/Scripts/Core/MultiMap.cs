@@ -5,7 +5,38 @@ namespace ET
 {
     public class MultiMap<T, K>: SortedDictionary<T, List<K>>
     {
-        private readonly List<K> Empty = new List<K>();
+        private readonly List<K> Empty = new();
+        private readonly int maxPoolCount;
+        private readonly Queue<List<K>> pool;
+
+        public MultiMap(int maxPoolCount = 0)
+        {
+            this.maxPoolCount = maxPoolCount;
+            this.pool = new Queue<List<K>>(maxPoolCount);
+        }
+
+        private List<K> FetchList()
+        {
+            if (this.pool.Count > 0)
+            {
+                return this.pool.Dequeue();
+            }
+            return new List<K>(10);
+        }
+
+        private void Recycle(List<K> list)
+        {
+            if (list == null)
+            {
+                return;
+            }
+            if (this.pool.Count == this.maxPoolCount)
+            {
+                return;
+            }
+            list.Clear();
+            this.pool.Enqueue(list);
+        }
 
         public void Add(T t, K k)
         {
@@ -13,7 +44,7 @@ namespace ET
             this.TryGetValue(t, out list);
             if (list == null)
             {
-                list = new List<K>();
+                list = this.FetchList();
                 this.Add(t, list);
             }
             list.Add(k);
@@ -36,6 +67,18 @@ namespace ET
                 this.Remove(t);
             }
             return true;
+        }
+
+        public new bool Remove(T t)
+        {
+            List<K> list;
+            this.TryGetValue(t, out list);
+            if (list == null)
+            {
+                return false;
+            }
+            this.Recycle(list);
+            return base.Remove(t);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ET
 {
@@ -34,6 +35,7 @@ namespace ET
             return opcode >= OpcodeRangeDefine.InnerMinOpcode;
         }
 
+        [Conditional("CLOSE")]
         public static void LogMsg(int zone, object message)
         {
             ushort opcode = NetServices.Instance.GetOpcode(message.GetType());

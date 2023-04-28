@@ -174,6 +174,8 @@ namespace ET
 			}
 		}
 
+		private long lastConnectTime = long.MaxValue;
+
 		/// <summary>
 		/// 发送请求连接消息
 		/// </summary>
@@ -183,6 +185,13 @@ namespace ET
 			{
 				if (this.IsConnected)
 				{
+					return;
+				}
+
+				// 300毫秒后再次update发送connect请求
+				if (timeNow < this.lastConnectTime + 300)
+				{
+					this.Service.AddToUpdate(0, this.Id);
 					return;
 				}
 				
@@ -200,9 +209,10 @@ namespace ET
 				buffer.WriteTo(5, this.RemoteConn);
 				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
 				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
-				
-				// 300毫秒后再次update发送connect请求
-				this.Service.AddToUpdate(timeNow + 300, this.Id);
+
+				this.lastConnectTime = timeNow;
+
+				this.Service.AddToUpdate(0, this.Id);
 			}
 			catch (Exception e)
 			{
@@ -437,10 +447,9 @@ namespace ET
 			this.Service.Recycle(memoryStream);
 		}
 		
-		public void Send(long actorId, object message)
+		public void Send(long actorId, MessageObject message)
 		{
 			MemoryBuffer stream = this.Service.Fetch(message);
-			MessageSerializeHelper.MessageToStream(stream, message);
 			KcpWaitPacket kcpWaitPacket = new() { ActorId = actorId, MemoryStream = stream };
 			if (!this.IsConnected)
 			{

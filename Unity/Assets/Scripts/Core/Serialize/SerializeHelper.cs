@@ -9,21 +9,8 @@ namespace ET
 	{
 		// 这里不用宏控制，因为服务端也要用，如果用宏，需要同时在服务端客户端加宏，挺麻烦的，不如直接在这里改代码
 		public const bool UseMemoryPack = true;
-		
-		public static object Deserialize(Type type, byte[] bytes, int index, int count)
-		{
-			if (UseMemoryPack)
-			{
-				return MemoryPackHelper.Deserialize(type, bytes, index, count);
-			}
-			else
-			{
-				using MemoryStream memoryStream = new MemoryStream(bytes, index, count);
-				return ProtoBuf.Serializer.Deserialize(type, memoryStream);
-			}
-		}
 
-        public static byte[] Serialize(object message)
+		public static byte[] Serialize(object message)
 		{
 			if (UseMemoryPack)
 			{
@@ -46,12 +33,29 @@ namespace ET
 				ProtobufHelper.Serialize(message, stream);	
 			}
 		}
+		
+		public static object Deserialize(Type type, byte[] bytes, int index, int count)
+		{
+			if (UseMemoryPack)
+			{
+				object o = NetServices.Instance.FetchMessage(type);
+				MemoryPackHelper.Deserialize(type, bytes, index, count, ref o);
+				return o;
+			}
+			else
+			{
+				using MemoryStream memoryStream = new MemoryStream(bytes, index, count);
+				return ProtoBuf.Serializer.Deserialize(type, memoryStream);
+			}
+		}
 
 		public static object Deserialize(Type type, MemoryBuffer stream)
 		{
 			if (UseMemoryPack)
 			{
-				return MemoryPackHelper.Deserialize(type, stream);
+				object o = NetServices.Instance.FetchMessage(type);
+				MemoryPackHelper.Deserialize(type, stream, ref o);
+				return o;
 			}
 			else
 			{

@@ -7,7 +7,7 @@ namespace ET
 	[Message(OuterMessage.HttpGetRouterResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class HttpGetRouterResponse: ProtoObject
+	public partial class HttpGetRouterResponse: MessageObject
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -22,7 +22,7 @@ namespace ET
 	[Message(OuterMessage.RouterSync)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class RouterSync: ProtoObject
+	public partial class RouterSync: MessageObject
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -38,7 +38,7 @@ namespace ET
 	[Message(OuterMessage.C2M_TestRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_TestRequest: ProtoObject, IActorLocationRequest
+	public partial class C2M_TestRequest: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -53,7 +53,7 @@ namespace ET
 	[Message(OuterMessage.M2C_TestResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_TestResponse: ProtoObject, IActorResponse
+	public partial class M2C_TestResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -77,7 +77,7 @@ namespace ET
 	[Message(OuterMessage.Actor_TransferRequest)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class Actor_TransferRequest: ProtoObject, IActorLocationRequest
+	public partial class Actor_TransferRequest: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -92,7 +92,7 @@ namespace ET
 	[Message(OuterMessage.Actor_TransferResponse)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class Actor_TransferResponse: ProtoObject, IActorLocationResponse
+	public partial class Actor_TransferResponse: MessageObject, IActorLocationResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -112,7 +112,7 @@ namespace ET
 	[Message(OuterMessage.C2G_EnterMap)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2G_EnterMap: ProtoObject, IRequest
+	public partial class C2G_EnterMap: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -123,7 +123,7 @@ namespace ET
 	[Message(OuterMessage.G2C_EnterMap)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2C_EnterMap: ProtoObject, IResponse
+	public partial class G2C_EnterMap: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -147,7 +147,7 @@ namespace ET
 	[Message(OuterMessage.MoveInfo)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class MoveInfo: ProtoObject
+	public partial class MoveInfo: MessageObject
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -166,7 +166,7 @@ namespace ET
 	[Message(OuterMessage.UnitInfo)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class UnitInfo: ProtoObject
+	public partial class UnitInfo: MessageObject
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -201,7 +201,7 @@ namespace ET
 	[Message(OuterMessage.M2C_CreateUnits)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_CreateUnits: ProtoObject, IActorMessage
+	public partial class M2C_CreateUnits: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -212,7 +212,7 @@ namespace ET
 	[Message(OuterMessage.M2C_CreateMyUnit)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_CreateMyUnit: ProtoObject, IActorMessage
+	public partial class M2C_CreateMyUnit: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -223,7 +223,7 @@ namespace ET
 	[Message(OuterMessage.M2C_StartSceneChange)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_StartSceneChange: ProtoObject, IActorMessage
+	public partial class M2C_StartSceneChange: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -238,7 +238,7 @@ namespace ET
 	[Message(OuterMessage.M2C_RemoveUnits)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_RemoveUnits: ProtoObject, IActorMessage
+	public partial class M2C_RemoveUnits: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -249,7 +249,7 @@ namespace ET
 	[Message(OuterMessage.C2M_PathfindingResult)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_PathfindingResult: ProtoObject, IActorLocationMessage
+	public partial class C2M_PathfindingResult: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -264,7 +264,7 @@ namespace ET
 	[Message(OuterMessage.C2M_Stop)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_Stop: ProtoObject, IActorLocationMessage
+	public partial class C2M_Stop: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -275,7 +275,7 @@ namespace ET
 	[Message(OuterMessage.M2C_PathfindingResult)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_PathfindingResult: ProtoObject, IActorMessage
+	public partial class M2C_PathfindingResult: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -294,7 +294,7 @@ namespace ET
 	[Message(OuterMessage.M2C_Stop)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_Stop: ProtoObject, IActorMessage
+	public partial class M2C_Stop: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -318,7 +318,7 @@ namespace ET
 	[Message(OuterMessage.C2G_Ping)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2G_Ping: ProtoObject, IRequest
+	public partial class C2G_Ping: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -329,7 +329,7 @@ namespace ET
 	[Message(OuterMessage.G2C_Ping)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2C_Ping: ProtoObject, IResponse
+	public partial class G2C_Ping: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -352,7 +352,7 @@ namespace ET
 	[Message(OuterMessage.G2C_Test)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2C_Test: ProtoObject, IMessage
+	public partial class G2C_Test: MessageObject, IMessage
 	{
 	}
 
@@ -360,7 +360,7 @@ namespace ET
 	[Message(OuterMessage.C2M_Reload)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_Reload: ProtoObject, IRequest
+	public partial class C2M_Reload: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -379,7 +379,7 @@ namespace ET
 	[Message(OuterMessage.M2C_Reload)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_Reload: ProtoObject, IResponse
+	public partial class M2C_Reload: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -399,7 +399,7 @@ namespace ET
 	[Message(OuterMessage.C2R_Login)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2R_Login: ProtoObject, IRequest
+	public partial class C2R_Login: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -418,7 +418,7 @@ namespace ET
 	[Message(OuterMessage.R2C_Login)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class R2C_Login: ProtoObject, IResponse
+	public partial class R2C_Login: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -450,7 +450,7 @@ namespace ET
 	[Message(OuterMessage.C2G_LoginGate)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2G_LoginGate: ProtoObject, IRequest
+	public partial class C2G_LoginGate: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -469,7 +469,7 @@ namespace ET
 	[Message(OuterMessage.G2C_LoginGate)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2C_LoginGate: ProtoObject, IResponse
+	public partial class G2C_LoginGate: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -492,7 +492,7 @@ namespace ET
 	[Message(OuterMessage.G2C_TestHotfixMessage)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2C_TestHotfixMessage: ProtoObject, IMessage
+	public partial class G2C_TestHotfixMessage: MessageObject, IMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -504,7 +504,7 @@ namespace ET
 	[Message(OuterMessage.C2M_TestRobotCase)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_TestRobotCase: ProtoObject, IActorLocationRequest
+	public partial class C2M_TestRobotCase: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -519,7 +519,7 @@ namespace ET
 	[Message(OuterMessage.M2C_TestRobotCase)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_TestRobotCase: ProtoObject, IActorLocationResponse
+	public partial class M2C_TestRobotCase: MessageObject, IActorLocationResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -542,7 +542,7 @@ namespace ET
 	[Message(OuterMessage.C2M_TestRobotCase2)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_TestRobotCase2: ProtoObject, IActorLocationMessage
+	public partial class C2M_TestRobotCase2: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -557,7 +557,7 @@ namespace ET
 	[Message(OuterMessage.M2C_TestRobotCase2)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_TestRobotCase2: ProtoObject, IActorLocationMessage
+	public partial class M2C_TestRobotCase2: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -573,7 +573,7 @@ namespace ET
 	[Message(OuterMessage.C2M_TransferMap)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2M_TransferMap: ProtoObject, IActorLocationRequest
+	public partial class C2M_TransferMap: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -584,7 +584,7 @@ namespace ET
 	[Message(OuterMessage.M2C_TransferMap)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class M2C_TransferMap: ProtoObject, IActorLocationResponse
+	public partial class M2C_TransferMap: MessageObject, IActorLocationResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -604,7 +604,7 @@ namespace ET
 	[Message(OuterMessage.C2G_Benchmark)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class C2G_Benchmark: ProtoObject, IRequest
+	public partial class C2G_Benchmark: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]
@@ -615,7 +615,7 @@ namespace ET
 	[Message(OuterMessage.G2C_Benchmark)]
 	[ProtoContract]
 	[MemoryPackable]
-	public partial class G2C_Benchmark: ProtoObject, IResponse
+	public partial class G2C_Benchmark: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
 		[MemoryPackOrder(0)]

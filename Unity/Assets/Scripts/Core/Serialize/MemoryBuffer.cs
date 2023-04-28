@@ -7,7 +7,8 @@ namespace ET
 {
     public class MemoryBuffer: MemoryStream, IBufferWriter<byte>
     {
-        private int _origin;
+        private int origin;
+        public bool IsFromPool;
         
         public MemoryBuffer()
         {
@@ -23,7 +24,7 @@ namespace ET
         
         public MemoryBuffer(byte[] buffer, int index, int length): base(buffer, index, length)
         {
-            _origin = index;
+            this.origin = index;
         }
 
         protected override void Dispose(bool disposing)
@@ -31,9 +32,9 @@ namespace ET
             this.Seek(0, SeekOrigin.Begin);
         }
         
-        public ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(_origin, (int)this.Position);
+        public ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(this.origin, (int)this.Position);
 
-        public ReadOnlySpan<byte> WrittenSpan => this.GetBuffer().AsSpan(_origin, (int)this.Position);
+        public ReadOnlySpan<byte> WrittenSpan => this.GetBuffer().AsSpan(this.origin, (int)this.Position);
 
         public void Advance(int count)
         {
@@ -51,7 +52,7 @@ namespace ET
             {
                 this.SetLength(this.Position + sizeHint);
             }
-            var memory = this.GetBuffer().AsMemory((int)this.Position + _origin, (int)(this.Length - this.Position));
+            var memory = this.GetBuffer().AsMemory((int)this.Position + this.origin, (int)(this.Length - this.Position));
             return memory;
         }
 
@@ -61,7 +62,7 @@ namespace ET
             {
                 this.SetLength(this.Position + sizeHint);
             }
-            var span = this.GetBuffer().AsSpan((int)this.Position + _origin, (int)(this.Length - this.Position));
+            var span = this.GetBuffer().AsSpan((int)this.Position + this.origin, (int)(this.Length - this.Position));
             return span;
         }
     }
