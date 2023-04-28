@@ -5,6 +5,21 @@ namespace ET.Client
     [ComponentOf(typeof(Unit))]
     public class GameObjectComponent: Entity, IAwake, IDestroy
     {
-        public GameObject GameObject { get; set; }
+        private GameObject gameObject;
+
+        public GameObject GameObject
+        {
+            get
+            {
+                return this.gameObject;
+            }
+            set
+            {
+                this.gameObject = value;
+                this.Transform = value.transform;
+            }
+        }
+
+        public Transform Transform { get; private set; }
     }
 }

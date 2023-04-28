@@ -34,7 +34,7 @@ namespace ET.Server
             }
             catch (Exception e)
             {
-                Log.Error($"InnerMessageDispatcher error: {args.Message.GetType().Name}\n{e}");
+                Log.Error($"InnerMessageDispatcher error: {args.Message.GetType().FullName}\n{e}");
             }
 
             await ETTask.CompletedTask;

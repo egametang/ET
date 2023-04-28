@@ -21,7 +21,7 @@ namespace ET
             {
                 if (ReferenceEquals(message, this.lastMessageInfo.Message))
                 {
-                    Log.Debug($"message serialize cache: {message.GetType().Name}");
+                    Log.Debug($"message serialize cache: {message.GetType().FullName}");
                     return lastMessageInfo.MemoryStream;
                 }
                 stream = new MemoryBuffer(); // 因为广播，可能MemoryBuffer会用多次，所以不能用对象池

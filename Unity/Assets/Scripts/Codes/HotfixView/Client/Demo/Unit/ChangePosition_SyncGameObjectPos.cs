@@ -13,7 +13,8 @@ namespace ET.Client
             {
                 return;
             }
-            Transform transform = gameObjectComponent.GameObject.transform;
+
+            Transform transform = gameObjectComponent.Transform;
             transform.position = unit.Position;
             await ETTask.CompletedTask;
         }
