@@ -5,7 +5,7 @@ namespace ET
 {
     public class ObjectPool: Singleton<ObjectPool>
     {
-        private readonly Dictionary<Type, Queue<object>> pool = new Dictionary<Type, Queue<object>>();
+        private readonly Dictionary<Type, Queue<object>> pool = new();
         
         public T Fetch<T>() where T: class
         {

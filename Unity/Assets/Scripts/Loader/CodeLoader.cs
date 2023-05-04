@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+#pragma warning disable CS0162
 
 namespace ET
 {
@@ -54,9 +55,17 @@ namespace ET
 				}
 			
 				this.model = Assembly.Load(assBytes, pdbBytes);
-				this.LoadHotfix();
+
+				if (SerializeHelper.UseMemoryPack)
+				{
+					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Init).Assembly, this.model);
+					EventSystem.Instance.Add(types);
+				}
+				else
+				{
+					this.LoadHotfix();
+				}
 			}
-			
 			IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
 			start.Run();
 		}
@@ -83,6 +92,9 @@ namespace ET
 				string logicName = Path.GetFileNameWithoutExtension(logicFiles[0]);
 				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.dll"));
 				pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.pdb"));
+				
+				//assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"));
+				//pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"));
 			}
 
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);

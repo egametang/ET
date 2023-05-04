@@ -19,7 +19,7 @@ namespace ET.Server
 
                 if (entity is not E ee)
                 {
-                    Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof (E).Name} --{typeof (Request).Name}");
+                    Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Request).FullName}");
                     return;
                 }
 

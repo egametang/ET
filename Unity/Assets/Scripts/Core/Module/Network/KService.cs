@@ -149,11 +149,13 @@ namespace ET
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
         
+#if !UNITY
         // 下次时间更新的channel
-        private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
+        private readonly MultiMap<long, long> timeId = new();
         private readonly List<long> timeOutTime = new List<long>();
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
+#endif
         
         public override bool IsDispose()
         {
@@ -519,7 +521,7 @@ namespace ET
             Log.Info($"channel send fin: {localConn} {remoteConn} {address} {error}");
         }
         
-        public override void Send(long channelId, long actorId, object message)
+        public override void Send(long channelId, long actorId, MessageObject message)
         {
             KChannel channel = this.Get(channelId);
             if (channel == null)
@@ -527,16 +529,15 @@ namespace ET
                 return;
             }
             
-            MemoryStream memoryStream = this.GetMemoryStream(message);
-            channel.Send(actorId, memoryStream);
+            channel.Send(actorId, message);
         }
 
         public override void Update()
         {
             uint timeNow = this.TimeNow;
-            
+
             this.TimerOut(timeNow);
-            
+
             this.CheckWaitAcceptChannel(timeNow);
             
             this.Recv();
@@ -598,6 +599,7 @@ namespace ET
         // 服务端需要看channel的update时间是否已到
         public void AddToUpdate(long time, long id)
         {
+#if !UNITY
             if (time == 0)
             {
                 this.updateIds.Add(id);
@@ -608,11 +610,16 @@ namespace ET
                 this.minTime = time;
             }
             this.timeId.Add(time, id);
+#else
+            this.updateIds.Add(id);
+#endif
         }
         
+
         // 计算到期需要update的channel
         private void TimerOut(uint timeNow)
         {
+#if !UNITY
             if (this.timeId.Count == 0)
             {
                 return;
@@ -646,6 +653,7 @@ namespace ET
                 }
                 this.timeId.Remove(k);
             }
+#endif
         }
     }
 }

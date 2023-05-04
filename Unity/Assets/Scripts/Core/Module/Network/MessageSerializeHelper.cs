@@ -5,25 +5,9 @@ namespace ET
 {
     public static class MessageSerializeHelper
     {
-        private static MemoryStream GetStream(int count = 0)
-        {
-            MemoryStream stream;
-            if (count > 0)
-            {
-                stream = new MemoryStream(count);
-            }
-            else
-            {
-                stream = new MemoryStream();
-            }
-
-            return stream;
-        }
-        
-        public static (ushort, MemoryStream) MessageToStream(object message)
+        public static ushort MessageToStream(MemoryBuffer stream, object message)
         {
             int headOffset = Packet.ActorIdLength;
-            MemoryStream stream = GetStream(headOffset + Packet.OpcodeLength);
 
             ushort opcode = NetServices.Instance.GetOpcode(message.GetType());
             
@@ -35,7 +19,7 @@ namespace ET
             SerializeHelper.Serialize(message, stream);
             
             stream.Seek(0, SeekOrigin.Begin);
-            return (opcode, stream);
+            return opcode;
         }
     }
 }

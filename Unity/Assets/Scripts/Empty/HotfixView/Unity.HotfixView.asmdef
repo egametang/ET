@@ -8,11 +8,10 @@
         "Unity.ModelView",
         "Unity.Core",
         "Unity.Mathematics",
-        "Unity.Loader"
+        "Unity.Loader",
+        "MemoryPack"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

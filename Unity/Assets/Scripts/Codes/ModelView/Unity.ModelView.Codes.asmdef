@@ -8,9 +8,7 @@
         "Unity.Mathematics",
         "Unity.Loader"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

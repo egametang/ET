@@ -11,8 +11,6 @@ namespace ET
 {
     public static class BuildAssembliesHelper
     {
-        public const string CodeDir = "Assets/Bundles/Code/";
-
         public static void BuildModel(CodeOptimization codeOptimization, GlobalConfig globalConfig)
         {
             List<string> codes;
@@ -53,8 +51,8 @@ namespace ET
 
             BuildAssembliesHelper.BuildMuteAssembly("Model", codes, Array.Empty<string>(), codeOptimization, globalConfig.CodeMode);
 
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.dll"), Path.Combine(CodeDir, $"Model.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.pdb"), Path.Combine(CodeDir, $"Model.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.dll"), Path.Combine(Define.CodeDir, $"Model.dll.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.pdb"), Path.Combine(Define.CodeDir, $"Model.pdb.bytes"), true);
             Debug.Log("copy Model.dll to Bundles/Code success!");
         }
 
@@ -102,8 +100,8 @@ namespace ET
             BuildAssembliesHelper.BuildMuteAssembly("Hotfix", codes, new[] { Path.Combine(Define.BuildOutputDir, "Model.dll") }, codeOptimization,
                 globalConfig.CodeMode);
 
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(CodeDir, $"Hotfix.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(CodeDir, $"Hotfix.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(Define.CodeDir, $"Hotfix.dll.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(Define.CodeDir, $"Hotfix.pdb.bytes"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.dll"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.pdb"), true);
             Debug.Log("copy Hotfix.dll to Bundles/Code success!");

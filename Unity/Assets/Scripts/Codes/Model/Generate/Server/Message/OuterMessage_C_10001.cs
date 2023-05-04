@@ -1,28 +1,35 @@
 using ET;
 using ProtoBuf;
+using MemoryPack;
 using System.Collections.Generic;
 namespace ET
 {
 	[Message(OuterMessage.HttpGetRouterResponse)]
 	[ProtoContract]
-	public partial class HttpGetRouterResponse: ProtoObject
+	[MemoryPackable]
+	public partial class HttpGetRouterResponse: MessageObject
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public List<string> Realms { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public List<string> Routers { get; set; }
 
 	}
 
 	[Message(OuterMessage.RouterSync)]
 	[ProtoContract]
-	public partial class RouterSync: ProtoObject
+	[MemoryPackable]
+	public partial class RouterSync: MessageObject
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public uint ConnectId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public string Address { get; set; }
 
 	}
@@ -30,30 +37,38 @@ namespace ET
 	[ResponseType(nameof(M2C_TestResponse))]
 	[Message(OuterMessage.C2M_TestRequest)]
 	[ProtoContract]
-	public partial class C2M_TestRequest: ProtoObject, IActorLocationRequest
+	[MemoryPackable]
+	public partial class C2M_TestRequest: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public string request { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_TestResponse)]
 	[ProtoContract]
-	public partial class M2C_TestResponse: ProtoObject, IActorResponse
+	[MemoryPackable]
+	public partial class M2C_TestResponse: MessageObject, IActorResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public string response { get; set; }
 
 	}
@@ -61,27 +76,34 @@ namespace ET
 	[ResponseType(nameof(Actor_TransferResponse))]
 	[Message(OuterMessage.Actor_TransferRequest)]
 	[ProtoContract]
-	public partial class Actor_TransferRequest: ProtoObject, IActorLocationRequest
+	[MemoryPackable]
+	public partial class Actor_TransferRequest: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int MapIndex { get; set; }
 
 	}
 
 	[Message(OuterMessage.Actor_TransferResponse)]
 	[ProtoContract]
-	public partial class Actor_TransferResponse: ProtoObject, IActorLocationResponse
+	[MemoryPackable]
+	public partial class Actor_TransferResponse: MessageObject, IActorLocationResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 	}
@@ -89,163 +111,205 @@ namespace ET
 	[ResponseType(nameof(G2C_EnterMap))]
 	[Message(OuterMessage.C2G_EnterMap)]
 	[ProtoContract]
-	public partial class C2G_EnterMap: ProtoObject, IRequest
+	[MemoryPackable]
+	public partial class C2G_EnterMap: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(OuterMessage.G2C_EnterMap)]
 	[ProtoContract]
-	public partial class G2C_EnterMap: ProtoObject, IResponse
+	[MemoryPackable]
+	public partial class G2C_EnterMap: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 // 自己unitId
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public long MyId { get; set; }
 
 	}
 
 	[Message(OuterMessage.MoveInfo)]
 	[ProtoContract]
-	public partial class MoveInfo: ProtoObject
+	[MemoryPackable]
+	public partial class MoveInfo: MessageObject
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public List<Unity.Mathematics.float3> Points { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public Unity.Mathematics.quaternion Rotation { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public int TurnSpeed { get; set; }
 
 	}
 
 	[Message(OuterMessage.UnitInfo)]
 	[ProtoContract]
-	public partial class UnitInfo: ProtoObject
+	[MemoryPackable]
+	public partial class UnitInfo: MessageObject
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public long UnitId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int ConfigId { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public int Type { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
 		[ProtoMember(5)]
+		[MemoryPackOrder(4)]
 		public Unity.Mathematics.float3 Forward { get; set; }
 
 		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
 		[ProtoMember(6)]
+		[MemoryPackOrder(5)]
 		public Dictionary<int, long> KV { get; set; }
 		[ProtoMember(7)]
+		[MemoryPackOrder(6)]
 		public MoveInfo MoveInfo { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_CreateUnits)]
 	[ProtoContract]
-	public partial class M2C_CreateUnits: ProtoObject, IActorMessage
+	[MemoryPackable]
+	public partial class M2C_CreateUnits: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public List<UnitInfo> Units { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_CreateMyUnit)]
 	[ProtoContract]
-	public partial class M2C_CreateMyUnit: ProtoObject, IActorMessage
+	[MemoryPackable]
+	public partial class M2C_CreateMyUnit: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public UnitInfo Unit { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_StartSceneChange)]
 	[ProtoContract]
-	public partial class M2C_StartSceneChange: ProtoObject, IActorMessage
+	[MemoryPackable]
+	public partial class M2C_StartSceneChange: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public long SceneInstanceId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public string SceneName { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_RemoveUnits)]
 	[ProtoContract]
-	public partial class M2C_RemoveUnits: ProtoObject, IActorMessage
+	[MemoryPackable]
+	public partial class M2C_RemoveUnits: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public List<long> Units { get; set; }
 
 	}
 
 	[Message(OuterMessage.C2M_PathfindingResult)]
 	[ProtoContract]
-	public partial class C2M_PathfindingResult: ProtoObject, IActorLocationMessage
+	[MemoryPackable]
+	public partial class C2M_PathfindingResult: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
 	}
 
 	[Message(OuterMessage.C2M_Stop)]
 	[ProtoContract]
-	public partial class C2M_Stop: ProtoObject, IActorLocationMessage
+	[MemoryPackable]
+	public partial class C2M_Stop: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_PathfindingResult)]
 	[ProtoContract]
-	public partial class M2C_PathfindingResult: ProtoObject, IActorMessage
+	[MemoryPackable]
+	public partial class M2C_PathfindingResult: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public long Id { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public List<Unity.Mathematics.float3> Points { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_Stop)]
 	[ProtoContract]
-	public partial class M2C_Stop: ProtoObject, IActorMessage
+	[MemoryPackable]
+	public partial class M2C_Stop: MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int Error { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public long Id { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public Unity.Mathematics.quaternion Rotation { get; set; }
 
 	}
@@ -253,64 +317,80 @@ namespace ET
 	[ResponseType(nameof(G2C_Ping))]
 	[Message(OuterMessage.C2G_Ping)]
 	[ProtoContract]
-	public partial class C2G_Ping: ProtoObject, IRequest
+	[MemoryPackable]
+	public partial class C2G_Ping: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(OuterMessage.G2C_Ping)]
 	[ProtoContract]
-	public partial class G2C_Ping: ProtoObject, IResponse
+	[MemoryPackable]
+	public partial class G2C_Ping: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public long Time { get; set; }
 
 	}
 
 	[Message(OuterMessage.G2C_Test)]
 	[ProtoContract]
-	public partial class G2C_Test: ProtoObject, IMessage
+	[MemoryPackable]
+	public partial class G2C_Test: MessageObject, IMessage
 	{
 	}
 
 	[ResponseType(nameof(M2C_Reload))]
 	[Message(OuterMessage.C2M_Reload)]
 	[ProtoContract]
-	public partial class C2M_Reload: ProtoObject, IRequest
+	[MemoryPackable]
+	public partial class C2M_Reload: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public string Account { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Password { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_Reload)]
 	[ProtoContract]
-	public partial class M2C_Reload: ProtoObject, IResponse
+	[MemoryPackable]
+	public partial class M2C_Reload: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 	}
@@ -318,39 +398,50 @@ namespace ET
 	[ResponseType(nameof(R2C_Login))]
 	[Message(OuterMessage.C2R_Login)]
 	[ProtoContract]
-	public partial class C2R_Login: ProtoObject, IRequest
+	[MemoryPackable]
+	public partial class C2R_Login: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public string Account { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Password { get; set; }
 
 	}
 
 	[Message(OuterMessage.R2C_Login)]
 	[ProtoContract]
-	public partial class R2C_Login: ProtoObject, IResponse
+	[MemoryPackable]
+	public partial class R2C_Login: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public string Address { get; set; }
 
 		[ProtoMember(5)]
+		[MemoryPackOrder(4)]
 		public long Key { get; set; }
 
 		[ProtoMember(6)]
+		[MemoryPackOrder(5)]
 		public long GateId { get; set; }
 
 	}
@@ -358,42 +449,53 @@ namespace ET
 	[ResponseType(nameof(G2C_LoginGate))]
 	[Message(OuterMessage.C2G_LoginGate)]
 	[ProtoContract]
-	public partial class C2G_LoginGate: ProtoObject, IRequest
+	[MemoryPackable]
+	public partial class C2G_LoginGate: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public long Key { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public long GateId { get; set; }
 
 	}
 
 	[Message(OuterMessage.G2C_LoginGate)]
 	[ProtoContract]
-	public partial class G2C_LoginGate: ProtoObject, IResponse
+	[MemoryPackable]
+	public partial class G2C_LoginGate: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public long PlayerId { get; set; }
 
 	}
 
 	[Message(OuterMessage.G2C_TestHotfixMessage)]
 	[ProtoContract]
-	public partial class G2C_TestHotfixMessage: ProtoObject, IMessage
+	[MemoryPackable]
+	public partial class G2C_TestHotfixMessage: MessageObject, IMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public string Info { get; set; }
 
 	}
@@ -401,54 +503,68 @@ namespace ET
 	[ResponseType(nameof(M2C_TestRobotCase))]
 	[Message(OuterMessage.C2M_TestRobotCase)]
 	[ProtoContract]
-	public partial class C2M_TestRobotCase: ProtoObject, IActorLocationRequest
+	[MemoryPackable]
+	public partial class C2M_TestRobotCase: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int N { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_TestRobotCase)]
 	[ProtoContract]
-	public partial class M2C_TestRobotCase: ProtoObject, IActorLocationResponse
+	[MemoryPackable]
+	public partial class M2C_TestRobotCase: MessageObject, IActorLocationResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
+		[MemoryPackOrder(3)]
 		public int N { get; set; }
 
 	}
 
 	[Message(OuterMessage.C2M_TestRobotCase2)]
 	[ProtoContract]
-	public partial class C2M_TestRobotCase2: ProtoObject, IActorLocationMessage
+	[MemoryPackable]
+	public partial class C2M_TestRobotCase2: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int N { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_TestRobotCase2)]
 	[ProtoContract]
-	public partial class M2C_TestRobotCase2: ProtoObject, IActorLocationMessage
+	[MemoryPackable]
+	public partial class M2C_TestRobotCase2: MessageObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int N { get; set; }
 
 	}
@@ -456,24 +572,30 @@ namespace ET
 	[ResponseType(nameof(M2C_TransferMap))]
 	[Message(OuterMessage.C2M_TransferMap)]
 	[ProtoContract]
-	public partial class C2M_TransferMap: ProtoObject, IActorLocationRequest
+	[MemoryPackable]
+	public partial class C2M_TransferMap: MessageObject, IActorLocationRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(OuterMessage.M2C_TransferMap)]
 	[ProtoContract]
-	public partial class M2C_TransferMap: ProtoObject, IActorLocationResponse
+	[MemoryPackable]
+	public partial class M2C_TransferMap: MessageObject, IActorLocationResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 	}
@@ -481,24 +603,30 @@ namespace ET
 	[ResponseType(nameof(G2C_Benchmark))]
 	[Message(OuterMessage.C2G_Benchmark)]
 	[ProtoContract]
-	public partial class C2G_Benchmark: ProtoObject, IRequest
+	[MemoryPackable]
+	public partial class C2G_Benchmark: MessageObject, IRequest
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(OuterMessage.G2C_Benchmark)]
 	[ProtoContract]
-	public partial class G2C_Benchmark: ProtoObject, IResponse
+	[MemoryPackable]
+	public partial class G2C_Benchmark: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
+		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
+		[MemoryPackOrder(1)]
 		public int Error { get; set; }
 
 		[ProtoMember(3)]
+		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
 	}

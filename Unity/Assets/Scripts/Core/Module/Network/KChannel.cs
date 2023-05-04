@@ -12,7 +12,7 @@ namespace ET
 	public struct KcpWaitPacket
 	{
 		public long ActorId;
-		public MemoryStream MemoryStream;
+		public MemoryBuffer MemoryStream;
 	}
 	
 	public class KChannel : AChannel
@@ -48,9 +48,9 @@ namespace ET
 		
 		private const int maxPacketSize = 10000;
 
-		private readonly MemoryStream ms = new MemoryStream(maxPacketSize);
+		private readonly MemoryBuffer ms = new MemoryBuffer(maxPacketSize);
 
-		private MemoryStream readMemory;
+		private MemoryBuffer readMemory;
 		private int needReadSplitCount;
 		
 		private void InitKcp()
@@ -174,6 +174,8 @@ namespace ET
 			}
 		}
 
+		private long lastConnectTime = long.MaxValue;
+
 		/// <summary>
 		/// 发送请求连接消息
 		/// </summary>
@@ -183,6 +185,13 @@ namespace ET
 			{
 				if (this.IsConnected)
 				{
+					return;
+				}
+
+				// 300毫秒后再次update发送connect请求
+				if (timeNow < this.lastConnectTime + 300)
+				{
+					this.Service.AddToUpdate(0, this.Id);
 					return;
 				}
 				
@@ -200,9 +209,10 @@ namespace ET
 				buffer.WriteTo(5, this.RemoteConn);
 				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
 				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
-				
-				// 300毫秒后再次update发送connect请求
-				this.Service.AddToUpdate(timeNow + 300, this.Id);
+
+				this.lastConnectTime = timeNow;
+
+				this.Service.AddToUpdate(0, this.Id);
 			}
 			catch (Exception e)
 			{
@@ -323,7 +333,7 @@ namespace ET
 								this.OnError(ErrorCore.ERR_KcpSplitCountError);
 								return;
 							}
-							this.readMemory = new MemoryStream(this.needReadSplitCount);
+							this.readMemory = new MemoryBuffer(this.needReadSplitCount);
 							this.readMemory.SetLength(this.needReadSplitCount);
 							this.readMemory.Seek(0, SeekOrigin.Begin);
 							continue;
@@ -341,7 +351,7 @@ namespace ET
 						this.readMemory.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
 						break;
 				}
-				MemoryStream mem = this.readMemory;
+				MemoryBuffer mem = this.readMemory;
 				this.readMemory = null;
 				this.OnRead(mem);
 			}
@@ -387,7 +397,7 @@ namespace ET
 			{
 				return;
 			}
-			MemoryStream memoryStream = kcpWaitPacket.MemoryStream;
+			MemoryBuffer memoryStream = kcpWaitPacket.MemoryStream;
 			
 			switch (this.Service.ServiceType)
 			{
@@ -432,11 +442,15 @@ namespace ET
 			}
 
 			this.Service.AddToUpdate(0, this.Id);
+			
+			// 回收MemoryBuffer，减少GC
+			this.Service.Recycle(memoryStream);
 		}
 		
-		public void Send(long actorId, MemoryStream stream)
+		public void Send(long actorId, MessageObject message)
 		{
-			KcpWaitPacket kcpWaitPacket = new KcpWaitPacket() { ActorId = actorId, MemoryStream = stream };
+			MemoryBuffer stream = this.Service.Fetch(message);
+			KcpWaitPacket kcpWaitPacket = new() { ActorId = actorId, MemoryStream = stream };
 			if (!this.IsConnected)
 			{
 				this.sendBuffer.Enqueue(kcpWaitPacket);
@@ -469,10 +483,11 @@ namespace ET
 				this.OnError(ErrorCore.ERR_KcpWaitSendSizeTooLarge);
 				return;
 			}
+
 			this.KcpSend(kcpWaitPacket);
 		}
 		
-		private void OnRead(MemoryStream memoryStream)
+		private void OnRead(MemoryBuffer memoryStream)
 		{
 			try
 			{

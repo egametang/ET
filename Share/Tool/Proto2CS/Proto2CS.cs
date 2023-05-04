@@ -76,6 +76,7 @@ namespace ET
             StringBuilder sb = new StringBuilder();
             sb.Append("using ET;\n");
             sb.Append("using ProtoBuf;\n");
+            sb.Append("using MemoryPack;\n");
             sb.Append("using System.Collections.Generic;\n");
             sb.Append($"namespace {ns}\n");
             sb.Append("{\n");
@@ -119,7 +120,8 @@ namespace ET
 
                     sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
-                    sb.Append($"\tpublic partial class {msgName}: ProtoObject");
+                    sb.Append($"\t[MemoryPackable]\n");
+                    sb.Append($"\tpublic partial class {msgName}: MessageObject");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
                         sb.Append($", {parentClass}\n");
@@ -225,10 +227,11 @@ namespace ET
             string tail = newline.Substring(end + 1);
             ss = tail.Trim().Replace(";", "").Split(" ");
             string v = ss[0];
-            string n = ss[2];
+            int n = int.Parse(ss[2]);
             
             sb.Append("\t\t[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]\n");
             sb.Append($"\t\t[ProtoMember({n})]\n");
+            sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
             sb.Append($"\t\tpublic Dictionary<{keyType}, {valueType}> {v} {{ get; set; }}\n");
         }
         
@@ -245,6 +248,7 @@ namespace ET
                 int n = int.Parse(ss[4]);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
+                sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
                 sb.Append($"\t\tpublic List<{type}> {name} {{ get; set; }}\n\n");
             }
             catch (Exception e)
@@ -303,6 +307,7 @@ namespace ET
                 string typeCs = ConvertType(type);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
+                sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
                 sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
             }
             catch (Exception e)

@@ -1,4 +1,7 @@
-﻿namespace ET
+﻿using System.IO;
+using MemoryPack;
+
+namespace ET
 {
     namespace EventType
     {
@@ -33,7 +36,8 @@
             
             MongoHelper.Init();
             ProtobufHelper.Init();
-            
+            MemoryPackHelper.Init();
+
             Game.AddSingleton<NetServices>();
             Game.AddSingleton<Root>();
             Game.AddSingleton<LSSington>();

@@ -90,12 +90,14 @@ namespace ET
 			this.socket = null;
 		}
 
-		public void Send(long actorId, MemoryStream stream)
+		public void Send(long actorId, MessageObject message)
 		{
 			if (this.IsDisposed)
 			{
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
+			
+			MemoryBuffer stream = this.Service.Fetch(message);
 
 			switch (this.Service.ServiceType)
 			{
@@ -127,6 +129,8 @@ namespace ET
 					break;
 				}
 			}
+			
+			this.Service.Recycle(stream);
 			
 			if (!this.isSending)
 			{
@@ -352,7 +356,7 @@ namespace ET
 			}
 		}
 		
-		private void OnRead(MemoryStream memoryStream)
+		private void OnRead(MemoryBuffer memoryStream)
 		{
 			try
 			{

@@ -14,13 +14,13 @@ namespace ET
 
         private readonly WebSocket webSocket;
 
-        private readonly Queue<MemoryStream> queue = new Queue<MemoryStream>();
+        private readonly Queue<MemoryBuffer> queue = new();
 
         private bool isSending;
 
         private bool isConnected;
 
-        private readonly MemoryStream recvStream;
+        private readonly MemoryBuffer recvStream;
 
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -31,7 +31,7 @@ namespace ET
             this.ChannelType = ChannelType.Accept;
             this.WebSocketContext = webSocketContext;
             this.webSocket = webSocketContext.WebSocket;
-            this.recvStream = new MemoryStream(ushort.MaxValue);
+            this.recvStream = new MemoryBuffer(ushort.MaxValue);
 
             isConnected = true;
             
@@ -48,7 +48,7 @@ namespace ET
             this.Service = service;
             this.ChannelType = ChannelType.Connect;
             this.webSocket = webSocket;
-            this.recvStream = new MemoryStream(ushort.MaxValue);
+            this.recvStream = new MemoryBuffer(ushort.MaxValue);
 
             isConnected = false;
             
@@ -86,8 +86,10 @@ namespace ET
             }
         }
 
-        public void Send(MemoryStream stream)
+        public void Send(MessageObject message)
         {
+            MemoryBuffer stream = this.Service.Fetch(message);
+            
             switch (this.Service.ServiceType)
             {
                 case ServiceType.Inner:
@@ -105,7 +107,7 @@ namespace ET
             }
         }
 
-        public async ETTask StartSend()
+        private async ETTask StartSend()
         {
             if (this.IsDisposed)
             {
@@ -129,10 +131,13 @@ namespace ET
                         return;
                     }
 
-                    MemoryStream bytes = this.queue.Dequeue();
+                    MemoryBuffer bytes = this.queue.Dequeue();
                     try
                     {
-                        await this.webSocket.SendAsync(new ReadOnlyMemory<byte>(bytes.GetBuffer(), (int)bytes.Position, (int)(bytes.Length - bytes.Position)), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
+                        await this.webSocket.SendAsync(bytes.GetMemory(), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
+                        
+                        this.Service.Recycle(bytes);
+                        
                         if (this.IsDisposed)
                         {
                             return;
@@ -152,7 +157,7 @@ namespace ET
             }
         }
 
-        private byte[] cache = new byte[ushort.MaxValue];
+        private readonly byte[] cache = new byte[ushort.MaxValue];
 
         public async ETTask StartRecv()
         {
@@ -208,7 +213,7 @@ namespace ET
             }
         }
         
-        private void OnRead(MemoryStream memoryStream)
+        private void OnRead(MemoryBuffer memoryStream)
         {
             try
             {
