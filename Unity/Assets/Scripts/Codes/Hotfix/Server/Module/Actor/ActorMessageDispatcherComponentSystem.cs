@@ -98,7 +98,7 @@ namespace ET.Server
             List<ActorMessageDispatcherInfo> list;
             if (!self.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
             {
-                throw new Exception($"not found message handler: {message} {entity.GetType().Name}");
+                throw new Exception($"not found message handler: {message} {entity.GetType().FullName}");
             }
 
             SceneType sceneType = entity.Domain.SceneType;

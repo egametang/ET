@@ -18,7 +18,7 @@ namespace ET
         {
             if (object.ReferenceEquals(lastMessageInfo.Message, message))
             {
-                Log.Debug($"message serialize cache: {message.GetType().Name}");
+                Log.Debug($"message serialize cache: {message.GetType().FullName}");
                 return lastMessageInfo.MemoryStream;
             }
 

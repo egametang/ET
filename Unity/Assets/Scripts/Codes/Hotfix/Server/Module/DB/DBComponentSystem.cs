@@ -138,7 +138,7 @@ namespace ET.Server
 		    
 		    if (collection == null)
 		    {
-			    collection = entity.GetType().Name;
+			    collection = entity.GetType().FullName;
 		    }
 
 		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
@@ -158,7 +158,7 @@ namespace ET.Server
 
 		    if (collection == null)
 		    {
-			    collection = entity.GetType().Name;
+			    collection = entity.GetType().FullName;
 		    }
 
 		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
@@ -184,7 +184,7 @@ namespace ET.Server
 					    continue;
 				    }
 
-				    await self.GetCollection(entity.GetType().Name)
+				    await self.GetCollection(entity.GetType().FullName)
 						    .ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 			    }
 		    }

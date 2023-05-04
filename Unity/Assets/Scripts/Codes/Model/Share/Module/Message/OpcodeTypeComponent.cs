@@ -77,7 +77,7 @@ namespace ET
         {
             if (!self.requestResponse.TryGetValue(request, out Type response))
             {
-                throw new Exception($"not found response type, request type: {request.GetType().Name}");
+                throw new Exception($"not found response type, request type: {request.GetType().FullName}");
             }
             return response;
         }

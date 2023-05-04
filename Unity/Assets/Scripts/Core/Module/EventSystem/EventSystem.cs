@@ -616,7 +616,7 @@ namespace ET
                     
                 if (!(eventInfo.IEvent is AEvent<S, T> aEvent))
                 {
-                    Log.Error($"event error: {eventInfo.IEvent.GetType().Name}");
+                    Log.Error($"event error: {eventInfo.IEvent.GetType().FullName}");
                     continue;
                 }
 
@@ -652,7 +652,7 @@ namespace ET
                 
                 if (!(eventInfo.IEvent is AEvent<S, T> aEvent))
                 {
-                    Log.Error($"event error: {eventInfo.IEvent.GetType().Name}");
+                    Log.Error($"event error: {eventInfo.IEvent.GetType().FullName}");
                     continue;
                 }
                 
