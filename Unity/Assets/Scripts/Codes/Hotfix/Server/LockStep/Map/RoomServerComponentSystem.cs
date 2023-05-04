@@ -16,5 +16,17 @@ namespace ET.Server
                 }
             }
         }
+
+        public static bool IsAllPlayerProgress100(this RoomServerComponent self)
+        {
+            foreach (RoomPlayer roomPlayer in self.Children.Values)
+            {
+                if (roomPlayer.Progress != 100)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

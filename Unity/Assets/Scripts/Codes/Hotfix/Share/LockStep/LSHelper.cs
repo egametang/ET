@@ -14,7 +14,7 @@ namespace ET
             self.LSWorld = MongoHelper.Deserialize<LSWorld>(dataBuffer);
 
             // 从回滚的地方重新执行预测的帧
-            for (int i = frameBuffer.RealFrame + 1; i < frameBuffer.NowFrame; ++i)
+            for (int i = frameBuffer.RealFrame + 1; i < frameBuffer.PredictionFrame; ++i)
             {
                 OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(i);
                 self.Update(oneFrameMessages);

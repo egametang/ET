@@ -7,8 +7,13 @@ namespace ET.Server
     {
         protected override async ETTask Run(Room room, FrameMessage message)
         {
-            RoomServerUpdater roomServerUpdater = room.GetComponent<RoomServerUpdater>();
-            roomServerUpdater.Add(message);
+            FrameBuffer frameBuffer = room.FrameBuffer;
+            if (message.Frame < frameBuffer.RealFrame)  // 小于RealFrame，丢弃
+            {
+                return;
+            }
+            OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(message.Frame);
+            oneFrameMessages.Inputs[message.PlayerId] = message.Input;
 
             if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)
             {

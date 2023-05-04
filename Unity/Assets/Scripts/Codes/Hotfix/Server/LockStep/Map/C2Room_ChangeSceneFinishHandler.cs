@@ -11,15 +11,9 @@ namespace ET.Server
         {
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
             RoomPlayer roomPlayer = room.GetComponent<RoomServerComponent>().GetChild<RoomPlayer>(message.PlayerId);
-            roomPlayer.IsJoinRoom = true;
-            roomServerComponent.AlreadyJoinRoomCount++;
+            roomPlayer.Progress = 100;
 
-            if (roomServerComponent.AlreadyJoinRoomCount <= LSConstValue.MatchCount)
-            {
-                // 通知给已加进来的客户端每个玩家的进度
-            }
-
-            if (roomServerComponent.AlreadyJoinRoomCount == LSConstValue.MatchCount)
+            if (roomServerComponent.IsAllPlayerProgress100())
             {
                 await TimerComponent.Instance.WaitAsync(1000);
 
@@ -40,7 +34,6 @@ namespace ET.Server
 
                 RoomMessageHelper.BroadCast(room, room2CStart);
             }
-
             await ETTask.CompletedTask;
         }
     }

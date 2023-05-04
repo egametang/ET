@@ -31,14 +31,14 @@ namespace ET.Client
             FrameBuffer frameBuffer = room.FrameBuffer;
             long timeNow = TimeHelper.ServerFrameTime();
             Scene clientScene = room.GetParent<Scene>();
-            if (!room.FixedTimeCounter.IsTimeout(timeNow, frameBuffer.NowFrame))
+            if (!room.FixedTimeCounter.IsTimeout(timeNow, frameBuffer.PredictionFrame))
             {
                 return;
             }
             
-            OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.NowFrame);
+            OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.PredictionFrame);
             room.Update(oneFrameMessages);
-            ++frameBuffer.NowFrame;
+            ++frameBuffer.PredictionFrame;
 
             FrameMessage frameMessage = NetServices.Instance.FetchMessage<FrameMessage>();
             frameMessage.Frame = oneFrameMessages.Frame;
@@ -64,40 +64,12 @@ namespace ET.Client
         private static OneFrameMessages GetPredictionOneFrameMessage(this RoomClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
+            OneFrameMessages predictionFrame = room.FrameBuffer.GetFrame(frame);
             OneFrameMessages preFrame = room.FrameBuffer.GetFrame(frame - 1);
-            OneFrameMessages predictionFrame  = preFrame != null? MongoHelper.Clone(preFrame) : new OneFrameMessages();
+            preFrame?.CopyTo(predictionFrame);
             predictionFrame.Frame = frame;
-
-            predictionFrame.Inputs[self.MyId] = new() {V = self.Input.V, Button = self.Input.Button};
+            predictionFrame.Inputs[self.MyId] = self.Input;
             
-            room.FrameBuffer.AddFrame(predictionFrame);
-            
-            return predictionFrame;
-        }
-        
-        // 获取预测一帧的消息
-        private static OneFrameMessages GetRePredictionOneFrameMessage(this RoomClientUpdater self, int frame)
-        {
-            Room room = self.GetParent<Room>();
-            FrameBuffer frameBuffer = room.FrameBuffer;
-            OneFrameMessages preFrame = frameBuffer.GetFrame(frame - 1);
-            OneFrameMessages predictionFrame = frameBuffer.GetFrame(frame);
-            foreach (var kv in predictionFrame.Inputs)
-            {
-                if (kv.Key == self.MyId)
-                {
-                    continue;
-                }
-
-                LSInput preInput = preFrame.Inputs[kv.Key];
-                predictionFrame.Inputs[kv.Key] = preInput;
-            }
-
-            LSInput oldMyInput = frameBuffer.GetFrame(predictionFrame.Frame).Inputs[self.MyId];
-
-            predictionFrame.Inputs[self.MyId] = oldMyInput;
-            
-            predictionFrame.Frame = frame;
             return predictionFrame;
         }
     }

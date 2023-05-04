@@ -9,6 +9,7 @@ namespace ET.Client
         {
             Room room = session.DomainScene().GetComponent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
+            
             if (message.Frame != frameBuffer.RealFrame + 1)
             {
                 throw new Exception($"recv oneframeMessage frame error: {message.Frame} {frameBuffer.RealFrame}");
@@ -21,8 +22,11 @@ namespace ET.Client
             {
                 // 回滚到frameBuffer.RealFrame
                 LSHelper.Rollback(room, frameBuffer.RealFrame + 1);
+                
+                message.CopyTo(predictionMessage);
             }
-            frameBuffer.AddRealFrame(message);
+            ++frameBuffer.RealFrame;
+            
             await ETTask.CompletedTask;
         }
     }

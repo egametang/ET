@@ -20,44 +20,28 @@ namespace ET.Server
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             long timeNow = TimeHelper.ServerFrameTime();
-            if (!room.FixedTimeCounter.IsTimeout(timeNow, frameBuffer.NowFrame))
+            
+            
+            int frame = frameBuffer.RealFrame + 1;
+            if (!room.FixedTimeCounter.IsTimeout(timeNow, frame))
             {
                 return;
             }
-
-            if (!self.FrameMessages.TryGetValue(self.NowFrame, out OneFrameMessages oneFrameMessages))
-            {
-                return;
-            }
-
+            
+            OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(frame);
             if (oneFrameMessages.Inputs.Count != LSConstValue.MatchCount)
             {
                 return;
             }
-            self.FrameMessages.Remove(oneFrameMessages.Frame);
-            ++self.NowFrame;
+            ++frameBuffer.RealFrame;
             
-            RoomMessageHelper.BroadCast(room, oneFrameMessages);
-        }
-        
-        
-        public static void Add(this RoomServerUpdater self, FrameMessage message)
-        {
-            if (message.Frame < self.NowFrame)
-            {
-                return;
-            }
+            OneFrameMessages sendMessage = NetServices.Instance.FetchMessage<OneFrameMessages>();
             
-            OneFrameMessages oneFrameMessages;
-            if (!self.FrameMessages.TryGetValue(message.Frame, out oneFrameMessages))
-            {
-                oneFrameMessages = new OneFrameMessages
-                {
-                    Frame = message.Frame,
-                };
-                self.FrameMessages.Add(oneFrameMessages.Frame, oneFrameMessages);
-            }
-            oneFrameMessages.Inputs[message.PlayerId] = message.Input;
+            oneFrameMessages.CopyTo(sendMessage);
+            oneFrameMessages.Inputs.Clear();
+            oneFrameMessages.Frame = 0;
+            
+            RoomMessageHelper.BroadCast(room, sendMessage);
         }
     }
 }

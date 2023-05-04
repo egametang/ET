@@ -11,7 +11,7 @@ namespace ET.Server
             {
                 RoomPlayer roomPlayer = kv.Value as RoomPlayer;
 
-                if (!roomPlayer.IsJoinRoom)
+                if (!roomPlayer.IsOnline)
                 {
                     continue;
                 }

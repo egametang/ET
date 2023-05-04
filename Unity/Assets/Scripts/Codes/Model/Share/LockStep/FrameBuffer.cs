@@ -5,7 +5,7 @@ namespace ET
 {
     public class FrameBuffer
     {
-        public int NowFrame { get; set; }
+        public int PredictionFrame { get; set; }
 
         public int RealFrame { get; set; } = -1;
         
@@ -18,11 +18,11 @@ namespace ET
         {
             for (int i = 0; i < this.dataBuffer.Capacity; ++i)
             {
-                this.messageBuffer.Add(null);
+                this.messageBuffer.Add(new OneFrameMessages());
                 this.dataBuffer.Add(null);
             }
         }
-
+/*
         public void AddRealFrame(OneFrameMessages message)
         {
             if (message.Frame != this.RealFrame + 1)
@@ -37,19 +37,16 @@ namespace ET
         {
             this.messageBuffer[message.Frame % TotalFrameCount] = message;
         }
-        
+        */
         public OneFrameMessages GetFrame(int frame)
         {
             if (frame < 0)
             {
                 return null;
             }
-
-            if (frame > this.RealFrame && frame > this.NowFrame)
-            {
-                return null;
-            }
-            return this.messageBuffer[frame % TotalFrameCount];
+            OneFrameMessages oneFrameMessages = this.messageBuffer[frame % TotalFrameCount];
+            oneFrameMessages.Frame = frame;
+            return oneFrameMessages;
         }
 
         public void SaveDate(int frame, byte[] data)

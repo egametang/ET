@@ -10,6 +10,16 @@ namespace ET
             return this.Frame == other.Frame && Equals(this.Inputs, other.Inputs);
         }
 
+        public void CopyTo(OneFrameMessages to)
+        {
+            to.Frame = this.Frame;
+            to.Inputs.Clear();
+            foreach (var kv in this.Inputs)
+            {
+                to.Inputs.Add(kv.Key, kv.Value);
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
