@@ -40,6 +40,11 @@ namespace ET
             }
             else
             {
+                if (Define.IsDebug)
+                {
+                    content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
+                }
+                
                 if (path.EndsWith("Unity.Hotfix.csproj"))
                 {
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Hotfix\\Empty.cs\" />", string.Empty);

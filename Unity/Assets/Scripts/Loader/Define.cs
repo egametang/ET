@@ -4,6 +4,11 @@
 	{
 		public const string CodeDir = "Assets/Bundles/Code/";
 		public const string BuildOutputDir = "Temp/Bin/Debug";
+#if DEBUG
+		public static bool IsDebug = true;
+#else
+		public static bool IsDebug = false;
+#endif
 		
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;
