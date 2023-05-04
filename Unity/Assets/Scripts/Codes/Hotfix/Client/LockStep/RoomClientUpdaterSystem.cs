@@ -31,7 +31,7 @@ namespace ET.Client
             FrameBuffer frameBuffer = room.FrameBuffer;
             long timeNow = TimeHelper.ServerFrameTime();
             Scene clientScene = room.GetParent<Scene>();
-            if (!room.FixedTimeCounter.IsTimeout(timeNow, frameBuffer.PredictionFrame))
+            if (timeNow < room.FixedTimeCounter.FrameTime(frameBuffer.PredictionFrame))
             {
                 return;
             }

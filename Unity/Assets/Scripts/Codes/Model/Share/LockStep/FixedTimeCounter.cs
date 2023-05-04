@@ -12,16 +12,6 @@ namespace ET
             this.startFrame = startFrame;
             this.Interval = interval;
         }
-
-        public bool IsTimeout(long time, int frame)
-        {
-            if (time > this.startTime + (frame - this.startFrame) * this.Interval)
-            {
-                return true;
-            }
-
-            return false;
-        }
         
         public void ChangeInterval(int interval, int frame)
         {

@@ -23,7 +23,7 @@ namespace ET.Server
             
             
             int frame = frameBuffer.RealFrame + 1;
-            if (!room.FixedTimeCounter.IsTimeout(timeNow, frame))
+            if (timeNow < room.FixedTimeCounter.FrameTime(frame))
             {
                 return;
             }
