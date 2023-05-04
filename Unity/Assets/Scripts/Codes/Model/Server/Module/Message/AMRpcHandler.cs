@@ -18,7 +18,7 @@ namespace ET.Server
                 Request request = message as Request;
                 if (request == null)
                 {
-                    throw new Exception($"消息类型转换错误: {message.GetType().Name} to {typeof (Request).Name}");
+                    throw new Exception($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).FullName}");
                 }
 
                 int rpcId = request.RpcId;

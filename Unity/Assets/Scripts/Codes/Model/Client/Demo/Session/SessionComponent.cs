@@ -3,17 +3,17 @@
 	[ComponentOf(typeof(Scene))]
 	public class SessionComponent: Entity, IAwake, IDestroy
 	{
-		private long sessionInstanceId;
+		private EntityRef<Session> session;
 
 		public Session Session
 		{
 			get
 			{
-				return Root.Instance.Get(this.sessionInstanceId) as Session;
+				return session;
 			}
 			set
 			{
-				this.sessionInstanceId = value.InstanceId;
+				this.session = value;
 			}
 		}
 	}

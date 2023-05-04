@@ -48,7 +48,7 @@ namespace ET.Server
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Warning($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorRequest}");
+                Log.Warning($"actor not found mailbox: {entity.GetType().FullName} {realActorId} {iActorRequest}");
                 IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 Reply(fromProcess, response);
                 return;
@@ -101,7 +101,7 @@ namespace ET.Server
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Error($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorMessage}");
+                Log.Error($"actor not found mailbox: {entity.GetType().FullName} {realActorId} {iActorMessage}");
                 return;
             }
 

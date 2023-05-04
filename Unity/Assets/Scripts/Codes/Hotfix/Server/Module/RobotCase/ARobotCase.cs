@@ -17,7 +17,7 @@ namespace ET.Server
             catch (System.Exception e)
             {
                 Log.Error($"{robotCase.DomainZone()} {e}");
-                RobotLog.Console($"RobotCase Error {this.GetType().Name}:\n\t{e}");
+                RobotLog.Console($"RobotCase Error {this.GetType().FullName}:\n\t{e}");
             }
         }
     }

@@ -7,17 +7,17 @@ namespace ET.Client
 		// 战斗摄像机
 		public Camera mainCamera;
 
-		private long unitInstanceId;
+		private EntityRef<Unit> unit;
 
 		public Unit Unit
 		{
 			get
 			{
-				return Root.Instance.Get(this.unitInstanceId) as Unit;
+				return this.unit;
 			}
 			set
 			{
-				this.unitInstanceId = value.InstanceId;
+				this.unit = value;
 			}
 		}
 
