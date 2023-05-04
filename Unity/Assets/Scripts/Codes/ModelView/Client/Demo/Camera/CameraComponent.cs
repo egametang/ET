@@ -23,21 +23,17 @@ namespace ET.Client
 			}
 		}
 
-		private long unitViewInstanceId;
+		private EntityRef<LSUnitView> unitView;
 
 		public LSUnitView MyUnitView
 		{
 			get
 			{
-				return Root.Instance.Get(this.unitViewInstanceId) as LSUnitView;
+				return this.unitView;
 			}
 			set
 			{
-				if (value == null)
-				{
-					return;
-				}
-				this.unitViewInstanceId = value.InstanceId;
+				this.unitView = value;
 			}
 		}
 	}

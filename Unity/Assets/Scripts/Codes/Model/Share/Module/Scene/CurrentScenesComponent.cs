@@ -4,17 +4,17 @@
     [ComponentOf(typeof(Scene))]
     public class CurrentScenesComponent: Entity, IAwake
     {
-        private long sceneInstanceId;
+        private EntityRef<Scene> scene;
 
         public Scene Scene
         {
             get
             {
-                return Root.Instance.Get(this.sceneInstanceId) as Scene;
+                return this.scene;
             }
             set
             {
-                this.sceneInstanceId = value.InstanceId;
+                this.scene = value;
             }
         }
     }

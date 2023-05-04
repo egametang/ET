@@ -10,18 +10,18 @@ namespace ET
         public SceneType SceneType { get; set; } = SceneType.Room;
         public string Name { get; set; }
         
-        private long lsWorldInstanceId;
+        private EntityRef<LSWorld> lsWorld;
         
         public LSWorld LSWorld
         {
             get
             {
-                return Root.Instance.Get(this.lsWorldInstanceId) as LSWorld;
+                return this.lsWorld;
             }
             set
             {
                 this.AddChild(value);
-                this.lsWorldInstanceId = value.InstanceId;
+                this.lsWorld = value;
             }
         }
 
