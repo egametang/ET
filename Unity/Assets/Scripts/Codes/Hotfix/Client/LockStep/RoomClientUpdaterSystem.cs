@@ -40,8 +40,10 @@ namespace ET.Client
             room.Update(oneFrameMessages);
             ++frameBuffer.NowFrame;
 
-            LSInput lsInput = new LSInput() { V = self.Input.V, Button = self.Input.Button };
-            clientScene.GetComponent<SessionComponent>().Session.Send(new FrameMessage() {Frame = oneFrameMessages.Frame, Input = lsInput});
+            FrameMessage frameMessage = NetServices.Instance.FetchMessage<FrameMessage>();
+            frameMessage.Frame = oneFrameMessages.Frame;
+            frameMessage.Input = self.Input;
+            clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
         }
 
         private static OneFrameMessages GetOneFrameMessages(this RoomClientUpdater self, int frame)

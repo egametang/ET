@@ -42,12 +42,6 @@ message Room2C_Start // IActorMessage
 	repeated LockStepUnitInfo UnitInfo = 2;
 }
 
-message LSInput
-{
-	TrueSync.TSVector2 V = 1;
-	int32 Button = 2;
-}
-
 message FrameMessage // IActorMessage
 {
 	int32 Frame = 1;

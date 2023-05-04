@@ -152,9 +152,8 @@ namespace ET
 		 public const ushort C2Room_ChangeSceneFinish = 11005;
 		 public const ushort LockStepUnitInfo = 11006;
 		 public const ushort Room2C_Start = 11007;
-		 public const ushort LSInput = 11008;
-		 public const ushort FrameMessage = 11009;
-		 public const ushort OneFrameMessages = 11010;
-		 public const ushort Room2C_AdjustUpdateTime = 11011;
+		 public const ushort FrameMessage = 11008;
+		 public const ushort OneFrameMessages = 11009;
+		 public const ushort Room2C_AdjustUpdateTime = 11010;
 	}
 }
