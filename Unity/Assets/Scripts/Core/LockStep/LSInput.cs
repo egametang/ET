@@ -1,33 +1,29 @@
 using System;
-using TrueSync;
+using MemoryPack;
+using ProtoBuf;
 
 namespace ET
 {
-    public partial class LSInput
+    [ProtoContract]
+    [MemoryPackable]
+    public partial struct LSInput
     {
-        protected bool Equals(LSInput other)
+        [ProtoMember(1)]
+        [MemoryPackOrder(0)]
+        public TrueSync.TSVector2 V;
+
+        [ProtoMember(2)]
+        [MemoryPackOrder(1)]
+        public int Button;
+        
+        public bool Equals(LSInput other)
         {
-            return this.V.Equals(other.V) && this.Button == other.Button;
+            return this.V == other.V && this.Button == other.Button;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((LSInput) obj);
+            return obj is LSInput other && Equals(other);
         }
 
         public override int GetHashCode()

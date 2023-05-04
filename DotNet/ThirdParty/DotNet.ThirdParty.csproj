@@ -77,9 +77,6 @@
         <Link>runtimes\win\native\RecastDll.dll</Link>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\TrueSync\**\*.cs">
-          <Link>TrueSync/%(RecursiveDir)%(FileName)%(Extension)</Link>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>

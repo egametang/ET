@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ET.Analyzer
 {
+    /*
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class EntityClassDeclarationAnalyzer: DiagnosticAnalyzer
     {
@@ -18,7 +19,7 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            //context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
+            context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
         }
 
         private void Analyzer(SymbolAnalysisContext context)
@@ -28,7 +29,8 @@ namespace ET.Analyzer
                 return;
             }
 
-            if (namedTypeSymbol.BaseType?.BaseType?.ToString() != Definition.EntityType)
+            string? t = namedTypeSymbol.BaseType?.BaseType?.ToString();
+            if (t != Definition.EntityType && t != "ET.LSEntity")
             {
                 return;
             }
@@ -41,4 +43,5 @@ namespace ET.Analyzer
             }
         }
     }
+    */
 }

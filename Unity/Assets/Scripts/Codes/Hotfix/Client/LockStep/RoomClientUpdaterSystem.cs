@@ -88,8 +88,7 @@ namespace ET.Client
                 }
 
                 LSInput preInput = preFrame.Inputs[kv.Key];
-                kv.Value.V = preInput.V;
-                kv.Value.Button = preInput.Button;
+                predictionFrame.Inputs[kv.Key] = preInput;
             }
 
             LSInput oldMyInput = frameBuffer.GetFrame(predictionFrame.Frame).Inputs[self.MyId];

@@ -1,10 +1,10 @@
+using System;
+
 namespace ET
 {
     [FriendOf(typeof(Room))]
     public static class RoomSystem
     {
-        
-        
         public static void Init(this Room self, Room2C_Start room2CStart)
         {
             self.StartTime = room2CStart.StartTime;
@@ -30,9 +30,8 @@ namespace ET
             foreach (var kv in oneFrameMessages.Inputs)
             {
                 LSUnit lsUnit = unitComponent.GetChild<LSUnit>(kv.Key);
-                LSInput lsInput = lsUnit.GetComponent<LSInputComponent>().LSInput;
-                lsInput.V = kv.Value.V;
-                lsInput.Button = kv.Value.Button;
+                LSInputComponent lsInputComponent = lsUnit.GetComponent<LSInputComponent>();
+                lsInputComponent.LSInput = kv.Value;
             }
             
             lsWorld.Updater.Update();
