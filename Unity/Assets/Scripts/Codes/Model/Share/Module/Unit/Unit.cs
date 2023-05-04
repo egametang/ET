@@ -55,7 +55,7 @@ namespace ET
         {
             get
             {
-                return $"{this.GetType().Name} ({this.Id})";
+                return $"{this.GetType().FullName} ({this.Id})";
             }
         }
     }

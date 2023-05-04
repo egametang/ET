@@ -103,7 +103,7 @@ namespace ET
         {
             get
             {
-                return this.GetType().Name;
+                return this.GetType().FullName;
             }
         }
 
