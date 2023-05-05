@@ -841,7 +841,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: UNITY;SINGLE_THREAD
     Server: UNITY
-    Standalone: UNITY;SINGLE_THREAD;ENABLE_VIEW;ENABLE_CODES
+    Standalone: UNITY;SINGLE_THREAD;ENABLE_VIEW
     WebGL: UNITY
     iPhone: UNITY;SINGLE_THREAD;ENABLE_CODES
   additionalCompilerArguments: {}
@@ -850,7 +850,7 @@ PlayerSettings:
   scriptingBackend:
     Android: 1
     Server: 0
-    Standalone: 1
+    Standalone: 0
     iPhone: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}

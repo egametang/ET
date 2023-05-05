@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Xml;
 using System.IO;
 using System.Text;
+using UnityEditor.Compilation;
 
 namespace ET
 {
@@ -40,11 +41,6 @@ namespace ET
             }
             else
             {
-                if (Define.IsDebug)
-                {
-                    content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
-                }
-                
                 if (path.EndsWith("Unity.Hotfix.csproj"))
                 {
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Hotfix\\Empty.cs\" />", string.Empty);
@@ -122,6 +118,13 @@ namespace ET
                 
                 if (path.EndsWith("Unity.AllCodes.csproj"))
                 {
+                    GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+                    if (globalConfig.CodeOptimization == CodeOptimization.Release)
+                    {
+                        content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
+                        content = content.Replace(";DEBUG;", ";");
+                    }
+
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\AllCodes\\Empty.cs\" />", string.Empty);
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\AllCodes\\Unity.AllCodes.asmdef\" />", string.Empty);
 

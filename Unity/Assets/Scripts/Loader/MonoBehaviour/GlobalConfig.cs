@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Compilation;
+using UnityEngine;
 
 namespace ET
 {
@@ -13,5 +14,6 @@ namespace ET
     public class GlobalConfig: ScriptableObject
     {
         public CodeMode CodeMode;
+        public CodeOptimization CodeOptimization;
     }
 }

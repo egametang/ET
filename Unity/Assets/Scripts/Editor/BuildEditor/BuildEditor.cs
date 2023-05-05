@@ -34,7 +34,6 @@ namespace ET
 		private bool clearFolder;
 		private bool isBuildExe;
 		private bool isContainAB;
-		private CodeOptimization codeOptimization = CodeOptimization.Debug;
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
@@ -72,11 +71,19 @@ namespace ET
 			this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
 			this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
 			this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
-			this.codeOptimization = (CodeOptimization)EditorGUILayout.EnumPopup("CodeOptimization ", this.codeOptimization);
+			CodeOptimization codeOptimization = (CodeOptimization)EditorGUILayout.EnumPopup("CodeOptimization ", this.globalConfig.CodeOptimization);
+			
+			if (codeOptimization != this.globalConfig.CodeOptimization)
+			{
+				this.globalConfig.CodeOptimization = codeOptimization;
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssets();
+			}
+			
 			EditorGUILayout.LabelField("BuildAssetBundleOptions ");
 			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
 			
-			switch (this.codeOptimization)
+			switch (this.globalConfig.CodeOptimization)
 			{
 				case CodeOptimization.None:
 				case CodeOptimization.Debug:
@@ -135,8 +142,8 @@ namespace ET
 					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
 				}
 				
-				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
-				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildModel(this.globalConfig.CodeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildHotfix(this.globalConfig.CodeOptimization, globalConfig);
 
 				AfterCompiling();
 				
@@ -153,7 +160,7 @@ namespace ET
 				{
 					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
 				}
-				BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildModel(this.globalConfig.CodeOptimization, globalConfig);
 
 				AfterCompiling();
 				
@@ -170,7 +177,7 @@ namespace ET
 				{
 					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
 				}
-				BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
+				BuildAssembliesHelper.BuildHotfix(this.globalConfig.CodeOptimization, globalConfig);
 
 				AfterCompiling();
 				
