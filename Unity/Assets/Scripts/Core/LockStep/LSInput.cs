@@ -1,18 +1,14 @@
 using System;
 using MemoryPack;
-using ProtoBuf;
 
 namespace ET
 {
-    [ProtoContract]
     [MemoryPackable]
     public partial struct LSInput
     {
-        [ProtoMember(1)]
         [MemoryPackOrder(0)]
         public TrueSync.TSVector2 V;
 
-        [ProtoMember(2)]
         [MemoryPackOrder(1)]
         public int Button;
         

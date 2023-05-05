@@ -1,39 +1,24 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
-    [ProtoContract]
     [Config]
     public partial class StartSceneConfigCategory : ConfigSingleton<StartSceneConfigCategory>, IMerge
     {
-        [ProtoIgnore]
-        [BsonIgnore]
-        private Dictionary<int, StartSceneConfig> dict = new Dictionary<int, StartSceneConfig>();
-		
         [BsonElement]
-        [ProtoMember(1)]
-        private List<StartSceneConfig> list = new List<StartSceneConfig>();
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        private Dictionary<int, StartSceneConfig> dict = new Dictionary<int, StartSceneConfig>();
 		
         public void Merge(object o)
         {
             StartSceneConfigCategory s = o as StartSceneConfigCategory;
-            this.list.AddRange(s.list);
-        }
-		
-		[ProtoAfterDeserialization]        
-        public void ProtoEndInit()
-        {
-            foreach (StartSceneConfig config in list)
+            foreach (var kv in s.dict)
             {
-                config.AfterEndInit();
-                this.dict.Add(config.Id, config);
+                this.dict.Add(kv.Key, kv.Value);
             }
-            this.list.Clear();
-            
-            this.AfterEndInit();
         }
 		
         public StartSceneConfig Get(int id)
@@ -68,26 +53,19 @@ namespace ET
         }
     }
 
-    [ProtoContract]
 	public partial class StartSceneConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
 		public int Id { get; set; }
 		/// <summary>所属进程</summary>
-		[ProtoMember(2)]
 		public int Process { get; set; }
 		/// <summary>所属区</summary>
-		[ProtoMember(3)]
 		public int Zone { get; set; }
 		/// <summary>类型</summary>
-		[ProtoMember(4)]
 		public string SceneType { get; set; }
 		/// <summary>名字</summary>
-		[ProtoMember(5)]
 		public string Name { get; set; }
 		/// <summary>外网端口</summary>
-		[ProtoMember(6)]
 		public int OuterPort { get; set; }
 
 	}

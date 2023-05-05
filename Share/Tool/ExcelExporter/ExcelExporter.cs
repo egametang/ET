@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using OfficeOpenXml;
-using ProtoBuf;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace ET
@@ -41,7 +41,6 @@ namespace ET
     }
 
     // 这里加个标签是为了防止编译时裁剪掉protobuf，因为整个tool工程没有用到protobuf，编译会去掉引用，然后动态编译就会出错
-    [ProtoContract]
     class Table
     {
         public bool C;
@@ -98,9 +97,6 @@ namespace ET
         {
             try
             {
-                //防止编译时裁剪掉protobuf
-                ProtoBuf.WireType.Fixed64.ToString();
-                
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -431,7 +427,6 @@ namespace ET
                 }
 
                 sb.Append($"\t\t/// <summary>{headInfo.FieldDesc}</summary>\n");
-                sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex})]\n");
                 string fieldType = headInfo.FieldType;
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
@@ -448,7 +443,7 @@ namespace ET
         static void ExportExcelJson(ExcelPackage p, string name, Table table, ConfigType configType, string relativeDir)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("{\"list\":[\n");
+            sb.Append("{\"dict\": [\n");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
                 if (worksheet.Name.StartsWith("#"))
@@ -500,8 +495,7 @@ namespace ET
                     continue;
                 }
 
-                sb.Append("{");
-                sb.Append($"\"_t\":\"{name}\"");
+                sb.Append($"[{worksheet.Cells[row, 3].Text.Trim()}, {{\"_t\":\"{name}\"");
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
                     string fieldName = worksheet.Cells[4, col].Text.Trim();
@@ -531,7 +525,7 @@ namespace ET
                     sb.Append($",\"{fieldN}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
                 }
 
-                sb.Append("},\n");
+                sb.Append("}],\n");
             }
         }
 
@@ -585,9 +579,6 @@ namespace ET
             Type type = ass.GetType($"ET.{protoName}Category");
             Type subType = ass.GetType($"ET.{protoName}");
 
-            Serializer.NonGeneric.PrepareSerializer(type);
-            Serializer.NonGeneric.PrepareSerializer(subType);
-
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
             string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
@@ -604,34 +595,16 @@ namespace ET
                     object deserialize = BsonSerializer.Deserialize(json, type);
                     final.Merge(deserialize);
                 }
-                catch
+                catch (Exception e)
                 {
-                    #region 为了定位该文件中具体那一行出现了异常
-                    List<string> list = new List<string>(json.Split('\n'));
-                    if (list.Count > 0)
-                        list.RemoveAt(0);
-                    if (list.Count > 0)
-                        list.RemoveAt(list.Count-1);
-                    foreach (string s in list)
-                    {
-                        try
-                        {
-                            BsonSerializer.Deserialize(s.Substring(0, s.Length-1), subType);
-                        }
-                        catch (Exception)
-                        {
-                            Log.Console($"json : {s}");
-                            throw;
-                        }
-                    }
-                    #endregion
+                    throw new Exception($"json : {jsonPath} error", e);
                 }
             }
 
             string path = Path.Combine(dir, $"{protoName}Category.bytes");
 
             using FileStream file = File.Create(path);
-            Serializer.Serialize(file, final);
+            file.Write(final.ToBson());
         }
     }
 }

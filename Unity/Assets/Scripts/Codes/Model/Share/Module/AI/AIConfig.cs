@@ -2,13 +2,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
 
 namespace ET
 {
 	public partial class AIConfigCategory
 	{
-		[ProtoIgnore]
 		[BsonIgnore]
 		public Dictionary<int, SortedDictionary<int, AIConfig>> AIConfigs = new Dictionary<int, SortedDictionary<int, AIConfig>>();
 
@@ -17,7 +15,7 @@ namespace ET
 			return this.AIConfigs[aiConfigId];
 		}
 
-		public override void AfterEndInit()
+		public override void EndInit()
 		{
 			foreach (var kv in this.GetAll())
 			{

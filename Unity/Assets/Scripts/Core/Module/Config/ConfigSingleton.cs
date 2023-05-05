@@ -36,10 +36,6 @@ namespace ET
             throw new NotImplementedException();
         }
 
-        public override void AfterEndInit()
-        {
-        }
-
         public virtual void Dispose()
         {
         }

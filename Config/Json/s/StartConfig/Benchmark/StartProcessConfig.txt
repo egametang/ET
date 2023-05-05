@@ -1,5 +1,5 @@
-{"list":[
-{"_t":"StartProcessConfig","_id":1,"MachineId":1,"InnerPort":20101},
-{"_t":"StartProcessConfig","_id":2,"MachineId":1,"InnerPort":20102},
-{"_t":"StartProcessConfig","_id":3,"MachineId":1,"InnerPort":20103},
+{"dict": [
+[1, {"_t":"StartProcessConfig","_id":1,"MachineId":1,"InnerPort":20101}],
+[2, {"_t":"StartProcessConfig","_id":2,"MachineId":1,"InnerPort":20102}],
+[3, {"_t":"StartProcessConfig","_id":3,"MachineId":1,"InnerPort":20103}],
 ]}

@@ -35,7 +35,6 @@ namespace ET
             WinPeriod.Init();
             
             MongoHelper.Init();
-            ProtobufHelper.Init();
             MemoryPackHelper.Init();
 
             Game.AddSingleton<NetServices>();

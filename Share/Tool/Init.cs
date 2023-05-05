@@ -38,7 +38,6 @@ namespace ET.Server
                 Game.AddSingleton<Root>();
 
                 MongoHelper.Init();
-                ProtobufHelper.Init();
 				
                 Log.Info($"server start........................ {Root.Instance.Scene.Id}");
 				

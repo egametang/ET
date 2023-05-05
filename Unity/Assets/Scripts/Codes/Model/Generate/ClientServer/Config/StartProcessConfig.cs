@@ -1,39 +1,24 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
-    [ProtoContract]
     [Config]
     public partial class StartProcessConfigCategory : ConfigSingleton<StartProcessConfigCategory>, IMerge
     {
-        [ProtoIgnore]
-        [BsonIgnore]
-        private Dictionary<int, StartProcessConfig> dict = new Dictionary<int, StartProcessConfig>();
-		
         [BsonElement]
-        [ProtoMember(1)]
-        private List<StartProcessConfig> list = new List<StartProcessConfig>();
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        private Dictionary<int, StartProcessConfig> dict = new Dictionary<int, StartProcessConfig>();
 		
         public void Merge(object o)
         {
             StartProcessConfigCategory s = o as StartProcessConfigCategory;
-            this.list.AddRange(s.list);
-        }
-		
-		[ProtoAfterDeserialization]        
-        public void ProtoEndInit()
-        {
-            foreach (StartProcessConfig config in list)
+            foreach (var kv in s.dict)
             {
-                config.AfterEndInit();
-                this.dict.Add(config.Id, config);
+                this.dict.Add(kv.Key, kv.Value);
             }
-            this.list.Clear();
-            
-            this.AfterEndInit();
         }
 		
         public StartProcessConfig Get(int id)
@@ -68,17 +53,13 @@ namespace ET
         }
     }
 
-    [ProtoContract]
 	public partial class StartProcessConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
 		public int Id { get; set; }
 		/// <summary>所属机器</summary>
-		[ProtoMember(2)]
 		public int MachineId { get; set; }
 		/// <summary>内网端口</summary>
-		[ProtoMember(3)]
 		public int InnerPort { get; set; }
 
 	}

@@ -1,39 +1,24 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
-    [ProtoContract]
     [Config]
     public partial class StartZoneConfigCategory : ConfigSingleton<StartZoneConfigCategory>, IMerge
     {
-        [ProtoIgnore]
-        [BsonIgnore]
-        private Dictionary<int, StartZoneConfig> dict = new Dictionary<int, StartZoneConfig>();
-		
         [BsonElement]
-        [ProtoMember(1)]
-        private List<StartZoneConfig> list = new List<StartZoneConfig>();
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        private Dictionary<int, StartZoneConfig> dict = new Dictionary<int, StartZoneConfig>();
 		
         public void Merge(object o)
         {
             StartZoneConfigCategory s = o as StartZoneConfigCategory;
-            this.list.AddRange(s.list);
-        }
-		
-		[ProtoAfterDeserialization]        
-        public void ProtoEndInit()
-        {
-            foreach (StartZoneConfig config in list)
+            foreach (var kv in s.dict)
             {
-                config.AfterEndInit();
-                this.dict.Add(config.Id, config);
+                this.dict.Add(kv.Key, kv.Value);
             }
-            this.list.Clear();
-            
-            this.AfterEndInit();
         }
 		
         public StartZoneConfig Get(int id)
@@ -68,17 +53,13 @@ namespace ET
         }
     }
 
-    [ProtoContract]
 	public partial class StartZoneConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
 		public int Id { get; set; }
 		/// <summary>数据库地址</summary>
-		[ProtoMember(2)]
 		public string DBConnection { get; set; }
 		/// <summary>数据库名</summary>
-		[ProtoMember(3)]
 		public string DBName { get; set; }
 
 	}

@@ -1,39 +1,24 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
-    [ProtoContract]
     [Config]
     public partial class UnitConfigCategory : ConfigSingleton<UnitConfigCategory>, IMerge
     {
-        [ProtoIgnore]
-        [BsonIgnore]
-        private Dictionary<int, UnitConfig> dict = new Dictionary<int, UnitConfig>();
-		
         [BsonElement]
-        [ProtoMember(1)]
-        private List<UnitConfig> list = new List<UnitConfig>();
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        private Dictionary<int, UnitConfig> dict = new Dictionary<int, UnitConfig>();
 		
         public void Merge(object o)
         {
             UnitConfigCategory s = o as UnitConfigCategory;
-            this.list.AddRange(s.list);
-        }
-		
-		[ProtoAfterDeserialization]        
-        public void ProtoEndInit()
-        {
-            foreach (UnitConfig config in list)
+            foreach (var kv in s.dict)
             {
-                config.AfterEndInit();
-                this.dict.Add(config.Id, config);
+                this.dict.Add(kv.Key, kv.Value);
             }
-            this.list.Clear();
-            
-            this.AfterEndInit();
         }
 		
         public UnitConfig Get(int id)
@@ -68,23 +53,17 @@ namespace ET
         }
     }
 
-    [ProtoContract]
 	public partial class UnitConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
 		public int Id { get; set; }
 		/// <summary>Type</summary>
-		[ProtoMember(2)]
 		public int Type { get; set; }
 		/// <summary>名字</summary>
-		[ProtoMember(3)]
 		public string Name { get; set; }
 		/// <summary>位置</summary>
-		[ProtoMember(4)]
 		public int Position { get; set; }
 		/// <summary>身高</summary>
-		[ProtoMember(5)]
 		public int Height { get; set; }
 
 	}

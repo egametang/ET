@@ -38,7 +38,7 @@ namespace ET
 			
 			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
 
-			object category = ProtobufHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;
 			singleton.Register();
 			
@@ -77,7 +77,7 @@ namespace ET
 		
 		private void LoadOneInThread(Type configType, byte[] oneConfigBytes)
 		{
-			object category = ProtobufHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			
 			lock (this)
 			{
