@@ -1,24 +1,25 @@
 {
-    "name": "Unity.Editor",
-    "rootNamespace": "",
+    "name": "Unity.HotfixView",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
+        "Unity.Mathematics",
         "Unity.Loader",
-        "HybridCLR.Runtime",
-        "HybridCLR.Editor",
+        "MemoryPack",
         "Unity.Model",
-        "Unity.Hotfix"
+        "Unity.Hotfix",
+        "Unity.ModelView"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "!ENABLE_CODES"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
