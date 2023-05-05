@@ -20,12 +20,6 @@ namespace ET
 		MacOS,
 		Linux
 	}
-	
-	public enum BuildType
-	{
-		Development,
-		Release,
-	}
 
 	public class BuildEditor : EditorWindow
 	{
@@ -71,11 +65,11 @@ namespace ET
 			this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
 			this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
 			this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
-			CodeOptimization codeOptimization = (CodeOptimization)EditorGUILayout.EnumPopup("CodeOptimization ", this.globalConfig.CodeOptimization);
+			BuildType codeOptimization = (BuildType)EditorGUILayout.EnumPopup("BuildType ", this.globalConfig.BuildType);
 			
-			if (codeOptimization != this.globalConfig.CodeOptimization)
+			if (codeOptimization != this.globalConfig.BuildType)
 			{
-				this.globalConfig.CodeOptimization = codeOptimization;
+				this.globalConfig.BuildType = codeOptimization;
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
 			}
@@ -83,13 +77,13 @@ namespace ET
 			EditorGUILayout.LabelField("BuildAssetBundleOptions ");
 			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
 			
-			switch (this.globalConfig.CodeOptimization)
+			switch (this.globalConfig.BuildType)
 			{
-				case CodeOptimization.None:
-				case CodeOptimization.Debug:
+				case BuildType.None:
+				case BuildType.Debug:
 					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler;
 					break;
-				case CodeOptimization.Release:
+				case BuildType.Release:
 					this.buildOptions = BuildOptions.None;
 					break;
 			}
@@ -130,58 +124,10 @@ namespace ET
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
 			}
-			
-			if (GUILayout.Button("BuildModelAndHotfix"))
-			{
-				if (Define.EnableCodes)
-				{
-					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-				}
-				if (SerializeHelper.UseMemoryPack)
-				{
-					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
-				}
-				
-				BuildAssembliesHelper.BuildModel(this.globalConfig.CodeOptimization, globalConfig);
-				BuildAssembliesHelper.BuildHotfix(this.globalConfig.CodeOptimization, globalConfig);
 
-				AfterCompiling();
-				
-				ShowNotification("Build Model And Hotfix Success!");
-			}
-			
-			if (GUILayout.Button("BuildModel"))
+			if (GUILayout.Button("ReGenerateProjectFiles"))
 			{
-				if (Define.EnableCodes)
-				{
-					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-				}
-				if (SerializeHelper.UseMemoryPack)
-				{
-					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
-				}
-				BuildAssembliesHelper.BuildModel(this.globalConfig.CodeOptimization, globalConfig);
-
-				AfterCompiling();
-				
-				ShowNotification("Build Model Success!");
-			}
-			
-			if (GUILayout.Button("BuildHotfix"))
-			{
-				if (Define.EnableCodes)
-				{
-					throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-				}
-				if (SerializeHelper.UseMemoryPack)
-				{
-					throw new Exception("now in UseMemoryPack mode, you should use ide Build Unity.AllCodes project!");
-				}
-				BuildAssembliesHelper.BuildHotfix(this.globalConfig.CodeOptimization, globalConfig);
-
-				AfterCompiling();
-				
-				ShowNotification("Build Hotfix Success!");
+				BuildHelper.ReGenerateProjectFiles();
 			}
 			
 			if (GUILayout.Button("ExcelExporter"))

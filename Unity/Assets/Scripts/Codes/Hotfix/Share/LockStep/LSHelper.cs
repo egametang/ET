@@ -10,8 +10,7 @@ namespace ET
             FrameBuffer frameBuffer = self.FrameBuffer;
             
             // 回滚
-            byte[] dataBuffer = frameBuffer.GetDate(frame);
-            self.LSWorld = MongoHelper.Deserialize<LSWorld>(dataBuffer);
+            self.LSWorld = frameBuffer.GetLSWorld(frame);
 
             // 从回滚的地方重新执行预测的帧
             for (int i = frameBuffer.RealFrame + 1; i < frameBuffer.PredictionFrame; ++i)

@@ -77,49 +77,10 @@ namespace ET
                         @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
                 }
                 
-                if (path.EndsWith("Unity.AllModel.csproj"))
-                {
-                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\AllModel\\Empty.cs\" />", string.Empty);
-                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\AllModel\\Unity.AllModel.asmdef\" />", string.Empty);
-
-                    content = GenerateCustomProject(path, content,
-                        @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
-                        );
-                    content = content.Replace("<Target Name=\"AfterBuild\" />",
-                        "   <Target Name=\"AfterBuild\">\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.dll.bytes\" ContinueOnError=\"false\" />\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Model.dll\" ContinueOnError=\"false\" />\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Model.pdb\" ContinueOnError=\"false\" />\n" +
-                        "   </Target>\n");
-                }
-                
-                if (path.EndsWith("Unity.AllHotfix.csproj"))
-                {
-                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\AllHotfix\\Empty.cs\" />", string.Empty);
-                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\AllHotfix\\Unity.AllHotfix.asmdef\" />", string.Empty);
-
-                    content = GenerateCustomProject(path, content,
-                        @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
-                        );
-                    content = content.Replace("<Target Name=\"AfterBuild\" />",
-                        "   <Target Name=\"AfterBuild\">\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Hotfix.dll.bytes\" ContinueOnError=\"false\" />\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Hotfix.pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Hotfix.dll\" ContinueOnError=\"false\" />\n" +
-                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Hotfix.pdb\" ContinueOnError=\"false\" />\n" +
-                        "   </Target>\n");
-                }
-                
                 if (path.EndsWith("Unity.AllCodes.csproj"))
                 {
                     GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-                    if (globalConfig.CodeOptimization == CodeOptimization.Release)
+                    if (globalConfig.BuildType == BuildType.Release)
                     {
                         content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
                         content = content.Replace(";DEBUG;", ";");
@@ -128,15 +89,36 @@ namespace ET
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\AllCodes\\Empty.cs\" />", string.Empty);
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\AllCodes\\Unity.AllCodes.asmdef\" />", string.Empty);
 
-                    content = GenerateCustomProject(path, content,
-                        @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                        @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
-                        );
+                    string[] files = Array.Empty<string>();
+                    switch (globalConfig.CodeMode)
+                    {
+                        case CodeMode.Client:
+                            files = new[]
+                            {
+                                @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Model\Generate\Client\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Hotfix\Client\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Hotfix\Share\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
+                            };
+                            break;
+                        case CodeMode.ClientServer:
+                            files = new[]
+                            {
+                                @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
+                                @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
+                            };
+                            break;
+                    }
+
+                    content = GenerateCustomProject(path, content, files);
                     content = content.Replace("<Target Name=\"AfterBuild\" />",
                         "   <Target Name=\"AfterBuild\">\n" +
                         $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.dll.bytes\" ContinueOnError=\"false\" />\n" +

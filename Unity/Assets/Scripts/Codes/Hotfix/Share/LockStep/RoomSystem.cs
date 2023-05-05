@@ -22,7 +22,7 @@ namespace ET
         public static void Update(this Room self, OneFrameMessages oneFrameMessages)
         {
             // 保存当前帧场景数据
-            self.FrameBuffer.SaveDate(self.FrameBuffer.PredictionFrame, MongoHelper.Serialize(self.LSWorld));
+            self.FrameBuffer.SaveLSWorld(self.FrameBuffer.PredictionFrame, self.LSWorld);
             
             // 设置输入到每个LSUnit身上
             LSWorld lsWorld = self.LSWorld;

@@ -11,7 +11,7 @@ namespace ET
 {
     public static class BuildAssembliesHelper
     {
-        public static void BuildModel(CodeOptimization codeOptimization, GlobalConfig globalConfig)
+        public static void BuildModel(BuildType codeOptimization, GlobalConfig globalConfig)
         {
             List<string> codes;
 
@@ -56,7 +56,7 @@ namespace ET
             Debug.Log("copy Model.dll to Bundles/Code success!");
         }
 
-        public static void BuildHotfix(CodeOptimization codeOptimization, GlobalConfig globalConfig)
+        public static void BuildHotfix(BuildType codeOptimization, GlobalConfig globalConfig)
         {
             string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Hotfix_*");
             foreach (string file in logicFiles)
@@ -109,7 +109,7 @@ namespace ET
 
         private static void BuildMuteAssembly(
             string assemblyName, List<string> CodeDirectorys,
-            string[] additionalReferences, CodeOptimization codeOptimization, CodeMode codeMode = CodeMode.Client)
+            string[] additionalReferences, BuildType codeOptimization, CodeMode codeMode = CodeMode.Client)
         {
             if (!Directory.Exists(Define.BuildOutputDir))
             {
@@ -157,7 +157,7 @@ namespace ET
 
             BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 
-            assemblyBuilder.compilerOptions.CodeOptimization = codeOptimization;
+            assemblyBuilder.compilerOptions.CodeOptimization = (CodeOptimization)codeOptimization;
             assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 

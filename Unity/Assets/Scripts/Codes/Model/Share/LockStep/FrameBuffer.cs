@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ET
 {
@@ -12,32 +13,17 @@ namespace ET
         private const int TotalFrameCount = 128;
         
         private readonly List<OneFrameMessages> messageBuffer = new(TotalFrameCount);
-        private readonly List<byte[]> dataBuffer = new(TotalFrameCount);
+        private readonly List<MemoryBuffer> dataBuffer = new(TotalFrameCount);
 
         public FrameBuffer()
         {
             for (int i = 0; i < this.dataBuffer.Capacity; ++i)
             {
                 this.messageBuffer.Add(new OneFrameMessages());
-                this.dataBuffer.Add(null);
+                this.dataBuffer.Add(new MemoryBuffer(10240));
             }
         }
-/*
-        public void AddRealFrame(OneFrameMessages message)
-        {
-            if (message.Frame != this.RealFrame + 1)
-            {
-                throw new Exception($"add real frame error: {message.Frame} {this.RealFrame}");
-            }
-            this.RealFrame = message.Frame;
-            AddFrame(message);
-        }
-
-        public void AddFrame(OneFrameMessages message)
-        {
-            this.messageBuffer[message.Frame % TotalFrameCount] = message;
-        }
-        */
+        
         public OneFrameMessages GetFrame(int frame)
         {
             if (frame < 0)
@@ -49,14 +35,19 @@ namespace ET
             return oneFrameMessages;
         }
 
-        public void SaveDate(int frame, byte[] data)
+        public LSWorld GetLSWorld(int frame)
         {
-            this.dataBuffer[frame % TotalFrameCount] = data;
+            MemoryBuffer memoryBuffer = this.dataBuffer[frame % TotalFrameCount];
+            return MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer) as LSWorld;
         }
 
-        public byte[] GetDate(int frame)
+        public void SaveLSWorld(int frame, LSWorld lsWorld)
         {
-            return this.dataBuffer[frame % TotalFrameCount];
+            MemoryBuffer memoryBuffer = this.dataBuffer[frame % TotalFrameCount];
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
+            memoryBuffer.SetLength(0);
+            MongoHelper.Serialize(lsWorld, memoryBuffer);
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
         }
     }
 }
