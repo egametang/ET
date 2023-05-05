@@ -1,6 +1,4 @@
-﻿using UnityEditor.Compilation;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace ET
 {

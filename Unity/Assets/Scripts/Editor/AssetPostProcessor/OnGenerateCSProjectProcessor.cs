@@ -43,10 +43,10 @@ namespace ET
                             @"Assets\Scripts\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Generate\Client\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Hotfix\Client\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Hotfix\Share\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
+                            @"Assets\Scripts\Hotfix\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Hotfix\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\ModelView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\HotfixView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)"
                         };
                         break;
                     case CodeMode.ClientServer:
@@ -56,9 +56,9 @@ namespace ET
                             @"Assets\Scripts\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)"
+                            @"Assets\Scripts\Hotfix\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\ModelView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\HotfixView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)"
                         };
                         break;
                 }

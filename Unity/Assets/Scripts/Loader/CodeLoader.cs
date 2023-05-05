@@ -15,6 +15,12 @@ namespace ET
 		{
 			if (!Define.EnableCodes)
 			{
+				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+				if (globalConfig.CodeMode != CodeMode.ClientServer)
+				{
+					throw new Exception("!ENABLE_CODES mode must use ClientServer code mode!");
+				}
+				
 				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 				Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
 				EventSystem.Instance.Add(types);

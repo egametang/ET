@@ -18,8 +18,7 @@ MonoBehaviour:
   il2cppPlusRepoURL: https://gitee.com/focus-creative-games/il2cpp_plus
   hotUpdateAssemblyDefinitions: []
   hotUpdateAssemblies:
-  - Model
-  - Hotfix
+  - Codes
   preserveHotUpdateAssemblies: []
   hotUpdateDllCompileOutputRootDir: HybridCLRData/HotUpdateDlls
   externalHotUpdateAssembliyDirs:
@@ -32,10 +31,11 @@ MonoBehaviour:
   - MongoDB.Bson.dll
   - CommandLine.dll
   - NLog.dll
-  - mscorlib.dll
   - System.dll
   - System.Core.dll
-  collectAssetReferenceTypes: 0
+  - mscorlib.dll
+  - MemoryPack.dll
+  - System.Runtime.CompilerServices.Unsafe.dll
   outputLinkFile: Scripts/Loader/Plugins/HybridCLR/Generated/link.xml
   outputAOTGenericReferenceFile: Scripts/Loader/Plugins/HybridCLR/Generated/AOTGenericReferences.cs
   maxGenericReferenceIteration: 10
