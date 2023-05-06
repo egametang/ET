@@ -81,7 +81,7 @@ namespace ET
 			{
 				case BuildType.None:
 				case BuildType.Debug:
-					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler;
+					this.buildOptions = BuildOptions.BuildScriptsOnly;
 					break;
 				case BuildType.Release:
 					this.buildOptions = BuildOptions.BuildScriptsOnly;

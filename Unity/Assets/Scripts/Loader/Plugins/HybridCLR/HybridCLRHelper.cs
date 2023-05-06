@@ -12,7 +12,7 @@ namespace ET
             foreach (var kv in dictionary)
             {
                 byte[] bytes = (kv.Value as TextAsset).bytes;
-                RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.Consistent);
+                RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.SuperSet);
             }
         }
     }

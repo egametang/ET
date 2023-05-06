@@ -6,7 +6,7 @@ namespace ET.Client
         protected override async ETTask Run(Session session, Room2C_AdjustUpdateTime message)
         {
             Room room = session.DomainScene().GetComponent<Room>();
-            int newInterval = (1000 + (message.DiffTime - LSConstValue.UpdateInterval * 2)) * LSConstValue.UpdateInterval / 1000;
+            int newInterval = (1000 + (message.DiffTime - LSConstValue.UpdateInterval)) * LSConstValue.UpdateInterval / 1000;
 
             if (newInterval < 40)
             {
@@ -18,7 +18,7 @@ namespace ET.Client
                 newInterval = 66;
             }
             
-            room.FixedTimeCounter.ChangeInterval(newInterval, room.FrameBuffer.PredictionFrame - 1);
+            room.FixedTimeCounter.ChangeInterval(newInterval, room.FrameBuffer.PredictionFrame);
             await ETTask.CompletedTask;
         }
     }

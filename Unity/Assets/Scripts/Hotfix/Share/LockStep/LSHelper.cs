@@ -7,7 +7,7 @@ namespace ET
         // 回滚
         public static void Rollback(Room room, int frame)
         {
-            Log.Debug($"Room Scene roll back start {frame}");
+            Log.Debug($"roll back start {frame}");
             room.LSWorld.Dispose();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
@@ -19,7 +19,7 @@ namespace ET
 
             
             // 重新执行预测的帧
-            for (int i = frameBuffer.RealFrame + 1; i < frameBuffer.PredictionFrame; ++i)
+            for (int i = frameBuffer.RealFrame + 1; i <= frameBuffer.PredictionFrame; ++i)
             {
                 OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(i);
                 CopyOtherInputsTo(room, realFrameMessage, oneFrameMessages); // 重新预测剩下预测过的消息
@@ -28,22 +28,20 @@ namespace ET
             
             RollbackHelper.Rollback(room);
             
-            Log.Debug($"Room Scene roll back finish {frame}");
+            Log.Debug($"roll back finish {frame}");
         }
-        
-        public static void CopyOtherInputsTo(Room room, OneFrameMessages from, OneFrameMessages to)
+
+        private static void CopyOtherInputsTo(Room room, OneFrameMessages from, OneFrameMessages to)
         {
             long myId = room.GetComponent<RoomClientUpdater>().MyId;
-            to.Inputs.Clear();
             foreach (var kv in from.Inputs)
             {
                 if (kv.Key == myId)
                 {
                     continue;
                 }
-                to.Inputs.Add(kv.Key, kv.Value);
+                to.Inputs[kv.Key] = kv.Value;
             }
-            Log.Debug($"copy inputs to: {to.ToJson()}");
         }
     }
 }

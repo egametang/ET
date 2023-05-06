@@ -10,9 +10,11 @@ namespace ET.Server
             FrameBuffer frameBuffer = room.FrameBuffer;
             if (message.Frame < frameBuffer.RealFrame)  // 小于RealFrame，丢弃
             {
+                Log.Warning($"FrameMessage discard: {message}");
                 return;
             }
             OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(message.Frame);
+            oneFrameMessages.Frame = message.Frame;
             oneFrameMessages.Inputs[message.PlayerId] = message.Input;
 
             if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)

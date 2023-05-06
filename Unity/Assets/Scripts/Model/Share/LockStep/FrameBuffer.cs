@@ -6,7 +6,7 @@ namespace ET
 {
     public class FrameBuffer
     {
-        public int PredictionFrame { get; set; }
+        public int PredictionFrame { get; set; } = -1;
 
         public int RealFrame { get; set; } = -1;
         
@@ -31,7 +31,6 @@ namespace ET
                 return null;
             }
             OneFrameMessages oneFrameMessages = this.messageBuffer[frame % TotalFrameCount];
-            oneFrameMessages.Frame = frame;
             return oneFrameMessages;
         }
 

@@ -29,6 +29,7 @@ namespace ET.Server
             }
             
             OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(frame);
+            oneFrameMessages.Frame = frame;
             if (oneFrameMessages.Inputs.Count != LSConstValue.MatchCount)
             {
                 return;

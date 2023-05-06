@@ -21,16 +21,11 @@ namespace ET.Client
             ++frameBuffer.RealFrame;
             if (message != predictionMessage)
             {
-                Log.Debug($"recv diff:");
-                Log.Debug($"recv diff1----: {message.ToJson()}");
-                Log.Debug($"recv diff2----: {predictionMessage.ToJson()}");
-                
                 message.CopyTo(predictionMessage);
                 // 回滚到frameBuffer.RealFrame
                 LSHelper.Rollback(room, frameBuffer.RealFrame);
             }
-            
-            
+
             await ETTask.CompletedTask;
         }
     }
