@@ -18,14 +18,18 @@ namespace ET.Client
             // 服务端返回来的消息，跟预测消息对比
             OneFrameMessages predictionMessage = frameBuffer.GetFrame(message.Frame);
             
+            ++frameBuffer.RealFrame;
             if (message != predictionMessage)
             {
-                // 回滚到frameBuffer.RealFrame
-                LSHelper.Rollback(room, frameBuffer.RealFrame + 1);
+                Log.Debug($"recv diff:");
+                Log.Debug($"recv diff1----: {message.ToJson()}");
+                Log.Debug($"recv diff2----: {predictionMessage.ToJson()}");
                 
                 message.CopyTo(predictionMessage);
+                // 回滚到frameBuffer.RealFrame
+                LSHelper.Rollback(room, frameBuffer.RealFrame);
             }
-            ++frameBuffer.RealFrame;
+            
             
             await ETTask.CompletedTask;
         }

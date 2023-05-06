@@ -47,8 +47,11 @@
     <type fullname="System.Diagnostics.ConditionalAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerBrowsableAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerBrowsableState" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerDisplayAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerHiddenAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerStepThroughAttribute" preserve="all" />
     <type fullname="System.Enum" preserve="all" />
     <type fullname="System.Exception" preserve="all" />
     <type fullname="System.Func`1" preserve="all" />
@@ -166,6 +169,7 @@
     <type fullname="ET.IMerge" preserve="all" />
     <type fullname="ET.InvokeAttribute" preserve="all" />
     <type fullname="ET.IScene" preserve="all" />
+    <type fullname="ET.ISerializeToEntity" preserve="all" />
     <type fullname="ET.ITransfer" preserve="all" />
     <type fullname="ET.IUpdate" preserve="all" />
     <type fullname="ET.JsonHelper" preserve="all" />
@@ -191,6 +195,7 @@
     <type fullname="ET.MongoHelper" preserve="all" />
     <type fullname="ET.NetServices" preserve="all" />
     <type fullname="ET.NetworkHelper" preserve="all" />
+    <type fullname="ET.Object" preserve="all" />
     <type fullname="ET.ObjectSystemAttribute" preserve="all" />
     <type fullname="ET.Options" preserve="all" />
     <type fullname="ET.ProtoObject" preserve="all" />

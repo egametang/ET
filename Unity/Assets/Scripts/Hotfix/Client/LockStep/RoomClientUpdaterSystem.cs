@@ -37,7 +37,7 @@ namespace ET.Client
             }
             
             OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.PredictionFrame);
-            room.Update(oneFrameMessages);
+            room.Update(oneFrameMessages, frameBuffer.PredictionFrame);
             ++frameBuffer.PredictionFrame;
 
             FrameMessage frameMessage = NetServices.Instance.FetchMessage<FrameMessage>();

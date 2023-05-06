@@ -1,6 +1,6 @@
 namespace ET
 {
-    public class LSInputComponent: LSEntity, ILSUpdate, IAwake
+    public class LSInputComponent: LSEntity, ILSUpdate, IAwake, ISerializeToEntity
     {
         public LSInput LSInput { get; set; } = new LSInput();
 

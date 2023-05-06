@@ -4,7 +4,7 @@
     {
         public static LSUnit Init(LSWorld lsWorld, LockStepUnitInfo unitInfo)
         {
-	        LSUnitComponent lsUnitComponent = lsWorld.AddComponent<LSUnitComponent>();
+	        LSUnitComponent lsUnitComponent = lsWorld.GetComponent<LSUnitComponent>();
 	        LSUnit lsUnit = lsUnitComponent.AddChildWithId<LSUnit>(unitInfo.PlayerId);
 			
 	        lsUnit.Position = unitInfo.Position;

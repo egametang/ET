@@ -1,25 +1,49 @@
+using ET.Client;
+
 namespace ET
 {
     public static class LSHelper
     {
         // 回滚
-        public static void Rollback(Room self, int frame)
+        public static void Rollback(Room room, int frame)
         {
-            Log.Debug($"Room Scene roll back to {frame}");
-            self.LSWorld.Dispose();
-            FrameBuffer frameBuffer = self.FrameBuffer;
+            Log.Debug($"Room Scene roll back start {frame}");
+            room.LSWorld.Dispose();
+            FrameBuffer frameBuffer = room.FrameBuffer;
             
             // 回滚
-            self.LSWorld = frameBuffer.GetLSWorld(frame);
+            room.LSWorld = frameBuffer.GetLSWorld(frame);
+            OneFrameMessages realFrameMessage = frameBuffer.GetFrame(frame);
+            // 执行RealFrame
+            room.Update(realFrameMessage, frame);
 
-            // 从回滚的地方重新执行预测的帧
+            
+            // 重新执行预测的帧
             for (int i = frameBuffer.RealFrame + 1; i < frameBuffer.PredictionFrame; ++i)
             {
                 OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(i);
-                self.Update(oneFrameMessages);
+                CopyOtherInputsTo(room, realFrameMessage, oneFrameMessages); // 重新预测剩下预测过的消息
+                room.Update(oneFrameMessages, i);
             }
             
-            RollbackHelper.Rollback(self);
+            RollbackHelper.Rollback(room);
+            
+            Log.Debug($"Room Scene roll back finish {frame}");
+        }
+        
+        public static void CopyOtherInputsTo(Room room, OneFrameMessages from, OneFrameMessages to)
+        {
+            long myId = room.GetComponent<RoomClientUpdater>().MyId;
+            to.Inputs.Clear();
+            foreach (var kv in from.Inputs)
+            {
+                if (kv.Key == myId)
+                {
+                    continue;
+                }
+                to.Inputs.Add(kv.Key, kv.Value);
+            }
+            Log.Debug($"copy inputs to: {to.ToJson()}");
         }
     }
 }

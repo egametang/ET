@@ -3,7 +3,7 @@ using TrueSync;
 
 namespace ET
 {
-    public static class LSUnitInputComponentSystem
+    public static class LSInputComponentSystem
     {
         [ObjectSystem]
         public class LSUpdateSystem: LSUpdateSystem<LSInputComponent>

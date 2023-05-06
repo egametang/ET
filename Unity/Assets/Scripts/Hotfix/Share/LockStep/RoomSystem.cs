@@ -11,6 +11,7 @@ namespace ET
             
             self.FixedTimeCounter = new FixedTimeCounter(self.StartTime, 0, LSConstValue.UpdateInterval);
 
+            self.LSWorld.AddComponent<LSUnitComponent>();
             for (int i = 0; i < room2CStart.UnitInfo.Count; ++i)
             {
                 LockStepUnitInfo unitInfo = room2CStart.UnitInfo[i];
@@ -19,11 +20,14 @@ namespace ET
         }
 
 
-        public static void Update(this Room self, OneFrameMessages oneFrameMessages)
+        public static void Update(this Room self, OneFrameMessages oneFrameMessages, int frame)
         {
-            // 保存当前帧场景数据
-            self.FrameBuffer.SaveLSWorld(self.FrameBuffer.PredictionFrame, self.LSWorld);
-            
+            if (frame == self.FrameBuffer.RealFrame + 1)
+            {
+                // 保存当前帧场景数据
+                self.FrameBuffer.SaveLSWorld(frame, self.LSWorld);
+            }
+
             // 设置输入到每个LSUnit身上
             LSWorld lsWorld = self.LSWorld;
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
