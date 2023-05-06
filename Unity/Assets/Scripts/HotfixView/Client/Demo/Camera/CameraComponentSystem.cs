@@ -45,7 +45,7 @@ namespace ET.Client
 
 			Vector3 pos = lsUnit.Transform.position;
 			Vector3 cameraPos = self.Transform.position;
-			self.Transform.position = new Vector3(pos.x, cameraPos.y, pos.z - 10);
+			self.Transform.position = new Vector3(pos.x, pos.y + 3, pos.z - 5);
 		}
 	}
 }

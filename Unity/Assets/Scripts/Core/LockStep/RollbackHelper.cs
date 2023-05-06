@@ -13,17 +13,17 @@ namespace ET
             
             if (entity.ComponentsCount() > 0)
             {
-                foreach (Entity component in entity.Components.Values)
+                foreach (var kv in entity.Components)
                 {
-                    Rollback(component);
+                    Rollback(kv.Value);
                 }
             }
 
             if (entity.ChildrenCount() > 0)
             {
-                foreach (Entity child in entity.Children.Values)
+                foreach (var kv in entity.Children)
                 {
-                    Rollback(child);
+                    Rollback(kv.Value);
                 }
             }
         }

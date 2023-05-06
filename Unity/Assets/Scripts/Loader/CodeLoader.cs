@@ -39,9 +39,12 @@ namespace ET
 				byte[] pdbBytes;
 				if (!Define.IsEditor)
 				{
-					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					assBytes = ((TextAsset)dictionary["Codes.dll"]).bytes;
-					pdbBytes = ((TextAsset)dictionary["Codes.pdb"]).bytes;
+					//Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+					//assBytes = ((TextAsset)dictionary["Codes.dll"]).bytes;
+					//pdbBytes = ((TextAsset)dictionary["Codes.pdb"]).bytes;
+					
+					assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Codes.dll"));
+					pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Codes.pdb"));
 
 					if (Define.EnableIL2CPP)
 					{
