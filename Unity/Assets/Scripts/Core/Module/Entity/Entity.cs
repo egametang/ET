@@ -73,13 +73,8 @@ namespace ET
                     this.status &= ~EntityStatus.IsRegister;
                 }
 
-                if (!value)
+                if (value)
                 {
-                    Root.Instance.Remove(this.InstanceId);
-                }
-                else
-                {
-                    Root.Instance.Add(this);
                     EventSystem.Instance.RegisterSystem(this);
                 }
 

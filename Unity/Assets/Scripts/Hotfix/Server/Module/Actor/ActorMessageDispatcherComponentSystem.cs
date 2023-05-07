@@ -93,7 +93,7 @@ namespace ET.Server
             self.ActorMessageHandlers[type].Add(handler);
         }
 
-        public static async ETTask Handle(this ActorMessageDispatcherComponent self, Entity entity, int fromProcess, object message)
+        private static async ETTask Handle(this ActorMessageDispatcherComponent self, Entity entity, int fromProcess, object message)
         {
             List<ActorMessageDispatcherInfo> list;
             if (!self.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
@@ -110,6 +110,128 @@ namespace ET.Server
                 }
                 await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, fromProcess, message);   
             }
+        }
+
+
+        /// <summary>
+        /// 分发actor消息
+        /// </summary>
+        [EnableAccessEntiyChild]
+        public static async ETTask HandleIActorRequest(this ActorMessageDispatcherComponent self, int fromProcess, long actorId, IActorRequest iActorRequest)
+        {
+            Entity entity = self.Get(actorId);
+            if (entity == null)
+            {
+                IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                ActorHandleHelper.Reply(fromProcess, response);
+                return;
+            }
+            
+            OpcodeHelper.LogMsg(entity.DomainScene(), iActorRequest);
+
+            MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+            if (mailBoxComponent == null)
+            {
+                Log.Warning($"actor not found mailbox: {entity.GetType().FullName} {actorId} {iActorRequest}");
+                IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                ActorHandleHelper.Reply(fromProcess, response);
+                return;
+            }
+            
+            switch (mailBoxComponent.MailboxType)
+            {
+                case MailboxType.MessageDispatcher:
+                {
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
+                    {
+                        if (entity.InstanceId != actorId)
+                        {
+                            IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                            ActorHandleHelper.Reply(fromProcess, response);
+                            break;
+                        }
+                        await self.Handle(entity, fromProcess, iActorRequest);
+                    }
+                    break;
+                }
+                case MailboxType.UnOrderMessageDispatcher:
+                {
+                    await self.Handle(entity, fromProcess, iActorRequest);
+                    break;
+                }
+                default:
+                    throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorRequest}");
+            }
+        }
+        
+        /// <summary>
+        /// 分发actor消息
+        /// </summary>
+        [EnableAccessEntiyChild]
+        public static async ETTask HandleIActorMessage(this ActorMessageDispatcherComponent self, int fromProcess, long actorId, IActorMessage iActorMessage)
+        {
+            Entity entity = self.Get(actorId);
+            if (entity == null)
+            {
+                Log.Error($"not found actor: {actorId} {iActorMessage}");
+                return;
+            }
+            
+            MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+            if (mailBoxComponent == null)
+            {
+                Log.Error($"actor not found mailbox: {entity.GetType().FullName} {actorId} {iActorMessage}");
+                return;
+            }
+
+            switch (mailBoxComponent.MailboxType)
+            {
+                case MailboxType.MessageDispatcher:
+                {
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
+                    {
+                        if (entity.InstanceId != actorId)
+                        {
+                            break;
+                        }
+                        await self.Handle(entity, fromProcess, iActorMessage);
+                    }
+                    break;
+                }
+                case MailboxType.UnOrderMessageDispatcher:
+                {
+                    await self.Handle(entity, fromProcess, iActorMessage);
+                    break;
+                }
+                case MailboxType.GateSession:
+                {
+                    if (entity is PlayerSessionComponent playerSessionComponent)
+                    {
+                        playerSessionComponent.Session?.Send(iActorMessage);
+                    }
+                    break;
+                }
+                default:
+                    throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorMessage}");
+            }
+        }
+        
+        
+        public static void Add(this ActorMessageDispatcherComponent self, Entity entity)
+        {
+            self.mailboxEntities.Add(entity.InstanceId, entity);
+        }
+        
+        public static void Remove(this ActorMessageDispatcherComponent self, long instanceId)
+        {
+            self.mailboxEntities.Remove(instanceId);
+        }
+
+        private static Entity Get(this ActorMessageDispatcherComponent self, long instanceId)
+        {
+            Entity component = null;
+            self.mailboxEntities.TryGetValue(instanceId, out component);
+            return component;
         }
     }
 }

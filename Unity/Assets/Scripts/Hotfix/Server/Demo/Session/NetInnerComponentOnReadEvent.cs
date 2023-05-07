@@ -14,7 +14,7 @@ namespace ET.Server
 
                 if (message is IActorResponse iActorResponse)
                 {
-                    ActorHandleHelper.HandleIActorResponse(iActorResponse);
+                    ActorMessageSenderComponent.Instance.HandleIActorResponse(iActorResponse);
                     return;
                 }
                 
@@ -28,12 +28,12 @@ namespace ET.Server
                 {
                     case IActorRequest iActorRequest:
                     {
-                        await ActorHandleHelper.HandleIActorRequest(fromProcess, realActorId, iActorRequest);
+                        await ActorMessageDispatcherComponent.Instance.HandleIActorRequest(fromProcess, realActorId, iActorRequest);
                         break;
                     }
                     case IActorMessage iActorMessage:
                     {
-                        await ActorHandleHelper.HandleIActorMessage(fromProcess, realActorId, iActorMessage);
+                        await ActorMessageDispatcherComponent.Instance.HandleIActorMessage(fromProcess, realActorId, iActorMessage);
                         break;
                     }
                 }
@@ -42,8 +42,6 @@ namespace ET.Server
             {
                 Log.Error($"InnerMessageDispatcher error: {args.Message.GetType().FullName}\n{e}");
             }
-
-            await ETTask.CompletedTask;
         }
     }
 }

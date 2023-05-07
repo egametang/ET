@@ -91,13 +91,13 @@ namespace ET
 
         private TypeSystems typeSystems;
 
-        private readonly Queue<long>[] queues = new Queue<long>[InstanceQueueIndex.Max];
+        private readonly Queue<EntityRef<Entity>>[] queues = new Queue<EntityRef<Entity>>[InstanceQueueIndex.Max];
 
         public EventSystem()
         {
             for (int i = 0; i < this.queues.Length; i++)
             {
-                this.queues[i] = new Queue<long>();
+                this.queues[i] = new Queue<EntityRef<Entity>>();
             }
         }
 
@@ -237,7 +237,7 @@ namespace ET
                 {
                     continue;
                 }
-                this.queues[i].Enqueue(component.InstanceId);
+                this.queues[i].Enqueue(component);
             }
         }
 
@@ -447,12 +447,11 @@ namespace ET
 
         public void Load()
         {
-            Queue<long> queue = this.queues[InstanceQueueIndex.Load];
+            Queue<EntityRef<Entity>> queue = this.queues[InstanceQueueIndex.Load];
             int count = queue.Count;
             while (count-- > 0)
             {
-                long instanceId = queue.Dequeue();
-                Entity component = Root.Instance.Get(instanceId);
+                Entity component = queue.Dequeue();
                 if (component == null)
                 {
                     continue;
@@ -474,7 +473,7 @@ namespace ET
                     continue;
                 }
 
-                queue.Enqueue(instanceId);
+                queue.Enqueue(component);
 
                 foreach (ILoadSystem iLoadSystem in iLoadSystems)
                 {
@@ -523,12 +522,11 @@ namespace ET
 
         public void Update()
         {
-            Queue<long> queue = this.queues[InstanceQueueIndex.Update];
+            Queue<EntityRef<Entity>> queue = this.queues[InstanceQueueIndex.Update];
             int count = queue.Count;
             while (count-- > 0)
             {
-                long instanceId = queue.Dequeue();
-                Entity component = Root.Instance.Get(instanceId);
+                Entity component = queue.Dequeue();
                 if (component == null)
                 {
                     continue;
@@ -550,7 +548,7 @@ namespace ET
                     continue;
                 }
 
-                queue.Enqueue(instanceId);
+                queue.Enqueue(component);
 
                 foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
                 {
@@ -568,12 +566,11 @@ namespace ET
 
         public void LateUpdate()
         {
-            Queue<long> queue = this.queues[InstanceQueueIndex.LateUpdate];
+            Queue<EntityRef<Entity>> queue = this.queues[InstanceQueueIndex.LateUpdate];
             int count = queue.Count;
             while (count-- > 0)
             {
-                long instanceId = queue.Dequeue();
-                Entity component = Root.Instance.Get(instanceId);
+                Entity component = queue.Dequeue();
                 if (component == null)
                 {
                     continue;
@@ -595,7 +592,7 @@ namespace ET
                     continue;
                 }
 
-                queue.Enqueue(instanceId);
+                queue.Enqueue(component);
 
                 foreach (ILateUpdateSystem iLateUpdateSystem in iLateUpdateSystems)
                 {

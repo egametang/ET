@@ -8,6 +8,8 @@ namespace ET.Server
         protected override void Awake(MailBoxComponent self)
         {
             self.MailboxType = MailboxType.MessageDispatcher;
+            self.ParentInstanceId = self.Parent.InstanceId;
+            ActorMessageDispatcherComponent.Instance.Add(self.Parent);
         }
     }
 
@@ -17,6 +19,17 @@ namespace ET.Server
         protected override void Awake(MailBoxComponent self, MailboxType mailboxType)
         {
             self.MailboxType = mailboxType;
+            self.ParentInstanceId = self.Parent.InstanceId;
+            ActorMessageDispatcherComponent.Instance.Add(self.Parent);
+        }
+    }
+
+    [ObjectSystem]
+    public class DestroySystem: DestroySystem<MailBoxComponent>
+    {
+        protected override void Destroy(MailBoxComponent self)
+        {
+            ActorMessageDispatcherComponent.Instance.Remove(self.ParentInstanceId);
         }
     }
 }

@@ -26,5 +26,7 @@ namespace ET.Server
         public static ActorMessageDispatcherComponent Instance;
 
         public readonly Dictionary<Type, List<ActorMessageDispatcherInfo>> ActorMessageHandlers = new();
+        
+        public readonly Dictionary<long, Entity> mailboxEntities = new();
     }
 }
