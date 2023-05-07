@@ -119,6 +119,11 @@ namespace ET
                 this.TimeId.Remove(time);
             }
 
+            if (this.TimeId.Count == 0)
+            {
+                this.minTime = long.MaxValue;
+            }
+
             while (this.timeOutTimerIds.Count > 0)
             {
                 long timerId = this.timeOutTimerIds.Dequeue();
