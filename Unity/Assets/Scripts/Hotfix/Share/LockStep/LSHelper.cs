@@ -13,16 +13,16 @@ namespace ET
             
             // 回滚
             room.LSWorld = frameBuffer.GetLSWorld(frame);
-            OneFrameMessages realFrameMessage = frameBuffer.GetFrame(frame);
+            OneFrameMessages realFrameMessage = frameBuffer[frame];
             // 执行RealFrame
             room.Update(realFrameMessage, frame);
 
             
             // 重新执行预测的帧
-            for (int i = frameBuffer.RealFrame + 1; i <= frameBuffer.PredictionFrame; ++i)
+            for (int i = room.RealFrame + 1; i <= room.PredictionFrame; ++i)
             {
-                OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(i);
-                CopyOtherInputsTo(room, realFrameMessage, oneFrameMessages); // 重新预测剩下预测过的消息
+                OneFrameMessages oneFrameMessages = frameBuffer[i];
+                CopyOtherInputsTo(room, realFrameMessage, oneFrameMessages); // 重新预测消息
                 room.Update(oneFrameMessages, i);
             }
             
@@ -31,6 +31,7 @@ namespace ET
             Log.Debug($"roll back finish {frame}");
         }
 
+        // 重新调整预测消息，只需要调整其他玩家的输入
         private static void CopyOtherInputsTo(Room room, OneFrameMessages from, OneFrameMessages to)
         {
             long myId = room.GetComponent<RoomClientUpdater>().MyId;

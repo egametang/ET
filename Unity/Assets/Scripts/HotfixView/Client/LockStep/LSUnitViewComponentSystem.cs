@@ -14,23 +14,23 @@ namespace ET.Client
             }
         }
         
-        public class RollbackSystem: RollbackSystem<LSUnitViewComponent>
-        {
-            protected override void Rollback(LSUnitViewComponent self)
-            {
-                LSWorld lsWorld = self.GetParent<Room>().LSWorld;
-                foreach (LSUnitView child in self.Children.Values)
-                {
-                    LSUnit unit = lsWorld.Get(child.Id) as LSUnit;
-
-                    Vector3 pos = child.Transform.position;
-                    Vector3 to = unit.Position.ToVector();
-                    float t = (to - pos).magnitude / 9f;
-
-                    child.Transform.position = pos;
-                }
-            }
-        }
+        //public class RollbackSystem: RollbackSystem<LSUnitViewComponent>
+        //{
+        //    protected override void Rollback(LSUnitViewComponent self)
+        //    {
+        //        LSWorld lsWorld = self.GetParent<Room>().LSWorld;
+        //        foreach (LSUnitView child in self.Children.Values)
+        //        {
+        //            LSUnit unit = lsWorld.Get(child.Id) as LSUnit;
+//
+        //            Vector3 pos = child.Transform.position;
+        //            Vector3 to = unit.Position.ToVector();
+        //            float t = (to - pos).magnitude / 9f;
+//
+        //            child.Transform.position = pos;
+        //        }
+        //    }
+        //}
         
         public class UpdateSystem: UpdateSystem<LSUnitViewComponent>
         {
@@ -43,8 +43,12 @@ namespace ET.Client
 
                     Vector3 pos = child.Transform.position;
                     Vector3 to = unit.Position.ToVector();
-                    float t = (to - pos).magnitude / 9f;
-                    
+                    float distance = (to - pos).magnitude;
+                    if (distance < 0.5)
+                    {
+                        continue;
+                    }
+                    float t = distance / 9f;
                     child.Transform.position = Vector3.Lerp(pos, unit.Position.ToVector(), Time.deltaTime / t);
                 }
             }

@@ -16,6 +16,7 @@ namespace ET
             {
                 LockStepUnitInfo unitInfo = room2CStart.UnitInfo[i];
                 LSUnitFactory.Init(self.LSWorld, unitInfo);
+                self.PlayerIds.Add(unitInfo.PlayerId);
             }
         }
 

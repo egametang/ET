@@ -4,5 +4,6 @@ namespace ET
     {
         public const int MatchCount = 2;
         public const int UpdateInterval = 50;
+        public const int FrameCountPerSecond = 1000 / UpdateInterval;
     }
 }

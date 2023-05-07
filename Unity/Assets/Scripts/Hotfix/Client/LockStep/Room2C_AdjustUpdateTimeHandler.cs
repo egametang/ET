@@ -18,7 +18,7 @@ namespace ET.Client
                 newInterval = 66;
             }
             
-            room.FixedTimeCounter.ChangeInterval(newInterval, room.FrameBuffer.PredictionFrame);
+            room.FixedTimeCounter.ChangeInterval(newInterval, room.PredictionFrame);
             await ETTask.CompletedTask;
         }
     }

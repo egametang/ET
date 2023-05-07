@@ -30,5 +30,11 @@ namespace ET
         public FrameBuffer FrameBuffer { get; } = new();
 
         public FixedTimeCounter FixedTimeCounter { get; set; }
+
+        public List<long> PlayerIds { get; } = new(LSConstValue.MatchCount);
+        
+        public int PredictionFrame { get; set; } = -1;
+
+        public int RealFrame { get; set; } = -1;
     }
 }

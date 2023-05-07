@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using MongoDB.Bson;
 
 namespace ET.Client
 {
@@ -16,7 +15,6 @@ namespace ET.Client
             }
         }
         
-        [FriendOf(typeof (Room))]
         public class UpdateSystem: UpdateSystem<RoomClientUpdater>
         {
             protected override void Update(RoomClientUpdater self)
@@ -28,17 +26,23 @@ namespace ET.Client
         private static void Update(this RoomClientUpdater self)
         {
             Room room = self.GetParent<Room>();
-            FrameBuffer frameBuffer = room.FrameBuffer;
             long timeNow = TimeHelper.ServerFrameTime();
             Scene clientScene = room.GetParent<Scene>();
             
-            if (timeNow < room.FixedTimeCounter.FrameTime(frameBuffer.PredictionFrame + 1))
+            if (timeNow < room.FixedTimeCounter.FrameTime(room.PredictionFrame + 1))
             {
                 return;
             }
-            ++frameBuffer.PredictionFrame;
-            OneFrameMessages oneFrameMessages = GetOneFrameMessages(self, frameBuffer.PredictionFrame);
-            room.Update(oneFrameMessages, frameBuffer.PredictionFrame);
+
+            // 最多只预测5帧
+            if (room.PredictionFrame - room.RealFrame > 5)
+            {
+                return;
+            }
+            
+            ++room.PredictionFrame;
+            OneFrameMessages oneFrameMessages = self.GetOneFrameMessages(room.PredictionFrame);
+            room.Update(oneFrameMessages, room.PredictionFrame);
             
 
             FrameMessage frameMessage = NetServices.Instance.FetchMessage<FrameMessage>();
@@ -52,21 +56,20 @@ namespace ET.Client
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
-            if (frame <= frameBuffer.RealFrame)
+            if (frame <= room.RealFrame)
             {
-                return frameBuffer.GetFrame(frame);
+                return frameBuffer[frame];
             }
             
             // predict
-            return GetPredictionOneFrameMessage(self, frame);
-        }
-
-        // 获取预测一帧的消息
-        private static OneFrameMessages GetPredictionOneFrameMessage(this RoomClientUpdater self, int frame)
-        {
-            Room room = self.GetParent<Room>();
-            OneFrameMessages predictionFrame = room.FrameBuffer.GetFrame(frame);
-            OneFrameMessages realFrame = room.FrameBuffer.GetFrame(room.FrameBuffer.RealFrame);
+            OneFrameMessages predictionFrame = frameBuffer[frame];
+            if (predictionFrame == null)
+            {
+                throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
+            }
+            
+            frameBuffer.MoveForward(frame);
+            OneFrameMessages realFrame = frameBuffer[room.RealFrame];
             realFrame?.CopyTo(predictionFrame);
             predictionFrame.Frame = frame;
             predictionFrame.Inputs[self.MyId] = self.Input;

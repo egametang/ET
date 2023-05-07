@@ -18,31 +18,66 @@ namespace ET.Server
         private static void Update(this RoomServerUpdater self)
         {
             Room room = self.GetParent<Room>();
-            FrameBuffer frameBuffer = room.FrameBuffer;
             long timeNow = TimeHelper.ServerFrameTime();
             
             
-            int frame = frameBuffer.RealFrame + 1;
+            int frame = room.RealFrame + 1;
             if (timeNow < room.FixedTimeCounter.FrameTime(frame))
             {
                 return;
             }
-            
-            OneFrameMessages oneFrameMessages = frameBuffer.GetFrame(frame);
-            oneFrameMessages.Frame = frame;
-            if (oneFrameMessages.Inputs.Count != LSConstValue.MatchCount)
-            {
-                return;
-            }
-            ++frameBuffer.RealFrame;
-            
-            OneFrameMessages sendMessage = NetServices.Instance.FetchMessage<OneFrameMessages>();
-            
+
+            OneFrameMessages oneFrameMessages = self.GetOneFrameMessage(frame);
+            ++room.RealFrame;
+
+            OneFrameMessages sendMessage = new();
             oneFrameMessages.CopyTo(sendMessage);
-            oneFrameMessages.Inputs.Clear();
-            oneFrameMessages.Frame = 0;
-            
+
             RoomMessageHelper.BroadCast(room, sendMessage);
+            
+            room.Update(oneFrameMessages, frame);
+        }
+
+        private static OneFrameMessages GetOneFrameMessage(this RoomServerUpdater self, int frame)
+        {
+            Room room = self.GetParent<Room>();
+            FrameBuffer frameBuffer = room.FrameBuffer;
+            OneFrameMessages oneFrameMessages = frameBuffer[frame];
+            if (oneFrameMessages == null)
+            {
+                throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
+            }
+            
+            frameBuffer.MoveForward(frame);
+            
+            oneFrameMessages.Frame = frame;
+            if (oneFrameMessages.Inputs.Count == LSConstValue.MatchCount)
+            {
+                return oneFrameMessages;
+            }
+
+            OneFrameMessages preFrameMessages = frameBuffer[frame - 1];
+            
+            // 有人输入的消息没过来，给他使用上一帧的操作
+            foreach (long playerId in room.PlayerIds)
+            {
+                if (oneFrameMessages.Inputs.ContainsKey(playerId))
+                {
+                    continue;
+                }
+
+                if (preFrameMessages != null && preFrameMessages.Inputs.TryGetValue(playerId, out LSInput input))
+                {
+                    // 使用上一帧的输入
+                    oneFrameMessages.Inputs[playerId] = input;
+                }
+                else
+                {
+                    oneFrameMessages.Inputs[playerId] = new LSInput();
+                }
+            }
+
+            return oneFrameMessages;
         }
     }
 }
