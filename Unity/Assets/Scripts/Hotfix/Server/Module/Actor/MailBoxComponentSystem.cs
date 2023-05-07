@@ -29,7 +29,7 @@ namespace ET.Server
     {
         protected override void Destroy(MailBoxComponent self)
         {
-            ActorMessageDispatcherComponent.Instance.Remove(self.ParentInstanceId);
+            ActorMessageDispatcherComponent.Instance?.Remove(self.ParentInstanceId);
         }
     }
 }

@@ -6,6 +6,15 @@ namespace ET
 {
     public class SortedLinkList<T, K>: Dictionary<T, K> where T: IComparable<T>, IEnumerable
     {
+        //public struct KeyValuePair
+        //{
+        //    public SortedLinkList<T, K> sortedLinkList;
+        //    public T Key;
+        //    public K Value;
+        //    
+        //    public KeyValuePair()
+        //}
+        
         public class Node
         {
             public Node Next;
@@ -35,6 +44,11 @@ namespace ET
             }
             this.pool.Enqueue(node);
         }
+
+        //public new KeyValuePair GetEnumerator()
+        //{
+        //    return new 
+        //}
 
         public T FirstKey()
         {

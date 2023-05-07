@@ -95,16 +95,20 @@ namespace ET
                 return;
             }
 
-            foreach (KeyValuePair<long, List<long>> kv in this.TimeId)
+            using (var enumerator = this.TimeId.GetEnumerator())
             {
-                long k = kv.Key;
-                if (k > timeNow)
+                while (enumerator.MoveNext())
                 {
-                    this.minTime = k;
-                    break;
-                }
+                    var kv = enumerator.Current;
+                    long k = kv.Key;
+                    if (k > timeNow)
+                    {
+                        this.minTime = k;
+                        break;
+                    }
 
-                this.timeOutTime.Enqueue(k);
+                    this.timeOutTime.Enqueue(k);
+                }
             }
 
             while (this.timeOutTime.Count > 0)
