@@ -82,10 +82,9 @@ namespace ET
         [StaticField]
         private static readonly JsonWriterSettings defaultSettings = new() { OutputMode = JsonOutputMode.RelaxedExtendedJson };
 
-        static MongoHelper()
+        public static void Register()
         {
             // 自动注册IgnoreExtraElements
-
             ConventionPack conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
 
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
@@ -100,7 +99,6 @@ namespace ET
             RegisterStruct<TSVector2>();
             RegisterStruct<TSVector4>();
             RegisterStruct<TSQuaternion>();
-            RegisterStruct<LSInput>();
 
             Dictionary<string, Type> types = EventSystem.Instance.GetTypes();
             foreach (Type type in types.Values)
@@ -117,10 +115,6 @@ namespace ET
 
                 BsonClassMap.LookupClassMap(type);
             }
-        }
-
-        public static void Init()
-        {
         }
 
         public static void RegisterStruct<T>() where T : struct

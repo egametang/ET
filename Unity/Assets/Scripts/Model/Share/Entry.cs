@@ -34,8 +34,8 @@ namespace ET
         {
             WinPeriod.Init();
             
-            MongoHelper.Init();
-            MemoryPackHelper.Init();
+            MongoHelper.RegisterStruct<LSInput>();
+            MongoHelper.Register();
 
             Game.AddSingleton<NetServices>();
             Game.AddSingleton<Root>();

@@ -58,27 +58,12 @@ namespace ET
             
             Log.Info($"LSScene create: {this.Id} {this.InstanceId}");
         }
-        
-        private readonly Dictionary<long, LSEntity> allLSEntities = new();
 
         [BsonElement]
         public LSUpdater Updater = new();
 
-        public LSEntity Get(long id)
+        public void RegisterSystem(LSEntity entity) 
         {
-            this.allLSEntities.TryGetValue(id, out LSEntity entity);
-            return entity;
-        }
-
-        public void Remove(long id)
-        {
-            this.allLSEntities.Remove(id);
-        }
-
-        public void Add(LSEntity entity) 
-        {
-            this.allLSEntities.Add(entity.Id, entity);
-
             TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(entity.GetType());
             if (oneTypeSystems == null)
             {
@@ -88,6 +73,21 @@ namespace ET
             if (oneTypeSystems.QueueFlag[LSQueneUpdateIndex.LSUpdate])
             {
                 this.Updater.Add(entity);
+            }
+        }
+
+        private LSEntityRef<LSUnitComponent> lsUnitComponent;
+        
+        [BsonIgnore]
+        public LSUnitComponent LSUnitComponent
+        {
+            get
+            {
+                return this.lsUnitComponent;
+            }
+            set
+            {
+                this.lsUnitComponent = value;
             }
         }
 

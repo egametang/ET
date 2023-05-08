@@ -1,31 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
 using MemoryPack;
 
 namespace ET
 {
     public static class MemoryPackHelper
     {
-        static MemoryPackHelper()
-        {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
-            foreach (Type type in types)
-            {
-                if (type.GetCustomAttribute(typeof (MemoryPackableAttribute)) == null)
-                {
-                    continue;
-                }
-
-                Activator.CreateInstance(type);
-            }
-        }
-        
-        public static void Init()
-        {
-        }
-
         public static byte[] Serialize(object message)
         {
             return MemoryPackSerializer.Serialize(message.GetType(), message);

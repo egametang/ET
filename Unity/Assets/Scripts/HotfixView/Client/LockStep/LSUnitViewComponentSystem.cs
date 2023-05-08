@@ -22,7 +22,7 @@ namespace ET.Client
                 LSWorld lsWorld = room.LSWorld;
                 foreach (long playerId in room.PlayerIds)
                 {
-                    LSUnit unit = lsWorld.Get(playerId) as LSUnit;
+                    LSUnit unit = lsWorld.LSUnitComponent.GetChild<LSUnit>(playerId);
                     LSUnitView child = self.GetChild<LSUnitView>(playerId);
                     Vector3 pos = child.Transform.position;
                     Vector3 to = unit.Position.ToVector();

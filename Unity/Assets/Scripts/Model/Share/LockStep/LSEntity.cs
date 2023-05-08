@@ -44,6 +44,13 @@ namespace ET
             return this.AddChildWithId<T, A, B, C>(this.GetId(), a, b, c, isFromPool);
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            this.Id = 0;
+        }
+
         public override IScene Domain
         {
             get
@@ -60,13 +67,10 @@ namespace ET
                     return;
                 }
 
+                LSWorld lsWorld = this.DomainScene();
                 if (newIsRegister)
                 {
-                    this.DomainScene().Add(this);
-                }
-                else
-                {
-                    this.DomainScene().Remove(this.Id);
+                    lsWorld.RegisterSystem(this);
                 }
             }
         }
