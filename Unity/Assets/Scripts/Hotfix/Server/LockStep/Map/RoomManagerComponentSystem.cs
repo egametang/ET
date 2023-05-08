@@ -13,7 +13,8 @@ namespace ET.Server
             
             room.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
 
-            room.LSWorld = new LSWorld(SceneType.LockStepServer);
+            LSWorld lsWorld = new(SceneType.LockStepServer);
+            room.AddComponent(lsWorld);
 
             room.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
             

@@ -1,21 +1,17 @@
 using System;
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
     public class LSUpdater
     {
-        [BsonIgnore]
-        public LSWorld Parent { get; set; }
-        
-        private SortedSet<long> updateIds = new();
+        private readonly SortedSet<long> updateIds = new();
 
-        private Dictionary<long, EntityRef<LSEntity>> lsEntities = new();
+        private readonly Dictionary<long, EntityRef<LSEntity>> lsEntities = new();
 
-        private Queue<long> addUpdateIds = new();
+        private readonly Queue<long> addUpdateIds = new();
 
-        private Queue<long> removeUpdateIds = new();
+        private readonly Queue<long> removeUpdateIds = new();
 
         public void Update()
         {

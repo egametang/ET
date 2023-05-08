@@ -7,42 +7,26 @@ namespace ET
 {
     public static class LSWorldSystem
     {
-        [ObjectSystem]
-        public class LSSceneAwakeSystem: AwakeSystem<LSWorld>
-        {
-            protected override void Awake(LSWorld self)
-            {
-                self.Updater.Parent = self;
-            }
-        }
-        
-        public class DeserializeSystem: DeserializeSystem<LSWorld>
-        {
-            protected override void Deserialize(LSWorld self)
-            {
-                self.Updater.Parent = self;
-            }
-        }
-
-        public static LSWorld DomainScene(this LSEntity entity)
+        public static LSWorld LSWorld(this LSEntity entity)
         {
             return entity.Domain as LSWorld;
         }
 
         public static long GetId(this LSEntity entity)
         {
-            return entity.DomainScene().GetId();
+            return entity.LSWorld().GetId();
         }
         
         public static TSRandom GetRandom(this LSEntity entity)
         {
-            return entity.DomainScene().Random;
+            return entity.LSWorld().Random;
         }
     }
 
     [EnableMethod]
     [ChildOf]
-    public class LSWorld: LSEntity, IAwake, IScene, IDeserialize
+    [ComponentOf]
+    public class LSWorld: LSEntity, IAwake, IScene
     {
         public LSWorld()
         {
@@ -54,13 +38,10 @@ namespace ET
 
             this.SceneType = sceneType;
             
-            this.Updater.Parent = this;
-            
             Log.Info($"LSScene create: {this.Id} {this.InstanceId}");
         }
 
-        [BsonElement]
-        public LSUpdater Updater = new();
+        private readonly LSUpdater updater = new();
 
         [BsonElement]
         private long idGenerator;
@@ -73,5 +54,15 @@ namespace ET
         public TSRandom Random { get; set; }
         
         public SceneType SceneType { get; set; }
+
+        public void AddToUpdater(LSEntity lsEntity)
+        {
+            this.updater.Add(lsEntity);
+        }
+
+        public void Update()
+        {
+            this.updater.Update();
+        }
     }
 }

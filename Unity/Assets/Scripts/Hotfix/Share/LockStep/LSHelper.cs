@@ -8,11 +8,11 @@ namespace ET
         public static void Rollback(Room room, int frame)
         {
             Log.Debug($"roll back start {frame}");
-            room.LSWorld.Dispose();
+            room.RemoveComponent<LSWorld>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
             // 回滚
-            room.LSWorld = frameBuffer.GetLSWorld(frame);
+            room.AddComponent(frameBuffer.GetLSWorld(frame));
             OneFrameMessages realFrameMessage = frameBuffer[frame];
             // 执行RealFrame
             room.Update(realFrameMessage, frame);

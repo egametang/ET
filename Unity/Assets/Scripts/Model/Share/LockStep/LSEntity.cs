@@ -47,7 +47,7 @@ namespace ET
 
         protected override void RegisterSystem()
         {
-            LSWorld lsWorld = this.DomainScene();
+            LSWorld lsWorld = this.LSWorld();
             TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(this.GetType());
             if (oneTypeSystems == null)
             {
@@ -56,7 +56,7 @@ namespace ET
 
             if (oneTypeSystems.QueueFlag[LSQueneUpdateIndex.LSUpdate])
             {
-                lsWorld.Updater.Add(this);
+                lsWorld.AddToUpdater(this);
             }
         }
     }

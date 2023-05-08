@@ -19,7 +19,8 @@ namespace ET.Client
             // 等待Room2C_EnterMap消息
             WaitType.Wait_Room2C_Start waitRoom2CStart = await clientScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_Start>();
 
-            room.LSWorld = new LSWorld(SceneType.LockStepClient);
+            LSWorld lsWorld = new(SceneType.LockStepClient);
+            room.AddComponent(lsWorld);
             room.Init(waitRoom2CStart.Message);
             
             room.AddComponent<RoomClientUpdater>();
