@@ -3,8 +3,6 @@ using UnityEditor;
 using UnityEngine;
 using System.Xml;
 using System.IO;
-using System.Text;
-using UnityEditor.Compilation;
 
 namespace ET
 {
@@ -19,11 +17,6 @@ namespace ET
 
             if (path.EndsWith("Unity.Codes.csproj"))
             {
-                if (!Define.EnableCodes)
-                {
-                    return content;
-                }
-                
                 GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
                 if (globalConfig.BuildType == BuildType.Release)
                 {
@@ -31,34 +24,33 @@ namespace ET
                     content = content.Replace(";DEBUG;", ";");
                 }
 
-                content = content.Replace("<Compile Include=\"Assets\\Scripts\\Codes\\Empty.cs\" />", string.Empty);
-                content = content.Replace("<None Include=\"Assets\\Scripts\\Codes\\Unity.Codes.asmdef\" />", string.Empty);
-
                 string[] files = Array.Empty<string>();
                 switch (globalConfig.CodeMode)
                 {
                     case CodeMode.Client:
                         files = new[]
                         {
-                            @"Assets\Scripts\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Model\Generate\Client\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Hotfix\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Hotfix\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\ModelView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\HotfixView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)"
+                            @"Assets\Scripts\Model\Client\**\*.cs Model\Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Model\Share\**\*.cs Model\Share\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Model\Generate\Client\**\*.cs Model\Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Hotfix\Client\**\*.cs Hotfix\Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Hotfix\Share\**\*.cs Hotfix\Share\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\ModelView\Client\**\*.cs ModelView\Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\HotfixView\Client\**\*.cs HotfixView\Client\%(RecursiveDir)%(FileName)%(Extension)"
                         };
                         break;
                     case CodeMode.ClientServer:
                         files = new[]
                         {
-                            @"Assets\Scripts\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Hotfix\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\ModelView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\HotfixView\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)"
+                            @"Assets\Scripts\Model\Server\**\*.cs Model\Server\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Model\Client\**\*.cs Model\Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Model\Share\**\*.cs Model\Share\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Model\Generate\ClientServer\**\*.cs Model\Generate\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Hotfix\Client\**\*.cs Hotfix\Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Hotfix\Server\**\*.cs Hotfix\Server\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\Hotfix\Share\**\*.cs Hotfix\Share\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\ModelView\Client\**\*.cs ModelView\Client\%(RecursiveDir)%(FileName)%(Extension)",
+                            @"Assets\Scripts\HotfixView\Client\**\*.cs HotfixView\Client\%(RecursiveDir)%(FileName)%(Extension)"
                         };
                         break;
                 }
