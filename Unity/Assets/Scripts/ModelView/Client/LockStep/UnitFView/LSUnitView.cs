@@ -7,5 +7,6 @@ namespace ET
     {
         public GameObject GameObject { get; set; }
         public Transform Transform { get; set; }
+        public EntityRef<LSUnit> Unit;
     }
 }

@@ -5,7 +5,7 @@ using TrueSync;
 
 namespace ET
 {
-    public static class LSSceneSystem
+    public static class LSWorldSystem
     {
         [ObjectSystem]
         public class LSSceneAwakeSystem: AwakeSystem<LSWorld>
@@ -61,35 +61,6 @@ namespace ET
 
         [BsonElement]
         public LSUpdater Updater = new();
-
-        public void RegisterSystem(LSEntity entity) 
-        {
-            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(entity.GetType());
-            if (oneTypeSystems == null)
-            {
-                return;
-            }
-
-            if (oneTypeSystems.QueueFlag[LSQueneUpdateIndex.LSUpdate])
-            {
-                this.Updater.Add(entity);
-            }
-        }
-
-        private LSEntityRef<LSUnitComponent> lsUnitComponent;
-        
-        [BsonIgnore]
-        public LSUnitComponent LSUnitComponent
-        {
-            get
-            {
-                return this.lsUnitComponent;
-            }
-            set
-            {
-                this.lsUnitComponent = value;
-            }
-        }
 
         [BsonElement]
         private long idGenerator;

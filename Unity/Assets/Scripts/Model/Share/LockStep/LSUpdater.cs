@@ -11,7 +11,7 @@ namespace ET
         
         private SortedSet<long> updateIds = new();
 
-        private Dictionary<long, LSEntityRef<LSEntity>> lsEntities = new();
+        private Dictionary<long, EntityRef<LSEntity>> lsEntities = new();
 
         private Queue<long> addUpdateIds = new();
 

@@ -2,6 +2,7 @@ using System;
 
 namespace ET
 {
+    [EnableMethod]
     public class LSEntity: Entity
     {
         public new K AddComponent<K>(bool isFromPool = false) where K : LSEntity, IAwake, new()
@@ -44,34 +45,18 @@ namespace ET
             return this.AddChildWithId<T, A, B, C>(this.GetId(), a, b, c, isFromPool);
         }
 
-        public override void Dispose()
+        protected override void RegisterSystem()
         {
-            base.Dispose();
-
-            this.Id = 0;
-        }
-
-        public override IScene Domain
-        {
-            get
+            LSWorld lsWorld = this.DomainScene();
+            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(this.GetType());
+            if (oneTypeSystems == null)
             {
-                return this.domain;
+                return;
             }
-            protected set
-            {
-                bool oldIsRegister = this.IsRegister;
-                base.Domain = value;
-                bool newIsRegister = this.IsRegister;
-                if (oldIsRegister == newIsRegister)
-                {
-                    return;
-                }
 
-                LSWorld lsWorld = this.DomainScene();
-                if (newIsRegister)
-                {
-                    lsWorld.RegisterSystem(this);
-                }
+            if (oneTypeSystems.QueueFlag[LSQueneUpdateIndex.LSUpdate])
+            {
+                lsWorld.Updater.Add(this);
             }
         }
     }

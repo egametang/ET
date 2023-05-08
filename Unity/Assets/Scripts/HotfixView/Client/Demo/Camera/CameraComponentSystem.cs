@@ -35,7 +35,9 @@ namespace ET.Client
 			LSUnitView lsUnit = self.MyUnitView;
 			if (lsUnit == null)
 			{
-				self.MyUnitView = self.GetParent<Room>().GetComponent<LSUnitViewComponent>().GetMyLsUnitView();
+				Room room = self.GetParent<Room>();
+				long id = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
+				self.MyUnitView = room.GetComponent<LSUnitViewComponent>().GetChild<LSUnitView>(id);
 			}
 
 			if (lsUnit == null)
@@ -44,7 +46,6 @@ namespace ET.Client
 			}
 
 			Vector3 pos = lsUnit.Transform.position;
-			Vector3 cameraPos = self.Transform.position;
 			self.Transform.position = new Vector3(pos.x, pos.y + 3, pos.z - 5);
 		}
 	}

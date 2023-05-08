@@ -47,11 +47,8 @@
     <type fullname="System.Diagnostics.ConditionalAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
-    <type fullname="System.Diagnostics.DebuggerBrowsableAttribute" preserve="all" />
-    <type fullname="System.Diagnostics.DebuggerBrowsableState" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerDisplayAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerHiddenAttribute" preserve="all" />
-    <type fullname="System.Diagnostics.DebuggerStepThroughAttribute" preserve="all" />
     <type fullname="System.Enum" preserve="all" />
     <type fullname="System.Exception" preserve="all" />
     <type fullname="System.Func`1" preserve="all" />
@@ -102,9 +99,13 @@
     <type fullname="System.ValueType" preserve="all" />
   </assembly>
   <assembly fullname="System">
+    <type fullname="System.Collections.Generic.Queue`1" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2" preserve="all" />
+    <type fullname="System.Collections.Generic.SortedDictionary`2/Enumerator" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection/Enumerator" preserve="all" />
+    <type fullname="System.Collections.Generic.SortedSet`1" preserve="all" />
+    <type fullname="System.Collections.Generic.SortedSet`1/Enumerator" preserve="all" />
     <type fullname="System.Net.EndPoint" preserve="all" />
     <type fullname="System.Net.IPAddress" preserve="all" />
     <type fullname="System.Net.IPEndPoint" preserve="all" />
@@ -147,8 +148,10 @@
     <type fullname="ET.ConfigSingleton`1" preserve="all" />
     <type fullname="ET.CoroutineLock" preserve="all" />
     <type fullname="ET.CoroutineLockComponent" preserve="all" />
+    <type fullname="ET.DeserializeSystem`1" preserve="all" />
     <type fullname="ET.DestroySystem`1" preserve="all" />
     <type fullname="ET.DisposeObject" preserve="all" />
+    <type fullname="ET.EnableMethodAttribute" preserve="all" />
     <type fullname="ET.Entity" preserve="all" />
     <type fullname="ET.EntityRef`1" preserve="all" />
     <type fullname="ET.EntitySceneFactory" preserve="all" />
@@ -160,16 +163,19 @@
     <type fullname="ET.IAwake" preserve="all" />
     <type fullname="ET.IAwake`1" preserve="all" />
     <type fullname="ET.IAwake`2" preserve="all" />
+    <type fullname="ET.IAwake`3" preserve="all" />
     <type fullname="ET.IConfig" preserve="all" />
+    <type fullname="ET.IDeserialize" preserve="all" />
     <type fullname="ET.IDestroy" preserve="all" />
     <type fullname="ET.IdGenerater" preserve="all" />
     <type fullname="ET.ILateUpdate" preserve="all" />
     <type fullname="ET.ILoad" preserve="all" />
-    <type fullname="ET.ILSUpdate" preserve="all" />
     <type fullname="ET.IMerge" preserve="all" />
     <type fullname="ET.InvokeAttribute" preserve="all" />
     <type fullname="ET.IScene" preserve="all" />
     <type fullname="ET.ISerializeToEntity" preserve="all" />
+    <type fullname="ET.ISingletonAwake" preserve="all" />
+    <type fullname="ET.ISystemType" preserve="all" />
     <type fullname="ET.ITransfer" preserve="all" />
     <type fullname="ET.IUpdate" preserve="all" />
     <type fullname="ET.JsonHelper" preserve="all" />
@@ -179,28 +185,16 @@
     <type fullname="ET.LoadSystem`1" preserve="all" />
     <type fullname="ET.Log" preserve="all" />
     <type fullname="ET.Logger" preserve="all" />
-    <type fullname="ET.LSEntity" preserve="all" />
-    <type fullname="ET.LSInput" preserve="all" />
-    <type fullname="ET.LSSceneSystem" preserve="all" />
-    <type fullname="ET.LSSington" preserve="all" />
-    <type fullname="ET.LSUnit" preserve="all" />
-    <type fullname="ET.LSUnitComponent" preserve="all" />
-    <type fullname="ET.LSUpdater" preserve="all" />
-    <type fullname="ET.LSUpdateSystem`1" preserve="all" />
-    <type fullname="ET.LSWorld" preserve="all" />
     <type fullname="ET.MemoryBuffer" preserve="all" />
-    <type fullname="ET.MemoryPackHelper" preserve="all" />
     <type fullname="ET.MessageAttribute" preserve="all" />
     <type fullname="ET.MessageObject" preserve="all" />
     <type fullname="ET.MongoHelper" preserve="all" />
     <type fullname="ET.NetServices" preserve="all" />
     <type fullname="ET.NetworkHelper" preserve="all" />
-    <type fullname="ET.Object" preserve="all" />
     <type fullname="ET.ObjectSystemAttribute" preserve="all" />
     <type fullname="ET.Options" preserve="all" />
     <type fullname="ET.ProtoObject" preserve="all" />
     <type fullname="ET.RandomGenerator" preserve="all" />
-    <type fullname="ET.RollbackHelper" preserve="all" />
     <type fullname="ET.Root" preserve="all" />
     <type fullname="ET.RpcException" preserve="all" />
     <type fullname="ET.Scene" preserve="all" />
@@ -215,7 +209,10 @@
     <type fullname="ET.TimeHelper" preserve="all" />
     <type fullname="ET.TimeInfo" preserve="all" />
     <type fullname="ET.TimerComponent" preserve="all" />
+    <type fullname="ET.TypeSystems" preserve="all" />
+    <type fullname="ET.TypeSystems/OneTypeSystems" preserve="all" />
     <type fullname="ET.UniqueIdAttribute" preserve="all" />
+    <type fullname="ET.UnOrderMultiMap`2" preserve="all" />
     <type fullname="ET.UpdateSystem`1" preserve="all" />
     <type fullname="ET.WinPeriod" preserve="all" />
   </assembly>
@@ -245,6 +242,7 @@
     <type fullname="TrueSync.FP" preserve="all" />
     <type fullname="TrueSync.TSMatrix" preserve="all" />
     <type fullname="TrueSync.TSQuaternion" preserve="all" />
+    <type fullname="TrueSync.TSRandom" preserve="all" />
     <type fullname="TrueSync.TSVector" preserve="all" />
     <type fullname="TrueSync.TSVector2" preserve="all" />
   </assembly>

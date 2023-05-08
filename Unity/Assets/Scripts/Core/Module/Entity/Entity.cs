@@ -75,7 +75,7 @@ namespace ET
 
                 if (value)
                 {
-                    EventSystem.Instance.RegisterSystem(this);
+                    this.RegisterSystem();
                 }
 
 #if ENABLE_VIEW && UNITY_EDITOR
@@ -92,6 +92,11 @@ namespace ET
                 }
 #endif
             }
+        }
+
+        protected virtual void RegisterSystem()
+        {
+            EventSystem.Instance.RegisterSystem(this);
         }
 
         protected virtual string ViewName
@@ -157,11 +162,11 @@ namespace ET
         public bool IsDisposed => this.InstanceId == 0;
 
         [BsonIgnore]
-        protected Entity parent;
+        private Entity parent;
 
         // 可以改变parent，但是不能设置为null
         [BsonIgnore]
-        public virtual Entity Parent
+        public Entity Parent
         {
             get => this.parent;
             protected set
@@ -272,7 +277,7 @@ namespace ET
         protected IScene domain;
 
         [BsonIgnore]
-        public virtual IScene Domain
+        public IScene Domain
         {
             get
             {
@@ -388,7 +393,7 @@ namespace ET
 
         [BsonElement("C")]
         [BsonIgnoreIfNull]
-        protected List<Entity> componentsDB;
+        private List<Entity> componentsDB;
 
         [BsonIgnore]
         private SortedDictionary<string, Entity> components;
@@ -581,7 +586,7 @@ namespace ET
             c.Dispose();
         }
 
-        public void RemoveComponent(Entity component)
+        private protected void RemoveComponent(Entity component)
         {
             if (this.IsDisposed)
             {

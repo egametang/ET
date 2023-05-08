@@ -37,7 +37,7 @@ namespace ET.Server
                 
                 Game.AddSingleton<Root>();
 
-                MongoHelper.Init();
+                MongoHelper.Register();
 				
                 Log.Info($"server start........................ {Root.Instance.Scene.Id}");
 				
