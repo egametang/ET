@@ -70,7 +70,7 @@ namespace ET
 #endif
         }
 
-        public void Destroy()
+        public override void Dispose()
         {
             
 #if !SINGLE_THREAD
