@@ -5,19 +5,21 @@ namespace ET
 {
     public class LSUpdater
     {
-        private readonly SortedSet<long> updateIds = new();
+        private List<long> updateIds = new();
+        private List<long> newUpdateIds = new();
 
         private readonly Dictionary<long, EntityRef<LSEntity>> lsEntities = new();
 
-        private readonly Queue<long> addUpdateIds = new();
-
-        private readonly Queue<long> removeUpdateIds = new();
-
         public void Update()
         {
-            while (this.addUpdateIds.Count > 0)
+            if (this.newUpdateIds.Count > 0)
             {
-                this.updateIds.Add(this.addUpdateIds.Dequeue());
+                foreach (long id in this.newUpdateIds)
+                {
+                    this.updateIds.Add(id);
+                }
+                this.updateIds.Sort();
+                this.newUpdateIds.Clear();
             }
 
             foreach (long id in this.updateIds)
@@ -25,24 +27,19 @@ namespace ET
                 LSEntity entity = lsEntities[id];
                 if (entity == null)
                 {
-                    this.removeUpdateIds.Enqueue(id);
+                    this.lsEntities.Remove(id);
                     continue;
                 }
-                
+                this.newUpdateIds.Add(id);
                 LSSington.Instance.LSUpdate(entity);
             }
-
-            while (this.removeUpdateIds.Count > 0)
-            {
-                long id = this.removeUpdateIds.Dequeue();
-                this.updateIds.Remove(id);
-                this.lsEntities.Remove(id);
-            }
+            this.updateIds.Clear();
+            ObjectHelper.Swap(ref this.updateIds, ref this.newUpdateIds);
         }
         
         public void Add(LSEntity entity)
         {
-            this.addUpdateIds.Enqueue(entity.Id);
+            this.newUpdateIds.Add(entity.Id);
             this.lsEntities.Add(entity.Id, entity);
         }
     }
