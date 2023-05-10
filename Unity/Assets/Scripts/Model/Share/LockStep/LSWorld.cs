@@ -54,6 +54,13 @@ namespace ET
         public TSRandom Random { get; set; }
         
         public SceneType SceneType { get; set; }
+        
+        public int Frame { get; set; }
+
+        public long TimeNow()
+        {
+            return LSConstValue.UpdateInterval * this.Frame;
+        }
 
         public void AddToUpdater(LSEntity lsEntity)
         {
@@ -63,6 +70,7 @@ namespace ET
         public void Update()
         {
             this.updater.Update();
+            ++this.Frame;
         }
     }
 }

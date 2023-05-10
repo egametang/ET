@@ -21,5 +21,7 @@ namespace ET
         public int PredictionFrame { get; set; } = -1;
 
         public int RealFrame { get; set; } = -1;
+
+        public SaveData SaveData = new();
     }
 }

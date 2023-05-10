@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace ET
 {
@@ -27,7 +28,12 @@ namespace ET
             LSWorld lsWorld = self.GetComponent<LSWorld>();
             // 保存当前帧场景数据
             self.FrameBuffer.SaveLSWorld(frame, lsWorld);
-            
+
+            if (frame <= self.RealFrame) // 只有Real帧才保存录像数据
+            {
+                self.SaveData(frame);
+            }
+
             // 设置输入到每个LSUnit身上
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
             foreach (var kv in oneFrameMessages.Inputs)
@@ -38,6 +44,19 @@ namespace ET
             }
             
             lsWorld.Update();
+        }
+
+        public static void SaveData(this Room self, int frame)
+        {
+            OneFrameMessages oneFrameMessages = self.FrameBuffer[frame];
+            OneFrameMessages saveMessage = new();
+            oneFrameMessages.CopyTo(saveMessage);
+            self.SaveData.MessagesList.Add(saveMessage);
+            if (frame % LSConstValue.SaveLSWorldFrameCount == 0)
+            {
+                MemoryBuffer memoryBuffer = self.FrameBuffer.GetMemoryBuffer(frame);
+                self.SaveData.LSWorlds.Add(memoryBuffer.ToArray());   
+            }
         }
     }
 }

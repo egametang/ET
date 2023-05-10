@@ -60,9 +60,24 @@ namespace ET
             oneFrameMessages.Frame = 0;
         }
 
+        public MemoryBuffer GetMemoryBuffer(int frame)
+        {
+            if (frame < 0)
+            {
+                return null;
+            }
+
+            if (frame > this.MaxFrame)
+            {
+                return null;
+            }
+            MemoryBuffer memoryBuffer = this.dataBuffer[frame % this.dataBuffer.Capacity];
+            return memoryBuffer;
+        }
+
         public LSWorld GetLSWorld(int frame)
         {
-            MemoryBuffer memoryBuffer = this.dataBuffer[frame % this.dataBuffer.Capacity];
+            MemoryBuffer memoryBuffer = GetMemoryBuffer(frame);
             return MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer) as LSWorld;
         }
 
