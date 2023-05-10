@@ -22,7 +22,8 @@ namespace ET.Client
             GameObject go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);
             go.transform.position = args.LsUnit.Position.ToVector();
 
-            lsUnitViewComponent.AddChildWithId<LSUnitView, GameObject>(args.LsUnit.Id, go);
+            LSUnitView lsUnitView = lsUnitViewComponent.AddChildWithId<LSUnitView, GameObject>(args.LsUnit.Id, go);
+            lsUnitView.AddComponent<AnimatorComponent>();
 
             await ETTask.CompletedTask;
         }

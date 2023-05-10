@@ -10,11 +10,11 @@ namespace ET.Client
 		Run,
 	}
 
-	[ComponentOf(typeof(Unit))]
+	[ComponentOf]
 	public class AnimatorComponent : Entity, IAwake, IUpdate, IDestroy
 	{
-		public Dictionary<string, AnimationClip> animationClips = new Dictionary<string, AnimationClip>();
-		public HashSet<string> Parameter = new HashSet<string>();
+		public Dictionary<string, AnimationClip> animationClips = new();
+		public HashSet<string> Parameter = new();
 
 		public MotionType MotionType;
 		public float MontionSpeed;

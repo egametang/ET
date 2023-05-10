@@ -1,4 +1,5 @@
 using System;
+using TrueSync;
 using UnityEngine;
 
 namespace ET.Client
@@ -25,19 +26,35 @@ namespace ET.Client
         private static void Update(this LSUnitView self)
         {
             LSUnit unit = self.GetUnit();
-                
-            Vector3 pos = self.Transform.position;
-            Vector3 to = unit.Position.ToVector();
-            float distance = (to - pos).magnitude;
-            //if (distance < 0.5)
-            //{
-            //    return;
-            //}
-            float t = distance / 9f;
-            self.Transform.position = Vector3.Lerp(pos, unit.Position.ToVector(), Time.deltaTime / t);
+
+            Vector3 unitPos = unit.Position.ToVector();
+            const float speed = 6f;  
+            
+            if (unitPos != self.Position)
+            {
+                float distance = (unitPos - self.Position).magnitude;
+                self.totalTime = distance / speed;
+                self.t = 0;
+                self.Position = unit.Position.ToVector();
+                self.Rotation = unit.Rotation.ToQuaternion();
+            }
+
+            LSInput input = unit.GetComponent<LSInputComponent>().LSInput;
+            if (input.V != TSVector2.zero)
+            {
+                self.GetComponent<AnimatorComponent>().SetFloatValue("Speed", speed);
+            }
+            else
+            {
+                self.GetComponent<AnimatorComponent>().SetFloatValue("Speed", 0);
+            }
+
+            self.t += Time.deltaTime;
+            self.Transform.rotation = Quaternion.Lerp(self.Transform.rotation, self.Rotation, self.t / 1f);
+            self.Transform.position = Vector3.Lerp(self.Transform.position, self.Position, self.t / self.totalTime);
         }
 
-        public static LSUnit GetUnit(this LSUnitView self)
+        private static LSUnit GetUnit(this LSUnitView self)
         {
             LSUnit unit = self.Unit;
             if (unit != null)

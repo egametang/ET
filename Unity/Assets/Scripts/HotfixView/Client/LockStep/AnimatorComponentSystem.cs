@@ -34,10 +34,10 @@ namespace ET.Client
 				self.Animator = null;
 			}
 		}
-		
-		public static void Awake(this AnimatorComponent self)
+
+		private static void Awake(this AnimatorComponent self)
 		{
-			Animator animator = self.GetParent<Unit>().GetComponent<GameObjectComponent>().GameObject.GetComponent<Animator>();
+			Animator animator = self.GetParent<LSUnitView>().GameObject.GetComponent<Animator>();
 
 			if (animator == null)
 			{
@@ -64,7 +64,7 @@ namespace ET.Client
 			}
 		}
 
-		public static void Update(this AnimatorComponent self)
+		private static void Update(this AnimatorComponent self)
 		{
 			if (self.isStop)
 			{

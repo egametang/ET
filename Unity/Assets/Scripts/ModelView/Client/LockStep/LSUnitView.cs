@@ -8,5 +8,9 @@ namespace ET
         public GameObject GameObject { get; set; }
         public Transform Transform { get; set; }
         public EntityRef<LSUnit> Unit;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public float totalTime;
+        public float t;
     }
 }
