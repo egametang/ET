@@ -4,13 +4,14 @@ namespace ET.Client
 {
     public static class SceneFactory
     {
-        public static async ETTask<Scene> CreateClientScene(int zone, string name)
+        public static async ETTask<Scene> CreateClientScene(int zone, SceneType sceneType, string name)
         {
             await ETTask.CompletedTask;
             
-            Scene clientScene = EntitySceneFactory.CreateScene(zone, SceneType.Client, name, ClientSceneManagerComponent.Instance);
+            Scene clientScene = EntitySceneFactory.CreateScene(zone, sceneType, name, ClientSceneManagerComponent.Instance);
             clientScene.AddComponent<ObjectWait>();
             clientScene.AddComponent<PlayerComponent>();
+            clientScene.AddComponent<CurrentScenesComponent>();
             
             EventSystem.Instance.Publish(clientScene, new EventType.AfterCreateClientScene());
             return clientScene;

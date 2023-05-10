@@ -187,11 +187,11 @@ namespace ET
 				{
 					return;
 				}
-
+				
 				// 300毫秒后再次update发送connect请求
 				if (timeNow < this.lastConnectTime + 300)
 				{
-					this.Service.AddToUpdate(0, this.Id);
+					this.Service.AddToUpdate(300, this.Id);
 					return;
 				}
 				
@@ -212,7 +212,7 @@ namespace ET
 
 				this.lastConnectTime = timeNow;
 
-				this.Service.AddToUpdate(0, this.Id);
+				this.Service.AddToUpdate(300, this.Id);
 			}
 			catch (Exception e)
 			{

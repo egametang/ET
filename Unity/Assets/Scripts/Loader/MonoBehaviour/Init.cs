@@ -18,13 +18,16 @@ namespace ET
 				
 			Game.AddSingleton<MainThreadSynchronizationContext>();
 
+			GlobalComponent globalComponent = Game.AddSingleton<GlobalComponent>();
+			
 			// 命令行参数
 			string[] args = "".Split(" ");
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.AddSingleton);
-			Options.Instance.StartConfig = "StartConfig/LockStep";
 			
+			Options.Instance.StartConfig = $"StartConfig/{globalComponent.GlobalConfig.SceneType}";
+
 			Game.AddSingleton<TimeInfo>();
 			Game.AddSingleton<Logger>().ILog = new UnityLogger();
 			Game.AddSingleton<ObjectPool>();

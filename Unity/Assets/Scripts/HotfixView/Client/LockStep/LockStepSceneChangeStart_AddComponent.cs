@@ -2,7 +2,7 @@ using UnityEngine.SceneManagement;
 
 namespace ET.Client
 {
-    [Event(SceneType.Client)]
+    [Event(SceneType.LockStep)]
     public class LockStepSceneChangeStart_AddComponent: AEvent<Scene, EventType.LockStepSceneChangeStart>
     {
         protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneChangeStart args)

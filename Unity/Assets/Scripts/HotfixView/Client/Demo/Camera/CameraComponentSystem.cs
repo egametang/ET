@@ -6,7 +6,7 @@ namespace ET.Client
 	public static class CameraComponentSystem
 	{
 		[ObjectSystem]
-		public class CameraComponentAwakeSystem : AwakeSystem<CameraComponent>
+		public class AwakeSystem : AwakeSystem<CameraComponent>
 		{
 			protected override void Awake(CameraComponent self)
 			{
@@ -15,7 +15,7 @@ namespace ET.Client
 		}
 
 		[ObjectSystem]
-		public class CameraComponentLateUpdateSystem : LateUpdateSystem<CameraComponent>
+		public class LateUpdateSystem : LateUpdateSystem<CameraComponent>
 		{
 			protected override void LateUpdate(CameraComponent self)
 			{
@@ -26,6 +26,7 @@ namespace ET.Client
 		private static void Awake(this CameraComponent self)
 		{
 			self.Camera = Camera.main;
+			self.Camera.transform.rotation = Quaternion.Euler(new Vector3(20, 0, 0));
 		}
 
 		private static void LateUpdate(this CameraComponent self)

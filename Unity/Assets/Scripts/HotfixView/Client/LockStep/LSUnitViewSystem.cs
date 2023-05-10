@@ -42,11 +42,11 @@ namespace ET.Client
             LSInput input = unit.GetComponent<LSInputComponent>().LSInput;
             if (input.V != TSVector2.zero)
             {
-                self.GetComponent<AnimatorComponent>().SetFloatValue("Speed", speed);
+                self.GetComponent<LSAnimatorComponent>().SetFloatValue("Speed", speed);
             }
             else
             {
-                self.GetComponent<AnimatorComponent>().SetFloatValue("Speed", 0);
+                self.GetComponent<LSAnimatorComponent>().SetFloatValue("Speed", 0);
             }
 
             self.t += Time.deltaTime;

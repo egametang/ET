@@ -10,12 +10,12 @@ namespace ET.Client
         {
             // 加载配置
             Root.Instance.Scene.AddComponent<ResourcesComponent>();
-            
-            Root.Instance.Scene.AddComponent<GlobalComponent>();
 
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
+
+            SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalComponent.Instance.GlobalConfig.SceneType);
             
-            Scene clientScene = await SceneFactory.CreateClientScene(1, "Game");
+            Scene clientScene = await SceneFactory.CreateClientScene(1, sceneType, sceneType.ToString());
             
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }

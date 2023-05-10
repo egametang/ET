@@ -24,6 +24,7 @@ namespace ET
                     Log.Debug($"message serialize cache: {message.GetType().FullName}");
                     return lastMessageInfo.MemoryStream;
                 }
+
                 stream = new MemoryBuffer(); // 因为广播，可能MemoryBuffer会用多次，所以不能用对象池
                 MessageSerializeHelper.MessageToStream(stream, message);
                 this.lastMessageInfo = (message, stream);
@@ -32,6 +33,7 @@ namespace ET
             {
                 stream = NetServices.Instance.Fetch();
                 MessageSerializeHelper.MessageToStream(stream, message);
+                NetServices.Instance.RecycleMessage(message);
             }
             return stream;
         }

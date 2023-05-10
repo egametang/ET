@@ -22,5 +22,7 @@ namespace ET
         public CodeMode CodeMode;
         
         public BuildType BuildType;
+
+        public string SceneType;
     }
 }

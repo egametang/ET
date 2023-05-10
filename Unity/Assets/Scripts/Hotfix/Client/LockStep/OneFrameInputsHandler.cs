@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Client
 {
-    [MessageHandler(SceneType.Client)]
+    [MessageHandler(SceneType.LockStep)]
     public class OneFrameInputsHandler: AMHandler<OneFrameInputs>
     {
         protected override async ETTask Run(Session session, OneFrameInputs input)

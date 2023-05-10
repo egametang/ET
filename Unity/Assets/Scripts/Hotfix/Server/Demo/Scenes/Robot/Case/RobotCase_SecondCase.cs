@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Server
 {
-    [MessageHandler(SceneType.Client)]
+    [MessageHandler(SceneType.Demo)]
     public class M2C_TestRobotCase2Handler: AMHandler<M2C_TestRobotCase2>
     {
         protected override async ETTask Run(Session session, M2C_TestRobotCase2 message)

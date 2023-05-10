@@ -23,7 +23,7 @@ namespace ET.Client
             go.transform.position = args.LsUnit.Position.ToVector();
 
             LSUnitView lsUnitView = lsUnitViewComponent.AddChildWithId<LSUnitView, GameObject>(args.LsUnit.Id, go);
-            lsUnitView.AddComponent<AnimatorComponent>();
+            lsUnitView.AddComponent<LSAnimatorComponent>();
 
             await ETTask.CompletedTask;
         }

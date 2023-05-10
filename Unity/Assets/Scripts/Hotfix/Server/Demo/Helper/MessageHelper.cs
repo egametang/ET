@@ -25,7 +25,7 @@ namespace ET.Server
         {
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
             // 网络底层做了优化，同一个消息不会多次序列化
-            ActorLocationSenderOneType oneTypeLocationType = ActorLocationSenderComponent.Instance.Get(LocationType.Player);
+            ActorLocationSenderOneType oneTypeLocationType = ActorLocationSenderComponent.Instance.Get(LocationType.GateSession);
             foreach (AOIEntity u in dict.Values)
             {
                 oneTypeLocationType.Send(u.Unit.Id, message);
@@ -34,7 +34,7 @@ namespace ET.Server
         
         public static void SendToClient(Unit unit, IActorMessage message)
         {
-            ActorLocationSenderComponent.Instance.Get(LocationType.Player).Send(unit.Id, message);
+            ActorLocationSenderComponent.Instance.Get(LocationType.GateSession).Send(unit.Id, message);
         }
         
         

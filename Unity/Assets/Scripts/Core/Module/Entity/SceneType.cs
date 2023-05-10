@@ -25,10 +25,10 @@ namespace ET
 		LockStepServer = 1 << 17,
 
 		// 客户端Model层
-		Client = 1 << 30,
+		Demo = 1 << 30,
 		Current = 1ul << 31,
-		
-		
+		LockStep = 1ul << 32,
+
 		All = ulong.MaxValue,
 	}
 

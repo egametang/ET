@@ -1,6 +1,6 @@
 namespace ET.Client
 {
-    [Event(SceneType.Client)]
+    [Event(SceneType.LockStep)]
     public class LockStepSceneInitFinish_Finish: AEvent<Scene, EventType.LockStepSceneInitFinish>
     {
         protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneInitFinish args)
