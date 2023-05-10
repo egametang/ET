@@ -49,9 +49,8 @@ message FrameMessage // IActorMessage
 	LSInput Input = 3;
 }
 
-message OneFrameMessages // IActorMessage
+message OneFrameInputs // IActorMessage
 {
-	int32 Frame = 1;
 	map<int64, LSInput> Inputs = 2;
 }
 

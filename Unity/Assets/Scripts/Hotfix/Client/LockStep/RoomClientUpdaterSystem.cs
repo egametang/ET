@@ -41,17 +41,17 @@ namespace ET.Client
             }
             
             ++room.PredictionFrame;
-            OneFrameMessages oneFrameMessages = self.GetOneFrameMessages(room.PredictionFrame);
-            room.Update(oneFrameMessages, room.PredictionFrame);
+            OneFrameInputs oneFrameInputs = self.GetOneFrameMessages(room.PredictionFrame);
+            room.Update(oneFrameInputs, room.PredictionFrame);
             
 
             FrameMessage frameMessage = NetServices.Instance.FetchMessage<FrameMessage>();
-            frameMessage.Frame = oneFrameMessages.Frame;
+            frameMessage.Frame = room.PredictionFrame;
             frameMessage.Input = self.Input;
             clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
         }
 
-        private static OneFrameMessages GetOneFrameMessages(this RoomClientUpdater self, int frame)
+        private static OneFrameInputs GetOneFrameMessages(this RoomClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
@@ -62,16 +62,15 @@ namespace ET.Client
             }
             
             // predict
-            OneFrameMessages predictionFrame = frameBuffer[frame];
+            OneFrameInputs predictionFrame = frameBuffer[frame];
             if (predictionFrame == null)
             {
                 throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
             }
             
             frameBuffer.MoveForward(frame);
-            OneFrameMessages realFrame = frameBuffer[room.RealFrame];
+            OneFrameInputs realFrame = frameBuffer[room.RealFrame];
             realFrame?.CopyTo(predictionFrame);
-            predictionFrame.Frame = frame;
             predictionFrame.Inputs[self.MyId] = self.Input;
             
             return predictionFrame;

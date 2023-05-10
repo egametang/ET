@@ -4,10 +4,10 @@ using MemoryPack;
 namespace ET
 {
     [MemoryPackable]
-    public class SaveData
+    public partial class SaveData
     {
         [MemoryPackOrder(1)]
-        public List<OneFrameMessages> MessagesList = new();
+        public List<OneFrameInputs> MessagesList = new();
         
         [MemoryPackOrder(2)]
         public List<byte[]> LSWorlds = new();

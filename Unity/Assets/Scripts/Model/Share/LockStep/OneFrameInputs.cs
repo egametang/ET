@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public partial class OneFrameMessages
+    public partial class OneFrameInputs
     {
-        protected bool Equals(OneFrameMessages other)
+        protected bool Equals(OneFrameInputs other)
         {
-            return this.Frame == other.Frame && Equals(this.Inputs, other.Inputs);
+            return Equals(this.Inputs, other.Inputs);
         }
 
-        public void CopyTo(OneFrameMessages to)
+        public void CopyTo(OneFrameInputs to)
         {
-            to.Frame = this.Frame;
             to.Inputs.Clear();
             foreach (var kv in this.Inputs)
             {
@@ -37,20 +36,20 @@ namespace ET
                 return false;
             }
 
-            return Equals((OneFrameMessages) obj);
+            return Equals((OneFrameInputs) obj);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Frame, this.Inputs);
+            return HashCode.Combine(this.Inputs);
         }
 
-        public OneFrameMessages()
+        public OneFrameInputs()
         {
             this.Inputs = new Dictionary<long, LSInput>(LSConstValue.MatchCount);
         }
 
-        public static bool operator==(OneFrameMessages a, OneFrameMessages b)
+        public static bool operator==(OneFrameInputs a, OneFrameInputs b)
         {
             if (a is null || b is null)
             {
@@ -61,11 +60,6 @@ namespace ET
                 return false;
             }
             
-            if (a.Frame != b.Frame)
-            {
-                return false;
-            }
-
             if (a.Inputs.Count != b.Inputs.Count)
             {
                 return false;
@@ -87,7 +81,7 @@ namespace ET
             return true;
         }
 
-        public static bool operator !=(OneFrameMessages a, OneFrameMessages b)
+        public static bool operator !=(OneFrameInputs a, OneFrameInputs b)
         {
             return !(a == b);
         }

@@ -27,57 +27,56 @@ namespace ET.Server
                 return;
             }
 
-            OneFrameMessages oneFrameMessages = self.GetOneFrameMessage(frame);
+            OneFrameInputs oneFrameInputs = self.GetOneFrameMessage(frame);
             ++room.RealFrame;
 
-            OneFrameMessages sendMessage = new();
-            oneFrameMessages.CopyTo(sendMessage);
+            OneFrameInputs sendInput = new();
+            oneFrameInputs.CopyTo(sendInput);
 
-            RoomMessageHelper.BroadCast(room, sendMessage);
+            RoomMessageHelper.BroadCast(room, sendInput);
             
-            room.Update(oneFrameMessages, frame);
+            room.Update(oneFrameInputs, frame);
         }
 
-        private static OneFrameMessages GetOneFrameMessage(this RoomServerUpdater self, int frame)
+        private static OneFrameInputs GetOneFrameMessage(this RoomServerUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
-            OneFrameMessages oneFrameMessages = frameBuffer[frame];
-            if (oneFrameMessages == null)
+            OneFrameInputs oneFrameInputs = frameBuffer[frame];
+            if (oneFrameInputs == null)
             {
                 throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
             }
             
             frameBuffer.MoveForward(frame);
             
-            oneFrameMessages.Frame = frame;
-            if (oneFrameMessages.Inputs.Count == LSConstValue.MatchCount)
+            if (oneFrameInputs.Inputs.Count == LSConstValue.MatchCount)
             {
-                return oneFrameMessages;
+                return oneFrameInputs;
             }
 
-            OneFrameMessages preFrameMessages = frameBuffer[frame - 1];
+            OneFrameInputs preFrameInputs = frameBuffer[frame - 1];
             
             // 有人输入的消息没过来，给他使用上一帧的操作
             foreach (long playerId in room.PlayerIds)
             {
-                if (oneFrameMessages.Inputs.ContainsKey(playerId))
+                if (oneFrameInputs.Inputs.ContainsKey(playerId))
                 {
                     continue;
                 }
 
-                if (preFrameMessages != null && preFrameMessages.Inputs.TryGetValue(playerId, out LSInput input))
+                if (preFrameInputs != null && preFrameInputs.Inputs.TryGetValue(playerId, out LSInput input))
                 {
                     // 使用上一帧的输入
-                    oneFrameMessages.Inputs[playerId] = input;
+                    oneFrameInputs.Inputs[playerId] = input;
                 }
                 else
                 {
-                    oneFrameMessages.Inputs[playerId] = new LSInput();
+                    oneFrameInputs.Inputs[playerId] = new LSInput();
                 }
             }
 
-            return oneFrameMessages;
+            return oneFrameInputs;
         }
     }
 }

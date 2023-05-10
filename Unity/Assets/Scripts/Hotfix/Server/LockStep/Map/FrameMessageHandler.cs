@@ -24,14 +24,13 @@ namespace ET.Server
                 return;
             }
             
-            OneFrameMessages oneFrameMessages = frameBuffer[message.Frame];
-            if (oneFrameMessages == null)
+            OneFrameInputs oneFrameInputs = frameBuffer[message.Frame];
+            if (oneFrameInputs == null)
             {
                 Log.Error($"FrameMessageHandler get frame is null: {message.Frame}, max frame: {frameBuffer.MaxFrame}");
                 return;
             }
-            oneFrameMessages.Frame = message.Frame;
-            oneFrameMessages.Inputs[message.PlayerId] = message.Input;
+            oneFrameInputs.Inputs[message.PlayerId] = message.Input;
 
 
             await ETTask.CompletedTask;

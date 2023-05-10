@@ -7,18 +7,18 @@ namespace ET
     public class FrameBuffer
     {
         public int MaxFrame { get; private set; }
-        private readonly List<OneFrameMessages> messageBuffer;
+        private readonly List<OneFrameInputs> messageBuffer;
         private readonly List<MemoryBuffer> dataBuffer;
 
         public FrameBuffer(int capacity = LSConstValue.FrameCountPerSecond * 10)
         {
             this.MaxFrame = capacity - 1;
-            this.messageBuffer = new List<OneFrameMessages>(capacity);
+            this.messageBuffer = new List<OneFrameInputs>(capacity);
             this.dataBuffer = new List<MemoryBuffer>(capacity);
             
             for (int i = 0; i < this.dataBuffer.Capacity; ++i)
             {
-                this.messageBuffer.Add(new OneFrameMessages());
+                this.messageBuffer.Add(new OneFrameInputs());
                 MemoryBuffer memoryBuffer = new(10240);
                 memoryBuffer.SetLength(0);
                 memoryBuffer.Seek(0, SeekOrigin.Begin);
@@ -26,7 +26,7 @@ namespace ET
             }
         }
         
-        public OneFrameMessages this[int frame]
+        public OneFrameInputs this[int frame]
         {
             get
             {
@@ -39,8 +39,8 @@ namespace ET
                 {
                     return null;
                 }
-                OneFrameMessages oneFrameMessages = this.messageBuffer[frame % this.messageBuffer.Capacity];
-                return oneFrameMessages;
+                OneFrameInputs oneFrameInputs = this.messageBuffer[frame % this.messageBuffer.Capacity];
+                return oneFrameInputs;
             }
         }
 
@@ -55,9 +55,8 @@ namespace ET
             
             Log.Debug($"framebuffer move forward: {this.MaxFrame}");
             
-            OneFrameMessages oneFrameMessages = this[this.MaxFrame];
-            oneFrameMessages.Inputs.Clear();
-            oneFrameMessages.Frame = 0;
+            OneFrameInputs oneFrameInputs = this[this.MaxFrame];
+            oneFrameInputs.Inputs.Clear();
         }
 
         public MemoryBuffer GetMemoryBuffer(int frame)

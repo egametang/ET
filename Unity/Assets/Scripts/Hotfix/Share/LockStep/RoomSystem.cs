@@ -23,7 +23,7 @@ namespace ET
         }
 
 
-        public static void Update(this Room self, OneFrameMessages oneFrameMessages, int frame)
+        public static void Update(this Room self, OneFrameInputs oneFrameInputs, int frame)
         {
             LSWorld lsWorld = self.GetComponent<LSWorld>();
             // 保存当前帧场景数据
@@ -36,7 +36,7 @@ namespace ET
 
             // 设置输入到每个LSUnit身上
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
-            foreach (var kv in oneFrameMessages.Inputs)
+            foreach (var kv in oneFrameInputs.Inputs)
             {
                 LSUnit lsUnit = unitComponent.GetChild<LSUnit>(kv.Key);
                 LSInputComponent lsInputComponent = lsUnit.GetComponent<LSInputComponent>();
@@ -48,10 +48,10 @@ namespace ET
 
         public static void SaveData(this Room self, int frame)
         {
-            OneFrameMessages oneFrameMessages = self.FrameBuffer[frame];
-            OneFrameMessages saveMessage = new();
-            oneFrameMessages.CopyTo(saveMessage);
-            self.SaveData.MessagesList.Add(saveMessage);
+            OneFrameInputs oneFrameInputs = self.FrameBuffer[frame];
+            OneFrameInputs saveInput = new();
+            oneFrameInputs.CopyTo(saveInput);
+            self.SaveData.MessagesList.Add(saveInput);
             if (frame % LSConstValue.SaveLSWorldFrameCount == 0)
             {
                 MemoryBuffer memoryBuffer = self.FrameBuffer.GetMemoryBuffer(frame);

@@ -95,13 +95,10 @@ namespace ET
 
 	}
 
-	[Message(LockStepOuter.OneFrameMessages)]
+	[Message(LockStepOuter.OneFrameInputs)]
 	[MemoryPackable]
-	public partial class OneFrameMessages: MessageObject, IActorMessage
+	public partial class OneFrameInputs: MessageObject, IActorMessage
 	{
-		[MemoryPackOrder(0)]
-		public int Frame { get; set; }
-
 		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
 		[MemoryPackOrder(1)]
 		public Dictionary<long, LSInput> Inputs { get; set; }
@@ -125,7 +122,7 @@ namespace ET
 		 public const ushort LockStepUnitInfo = 11006;
 		 public const ushort Room2C_Start = 11007;
 		 public const ushort FrameMessage = 11008;
-		 public const ushort OneFrameMessages = 11009;
+		 public const ushort OneFrameInputs = 11009;
 		 public const ushort Room2C_AdjustUpdateTime = 11010;
 	}
 }
