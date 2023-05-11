@@ -18,13 +18,19 @@ namespace ET.Server
                 ActorLocationSenderComponent.Instance.Get(LocationType.GateSession).Send(message.PlayerId, new Room2C_AdjustUpdateTime() {DiffTime = diffTime});
             }
 
-            if (message.Frame < room.RealFrame)  // 小于RealFrame，丢弃
+            if (message.Frame < room.AuthorityFrame)  // 小于AuthorityFrame，丢弃
             {
-                Log.Warning($"FrameMessage discard: {message}");
+                Log.Warning($"FrameMessage < AuthorityFrame discard: {message}");
+                return;
+            }
+
+            if (message.Frame > room.AuthorityFrame + 10)  // 大于AuthorityFrame + 10，丢弃
+            {
+                Log.Warning($"FrameMessage > AuthorityFrame + 10 discard: {message}");
                 return;
             }
             
-            OneFrameInputs oneFrameInputs = frameBuffer[message.Frame];
+            OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(message.Frame);
             if (oneFrameInputs == null)
             {
                 Log.Error($"FrameMessageHandler get frame is null: {message.Frame}, max frame: {frameBuffer.MaxFrame}");

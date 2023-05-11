@@ -7,41 +7,38 @@ namespace ET
     public class FrameBuffer
     {
         public int MaxFrame { get; private set; }
-        private readonly List<OneFrameInputs> messageBuffer;
-        private readonly List<MemoryBuffer> dataBuffer;
+        private readonly List<OneFrameInputs> frameInputs;
+        private readonly List<MemoryBuffer> snapshots;
 
         public FrameBuffer(int capacity = LSConstValue.FrameCountPerSecond * 10)
         {
             this.MaxFrame = capacity - 1;
-            this.messageBuffer = new List<OneFrameInputs>(capacity);
-            this.dataBuffer = new List<MemoryBuffer>(capacity);
+            this.frameInputs = new List<OneFrameInputs>(capacity);
+            this.snapshots = new List<MemoryBuffer>(capacity);
             
-            for (int i = 0; i < this.dataBuffer.Capacity; ++i)
+            for (int i = 0; i < this.snapshots.Capacity; ++i)
             {
-                this.messageBuffer.Add(new OneFrameInputs());
+                this.frameInputs.Add(new OneFrameInputs());
                 MemoryBuffer memoryBuffer = new(10240);
                 memoryBuffer.SetLength(0);
                 memoryBuffer.Seek(0, SeekOrigin.Begin);
-                this.dataBuffer.Add(memoryBuffer);
+                this.snapshots.Add(memoryBuffer);
             }
         }
         
-        public OneFrameInputs this[int frame]
+        public OneFrameInputs FrameInputs(int frame)
         {
-            get
+            if (frame < 0)
             {
-                if (frame < 0)
-                {
-                    return null;
-                }
-
-                if (frame > this.MaxFrame)
-                {
-                    return null;
-                }
-                OneFrameInputs oneFrameInputs = this.messageBuffer[frame % this.messageBuffer.Capacity];
-                return oneFrameInputs;
+                return null;
             }
+
+            if (frame > this.MaxFrame)
+            {
+                return null;
+            }
+            OneFrameInputs oneFrameInputs = this.frameInputs[frame % this.frameInputs.Capacity];
+            return oneFrameInputs;
         }
 
         public void MoveForward(int frame)
@@ -55,11 +52,11 @@ namespace ET
             
             Log.Debug($"framebuffer move forward: {this.MaxFrame}");
             
-            OneFrameInputs oneFrameInputs = this[this.MaxFrame];
+            OneFrameInputs oneFrameInputs = this.FrameInputs(this.MaxFrame);
             oneFrameInputs.Inputs.Clear();
         }
 
-        public MemoryBuffer GetMemoryBuffer(int frame)
+        public MemoryBuffer Snapshot(int frame)
         {
             if (frame < 0)
             {
@@ -70,24 +67,8 @@ namespace ET
             {
                 return null;
             }
-            MemoryBuffer memoryBuffer = this.dataBuffer[frame % this.dataBuffer.Capacity];
+            MemoryBuffer memoryBuffer = this.snapshots[frame % this.snapshots.Capacity];
             return memoryBuffer;
-        }
-
-        public LSWorld GetLSWorld(int frame)
-        {
-            MemoryBuffer memoryBuffer = GetMemoryBuffer(frame);
-            return MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer) as LSWorld;
-        }
-
-        public void SaveLSWorld(int frame, LSWorld lsWorld)
-        {
-            MemoryBuffer memoryBuffer = this.dataBuffer[frame % this.dataBuffer.Capacity];
-            memoryBuffer.Seek(0, SeekOrigin.Begin);
-            memoryBuffer.SetLength(0);
-            
-            MongoHelper.Serialize(lsWorld, memoryBuffer);
-            memoryBuffer.Seek(0, SeekOrigin.Begin);
         }
     }
 }

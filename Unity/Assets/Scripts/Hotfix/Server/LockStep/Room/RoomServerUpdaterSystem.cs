@@ -21,14 +21,14 @@ namespace ET.Server
             long timeNow = TimeHelper.ServerFrameTime();
             
             
-            int frame = room.RealFrame + 1;
+            int frame = room.AuthorityFrame + 1;
             if (timeNow < room.FixedTimeCounter.FrameTime(frame))
             {
                 return;
             }
 
             OneFrameInputs oneFrameInputs = self.GetOneFrameMessage(frame);
-            ++room.RealFrame;
+            ++room.AuthorityFrame;
 
             OneFrameInputs sendInput = new();
             oneFrameInputs.CopyTo(sendInput);
@@ -42,7 +42,7 @@ namespace ET.Server
         {
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
-            OneFrameInputs oneFrameInputs = frameBuffer[frame];
+            OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(frame);
             if (oneFrameInputs == null)
             {
                 throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
@@ -55,7 +55,7 @@ namespace ET.Server
                 return oneFrameInputs;
             }
 
-            OneFrameInputs preFrameInputs = frameBuffer[frame - 1];
+            OneFrameInputs preFrameInputs = frameBuffer.FrameInputs(frame - 1);
             
             // 有人输入的消息没过来，给他使用上一帧的操作
             foreach (long playerId in room.PlayerIds)

@@ -29,7 +29,7 @@ namespace ET.Server
                 });
             }
 
-            room.Init(room2CStart);
+            room.Init(room2CStart.UnitInfo, room2CStart.StartTime);
 
             room.AddComponent<RoomServerUpdater>();
 

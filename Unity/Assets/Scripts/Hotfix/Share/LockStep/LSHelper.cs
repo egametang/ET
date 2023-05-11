@@ -4,35 +4,61 @@ namespace ET
 {
     public static class LSHelper
     {
+        public static void RunRollbackSystem(Entity entity)
+        {
+            if (entity is LSEntity)
+            {
+                return;
+            }
+            
+            LSSington.Instance.Rollback(entity);
+            
+            if (entity.ComponentsCount() > 0)
+            {
+                foreach (var kv in entity.Components)
+                {
+                    RunRollbackSystem(kv.Value);
+                }
+            }
+
+            if (entity.ChildrenCount() > 0)
+            {
+                foreach (var kv in entity.Children)
+                {
+                    RunRollbackSystem(kv.Value);
+                }
+            }
+        }
+        
         // 回滚
         public static void Rollback(Room room, int frame)
         {
             Log.Debug($"roll back start {frame}");
-            room.RemoveComponent<LSWorld>();
+            room.LSWorld.Dispose();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
             // 回滚
-            room.AddComponent(frameBuffer.GetLSWorld(frame));
-            OneFrameInputs realFrameInput = frameBuffer[frame];
+            room.LSWorld = room.GetLSWorld(frame);
+            OneFrameInputs authorityFrameInput = frameBuffer.FrameInputs(frame);
             // 执行RealFrame
-            room.Update(realFrameInput, frame);
+            room.Update(authorityFrameInput, frame);
 
             
             // 重新执行预测的帧
-            for (int i = room.RealFrame + 1; i <= room.PredictionFrame; ++i)
+            for (int i = room.AuthorityFrame + 1; i <= room.PredictionFrame; ++i)
             {
-                OneFrameInputs oneFrameInputs = frameBuffer[i];
-                CopyOtherInputsTo(room, realFrameInput, oneFrameInputs); // 重新预测消息
+                OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(i);
+                LSHelper.CopyOtherInputsTo(room, authorityFrameInput, oneFrameInputs); // 重新预测消息
                 room.Update(oneFrameInputs, i);
             }
             
-            RollbackHelper.Rollback(room);
+            RunRollbackSystem(room);
             
             Log.Debug($"roll back finish {frame}");
         }
-
+        
         // 重新调整预测消息，只需要调整其他玩家的输入
-        private static void CopyOtherInputsTo(Room room, OneFrameInputs from, OneFrameInputs to)
+        public static void CopyOtherInputsTo(Room room, OneFrameInputs from, OneFrameInputs to)
         {
             long myId = room.GetComponent<RoomClientUpdater>().MyId;
             foreach (var kv in from.Inputs)

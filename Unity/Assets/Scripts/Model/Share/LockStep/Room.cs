@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TrueSync;
 
 namespace ET
 {
@@ -12,16 +11,40 @@ namespace ET
         
         public long StartTime { get; set; }
 
+        // 帧缓存
         public FrameBuffer FrameBuffer { get; } = new();
 
+        // 计算fixedTime，fixedTime在客户端是动态调整的，会做时间膨胀缩放
         public FixedTimeCounter FixedTimeCounter { get; set; }
 
+        // 玩家id列表
         public List<long> PlayerIds { get; } = new(LSConstValue.MatchCount);
         
+        // 预测帧
         public int PredictionFrame { get; set; } = -1;
 
-        public int RealFrame { get; set; } = -1;
+        // 权威帧
+        public int AuthorityFrame { get; set; } = -1;
 
-        public SaveData SaveData = new();
+        // 存档
+        public Record Record = new();
+
+        private EntityRef<LSWorld> lsWorld;
+
+        // LSWorld做成child，可以有多个lsWorld，比如守望先锋有两个
+        public LSWorld LSWorld
+        {
+            get
+            {
+                return this.lsWorld;
+            }
+            set
+            {
+                this.AddChild(value);
+                this.lsWorld = value;
+            }
+        }
+
+        public bool IsReplay;
     }
 }

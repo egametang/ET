@@ -35,7 +35,7 @@ namespace ET.Client
             }
 
             // 最多只预测5帧
-            if (room.PredictionFrame - room.RealFrame > 5)
+            if (room.PredictionFrame - room.AuthorityFrame > 5)
             {
                 return;
             }
@@ -56,21 +56,21 @@ namespace ET.Client
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
-            if (frame <= room.RealFrame)
+            if (frame <= room.AuthorityFrame)
             {
-                return frameBuffer[frame];
+                return frameBuffer.FrameInputs(frame);
             }
             
             // predict
-            OneFrameInputs predictionFrame = frameBuffer[frame];
+            OneFrameInputs predictionFrame = frameBuffer.FrameInputs(frame);
             if (predictionFrame == null)
             {
                 throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
             }
             
             frameBuffer.MoveForward(frame);
-            OneFrameInputs realFrame = frameBuffer[room.RealFrame];
-            realFrame?.CopyTo(predictionFrame);
+            OneFrameInputs authorityFrame = frameBuffer.FrameInputs(room.AuthorityFrame);
+            authorityFrame?.CopyTo(predictionFrame);
             predictionFrame.Inputs[self.MyId] = self.Input;
             
             return predictionFrame;
