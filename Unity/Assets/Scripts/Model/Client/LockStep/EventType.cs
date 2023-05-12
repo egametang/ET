@@ -2,12 +2,12 @@
 {
     namespace EventType
     {
-        public struct LockStepSceneChangeStart
+        public struct LSSceneChangeStart
         {
             public Room Room;
         }
         
-        public struct LockStepSceneInitFinish
+        public struct LSSceneInitFinish
         {
         }
 

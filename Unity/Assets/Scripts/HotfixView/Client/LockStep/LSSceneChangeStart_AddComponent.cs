@@ -3,9 +3,9 @@ using UnityEngine.SceneManagement;
 namespace ET.Client
 {
     [Event(SceneType.LockStep)]
-    public class LockStepSceneChangeStart_AddComponent: AEvent<Scene, EventType.LockStepSceneChangeStart>
+    public class LSSceneChangeStart_AddComponent: AEvent<Scene, EventType.LSSceneChangeStart>
     {
-        protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneChangeStart args)
+        protected override async ETTask Run(Scene clientScene, EventType.LSSceneChangeStart args)
         {
             Room room = clientScene.GetComponent<Room>();
             room.AddComponent<ResourcesLoaderComponent>();

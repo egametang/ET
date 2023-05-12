@@ -3,27 +3,27 @@ using System.IO;
 
 namespace ET.Client
 {
-    [FriendOf(typeof (RoomClientUpdater))]
-    public static class RoomClientUpdaterSystem
+    [FriendOf(typeof (LSClientUpdater))]
+    public static class LSClientUpdaterSystem
     {
-        public class AwakeSystem: AwakeSystem<RoomClientUpdater>
+        public class AwakeSystem: AwakeSystem<LSClientUpdater>
         {
-            protected override void Awake(RoomClientUpdater self)
+            protected override void Awake(LSClientUpdater self)
             {
                 Room room = self.GetParent<Room>();
                 self.MyId = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
             }
         }
         
-        public class UpdateSystem: UpdateSystem<RoomClientUpdater>
+        public class UpdateSystem: UpdateSystem<LSClientUpdater>
         {
-            protected override void Update(RoomClientUpdater self)
+            protected override void Update(LSClientUpdater self)
             {
                 self.Update();
             }
         }
 
-        private static void Update(this RoomClientUpdater self)
+        private static void Update(this LSClientUpdater self)
         {
             Room room = self.GetParent<Room>();
             long timeNow = TimeHelper.ServerFrameTime();
@@ -51,7 +51,7 @@ namespace ET.Client
             clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
         }
 
-        private static OneFrameInputs GetOneFrameMessages(this RoomClientUpdater self, int frame)
+        private static OneFrameInputs GetOneFrameMessages(this LSClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;

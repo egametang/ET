@@ -1,7 +1,7 @@
 namespace ET.Client
 {
     [ComponentOf(typeof(Room))]
-    public class ReplayUpdater: Entity, IAwake, IUpdate
+    public class LSReplayUpdater: Entity, IAwake, IUpdate
     {
     }
 }

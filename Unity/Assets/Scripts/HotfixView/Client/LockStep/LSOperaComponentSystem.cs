@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [FriendOf(typeof(RoomClientUpdater))]
+    [FriendOf(typeof(LSClientUpdater))]
     public static class LSOperaComponentSystem
     {
-        [FriendOf(typeof(RoomClientUpdater))]
+        [FriendOf(typeof(LSClientUpdater))]
         public class UpdateSystem: UpdateSystem<LSOperaComponent>
         {
             protected override void Update(LSOperaComponent self)
@@ -32,8 +32,8 @@ namespace ET.Client
                     v.x += 1;
                 }
 
-                RoomClientUpdater roomClientUpdater = self.GetParent<Room>().GetComponent<RoomClientUpdater>();
-                roomClientUpdater.Input.V = v.normalized;
+                LSClientUpdater lsClientUpdater = self.GetParent<Room>().GetComponent<LSClientUpdater>();
+                lsClientUpdater.Input.V = v.normalized;
             }
         }
     }

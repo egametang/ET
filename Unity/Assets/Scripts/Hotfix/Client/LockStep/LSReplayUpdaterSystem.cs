@@ -2,19 +2,19 @@ using System;
 
 namespace ET.Client
 {
-    [FriendOf(typeof(ReplayUpdater))]
-    public static class ReplayComponentSystem
+    [FriendOf(typeof(LSReplayUpdater))]
+    public static class LSReplayComponentSystem
     {
         [ObjectSystem]
-        public class UpdateSystem: UpdateSystem<ReplayUpdater>
+        public class UpdateSystem: UpdateSystem<LSReplayUpdater>
         {
-            protected override void Update(ReplayUpdater self)
+            protected override void Update(LSReplayUpdater self)
             {
                 self.Update();
             }
         }
 
-        private static void Update(this ReplayUpdater self)
+        private static void Update(this LSReplayUpdater self)
         {
             Room room = self.GetParent<Room>();
             long timeNow = TimeHelper.ServerFrameTime();

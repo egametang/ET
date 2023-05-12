@@ -31,7 +31,7 @@ namespace ET.Server
 
             room.Init(room2CStart.UnitInfo, room2CStart.StartTime);
 
-            room.AddComponent<RoomServerUpdater>();
+            room.AddComponent<LSServerUpdater>();
 
             RoomMessageHelper.BroadCast(room, room2CStart);
         }

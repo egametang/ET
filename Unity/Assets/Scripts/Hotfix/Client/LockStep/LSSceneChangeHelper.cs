@@ -12,7 +12,7 @@ namespace ET.Client
             room.Name = sceneName;
 
             // 等待表现层订阅的事件完成
-            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LockStepSceneChangeStart() {Room = room});
+            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LSSceneChangeStart() {Room = room});
 
             clientScene.GetComponent<SessionComponent>().Session.Send(new C2Room_ChangeSceneFinish());
             
@@ -22,10 +22,10 @@ namespace ET.Client
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(waitRoom2CStart.Message.UnitInfo, waitRoom2CStart.Message.StartTime);
             
-            room.AddComponent<RoomClientUpdater>();
+            room.AddComponent<LSClientUpdater>();
 
             // 这个事件中可以订阅取消loading
-            EventSystem.Instance.Publish(clientScene, new EventType.LockStepSceneInitFinish());
+            EventSystem.Instance.Publish(clientScene, new EventType.LSSceneInitFinish());
         }
         
         // 场景切换协程
@@ -39,15 +39,15 @@ namespace ET.Client
             room.Replay = replay;
 
             // 等待表现层订阅的事件完成
-            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LockStepSceneChangeStart() {Room = room});
+            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LSSceneChangeStart() {Room = room});
             
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(replay.UnitInfos, TimeHelper.ServerFrameTime());
             
-            room.AddComponent<ReplayUpdater>();
+            room.AddComponent<LSReplayUpdater>();
 
             // 这个事件中可以订阅取消loading
-            EventSystem.Instance.Publish(clientScene, new EventType.LockStepSceneInitFinish());
+            EventSystem.Instance.Publish(clientScene, new EventType.LSSceneInitFinish());
         }
     }
 }

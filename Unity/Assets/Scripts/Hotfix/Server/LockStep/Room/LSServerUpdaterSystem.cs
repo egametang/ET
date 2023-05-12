@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    [FriendOf(typeof(RoomServerUpdater))]
-    public static class RoomServerUpdaterSystem
+    [FriendOf(typeof(LSServerUpdater))]
+    public static class LSServerUpdaterSystem
     {
         [ObjectSystem]
-        public class UpdateSystem: UpdateSystem<RoomServerUpdater>
+        public class UpdateSystem: UpdateSystem<LSServerUpdater>
         {
-            protected override void Update(RoomServerUpdater self)
+            protected override void Update(LSServerUpdater self)
             {
                 self.Update();
             }
         }
         
-        private static void Update(this RoomServerUpdater self)
+        private static void Update(this LSServerUpdater self)
         {
             Room room = self.GetParent<Room>();
             long timeNow = TimeHelper.ServerFrameTime();
@@ -38,7 +38,7 @@ namespace ET.Server
             room.Update(oneFrameInputs, frame);
         }
 
-        private static OneFrameInputs GetOneFrameMessage(this RoomServerUpdater self, int frame)
+        private static OneFrameInputs GetOneFrameMessage(this LSServerUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;

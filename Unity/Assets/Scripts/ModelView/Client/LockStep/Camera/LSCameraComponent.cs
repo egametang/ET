@@ -3,7 +3,7 @@
 namespace ET.Client
 {
 	[ComponentOf(typeof(Room))]
-	public class CameraComponent : Entity, IAwake, ILateUpdate
+	public class LSCameraComponent : Entity, IAwake, ILateUpdate
 	{
 		// 战斗摄像机
 		private Camera camera;

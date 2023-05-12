@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ET.Client
 {
     [Event(SceneType.LockStepClient)]
-    public class LockStepAfterUnitCreate_CreateUnitFView: AEvent<LSWorld, LSAfterUnitCreate>
+    public class LSAfterUnitCreate_CreateUnitFView: AEvent<LSWorld, LSAfterUnitCreate>
     {
         protected override async ETTask Run(LSWorld lsWorld, LSAfterUnitCreate args)
         {
