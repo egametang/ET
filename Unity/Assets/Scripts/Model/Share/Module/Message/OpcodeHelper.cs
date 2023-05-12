@@ -12,6 +12,8 @@ namespace ET
             OuterMessage.G2C_Ping,
             OuterMessage.C2G_Benchmark,
             OuterMessage.G2C_Benchmark,
+            LockStepOuter.OneFrameInputs,
+            LockStepOuter.FrameMessage,
             ushort.MaxValue, // ActorResponse
         };
 

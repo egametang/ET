@@ -10,6 +10,8 @@ namespace ET.Client
             room.AddComponent<CameraComponent>();
             
             room.AddComponent<LSOperaComponent>();
+            
+            await UIHelper.Remove(clientScene, UIType.UILSLobby);
             await ETTask.CompletedTask;
         }
     }

@@ -14,14 +14,16 @@ namespace ET.Client
                 ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 
                 self.enterMap = rc.Get<GameObject>("EnterMap");
-                self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
+                self.enterMap.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    self.EnterMap().Coroutine();
+                });
             }
         }
-        
-        public static async ETTask EnterMap(this UILSLobbyComponent self)
+
+        private static async ETTask EnterMap(this UILSLobbyComponent self)
         {
             await EnterMapHelper.Match(self.ClientScene());
-            await UIHelper.Remove(self.ClientScene(), UIType.UILSLobby);
         }
     }
 }

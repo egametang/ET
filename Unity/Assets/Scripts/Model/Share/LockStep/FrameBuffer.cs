@@ -50,8 +50,6 @@ namespace ET
             
             ++this.MaxFrame;
             
-            Log.Debug($"framebuffer move forward: {this.MaxFrame}");
-            
             OneFrameInputs oneFrameInputs = this.FrameInputs(this.MaxFrame);
             oneFrameInputs.Inputs.Clear();
         }
