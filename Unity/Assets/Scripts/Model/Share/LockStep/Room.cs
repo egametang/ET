@@ -27,7 +27,7 @@ namespace ET
         public int AuthorityFrame { get; set; } = -1;
 
         // 存档
-        public Record Record = new();
+        public Replay Replay { get; set; } = new();
 
         private EntityRef<LSWorld> lsWorld;
 
@@ -45,6 +45,6 @@ namespace ET
             }
         }
 
-        public bool IsReplay;
+        public bool IsReplay { get; set; }
     }
 }

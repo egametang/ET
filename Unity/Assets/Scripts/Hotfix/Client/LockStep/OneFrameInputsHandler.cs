@@ -33,6 +33,10 @@ namespace ET.Client
                 // 回滚到frameBuffer.AuthorityFrame
                 LSHelper.Rollback(room, room.AuthorityFrame);
             }
+            else
+            {
+                room.Record(frame);
+            }
 
             // 回收消息，减少GC
             NetServices.Instance.RecycleMessage(input);

@@ -6,16 +6,6 @@ namespace ET.Client
     public static class ReplayComponentSystem
     {
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<ReplayUpdater, Record>
-        {
-            protected override void Awake(ReplayUpdater self, Record record)
-            {
-                self.Record = record;
-                self.GetParent<Room>().Init(self.Record.UnitInfos, TimeHelper.ServerFrameTime());
-            }
-        }
-
-        [ObjectSystem]
         public class UpdateSystem: UpdateSystem<ReplayUpdater>
         {
             protected override void Update(ReplayUpdater self)
@@ -35,7 +25,14 @@ namespace ET.Client
             }
 
             ++room.AuthorityFrame;
-            OneFrameInputs oneFrameInputs = self.Record.FrameInputs[room.AuthorityFrame];
+
+            if (room.AuthorityFrame >= room.Replay.FrameInputs.Count)
+            {
+                return;
+            }
+            
+            OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
+            
             room.Update(oneFrameInputs, room.AuthorityFrame);
         }
     }

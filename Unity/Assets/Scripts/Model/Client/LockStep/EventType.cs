@@ -4,6 +4,7 @@
     {
         public struct LockStepSceneChangeStart
         {
+            public Room Room;
         }
         
         public struct LockStepSceneInitFinish

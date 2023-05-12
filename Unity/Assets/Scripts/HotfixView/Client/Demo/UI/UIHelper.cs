@@ -2,7 +2,7 @@
 {
     public static class UIHelper
     {
-        public static async ETTask<UI> Create(Scene scene, string uiType, UILayer uiLayer)
+        public static async ETTask<UI> Create(Entity scene, string uiType, UILayer uiLayer)
         {
             return await scene.GetComponent<UIComponent>().Create(uiType, uiLayer);
         }

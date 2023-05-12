@@ -36,5 +36,7 @@ namespace ET.Client
 				this.unitView = value;
 			}
 		}
+
+		public int index;
 	}
 }

@@ -8,11 +8,14 @@ namespace ET.Client
         protected override async ETTask Run(Scene clientScene, EventType.LockStepSceneChangeStart args)
         {
             Room room = clientScene.GetComponent<Room>();
+            room.AddComponent<ResourcesLoaderComponent>();
+            room.AddComponent<UIComponent>();
             
             // 创建loading界面
             
-            // 删除大厅UI
-            await UIHelper.Remove(clientScene, UIType.UILobby);
+            
+            // 创建房间UI
+            await UIHelper.Create(args.Room, UIType.UILSRoom, UILayer.Low);
             
             // 加载场景资源
             await ResourcesComponent.Instance.LoadBundleAsync($"{room.Name}.unity3d");

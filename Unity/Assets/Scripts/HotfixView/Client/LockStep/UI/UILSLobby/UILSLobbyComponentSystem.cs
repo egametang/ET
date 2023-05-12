@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace ET.Client
@@ -18,12 +19,25 @@ namespace ET.Client
                 {
                     self.EnterMap().Coroutine();
                 });
+                
+                self.replay = rc.Get<GameObject>("Replay").GetComponent<Button>();
+                self.replayPath = rc.Get<GameObject>("ReplayPath").GetComponent<InputField>();
+                self.replay.onClick.AddListener(self.Replay);
             }
         }
 
         private static async ETTask EnterMap(this UILSLobbyComponent self)
         {
             await EnterMapHelper.Match(self.ClientScene());
+        }
+        
+        private static void Replay(this UILSLobbyComponent self)
+        {
+            byte[] bytes = File.ReadAllBytes(self.replayPath.text);
+            
+            Replay replay = MemoryPackHelper.Deserialize(typeof (Replay), bytes, 0, bytes.Length) as Replay;
+            
+            LSSceneChangeHelper.SceneChangeToReplay(self.ClientScene(), replay).Coroutine();
         }
     }
 }

@@ -32,12 +32,20 @@ namespace ET.Client
 		private static void LateUpdate(this CameraComponent self)
 		{
 			// 摄像机每帧更新位置
+			Room room = self.GetParent<Room>();
+			if (room.IsReplay)
+			{
+				if (Input.GetKeyDown(KeyCode.Tab))
+				{
+					++self.index;
+					self.MyUnitView = new LSUnitView();
+				}
+			}
 
 			LSUnitView lsUnit = self.MyUnitView;
 			if (lsUnit == null)
 			{
-				Room room = self.GetParent<Room>();
-				long id = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
+				long id = room.IsReplay? room.PlayerIds[self.index % room.PlayerIds.Count] : room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
 				self.MyUnitView = room.GetComponent<LSUnitViewComponent>().GetChild<LSUnitView>(id);
 			}
 

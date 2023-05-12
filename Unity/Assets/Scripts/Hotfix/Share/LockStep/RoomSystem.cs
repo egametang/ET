@@ -7,10 +7,15 @@ namespace ET
     [FriendOf(typeof(Room))]
     public static class RoomSystem
     {
+        public static Room Room(this Entity entity)
+        {
+            return entity.Domain as Room;
+        }
+        
         public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime)
         {
             self.StartTime = startTime;
-            
+            self.Replay.UnitInfos = unitInfos;
             self.FixedTimeCounter = new FixedTimeCounter(self.StartTime, 0, LSConstValue.UpdateInterval);
 
             LSWorld lsWorld = self.LSWorld;
@@ -67,16 +72,21 @@ namespace ET
             memoryBuffer.Seek(0, SeekOrigin.Begin);
         }
 
+        // 记录需要存档的数据
         public static void Record(this Room self, int frame)
         {
+            if (self.IsReplay)
+            {
+                return;
+            }
             OneFrameInputs oneFrameInputs = self.FrameBuffer.FrameInputs(frame);
             OneFrameInputs saveInput = new();
             oneFrameInputs.CopyTo(saveInput);
-            self.Record.FrameInputs.Add(saveInput);
+            self.Replay.FrameInputs.Add(saveInput);
             if (frame % LSConstValue.SaveLSWorldFrameCount == 0)
             {
                 MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
-                self.Record.Snapshots.Add(memoryBuffer.ToArray());   
+                self.Replay.Snapshots.Add(memoryBuffer.ToArray());   
             }
         }
     }

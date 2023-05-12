@@ -5,7 +5,7 @@ namespace ET
 {
     public static class MessageSerializeHelper
     {
-        public static ushort MessageToStream(MemoryBuffer stream, object message)
+        public static ushort MessageToStream(MemoryBuffer stream, MessageObject message)
         {
             int headOffset = Packet.ActorIdLength;
 

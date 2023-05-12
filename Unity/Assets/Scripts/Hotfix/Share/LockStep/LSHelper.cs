@@ -1,3 +1,4 @@
+using System.IO;
 using ET.Client;
 
 namespace ET
@@ -69,6 +70,17 @@ namespace ET
                 }
                 to.Inputs[kv.Key] = kv.Value;
             }
+        }
+
+        public static void SaveReplay(Room room, string path)
+        {
+            if (room.IsReplay)
+            {
+                return;
+            }
+            Log.Debug($"save replay: {path} frame: {room.Replay.FrameInputs.Count}");
+            byte[] bytes = MemoryPackHelper.Serialize(room.Replay);
+            File.WriteAllBytes(path, bytes);
         }
     }
 }
