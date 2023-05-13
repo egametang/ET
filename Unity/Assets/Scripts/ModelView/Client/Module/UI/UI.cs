@@ -6,7 +6,7 @@ namespace ET.Client
     [FriendOf(typeof(UI))]
     public static class UISystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
         {
             protected override void Awake(UI self, string name, GameObject gameObject)
@@ -18,7 +18,7 @@ namespace ET.Client
             }
         }
 		
-        [ObjectSystem]
+        [EntitySystem]
         public class UIDestroySystem : DestroySystem<UI>
         {
             protected override void Destroy(UI self)

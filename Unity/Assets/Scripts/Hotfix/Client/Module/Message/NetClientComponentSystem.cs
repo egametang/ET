@@ -6,24 +6,34 @@ namespace ET.Client
     [FriendOf(typeof(NetClientComponent))]
     public static class NetClientComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<NetClientComponent, AddressFamily>
         {
             protected override void Awake(NetClientComponent self, AddressFamily addressFamily)
             {
-                self.ServiceId = NetServices.Instance.AddService(new KService(addressFamily, ServiceType.Outer));
-                NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-                NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+                self.Awake(addressFamily);
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class DestroySystem: DestroySystem<NetClientComponent>
         {
             protected override void Destroy(NetClientComponent self)
             {
-                NetServices.Instance.RemoveService(self.ServiceId);
+                self.Destroy();
             }
+        }
+        
+        private static void Awake(this NetClientComponent self, AddressFamily addressFamily)
+        {
+            self.ServiceId = NetServices.Instance.AddService(new KService(addressFamily, ServiceType.Outer));
+            NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
+            NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+        }
+        
+        private static void Destroy(this NetClientComponent self)
+        {
+            NetServices.Instance.RemoveService(self.ServiceId);
         }
 
         private static void OnRead(this NetClientComponent self, long channelId, long actorId, object message)

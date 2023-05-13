@@ -48,7 +48,7 @@ namespace ET
         protected override void RegisterSystem()
         {
             LSWorld lsWorld = this.LSWorld();
-            TypeSystems.OneTypeSystems oneTypeSystems = LSSington.Instance.GetOneTypeSystems(this.GetType());
+            TypeSystems.OneTypeSystems oneTypeSystems = LSEntitySystemSington.Instance.GetOneTypeSystems(this.GetType());
             if (oneTypeSystems == null)
             {
                 return;

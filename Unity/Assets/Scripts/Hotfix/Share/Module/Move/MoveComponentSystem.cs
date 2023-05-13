@@ -23,30 +23,40 @@ namespace ET
             }
         }
     
-        [ObjectSystem]
+        [EntitySystem]
         public class DestroySystem: DestroySystem<MoveComponent>
         {
             protected override void Destroy(MoveComponent self)
             {
-                self.MoveFinish(false);
+                self.Destroy();
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<MoveComponent>
         {
             protected override void Awake(MoveComponent self)
             {
-                self.StartTime = 0;
-                self.StartPos = float3.zero;
-                self.NeedTime = 0;
-                self.MoveTimer = 0;
-                self.tcs = null;
-                self.Targets.Clear();
-                self.Speed = 0;
-                self.N = 0;
-                self.TurnTime = 0;
+                self.Awake();
             }
+        }
+        
+        private static void Destroy(this MoveComponent self)
+        {
+            self.MoveFinish(false);
+        }
+        
+        private static void Awake(this MoveComponent self)
+        {
+            self.StartTime = 0;
+            self.StartPos = float3.zero;
+            self.NeedTime = 0;
+            self.MoveTimer = 0;
+            self.tcs = null;
+            self.Targets.Clear();
+            self.Speed = 0;
+            self.N = 0;
+            self.TurnTime = 0;
         }
         
         public static bool IsArrived(this MoveComponent self)

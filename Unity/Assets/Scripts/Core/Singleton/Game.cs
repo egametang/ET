@@ -6,15 +6,15 @@ namespace ET
     public static class Game
     {
         [StaticField]
-        private static readonly Dictionary<Type, ISingleton> singletonTypes = new Dictionary<Type, ISingleton>();
+        private static readonly Stack<ISingleton> singletons = new();
         [StaticField]
-        private static readonly Stack<ISingleton> singletons = new Stack<ISingleton>();
+        private static readonly Queue<ISingleton> updates = new();
         [StaticField]
-        private static readonly Queue<ISingleton> updates = new Queue<ISingleton>();
+        private static readonly Queue<ISingleton> lateUpdates = new();
         [StaticField]
-        private static readonly Queue<ISingleton> lateUpdates = new Queue<ISingleton>();
+        private static readonly Queue<ISingleton> loads = new();
         [StaticField]
-        private static readonly Queue<ETTask> frameFinishTask = new Queue<ETTask>();
+        private static readonly Queue<ETTask> frameFinishTask = new();
 
         public static T AddSingleton<T>() where T: Singleton<T>, new()
         {
@@ -25,17 +25,10 @@ namespace ET
         
         public static void AddSingleton(ISingleton singleton)
         {
-            Type singletonType = singleton.GetType();
-            if (singletonTypes.ContainsKey(singletonType))
-            {
-                throw new Exception($"already exist singleton: {singletonType.Name}");
-            }
-
-            singletonTypes.Add(singletonType, singleton);
+            singleton.Register();
+            
             singletons.Push(singleton);
             
-            singleton.Register();
-
             if (singleton is ISingletonAwake awake)
             {
                 awake.Awake();
@@ -49,6 +42,11 @@ namespace ET
             if (singleton is ISingletonLateUpdate)
             {
                 lateUpdates.Enqueue(singleton);
+            }
+
+            if (singleton is ISingletonLoad)
+            {
+                loads.Enqueue(singleton);
             }
         }
 
@@ -116,6 +114,35 @@ namespace ET
                 }
             }
         }
+        
+        public static void Load()
+        {
+            int count = loads.Count;
+            while (count-- > 0)
+            {
+                ISingleton singleton = loads.Dequeue();
+                
+                if (singleton.IsDisposed())
+                {
+                    continue;
+                }
+
+                if (singleton is not ISingletonLoad load)
+                {
+                    continue;
+                }
+                
+                loads.Enqueue(singleton);
+                try
+                {
+                    load.Load();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
 
         public static void FrameFinishUpdate()
         {
@@ -134,7 +161,6 @@ namespace ET
                 ISingleton iSingleton = singletons.Pop();
                 iSingleton.Destroy();
             }
-            singletonTypes.Clear();
         }
     }
 }

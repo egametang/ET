@@ -2,45 +2,56 @@ using System;
 
 namespace ET
 {
-    [Invoke(TimerInvokeType.SessionIdleChecker)]
-    public class SessionIdleChecker: ATimer<SessionIdleCheckerComponent>
+    [FriendOf(typeof(SessionIdleCheckerComponent))]
+    public static class SessionIdleCheckerComponentSystem
     {
-        protected override void Run(SessionIdleCheckerComponent self)
+        [Invoke(TimerInvokeType.SessionIdleChecker)]
+        public class SessionIdleChecker: ATimer<SessionIdleCheckerComponent>
         {
-            try
+            protected override void Run(SessionIdleCheckerComponent self)
             {
-                self.Check();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
+                try
+                {
+                    self.Check();
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"move timer error: {self.Id}\n{e}");
+                }
             }
         }
-    }
     
-    [ObjectSystem]
-    public class SessionIdleCheckerComponentAwakeSystem: AwakeSystem<SessionIdleCheckerComponent>
-    {
-        protected override void Awake(SessionIdleCheckerComponent self)
+        [EntitySystem]
+        public class SessionIdleCheckerComponentAwakeSystem: AwakeSystem<SessionIdleCheckerComponent>
+        {
+            protected override void Awake(SessionIdleCheckerComponent self)
+            {
+                self.Awake();
+            }
+        }
+
+        [EntitySystem]
+        public class SessionIdleCheckerComponentDestroySystem: DestroySystem<SessionIdleCheckerComponent>
+        {
+            protected override void Destroy(SessionIdleCheckerComponent self)
+            {
+                self.Destroy();
+            }
+        }
+        
+        private static void Awake(this SessionIdleCheckerComponent self)
         {
             self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(SessionIdleCheckerComponentSystem.CheckInteral, TimerInvokeType.SessionIdleChecker, self);
         }
-    }
-
-    [ObjectSystem]
-    public class SessionIdleCheckerComponentDestroySystem: DestroySystem<SessionIdleCheckerComponent>
-    {
-        protected override void Destroy(SessionIdleCheckerComponent self)
+        
+        private static void Destroy(this SessionIdleCheckerComponent self)
         {
             TimerComponent.Instance?.Remove(ref self.RepeatedTimer);
         }
-    }
-
-    public static class SessionIdleCheckerComponentSystem
-    {
-        public const int CheckInteral = 2000;
         
-        public static void Check(this SessionIdleCheckerComponent self)
+        public const int CheckInteral = 2000;
+
+        private static void Check(this SessionIdleCheckerComponent self)
         {
             Session session = self.GetParent<Session>();
             long timeNow = TimeHelper.ClientNow();

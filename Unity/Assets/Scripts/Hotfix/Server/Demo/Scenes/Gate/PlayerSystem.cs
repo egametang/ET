@@ -3,7 +3,7 @@
     [FriendOf(typeof(Player))]
     public static class PlayerSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class PlayerAwakeSystem : AwakeSystem<Player, string>
         {
             protected override void Awake(Player self, string a)

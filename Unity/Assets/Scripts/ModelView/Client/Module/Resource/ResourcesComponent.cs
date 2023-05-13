@@ -10,7 +10,7 @@ namespace ET.Client
     [FriendOf(typeof(ABInfo))]
     public static class ABInfoSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class ABInfoAwakeSystem: AwakeSystem<ABInfo, string, AssetBundle>
         {
             protected override void Awake(ABInfo self, string abName, AssetBundle a)
@@ -22,7 +22,7 @@ namespace ET.Client
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ABInfoDestroySystem: DestroySystem<ABInfo>
         {
             protected override void Destroy(ABInfo self)
@@ -114,7 +114,7 @@ namespace ET.Client
     [FriendOf(typeof(ResourcesComponent))]
     public static class ResourcesComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
         {
             protected override void Awake(ResourcesComponent self)
@@ -129,7 +129,7 @@ namespace ET.Client
             }
         }
         
-        [ObjectSystem]
+        [EntitySystem]
         public class ResourcesComponentDestroySystem: DestroySystem<ResourcesComponent>
         {
             protected override void Destroy(ResourcesComponent self)

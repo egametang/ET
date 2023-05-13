@@ -1,6 +1,6 @@
 namespace ET
 {
-    [ObjectSystem]
+    [EntitySystem]
     public class UnitSystem: AwakeSystem<Unit, int>
     {
         protected override void Awake(Unit self, int configId)

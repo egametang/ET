@@ -24,24 +24,34 @@ namespace ET
     [FriendOf(typeof(ObjectWait))]
     public static class ObjectWaitSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class ObjectWaitAwakeSystem: AwakeSystem<ObjectWait>
         {
             protected override void Awake(ObjectWait self)
             {
-                self.tcss.Clear();
+                self.Awake();
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ObjectWaitDestroySystem: DestroySystem<ObjectWait>
         {
             protected override void Destroy(ObjectWait self)
             {
-                foreach (object v in self.tcss.Values.ToArray())
-                {
-                    ((IDestroyRun) v).SetResult();
-                }
+                self.Destroy();
+            }
+        }
+        
+        private static void Awake(this ObjectWait self)
+        {
+            self.tcss.Clear();
+        }
+        
+        private static void Destroy(this ObjectWait self)
+        {
+            foreach (object v in self.tcss.Values.ToArray())
+            {
+                ((IDestroyRun) v).SetResult();
             }
         }
 

@@ -94,11 +94,7 @@ namespace ET.Analyzer
                 return;
             }
             
-            //判断是否在实体类生命周期System中
-            if (this.CheckIsEntityLifecycleSystem(accessFieldClassSymbol, filedSymbol.ContainingType))
-            {
-                return;
-            }
+            //判断是否在实体类生命周期System中, 这里做了修改，周期System也不允许
 
             //判断是否在实体类的友元类中
             if (this.CheckIsEntityFriendOf(accessFieldClassSymbol, filedSymbol.ContainingType))
@@ -111,33 +107,6 @@ namespace ET.Analyzer
             Diagnostic diagnostic = Diagnostic.Create(Rule, memberAccessExpressionSyntax.GetLocation(), builder.ToImmutable(),filedSymbol.ContainingType.ToString(),
                 filedSymbol.Name);
             context.ReportDiagnostic(diagnostic);
-        }
-
-        private bool CheckIsEntityLifecycleSystem(INamedTypeSymbol accessFieldClassSymbol, INamedTypeSymbol entityTypeSymbol)
-        {
-            if (accessFieldClassSymbol.BaseType == null || !accessFieldClassSymbol.BaseType.IsGenericType)
-            {
-                return false;
-            }
-
-            // 判断是否含有 ObjectSystem Attribute 且继承了接口 ISystemType
-            if (accessFieldClassSymbol.BaseType.HasAttribute(Definition.ObjectSystemAttribute) && accessFieldClassSymbol.HasInterface(Definition.ISystemType))
-            {
-                // 获取 accessFieldClassSymbol 父类的实体类型参数
-                ITypeSymbol? entityTypeArgumentSymbol = accessFieldClassSymbol.BaseType.TypeArguments.FirstOrDefault();
-                if (entityTypeArgumentSymbol == null)
-                {
-                    return false;
-                }
-
-                // 判断 accessFieldClassSymbol 父类的实体类型参数是否为 entityTypeSymbol
-                if (entityTypeArgumentSymbol.ToString() == entityTypeSymbol.ToString())
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private bool CheckIsEntityFriendOf(INamedTypeSymbol accessFieldTypeSymbol, INamedTypeSymbol entityTypeSymbol)

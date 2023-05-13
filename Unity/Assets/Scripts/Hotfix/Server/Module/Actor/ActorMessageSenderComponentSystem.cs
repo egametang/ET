@@ -22,27 +22,37 @@ namespace ET.Server
             }
         }
     
-        [ObjectSystem]
+        [EntitySystem]
         public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
         {
             protected override void Awake(ActorMessageSenderComponent self)
             {
-                ActorMessageSenderComponent.Instance = self;
-
-                self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
+                self.Awake();
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ActorMessageSenderComponentDestroySystem: DestroySystem<ActorMessageSenderComponent>
         {
             protected override void Destroy(ActorMessageSenderComponent self)
             {
-                ActorMessageSenderComponent.Instance = null;
-                TimerComponent.Instance?.Remove(ref self.TimeoutCheckTimer);
-                self.TimeoutCheckTimer = 0;
-                self.TimeoutActorMessageSenders.Clear();
+                self.Destroy();
             }
+        }
+        
+        private static void Awake(this ActorMessageSenderComponent self)
+        {
+            ActorMessageSenderComponent.Instance = self;
+
+            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
+        }
+        
+        private static void Destroy(this ActorMessageSenderComponent self)
+        {
+            ActorMessageSenderComponent.Instance = null;
+            TimerComponent.Instance?.Remove(ref self.TimeoutCheckTimer);
+            self.TimeoutCheckTimer = 0;
+            self.TimeoutActorMessageSenders.Clear();
         }
 
         private static void Run(ActorMessageSender self, IActorResponse response)

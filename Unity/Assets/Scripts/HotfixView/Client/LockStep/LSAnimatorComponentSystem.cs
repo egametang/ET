@@ -6,7 +6,7 @@ namespace ET.Client
 	[FriendOf(typeof(LSAnimatorComponent))]
 	public static class LSAnimatorComponentSystem
 	{
-		[ObjectSystem]
+		[EntitySystem]
 		public class AwakeSystem : AwakeSystem<LSAnimatorComponent>
 		{
 			protected override void Awake(LSAnimatorComponent self)
@@ -15,7 +15,7 @@ namespace ET.Client
 			}
 		}
 
-		[ObjectSystem]
+		[EntitySystem]
 		public class UpdateSystem : UpdateSystem<LSAnimatorComponent>
 		{
 			protected override void Update(LSAnimatorComponent self)
@@ -24,7 +24,7 @@ namespace ET.Client
 			}
 		}
 	
-		[ObjectSystem]
+		[EntitySystem]
 		public class DestroySystem : DestroySystem<LSAnimatorComponent>
 		{
 			protected override void Destroy(LSAnimatorComponent self)

@@ -22,26 +22,36 @@ namespace ET
             }
         }
     
-        [ObjectSystem]
+        [EntitySystem]
         public class AIComponentAwakeSystem: AwakeSystem<AIComponent, int>
         {
             protected override void Awake(AIComponent self, int aiConfigId)
             {
-                self.AIConfigId = aiConfigId;
-                self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
+                self.Awake(aiConfigId);
             }
         }
+        
+        private static void Awake(this AIComponent self, int aiConfigId)
+        {
+            self.AIConfigId = aiConfigId;
+            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
+        }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class AIComponentDestroySystem: DestroySystem<AIComponent>
         {
             protected override void Destroy(AIComponent self)
             {
-                TimerComponent.Instance?.Remove(ref self.Timer);
-                self.CancellationToken?.Cancel();
-                self.CancellationToken = null;
-                self.Current = 0;
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this AIComponent self)
+        {
+            TimerComponent.Instance?.Remove(ref self.Timer);
+            self.CancellationToken?.Cancel();
+            self.CancellationToken = null;
+            self.Current = 0;
         }
         
         public static void Check(this AIComponent self)

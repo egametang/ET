@@ -3,37 +3,47 @@
     [FriendOf(typeof(RouterNode))]
     public static class RouterNodeSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class RouterNodeAwakeSystem: AwakeSystem<RouterNode>
         {
             protected override void Awake(RouterNode self)
             {
-                long timeNow = TimeHelper.ServerNow();
-                self.LastRecvInnerTime = timeNow;
-                self.LastRecvOuterTime = timeNow;
-                self.OuterIpEndPoint = null;
-                self.InnerIpEndPoint = null;
-                self.RouterSyncCount = 0;
-                self.OuterConn = 0;
-                self.InnerConn = 0;
+                self.Awake();
             }
         }
+        
+        private static void Awake(this RouterNode self)
+        {
+            long timeNow = TimeHelper.ServerNow();
+            self.LastRecvInnerTime = timeNow;
+            self.LastRecvOuterTime = timeNow;
+            self.OuterIpEndPoint = null;
+            self.InnerIpEndPoint = null;
+            self.RouterSyncCount = 0;
+            self.OuterConn = 0;
+            self.InnerConn = 0;
+        }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class RouterNodeDestroySystem: DestroySystem<RouterNode>
         {
             protected override void Destroy(RouterNode self)
             {
-                self.OuterConn = 0;
-                self.InnerConn = 0;
-                self.LastRecvInnerTime = 0;
-                self.LastRecvOuterTime = 0;
-                self.OuterIpEndPoint = null;
-                self.InnerIpEndPoint = null;
-                self.InnerAddress = null;
-                self.RouterSyncCount = 0;
-                self.SyncCount = 0;
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this RouterNode self)
+        {
+            self.OuterConn = 0;
+            self.InnerConn = 0;
+            self.LastRecvInnerTime = 0;
+            self.LastRecvOuterTime = 0;
+            self.OuterIpEndPoint = null;
+            self.InnerIpEndPoint = null;
+            self.InnerAddress = null;
+            self.RouterSyncCount = 0;
+            self.SyncCount = 0;
         }
         
         public static bool CheckOuterCount(this RouterNode self, long timeNow)

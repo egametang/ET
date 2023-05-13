@@ -2,37 +2,54 @@
 
 namespace ET
 {
-    [Invoke(TimerInvokeType.SessionAcceptTimeout)]
-    public class SessionAcceptTimeout: ATimer<SessionAcceptTimeoutComponent>
+    [FriendOf(typeof(SessionAcceptTimeoutComponent))]
+    public static class SessionAcceptTimeoutComponentHelper
     {
-        protected override void Run(SessionAcceptTimeoutComponent self)
+        [Invoke(TimerInvokeType.SessionAcceptTimeout)]
+        public class SessionAcceptTimeout: ATimer<SessionAcceptTimeoutComponent>
         {
-            try
+            protected override void Run(SessionAcceptTimeoutComponent self)
             {
-                self.Parent.Dispose();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
+                try
+                {
+                    self.Parent.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"move timer error: {self.Id}\n{e}");
+                }
             }
         }
-    }
     
-    [ObjectSystem]
-    public class SessionAcceptTimeoutComponentAwakeSystem: AwakeSystem<SessionAcceptTimeoutComponent>
-    {
-        protected override void Awake(SessionAcceptTimeoutComponent self)
+        [EntitySystem]
+        public class SessionAcceptTimeoutComponentAwakeSystem: AwakeSystem<SessionAcceptTimeoutComponent>
+        {
+            protected override void Awake(SessionAcceptTimeoutComponent self)
+            {
+                self.Awake();
+            }
+        }
+
+        [EntitySystem]
+        public class SessionAcceptTimeoutComponentDestroySystem: DestroySystem<SessionAcceptTimeoutComponent>
+        {
+            protected override void Destroy(SessionAcceptTimeoutComponent self)
+            {
+                self.Destroy();
+            }
+        }
+
+        private static void Awake(this SessionAcceptTimeoutComponent self)
         {
             self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 5000, TimerInvokeType.SessionAcceptTimeout, self);
         }
-    }
 
-    [ObjectSystem]
-    public class SessionAcceptTimeoutComponentDestroySystem: DestroySystem<SessionAcceptTimeoutComponent>
-    {
-        protected override void Destroy(SessionAcceptTimeoutComponent self)
+        private static void Destroy(this SessionAcceptTimeoutComponent self)
         {
             TimerComponent.Instance.Remove(ref self.Timer);
         }
+        
     }
+    
+    
 }

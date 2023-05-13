@@ -4,7 +4,7 @@ namespace ET.Client
 {
     public static class GameObjectComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class DestroySystem: DestroySystem<GameObjectComponent>
         {
             protected override void Destroy(GameObjectComponent self)

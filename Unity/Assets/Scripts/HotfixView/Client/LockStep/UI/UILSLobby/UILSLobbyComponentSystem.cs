@@ -7,7 +7,7 @@ namespace ET.Client
     [FriendOf(typeof(UILSLobbyComponent))]
     public static class UILSLobbyComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class UILSLobbyComponentAwakeSystem: AwakeSystem<UILSLobbyComponent>
         {
             protected override void Awake(UILSLobbyComponent self)

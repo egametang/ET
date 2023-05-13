@@ -11,33 +11,38 @@ namespace ET.Server
         {
             protected override void Awake(HttpComponent self, string address)
             {
-                try
-                {
-                    self.Load();
+                self.Awake(address);
+            }
+        }
+        
+        private static void Awake(this HttpComponent self, string address)
+        {
+            try
+            {
+                self.Load();
                 
-                    self.Listener = new HttpListener();
+                self.Listener = new HttpListener();
 
-                    foreach (string s in address.Split(';'))
-                    {
-                        if (s.Trim() == "")
-                        {
-                            continue;
-                        }
-                        self.Listener.Prefixes.Add(s);
-                    }
-
-                    self.Listener.Start();
-
-                    self.Accept().Coroutine();
-                }
-                catch (HttpListenerException e)
+                foreach (string s in address.Split(';'))
                 {
-                    throw new Exception($"请先在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
+                    if (s.Trim() == "")
+                    {
+                        continue;
+                    }
+                    self.Listener.Prefixes.Add(s);
                 }
+
+                self.Listener.Start();
+
+                self.Accept().Coroutine();
+            }
+            catch (HttpListenerException e)
+            {
+                throw new Exception($"请先在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class HttpComponentLoadSystem: LoadSystem<HttpComponent>
         {
             protected override void Load(HttpComponent self)
@@ -46,17 +51,22 @@ namespace ET.Server
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class HttpComponentDestroySystem: DestroySystem<HttpComponent>
         {
             protected override void Destroy(HttpComponent self)
             {
-                self.Listener.Stop();
-                self.Listener.Close();
+                self.Destroy();
             }
         }
         
-        public static void Load(this HttpComponent self)
+        private static void Destroy(this HttpComponent self)
+        {
+            self.Listener.Stop();
+            self.Listener.Close();
+        }
+
+        private static void Load(this HttpComponent self)
         {
             self.dispatcher = new Dictionary<string, IHttpHandler>();
 

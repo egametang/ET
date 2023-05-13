@@ -6,7 +6,7 @@ namespace ET.Client
     [FriendOf(typeof(OperaComponent))]
     public static class OperaComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>
         {
             protected override void Awake(OperaComponent self)
@@ -15,7 +15,7 @@ namespace ET.Client
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class OperaComponentUpdateSystem : UpdateSystem<OperaComponent>
         {
             protected override void Update(OperaComponent self)
@@ -34,7 +34,7 @@ namespace ET.Client
 
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    EventSystem.Instance.Load();
+                    Game.Load();
                     Log.Debug("hot reload success!");
                 }
             

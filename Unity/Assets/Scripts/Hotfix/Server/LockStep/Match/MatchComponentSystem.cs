@@ -7,7 +7,7 @@ namespace ET.Server
     [FriendOf(typeof(MatchComponent))]
     public static class MatchComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<MatchComponent>
         {
             protected override void Awake(MatchComponent self)

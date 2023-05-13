@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Client
 {
-    [ObjectSystem]
+    [EntitySystem]
     public class PingComponentAwakeSystem: AwakeSystem<PingComponent>
     {
         protected override void Awake(PingComponent self)
@@ -56,7 +56,7 @@ namespace ET.Client
         }
     }
 
-    [ObjectSystem]
+    [EntitySystem]
     public class PingComponentDestroySystem: DestroySystem<PingComponent>
     {
         protected override void Destroy(PingComponent self)

@@ -6,17 +6,22 @@ namespace ET.Server
     [FriendOf(typeof(Cell))]
     public static class CellSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class CellDestroySystem: DestroySystem<Cell>
         {
             protected override void Destroy(Cell self)
             {
-                self.AOIUnits.Clear();
-
-                self.SubsEnterEntities.Clear();
-
-                self.SubsLeaveEntities.Clear();
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this Cell self)
+        {
+            self.AOIUnits.Clear();
+
+            self.SubsEnterEntities.Clear();
+
+            self.SubsLeaveEntities.Clear();
         }
         
         public static void Add(this Cell self, AOIEntity aoiEntity)

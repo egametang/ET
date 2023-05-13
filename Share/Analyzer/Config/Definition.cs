@@ -16,7 +16,7 @@
         
         public const string BaseAttribute = "ET.BaseAttribute";
         
-        public const string ObjectSystemAttribute = "ET.ObjectSystemAttribute";
+        public const string ObjectSystemAttribute = "ET.SystemAttribute";
 
         public const string EnableMethodAttribute = "ET.EnableMethodAttribute";
         

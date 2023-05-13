@@ -12,7 +12,7 @@ namespace ET
         void Run(Entity o);
     }
     
-    [LSSystem]
+    [LSEntitySystem]
     public abstract class RollbackSystem<T> : IRollbackSystem where T: Entity, IRollback
     {
         void IRollbackSystem.Run(Entity o)

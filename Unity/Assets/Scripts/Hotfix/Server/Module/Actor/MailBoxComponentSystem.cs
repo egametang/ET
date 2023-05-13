@@ -2,32 +2,48 @@ using System;
 
 namespace ET.Server
 {
-    [ObjectSystem]
-    public class MailBoxComponentAwakeSystem: AwakeSystem<MailBoxComponent>
+    [FriendOf(typeof(MailBoxComponent))]
+    public static class MailBoxComponentSystem
     {
-        protected override void Awake(MailBoxComponent self)
+        public class MailBoxComponentAwakeSystem: AwakeSystem<MailBoxComponent>
+        {
+            protected override void Awake(MailBoxComponent self)
+            {
+                self.Awake();
+            }
+        }
+        
+        private static void Awake(this MailBoxComponent self)
         {
             self.MailboxType = MailboxType.MessageDispatcher;
             self.ParentInstanceId = self.Parent.InstanceId;
             ActorMessageDispatcherComponent.Instance.Add(self.Parent);
         }
-    }
 
-    [ObjectSystem]
-    public class MailBoxComponentAwake1System: AwakeSystem<MailBoxComponent, MailboxType>
-    {
-        protected override void Awake(MailBoxComponent self, MailboxType mailboxType)
+        public class MailBoxComponentAwake1System: AwakeSystem<MailBoxComponent, MailboxType>
+        {
+            protected override void Awake(MailBoxComponent self, MailboxType mailboxType)
+            {
+                self.Awake(mailboxType);
+            }
+        }
+        
+        private static void Awake(this MailBoxComponent self, MailboxType mailboxType)
         {
             self.MailboxType = mailboxType;
             self.ParentInstanceId = self.Parent.InstanceId;
             ActorMessageDispatcherComponent.Instance.Add(self.Parent);
         }
-    }
 
-    [ObjectSystem]
-    public class DestroySystem: DestroySystem<MailBoxComponent>
-    {
-        protected override void Destroy(MailBoxComponent self)
+        public class DestroySystem: DestroySystem<MailBoxComponent>
+        {
+            protected override void Destroy(MailBoxComponent self)
+            {
+                self.Destroy();
+            }
+        }
+        
+        private static void Destroy(this MailBoxComponent self)
         {
             ActorMessageDispatcherComponent.Instance?.Remove(self.ParentInstanceId);
         }

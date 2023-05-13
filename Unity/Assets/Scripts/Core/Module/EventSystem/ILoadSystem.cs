@@ -11,7 +11,7 @@ namespace ET
 		void Run(Entity o);
 	}
 
-	[ObjectSystem]
+	[EntitySystem]
 	public abstract class LoadSystem<T> : ILoadSystem where T: Entity, ILoad
 	{
 		void ILoadSystem.Run(Entity o)

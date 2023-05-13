@@ -6,7 +6,7 @@ namespace ET
 {
     public static class LSInputComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class LSUpdateSystem: LSUpdateSystem<LSInputComponent>
         {
             protected override void LSUpdate(LSInputComponent self)

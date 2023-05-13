@@ -5,7 +5,7 @@ namespace ET.Client
     [FriendOf(typeof(ResourcesLoaderComponent))]
     public static class ResourcesLoaderComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
             public class ResourcesLoaderComponentDestroySystem: DestroySystem<ResourcesLoaderComponent>
             {
                 protected override void Destroy(ResourcesLoaderComponent self)

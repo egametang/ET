@@ -9,17 +9,16 @@ namespace ET.Server
     [FriendOf(typeof(ActorMessageDispatcherComponent))]
     public static class ActorMessageDispatcherComponentHelper
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
         {
             protected override void Awake(ActorMessageDispatcherComponent self)
             {
-                ActorMessageDispatcherComponent.Instance = self;
                 self.Awake();
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
         {
             protected override void Load(ActorMessageDispatcherComponent self)
@@ -28,19 +27,25 @@ namespace ET.Server
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
         {
             protected override void Destroy(ActorMessageDispatcherComponent self)
             {
-                self.ActorMessageHandlers.Clear();
-                ActorMessageDispatcherComponent.Instance = null;
+                self.Destroy();
             }
         }
         
         private static void Awake(this ActorMessageDispatcherComponent self)
         {
+            ActorMessageDispatcherComponent.Instance = self;
             self.Load();
+        }
+        
+        private static void Destroy(this ActorMessageDispatcherComponent self)
+        {
+            self.ActorMessageHandlers.Clear();
+            ActorMessageDispatcherComponent.Instance = null;
         }
 
         private static void Load(this ActorMessageDispatcherComponent self)

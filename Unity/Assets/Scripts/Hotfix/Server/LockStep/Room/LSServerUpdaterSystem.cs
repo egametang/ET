@@ -6,7 +6,7 @@ namespace ET.Server
     [FriendOf(typeof(LSServerUpdater))]
     public static class LSServerUpdaterSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class UpdateSystem: UpdateSystem<LSServerUpdater>
         {
             protected override void Update(LSServerUpdater self)

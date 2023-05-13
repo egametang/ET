@@ -10,7 +10,7 @@ namespace ET.Client
 	[FriendOf(typeof(UIEventComponent))]
 	public static class UIEventComponentSystem
 	{
-		[ObjectSystem]
+		[EntitySystem]
 		public class UIEventComponentAwakeSystem : AwakeSystem<UIEventComponent>
 		{
 			protected override void Awake(UIEventComponent self)

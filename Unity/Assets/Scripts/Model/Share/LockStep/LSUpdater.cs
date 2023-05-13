@@ -31,7 +31,7 @@ namespace ET
                     continue;
                 }
                 this.newUpdateIds.Add(id);
-                LSSington.Instance.LSUpdate(entity);
+                LSEntitySystemSington.Instance.LSUpdate(entity);
             }
             this.updateIds.Clear();
             ObjectHelper.Swap(ref this.updateIds, ref this.newUpdateIds);

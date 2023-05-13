@@ -24,25 +24,33 @@ namespace ET.Server
             }
         }
     
-        [ObjectSystem]
         public class AwakeSystem: AwakeSystem<ActorLocationSenderOneType, int>
         {
             protected override void Awake(ActorLocationSenderOneType self, int locationType)
             {
-                self.LocationType = locationType;
-                // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
-                // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
-                self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
+                self.Awake(locationType);
             }
         }
 
-        [ObjectSystem]
         public class DestroySystem: DestroySystem<ActorLocationSenderOneType>
         {
             protected override void Destroy(ActorLocationSenderOneType self)
             {
-                TimerComponent.Instance?.Remove(ref self.CheckTimer);
+                self.Destroy();
             }
+        }
+        
+        private static void Awake(this ActorLocationSenderOneType self, int locationType)
+        {
+            self.LocationType = locationType;
+            // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
+            // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
+            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
+        }
+        
+        private static void Destroy(this ActorLocationSenderOneType self)
+        {
+            TimerComponent.Instance?.Remove(ref self.CheckTimer);
         }
 
         private static void Check(this ActorLocationSenderOneType self)
@@ -287,25 +295,30 @@ namespace ET.Server
     [FriendOf(typeof (ActorLocationSenderComponent))]
     public static class ActorLocationSenderManagerComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<ActorLocationSenderComponent>
         {
             protected override void Awake(ActorLocationSenderComponent self)
             {
-                ActorLocationSenderComponent.Instance = self;
-                for (int i = 0; i < self.ActorLocationSenderComponents.Length; ++i)
-                {
-                    self.ActorLocationSenderComponents[i] = self.AddChild<ActorLocationSenderOneType, int>(i);
-                }
+                self.Awake();
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class DestroySystem: DestroySystem<ActorLocationSenderComponent>
         {
             protected override void Destroy(ActorLocationSenderComponent self)
             {
                 ActorLocationSenderComponent.Instance = null;
+            }
+        }
+        
+        private static void Awake(this ActorLocationSenderComponent self)
+        {
+            ActorLocationSenderComponent.Instance = self;
+            for (int i = 0; i < self.ActorLocationSenderComponents.Length; ++i)
+            {
+                self.ActorLocationSenderComponents[i] = self.AddChild<ActorLocationSenderOneType, int>(i);
             }
         }
         

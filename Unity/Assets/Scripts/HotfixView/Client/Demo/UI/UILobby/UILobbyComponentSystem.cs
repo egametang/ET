@@ -6,7 +6,7 @@ namespace ET.Client
     [FriendOf(typeof(UILobbyComponent))]
     public static class UILobbyComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class UILobbyComponentAwakeSystem: AwakeSystem<UILobbyComponent>
         {
             protected override void Awake(UILobbyComponent self)

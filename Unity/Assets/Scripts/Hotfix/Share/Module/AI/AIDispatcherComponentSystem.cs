@@ -5,17 +5,22 @@ namespace ET
     [FriendOf(typeof(AIDispatcherComponent))]
     public static class AIDispatcherComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AIDispatcherComponentAwakeSystem: AwakeSystem<AIDispatcherComponent>
         {
             protected override void Awake(AIDispatcherComponent self)
             {
-                AIDispatcherComponent.Instance = self;
-                self.Load();
+                self.Awake();
             }
         }
+        
+        private static void Awake(this AIDispatcherComponent self)
+        {
+            AIDispatcherComponent.Instance = self;
+            self.Load();
+        }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class AIDispatcherComponentLoadSystem: LoadSystem<AIDispatcherComponent>
         {
             protected override void Load(AIDispatcherComponent self)
@@ -24,14 +29,19 @@ namespace ET
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class AIDispatcherComponentDestroySystem: DestroySystem<AIDispatcherComponent>
         {
             protected override void Destroy(AIDispatcherComponent self)
             {
-                self.AIHandlers.Clear();
-                AIDispatcherComponent.Instance = null;
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this AIDispatcherComponent self)
+        {
+            self.AIHandlers.Clear();
+            AIDispatcherComponent.Instance = null;
         }
         
         private static void Load(this AIDispatcherComponent self)

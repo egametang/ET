@@ -12,9 +12,14 @@ namespace ET.Client
         {
             protected override void Awake(RouterAddressComponent self, string address, int port)
             {
-                self.RouterManagerHost = address;
-                self.RouterManagerPort = port;
+                self.Awake(address, port);
             }
+        }
+
+        private static void Awake(this RouterAddressComponent self, string address, int port)
+        {
+            self.RouterManagerHost = address;
+            self.RouterManagerPort = port;
         }
         
         public static async ETTask Init(this RouterAddressComponent self)

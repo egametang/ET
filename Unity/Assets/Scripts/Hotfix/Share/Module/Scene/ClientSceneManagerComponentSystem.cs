@@ -3,7 +3,7 @@
     [FriendOf(typeof(ClientSceneManagerComponent))]
     public static class ClientSceneManagerComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class ClientSceneManagerComponentAwakeSystem: AwakeSystem<ClientSceneManagerComponent>
         {
             protected override void Awake(ClientSceneManagerComponent self)
@@ -12,7 +12,7 @@
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ClientSceneManagerComponentDestroySystem: DestroySystem<ClientSceneManagerComponent>
         {
             protected override void Destroy(ClientSceneManagerComponent self)

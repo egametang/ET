@@ -12,10 +12,15 @@ namespace ET.Server
 	    {
 			protected override void Awake(DBComponent self, string dbConnection, string dbName, int zone)
 		    {
-			    self.mongoClient = new MongoClient(dbConnection);
-			    self.database = self.mongoClient.GetDatabase(dbName);
+			    self.Awake(dbConnection, dbName, zone);
 		    }
 	    }
+		
+		private static void Awake(this DBComponent self, string dbConnection, string dbName, int zone)
+		{
+			self.mongoClient = new MongoClient(dbConnection);
+			self.database = self.mongoClient.GetDatabase(dbName);
+		}
 
 	    private static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
 	    {

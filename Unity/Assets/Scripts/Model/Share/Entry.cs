@@ -36,10 +36,13 @@ namespace ET
             
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
+            
+            Game.AddSingleton<EntitySystemSingleton>();
+            Game.AddSingleton<LSEntitySystemSington>();
 
             Game.AddSingleton<NetServices>();
             Game.AddSingleton<Root>();
-            Game.AddSingleton<LSSington>();
+
             
             await Game.AddSingleton<ConfigComponent>().LoadAsync();
 

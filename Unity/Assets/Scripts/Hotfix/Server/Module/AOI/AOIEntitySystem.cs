@@ -4,35 +4,49 @@ using Unity.Mathematics;
 namespace ET.Server
 {
     [FriendOf(typeof(AOIEntity))]
-    [FriendOf(typeof(Cell))]
-    public static class AOIEntitySystem
+    public static class AOIEntitySystem2
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<AOIEntity, int, float3>
         {
             protected override void Awake(AOIEntity self, int distance, float3 pos)
             {
-                self.ViewDistance = distance;
-                self.DomainScene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
+                self.Awake(distance, pos);
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class DestroySystem: DestroySystem<AOIEntity>
         {
             protected override void Destroy(AOIEntity self)
             {
-                self.DomainScene().GetComponent<AOIManagerComponent>()?.Remove(self);
-                self.ViewDistance = 0;
-                self.SeeUnits.Clear();
-                self.SeePlayers.Clear();
-                self.BeSeePlayers.Clear();
-                self.BeSeeUnits.Clear();
-                self.SubEnterCells.Clear();
-                self.SubLeaveCells.Clear();
+                self.Destroy();
             }
         }
         
+        private static void Awake(this AOIEntity self, int distance, float3 pos)
+        {
+            self.ViewDistance = distance;
+            self.DomainScene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
+        }
+        
+        private static void Destroy(this AOIEntity self)
+        {
+            self.DomainScene().GetComponent<AOIManagerComponent>()?.Remove(self);
+            self.ViewDistance = 0;
+            self.SeeUnits.Clear();
+            self.SeePlayers.Clear();
+            self.BeSeePlayers.Clear();
+            self.BeSeeUnits.Clear();
+            self.SubEnterCells.Clear();
+            self.SubLeaveCells.Clear();
+        }
+    }
+    
+    [FriendOf(typeof(AOIEntity))]
+    [FriendOf(typeof(Cell))]
+    public static class AOIEntitySystem
+    {
         // 获取在自己视野中的对象
         public static Dictionary<long, AOIEntity> GetSeeUnits(this AOIEntity self)
         {

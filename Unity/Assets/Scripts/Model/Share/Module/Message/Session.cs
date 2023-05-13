@@ -21,38 +21,48 @@ namespace ET
     [FriendOf(typeof(Session))]
     public static class SessionSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class SessionAwakeSystem: AwakeSystem<Session, int>
         {
             protected override void Awake(Session self, int serviceId)
             {
-                self.ServiceId = serviceId;
-                long timeNow = TimeHelper.ClientNow();
-                self.LastRecvTime = timeNow;
-                self.LastSendTime = timeNow;
-
-                self.requestCallbacks.Clear();
-            
-                Log.Info($"session create: zone: {self.DomainZone()} id: {self.Id} {timeNow} ");
+                self.Awake(serviceId);
             }
         }
         
-        [ObjectSystem]
+        private static void Awake(this Session self, int serviceId)
+        {
+            self.ServiceId = serviceId;
+            long timeNow = TimeHelper.ClientNow();
+            self.LastRecvTime = timeNow;
+            self.LastSendTime = timeNow;
+
+            self.requestCallbacks.Clear();
+            
+            Log.Info($"session create: zone: {self.DomainZone()} id: {self.Id} {timeNow} ");
+        }
+        
+        [EntitySystem]
         public class SessionDestroySystem: DestroySystem<Session>
         {
             protected override void Destroy(Session self)
             {
-                NetServices.Instance.RemoveChannel(self.ServiceId, self.Id, self.Error);
-            
-                foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
-                {
-                    responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
-                }
-
-                Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
-            
-                self.requestCallbacks.Clear();
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this Session self)
+        {
+            NetServices.Instance.RemoveChannel(self.ServiceId, self.Id, self.Error);
+            
+            foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
+            {
+                responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
+            }
+
+            Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
+            
+            self.requestCallbacks.Clear();
         }
         
         public static void OnResponse(this Session self, IResponse response)

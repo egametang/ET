@@ -6,7 +6,7 @@ namespace ET.Server
     [FriendOf(typeof(RobotCaseComponent))]
     public static class RobotCaseComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class RobotCaseComponentAwakeSystem: AwakeSystem<RobotCaseComponent>
         {
             protected override void Awake(RobotCaseComponent self)
@@ -15,7 +15,7 @@ namespace ET.Server
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class RobotCaseComponentDestroySystem: DestroySystem<RobotCaseComponent>
         {
             protected override void Destroy(RobotCaseComponent self)

@@ -5,7 +5,7 @@ namespace ET.Client
 	[FriendOf(typeof(LSCameraComponent))]
 	public static class LSCameraComponentSystem
 	{
-		[ObjectSystem]
+		[EntitySystem]
 		public class AwakeSystem : AwakeSystem<LSCameraComponent>
 		{
 			protected override void Awake(LSCameraComponent self)
@@ -14,7 +14,7 @@ namespace ET.Client
 			}
 		}
 
-		[ObjectSystem]
+		[EntitySystem]
 		public class LateUpdateSystem : LateUpdateSystem<LSCameraComponent>
 		{
 			protected override void LateUpdate(LSCameraComponent self)

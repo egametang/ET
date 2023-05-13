@@ -5,25 +5,35 @@ namespace ET.Server
     [FriendOf(typeof(NetServerComponent))]
     public static class NetServerComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<NetServerComponent, IPEndPoint>
         {
             protected override void Awake(NetServerComponent self, IPEndPoint address)
             {
-                self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Outer));
-                NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
-                NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-                NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+                self.Awake(address);
             }
         }
+        
+        private static void Awake(this NetServerComponent self, IPEndPoint address)
+        {
+            self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Outer));
+            NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
+            NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
+            NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+        }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class NetKcpComponentDestroySystem: DestroySystem<NetServerComponent>
         {
             protected override void Destroy(NetServerComponent self)
             {
-                NetServices.Instance.RemoveService(self.ServiceId);
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this NetServerComponent self)
+        {
+            NetServices.Instance.RemoveService(self.ServiceId);
         }
 
         private static void OnError(this NetServerComponent self, long channelId, int error)

@@ -7,29 +7,39 @@ namespace ET
     [FriendOf(typeof(PathfindingComponent))]
     public static class PathfindingComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class AwakeSystem: AwakeSystem<PathfindingComponent, string>
         {
             protected override void Awake(PathfindingComponent self, string name)
             {
-                self.Name = name;
-                self.NavMesh = NavmeshComponent.Instance.Get(name);
+                self.Awake(name);
+            }
+        }
+        
+        private static void Awake(this PathfindingComponent self, string name)
+        {
+            self.Name = name;
+            self.NavMesh = NavmeshComponent.Instance.Get(name);
 
-                if (self.NavMesh == 0)
-                {
-                    throw new Exception($"nav load fail: {name}");
-                }
+            if (self.NavMesh == 0)
+            {
+                throw new Exception($"nav load fail: {name}");
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class DestroySystem: DestroySystem<PathfindingComponent>
         {
             protected override void Destroy(PathfindingComponent self)
             {
-                self.Name = string.Empty;
-                self.NavMesh = 0;
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this PathfindingComponent self)
+        {
+            self.Name = string.Empty;
+            self.NavMesh = 0;
         }
         
         public static void Find(this PathfindingComponent self, float3 start, float3 target, List<float3> result)

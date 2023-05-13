@@ -5,7 +5,7 @@ namespace ET.Server
 {
     public static class RobotCaseSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class RobotCaseDestroySystem: DestroySystem<RobotCase>
         {
             protected override void Destroy(RobotCase self)

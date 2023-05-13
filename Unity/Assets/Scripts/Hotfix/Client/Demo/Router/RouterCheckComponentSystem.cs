@@ -3,7 +3,7 @@ using System.Net;
 
 namespace ET.Client
 {
-    [ObjectSystem]
+    [EntitySystem]
     public class RouterCheckComponentAwakeSystem: AwakeSystem<RouterCheckComponent>
     {
         protected override void Awake(RouterCheckComponent self)

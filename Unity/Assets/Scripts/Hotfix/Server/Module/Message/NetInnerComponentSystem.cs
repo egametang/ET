@@ -6,66 +6,81 @@ namespace ET.Server
     [FriendOf(typeof(NetInnerComponent))]
     public static class NetInnerComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent>
         {
             protected override void Awake(NetInnerComponent self)
             {
-                NetInnerComponent.Instance = self;
-            
-                switch (self.InnerProtocol)
-                {
-                    case NetworkProtocol.TCP:
-                    {
-                        self.ServiceId = NetServices.Instance.AddService(new TService(AddressFamily.InterNetwork, ServiceType.Inner));
-                        break;
-                    }
-                    case NetworkProtocol.KCP:
-                    {
-                        self.ServiceId = NetServices.Instance.AddService(new KService(AddressFamily.InterNetwork, ServiceType.Inner));
-                        break;
-                    }
-                }
-                
-                NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-                NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+                self.Awake();
             }
         }
+        
+        private static void Awake(this NetInnerComponent self)
+        {
+            NetInnerComponent.Instance = self;
+            
+            switch (self.InnerProtocol)
+            {
+                case NetworkProtocol.TCP:
+                {
+                    self.ServiceId = NetServices.Instance.AddService(new TService(AddressFamily.InterNetwork, ServiceType.Inner));
+                    break;
+                }
+                case NetworkProtocol.KCP:
+                {
+                    self.ServiceId = NetServices.Instance.AddService(new KService(AddressFamily.InterNetwork, ServiceType.Inner));
+                    break;
+                }
+            }
+                
+            NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
+            NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+        }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint>
         {
             protected override void Awake(NetInnerComponent self, IPEndPoint address)
             {
-                NetInnerComponent.Instance = self;
-                
-                switch (self.InnerProtocol)
-                {
-                    case NetworkProtocol.TCP:
-                    {
-                        self.ServiceId = NetServices.Instance.AddService(new TService(address, ServiceType.Inner));
-                        break;
-                    }
-                    case NetworkProtocol.KCP:
-                    {
-                        self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Inner));
-                        break;
-                    }
-                }
-                
-                NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
-                NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-                NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+                self.Awake(address);
             }
         }
+        
+        private static void Awake(this NetInnerComponent self, IPEndPoint address)
+        {
+            NetInnerComponent.Instance = self;
+                
+            switch (self.InnerProtocol)
+            {
+                case NetworkProtocol.TCP:
+                {
+                    self.ServiceId = NetServices.Instance.AddService(new TService(address, ServiceType.Inner));
+                    break;
+                }
+                case NetworkProtocol.KCP:
+                {
+                    self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Inner));
+                    break;
+                }
+            }
+                
+            NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
+            NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
+            NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+        }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class NetInnerComponentDestroySystem: DestroySystem<NetInnerComponent>
         {
             protected override void Destroy(NetInnerComponent self)
             {
-                NetServices.Instance.RemoveService(self.ServiceId);
+                self.Destroy();
             }
+        }
+        
+        private static void Destroy(this NetInnerComponent self)
+        {
+            NetServices.Instance.RemoveService(self.ServiceId);
         }
 
         private static void OnRead(this NetInnerComponent self, long channelId, long actorId, object message)

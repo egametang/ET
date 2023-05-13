@@ -11,7 +11,7 @@ namespace ET
 		void Run(Entity o);
 	}
 
-	[ObjectSystem]
+	[EntitySystem]
 	public abstract class UpdateSystem<T> : IUpdateSystem where T: Entity, IUpdate
 	{
 		void IUpdateSystem.Run(Entity o)

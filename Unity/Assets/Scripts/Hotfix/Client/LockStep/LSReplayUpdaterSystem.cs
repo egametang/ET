@@ -5,7 +5,7 @@ namespace ET.Client
     [FriendOf(typeof(LSReplayUpdater))]
     public static class LSReplayComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class UpdateSystem: UpdateSystem<LSReplayUpdater>
         {
             protected override void Update(LSReplayUpdater self)

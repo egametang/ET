@@ -6,7 +6,7 @@ namespace ET
     [FriendOf(typeof(NumericWatcherComponent))]
     public static class NumericWatcherComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>
         {
             protected override void Awake(NumericWatcherComponent self)

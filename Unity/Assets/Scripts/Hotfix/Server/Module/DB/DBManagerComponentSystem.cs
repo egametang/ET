@@ -5,7 +5,7 @@ namespace ET.Server
     [FriendOf(typeof(DBManagerComponent))]
     public static class DBManagerComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class DBManagerComponentAwakeSystem: AwakeSystem<DBManagerComponent>
         {
             protected override void Awake(DBManagerComponent self)
@@ -14,7 +14,7 @@ namespace ET.Server
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class DBManagerComponentDestroySystem: DestroySystem<DBManagerComponent>
         {
             protected override void Destroy(DBManagerComponent self)

@@ -9,7 +9,7 @@ namespace ET
     [FriendOf(typeof(ModeContex))]
     public static class ConsoleComponentSystem
     {
-        [ObjectSystem]
+        [EntitySystem]
         public class ConsoleComponentAwakeSystem: AwakeSystem<ConsoleComponent>
         {
             protected override void Awake(ConsoleComponent self)
@@ -20,7 +20,7 @@ namespace ET
             }
         }
 
-        [ObjectSystem]
+        [EntitySystem]
         public class ConsoleComponentLoadSystem: LoadSystem<ConsoleComponent>
         {
             protected override void Load(ConsoleComponent self)

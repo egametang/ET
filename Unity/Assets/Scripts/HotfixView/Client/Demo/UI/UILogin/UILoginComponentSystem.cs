@@ -6,7 +6,7 @@ namespace ET.Client
 	[FriendOf(typeof(UILoginComponent))]
 	public static class UILoginComponentSystem
 	{
-		[ObjectSystem]
+		[EntitySystem]
 		public class UILoginComponentAwakeSystem : AwakeSystem<UILoginComponent>
 		{
 			protected override void Awake(UILoginComponent self)

@@ -11,13 +11,19 @@ namespace ET
         public const int Max = 1;
     }
     
-    public class LSSington: Singleton<LSSington>, ISingletonAwake
+    public class LSEntitySystemSington: Singleton<LSEntitySystemSington>, ISingletonAwake, ISingletonLoad
     {
-        private readonly TypeSystems typeSystems = new(LSQueneUpdateIndex.Max);
+        private TypeSystems typeSystems;
         
         public void Awake()
         {
-            foreach (Type type in EventSystem.Instance.GetTypes(typeof (LSSystemAttribute)))
+            this.Load();
+        }
+        
+        public void Load()
+        {
+            this.typeSystems = new(LSQueneUpdateIndex.Max);
+            foreach (Type type in EventSystem.Instance.GetTypes(typeof (LSEntitySystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
 

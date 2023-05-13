@@ -11,7 +11,7 @@ namespace ET
         void Run(LSEntity o);
     }
     
-    [LSSystem]
+    [LSEntitySystem]
     public abstract class LSUpdateSystem<T> : ILSUpdateSystem where T: LSEntity, ILSUpdate
     {
         void ILSUpdateSystem.Run(LSEntity o)
