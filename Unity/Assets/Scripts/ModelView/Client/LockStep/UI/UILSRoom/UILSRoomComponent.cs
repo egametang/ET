@@ -9,8 +9,10 @@ namespace ET.Client
         public InputField saveName;
         public Text totalFrame;
         public Text frameText;
+        public Text predictFrameText;
         public InputField jumpToField;
         public Button jump;
         public int frame;
+        public int predictFrame;
     }
 }

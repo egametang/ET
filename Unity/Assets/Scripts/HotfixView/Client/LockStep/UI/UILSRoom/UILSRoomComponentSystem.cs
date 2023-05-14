@@ -14,13 +14,14 @@ namespace ET.Client
                 GameObject replay = rc.Get<GameObject>("Replay");
                 GameObject play = rc.Get<GameObject>("Play");
                 
+                self.frameText = rc.Get<GameObject>("progress").GetComponent<Text>();
+                
                 Room room = self.Room();
                 if (room.IsReplay)
                 {
                     replay.SetActive(true);
                     play.SetActive(false);
                     self.totalFrame = rc.Get<GameObject>("framecount").GetComponent<Text>();
-                    self.frameText = rc.Get<GameObject>("progress").GetComponent<Text>();
                     self.jumpToField = rc.Get<GameObject>("jumpToCount").GetComponent<InputField>();
                     self.jump = rc.Get<GameObject>("jump").GetComponent<Button>();
                     self.jump.onClick.AddListener(self.JumpReplay);
@@ -31,6 +32,7 @@ namespace ET.Client
                 {
                     replay.SetActive(false);
                     play.SetActive(true);
+                    self.predictFrameText = rc.Get<GameObject>("predict").GetComponent<Text>();
                     self.saveReplay = rc.Get<GameObject>("SaveReplay").GetComponent<Button>();
                     self.saveName = rc.Get<GameObject>("SaveName").GetComponent<InputField>();
                     self.saveReplay.onClick.AddListener(self.OnSaveReplay);
@@ -43,15 +45,16 @@ namespace ET.Client
             protected override void Update(UILSRoomComponent self)
             {
                 Room room = self.Room();
-                if (room.IsReplay)
+                if (self.frame != room.AuthorityFrame)
                 {
-                    if (self.frame == room.AuthorityFrame)
-                    {
-                        return;
-                    }
-
                     self.frame = room.AuthorityFrame;
                     self.frameText.text = room.AuthorityFrame.ToString();
+                }
+
+                if (self.predictFrame != room.PredictionFrame)
+                {
+                    self.predictFrame = room.PredictionFrame;
+                    self.predictFrameText.text = room.PredictionFrame.ToString();
                 }
             }
         }

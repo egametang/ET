@@ -41,7 +41,7 @@ namespace ET.Client
 
             Vector3 unitPos = unit.Position.ToVector();
             const float speed = 6f;
-            float speed2 = 6 * self.Room().SpeedMultiply;
+            float speed2 = speed * self.Room().SpeedMultiply;
             
             if (unitPos != self.Position)
             {

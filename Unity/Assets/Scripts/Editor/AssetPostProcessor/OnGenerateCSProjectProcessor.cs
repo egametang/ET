@@ -17,6 +17,10 @@ namespace ET
 
             if (path.EndsWith("Unity.Codes.csproj"))
             {
+                if (!Define.EnableCodes)
+                {
+                    return content;
+                }
                 GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
                 if (globalConfig.BuildType == BuildType.Release)
                 {
