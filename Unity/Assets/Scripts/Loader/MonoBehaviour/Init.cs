@@ -18,7 +18,7 @@ namespace ET
 				
 			Game.AddSingleton<MainThreadSynchronizationContext>();
 
-			GlobalComponent globalComponent = Game.AddSingleton<GlobalComponent>();
+			Game.AddSingleton<GlobalComponent>();
 			
 			// 命令行参数
 			string[] args = "".Split(" ");
@@ -26,7 +26,7 @@ namespace ET
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.AddSingleton);
 			
-			Options.Instance.StartConfig = $"StartConfig/{globalComponent.GlobalConfig.SceneType}";
+			Options.Instance.StartConfig = $"StartConfig/Localhost";
 
 			Game.AddSingleton<TimeInfo>();
 			Game.AddSingleton<Logger>().ILog = new UnityLogger();

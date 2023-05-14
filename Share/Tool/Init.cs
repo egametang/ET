@@ -34,6 +34,8 @@ namespace ET.Server
                 Game.AddSingleton<EventSystem>();
                 Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly);
                 EventSystem.Instance.Add(types);
+
+                Game.AddSingleton<EntitySystemSingleton>();
                 
                 Game.AddSingleton<Root>();
 

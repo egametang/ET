@@ -149,24 +149,5 @@ namespace ET
 
 			GUILayout.Space(5);
 		}
-		
-		private static void AfterCompiling()
-		{
-			Directory.CreateDirectory(Define.CodeDir);
-
-			// 设置ab包
-			AssetImporter assetImporter = AssetImporter.GetAtPath("Assets/Bundles/Code");
-			assetImporter.assetBundleName = "Code.unity3d";
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
-            
-			Debug.Log("build success!");
-		}
-		
-		public static void ShowNotification(string tips)
-		{
-			EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-			game?.ShowNotification(new GUIContent($"{tips}"));
-		}
 	}
 }
