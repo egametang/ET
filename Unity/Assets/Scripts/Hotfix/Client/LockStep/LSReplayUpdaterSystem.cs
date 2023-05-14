@@ -17,10 +17,10 @@ namespace ET.Client
         private static void Update(this LSReplayUpdater self)
         {
             Room room = self.GetParent<Room>();
-            long timeNow = TimeHelper.ServerFrameTime();
+            long timeNow = TimeHelper.ServerNow();
 
-            int old = room.AuthorityFrame;
-            for (int i = 0; i < 10; ++i)
+            int i = 0;
+            while (true)
             {
                 if (room.AuthorityFrame + 1 >= room.Replay.FrameInputs.Count)
                 {
@@ -37,12 +37,13 @@ namespace ET.Client
                 OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
             
                 room.Update(oneFrameInputs, room.AuthorityFrame);
-                room.SpeedMultiply = i + 1;
-            }
-
-            if (room.AuthorityFrame > old)
-            {
-                Log.Debug($"111111111111111111 replay update: {old} {room.AuthorityFrame}");
+                room.SpeedMultiply = ++i;
+                
+                long timeNow2 = TimeHelper.ServerNow();
+                if (timeNow2 - timeNow > 5)
+                {
+                    break;
+                }
             }
         }
     }

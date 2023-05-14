@@ -50,7 +50,6 @@ namespace ET
             {
                 OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(i);
                 LSHelper.CopyOtherInputsTo(room, authorityFrameInput, oneFrameInputs); // 重新预测消息
-                room.Update(oneFrameInputs, i);
             }
             
             RunRollbackSystem(room);
