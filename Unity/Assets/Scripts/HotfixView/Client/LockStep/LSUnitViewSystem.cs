@@ -15,6 +15,18 @@ namespace ET.Client
             }
         }
         
+        public class RollbackSystem: RollbackSystem<LSUnitView>
+        {
+            protected override void Rollback(LSUnitView self)
+            {
+                LSUnit unit = self.GetUnit();
+                self.Transform.position = unit.Position.ToVector();
+                self.Transform.rotation = unit.Rotation.ToQuaternion();
+                self.t = 0;
+                self.totalTime = 0;
+            }
+        }
+        
         public class UpdateSystem: UpdateSystem<LSUnitView>
         {
             protected override void Update(LSUnitView self)
@@ -28,12 +40,13 @@ namespace ET.Client
             LSUnit unit = self.GetUnit();
 
             Vector3 unitPos = unit.Position.ToVector();
-            const float speed = 6f;  
+            const float speed = 6f;
+            float speed2 = 6 * self.Room().SpeedMultiply;
             
             if (unitPos != self.Position)
             {
                 float distance = (unitPos - self.Position).magnitude;
-                self.totalTime = distance / speed;
+                self.totalTime = distance / speed2;
                 self.t = 0;
                 self.Position = unit.Position.ToVector();
                 self.Rotation = unit.Rotation.ToQuaternion();
@@ -42,7 +55,7 @@ namespace ET.Client
             LSInput input = unit.GetComponent<LSInputComponent>().LSInput;
             if (input.V != TSVector2.zero)
             {
-                self.GetComponent<LSAnimatorComponent>().SetFloatValue("Speed", speed);
+                self.GetComponent<LSAnimatorComponent>().SetFloatValue("Speed", speed2);
             }
             else
             {

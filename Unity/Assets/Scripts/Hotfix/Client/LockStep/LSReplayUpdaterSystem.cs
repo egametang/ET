@@ -18,22 +18,32 @@ namespace ET.Client
         {
             Room room = self.GetParent<Room>();
             long timeNow = TimeHelper.ServerFrameTime();
-            
-            if (timeNow < room.FixedTimeCounter.FrameTime(room.AuthorityFrame + 1))
+
+            int old = room.AuthorityFrame;
+            for (int i = 0; i < 10; ++i)
             {
-                return;
+                if (room.AuthorityFrame + 1 >= room.Replay.FrameInputs.Count)
+                {
+                    break;
+                }
+                
+                if (timeNow < room.FixedTimeCounter.FrameTime(room.AuthorityFrame + 1))
+                {
+                    break;
+                }
+
+                ++room.AuthorityFrame;
+
+                OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
+            
+                room.Update(oneFrameInputs, room.AuthorityFrame);
+                room.SpeedMultiply = i + 1;
             }
 
-            ++room.AuthorityFrame;
-
-            if (room.AuthorityFrame >= room.Replay.FrameInputs.Count)
+            if (room.AuthorityFrame > old)
             {
-                return;
+                Log.Debug($"111111111111111111 replay update: {old} {room.AuthorityFrame}");
             }
-            
-            OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
-            
-            room.Update(oneFrameInputs, room.AuthorityFrame);
         }
     }
 }

@@ -82,5 +82,35 @@ namespace ET
             byte[] bytes = MemoryPackHelper.Serialize(room.Replay);
             File.WriteAllBytes(path, bytes);
         }
+        
+        public static void JumpReplay(Room room, int frame)
+        {
+            if (!room.IsReplay)
+            {
+                return;
+            }
+
+            if (frame >= room.Replay.FrameInputs.Count)
+            {
+                frame = room.Replay.FrameInputs.Count - 1;
+            }
+            
+            int snapshotIndex = frame / LSConstValue.SaveLSWorldFrameCount;
+            Log.Debug($"jump replay start {room.AuthorityFrame} {frame} {snapshotIndex}");
+            if (snapshotIndex != room.AuthorityFrame / LSConstValue.SaveLSWorldFrameCount || frame < room.AuthorityFrame)
+            {
+                room.LSWorld.Dispose();
+                // 回滚
+                byte[] memoryBuffer = room.Replay.Snapshots[snapshotIndex];
+                LSWorld lsWorld = MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer, 0, memoryBuffer.Length) as LSWorld;
+                room.LSWorld = lsWorld;
+                room.AuthorityFrame = snapshotIndex * LSConstValue.SaveLSWorldFrameCount;
+                RunRollbackSystem(room);
+            }
+            
+            room.FixedTimeCounter.Reset(TimeHelper.ServerFrameTime() - frame * LSConstValue.UpdateInterval, 0);
+
+            Log.Debug($"jump replay finish {frame}");
+        }
     }
 }

@@ -3,10 +3,10 @@ namespace ET
     public class FixedTimeCounter
     {
         private long startTime;
-        private long startFrame;
+        private int startFrame;
         public int Interval { get; private set; }
 
-        public FixedTimeCounter(long startTime, long startFrame, int interval)
+        public FixedTimeCounter(long startTime, int startFrame, int interval)
         {
             this.startTime = startTime;
             this.startFrame = startFrame;
@@ -23,6 +23,12 @@ namespace ET
         public long FrameTime(int frame)
         {
             return this.startTime + (frame - this.startFrame) * this.Interval;
+        }
+        
+        public void Reset(long time, int frame)
+        {
+            this.startTime = time;
+            this.startFrame = frame;
         }
     }
 }

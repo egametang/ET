@@ -8,9 +8,12 @@ namespace ET.Client
             Room room = clientScene.GetComponent<Room>();
             
             room.AddComponent<LSCameraComponent>();
-            
-            room.AddComponent<LSOperaComponent>();
-            
+
+            if (!room.IsReplay)
+            {
+                room.AddComponent<LSOperaComponent>();
+            }
+
             await UIHelper.Remove(clientScene, UIType.UILSLobby);
             await ETTask.CompletedTask;
         }

@@ -83,10 +83,13 @@ namespace ET
             OneFrameInputs saveInput = new();
             oneFrameInputs.CopyTo(saveInput);
             self.Replay.FrameInputs.Add(saveInput);
+            Log.Debug($"111111111111111111111111: {frame}");
             if (frame % LSConstValue.SaveLSWorldFrameCount == 0)
             {
                 MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
-                self.Replay.Snapshots.Add(memoryBuffer.ToArray());   
+                byte[] bytes = memoryBuffer.ToArray();
+                self.Replay.Snapshots.Add(bytes);
+                Log.Debug($"1111111111111111111111112: {frame} {bytes.Length}");
             }
         }
     }

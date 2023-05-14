@@ -3,10 +3,14 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
-    public class UILSRoomComponent: Entity, IAwake
+    public class UILSRoomComponent: Entity, IAwake, IUpdate
     {
-        public GameObject saveReplay;
-
+        public Button saveReplay;
         public InputField saveName;
+        public Text totalFrame;
+        public Text frameText;
+        public InputField jumpToField;
+        public Button jump;
+        public int frame;
     }
 }
