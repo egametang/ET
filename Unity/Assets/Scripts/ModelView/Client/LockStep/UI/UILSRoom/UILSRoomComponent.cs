@@ -12,6 +12,7 @@ namespace ET.Client
         public Text predictFrameText;
         public InputField jumpToField;
         public Button jump;
+        public Button replaySpeed;
         public int frame;
         public int predictFrame;
     }

@@ -57,11 +57,6 @@ namespace ET
         
         public int Frame { get; set; }
 
-        public long TimeNow()
-        {
-            return LSConstValue.UpdateInterval * this.Frame;
-        }
-
         public void AddToUpdater(LSEntity lsEntity)
         {
             this.updater.Add(lsEntity);

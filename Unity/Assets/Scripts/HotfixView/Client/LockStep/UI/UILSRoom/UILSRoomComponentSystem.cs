@@ -25,6 +25,8 @@ namespace ET.Client
                     self.jumpToField = rc.Get<GameObject>("jumpToCount").GetComponent<InputField>();
                     self.jump = rc.Get<GameObject>("jump").GetComponent<Button>();
                     self.jump.onClick.AddListener(self.JumpReplay);
+                    self.replaySpeed = rc.Get<GameObject>("speed").GetComponent<Button>();
+                    self.replaySpeed.onClick.AddListener(self.OnReplaySpeedClicked);
                     
                     self.totalFrame.text = self.Room().Replay.FrameInputs.Count.ToString();
                 }
@@ -51,10 +53,13 @@ namespace ET.Client
                     self.frameText.text = room.AuthorityFrame.ToString();
                 }
 
-                if (self.predictFrame != room.PredictionFrame)
+                if (!room.IsReplay)
                 {
-                    self.predictFrame = room.PredictionFrame;
-                    self.predictFrameText.text = room.PredictionFrame.ToString();
+                    if (self.predictFrame != room.PredictionFrame)
+                    {
+                        self.predictFrame = room.PredictionFrame;
+                        self.predictFrameText.text = room.PredictionFrame.ToString();
+                    }
                 }
             }
         }
@@ -70,6 +75,13 @@ namespace ET.Client
         {
             int toFrame = int.Parse(self.jumpToField.text);
             LSHelper.JumpReplay(self.Room(), toFrame);
+        }
+        
+        private static void OnReplaySpeedClicked(this UILSRoomComponent self)
+        {
+            LSReplayUpdater lsReplayUpdater = self.Room().GetComponent<LSReplayUpdater>();
+            lsReplayUpdater.ChangeReplaySpeed();
+            self.replaySpeed.gameObject.Get<GameObject>("Text").GetComponent<Text>().text = $"X{lsReplayUpdater.ReplaySpeed}";
         }
     }
 }

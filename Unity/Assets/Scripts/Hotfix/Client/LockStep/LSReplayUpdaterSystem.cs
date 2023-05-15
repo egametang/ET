@@ -46,5 +46,22 @@ namespace ET.Client
                 }
             }
         }
+
+        public static void ChangeReplaySpeed(this LSReplayUpdater self)
+        {
+            Room room = self.Room();
+            LSReplayUpdater lsReplayUpdater = room.GetComponent<LSReplayUpdater>();
+            if (lsReplayUpdater.ReplaySpeed == 8)
+            {
+                lsReplayUpdater.ReplaySpeed = 1;
+            }
+            else
+            {
+                lsReplayUpdater.ReplaySpeed *= 2;
+            }
+            
+            int updateInterval = LSConstValue.UpdateInterval / lsReplayUpdater.ReplaySpeed;
+            room.FixedTimeCounter.ChangeInterval(updateInterval, room.AuthorityFrame);
+        }
     }
 }
