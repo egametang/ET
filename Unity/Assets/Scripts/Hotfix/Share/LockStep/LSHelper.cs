@@ -39,17 +39,19 @@ namespace ET
             FrameBuffer frameBuffer = room.FrameBuffer;
             
             // 回滚
-            room.LSWorld = room.GetLSWorld(frame);
+            room.LSWorld = room.GetLSWorld(SceneType.LockStepClient, frame);
             OneFrameInputs authorityFrameInput = frameBuffer.FrameInputs(frame);
-            // 执行RealFrame
+            // 执行AuthorityFrame
             room.Update(authorityFrameInput, frame);
 
             
             // 重新执行预测的帧
             for (int i = room.AuthorityFrame + 1; i <= room.PredictionFrame; ++i)
             {
+                Log.Debug($"roll back predict {i}");
                 OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(i);
                 LSHelper.CopyOtherInputsTo(room, authorityFrameInput, oneFrameInputs); // 重新预测消息
+                room.Update(authorityFrameInput, i);
             }
             
             RunRollbackSystem(room);

@@ -10,6 +10,7 @@ namespace ET.Server
             await ETTask.CompletedTask;
             
             Room room = self.AddChild<Room>();
+            room.Name = "Server";
             
             room.AddComponent<RoomServerComponent, Match2Map_GetRoom>(request);
 

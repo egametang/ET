@@ -33,17 +33,6 @@ namespace ET
         {
             LSWorld lsWorld = self.LSWorld;
 
-            if (!self.IsReplay)
-            {
-                // 保存当前帧场景数据
-                self.SaveLSWorld(frame);
-
-                if (frame <= self.AuthorityFrame) // 只有AuthorityFrame帧才保存录像数据
-                {
-                    self.Record(frame);
-                }
-            }
-
             // 设置输入到每个LSUnit身上
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
             foreach (var kv in oneFrameInputs.Inputs)
@@ -56,10 +45,14 @@ namespace ET
             lsWorld.Update();
         }
         
-        public static LSWorld GetLSWorld(this Room self, int frame)
+        public static LSWorld GetLSWorld(this Room self, SceneType sceneType, int frame)
         {
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
-            return MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer) as LSWorld;
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
+            LSWorld lsWorld = MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer) as LSWorld;
+            lsWorld.SceneType = sceneType;
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
+            return lsWorld;
         }
 
         public static void SaveLSWorld(this Room self, int frame)
@@ -67,9 +60,18 @@ namespace ET
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
             memoryBuffer.SetLength(0);
+
+            if (frame != self.LSWorld.Frame)
+            {
+                Log.Error($"lsworld frame diff: {frame} {self.LSWorld.Frame}");
+            }
             
             MongoHelper.Serialize(self.LSWorld, memoryBuffer);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
+
+            long hash = memoryBuffer.GetBuffer().Hash(0, (int) memoryBuffer.Length);
+            
+            self.FrameBuffer.SetHash(frame, hash);
         }
 
         // 记录需要存档的数据

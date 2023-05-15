@@ -19,11 +19,11 @@ namespace ET.Client
         {
             protected override void Rollback(LSUnitView self)
             {
-                LSUnit unit = self.GetUnit();
-                self.Transform.position = unit.Position.ToVector();
-                self.Transform.rotation = unit.Rotation.ToQuaternion();
-                self.t = 0;
-                self.totalTime = 0;
+                //LSUnit unit = self.GetUnit();
+                //self.Transform.position = unit.Position.ToVector();
+                //self.Transform.rotation = unit.Rotation.ToQuaternion();
+                //self.t = 0;
+                //self.totalTime = 0;
             }
         }
         
@@ -41,7 +41,7 @@ namespace ET.Client
 
             Vector3 unitPos = unit.Position.ToVector();
             const float speed = 6f;
-            float speed2 = speed * self.Room().SpeedMultiply;
+            float speed2 = speed;// * self.Room().SpeedMultiply;
             
             if (unitPos != self.Position)
             {

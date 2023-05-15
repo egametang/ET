@@ -113,6 +113,33 @@ namespace ET
 
 	}
 
+	[Message(LockStepOuter.C2Room_CheckHash)]
+	[MemoryPackable]
+	public partial class C2Room_CheckHash: MessageObject, IActorRoom
+	{
+		[MemoryPackOrder(0)]
+		public long PlayerId { get; set; }
+
+		[MemoryPackOrder(1)]
+		public int Frame { get; set; }
+
+		[MemoryPackOrder(2)]
+		public long Hash { get; set; }
+
+	}
+
+	[Message(LockStepOuter.Room2C_CheckHashFail)]
+	[MemoryPackable]
+	public partial class Room2C_CheckHashFail: MessageObject, IActorMessage
+	{
+		[MemoryPackOrder(0)]
+		public int Frame { get; set; }
+
+		[MemoryPackOrder(1)]
+		public byte[] LSWorldBytes { get; set; }
+
+	}
+
 	public static class LockStepOuter
 	{
 		 public const ushort C2G_Match = 11002;
@@ -124,5 +151,7 @@ namespace ET
 		 public const ushort FrameMessage = 11008;
 		 public const ushort OneFrameInputs = 11009;
 		 public const ushort Room2C_AdjustUpdateTime = 11010;
+		 public const ushort C2Room_CheckHash = 11011;
+		 public const ushort Room2C_CheckHashFail = 11012;
 	}
 }

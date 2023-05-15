@@ -14,6 +14,7 @@ namespace ET
             OuterMessage.G2C_Benchmark,
             LockStepOuter.OneFrameInputs,
             LockStepOuter.FrameMessage,
+            LockStepOuter.C2Room_CheckHash,
             ushort.MaxValue, // ActorResponse
         };
 

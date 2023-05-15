@@ -59,3 +59,16 @@ message Room2C_AdjustUpdateTime // IActorMessage
 	int32 DiffTime = 1;
 }
 
+message C2Room_CheckHash // IActorRoom
+{
+	int64 PlayerId = 1;
+	int32 Frame = 2;
+	int64 Hash = 3;
+}
+
+message Room2C_CheckHashFail // IActorMessage
+{
+	int32 Frame = 1;
+	bytes LSWorldBytes = 2;
+}
+

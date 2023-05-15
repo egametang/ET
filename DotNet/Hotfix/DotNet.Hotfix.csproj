@@ -40,5 +40,8 @@
         <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Client\LockStep\" />
+    </ItemGroup>
 
 </Project>

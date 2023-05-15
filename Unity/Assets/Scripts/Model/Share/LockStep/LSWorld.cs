@@ -53,6 +53,7 @@ namespace ET
 
         public TSRandom Random { get; set; }
         
+        [BsonIgnore]
         public SceneType SceneType { get; set; }
         
         public int Frame { get; set; }
