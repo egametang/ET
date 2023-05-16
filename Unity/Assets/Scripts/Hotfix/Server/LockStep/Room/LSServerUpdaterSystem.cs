@@ -35,11 +35,7 @@ namespace ET.Server
 
             RoomMessageHelper.BroadCast(room, sendInput);
             
-            // 保存当前帧场景数据
-            room.SaveLSWorld(room.AuthorityFrame);
-            room.Record(room.AuthorityFrame);
-            
-            room.Update(oneFrameInputs, frame);
+            room.Update(oneFrameInputs);
         }
 
         private static OneFrameInputs GetOneFrameMessage(this LSServerUpdater self, int frame)

@@ -11,7 +11,8 @@ namespace ET.Client
                 Log.Debug($"check hash fail, server: {message.Frame} {serverWorld.ToJson()}");
             }
 
-            LSWorld clientWorld = session.ClientScene().GetComponent<Room>().GetLSWorld(SceneType.LockStepClient, message.Frame);
+            Room room = session.ClientScene().GetComponent<Room>();
+            LSWorld clientWorld = room.GetLSWorld(SceneType.LockStepClient, message.Frame);
             using (session.ClientScene().AddChild(clientWorld))
             {
                 Log.Debug($"check hash fail, client: {message.Frame} {clientWorld.ToJson()}");

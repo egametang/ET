@@ -29,8 +29,15 @@ namespace ET
         }
 
 
-        public static void Update(this Room self, OneFrameInputs oneFrameInputs, int frame)
+        public static void Update(this Room self, OneFrameInputs oneFrameInputs)
         {
+            if (!self.IsReplay)
+            {
+                // 保存当前帧场景数据
+                self.SaveLSWorld();
+                self.Record(self.LSWorld.Frame);
+            }
+
             LSWorld lsWorld = self.LSWorld;
 
             // 设置输入到每个LSUnit身上
@@ -55,16 +62,12 @@ namespace ET
             return lsWorld;
         }
 
-        public static void SaveLSWorld(this Room self, int frame)
+        public static void SaveLSWorld(this Room self)
         {
+            int frame = self.LSWorld.Frame;
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
             memoryBuffer.SetLength(0);
-
-            if (frame != self.LSWorld.Frame)
-            {
-                Log.Error($"lsworld frame diff: {frame} {self.LSWorld.Frame}");
-            }
             
             MongoHelper.Serialize(self.LSWorld, memoryBuffer);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
@@ -77,10 +80,6 @@ namespace ET
         // 记录需要存档的数据
         public static void Record(this Room self, int frame)
         {
-            if (self.IsReplay)
-            {
-                return;
-            }
             OneFrameInputs oneFrameInputs = self.FrameBuffer.FrameInputs(frame);
             OneFrameInputs saveInput = new();
             oneFrameInputs.CopyTo(saveInput);

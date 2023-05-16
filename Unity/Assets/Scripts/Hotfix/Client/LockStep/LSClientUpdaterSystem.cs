@@ -46,15 +46,9 @@ namespace ET.Client
                 ++room.PredictionFrame;
                 OneFrameInputs oneFrameInputs = self.GetOneFrameMessages(room.PredictionFrame);
                 
-                // 保存当前帧场景数据
-                room.SaveLSWorld(room.PredictionFrame);
-
-                if (room.PredictionFrame <= room.AuthorityFrame) // 只有AuthorityFrame帧才保存录像数据
-                {
-                    self.Record(room.PredictionFrame);
-                }
+                room.Update(oneFrameInputs);
+                room.SendHash(room.PredictionFrame);
                 
-                room.Update(oneFrameInputs, room.PredictionFrame);
                 room.SpeedMultiply = ++i;
 
                 FrameMessage frameMessage = NetServices.Instance.FetchMessage<FrameMessage>();
@@ -93,22 +87,6 @@ namespace ET.Client
             predictionFrame.Inputs[self.MyId] = self.Input;
             
             return predictionFrame;
-        }
-
-        public static void Record(this LSClientUpdater self, int frame)
-        {
-            Room room = self.Room();
-            //if (frame < room.AuthorityFrame)
-            //{
-            //    return;
-            //}
-            Log.Debug($"{self.Room().Name} Record: {frame}");
-            long hash = room.FrameBuffer.GetHash(frame);
-            C2Room_CheckHash c2RoomCheckHash = NetServices.Instance.FetchMessage<C2Room_CheckHash>();
-            c2RoomCheckHash.Frame = frame;
-            c2RoomCheckHash.Hash = hash;
-            room.GetParent<Scene>().GetComponent<SessionComponent>().Session.Send(c2RoomCheckHash);
-            room.Record(frame);
         }
     }
 }

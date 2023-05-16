@@ -42,21 +42,34 @@ namespace ET
             room.LSWorld = room.GetLSWorld(SceneType.LockStepClient, frame);
             OneFrameInputs authorityFrameInput = frameBuffer.FrameInputs(frame);
             // 执行AuthorityFrame
-            room.Update(authorityFrameInput, frame);
+            room.Update(authorityFrameInput);
+            room.SendHash(frame);
 
             
             // 重新执行预测的帧
             for (int i = room.AuthorityFrame + 1; i <= room.PredictionFrame; ++i)
             {
-                Log.Debug($"roll back predict {i}");
                 OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(i);
                 LSHelper.CopyOtherInputsTo(room, authorityFrameInput, oneFrameInputs); // 重新预测消息
-                room.Update(authorityFrameInput, i);
+                room.Update(oneFrameInputs);
             }
             
             RunRollbackSystem(room);
             
             Log.Debug($"roll back finish {frame}");
+        }
+        
+        public static void SendHash(this Room self, int frame)
+        {
+            if (frame > self.AuthorityFrame)
+            {
+                return;
+            }
+            long hash = self.FrameBuffer.GetHash(frame);
+            C2Room_CheckHash c2RoomCheckHash = NetServices.Instance.FetchMessage<C2Room_CheckHash>();
+            c2RoomCheckHash.Frame = frame;
+            c2RoomCheckHash.Hash = hash;
+            self.GetParent<Scene>().GetComponent<SessionComponent>().Session.Send(c2RoomCheckHash);
         }
         
         // 重新调整预测消息，只需要调整其他玩家的输入

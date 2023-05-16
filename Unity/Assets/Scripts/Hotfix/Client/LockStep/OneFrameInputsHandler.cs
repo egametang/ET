@@ -37,8 +37,7 @@ namespace ET.Client
                 }
                 else
                 {
-                    LSClientUpdater clientUpdater = room.GetComponent<LSClientUpdater>();
-                    clientUpdater.Record(room.AuthorityFrame);
+                    room.SendHash(room.AuthorityFrame);
                 }
             }
 

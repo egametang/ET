@@ -36,7 +36,7 @@ namespace ET.Client
 
                 OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
             
-                room.Update(oneFrameInputs, room.AuthorityFrame);
+                room.Update(oneFrameInputs);
                 room.SpeedMultiply = ++i;
                 
                 long timeNow2 = TimeHelper.ServerNow();
