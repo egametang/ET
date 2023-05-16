@@ -33,7 +33,7 @@ namespace ET.Client
                 {
                     input.CopyTo(predictionInput);
                     // 回滚到frameBuffer.AuthorityFrame
-                    LSHelper.Rollback(room, room.AuthorityFrame);
+                    LSClientHelper.Rollback(room, room.AuthorityFrame);
                 }
                 else
                 {

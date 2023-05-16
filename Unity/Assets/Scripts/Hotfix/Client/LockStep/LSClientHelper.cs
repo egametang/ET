@@ -3,7 +3,7 @@ using ET.Client;
 
 namespace ET
 {
-    public static class LSHelper
+    public static class LSClientHelper
     {
         public static void RunRollbackSystem(Entity entity)
         {
@@ -50,7 +50,7 @@ namespace ET
             for (int i = room.AuthorityFrame + 1; i <= room.PredictionFrame; ++i)
             {
                 OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(i);
-                LSHelper.CopyOtherInputsTo(room, authorityFrameInput, oneFrameInputs); // 重新预测消息
+                LSClientHelper.CopyOtherInputsTo(room, authorityFrameInput, oneFrameInputs); // 重新预测消息
                 room.Update(oneFrameInputs);
             }
             

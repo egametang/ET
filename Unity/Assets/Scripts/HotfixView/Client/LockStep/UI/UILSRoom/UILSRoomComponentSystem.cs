@@ -68,13 +68,13 @@ namespace ET.Client
         {
             string name = self.saveName.text;
             
-            LSHelper.SaveReplay(self.Room(), name);
+            LSClientHelper.SaveReplay(self.Room(), name);
         }
         
         private static void JumpReplay(this UILSRoomComponent self)
         {
             int toFrame = int.Parse(self.jumpToField.text);
-            LSHelper.JumpReplay(self.Room(), toFrame);
+            LSClientHelper.JumpReplay(self.Room(), toFrame);
         }
         
         private static void OnReplaySpeedClicked(this UILSRoomComponent self)
