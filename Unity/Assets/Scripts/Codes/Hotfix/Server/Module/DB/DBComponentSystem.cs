@@ -19,7 +19,7 @@ namespace ET.Server
 
 	    private static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
 	    {
-		    return self.database.GetCollection<T>(collection ?? typeof (T).Name);
+		    return self.database.GetCollection<T>(collection ?? typeof (T).FullName);
 	    }
 
 	    private static IMongoCollection<Entity> GetCollection(this DBComponent self, string name)
@@ -114,7 +114,7 @@ namespace ET.Server
 	    {
 		    if (collection == null)
 		    {
-			    collection = typeof (T).Name;
+			    collection = typeof (T).FullName;
 		    }
 		    
 		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
