@@ -60,7 +60,7 @@ namespace ET
         {
             if (!CheckFrame(frame))
             {
-                throw new Exception($"frame out: {frame}, maxframe: {frame}");
+                throw new Exception($"frame out: {frame}, maxframe: {this.MaxFrame}");
             }
         }
         

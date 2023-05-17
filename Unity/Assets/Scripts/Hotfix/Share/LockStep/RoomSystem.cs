@@ -66,7 +66,6 @@ namespace ET
         public static void SaveLSWorld(this Room self)
         {
             int frame = self.LSWorld.Frame;
-            Log.Debug($"11111111111111111 Save world: {frame}");
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
             memoryBuffer.SetLength(0);

@@ -62,6 +62,7 @@ namespace ET.Server
                 player.GetComponent<PlayerRoomComponent>().RoomInstanceId,
                 new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
             session.Send(new G2C_Reconnect() { StartTime = room2GateReconnect.StartTime, UnitInfos = room2GateReconnect.UnitInfos, Frame = room2GateReconnect.Frame});
+            session.AddComponent<SessionPlayerComponent>().Player = player;
             player.GetComponent<PlayerSessionComponent>().Session = session;
         }
     }

@@ -50,8 +50,12 @@ namespace ET.Server
                 return oneFrameInputs;
             }
 
-            OneFrameInputs preFrameInputs = frameBuffer.FrameInputs(frame - 1);
-            
+            OneFrameInputs preFrameInputs = null;
+            if (frameBuffer.CheckFrame(frame - 1))
+            {
+                preFrameInputs = frameBuffer.FrameInputs(frame - 1);    
+            }
+
             // 有人输入的消息没过来，给他使用上一帧的操作
             foreach (long playerId in room.PlayerIds)
             {
