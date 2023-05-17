@@ -15,7 +15,7 @@ message G2C_Match // IResponse
 }
 
 // 匹配成功，通知客户端切换场景
-message Match2G_NotifyMatchSuccess // IActorLocationMessage
+message Match2G_NotifyMatchSuccess // IActorMessage
 {
 	int32 RpcId = 1;
 	// 房间的instanceId

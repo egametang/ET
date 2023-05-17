@@ -31,7 +31,7 @@ namespace ET
 // 匹配成功，通知客户端切换场景
 	[Message(LockStepOuter.Match2G_NotifyMatchSuccess)]
 	[MemoryPackable]
-	public partial class Match2G_NotifyMatchSuccess: MessageObject, IActorLocationMessage
+	public partial class Match2G_NotifyMatchSuccess: MessageObject, IActorMessage
 	{
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
