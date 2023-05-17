@@ -64,11 +64,50 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(Room2G_Reconnect))]
+	[Message(LockStepInner.G2Room_Reconnect)]
+	[MemoryPackable]
+	public partial class G2Room_Reconnect: MessageObject, IActorRequest
+	{
+		[MemoryPackOrder(0)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(1)]
+		public long PlayerId { get; set; }
+
+	}
+
+	[Message(LockStepInner.Room2G_Reconnect)]
+	[MemoryPackable]
+	public partial class Room2G_Reconnect: MessageObject, IActorResponse
+	{
+		[MemoryPackOrder(0)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(1)]
+		public int Error { get; set; }
+
+		[MemoryPackOrder(2)]
+		public string Message { get; set; }
+
+		[MemoryPackOrder(3)]
+		public long StartTime { get; set; }
+
+		[MemoryPackOrder(4)]
+		public List<LockStepUnitInfo> UnitInfos { get; set; }
+
+		[MemoryPackOrder(5)]
+		public int Frame { get; set; }
+
+	}
+
 	public static class LockStepInner
 	{
 		 public const ushort G2Match_Match = 21002;
 		 public const ushort Match2G_Match = 21003;
 		 public const ushort Match2Map_GetRoom = 21004;
 		 public const ushort Map2Match_GetRoom = 21005;
+		 public const ushort G2Room_Reconnect = 21006;
+		 public const ushort Room2G_Reconnect = 21007;
 	}
 }

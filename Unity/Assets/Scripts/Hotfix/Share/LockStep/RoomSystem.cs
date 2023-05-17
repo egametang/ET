@@ -12,13 +12,16 @@ namespace ET
             return entity.Domain as Room;
         }
         
-        public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime)
+        public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime, int frame = -1)
         {
             self.StartTime = startTime;
+            self.AuthorityFrame = frame;
+            self.PredictionFrame = frame;
             self.Replay.UnitInfos = unitInfos;
+            self.FrameBuffer = new FrameBuffer(frame);
             self.FixedTimeCounter = new FixedTimeCounter(self.StartTime, 0, LSConstValue.UpdateInterval);
-
             LSWorld lsWorld = self.LSWorld;
+            lsWorld.Frame = frame + 1;
             lsWorld.AddComponent<LSUnitComponent>();
             for (int i = 0; i < unitInfos.Count; ++i)
             {
@@ -28,18 +31,9 @@ namespace ET
             }
         }
 
-
         public static void Update(this Room self, OneFrameInputs oneFrameInputs)
         {
-            if (!self.IsReplay)
-            {
-                // 保存当前帧场景数据
-                self.SaveLSWorld();
-                self.Record(self.LSWorld.Frame);
-            }
-
             LSWorld lsWorld = self.LSWorld;
-
             // 设置输入到每个LSUnit身上
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
             foreach (var kv in oneFrameInputs.Inputs)
@@ -49,6 +43,13 @@ namespace ET
                 lsInputComponent.LSInput = kv.Value;
             }
             
+            if (!self.IsReplay)
+            {
+                // 保存当前帧场景数据
+                self.SaveLSWorld();
+                self.Record(self.LSWorld.Frame);
+            }
+
             lsWorld.Update();
         }
         
@@ -65,6 +66,7 @@ namespace ET
         public static void SaveLSWorld(this Room self)
         {
             int frame = self.LSWorld.Frame;
+            Log.Debug($"11111111111111111 Save world: {frame}");
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
             memoryBuffer.SetLength(0);

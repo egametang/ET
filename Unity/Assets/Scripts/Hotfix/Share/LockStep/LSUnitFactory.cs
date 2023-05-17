@@ -11,8 +11,6 @@
 	        lsUnit.Rotation = unitInfo.Rotation;
 
 			lsUnit.AddComponent<LSInputComponent>();
-	        
-	        EventSystem.Instance.Publish(lsUnit.LSWorld(), new EventType.LSAfterUnitCreate() {LsUnit = lsUnit});
             return lsUnit;
         }
     }

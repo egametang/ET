@@ -12,7 +12,7 @@ namespace ET
         public long StartTime { get; set; }
 
         // 帧缓存
-        public FrameBuffer FrameBuffer { get; } = new();
+        public FrameBuffer FrameBuffer { get; set; }
 
         // 计算fixedTime，fixedTime在客户端是动态调整的，会做时间膨胀缩放
         public FixedTimeCounter FixedTimeCounter { get; set; }

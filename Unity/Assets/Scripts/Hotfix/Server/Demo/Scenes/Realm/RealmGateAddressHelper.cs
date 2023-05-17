@@ -5,13 +5,13 @@ namespace ET.Server
 {
 	public static class RealmGateAddressHelper
 	{
-		public static StartSceneConfig GetGate(int zone)
+		public static StartSceneConfig GetGate(int zone, string account)
 		{
+			long hash = account.GetLongHashCode();
+			
 			List<StartSceneConfig> zoneGates = StartSceneConfigCategory.Instance.Gates[zone];
 			
-			int n = RandomGenerator.RandomNumber(0, zoneGates.Count);
-
-			return zoneGates[n];
+			return zoneGates[(int)(hash % zoneGates.Count)];
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace ET.Client
             Room room = session.DomainScene().GetComponent<Room>();
             
             Log.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
-            
+                        
             FrameBuffer frameBuffer = room.FrameBuffer;
 
             ++room.AuthorityFrame;
@@ -22,7 +22,6 @@ namespace ET.Client
             }
             else
             {
-
                 // 服务端返回来的消息，跟预测消息对比
                 OneFrameInputs predictionInput = frameBuffer.FrameInputs(room.AuthorityFrame);
                 // 对比失败有两种可能，
@@ -31,16 +30,18 @@ namespace ET.Client
                 // 回滚重新预测的时候，自己的输入不用变化
                 if (input != predictionInput)
                 {
+                    Log.Debug($"frame diff: {predictionInput} {input}");
                     input.CopyTo(predictionInput);
                     // 回滚到frameBuffer.AuthorityFrame
+                    Log.Debug($"roll back start {room.AuthorityFrame}");
                     LSClientHelper.Rollback(room, room.AuthorityFrame);
+                    Log.Debug($"roll back finish {room.AuthorityFrame}");
                 }
                 else
                 {
                     room.SendHash(room.AuthorityFrame);
                 }
             }
-
             // 回收消息，减少GC
             NetServices.Instance.RecycleMessage(input);
             await ETTask.CompletedTask;

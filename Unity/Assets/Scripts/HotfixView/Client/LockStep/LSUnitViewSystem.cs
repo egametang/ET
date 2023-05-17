@@ -12,6 +12,7 @@ namespace ET.Client
             {
                 self.GameObject = go;
                 self.Transform = go.transform;
+                
             }
         }
         
@@ -38,7 +39,7 @@ namespace ET.Client
         private static void Update(this LSUnitView self)
         {
             LSUnit unit = self.GetUnit();
-
+            
             Vector3 unitPos = unit.Position.ToVector();
             const float speed = 6f;
             float speed2 = speed;// * self.Room().SpeedMultiply;
@@ -52,6 +53,7 @@ namespace ET.Client
                 self.Rotation = unit.Rotation.ToQuaternion();
             }
             
+            
             LSInput input = unit.GetComponent<LSInputComponent>().LSInput;
             if (input.V != TSVector2.zero)
             {
@@ -61,7 +63,6 @@ namespace ET.Client
             {
                 self.GetComponent<LSAnimatorComponent>().SetFloatValue("Speed", 0);
             }
-
             self.t += Time.deltaTime;
             self.Transform.rotation = Quaternion.Lerp(self.Transform.rotation, self.Rotation, self.t / 1f);
             self.Transform.position = Vector3.Lerp(self.Transform.position, self.Position, self.t / self.totalTime);

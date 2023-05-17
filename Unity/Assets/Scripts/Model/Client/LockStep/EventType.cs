@@ -10,10 +10,5 @@
         public struct LSSceneInitFinish
         {
         }
-
-        public struct LSAfterUnitCreate
-        {
-            public LSUnit LsUnit;
-        }
     }
 }

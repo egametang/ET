@@ -39,7 +39,7 @@ namespace ET
         }
 
         [Conditional("DEBUG")]
-        public static void LogMsg(Scene scene, object message)
+        public static void LogMsg(this Entity entity, object message)
         {
             ushort opcode = NetServices.Instance.GetOpcode(message.GetType());
             if (!IsNeedLogMessage(opcode))
@@ -47,7 +47,7 @@ namespace ET
                 return;
             }
             
-            Logger.Instance.Debug($"{scene.Name} {message}");
+            Logger.Instance.Debug($"{entity.Domain.SceneType} {message}");
         }
     }
 }

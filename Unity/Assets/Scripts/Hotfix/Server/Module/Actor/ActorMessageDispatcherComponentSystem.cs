@@ -132,7 +132,7 @@ namespace ET.Server
                 return;
             }
             
-            OpcodeHelper.LogMsg(entity.DomainScene(), iActorRequest);
+            self.LogMsg(iActorRequest);
 
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)

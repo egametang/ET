@@ -10,7 +10,7 @@ namespace ET.Server
 		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response)
 		{
 			// 随机分配一个Gate
-			StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone());
+			StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone(), request.Account);
 			Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
 			
 			// 向gate请求一个key,客户端可以拿着这个key连接gate

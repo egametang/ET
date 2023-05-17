@@ -37,15 +37,34 @@ namespace ET.Client
             room.Name = "Map1";
             room.IsReplay = true;
             room.Replay = replay;
-
-            // 等待表现层订阅的事件完成
-            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LSSceneChangeStart() {Room = room});
-            
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(replay.UnitInfos, TimeHelper.ServerFrameTime());
             
-            room.AddComponent<LSReplayUpdater>();
+            // 等待表现层订阅的事件完成
+            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LSSceneChangeStart() {Room = room});
+            
 
+            room.AddComponent<LSReplayUpdater>();
+            // 这个事件中可以订阅取消loading
+            EventSystem.Instance.Publish(clientScene, new EventType.LSSceneInitFinish());
+        }
+        
+        // 场景切换协程
+        public static async ETTask SceneChangeToReconnect(Scene clientScene, G2C_Reconnect message)
+        {
+            clientScene.RemoveComponent<Room>();
+
+            Room room = clientScene.AddComponent<Room>();
+            room.Name = "Map1";
+            
+            room.LSWorld = new LSWorld(SceneType.LockStepClient);
+            room.Init(message.UnitInfos, message.StartTime, message.Frame);
+            
+            // 等待表现层订阅的事件完成
+            await EventSystem.Instance.PublishAsync(clientScene, new EventType.LSSceneChangeStart() {Room = room});
+
+
+            room.AddComponent<LSClientUpdater>();
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(clientScene, new EventType.LSSceneInitFinish());
         }

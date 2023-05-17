@@ -140,6 +140,21 @@ namespace ET
 
 	}
 
+	[Message(LockStepOuter.G2C_Reconnect)]
+	[MemoryPackable]
+	public partial class G2C_Reconnect: MessageObject, IActorMessage
+	{
+		[MemoryPackOrder(0)]
+		public long StartTime { get; set; }
+
+		[MemoryPackOrder(1)]
+		public List<LockStepUnitInfo> UnitInfos { get; set; }
+
+		[MemoryPackOrder(2)]
+		public int Frame { get; set; }
+
+	}
+
 	public static class LockStepOuter
 	{
 		 public const ushort C2G_Match = 11002;
@@ -153,5 +168,6 @@ namespace ET
 		 public const ushort Room2C_AdjustUpdateTime = 11010;
 		 public const ushort C2Room_CheckHash = 11011;
 		 public const ushort Room2C_CheckHashFail = 11012;
+		 public const ushort G2C_Reconnect = 11013;
 	}
 }

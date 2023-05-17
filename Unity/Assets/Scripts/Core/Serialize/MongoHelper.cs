@@ -191,7 +191,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                throw new Exception($"from bson error: {type.Name}", e);
+                throw new Exception($"from bson error: {type.FullName} {bytes.Length}", e);
             }
         }
 
@@ -206,7 +206,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                throw new Exception($"from bson error: {type.Name}", e);
+                throw new Exception($"from bson error: {type.FullName} {bytes.Length} {index} {count}", e);
             }
         }
 
@@ -218,7 +218,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                throw new Exception($"from bson error: {type.Name}", e);
+                throw new Exception($"from bson error: {type.FullName} {stream.Position} {stream.Length}", e);
             }
         }
 
@@ -233,7 +233,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                throw new Exception($"from bson error: {typeof (T).Name}", e);
+                throw new Exception($"from bson error: {typeof (T).FullName} {bytes.Length}", e);
             }
         }
 

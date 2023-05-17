@@ -72,3 +72,10 @@ message Room2C_CheckHashFail // IActorMessage
 	bytes LSWorldBytes = 2;
 }
 
+message G2C_Reconnect // IActorMessage
+{
+	int64 StartTime = 1;
+	repeated LockStepUnitInfo UnitInfos = 2;
+	int32 Frame = 3;
+}
+

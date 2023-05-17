@@ -43,11 +43,6 @@ namespace ET.Server
             Room room = self.GetParent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(frame);
-            if (oneFrameInputs == null)
-            {
-                throw new Exception($"get frame is null: {frame}, max frame: {frameBuffer.MaxFrame}");
-            }
-            
             frameBuffer.MoveForward(frame);
             
             if (oneFrameInputs.Inputs.Count == LSConstValue.MatchCount)

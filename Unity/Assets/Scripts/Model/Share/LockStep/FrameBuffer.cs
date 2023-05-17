@@ -11,9 +11,9 @@ namespace ET
         private readonly List<MemoryBuffer> snapshots;
         private readonly List<long> hashs;
 
-        public FrameBuffer(int capacity = LSConstValue.FrameCountPerSecond * 10)
+        public FrameBuffer(int frame = 0, int capacity = LSConstValue.FrameCountPerSecond * 10)
         {
-            this.MaxFrame = capacity - 1;
+            this.MaxFrame = frame + LSConstValue.FrameCountPerSecond;
             this.frameInputs = new List<OneFrameInputs>(capacity);
             this.snapshots = new List<MemoryBuffer>(capacity);
             this.hashs = new List<long>(capacity);
@@ -31,43 +31,42 @@ namespace ET
 
         public void SetHash(int frame, long hash)
         {
-            if (frame < 0)
-            {
-                return;
-            }
-
-            if (frame > this.MaxFrame)
-            {
-                return;
-            }
+            EnsureFrame(frame);
             this.hashs[frame % this.frameInputs.Capacity] = hash;
         }
         
         public long GetHash(int frame)
         {
+            EnsureFrame(frame);
+            return this.hashs[frame % this.frameInputs.Capacity];
+        }
+
+        public bool CheckFrame(int frame)
+        {
             if (frame < 0)
             {
-                return 0;
+                return false;
             }
 
             if (frame > this.MaxFrame)
             {
-                return 0;
+                return false;
             }
-            return this.hashs[frame % this.frameInputs.Capacity];
+
+            return true;
+        }
+
+        private void EnsureFrame(int frame)
+        {
+            if (!CheckFrame(frame))
+            {
+                throw new Exception($"frame out: {frame}, maxframe: {frame}");
+            }
         }
         
         public OneFrameInputs FrameInputs(int frame)
         {
-            if (frame < 0)
-            {
-                return null;
-            }
-
-            if (frame > this.MaxFrame)
-            {
-                return null;
-            }
+            EnsureFrame(frame);
             OneFrameInputs oneFrameInputs = this.frameInputs[frame % this.frameInputs.Capacity];
             return oneFrameInputs;
         }
@@ -87,15 +86,7 @@ namespace ET
 
         public MemoryBuffer Snapshot(int frame)
         {
-            if (frame < 0)
-            {
-                return null;
-            }
-
-            if (frame > this.MaxFrame)
-            {
-                return null;
-            }
+            EnsureFrame(frame);
             MemoryBuffer memoryBuffer = this.snapshots[frame % this.snapshots.Capacity];
             return memoryBuffer;
         }

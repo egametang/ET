@@ -33,3 +33,21 @@ message Map2Match_GetRoom // IActorResponse
 	// 房间的instanceId
 	int64 InstanceId = 4;
 }
+
+//ResponseType Room2G_Reconnect
+message G2Room_Reconnect // IActorRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;
+}
+
+message Room2G_Reconnect // IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+
+	int64 StartTime = 4;
+	repeated LockStepUnitInfo UnitInfos = 5;
+	int32 Frame = 6;
+}

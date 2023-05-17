@@ -22,8 +22,6 @@ namespace ET.Client
             // 切换到map场景
 
             await SceneManager.LoadSceneAsync(room.Name);
-
-            room.AddComponent<LSUnitViewComponent>();
         }
     }
 }

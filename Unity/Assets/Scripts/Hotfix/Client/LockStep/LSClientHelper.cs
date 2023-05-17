@@ -34,7 +34,6 @@ namespace ET
         // 回滚
         public static void Rollback(Room room, int frame)
         {
-            Log.Debug($"roll back start {frame}");
             room.LSWorld.Dispose();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
@@ -55,8 +54,6 @@ namespace ET
             }
             
             RunRollbackSystem(room);
-            
-            Log.Debug($"roll back finish {frame}");
         }
         
         public static void SendHash(this Room self, int frame)
