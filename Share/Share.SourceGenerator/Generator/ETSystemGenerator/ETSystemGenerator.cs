@@ -37,9 +37,17 @@ public class ETSystemGenerator : ISourceGenerator
         var classTypeSymbol = semanticModel.GetDeclaredSymbol(classDeclarationSyntax) as INamedTypeSymbol;
         if (classTypeSymbol==null)
         {
-            context.AddSource($"{className}.g.cs", "classTypeSymbol==null");
             return;
         }
+
+        if (!classTypeSymbol.IsStatic || !classDeclarationSyntax.IsPartial())
+        {
+            Diagnostic diagnostic = Diagnostic.Create(ETSystemMethodIsInStaticPartialClassRule.Rule, classDeclarationSyntax.GetLocation(),
+                classDeclarationSyntax.Identifier.Text);
+            context.ReportDiagnostic(diagnostic);
+            return;
+        }
+        
         var namespaceSymbol = classTypeSymbol?.ContainingNamespace;
         var namespaceName = namespaceSymbol?.Name;
         while (namespaceSymbol?.ContainingNamespace != null)
@@ -55,7 +63,6 @@ public class ETSystemGenerator : ISourceGenerator
         var inClassSb = new StringBuilder();
 
         this.GenerateSystemCodeByTemplate(inClassSb, classDeclarationSyntax, methodDeclarationSyntaxes, context,semanticModel);
-
         string code = $$"""
 namespace {{namespaceName}}{
     public static partial class {{className}}
@@ -64,7 +71,7 @@ namespace {{namespaceName}}{
     }
 }
 """;
-        context.AddSource($"{className}.g.cs",code);
+        context.AddSource($"{namespaceName}.{className}.g.cs",code);
     }
 
     /// <summary>
@@ -74,16 +81,17 @@ namespace {{namespaceName}}{
     {
         foreach (var methodDeclarationSyntax in methodDeclarationSyntaxes)
         {
-            var componentParam = methodDeclarationSyntax.ParameterList.Parameters.FirstOrDefault();
-            if (componentParam==null)
-            {
-                continue;
-            }
             var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclarationSyntax) as IMethodSymbol;
             if (methodSymbol==null)
             {
                 continue;
             }
+            var componentParam = methodDeclarationSyntax.ParameterList.Parameters.FirstOrDefault();
+            if (componentParam==null)
+            {
+                continue;
+            }
+            
             var methodName = methodDeclarationSyntax.Identifier.Text;
             var componentName = componentParam.Type?.ToString();
             

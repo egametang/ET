@@ -359,5 +359,21 @@ namespace ET.Analyzer
             BasicBlock? block = controlFlowGraph.Blocks.FirstOrDefault(x => x.Operations.Any(y => y.Syntax.Contains(statementSyntax)));
             return block;
         }
+        
+        /// <summary>
+        /// 判断类是否为partial类
+        /// </summary>
+        public static bool IsPartial(this ClassDeclarationSyntax classDeclaration)
+        {
+            foreach (var modifier in classDeclaration.Modifiers)
+            {
+                if (modifier.IsKind(SyntaxKind.PartialKeyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

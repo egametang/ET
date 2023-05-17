@@ -5,10 +5,17 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <IncludeSymbols>false</IncludeSymbols>
+        <NoWarn>1701;1702;RS2008</NoWarn>
+        
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="../Analyzer/Extension/*.cs" />
+        <Compile Include="../Analyzer/Extension/*.cs">
+            <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
