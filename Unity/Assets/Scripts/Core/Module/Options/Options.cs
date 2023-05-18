@@ -13,6 +13,9 @@ namespace ET
         Proto2CS,
         BenchmarkClient,
         BenchmarkServer,
+        
+        Demo,
+        LockStep,
     }
     
     public class Options: Singleton<Options>

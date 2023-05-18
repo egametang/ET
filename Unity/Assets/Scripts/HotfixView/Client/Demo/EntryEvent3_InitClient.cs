@@ -13,7 +13,7 @@ namespace ET.Client
 
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
 
-            SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalComponent.Instance.GlobalConfig.SceneType);
+            SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalComponent.Instance.GlobalConfig.AppType.ToString());
             
             Scene clientScene = await SceneFactory.CreateClientScene(1, sceneType, sceneType.ToString());
             

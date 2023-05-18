@@ -23,6 +23,6 @@ namespace ET
         
         public BuildType BuildType;
 
-        public string SceneType;
+        public AppType AppType;
     }
 }
