@@ -10,12 +10,10 @@ namespace ET.Client
         {
 	        try
 	        {
-		        await uiComponent.DomainScene().GetComponent<ResourcesLoaderComponent>().LoadAsync(UIType.UIHelp.StringToAB());
-		        GameObject bundleGameObject = (GameObject) ResourcesComponent.Instance.GetAsset(UIType.UIHelp.StringToAB(), UIType.UIHelp);
-		        GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UIEventComponent.Instance.GetLayer((int)uiLayer));
-		        UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UIHelp, gameObject);
-
-				ui.AddComponent<UIHelpComponent>();
+		        GameObject gameObject = await ResComponent.Instance.LoadAssetAsync<GameObject>(ResPathHelper.GetUIPath(UIType.UIHelp));
+		        var go = GameObject.Instantiate(gameObject,UIEventComponent.Instance.GetLayer((int)uiLayer));
+		        UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UIHelp, go);
+		        ui.AddComponent<UIHelpComponent>();
 				return ui;
 	        }
 	        catch (Exception e)
@@ -27,6 +25,7 @@ namespace ET.Client
 
         public override void OnRemove(UIComponent uiComponent)
         {
+	        ResComponent.Instance.UnloadAsset(ResPathHelper.GetUIPath(UIType.UIHelp));
         }
     }
 }
