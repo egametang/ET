@@ -1,0 +1,339 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6177308985464232164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abebc8478d78fe54bb45646c484b090b, type: 3}
+  m_Name: Scan All Scenes
+  m_EditorClassIdentifier: 
+  Profile:
+    name: Scan All Scenes
+    description: Scans all scenes in the project
+    IncludeScenesFromBuildOptions: 0
+    IncludeOpenScenes: 0
+    IncludeAssetDependencies: 0
+    ScenePaths:
+    - Assets
+    ExcludeScenePaths: []
+--- !u!114 &-4373702687464331149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abebc8478d78fe54bb45646c484b090b, type: 3}
+  m_Name: Scan Scenes From Build Options
+  m_EditorClassIdentifier: 
+  Profile:
+    name: Scan Scenes From Build Options
+    description: Scans all scenes from build options, including scene asset dependencies.
+    IncludeScenesFromBuildOptions: 1
+    IncludeOpenScenes: 0
+    IncludeAssetDependencies: 1
+    ScenePaths: []
+    ExcludeScenePaths: []
+--- !u!114 &-2608400038212342859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6eb4985962213447b9576d5bbf22b8d, type: 3}
+  m_Name: Scan Entire Project
+  m_EditorClassIdentifier: 
+  Profile:
+    name: Scan Entire Project
+    description: Scans all prefabs, scriptable objects and scenes in the project
+    Profiles:
+    - {fileID: 6651077785885538075}
+    - {fileID: -6177308985464232164}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 839a6a64f3bdca7458c566950f280a51, type: 3}
+  m_Name: OdinValidationConfig
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: -2608400038212342859}
+    - {fileID: 6651077785885538075}
+    - {fileID: -6177308985464232164}
+    - {fileID: 5466813460749114777}
+    - {fileID: -4373702687464331149}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: MainValidationProfiles
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.IValidationProfile,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Hooks
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.AutomatedValidationHook,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 2|Sirenix.OdinValidator.Editor.AutomatedValidationHook, Sirenix.OdinValidator
+    - Name: Enabled
+      Entry: 5
+      Data: false
+    - Name: FinishValidationOnFailures
+      Entry: 5
+      Data: false
+    - Name: Hook
+      Entry: 7
+      Data: 3|Sirenix.OdinValidator.Editor.OnPlayValidationHook, Sirenix.OdinValidator
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Validations
+      Entry: 7
+      Data: 4|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.AutomatedValidation,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|Sirenix.OdinValidator.Editor.AutomatedValidation, Sirenix.OdinValidator
+    - Name: Actions
+      Entry: 3
+      Data: 3
+    - Name: ProfilesToRun
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.IValidationProfile,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|Sirenix.OdinValidator.Editor.AutomatedValidationHook, Sirenix.OdinValidator
+    - Name: Enabled
+      Entry: 5
+      Data: false
+    - Name: FinishValidationOnFailures
+      Entry: 5
+      Data: false
+    - Name: Hook
+      Entry: 7
+      Data: 8|Sirenix.OdinValidator.Editor.OnBuildValidationHook, Sirenix.OdinValidator
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Validations
+      Entry: 7
+      Data: 9|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.AutomatedValidation,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 10|Sirenix.OdinValidator.Editor.AutomatedValidation, Sirenix.OdinValidator
+    - Name: Actions
+      Entry: 3
+      Data: 3
+    - Name: ProfilesToRun
+      Entry: 7
+      Data: 11|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.IValidationProfile,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 12|Sirenix.OdinValidator.Editor.AutomatedValidationHook, Sirenix.OdinValidator
+    - Name: Enabled
+      Entry: 5
+      Data: false
+    - Name: FinishValidationOnFailures
+      Entry: 5
+      Data: false
+    - Name: Hook
+      Entry: 7
+      Data: 13|Sirenix.OdinValidator.Editor.OnProjectStartupValidationHook, Sirenix.OdinValidator
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Validations
+      Entry: 7
+      Data: 14|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.AutomatedValidation,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 15|Sirenix.OdinValidator.Editor.AutomatedValidation, Sirenix.OdinValidator
+    - Name: Actions
+      Entry: 3
+      Data: 3
+    - Name: ProfilesToRun
+      Entry: 7
+      Data: 16|System.Collections.Generic.List`1[[Sirenix.OdinValidator.Editor.IValidationProfile,
+        Sirenix.OdinValidator]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+--- !u!114 &5466813460749114777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abebc8478d78fe54bb45646c484b090b, type: 3}
+  m_Name: Scan Open Scenes
+  m_EditorClassIdentifier: 
+  Profile:
+    name: Scan Open Scenes
+    description: Scans all open scenes, without going through scene asset dependencies.
+    IncludeScenesFromBuildOptions: 0
+    IncludeOpenScenes: 1
+    IncludeAssetDependencies: 0
+    ScenePaths: []
+    ExcludeScenePaths: []
+--- !u!114 &6651077785885538075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7f05af491340f49928304b70f09b7a, type: 3}
+  m_Name: Scan All Assets
+  m_EditorClassIdentifier: 
+  Profile:
+    name: Scan All Assets
+    description: Scans all prefabs and scriptable objects in the project
+    SearchFilters:
+    - t:Prefab
+    - t:ScriptableObject
+    AssetPaths:
+    - Assets
+    AssetReferences: []
+    ExcludeAssetPaths: []
+    ExcludeAssetReferences: []

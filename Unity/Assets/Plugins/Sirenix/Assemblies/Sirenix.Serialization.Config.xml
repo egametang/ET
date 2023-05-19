@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sirenix.Serialization.Config</name>
+    </assembly>
+    <members>
+        <member name="T:Sirenix.Serialization.CustomLogger">
+            <summary>
+            A helper class for quickly and easily defining custom loggers.
+            </summary>
+            <seealso cref="T:Sirenix.Serialization.ILogger" />
+        </member>
+        <member name="M:Sirenix.Serialization.CustomLogger.#ctor(System.Action{System.String},System.Action{System.String},System.Action{System.Exception})">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Serialization.CustomLogger.LogWarning(System.String)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Serialization.CustomLogger.LogError(System.String)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Serialization.CustomLogger.LogException(System.Exception)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Serialization.DataFormat">
+            <summary>
+            Specifies a data format to read and write in.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.DataFormat.Binary">
+            <summary>
+            A custom packed binary format. This format is most efficient and almost allocation-free,
+            but its serialized data is not human-readable.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.DataFormat.JSON">
+            <summary>
+            A JSON format compliant with the json specification found at "http://www.json.org/".
+            <para />
+            This format has rather sluggish performance and allocates frightening amounts of string garbage.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.DataFormat.Nodes">
+            <summary>
+            A format that does not serialize to a byte stream, but to a list of data nodes in memory
+            which can then be serialized by Unity.
+            <para />
+            This format is highly inefficient, and is primarily used for ensuring that Unity assets
+            are mergeable by individual values when saved in Unity's text format. This makes
+            serialized values more robust and data recovery easier in case of issues.
+            <para />
+            This format is *not* recommended for use in builds.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Serialization.DefaultLoggers">
+            <summary>
+            Defines default loggers for serialization and deserialization. This class and all of its loggers are thread safe.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.DefaultLoggers.DefaultLogger">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.DefaultLoggers.UnityLogger">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Serialization.ErrorHandlingPolicy">
+            <summary>
+            The policy for handling errors during serialization and deserialization.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.ErrorHandlingPolicy.Resilient">
+            <summary>
+            Attempts will be made to recover from errors and continue serialization. Data may become invalid.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.ErrorHandlingPolicy.ThrowOnErrors">
+            <summary>
+            Exceptions will be thrown when errors are logged.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.ErrorHandlingPolicy.ThrowOnWarningsAndErrors">
+            <summary>
+            Exceptions will be thrown when warnings or errors are logged.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Serialization.GlobalSerializationConfig">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.GlobalSerializationConfig.ODIN_SERIALIZATION_CAUTIONARY_WARNING_TEXT">
+            <summary>
+            Text for the cautionary serialization warning shown in the inspector.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.GlobalSerializationConfig.ODIN_SERIALIZATION_CAUTIONARY_WARNING_BUTTON_TEXT">
+            <summary>
+            Text for the hide button for the cautionary serialization warning shown in the inspector.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.GlobalSerializationConfig.ODIN_PREFAB_CAUTIONARY_WARNING_BUTTON_TEXT">
+            <summary>
+            Text for the hide button for the cautionary prefab warning shown in the inspector.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.GlobalSerializationConfig.HideSerializationCautionaryMessage">
+            <summary>
+            Whether the user has chosen to hide the cautionary serialization warning.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.GlobalSerializationConfig.HideOdinSerializeAttributeWarningMessages">
+            <summary>
+            Whether the user has chosen to hide the warning messages related to the OdinSerialize attribute.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.GlobalSerializationConfig.HideNonSerializedShowInInspectorWarningMessages">
+            <summary>
+            Whether the user has chosen to hide the warning messages related to the SerializeField and ShowInInspector attributes on non-serialized members.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.GlobalSerializationConfig.Logger">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.GlobalSerializationConfig.EditorSerializationFormat">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.GlobalSerializationConfig.BuildSerializationFormat">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.GlobalSerializationConfig.LoggingPolicy">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Serialization.GlobalSerializationConfig.ErrorHandlingPolicy">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Serialization.ILogger">
+            <summary>
+            Implements methods for logging warnings, errors and exceptions during serialization and deserialization.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Serialization.ILogger.LogWarning(System.String)">
+            <summary>
+            Logs a warning.
+            </summary>
+            <param name="warning">The warning to log.</param>
+        </member>
+        <member name="M:Sirenix.Serialization.ILogger.LogError(System.String)">
+            <summary>
+            Logs an error.
+            </summary>
+            <param name="error">The error to log.</param>
+        </member>
+        <member name="M:Sirenix.Serialization.ILogger.LogException(System.Exception)">
+            <summary>
+            Logs an exception.
+            </summary>
+            <param name="exception">The exception to log.</param>
+        </member>
+        <member name="T:Sirenix.Serialization.LoggingPolicy">
+            <summary>
+            The policy for which level of logging to do during serialization and deserialization.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.LoggingPolicy.LogErrors">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.LoggingPolicy.LogWarningsAndErrors">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Serialization.LoggingPolicy.Silent">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,219 @@
+////////////////////////////////////////////////////////////
+// Licenses //
+////////////////////////////////////////////////////////////
+
+Animancer is governed by the Unity Asset Store EULA (https://unity3d.com/legal/as_terms); however, the example scenes use animations, models, and sprites that are freely available under public licenses, the details of which are listed both here and in their respective folders.
+
+Once you are done with the examples, it is recommended that you delete them to reduce the clutter in your project. Doing so will also remove any concerns about third party asset licenses.
+
+A viewer friendly version of this document is included in the documentation: https://kybernetik.com.au/animancer/docs/source/asset-sources
+
+
+
+////////////////////////////////////////////////////////////
+// Summary //
+////////////////////////////////////////////////////////////
+
+Some assets are included in the regular Unity Asset Store License as part of Animancer:
+- https://unity3d.com/legal/as_terms
+- Crate.png
+- Ground.png
+- OpenDoor.anim
+- OpenPortcullis.anim
+- Wall.png
+
+"DefaultHumanoid.fbx" and "Spider Bot.fbx" (and its animations) are owned by Unity and do not have an explicit license.
+
+The "Humanoid-*" Animations "may be copied, modified, or redistributed without permission".
+
+All other art assets (listed below) use the Creative Commons Zero (CC0 1.0) license: https://creativecommons.org/publicdomain/zero/1.0/
+
+
+
+////////////////////////////////////////////////////////////
+// Critters.png // CC0 //
+////////////////////////////////////////////////////////////
+
+16x16 Animated Critters by patvanmackelberg:
+https://opengameart.org/content/16x16-animated-critters
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+These sprites have been altered for use in Animancer:
+- Rearranged into a square for better use of texture memory.
+- Reordered for consistency.
+- Minor detail adjustments.
+
+
+
+////////////////////////////////////////////////////////////
+// DefaultHumanoid.fbx // Owned by Unity //
+////////////////////////////////////////////////////////////
+
+This is Unity's Default Avatar used for animation previews.
+
+It does not have an explicit license, but various other assets on the Asset Store include it so it should be fine for general use.
+
+The model has been altered for use in Animancer:
+- Cleaned up the naming convention for bones, meshes, etc.
+- Added "Holder" bones under the hands for positioning held objects.
+- Replaced the main texture with an Animancer themed one.
+- Reduced texture sizes to minimise download size.
+
+
+
+////////////////////////////////////////////////////////////
+// Footsteps on Concrete // CC0 //
+////////////////////////////////////////////////////////////
+
+FootSteps in a Concrete Corridor 1.wav by cris
+https://freesound.org/people/cris/sounds/167685/
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+
+
+////////////////////////////////////////////////////////////
+// Golf Hit.ogg // CC0 //
+////////////////////////////////////////////////////////////
+
+Golf 15.wav by zolopher
+https://freesound.org/people/zolopher/sounds/75209/
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+
+
+////////////////////////////////////////////////////////////
+// Humanoid Animations // Similar to CC0 //
+////////////////////////////////////////////////////////////
+
+These animations come from the Huge FBX Mocap Library:
+https://assetstore.unity.com/packages/3d/animations/huge-fbx-mocap-library-part-1-19991
+
+Which was ported to Unity from the Carnegie-Mellon
+University mocap library: http://mocap.cs.cmu.edu/
+
+No specific license is listed, however:
+"How can I use this data?
+The motion capture data may be copied, modified, or redistributed without permission."
+From the FAQ: http://mocap.cs.cmu.edu/faqs.php
+
+These animations have all been manually edited in Unity to reduce jitter and to suit the needs of the example scenes. Their file names all start with "Humanoid-".
+
+
+
+////////////////////////////////////////////////////////////
+// Knight.png // CC0 //
+////////////////////////////////////////////////////////////
+
+The Knight - Free Sprite by pzUH:
+https://opengameart.org/content/the-knight-free-sprite
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+These sprites have been altered for use in Animancer:
+- Compiled from individual images into a single sprite sheet.
+- Scaled down to reduce package size.
+
+
+
+////////////////////////////////////////////////////////////
+// Mage.png // CC0 //
+////////////////////////////////////////////////////////////
+
+16x16 Mage by saint11:
+https://opengameart.org/content/16x16-mage
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+These sprites have been altered for use in Animancer:
+- Rearranged into a square for better use of texture memory.
+- Reordered for consistency.
+- Minor detail adjustments.
+
+
+
+////////////////////////////////////////////////////////////
+// Medical Examiner.png // CC0 //
+////////////////////////////////////////////////////////////
+
+Medical Examiner (female) by Chasersgaming:
+https://chasersgaming.itch.io/medical-examiner-female
+https://www.patreon.com/Chasersgaming
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+These sprites have been altered for use in Animancer:
+- Rearranged for better use of texture memory.
+- Minor detail adjustments.
+
+
+
+////////////////////////////////////////////////////////////
+// Pirate.png // CC0 //
+////////////////////////////////////////////////////////////
+
+RPG Asset Character 'Pirate' NES by Chasersgaming:
+https://chasersgaming.itch.io/rpg-asset-character-pirate-nes
+https://www.patreon.com/Chasersgaming
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+These sprites have been altered for use in Animancer:
+- Rearranged for better use of texture memory.
+- Minor detail adjustments.
+
+
+
+////////////////////////////////////////////////////////////
+// Spider Bot.fbx and Animations // Owned by Unity //
+////////////////////////////////////////////////////////////
+
+Mecanim Example Scenes by Unity Technologies:
+https://assetstore.unity.com/packages/essentials/tutorial-projects/mecanim-example-scenes-5328
+
+The model was originally called "mine_bot".
+
+The license applied to these assets is unclear:
+- No licensing details were included in the package or store page.
+- They have been used in other assets such as the A* Pathfinding Project:
+https://assetstore.unity.com/packages/tools/ai/a-pathfinding-project-pro-87744
+- However, Unity intended them as examples so they tend to discourage people from using them in games.
+
+The model and animations have been altered for use in Animancer:
+- Cleaned up the naming convention for bones, meshes, etc.
+- Added foot bones for each leg so it can support Two Bone IK.
+
+
+
+////////////////////////////////////////////////////////////
+// Stone.png // CC0 //
+////////////////////////////////////////////////////////////
+
+100 Seamless Textures - 461223194 by Mitch Featherston
+https://opengameart.org/node/7904
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+
+
+////////////////////////////////////////////////////////////
+// Stone Wall.png // CC0 //
+////////////////////////////////////////////////////////////
+
+Stone wall vector image - no Author listed.
+https://publicdomainvectors.org/en/free-clipart/Stone-wall-vector-image/70177.html
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+////////////////////////////////////////////////////////////
