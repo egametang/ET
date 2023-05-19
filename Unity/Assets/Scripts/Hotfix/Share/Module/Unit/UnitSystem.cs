@@ -1,9 +1,9 @@
 namespace ET
 {
-    [EntitySystem]
-    public class UnitSystem: AwakeSystem<Unit, int>
+    public static partial class UnitSystem
     {
-        protected override void Awake(Unit self, int configId)
+        [EntitySystem]
+        private static void Awake(this Unit self, int configId)
         {
             self.ConfigId = configId;
         }

@@ -1,24 +1,18 @@
 ﻿namespace ET
 {
     [FriendOf(typeof(ClientSceneManagerComponent))]
-    public static class ClientSceneManagerComponentSystem
+    public static partial class ClientSceneManagerComponentSystem
     {
         [EntitySystem]
-        public class ClientSceneManagerComponentAwakeSystem: AwakeSystem<ClientSceneManagerComponent>
+        private static void Awake(this ClientSceneManagerComponent self)
         {
-            protected override void Awake(ClientSceneManagerComponent self)
-            {
-                ClientSceneManagerComponent.Instance = self;
-            }
+            ClientSceneManagerComponent.Instance = self;
         }
 
         [EntitySystem]
-        public class ClientSceneManagerComponentDestroySystem: DestroySystem<ClientSceneManagerComponent>
+        private static void Destroy(this ClientSceneManagerComponent self)
         {
-            protected override void Destroy(ClientSceneManagerComponent self)
-            {
-                ClientSceneManagerComponent.Instance = null;
-            }
+            ClientSceneManagerComponent.Instance = null;
         }
         
         public static Scene ClientScene(this Entity entity)

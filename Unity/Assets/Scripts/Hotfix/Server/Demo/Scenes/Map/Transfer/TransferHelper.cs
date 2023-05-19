@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace ET.Server
 {
-    public static class TransferHelper
+    public static partial class TransferHelper
     {
         public static async ETTask TransferAtFrameFinish(Unit unit, long sceneInstanceId, string sceneName)
         {

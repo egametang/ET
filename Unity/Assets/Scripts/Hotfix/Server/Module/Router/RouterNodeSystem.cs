@@ -1,17 +1,9 @@
 ﻿namespace ET.Server
 {
     [FriendOf(typeof(RouterNode))]
-    public static class RouterNodeSystem
+    public static partial class RouterNodeSystem
     {
         [EntitySystem]
-        public class RouterNodeAwakeSystem: AwakeSystem<RouterNode>
-        {
-            protected override void Awake(RouterNode self)
-            {
-                self.Awake();
-            }
-        }
-        
         private static void Awake(this RouterNode self)
         {
             long timeNow = TimeHelper.ServerNow();
@@ -25,14 +17,6 @@
         }
 
         [EntitySystem]
-        public class RouterNodeDestroySystem: DestroySystem<RouterNode>
-        {
-            protected override void Destroy(RouterNode self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this RouterNode self)
         {
             self.OuterConn = 0;

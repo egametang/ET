@@ -4,38 +4,27 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    public static class LSUnitViewSystem
+    public static partial class LSUnitViewSystem
     {
-        public class AwakeSystem: AwakeSystem<LSUnitView, GameObject>
+        [EntitySystem]
+        private static void Awake(this LSUnitView self, GameObject go)
         {
-            protected override void Awake(LSUnitView self, GameObject go)
-            {
-                self.GameObject = go;
-                self.Transform = go.transform;
-                
-            }
+            self.GameObject = go;
+            self.Transform = go.transform;
+            
         }
         
-        public class RollbackSystem: RollbackSystem<LSUnitView>
+        [EntitySystem]
+        private static void Rollback(this LSUnitView self)
         {
-            protected override void Rollback(LSUnitView self)
-            {
-                //LSUnit unit = self.GetUnit();
-                //self.Transform.position = unit.Position.ToVector();
-                //self.Transform.rotation = unit.Rotation.ToQuaternion();
-                //self.t = 0;
-                //self.totalTime = 0;
-            }
+            //LSUnit unit = self.GetUnit();
+            //self.Transform.position = unit.Position.ToVector();
+            //self.Transform.rotation = unit.Rotation.ToQuaternion();
+            //self.t = 0;
+            //self.totalTime = 0;
         }
         
-        public class UpdateSystem: UpdateSystem<LSUnitView>
-        {
-            protected override void Update(LSUnitView self)
-            {
-                self.Update();
-            }
-        }
-
+        [EntitySystem]
         private static void Update(this LSUnitView self)
         {
             LSUnit unit = self.GetUnit();

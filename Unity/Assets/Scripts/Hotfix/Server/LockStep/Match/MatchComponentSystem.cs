@@ -5,17 +5,8 @@ namespace ET.Server
 {
 
     [FriendOf(typeof(MatchComponent))]
-    public static class MatchComponentSystem
+    public static partial class MatchComponentSystem
     {
-        [EntitySystem]
-        public class AwakeSystem: AwakeSystem<MatchComponent>
-        {
-            protected override void Awake(MatchComponent self)
-            {
-                
-            }
-        }
-
         public static async ETTask Match(this MatchComponent self, long playerId)
         {
             if (self.waitMatchPlayers.Contains(playerId))

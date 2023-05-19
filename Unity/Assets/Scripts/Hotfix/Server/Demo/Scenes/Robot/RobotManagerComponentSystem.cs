@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ET.Server
 {
-    public static class RobotManagerComponentSystem
+    public static partial class RobotManagerComponentSystem
     {
         public static async ETTask<Scene> NewRobot(this RobotManagerComponent self, int zone)
         {

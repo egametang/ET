@@ -4,32 +4,16 @@ using Unity.Mathematics;
 namespace ET.Server
 {
     [FriendOf(typeof(AOIEntity))]
-    public static class AOIEntitySystem2
+    public static partial class AOIEntitySystem2
     {
         [EntitySystem]
-        public class AwakeSystem: AwakeSystem<AOIEntity, int, float3>
-        {
-            protected override void Awake(AOIEntity self, int distance, float3 pos)
-            {
-                self.Awake(distance, pos);
-            }
-        }
-
-        [EntitySystem]
-        public class DestroySystem: DestroySystem<AOIEntity>
-        {
-            protected override void Destroy(AOIEntity self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this AOIEntity self, int distance, float3 pos)
         {
             self.ViewDistance = distance;
             self.DomainScene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
         }
         
+        [EntitySystem]
         private static void Destroy(this AOIEntity self)
         {
             self.DomainScene().GetComponent<AOIManagerComponent>()?.Remove(self);
@@ -45,7 +29,7 @@ namespace ET.Server
     
     [FriendOf(typeof(AOIEntity))]
     [FriendOf(typeof(Cell))]
-    public static class AOIEntitySystem
+    public static partial class AOIEntitySystem
     {
         // 获取在自己视野中的对象
         public static Dictionary<long, AOIEntity> GetSeeUnits(this AOIEntity self)

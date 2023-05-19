@@ -7,47 +7,23 @@ namespace ET.Server
     /// Actor消息分发组件
     /// </summary>
     [FriendOf(typeof(ActorMessageDispatcherComponent))]
-    public static class ActorMessageDispatcherComponentHelper
+    public static partial class ActorMessageDispatcherComponentHelper
     {
         [EntitySystem]
-        public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
-        {
-            protected override void Awake(ActorMessageDispatcherComponent self)
-            {
-                self.Awake();
-            }
-        }
-
-        [EntitySystem]
-        public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
-        {
-            protected override void Load(ActorMessageDispatcherComponent self)
-            {
-                self.Load();
-            }
-        }
-
-        [EntitySystem]
-        public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
-        {
-            protected override void Destroy(ActorMessageDispatcherComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this ActorMessageDispatcherComponent self)
         {
             ActorMessageDispatcherComponent.Instance = self;
             self.Load();
         }
         
+        [EntitySystem]
         private static void Destroy(this ActorMessageDispatcherComponent self)
         {
             self.ActorMessageHandlers.Clear();
             ActorMessageDispatcherComponent.Instance = null;
         }
-
+        
+        [EntitySystem]
         private static void Load(this ActorMessageDispatcherComponent self)
         {
             self.ActorMessageHandlers.Clear();

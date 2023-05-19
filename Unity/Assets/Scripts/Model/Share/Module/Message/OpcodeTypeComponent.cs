@@ -5,29 +5,19 @@ using MongoDB.Driver.Core.Events;
 namespace ET
 {
     [FriendOf(typeof (OpcodeTypeComponent))]
-    public static class OpcodeTypeComponentSystem
+    public static partial class OpcodeTypeComponentSystem
     {
         [EntitySystem]
-        public class OpcodeTypeComponentAwakeSystem: AwakeSystem<OpcodeTypeComponent>
+        private static void Destroy(this OpcodeTypeComponent self)
         {
-            protected override void Awake(OpcodeTypeComponent self)
-            {
-                OpcodeTypeComponent.Instance = self;
-                self.Awake();
-            }
+            OpcodeTypeComponent.Instance = null;
         }
-
+        
         [EntitySystem]
-        public class OpcodeTypeComponentDestroySystem: DestroySystem<OpcodeTypeComponent>
-        {
-            protected override void Destroy(OpcodeTypeComponent self)
-            {
-                OpcodeTypeComponent.Instance = null;
-            }
-        }
-
         private static void Awake(this OpcodeTypeComponent self)
         {
+            OpcodeTypeComponent.Instance = self;
+            
             self.requestResponse.Clear();
 
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));

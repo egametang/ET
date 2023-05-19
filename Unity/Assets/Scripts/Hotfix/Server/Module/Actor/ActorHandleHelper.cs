@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    public static class ActorHandleHelper
+    public static partial class ActorHandleHelper
     {
         public static void Reply(int fromProcess, IActorResponse response)
         {

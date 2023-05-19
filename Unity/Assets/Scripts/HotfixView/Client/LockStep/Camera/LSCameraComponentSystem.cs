@@ -3,32 +3,16 @@
 namespace ET.Client
 {
 	[FriendOf(typeof(LSCameraComponent))]
-	public static class LSCameraComponentSystem
+	public static partial class LSCameraComponentSystem
 	{
 		[EntitySystem]
-		public class AwakeSystem : AwakeSystem<LSCameraComponent>
-		{
-			protected override void Awake(LSCameraComponent self)
-			{
-				self.Awake();
-			}
-		}
-
-		[EntitySystem]
-		public class LateUpdateSystem : LateUpdateSystem<LSCameraComponent>
-		{
-			protected override void LateUpdate(LSCameraComponent self)
-			{
-				self.LateUpdate();
-			}
-		}
-
 		private static void Awake(this LSCameraComponent self)
 		{
 			self.Camera = Camera.main;
 			self.Camera.transform.rotation = Quaternion.Euler(new Vector3(20, 0, 0));
 		}
-
+		
+		[EntitySystem]
 		private static void LateUpdate(this LSCameraComponent self)
 		{
 			// 摄像机每帧更新位置

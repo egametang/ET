@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace ET.Server
 {
-    public static class SceneFactory
+    public static partial class SceneFactory
     {
         public static async ETTask<Scene> CreateServerScene(Entity parent, long id, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {

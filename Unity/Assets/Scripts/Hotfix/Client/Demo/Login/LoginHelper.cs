@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace ET.Client
 {
-    public static class LoginHelper
+    public static partial class LoginHelper
     {
         public static async ETTask Login(Scene clientScene, string account, string password)
         {

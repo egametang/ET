@@ -4,20 +4,17 @@ using UnityEngine.UI;
 namespace ET.Client
 {
 	[FriendOf(typeof(UILoginComponent))]
-	public static class UILSLoginComponentSystem
+	public static partial class UILSLoginComponentSystem
 	{
 		[EntitySystem]
-		public class UILSLoginComponentAwakeSystem : AwakeSystem<UILSLoginComponent>
+		private static void Awake(this UILSLoginComponent self)
 		{
-			protected override void Awake(UILSLoginComponent self)
-			{
-				ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
-				self.loginBtn = rc.Get<GameObject>("LoginBtn");
-				
-				self.loginBtn.GetComponent<Button>().onClick.AddListener(()=> { self.OnLogin(); });
-				self.account = rc.Get<GameObject>("Account");
-				self.password = rc.Get<GameObject>("Password");
-			}
+			ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
+			self.loginBtn = rc.Get<GameObject>("LoginBtn");
+			
+			self.loginBtn.GetComponent<Button>().onClick.AddListener(()=> { self.OnLogin(); });
+			self.account = rc.Get<GameObject>("Account");
+			self.password = rc.Get<GameObject>("Password");
 		}
 
 		

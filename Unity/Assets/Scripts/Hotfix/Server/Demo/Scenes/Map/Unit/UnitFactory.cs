@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace ET.Server
 {
-    public static class UnitFactory
+    public static partial class UnitFactory
     {
         public static Unit Create(Scene scene, long id, UnitType unitType)
         {

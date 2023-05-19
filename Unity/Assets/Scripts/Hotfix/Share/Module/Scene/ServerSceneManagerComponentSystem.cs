@@ -1,24 +1,18 @@
 ﻿namespace ET
 {
     [FriendOf(typeof(ServerSceneManagerComponent))]
-    public static class ServerSceneManagerComponentSystem
+    public static partial class ServerSceneManagerComponentSystem
     {
         [EntitySystem]
-        public class ServerSceneManagerComponentAwakeSystem: AwakeSystem<ServerSceneManagerComponent>
+        private static void Awake(this ServerSceneManagerComponent self)
         {
-            protected override void Awake(ServerSceneManagerComponent self)
-            {
-                ServerSceneManagerComponent.Instance = self;
-            }
+            ServerSceneManagerComponent.Instance = self;
         }
 
         [EntitySystem]
-        public class ServerSceneManagerComponentDestroySystem: DestroySystem<ServerSceneManagerComponent>
+        private static void Destroy(this ServerSceneManagerComponent self)
         {
-            protected override void Destroy(ServerSceneManagerComponent self)
-            {
-                ServerSceneManagerComponent.Instance = null;
-            }
+            ServerSceneManagerComponent.Instance = null;
         }
         
         public static Scene Get(this ServerSceneManagerComponent self, int id)

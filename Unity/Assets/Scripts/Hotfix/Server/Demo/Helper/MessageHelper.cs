@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ET.Server
 {
-    public static class MessageHelper
+    public static partial class MessageHelper
     {
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
         {

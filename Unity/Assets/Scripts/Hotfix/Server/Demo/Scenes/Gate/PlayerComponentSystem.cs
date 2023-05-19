@@ -3,7 +3,7 @@
 namespace ET.Server
 {
     [FriendOf(typeof(PlayerComponent))]
-    public static class PlayerComponentSystem
+    public static partial class PlayerComponentSystem
     {
         public static void Add(this PlayerComponent self, Player player)
         {

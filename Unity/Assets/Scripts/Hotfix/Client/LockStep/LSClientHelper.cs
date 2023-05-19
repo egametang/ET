@@ -3,7 +3,7 @@ using ET.Client;
 
 namespace ET
 {
-    public static class LSClientHelper
+    public static partial class LSClientHelper
     {
         public static void RunRollbackSystem(Entity entity)
         {

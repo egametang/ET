@@ -7,17 +7,9 @@ namespace ET.Server
 {
     [FriendOf(typeof (RouterComponent))]
     [FriendOf(typeof (RouterNode))]
-    public static class RouterComponentSystem
+    public static partial class RouterComponentSystem
     {
         [EntitySystem]
-        public class RouterComponentAwakeSystem: AwakeSystem<RouterComponent, IPEndPoint, string>
-        {
-            protected override void Awake(RouterComponent self, IPEndPoint outerAddress, string innerIP)
-            {
-                self.Awake(outerAddress, innerIP);
-            }
-        }
-        
         private static void Awake(this RouterComponent self, IPEndPoint outerAddress, string innerIP)
         {
             self.OuterSocket = new Socket(outerAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
@@ -40,16 +32,8 @@ namespace ET.Server
             NetworkHelper.SetSioUdpConnReset(self.OuterSocket);
             NetworkHelper.SetSioUdpConnReset(self.InnerSocket);
         }
-
-        [EntitySystem]
-        public class RouterComponentDestroySystem: DestroySystem<RouterComponent>
-        {
-            protected override void Destroy(RouterComponent self)
-            {
-                self.Destroy();
-            }
-        }
         
+        [EntitySystem]
         private static void Destroy(this RouterComponent self)
         {
             self.OuterSocket.Dispose();
@@ -59,14 +43,6 @@ namespace ET.Server
         }
 
         [EntitySystem]
-        public class RouterComponentUpdateSystem: UpdateSystem<RouterComponent>
-        {
-            protected override void Update(RouterComponent self)
-            {
-                self.Update();
-            }
-        }
-        
         private static void Update(this RouterComponent self)
         {
             long timeNow = TimeHelper.ClientNow();

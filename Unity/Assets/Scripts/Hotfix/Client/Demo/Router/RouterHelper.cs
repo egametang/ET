@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace ET.Client
 {
-    public static class RouterHelper
+    public static partial class RouterHelper
     {
         // 注册router
         public static async ETTask<Session> CreateRouterSession(Scene clientScene, IPEndPoint address)

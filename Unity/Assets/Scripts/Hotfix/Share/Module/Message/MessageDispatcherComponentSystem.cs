@@ -7,47 +7,23 @@ namespace ET
     /// 消息分发组件
     /// </summary>
     [FriendOf(typeof(MessageDispatcherComponent))]
-    public static class MessageDispatcherComponentHelper
+    public static partial class MessageDispatcherComponentHelper
     {
         [EntitySystem]
-        public class MessageDispatcherComponentAwakeSystem: AwakeSystem<MessageDispatcherComponent>
-        {
-            protected override void Awake(MessageDispatcherComponent self)
-            {
-                self.Awake();
-            }
-        }
-
-        [EntitySystem]
-        public class MessageDispatcherComponentLoadSystem: LoadSystem<MessageDispatcherComponent>
-        {
-            protected override void Load(MessageDispatcherComponent self)
-            {
-                self.Load();
-            }
-        }
-
-        [EntitySystem]
-        public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
-        {
-            protected override void Destroy(MessageDispatcherComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this MessageDispatcherComponent self)
         {
             MessageDispatcherComponent.Instance = self;
             self.Load();
         }
         
+        [EntitySystem]
         private static void Destroy(this MessageDispatcherComponent self)
         {
             MessageDispatcherComponent.Instance = null;
             self.Handlers.Clear();
         }
-
+        
+        [EntitySystem]
         private static void Load(this MessageDispatcherComponent self)
         {
             self.Handlers.Clear();

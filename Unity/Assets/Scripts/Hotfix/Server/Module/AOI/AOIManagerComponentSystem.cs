@@ -5,7 +5,7 @@ namespace ET.Server
     [FriendOf(typeof(AOIManagerComponent))]
     [FriendOf(typeof(AOIEntity))]
     [FriendOf(typeof(Cell))]
-    public static class AOIManagerComponentSystem
+    public static partial class AOIManagerComponentSystem
     {
         public static void Add(this AOIManagerComponent self, AOIEntity aoiEntity, float x, float y)
         {

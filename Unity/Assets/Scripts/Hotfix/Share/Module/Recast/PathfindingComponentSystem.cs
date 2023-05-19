@@ -5,17 +5,9 @@ using Unity.Mathematics;
 namespace ET
 {
     [FriendOf(typeof(PathfindingComponent))]
-    public static class PathfindingComponentSystem
+    public static partial class PathfindingComponentSystem
     {
         [EntitySystem]
-        public class AwakeSystem: AwakeSystem<PathfindingComponent, string>
-        {
-            protected override void Awake(PathfindingComponent self, string name)
-            {
-                self.Awake(name);
-            }
-        }
-        
         private static void Awake(this PathfindingComponent self, string name)
         {
             self.Name = name;
@@ -28,14 +20,6 @@ namespace ET
         }
 
         [EntitySystem]
-        public class DestroySystem: DestroySystem<PathfindingComponent>
-        {
-            protected override void Destroy(PathfindingComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this PathfindingComponent self)
         {
             self.Name = string.Empty;

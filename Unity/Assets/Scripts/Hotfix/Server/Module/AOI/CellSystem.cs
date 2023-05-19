@@ -4,17 +4,9 @@ using System.Text;
 namespace ET.Server
 {
     [FriendOf(typeof(Cell))]
-    public static class CellSystem
+    public static partial class CellSystem
     {
         [EntitySystem]
-        public class CellDestroySystem: DestroySystem<Cell>
-        {
-            protected override void Destroy(Cell self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this Cell self)
         {
             self.AOIUnits.Clear();

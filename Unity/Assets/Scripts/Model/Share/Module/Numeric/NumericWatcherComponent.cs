@@ -4,27 +4,21 @@ using System.Collections.Generic;
 namespace ET
 {
     [FriendOf(typeof(NumericWatcherComponent))]
-    public static class NumericWatcherComponentSystem
+    public static partial class NumericWatcherComponentSystem
     {
         [EntitySystem]
-        public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>
+        private static void Awake(this NumericWatcherComponent self)
         {
-            protected override void Awake(NumericWatcherComponent self)
-            {
-                NumericWatcherComponent.Instance = self;
-                self.Init();
-            }
+            NumericWatcherComponent.Instance = self;
+            self.Init();
         }
 
-	
-        public class NumericWatcherComponentLoadSystem : LoadSystem<NumericWatcherComponent>
+	    [EntitySystem]
+        private static void Load(this NumericWatcherComponent self)
         {
-            protected override void Load(NumericWatcherComponent self)
-            {
-                self.Init();
-            }
+            self.Init();
         }
-
+            
         private static void Init(this NumericWatcherComponent self)
         {
             self.allWatchers = new Dictionary<int, List<NumericWatcherInfo>>();

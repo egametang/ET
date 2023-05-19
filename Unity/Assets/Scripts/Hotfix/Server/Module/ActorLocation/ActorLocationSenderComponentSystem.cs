@@ -6,7 +6,7 @@ namespace ET.Server
 {
     [FriendOf(typeof(ActorLocationSenderOneType))]
     [FriendOf(typeof(ActorLocationSender))]
-    public static class ActorLocationSenderComponentSystem
+    public static partial class ActorLocationSenderComponentSystem
     {
         [Invoke(TimerInvokeType.ActorLocationSenderChecker)]
         public class ActorLocationSenderChecker: ATimer<ActorLocationSenderOneType>
@@ -24,22 +24,7 @@ namespace ET.Server
             }
         }
     
-        public class AwakeSystem: AwakeSystem<ActorLocationSenderOneType, int>
-        {
-            protected override void Awake(ActorLocationSenderOneType self, int locationType)
-            {
-                self.Awake(locationType);
-            }
-        }
-
-        public class DestroySystem: DestroySystem<ActorLocationSenderOneType>
-        {
-            protected override void Destroy(ActorLocationSenderOneType self)
-            {
-                self.Destroy();
-            }
-        }
-        
+        [EntitySystem]
         private static void Awake(this ActorLocationSenderOneType self, int locationType)
         {
             self.LocationType = locationType;
@@ -48,6 +33,7 @@ namespace ET.Server
             self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
         }
         
+        [EntitySystem]
         private static void Destroy(this ActorLocationSenderOneType self)
         {
             TimerComponent.Instance?.Remove(ref self.CheckTimer);
@@ -293,26 +279,9 @@ namespace ET.Server
     }
 
     [FriendOf(typeof (ActorLocationSenderComponent))]
-    public static class ActorLocationSenderManagerComponentSystem
+    public static partial class ActorLocationSenderManagerComponentSystem
     {
         [EntitySystem]
-        public class AwakeSystem: AwakeSystem<ActorLocationSenderComponent>
-        {
-            protected override void Awake(ActorLocationSenderComponent self)
-            {
-                self.Awake();
-            }
-        }
-
-        [EntitySystem]
-        public class DestroySystem: DestroySystem<ActorLocationSenderComponent>
-        {
-            protected override void Destroy(ActorLocationSenderComponent self)
-            {
-                ActorLocationSenderComponent.Instance = null;
-            }
-        }
-        
         private static void Awake(this ActorLocationSenderComponent self)
         {
             ActorLocationSenderComponent.Instance = self;

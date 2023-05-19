@@ -2,15 +2,21 @@ using System;
 
 namespace ET.Client
 {
-    [EntitySystem]
-    public class PingComponentAwakeSystem: AwakeSystem<PingComponent>
+    public static partial class PingComponentSystem
     {
-        protected override void Awake(PingComponent self)
+        [EntitySystem]
+        private static void Awake(this PingComponent self)
         {
-            PingAsync(self).Coroutine();
+            self.PingAsync().Coroutine();
         }
-
-        private static async ETTask PingAsync(PingComponent self)
+        
+        [EntitySystem]
+        private static void Destroy(this PingComponent self)
+        {
+            self.Ping = default;
+        }
+        
+        private static async ETTask PingAsync(this PingComponent self)
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;
@@ -53,15 +59,6 @@ namespace ET.Client
                     Log.Error($"ping error: \n{e}");
                 }
             }
-        }
-    }
-
-    [EntitySystem]
-    public class PingComponentDestroySystem: DestroySystem<PingComponent>
-    {
-        protected override void Destroy(PingComponent self)
-        {
-            self.Ping = default;
         }
     }
 }

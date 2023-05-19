@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace ET.Server
 {
-    public static class WatcherHelper
+    public static partial class WatcherHelper
     {
         public static StartMachineConfig GetThisMachineConfig()
         {

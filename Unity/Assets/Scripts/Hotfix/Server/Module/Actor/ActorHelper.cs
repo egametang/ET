@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ET.Server
 {
-    public static class ActorHelper
+    public static partial class ActorHelper
     {
         public static IActorResponse CreateResponse(IActorRequest iActorRequest, int error)
         {

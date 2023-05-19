@@ -5,7 +5,7 @@ namespace ET.Server
 {
     [FriendOf(typeof(MoveComponent))]
     [FriendOf(typeof(NumericComponent))]
-    public static class UnitHelper
+    public static partial class UnitHelper
     {
         public static UnitInfo CreateUnitInfo(Unit unit)
         {

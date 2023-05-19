@@ -3,17 +3,14 @@ using System;
 namespace ET.Server
 {
     [FriendOf(typeof(RoomServerComponent))]
-    public static class RoomServerComponentSystem
+    public static partial class RoomServerComponentSystem
     {
         [EntitySystem]
-        public class RoomServerComponentAwakeSystem: AwakeSystem<RoomServerComponent, Match2Map_GetRoom>
+        private static void Awake(this RoomServerComponent self, Match2Map_GetRoom match2MapGetRoom)
         {
-            protected override void Awake(RoomServerComponent self, Match2Map_GetRoom match2MapGetRoom)
+            foreach (long id in match2MapGetRoom.PlayerIds)
             {
-                foreach (long id in match2MapGetRoom.PlayerIds)
-                {
-                    RoomPlayer roomPlayer = self.AddChildWithId<RoomPlayer>(id);
-                }
+                RoomPlayer roomPlayer = self.AddChildWithId<RoomPlayer>(id);
             }
         }
 

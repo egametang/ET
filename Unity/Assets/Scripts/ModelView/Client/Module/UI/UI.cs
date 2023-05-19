@@ -4,33 +4,27 @@ using UnityEngine;
 namespace ET.Client
 {
     [FriendOf(typeof(UI))]
-    public static class UISystem
+    public static partial class UISystem
     {
         [EntitySystem]
-        public class UIAwakeSystem : AwakeSystem<UI, string, GameObject>
+        private static void Awake(this UI self, string name, GameObject gameObject)
         {
-            protected override void Awake(UI self, string name, GameObject gameObject)
-            {
-                self.nameChildren.Clear();
-                gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
-                self.Name = name;
-                self.GameObject = gameObject;
-            }
+            self.nameChildren.Clear();
+            gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
+            self.Name = name;
+            self.GameObject = gameObject;
         }
 		
         [EntitySystem]
-        public class UIDestroySystem : DestroySystem<UI>
+        private static void Destroy(this UI self)
         {
-            protected override void Destroy(UI self)
+            foreach (UI ui in self.nameChildren.Values)
             {
-                foreach (UI ui in self.nameChildren.Values)
-                {
-                    ui.Dispose();
-                }
-			
-                UnityEngine.Object.Destroy(self.GameObject);
-                self.nameChildren.Clear();
+                ui.Dispose();
             }
+		
+            UnityEngine.Object.Destroy(self.GameObject);
+            self.nameChildren.Clear();
         }
 
         public static void SetAsFirstSibling(this UI self)

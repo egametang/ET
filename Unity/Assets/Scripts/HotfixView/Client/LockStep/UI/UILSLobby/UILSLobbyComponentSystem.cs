@@ -5,25 +5,22 @@ using UnityEngine.UI;
 namespace ET.Client
 {
     [FriendOf(typeof(UILSLobbyComponent))]
-    public static class UILSLobbyComponentSystem
+    public static partial class UILSLobbyComponentSystem
     {
         [EntitySystem]
-        public class UILSLobbyComponentAwakeSystem: AwakeSystem<UILSLobbyComponent>
+        private static void Awake(this UILSLobbyComponent self)
         {
-            protected override void Awake(UILSLobbyComponent self)
-            {
-                ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
+            ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 
-                self.enterMap = rc.Get<GameObject>("EnterMap");
-                self.enterMap.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    self.EnterMap().Coroutine();
-                });
-                
-                self.replay = rc.Get<GameObject>("Replay").GetComponent<Button>();
-                self.replayPath = rc.Get<GameObject>("ReplayPath").GetComponent<InputField>();
-                self.replay.onClick.AddListener(self.Replay);
-            }
+            self.enterMap = rc.Get<GameObject>("EnterMap");
+            self.enterMap.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                self.EnterMap().Coroutine();
+            });
+            
+            self.replay = rc.Get<GameObject>("Replay").GetComponent<Button>();
+            self.replayPath = rc.Get<GameObject>("ReplayPath").GetComponent<InputField>();
+            self.replay.onClick.AddListener(self.Replay);
         }
 
         private static async ETTask EnterMap(this UILSLobbyComponent self)

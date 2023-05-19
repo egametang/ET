@@ -6,16 +6,9 @@ using System.Net.Sockets;
 namespace ET.Client
 {
     [FriendOf(typeof(RouterAddressComponent))]
-    public static class RouterAddressComponentSystem
+    public static partial class RouterAddressComponentSystem
     {
-        public class RouterAddressComponentAwakeSystem: AwakeSystem<RouterAddressComponent, string, int>
-        {
-            protected override void Awake(RouterAddressComponent self, string address, int port)
-            {
-                self.Awake(address, port);
-            }
-        }
-
+        [EntitySystem]
         private static void Awake(this RouterAddressComponent self, string address, int port)
         {
             self.RouterManagerHost = address;

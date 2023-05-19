@@ -4,22 +4,18 @@ using System.Diagnostics;
 namespace ET.Server
 {
     [FriendOf(typeof(WatcherComponent))]
-    public static class WatcherComponentSystem
+    public static partial class WatcherComponentSystem
     {
-        public class WatcherComponentAwakeSystem: AwakeSystem<WatcherComponent>
+        [EntitySystem]
+        private static void Awake(this WatcherComponent self)
         {
-            protected override void Awake(WatcherComponent self)
-            {
-                WatcherComponent.Instance = self;
-            }
+            WatcherComponent.Instance = self;
         }
     
-        public class WatcherComponentDestroySystem: DestroySystem<WatcherComponent>
+        [EntitySystem]
+        private static void Destroy(this WatcherComponent self)
         {
-            protected override void Destroy(WatcherComponent self)
-            {
-                WatcherComponent.Instance = null;
-            }
+            WatcherComponent.Instance = null;
         }
         
         public static void Start(this WatcherComponent self, int createScenes = 0)

@@ -1,7 +1,7 @@
 namespace ET.Server
 {
 
-    public static class RoomMessageHelper
+    public static partial class RoomMessageHelper
     {
         public static void BroadCast(Room room, IActorMessage message)
         {

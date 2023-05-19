@@ -4,37 +4,17 @@ using UnityEngine;
 namespace ET.Client
 {
 	[FriendOf(typeof(AnimatorComponent))]
-	public static class AnimatorComponentSystem
+	public static partial class AnimatorComponentSystem
 	{
 		[EntitySystem]
-		public class AwakeSystem : AwakeSystem<AnimatorComponent>
+		private static void Destroy(this AnimatorComponent self)
 		{
-			protected override void Awake(AnimatorComponent self)
-			{
-				self.Awake();
-			}
+			self.animationClips = null;
+			self.Parameter = null;
+			self.Animator = null;
 		}
-
+			
 		[EntitySystem]
-		public class UpdateSystem : UpdateSystem<AnimatorComponent>
-		{
-			protected override void Update(AnimatorComponent self)
-			{
-				self.Update();
-			}
-		}
-	
-		[EntitySystem]
-		public class DestroySystem : DestroySystem<AnimatorComponent>
-		{
-			protected override void Destroy(AnimatorComponent self)
-			{
-				self.animationClips = null;
-				self.Parameter = null;
-				self.Animator = null;
-			}
-		}
-
 		private static void Awake(this AnimatorComponent self)
 		{
 			Animator animator = self.GetParent<Unit>().GetComponent<GameObjectComponent>().GameObject.GetComponent<Animator>();
@@ -63,7 +43,8 @@ namespace ET.Client
 				self.Parameter.Add(animatorControllerParameter.name);
 			}
 		}
-
+		
+		[EntitySystem]
 		private static void Update(this AnimatorComponent self)
 		{
 			if (self.isStop)

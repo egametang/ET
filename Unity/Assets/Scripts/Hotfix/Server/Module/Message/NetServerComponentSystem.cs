@@ -3,17 +3,9 @@
 namespace ET.Server
 {
     [FriendOf(typeof(NetServerComponent))]
-    public static class NetServerComponentSystem
+    public static partial class NetServerComponentSystem
     {
         [EntitySystem]
-        public class AwakeSystem: AwakeSystem<NetServerComponent, IPEndPoint>
-        {
-            protected override void Awake(NetServerComponent self, IPEndPoint address)
-            {
-                self.Awake(address);
-            }
-        }
-        
         private static void Awake(this NetServerComponent self, IPEndPoint address)
         {
             self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Outer));
@@ -23,14 +15,6 @@ namespace ET.Server
         }
 
         [EntitySystem]
-        public class NetKcpComponentDestroySystem: DestroySystem<NetServerComponent>
-        {
-            protected override void Destroy(NetServerComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this NetServerComponent self)
         {
             NetServices.Instance.RemoveService(self.ServiceId);

@@ -1,7 +1,7 @@
 namespace ET.Client
 {
 
-    public static class LSSceneChangeHelper
+    public static partial class LSSceneChangeHelper
     {
         // 场景切换协程
         public static async ETTask SceneChangeTo(Scene clientScene, string sceneName, long sceneInstanceId)

@@ -1,16 +1,12 @@
-﻿
-
-namespace ET.Server
+﻿namespace ET.Server
 {
-	public static class SessionPlayerComponentSystem
-	{
-		public class SessionPlayerComponentDestroySystem: DestroySystem<SessionPlayerComponent>
-		{
-			protected override void Destroy(SessionPlayerComponent self)
-			{
-				// 发送断线消息
-				ActorLocationSenderComponent.Instance?.Get(LocationType.Unit)?.Send(self.Player.Id, new G2M_SessionDisconnect());
-			}
-		}
-	}
+    public static partial class SessionPlayerComponentSystem
+    {
+        [EntitySystem]
+        private static void Destroy(this SessionPlayerComponent self)
+        {
+            // 发送断线消息
+            ActorLocationSenderComponent.Instance?.Get(LocationType.Unit)?.Send(self.Player.Id, new G2M_SessionDisconnect());
+        }
+    }
 }

@@ -2,7 +2,7 @@ using System.Net.Sockets;
 
 namespace ET.Client
 {
-    public static class SceneFactory
+    public static partial class SceneFactory
     {
         public static async ETTask<Scene> CreateClientScene(int zone, SceneType sceneType, string name)
         {

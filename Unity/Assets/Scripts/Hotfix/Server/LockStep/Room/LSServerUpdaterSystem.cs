@@ -4,17 +4,9 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [FriendOf(typeof(LSServerUpdater))]
-    public static class LSServerUpdaterSystem
+    public static partial class LSServerUpdaterSystem
     {
         [EntitySystem]
-        public class UpdateSystem: UpdateSystem<LSServerUpdater>
-        {
-            protected override void Update(LSServerUpdater self)
-            {
-                self.Update();
-            }
-        }
-        
         private static void Update(this LSServerUpdater self)
         {
             Room room = self.GetParent<Room>();

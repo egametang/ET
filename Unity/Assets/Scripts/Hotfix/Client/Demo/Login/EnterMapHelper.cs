@@ -3,7 +3,7 @@ using System;
 
 namespace ET.Client
 {
-    public static class EnterMapHelper
+    public static partial class EnterMapHelper
     {
         public static async ETTask EnterMapAsync(Scene clientScene)
         {

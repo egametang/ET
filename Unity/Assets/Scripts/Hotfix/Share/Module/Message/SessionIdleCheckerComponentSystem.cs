@@ -3,7 +3,7 @@ using System;
 namespace ET
 {
     [FriendOf(typeof(SessionIdleCheckerComponent))]
-    public static class SessionIdleCheckerComponentSystem
+    public static partial class SessionIdleCheckerComponentSystem
     {
         [Invoke(TimerInvokeType.SessionIdleChecker)]
         public class SessionIdleChecker: ATimer<SessionIdleCheckerComponent>
@@ -22,28 +22,12 @@ namespace ET
         }
     
         [EntitySystem]
-        public class SessionIdleCheckerComponentAwakeSystem: AwakeSystem<SessionIdleCheckerComponent>
-        {
-            protected override void Awake(SessionIdleCheckerComponent self)
-            {
-                self.Awake();
-            }
-        }
-
-        [EntitySystem]
-        public class SessionIdleCheckerComponentDestroySystem: DestroySystem<SessionIdleCheckerComponent>
-        {
-            protected override void Destroy(SessionIdleCheckerComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this SessionIdleCheckerComponent self)
         {
             self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(SessionIdleCheckerComponentSystem.CheckInteral, TimerInvokeType.SessionIdleChecker, self);
         }
         
+        [EntitySystem]
         private static void Destroy(this SessionIdleCheckerComponent self)
         {
             TimerComponent.Instance?.Remove(ref self.RepeatedTimer);

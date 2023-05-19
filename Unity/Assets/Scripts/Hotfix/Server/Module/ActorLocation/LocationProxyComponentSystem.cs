@@ -2,26 +2,20 @@
 
 namespace ET.Server
 {
-    [EntitySystem]
-    public class LocationProxyComponentAwakeSystem: AwakeSystem<LocationProxyComponent>
+    public static partial class LocationProxyComponentSystem
     {
-        protected override void Awake(LocationProxyComponent self)
+        [EntitySystem]
+        private static void Awake(this LocationProxyComponent self)
         {
             LocationProxyComponent.Instance = self;
         }
-    }
     
-    [EntitySystem]
-    public class LocationProxyComponentDestroySystem: DestroySystem<LocationProxyComponent>
-    {
-        protected override void Destroy(LocationProxyComponent self)
+        [EntitySystem]
+        private static void Destroy(this LocationProxyComponent self)
         {
             LocationProxyComponent.Instance = null;
         }
-    }
-
-    public static class LocationProxyComponentSystem
-    {
+        
         private static long GetLocationSceneId(long key)
         {
             return StartSceneConfigCategory.Instance.LocationConfig.InstanceId;

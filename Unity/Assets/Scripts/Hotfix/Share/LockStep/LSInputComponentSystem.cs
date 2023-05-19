@@ -4,17 +4,9 @@ using TrueSync;
 
 namespace ET
 {
-    public static class LSInputComponentSystem
+    public static partial class LSInputComponentSystem
     {
         [EntitySystem]
-        public class LSUpdateSystem: LSUpdateSystem<LSInputComponent>
-        {
-            protected override void LSUpdate(LSInputComponent self)
-            {
-                self.LSUpdate();
-            }
-        }
-
         public static void LSUpdate(this LSInputComponent self)
         {
             LSUnit unit = self.GetParent<LSUnit>();

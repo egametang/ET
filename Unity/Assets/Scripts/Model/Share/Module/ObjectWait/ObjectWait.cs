@@ -22,31 +22,15 @@ namespace ET
     }
 
     [FriendOf(typeof(ObjectWait))]
-    public static class ObjectWaitSystem
+    public static partial class ObjectWaitSystem
     {
         [EntitySystem]
-        public class ObjectWaitAwakeSystem: AwakeSystem<ObjectWait>
-        {
-            protected override void Awake(ObjectWait self)
-            {
-                self.Awake();
-            }
-        }
-
-        [EntitySystem]
-        public class ObjectWaitDestroySystem: DestroySystem<ObjectWait>
-        {
-            protected override void Destroy(ObjectWait self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this ObjectWait self)
         {
             self.tcss.Clear();
         }
         
+        [EntitySystem]
         private static void Destroy(this ObjectWait self)
         {
             foreach (object v in self.tcss.Values.ToArray())

@@ -19,17 +19,9 @@ namespace ET
     }
     
     [FriendOf(typeof(Session))]
-    public static class SessionSystem
+    public static partial class SessionSystem
     {
         [EntitySystem]
-        public class SessionAwakeSystem: AwakeSystem<Session, int>
-        {
-            protected override void Awake(Session self, int serviceId)
-            {
-                self.Awake(serviceId);
-            }
-        }
-        
         private static void Awake(this Session self, int serviceId)
         {
             self.ServiceId = serviceId;
@@ -43,14 +35,6 @@ namespace ET
         }
         
         [EntitySystem]
-        public class SessionDestroySystem: DestroySystem<Session>
-        {
-            protected override void Destroy(Session self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this Session self)
         {
             NetServices.Instance.RemoveChannel(self.ServiceId, self.Id, self.Error);

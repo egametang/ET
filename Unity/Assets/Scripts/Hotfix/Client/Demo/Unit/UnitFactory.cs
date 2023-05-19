@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-    public static class UnitFactory
+    public static partial class UnitFactory
     {
         public static Unit Create(Scene currentScene, UnitInfo unitInfo)
         {

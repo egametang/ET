@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-	public static class UnitComponentSystem
+	public static partial class UnitComponentSystem
 	{
 		public static void Add(this UnitComponent self, Unit unit)
 		{

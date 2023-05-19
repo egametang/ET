@@ -3,15 +3,15 @@ using System.Net;
 
 namespace ET.Client
 {
-    [EntitySystem]
-    public class RouterCheckComponentAwakeSystem: AwakeSystem<RouterCheckComponent>
+    public static partial class RouterCheckComponentSystem
     {
-        protected override void Awake(RouterCheckComponent self)
+        [EntitySystem]
+        private static void Awake(this RouterCheckComponent self)
         {
-            CheckAsync(self).Coroutine();
+            self.CheckAsync().Coroutine();
         }
 
-        private static async ETTask CheckAsync(RouterCheckComponent self)
+        private static async ETTask CheckAsync(this RouterCheckComponent self)
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;

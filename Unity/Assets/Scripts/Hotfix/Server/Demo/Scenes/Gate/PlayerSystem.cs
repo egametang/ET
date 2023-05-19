@@ -1,15 +1,12 @@
 ﻿namespace ET.Server
 {
     [FriendOf(typeof(Player))]
-    public static class PlayerSystem
+    public static partial class PlayerSystem
     {
         [EntitySystem]
-        public class PlayerAwakeSystem : AwakeSystem<Player, string>
+        private static void Awake(this Player self, string a)
         {
-            protected override void Awake(Player self, string a)
-            {
-                self.Account = a;
-            }
+            self.Account = a;
         }
     }
 }

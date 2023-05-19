@@ -4,24 +4,18 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [FriendOf(typeof(RobotCaseComponent))]
-    public static class RobotCaseComponentSystem
+    public static partial class RobotCaseComponentSystem
     {
         [EntitySystem]
-        public class RobotCaseComponentAwakeSystem: AwakeSystem<RobotCaseComponent>
+        private static void Awake(this RobotCaseComponent self)
         {
-            protected override void Awake(RobotCaseComponent self)
-            {
-                RobotCaseComponent.Instance = self;
-            }
+            RobotCaseComponent.Instance = self;
         }
 
         [EntitySystem]
-        public class RobotCaseComponentDestroySystem: DestroySystem<RobotCaseComponent>
+        private static void Destroy(this RobotCaseComponent self)
         {
-            protected override void Destroy(RobotCaseComponent self)
-            {
-                RobotCaseComponent.Instance = null;
-            }
+            RobotCaseComponent.Instance = null;
         }
         
         public static int GetN(this RobotCaseComponent self)

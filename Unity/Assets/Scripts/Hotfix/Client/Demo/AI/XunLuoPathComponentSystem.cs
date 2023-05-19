@@ -3,7 +3,7 @@ using Unity.Mathematics;
 namespace ET.Client
 {
     [FriendOf(typeof(XunLuoPathComponent))]
-    public static class XunLuoPathComponentSystem
+    public static partial class XunLuoPathComponentSystem
     {
         public static float3 GetCurrent(this XunLuoPathComponent self)
         {

@@ -4,7 +4,7 @@ namespace ET
 {
     [FriendOf(typeof(AIComponent))]
     [FriendOf(typeof(AIDispatcherComponent))]
-    public static class AIComponentSystem
+    public static partial class AIComponentSystem
     {
         [Invoke(TimerInvokeType.AITimer)]
         public class AITimer: ATimer<AIComponent>
@@ -23,14 +23,6 @@ namespace ET
         }
     
         [EntitySystem]
-        public class AIComponentAwakeSystem: AwakeSystem<AIComponent, int>
-        {
-            protected override void Awake(AIComponent self, int aiConfigId)
-            {
-                self.Awake(aiConfigId);
-            }
-        }
-        
         private static void Awake(this AIComponent self, int aiConfigId)
         {
             self.AIConfigId = aiConfigId;
@@ -38,14 +30,6 @@ namespace ET
         }
 
         [EntitySystem]
-        public class AIComponentDestroySystem: DestroySystem<AIComponent>
-        {
-            protected override void Destroy(AIComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this AIComponent self)
         {
             TimerComponent.Instance?.Remove(ref self.Timer);

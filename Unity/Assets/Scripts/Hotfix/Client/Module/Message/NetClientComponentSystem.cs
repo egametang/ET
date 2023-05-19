@@ -4,26 +4,9 @@ using System.Net.Sockets;
 namespace ET.Client
 {
     [FriendOf(typeof(NetClientComponent))]
-    public static class NetClientComponentSystem
+    public static partial class NetClientComponentSystem
     {
         [EntitySystem]
-        public class AwakeSystem: AwakeSystem<NetClientComponent, AddressFamily>
-        {
-            protected override void Awake(NetClientComponent self, AddressFamily addressFamily)
-            {
-                self.Awake(addressFamily);
-            }
-        }
-
-        [EntitySystem]
-        public class DestroySystem: DestroySystem<NetClientComponent>
-        {
-            protected override void Destroy(NetClientComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this NetClientComponent self, AddressFamily addressFamily)
         {
             self.ServiceId = NetServices.Instance.AddService(new KService(addressFamily, ServiceType.Outer));
@@ -31,6 +14,7 @@ namespace ET.Client
             NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
         }
         
+        [EntitySystem]
         private static void Destroy(this NetClientComponent self)
         {
             NetServices.Instance.RemoveService(self.ServiceId);

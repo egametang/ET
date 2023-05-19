@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace ET.Client
 {
-    public static class HttpClientHelper
+    public static partial class HttpClientHelper
     {
         public static async ETTask<string> Get(string link)
         {

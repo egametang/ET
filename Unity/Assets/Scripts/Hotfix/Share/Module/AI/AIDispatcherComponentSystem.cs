@@ -3,17 +3,9 @@ using System;
 namespace ET
 {
     [FriendOf(typeof(AIDispatcherComponent))]
-    public static class AIDispatcherComponentSystem
+    public static partial class AIDispatcherComponentSystem
     {
         [EntitySystem]
-        public class AIDispatcherComponentAwakeSystem: AwakeSystem<AIDispatcherComponent>
-        {
-            protected override void Awake(AIDispatcherComponent self)
-            {
-                self.Awake();
-            }
-        }
-        
         private static void Awake(this AIDispatcherComponent self)
         {
             AIDispatcherComponent.Instance = self;
@@ -21,29 +13,13 @@ namespace ET
         }
 
         [EntitySystem]
-        public class AIDispatcherComponentLoadSystem: LoadSystem<AIDispatcherComponent>
-        {
-            protected override void Load(AIDispatcherComponent self)
-            {
-                self.Load();
-            }
-        }
-
-        [EntitySystem]
-        public class AIDispatcherComponentDestroySystem: DestroySystem<AIDispatcherComponent>
-        {
-            protected override void Destroy(AIDispatcherComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Destroy(this AIDispatcherComponent self)
         {
             self.AIHandlers.Clear();
             AIDispatcherComponent.Instance = null;
         }
         
+        [EntitySystem]
         private static void Load(this AIDispatcherComponent self)
         {
             self.AIHandlers.Clear();

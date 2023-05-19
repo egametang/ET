@@ -3,17 +3,9 @@ using System;
 namespace ET.Client
 {
     [FriendOf(typeof(LSReplayUpdater))]
-    public static class LSReplayComponentSystem
+    public static partial class LSReplayComponentSystem
     {
         [EntitySystem]
-        public class UpdateSystem: UpdateSystem<LSReplayUpdater>
-        {
-            protected override void Update(LSReplayUpdater self)
-            {
-                self.Update();
-            }
-        }
-
         private static void Update(this LSReplayUpdater self)
         {
             Room room = self.GetParent<Room>();

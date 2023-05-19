@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace ET.Server
 {
-    public static class MoveHelper
+    public static partial class MoveHelper
     {
         // 可以多次调用，多次调用的话会取消上一次的协程
         public static async ETTask FindPathMoveToAsync(this Unit unit, float3 target)

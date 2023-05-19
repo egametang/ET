@@ -1,6 +1,6 @@
 namespace ET.Server
 {
-    public static class RobotSceneFactory
+    public static partial class RobotSceneFactory
     {
         public static async ETTask<Scene> Create(
             Entity parent,

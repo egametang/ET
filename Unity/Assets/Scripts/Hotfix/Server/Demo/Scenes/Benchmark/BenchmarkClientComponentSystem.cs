@@ -4,16 +4,14 @@ using ET.Client;
 
 namespace ET.Server
 {
-    public static class BenchmarkClientComponentSystem
+    public static partial class BenchmarkClientComponentSystem
     {
-        public class AwakeSystem: AwakeSystem<BenchmarkClientComponent>
+        [EntitySystem]
+        private static void Awake(this BenchmarkClientComponent self)
         {
-            protected override void Awake(BenchmarkClientComponent self)
+            for (int i = 0; i < 50; ++i)
             {
-                for (int i = 0; i < 50; ++i)
-                {
-                    self.Start().Coroutine();
-                }
+                self.Start().Coroutine();
             }
         }
 

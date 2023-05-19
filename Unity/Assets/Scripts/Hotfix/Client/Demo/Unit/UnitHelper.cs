@@ -1,6 +1,6 @@
 ﻿namespace ET.Client
 {
-    public static class UnitHelper
+    public static partial class UnitHelper
     {
         public static Unit GetMyUnitFromClientScene(Scene clientScene)
         {

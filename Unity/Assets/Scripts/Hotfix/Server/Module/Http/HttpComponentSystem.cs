@@ -5,16 +5,9 @@ using System.Net;
 namespace ET.Server
 {
     [FriendOf(typeof(HttpComponent))]
-    public static class HttpComponentSystem
+    public static partial class HttpComponentSystem
     {
-        public class HttpComponentAwakeSystem : AwakeSystem<HttpComponent, string>
-        {
-            protected override void Awake(HttpComponent self, string address)
-            {
-                self.Awake(address);
-            }
-        }
-        
+        [EntitySystem]
         private static void Awake(this HttpComponent self, string address)
         {
             try
@@ -41,31 +34,15 @@ namespace ET.Server
                 throw new Exception($"请先在cmd中运行: netsh http add urlacl url=http://*:你的address中的端口/ user=Everyone, address: {address}", e);
             }
         }
-
-        [EntitySystem]
-        public class HttpComponentLoadSystem: LoadSystem<HttpComponent>
-        {
-            protected override void Load(HttpComponent self)
-            {
-                self.Load();
-            }
-        }
-
-        [EntitySystem]
-        public class HttpComponentDestroySystem: DestroySystem<HttpComponent>
-        {
-            protected override void Destroy(HttpComponent self)
-            {
-                self.Destroy();
-            }
-        }
         
+        [EntitySystem]
         private static void Destroy(this HttpComponent self)
         {
             self.Listener.Stop();
             self.Listener.Close();
         }
-
+        
+        [EntitySystem]
         private static void Load(this HttpComponent self)
         {
             self.dispatcher = new Dictionary<string, IHttpHandler>();

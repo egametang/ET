@@ -4,25 +4,16 @@ using System.IO;
 namespace ET.Client
 {
     [FriendOf(typeof (LSClientUpdater))]
-    public static class LSClientUpdaterSystem
+    public static partial class LSClientUpdaterSystem
     {
-        public class AwakeSystem: AwakeSystem<LSClientUpdater>
+        [EntitySystem]
+        private static void Awake(this LSClientUpdater self)
         {
-            protected override void Awake(LSClientUpdater self)
-            {
-                Room room = self.GetParent<Room>();
-                self.MyId = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
-            }
+            Room room = self.GetParent<Room>();
+            self.MyId = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
         }
         
-        public class UpdateSystem: UpdateSystem<LSClientUpdater>
-        {
-            protected override void Update(LSClientUpdater self)
-            {
-                self.Update();
-            }
-        }
-
+        [EntitySystem]
         private static void Update(this LSClientUpdater self)
         {
             Room room = self.GetParent<Room>();

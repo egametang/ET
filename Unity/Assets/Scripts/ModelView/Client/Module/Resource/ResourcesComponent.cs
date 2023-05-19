@@ -7,35 +7,29 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [FriendOf(typeof(ABInfo))]
-    public static class ABInfoSystem
+    [FriendOf(typeof (ABInfo))]
+    public static partial class ABInfoSystem
     {
         [EntitySystem]
-        public class ABInfoAwakeSystem: AwakeSystem<ABInfo, string, AssetBundle>
+        private static void Awake(this ABInfo self, string abName, AssetBundle a)
         {
-            protected override void Awake(ABInfo self, string abName, AssetBundle a)
-            {
-                self.AssetBundle = a;
-                self.Name = abName;
-                self.RefCount = 1;
-                self.AlreadyLoadAssets = false;
-            }
+            self.AssetBundle = a;
+            self.Name = abName;
+            self.RefCount = 1;
+            self.AlreadyLoadAssets = false;
         }
 
         [EntitySystem]
-        public class ABInfoDestroySystem: DestroySystem<ABInfo>
+        private static void Destroy(this ABInfo self)
         {
-            protected override void Destroy(ABInfo self)
-            {
-                //Log.Debug($"desdroy assetbundle: {self.Name}");
+            //Log.Debug($"desdroy assetbundle: {self.Name}");
 
-                self.RefCount = 0;
-                self.Name = "";
-                self.AlreadyLoadAssets = false;
-                self.AssetBundle = null;
-            }
+            self.RefCount = 0;
+            self.Name = "";
+            self.AlreadyLoadAssets = false;
+            self.AssetBundle = null;
         }
-        
+
         public static void Destroy(this ABInfo self, bool unload = true)
         {
             if (self.AssetBundle != null)
@@ -47,7 +41,7 @@ namespace ET.Client
         }
     }
 
-    [ChildOf(typeof(ResourcesComponent))]
+    [ChildOf(typeof (ResourcesComponent))]
     public class ABInfo: Entity, IAwake<string, AssetBundle>, IDestroy
     {
         public string Name { get; set; }
@@ -60,7 +54,7 @@ namespace ET.Client
     }
 
     // 用于字符串转换，减少GC
-    [FriendOf(typeof(ResourcesComponent))]
+    [FriendOf(typeof (ResourcesComponent))]
     public static class AssetBundleHelper
     {
         public static string IntToString(this int value)
@@ -108,49 +102,41 @@ namespace ET.Client
         }
     }
 
-
-
-    [FriendOf(typeof(ABInfo))]
-    [FriendOf(typeof(ResourcesComponent))]
-    public static class ResourcesComponentSystem
+    [FriendOf(typeof (ABInfo))]
+    [FriendOf(typeof (ResourcesComponent))]
+    public static partial class ResourcesComponentSystem
     {
         [EntitySystem]
-        public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
+        private static void Awake(this ResourcesComponent self)
         {
-            protected override void Awake(ResourcesComponent self)
+            ResourcesComponent.Instance = self;
+            if (Define.IsAsync)
             {
-                ResourcesComponent.Instance = self;
-                if (Define.IsAsync)
-                {
-                    self.LoadOneBundle("StreamingAssets");
-                    self.AssetBundleManifestObject = (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
-                    self.UnloadBundle("StreamingAssets", false);
-                }
+                self.LoadOneBundle("StreamingAssets");
+                self.AssetBundleManifestObject = (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
+                self.UnloadBundle("StreamingAssets", false);
             }
         }
-        
+
         [EntitySystem]
-        public class ResourcesComponentDestroySystem: DestroySystem<ResourcesComponent>
+        private static void Destroy(this ResourcesComponent self)
         {
-            protected override void Destroy(ResourcesComponent self)
+            ResourcesComponent.Instance = null;
+
+            foreach (var abInfo in self.bundles)
             {
-                ResourcesComponent.Instance = null;
+                abInfo.Value.Destroy();
+            }
 
-                foreach (var abInfo in self.bundles)
-                {
-                    abInfo.Value.Destroy();
-                }
-
-                self.bundles.Clear();
-                self.resourceCache.Clear();
-                self.IntToStringDict.Clear();
-                self.StringToABDict.Clear();
-                self.BundleNameToLowerDict.Clear();
-                if (self.AssetBundleManifestObject != null)
-                {
-                    UnityEngine.Object.Destroy(self.AssetBundleManifestObject);
-                    self.AssetBundleManifestObject = null;
-                }
+            self.bundles.Clear();
+            self.resourceCache.Clear();
+            self.IntToStringDict.Clear();
+            self.StringToABDict.Clear();
+            self.BundleNameToLowerDict.Clear();
+            if (self.AssetBundleManifestObject != null)
+            {
+                UnityEngine.Object.Destroy(self.AssetBundleManifestObject);
+                self.AssetBundleManifestObject = null;
             }
         }
 
@@ -187,7 +173,8 @@ namespace ET.Client
             return ss;
         }
 
-        private static void CollectDependencies(this ResourcesComponent self, List<string> parents, string assetBundleName, Dictionary<string, int> info)
+        private static void CollectDependencies(this ResourcesComponent self, List<string> parents, string assetBundleName,
+        Dictionary<string, int> info)
         {
             parents.Add(assetBundleName);
             string[] deps = self.GetDependencies(assetBundleName);
@@ -213,8 +200,6 @@ namespace ET.Client
 
             parents.RemoveAt(parents.Count - 1);
         }
-
-
 
         public static bool Contains(this ResourcesComponent self, string bundleName)
         {
@@ -423,8 +408,9 @@ namespace ET.Client
             {
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
-                    using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
-                    
+                    using CoroutineLock coroutineLock =
+                            await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
+
                     ABInfo abInfo = await self.LoadOneBundleAsync(dependency);
                     if (abInfo == null || abInfo.RefCount > 1)
                     {
@@ -441,6 +427,7 @@ namespace ET.Client
                     {
                         tasks.Add(LoadDependency(dependency, abInfos));
                     }
+
                     await ETTaskHelper.WaitAll(tasks);
 
                     // ab包从硬盘加载完成，可以再并发加载all assets
@@ -449,6 +436,7 @@ namespace ET.Client
                     {
                         tasks.Add(self.LoadOneBundleAllAssets(abInfo));
                     }
+
                     await ETTaskHelper.WaitAll(tasks);
                 }
             }
@@ -464,6 +452,7 @@ namespace ET.Client
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 return null;
             }
+
             string p = "";
             AssetBundle assetBundle = null;
 
@@ -496,11 +485,13 @@ namespace ET.Client
                     return abInfo;
                 }
             }
+
             p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
             if (!File.Exists(p))
             {
                 p = Path.Combine(PathHelper.AppResPath, assetBundleName);
             }
+
             Log.Debug("Async load bundle BundleName : " + p);
 
             // if (!File.Exists(p))
@@ -517,6 +508,7 @@ namespace ET.Client
                 Log.Warning($"assets bundle not found: {assetBundleName}");
                 return null;
             }
+
             abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
             self.bundles[assetBundleName] = abInfo;
             return abInfo;
@@ -527,7 +519,7 @@ namespace ET.Client
         private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
             using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
-            
+
             if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
             {
                 return;
@@ -560,7 +552,7 @@ namespace ET.Client
             return sb.ToString();
         }
     }
-    
+
     [ComponentOf]
     public class ResourcesComponent: Entity, IAwake, IDestroy
     {
@@ -578,7 +570,7 @@ namespace ET.Client
                 new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
 
         public readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
-        
+
         // 缓存包依赖，不用每次计算
         public readonly Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
     }

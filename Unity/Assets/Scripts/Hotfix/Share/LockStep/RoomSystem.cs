@@ -5,7 +5,7 @@ using System.IO;
 namespace ET
 {
     [FriendOf(typeof(Room))]
-    public static class RoomSystem
+    public static partial class RoomSystem
     {
         public static Room Room(this Entity entity)
         {

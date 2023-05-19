@@ -2,15 +2,12 @@
 
 namespace ET.Client
 {
-    public static class GameObjectComponentSystem
+    public static partial class GameObjectComponentSystem
     {
         [EntitySystem]
-        public class DestroySystem: DestroySystem<GameObjectComponent>
+        private static void Destroy(this GameObjectComponent self)
         {
-            protected override void Destroy(GameObjectComponent self)
-            {
-                UnityEngine.Object.Destroy(self.GameObject);
-            }
+            UnityEngine.Object.Destroy(self.GameObject);
         }
     }
 }

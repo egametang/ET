@@ -3,20 +3,17 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    public static class RobotCaseSystem
+    public static partial class RobotCaseSystem
     {
         [EntitySystem]
-        public class RobotCaseDestroySystem: DestroySystem<RobotCase>
+        private static void Destroy(this RobotCase self)
         {
-            protected override void Destroy(RobotCase self)
+            foreach (long id in self.Scenes)
             {
-                foreach (long id in self.Scenes)
-                {
-                    ClientSceneManagerComponent.Instance.Remove(id);
-                }
+                ClientSceneManagerComponent.Instance.Remove(id);
             }
         }
-        
+
         // 创建机器人，生命周期是RobotCase
         public static async ETTask NewRobot(this RobotCase self, int count, List<Scene> scenes)
         {

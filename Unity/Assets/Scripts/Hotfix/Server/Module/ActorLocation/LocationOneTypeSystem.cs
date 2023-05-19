@@ -3,30 +3,16 @@
 namespace ET.Server
 {
     [FriendOf(typeof(LockInfo))]
-    public static class LockInfoSystem
+    public static partial class LockInfoSystem
     {
-        public class LockInfoAwakeSystem: AwakeSystem<LockInfo, long, CoroutineLock>
-        {
-            protected override void Awake(LockInfo self, long lockInstanceId, CoroutineLock coroutineLock)
-            {
-                self.Awake(lockInstanceId, coroutineLock);
-            }
-        }
-    
-        public class LockInfoDestroySystem: DestroySystem<LockInfo>
-        {
-            protected override void Destroy(LockInfo self)
-            {
-                self.Destroy();
-            }
-        }
-        
+        [EntitySystem]
         private static void Awake(this LockInfo self, long lockInstanceId, CoroutineLock coroutineLock)
         {
             self.CoroutineLock = coroutineLock;
             self.LockInstanceId = lockInstanceId;
         }
         
+        [EntitySystem]
         private static void Destroy(this LockInfo self)
         {
             self.CoroutineLock.Dispose();
@@ -38,17 +24,9 @@ namespace ET.Server
     
     [FriendOf(typeof(LocationOneType))]
     [FriendOf(typeof(LockInfo))]
-    public static class LocationOneTypeSystem
+    public static partial class LocationOneTypeSystem
     {
         [EntitySystem]
-        public class LocationOneTypeAwakeSystem: AwakeSystem<LocationOneType, int>
-        {
-            protected override void Awake(LocationOneType self, int locationType)
-            {
-                self.Awake(locationType);
-            }
-        }
-        
         private static void Awake(this LocationOneType self, int locationType)
         {
             self.LocationType = locationType;
@@ -139,16 +117,9 @@ namespace ET.Server
 
 
     [FriendOf(typeof (LocationManagerComoponent))]
-    public static class LocationComoponentSystem
+    public static partial class LocationComoponentSystem
     {
-        public class AwakeSystem: AwakeSystem<LocationManagerComoponent>
-        {
-            protected override void Awake(LocationManagerComoponent self)
-            {
-                self.Awake();
-            }
-        }
-        
+        [EntitySystem]
         private static void Awake(this LocationManagerComoponent self)
         {
             for (int i = 0; i < self.LocationOneTypes.Length; ++i)

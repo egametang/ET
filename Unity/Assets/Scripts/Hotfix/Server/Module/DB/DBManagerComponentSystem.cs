@@ -3,24 +3,18 @@
 namespace ET.Server
 {
     [FriendOf(typeof(DBManagerComponent))]
-    public static class DBManagerComponentSystem
+    public static partial class DBManagerComponentSystem
     {
         [EntitySystem]
-        public class DBManagerComponentAwakeSystem: AwakeSystem<DBManagerComponent>
+        private static void Awake(this DBManagerComponent self)
         {
-            protected override void Awake(DBManagerComponent self)
-            {
-                DBManagerComponent.Instance = self;
-            }
+            DBManagerComponent.Instance = self;
         }
 
         [EntitySystem]
-        public class DBManagerComponentDestroySystem: DestroySystem<DBManagerComponent>
+        private static void Destroy(this DBManagerComponent self)
         {
-            protected override void Destroy(DBManagerComponent self)
-            {
-                DBManagerComponent.Instance = null;
-            }
+            DBManagerComponent.Instance = null;
         }
         
         public static DBComponent GetZoneDB(this DBManagerComponent self, int zone)

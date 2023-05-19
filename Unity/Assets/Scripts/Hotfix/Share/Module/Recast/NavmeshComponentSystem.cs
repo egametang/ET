@@ -3,14 +3,12 @@
 namespace ET
 {
     [FriendOf(typeof(NavmeshComponent))]
-    public static class NavmeshComponentSystem
+    public static partial class NavmeshComponentSystem
     {
-        public class AwakeSystem: AwakeSystem<NavmeshComponent>
+        [EntitySystem]
+        private static void Awake(this NavmeshComponent self)
         {
-            protected override void Awake(NavmeshComponent self)
-            {
-                NavmeshComponent.Instance = self;
-            }
+            NavmeshComponent.Instance = self;
         }
         
         public static long Get(this NavmeshComponent self, string name)

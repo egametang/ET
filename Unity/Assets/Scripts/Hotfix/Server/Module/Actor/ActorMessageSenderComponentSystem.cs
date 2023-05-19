@@ -4,7 +4,7 @@ using System.IO;
 namespace ET.Server
 {
     [FriendOf(typeof(ActorMessageSenderComponent))]
-    public static class ActorMessageSenderComponentSystem
+    public static partial class ActorMessageSenderComponentSystem
     {
         [Invoke(TimerInvokeType.ActorMessageSenderChecker)]
         public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
@@ -23,23 +23,6 @@ namespace ET.Server
         }
     
         [EntitySystem]
-        public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
-        {
-            protected override void Awake(ActorMessageSenderComponent self)
-            {
-                self.Awake();
-            }
-        }
-
-        [EntitySystem]
-        public class ActorMessageSenderComponentDestroySystem: DestroySystem<ActorMessageSenderComponent>
-        {
-            protected override void Destroy(ActorMessageSenderComponent self)
-            {
-                self.Destroy();
-            }
-        }
-        
         private static void Awake(this ActorMessageSenderComponent self)
         {
             ActorMessageSenderComponent.Instance = self;
@@ -47,6 +30,7 @@ namespace ET.Server
             self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
         }
         
+        [EntitySystem]
         private static void Destroy(this ActorMessageSenderComponent self)
         {
             ActorMessageSenderComponent.Instance = null;

@@ -3,7 +3,7 @@
 
 namespace ET.Server
 {
-	public static class RealmGateAddressHelper
+	public static partial class RealmGateAddressHelper
 	{
 		public static StartSceneConfig GetGate(int zone, string account)
 		{
