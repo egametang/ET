@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
+using YooAsset;
 using Debug = UnityEngine.Debug;
 
 namespace ET
@@ -119,6 +120,14 @@ namespace ET
 			if (codeMode != this.globalConfig.CodeMode)
 			{
 				this.globalConfig.CodeMode = codeMode;
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssets();
+			}
+			
+			var playMode = (EPlayMode)EditorGUILayout.EnumPopup("BundleMode: ", this.globalConfig.PlayMode);
+			if (playMode != this.globalConfig.PlayMode)
+			{
+				this.globalConfig.PlayMode = playMode;
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
 			}
