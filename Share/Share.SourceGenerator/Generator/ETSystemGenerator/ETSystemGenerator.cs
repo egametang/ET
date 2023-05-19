@@ -16,7 +16,7 @@ public class ETSystemGenerator: ISourceGenerator
     public void Initialize(GeneratorInitializationContext context)
     {
         this.templates = new AttributeTemplate();
-        context.RegisterForSyntaxNotifications(SyntaxContextReceiver.Create);
+        context.RegisterForSyntaxNotifications(()=> SyntaxContextReceiver.Create(this.templates));
     }
 
     public void Execute(GeneratorExecutionContext context)
@@ -103,27 +103,32 @@ public class ETSystemGenerator: ISourceGenerator
             string methodName = methodDeclarationSyntax.Identifier.Text;
             string? componentName = componentParam.Type?.ToString();
 
-            StringBuilder argsTypes = new StringBuilder();
+            List<string> argsTypesList = new List<string>();
+            List<string> argsTypeVarsList = new List<string>();
+            List<string> argsVarsList = new List<string>();
+            List<string> argsVarsWithout0List = new List<string>();
             for (int i = 0; i < methodSymbol.Parameters.Length; i++)
             {
-                argsTypes.Append(i == 0? $"{methodSymbol.Parameters[i].Type}" : $",{methodSymbol.Parameters[i].Type}");
-            }
-
-            StringBuilder argsTypeVars = new StringBuilder();
-            for (int i = 0; i < methodSymbol.Parameters.Length; i++)
-            {
-                argsTypeVars.Append(i == 0? $"{methodSymbol.Parameters[i].Type} self" : $",{methodSymbol.Parameters[i].Type} args{i}");
-            }
-
-            StringBuilder argsVars = new StringBuilder();
-            if (methodSymbol.Parameters.Length > 1)
-            {
-                for (int i = 1; i < methodSymbol.Parameters.Length; i++)
+                string type = methodSymbol.Parameters[i].Type.ToString();
+                type = type.Trim();
+                if (type == "")
                 {
-                    argsVars.Append(i == 1? $"args1" : $",args{i}");
+                    continue;
+                }
+                string name = $"{methodSymbol.Parameters[i].Name}";
+                
+
+                
+                argsTypesList.Add(type);
+                argsVarsList.Add(name);
+                argsTypeVarsList.Add($"{type} {name}");
+
+                if (i != 0)
+                {
+                    argsVarsWithout0List.Add(name);
                 }
             }
-
+            
             foreach (AttributeListSyntax attributeListSyntax in methodDeclarationSyntax.AttributeLists)
             {
                 AttributeSyntax? attribute = attributeListSyntax.Attributes.FirstOrDefault();
@@ -147,17 +152,29 @@ namespace {{namespaceName}}
 }
 """;
 
-                string argsTypesString = argsTypes.ToString();
-                string argsTypesUnderLine = argsTypesString.Replace(",", "_").Replace(".", "_");
+                string argsVars = string.Join(",", argsVarsList);
+                string argsTypes = string.Join(",", argsTypesList);
+                string argsTypesVars = string.Join(",", argsTypeVarsList);
+                string argsTypesUnderLine = argsTypes.Replace(",", "_").Replace(".", "_");
+                string argsVarsWithout0 = string.Join(",", argsVarsWithout0List);
+
                 code = code.Replace("$attribute$", attributeString);
                 code = code.Replace("$attributeType$", attributeType);
                 code = code.Replace("$methodName$", methodName);
-                code = code.Replace("entityType", componentName);
-                code = code.Replace("$argsTypes$", argsTypesString);
+                code = code.Replace("$className$", className);
+                code = code.Replace("$entityType$", componentName);
+                code = code.Replace("$argsTypes$", argsTypes);
                 code = code.Replace("$argsTypesUnderLine$", argsTypesUnderLine);
-                code = code.Replace("$argsVars$", argsVars.ToString());
-                code = code.Replace("$argsTypeVars$", argsTypeVars.ToString());
-                
+                code = code.Replace("$argsTypesVars$", argsTypesVars);
+                code = code.Replace("$argsVars$", argsVars);
+                code = code.Replace("$argsVarsWithout0$", argsVarsWithout0);
+
+                for (int i = 0; i < argsTypesList.Count; ++i)
+                {
+                    code = code.Replace($"$argsTypes{i}$", argsTypesList[i]);
+                    code = code.Replace($"$argsVars{i}$", argsVarsList[i]);
+                }
+
                 string fileName = $"{namespaceName}.{className}.{methodName}.{argsTypesUnderLine}.g.cs";
                 
                 context.AddSource(fileName, code);
@@ -167,9 +184,16 @@ namespace {{namespaceName}}
 
     class SyntaxContextReceiver: ISyntaxContextReceiver
     {
-        internal static ISyntaxContextReceiver Create()
+        internal static ISyntaxContextReceiver Create(AttributeTemplate attributeTemplate)
         {
-            return new SyntaxContextReceiver();
+            return new SyntaxContextReceiver(attributeTemplate);
+        }
+
+        private AttributeTemplate attributeTemplate;
+
+        SyntaxContextReceiver(AttributeTemplate attributeTemplate)
+        {
+            this.attributeTemplate = attributeTemplate;
         }
 
         public Dictionary<ClassDeclarationSyntax, HashSet<MethodDeclarationSyntax>> MethodDeclarations { get; } = new();
@@ -187,9 +211,24 @@ namespace {{namespaceName}}
                 return;
             }
 
-            AttributeSyntax? attr = methodDeclarationSyntax.AttributeLists.SelectMany(x => x.Attributes)
-                    .FirstOrDefault(x => x.Name.ToString() == "EntitySystem");
-            if (attr == null)
+            bool found = false;
+            foreach (AttributeListSyntax attributeListSyntax in methodDeclarationSyntax.AttributeLists)
+            {
+                AttributeSyntax? attribute = attributeListSyntax.Attributes.FirstOrDefault();
+                if (attribute == null)
+                {
+                    return;
+                }
+
+                string attributeName = attribute.Name.ToString();
+
+                if (this.attributeTemplate.Contains(attributeName))
+                {
+                    found = true;
+                }
+            }
+
+            if (!found)
             {
                 return;
             }

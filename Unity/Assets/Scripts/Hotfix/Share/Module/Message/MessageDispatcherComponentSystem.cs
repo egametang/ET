@@ -39,7 +39,7 @@ namespace ET
                     continue;
                 }
 
-                object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+                object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), true);
                 
                 foreach (object attr in attrs)
                 {

@@ -2,7 +2,6 @@
 
 namespace ET
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class MessageHandlerAttribute: BaseAttribute
     {
         public SceneType SceneType { get; }
@@ -10,6 +9,13 @@ namespace ET
         public MessageHandlerAttribute(SceneType sceneType)
         {
             this.SceneType = sceneType;
+        }
+    }
+    
+    public class MessageRpcHandlerAttribute: MessageHandlerAttribute
+    {
+        public MessageRpcHandlerAttribute(SceneType sceneType): base(sceneType)
+        {
         }
     }
 }

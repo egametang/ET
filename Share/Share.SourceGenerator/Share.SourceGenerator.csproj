@@ -26,4 +26,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <Target Name="AfterBuild">
+        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Assets/Plugins/" ContinueOnError="false" />
+    </Target>
+
 </Project>
