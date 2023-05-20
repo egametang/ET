@@ -22,6 +22,18 @@ namespace ET.Generator
                         }
                 """);
             
+            this.templates.Add("LSEntitySystem", 
+                $$"""
+                $attribute$
+                        public class $argsTypesUnderLine$_$methodName$System: $methodName$System<$argsTypes$>
+                        {   
+                            protected override void $methodName$($argsTypesVars$)
+                            {
+                                $argsVars0$.$methodName$($argsVarsWithout0$);
+                            }
+                        }
+                """);
+            
             this.templates.Add("MessageHandler", 
                 $$"""
                 $attribute$

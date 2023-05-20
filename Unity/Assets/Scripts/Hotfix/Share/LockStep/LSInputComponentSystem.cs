@@ -6,7 +6,7 @@ namespace ET
 {
     public static partial class LSInputComponentSystem
     {
-        [EntitySystem]
+        [LSEntitySystem]
         public static void LSUpdate(this LSInputComponent self)
         {
             LSUnit unit = self.GetParent<LSUnit>();

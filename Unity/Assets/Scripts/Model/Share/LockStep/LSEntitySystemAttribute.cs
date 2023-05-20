@@ -2,8 +2,8 @@ using System;
 
 namespace ET
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class LSEntitySystemAttribute: SystemAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    public class LSEntitySystemAttribute: BaseAttribute
     {
     }
 }

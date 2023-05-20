@@ -14,7 +14,7 @@ namespace ET.Client
             
         }
         
-        [EntitySystem]
+        [LSEntitySystem]
         private static void Rollback(this LSUnitView self)
         {
             //LSUnit unit = self.GetUnit();
