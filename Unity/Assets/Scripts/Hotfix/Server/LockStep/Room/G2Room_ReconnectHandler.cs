@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    public static partial class G2Room_ReconnectHandler
+    [ActorMessageHandler(SceneType.Room)]
+    public class G2Room_ReconnectHandler: ActorMessageHandler<Room, G2Room_Reconnect, Room2G_Reconnect>
     {
-        [ActorMessageHandler(SceneType.Room)]
-        private static async ETTask Run(Room room, G2Room_Reconnect request, Room2G_Reconnect response)
+        protected override async ETTask Run(Room room, G2Room_Reconnect request, Room2G_Reconnect response)
         {
             response.StartTime = room.StartTime;
             response.UnitInfos = new List<LockStepUnitInfo>();

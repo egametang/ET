@@ -2,7 +2,6 @@
 
 namespace ET
 {
-	[AttributeUsage(AttributeTargets.Class)]
 	public class EventAttribute: BaseAttribute
 	{
 		public SceneType SceneType { get; }

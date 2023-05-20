@@ -57,6 +57,18 @@ namespace ET.Generator
                             }
                         }
                 """);
+            
+            this.templates.Add("Event", 
+                $$"""
+                $attribute$
+                        public class $argsTypes2$_$methodName$: AEvent<$argsTypes$>
+                        {
+                            protected override async ETTask Run($argsTypesVars$)
+                            {
+                                await $className$.$methodName$($argsVars$);
+                            }
+                        }
+                """);
         }
 
         public string Get(string attributeType)

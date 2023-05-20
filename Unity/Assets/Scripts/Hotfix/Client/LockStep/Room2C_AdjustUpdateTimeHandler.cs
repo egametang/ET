@@ -1,9 +1,9 @@
 namespace ET.Client
 {
-    public static partial class Room2C_AdjustUpdateTimeHandler
+    [MessageHandler(SceneType.LockStep)]
+    public class Room2C_AdjustUpdateTimeHandler: MessageHandler<Room2C_AdjustUpdateTime>
     {
-        [MessageHandler(SceneType.LockStep)]
-        private static async ETTask Run(Session session, Room2C_AdjustUpdateTime message)
+        protected override async ETTask Run(Session session, Room2C_AdjustUpdateTime message)
         {
             Room room = session.DomainScene().GetComponent<Room>();
             int newInterval = (1000 + (message.DiffTime - LSConstValue.UpdateInterval)) * LSConstValue.UpdateInterval / 1000;

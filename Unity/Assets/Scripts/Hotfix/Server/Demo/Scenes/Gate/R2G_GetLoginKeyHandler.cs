@@ -3,10 +3,10 @@
 
 namespace ET.Server
 {
-	public static partial class R2G_GetLoginKeyHandler
+	[ActorMessageHandler(SceneType.Gate)]
+	public class R2G_GetLoginKeyHandler : ActorMessageHandler<Scene, R2G_GetLoginKey, G2R_GetLoginKey>
 	{
-		[ActorMessageHandler(SceneType.Gate)]
-		private static async ETTask Run(Scene scene, R2G_GetLoginKey request, G2R_GetLoginKey response)
+		protected override async ETTask Run(Scene scene, R2G_GetLoginKey request, G2R_GetLoginKey response)
 		{
 			long key = RandomGenerator.RandInt64();
 			scene.GetComponent<GateSessionKeyComponent>().Add(key, request.Account);

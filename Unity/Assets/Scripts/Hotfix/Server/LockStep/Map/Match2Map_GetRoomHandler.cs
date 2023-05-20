@@ -3,10 +3,10 @@
 
 namespace ET.Server
 {
-	public static partial class Match2Map_GetRoomHandler
+	[ActorMessageHandler(SceneType.Map)]
+	public class Match2Map_GetRoomHandler : ActorMessageHandler<Scene, Match2Map_GetRoom, Map2Match_GetRoom>
 	{
-		[ActorMessageHandler(SceneType.Map)]
-		private static async ETTask Run(Scene scene, Match2Map_GetRoom request, Map2Match_GetRoom response)
+		protected override async ETTask Run(Scene scene, Match2Map_GetRoom request, Map2Match_GetRoom response)
 		{
 			RoomManagerComponent roomManagerComponent = scene.GetComponent<RoomManagerComponent>();
 			Room room = await roomManagerComponent.CreateServerRoom(request);

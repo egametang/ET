@@ -2,10 +2,10 @@
 
 namespace ET.Server
 {
-    public static partial class ObjectUnLockRequestHandler
+    [ActorMessageHandler(SceneType.Location)]
+    public class ObjectUnLockRequestHandler: ActorMessageHandler<Scene, ObjectUnLockRequest, ObjectUnLockResponse>
     {
-        [ActorMessageHandler(SceneType.Location)]
-        private static async ETTask Run(Scene scene, ObjectUnLockRequest request, ObjectUnLockResponse response)
+        protected override async ETTask Run(Scene scene, ObjectUnLockRequest request, ObjectUnLockResponse response)
         {
             scene.GetComponent<LocationManagerComoponent>().Get(request.Type).UnLock(request.Key, request.OldInstanceId, request.InstanceId);
 

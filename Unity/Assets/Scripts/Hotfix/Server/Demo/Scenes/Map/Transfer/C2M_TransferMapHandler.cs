@@ -2,10 +2,10 @@
 
 namespace ET.Server
 {
-	public static partial class C2M_TransferMapHandler
+	[ActorMessageLocationHandler(SceneType.Map)]
+	public class C2M_TransferMapHandler : ActorMessageLocationHandler<Unit, C2M_TransferMap, M2C_TransferMap>
 	{
-		[ActorMessageLocationHandler(SceneType.Map)]
-		private static async ETTask Run(Unit unit, C2M_TransferMap request, M2C_TransferMap response)
+		protected override async ETTask Run(Unit unit, C2M_TransferMap request, M2C_TransferMap response)
 		{
 			await ETTask.CompletedTask;
 

@@ -2,10 +2,10 @@ using System;
 
 namespace ET.Server
 {
-    public static partial class M2C_TestRobotCase2Handler
+    [MessageHandler(SceneType.Demo)]
+    public class M2C_TestRobotCase2Handler: MessageHandler<M2C_TestRobotCase2>
     {
-        [MessageHandler(SceneType.Demo)]
-        private static async ETTask Run(Session session, M2C_TestRobotCase2 message)
+        protected override async ETTask Run(Session session, M2C_TestRobotCase2 message)
         {
             ObjectWait objectWait = session.ClientScene().GetComponent<ObjectWait>();
             if (objectWait == null)

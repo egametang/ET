@@ -1,9 +1,9 @@
 ﻿namespace ET.Server
 {
-	public static partial class C2G_MatchHandler
+	[MessageHandler(SceneType.Gate)]
+	public class C2G_MatchHandler : MessageHandler<C2G_Match, G2C_Match>
 	{
-		[MessageHandler(SceneType.Gate)]
-		private static async ETTask Run(Session session, C2G_Match request, G2C_Match response)
+		protected override async ETTask Run(Session session, C2G_Match request, G2C_Match response)
 		{
 			Player player = session.GetComponent<SessionPlayerComponent>().Player;
 

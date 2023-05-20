@@ -2,10 +2,10 @@
 
 namespace ET.Server
 {
-    public static partial class ObjectAddRequestHandler
+    [ActorMessageHandler(SceneType.Location)]
+    public class ObjectAddRequestHandler: ActorMessageHandler<Scene, ObjectAddRequest, ObjectAddResponse>
     {
-        [ActorMessageHandler(SceneType.Location)]
-        private static async ETTask Run(Scene scene, ObjectAddRequest request, ObjectAddResponse response)
+        protected override async ETTask Run(Scene scene, ObjectAddRequest request, ObjectAddResponse response)
         {
             await scene.GetComponent<LocationManagerComoponent>().Get(request.Type).Add(request.Key, request.InstanceId);
         }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    public static partial class FrameMessageHandler
+    [ActorMessageHandler(SceneType.Room)]
+    public class FrameMessageHandler: ActorMessageHandler<Room, FrameMessage>
     {
-        [ActorMessageHandler(SceneType.Room)]
-        private static async ETTask Run(Room room, FrameMessage message)
+        protected override async ETTask Run(Room room, FrameMessage message)
         {
             FrameBuffer frameBuffer = room.FrameBuffer;
             

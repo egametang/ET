@@ -4,10 +4,10 @@ using System.Net;
 
 namespace ET.Server
 {
-	public static partial class C2R_LoginHandler
+	[MessageHandler(SceneType.Realm)]
+	public class C2R_LoginHandler : MessageHandler<C2R_Login, R2C_Login>
 	{
-		[MessageHandler(SceneType.Realm)]
-		private static async ETTask Run(Session session, C2R_Login request, R2C_Login response)
+		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response)
 		{
 			// 随机分配一个Gate
 			StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone(), request.Account);

@@ -3,10 +3,10 @@
 
 namespace ET.Server
 {
-	public static partial class G2Match_MatchHandler
+	[ActorMessageHandler(SceneType.Match)]
+	public class G2Match_MatchHandler : ActorMessageHandler<Scene, G2Match_Match, Match2G_Match>
 	{
-		[ActorMessageHandler(SceneType.Match)]
-		private static async ETTask Run(Scene scene, G2Match_Match request, Match2G_Match response)
+		protected override async ETTask Run(Scene scene, G2Match_Match request, Match2G_Match response)
 		{
 			MatchComponent matchComponent = scene.GetComponent<MatchComponent>();
 			matchComponent.Match(request.Id).Coroutine();

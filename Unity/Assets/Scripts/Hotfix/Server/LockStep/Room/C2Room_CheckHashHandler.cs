@@ -1,9 +1,9 @@
 namespace ET.Server
 {
-    public static partial class C2Room_CheckHashHandler
+    [ActorMessageHandler(SceneType.Room)]
+    public class C2Room_CheckHashHandler: ActorMessageHandler<Room, C2Room_CheckHash>
     {
-        [ActorMessageHandler(SceneType.Room)]
-        private static async ETTask Run(Room room, C2Room_CheckHash message)
+        protected override async ETTask Run(Room room, C2Room_CheckHash message)
         {
             long hash = room.FrameBuffer.GetHash(message.Frame);
             if (message.Hash != hash)

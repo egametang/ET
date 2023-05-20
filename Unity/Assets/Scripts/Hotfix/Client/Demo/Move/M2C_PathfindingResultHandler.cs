@@ -1,11 +1,9 @@
-﻿
-
-namespace ET.Client
+﻿namespace ET.Client
 {
-	public static partial class M2C_PathfindingResultHandler
+	[MessageHandler(SceneType.Demo)]
+	public class M2C_PathfindingResultHandler : MessageHandler<M2C_PathfindingResult>
 	{
-		[MessageHandler(SceneType.Demo)]
-		private static async ETTask Run(Session session, M2C_PathfindingResult message)
+		protected override async ETTask Run(Session session, M2C_PathfindingResult message)
 		{
 			Unit unit = session.DomainScene().CurrentScene().GetComponent<UnitComponent>().Get(message.Id);
 
