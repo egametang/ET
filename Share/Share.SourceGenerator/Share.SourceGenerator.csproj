@@ -17,6 +17,7 @@
         <Compile Include="../Analyzer/Extension/*.cs">
             <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
+        <Compile Include="../Analyzer/Config/Definition.cs" />
     </ItemGroup>
 
     <ItemGroup>

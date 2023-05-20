@@ -375,5 +375,28 @@ namespace ET.Analyzer
 
             return false;
         }
+
+        public static string? GetNameSpace(this INamedTypeSymbol namedTypeSymbol)
+        {
+            INamespaceSymbol? namespaceSymbol = namedTypeSymbol.ContainingNamespace;
+            string? namespaceName = namespaceSymbol?.Name;
+            while (namespaceSymbol?.ContainingNamespace != null)
+            {
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
+                if (string.IsNullOrEmpty(namespaceSymbol.Name))
+                {
+                    break;
+                }
+
+                namespaceName = $"{namespaceSymbol.Name}.{namespaceName}";
+            }
+
+            if (string.IsNullOrEmpty(namespaceName))
+            {
+                return null;
+            }
+
+            return namespaceName;
+        }
     }
 }
