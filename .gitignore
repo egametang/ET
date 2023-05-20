@@ -91,3 +91,5 @@ Publish/
 /Unity/Assembly-CSharp-firstpass.csproj
 
 /Unity/*.csproj
+/Unity/Assets/Plugins/Share.SourceGenerator.dll
+/Unity/Assets/Plugins/Share.SourceGenerator.dll.meta

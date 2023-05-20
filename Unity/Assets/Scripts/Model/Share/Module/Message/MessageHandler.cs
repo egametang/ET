@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public abstract class AMHandler<Message>: IMHandler where Message : class
+    public abstract class MessageHandler<Message>: IMHandler where Message : class
     {
         protected abstract ETTask Run(Session session, Message message);
 

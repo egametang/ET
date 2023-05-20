@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ET.Server
 {
@@ -28,39 +29,52 @@ namespace ET.Server
         {
             self.ActorMessageHandlers.Clear();
 
-            var types = EventSystem.Instance.GetTypes(typeof (ActorMessageHandlerAttribute));
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ActorMessageHandlerAttribute));
+            
             foreach (Type type in types)
             {
-                object obj = Activator.CreateInstance(type);
+                self.Register(type);
+            }
+            
+            HashSet<Type> types2 = EventSystem.Instance.GetTypes(typeof (ActorMessageLocationHandlerAttribute));
+            
+            foreach (Type type in types2)
+            {
+                self.Register(type);
+            }
+        }
 
-                IMActorHandler imHandler = obj as IMActorHandler;
-                if (imHandler == null)
-                {
-                    throw new Exception($"message handler not inherit IMActorHandler abstract class: {obj.GetType().FullName}");
-                }
+        private static void Register(this ActorMessageDispatcherComponent self, Type type)
+        {
+            object obj = Activator.CreateInstance(type);
+
+            IMActorHandler imHandler = obj as IMActorHandler;
+            if (imHandler == null)
+            {
+                throw new Exception($"message handler not inherit IMActorHandler abstract class: {obj.GetType().FullName}");
+            }
                 
-                object[] attrs = type.GetCustomAttributes(typeof(ActorMessageHandlerAttribute), false);
+            object[] attrs = type.GetCustomAttributes(typeof(ActorMessageHandlerAttribute), true);
 
-                foreach (object attr in attrs)
+            foreach (object attr in attrs)
+            {
+                ActorMessageHandlerAttribute actorMessageHandlerAttribute = attr as ActorMessageHandlerAttribute;
+
+                Type messageType = imHandler.GetRequestType();
+
+                Type handleResponseType = imHandler.GetResponseType();
+                if (handleResponseType != null)
                 {
-                    ActorMessageHandlerAttribute actorMessageHandlerAttribute = attr as ActorMessageHandlerAttribute;
-
-                    Type messageType = imHandler.GetRequestType();
-
-                    Type handleResponseType = imHandler.GetResponseType();
-                    if (handleResponseType != null)
+                    Type responseType = OpcodeTypeComponent.Instance.GetResponseType(messageType);
+                    if (handleResponseType != responseType)
                     {
-                        Type responseType = OpcodeTypeComponent.Instance.GetResponseType(messageType);
-                        if (handleResponseType != responseType)
-                        {
-                            throw new Exception($"message handler response type error: {messageType.FullName}");
-                        }
+                        throw new Exception($"message handler response type error: {messageType.FullName}");
                     }
-
-                    ActorMessageDispatcherInfo actorMessageDispatcherInfo = new(actorMessageHandlerAttribute.SceneType, imHandler);
-
-                    self.RegisterHandler(messageType, actorMessageDispatcherInfo);
                 }
+
+                ActorMessageDispatcherInfo actorMessageDispatcherInfo = new(actorMessageHandlerAttribute.SceneType, imHandler);
+
+                self.RegisterHandler(messageType, actorMessageDispatcherInfo);
             }
         }
         
@@ -121,7 +135,7 @@ namespace ET.Server
             
             switch (mailBoxComponent.MailboxType)
             {
-                case MailboxType.MessageDispatcher:
+                case MailboxType.OrderedMessage:
                 {
                     using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
                     {
@@ -167,7 +181,7 @@ namespace ET.Server
 
             switch (mailBoxComponent.MailboxType)
             {
-                case MailboxType.MessageDispatcher:
+                case MailboxType.OrderedMessage:
                 {
                     using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
                     {

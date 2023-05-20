@@ -1,9 +1,9 @@
 ﻿namespace ET.Client
 {
-	[MessageHandler(SceneType.Demo)]
-	public class M2C_RemoveUnitsHandler : AMHandler<M2C_RemoveUnits>
+	public static partial class M2C_RemoveUnitsHandler
 	{
-		protected override async ETTask Run(Session session, M2C_RemoveUnits message)
+		[MessageHandler(SceneType.Demo)]
+		private static async ETTask Run(Session session, M2C_RemoveUnits message)
 		{	
 			UnitComponent unitComponent = session.DomainScene().CurrentScene()?.GetComponent<UnitComponent>();
 			if (unitComponent == null)

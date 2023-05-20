@@ -3,10 +3,10 @@ using Unity.Mathematics;
 
 namespace ET.Server
 {
-	[ActorMessageHandler(SceneType.Map)]
-	public class M2M_UnitTransferRequestHandler : AMActorRpcHandler<Scene, M2M_UnitTransferRequest, M2M_UnitTransferResponse>
+	public static partial class M2M_UnitTransferRequestHandler
 	{
-		protected override async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response)
+		[ActorMessageHandler(SceneType.Map)]
+		private static async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response)
 		{
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = MongoHelper.Deserialize<Unit>(request.Unit);
@@ -24,7 +24,7 @@ namespace ET.Server
 			unit.AddComponent<PathfindingComponent, string>(scene.Name);
 			unit.Position = new float3(-10, 0, -10);
 			
-			unit.AddComponent<MailBoxComponent>();
+			unit.AddComponent<MailBoxComponent, MailboxType>(MailboxType.OrderedMessage);
 
 			// 通知客户端开始切场景
 			M2C_StartSceneChange m2CStartSceneChange = new M2C_StartSceneChange() {SceneInstanceId = scene.InstanceId, SceneName = scene.Name};

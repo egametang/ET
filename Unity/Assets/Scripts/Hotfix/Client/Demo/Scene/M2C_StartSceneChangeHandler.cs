@@ -1,9 +1,9 @@
 ﻿namespace ET.Client
 {
-	[MessageHandler(SceneType.Demo)]
-	public class M2C_StartSceneChangeHandler : AMHandler<M2C_StartSceneChange>
+	public static partial class M2C_StartSceneChangeHandler
 	{
-		protected override async ETTask Run(Session session, M2C_StartSceneChange message)
+		[MessageHandler(SceneType.Demo)]
+		private static async ETTask Run(Session session, M2C_StartSceneChange message)
 		{
 			await SceneChangeHelper.SceneChangeTo(session.ClientScene(), message.SceneName, message.SceneInstanceId);
 		}

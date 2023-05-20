@@ -61,7 +61,7 @@ namespace ET
 
                 content = GenerateCustomProject(path, content, files);
                 content = content.Replace("<Target Name=\"AfterBuild\" />",
-                    "   <Target Name=\"AfterBuild\">\n" +
+                    "   <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
                     $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Codes.dll.bytes\" ContinueOnError=\"false\" />\n" +
                     $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Codes.pdb.bytes\" ContinueOnError=\"false\" />\n" +
                     $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Codes.dll\" ContinueOnError=\"false\" />\n" +
@@ -94,7 +94,7 @@ namespace ET
                 XmlElement compile = newDoc.CreateElement("Compile", newDoc.DocumentElement.NamespaceURI);
                 XmlElement link = newDoc.CreateElement("Link", newDoc.DocumentElement.NamespaceURI);
                 link.InnerText = linkStr;
-                compile.AppendChild(link);
+                //compile.AppendChild(link);
                 compile.SetAttribute("Include", p);
                 itemGroup.AppendChild(compile);
             }

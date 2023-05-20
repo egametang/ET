@@ -2,10 +2,11 @@
 
 namespace ET.Client
 {
-	[MessageHandler(SceneType.Demo)]
-	public class M2C_StopHandler : AMHandler<M2C_Stop>
+	
+	public static partial class M2C_StopHandler
 	{
-		protected override async ETTask Run(Session session, M2C_Stop message)
+		[MessageHandler(SceneType.Demo)]
+		private static async ETTask Run(Session session, M2C_Stop message)
 		{
 			Unit unit = session.DomainScene().CurrentScene().GetComponent<UnitComponent>().Get(message.Id);
 			if (unit == null)

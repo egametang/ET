@@ -2,10 +2,10 @@
 
 namespace ET.Server
 {
-	[ActorMessageHandler(SceneType.Map)]
-	public class G2M_SessionDisconnectHandler : AMActorLocationHandler<Unit, G2M_SessionDisconnect>
+	public static partial class G2M_SessionDisconnectHandler
 	{
-		protected override async ETTask Run(Unit unit, G2M_SessionDisconnect message)
+		[ActorMessageLocationHandler(SceneType.Map)]
+		private static async ETTask Run(Unit unit, G2M_SessionDisconnect message)
 		{
 			await ETTask.CompletedTask;
 		}

@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Server
 {
-    public abstract class AMRpcHandler<Request, Response>: IMHandler where Request : class, IRequest where Response : class, IResponse
+    public abstract class MessageHandler<Request, Response>: IMHandler where Request : class, IRequest where Response : class, IResponse
     {
         protected abstract ETTask Run(Session session, Request request, Response response);
 

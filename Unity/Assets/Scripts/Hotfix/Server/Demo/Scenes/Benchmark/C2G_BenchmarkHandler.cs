@@ -4,7 +4,7 @@ namespace ET.Server
 {
     public static partial class C2G_BenchmarkHandler
     {
-        [MessageRpcHandler(SceneType.BenchmarkServer)]
+        [MessageHandler(SceneType.BenchmarkServer)]
         private static async ETTask Run(Session session, C2G_Benchmark request, G2C_Benchmark response)
         {
             BenchmarkServerComponent benchmarkServerComponent = session.DomainScene().GetComponent<BenchmarkServerComponent>();

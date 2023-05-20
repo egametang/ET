@@ -2,7 +2,7 @@
 {
     public enum MailboxType
     {
-        MessageDispatcher,
+        OrderedMessage,
         UnOrderMessageDispatcher,
         GateSession,
     }

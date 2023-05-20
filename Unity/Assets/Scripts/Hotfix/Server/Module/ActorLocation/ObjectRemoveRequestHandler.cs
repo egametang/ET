@@ -2,10 +2,10 @@
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Location)]
-    public class ObjectRemoveRequestHandler: AMActorRpcHandler<Scene, ObjectRemoveRequest, ObjectRemoveResponse>
+    public static partial class ObjectRemoveRequestHandler
     {
-        protected override async ETTask Run(Scene scene, ObjectRemoveRequest request, ObjectRemoveResponse response)
+        [ActorMessageHandler(SceneType.Location)]
+        private static async ETTask Run(Scene scene, ObjectRemoveRequest request, ObjectRemoveResponse response)
         {
             await scene.GetComponent<LocationManagerComoponent>().Get(request.Type).Remove(request.Key);
         }

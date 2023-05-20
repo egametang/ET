@@ -1,10 +1,9 @@
 namespace ET.Client
 {
-
-    [MessageHandler(SceneType.LockStep)]
-    public class Match2G_NotifyMatchSuccessHandler: AMHandler<Match2G_NotifyMatchSuccess>
+    public static partial class Match2G_NotifyMatchSuccessHandler
     {
-        protected override async ETTask Run(Session session, Match2G_NotifyMatchSuccess message)
+        [MessageHandler(SceneType.LockStep)]
+        private static async ETTask Run(Session session, Match2G_NotifyMatchSuccess message)
         {
             await LSSceneChangeHelper.SceneChangeTo(session.DomainScene(), "Map1", message.InstanceId);
         }

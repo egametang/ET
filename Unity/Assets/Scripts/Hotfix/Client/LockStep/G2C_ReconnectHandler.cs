@@ -1,9 +1,9 @@
 ﻿namespace ET.Client
 {
-    [MessageHandler(SceneType.LockStep)]
-    public class G2C_ReconnectHandler: AMHandler<G2C_Reconnect>
+    public static partial class G2C_ReconnectHandler
     {
-        protected override async ETTask Run(Session session, G2C_Reconnect message)
+        [MessageHandler(SceneType.LockStep)]
+        private static async ETTask Run(Session session, G2C_Reconnect message)
         {
             await LSSceneChangeHelper.SceneChangeToReconnect(session.ClientScene(), message);
             await ETTask.CompletedTask;

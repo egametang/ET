@@ -106,6 +106,8 @@ public class ETSystemGenerator: ISourceGenerator
             List<string> argsTypesList = new List<string>();
             List<string> argsTypeVarsList = new List<string>();
             List<string> argsVarsList = new List<string>();
+            List<string> argsTypesWithout0List = new List<string>();
+            List<string> argsTypeVarsWithout0List = new List<string>();
             List<string> argsVarsWithout0List = new List<string>();
             for (int i = 0; i < methodSymbol.Parameters.Length; i++)
             {
@@ -121,10 +123,13 @@ public class ETSystemGenerator: ISourceGenerator
                 
                 argsTypesList.Add(type);
                 argsVarsList.Add(name);
-                argsTypeVarsList.Add($"{type} {name}");
+                string typeName = $"{type} {name}";
+                argsTypeVarsList.Add(typeName);
 
                 if (i != 0)
                 {
+                    argsTypesWithout0List.Add(type);
+                    argsTypeVarsWithout0List.Add(typeName);
                     argsVarsWithout0List.Add(name);
                 }
             }
@@ -152,11 +157,13 @@ namespace {{namespaceName}}
 }
 """;
 
-                string argsVars = string.Join(",", argsVarsList);
-                string argsTypes = string.Join(",", argsTypesList);
-                string argsTypesVars = string.Join(",", argsTypeVarsList);
-                string argsTypesUnderLine = argsTypes.Replace(",", "_").Replace(".", "_");
-                string argsVarsWithout0 = string.Join(",", argsVarsWithout0List);
+                string argsVars = string.Join(", ", argsVarsList);
+                string argsTypes = string.Join(", ", argsTypesList);
+                string argsTypesVars = string.Join(", ", argsTypeVarsList);
+                string argsTypesUnderLine = string.Join("_", argsTypesList).Replace(", ", "_").Replace(".", "_");
+                string argsTypesWithout0 = string.Join(", ", argsTypesWithout0List);
+                string argsVarsWithout0 = string.Join(", ", argsVarsWithout0List);
+                string argsTypesVarsWithout0 = string.Join(", ", argsTypeVarsWithout0List);
 
                 code = code.Replace("$attribute$", attributeString);
                 code = code.Replace("$attributeType$", attributeType);
@@ -167,7 +174,9 @@ namespace {{namespaceName}}
                 code = code.Replace("$argsTypesUnderLine$", argsTypesUnderLine);
                 code = code.Replace("$argsTypesVars$", argsTypesVars);
                 code = code.Replace("$argsVars$", argsVars);
+                code = code.Replace("$argsTypesWithout0$", argsTypesWithout0);
                 code = code.Replace("$argsVarsWithout0$", argsVarsWithout0);
+                code = code.Replace("$argsTypesVarsWithout0$", argsTypesVarsWithout0);
 
                 for (int i = 0; i < argsTypesList.Count; ++i)
                 {

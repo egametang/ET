@@ -11,7 +11,7 @@ namespace ET.Server
             {
                 long actorId = args.ActorId;
                 object message = args.Message;
-
+                
                 if (message is IActorResponse iActorResponse)
                 {
                     ActorMessageSenderComponent.Instance.HandleIActorResponse(iActorResponse);

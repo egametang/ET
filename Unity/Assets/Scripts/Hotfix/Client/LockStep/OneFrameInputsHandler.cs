@@ -2,10 +2,10 @@ using System;
 
 namespace ET.Client
 {
-    [MessageHandler(SceneType.LockStep)]
-    public class OneFrameInputsHandler: AMHandler<OneFrameInputs>
+    public static partial class OneFrameInputsHandler
     {
-        protected override async ETTask Run(Session session, OneFrameInputs input)
+        [MessageHandler(SceneType.LockStep)]
+        private static async ETTask Run(Session session, OneFrameInputs input)
         {
             Room room = session.DomainScene().GetComponent<Room>();
             

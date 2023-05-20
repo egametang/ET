@@ -3,10 +3,10 @@
 
 namespace ET.Server
 {
-    [MessageHandler(SceneType.Gate)]
-    public class C2G_LoginGateHandler : AMRpcHandler<C2G_LoginGate, G2C_LoginGate>
+    public static partial class C2G_LoginGateHandler
     {
-        protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response)
+        [MessageHandler(SceneType.Gate)]
+        private static async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response)
         {
             Scene scene = session.DomainScene();
             string account = scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);

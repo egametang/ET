@@ -1,9 +1,9 @@
 namespace ET.Client
 {
-    [MessageHandler(SceneType.LockStep)]
-    public class Room2C_CheckHashFailHandler: AMHandler<Room2C_CheckHashFail>
+    public static partial class Room2C_CheckHashFailHandler
     {
-        protected override async ETTask Run(Session session, Room2C_CheckHashFail message)
+        [MessageHandler(SceneType.LockStep)]
+        private static async ETTask Run(Session session, Room2C_CheckHashFail message)
         {
             LSWorld serverWorld = MongoHelper.Deserialize(typeof(LSWorld), message.LSWorldBytes, 0, message.LSWorldBytes.Length) as LSWorld;
             using (session.ClientScene().AddChild(serverWorld))

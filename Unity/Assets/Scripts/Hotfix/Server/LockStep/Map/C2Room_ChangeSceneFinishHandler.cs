@@ -3,11 +3,11 @@ using TrueSync;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Room)]
     [FriendOf(typeof (RoomServerComponent))]
-    public class C2Room_ChangeSceneFinishHandler: AMActorHandler<Room, C2Room_ChangeSceneFinish>
+    public static partial class C2Room_ChangeSceneFinishHandler
     {
-        protected override async ETTask Run(Room room, C2Room_ChangeSceneFinish message)
+        [ActorMessageHandler(SceneType.Room)]
+        private static async ETTask Run(Room room, C2Room_ChangeSceneFinish message)
         {
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
             RoomPlayer roomPlayer = room.GetComponent<RoomServerComponent>().GetChild<RoomPlayer>(message.PlayerId);

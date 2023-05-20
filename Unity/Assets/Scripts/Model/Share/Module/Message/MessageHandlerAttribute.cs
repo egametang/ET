@@ -11,11 +11,4 @@ namespace ET
             this.SceneType = sceneType;
         }
     }
-    
-    public class MessageRpcHandlerAttribute: MessageHandlerAttribute
-    {
-        public MessageRpcHandlerAttribute(SceneType sceneType): base(sceneType)
-        {
-        }
-    }
 }
