@@ -300,6 +300,11 @@ namespace ET
 
         public void RecycleMemoryBuffer(MemoryBuffer memoryBuffer)
         {
+            if (memoryBuffer == null)
+            {
+                return;
+            }
+            
             if (!memoryBuffer.IsFromPool)
             {
                 return;

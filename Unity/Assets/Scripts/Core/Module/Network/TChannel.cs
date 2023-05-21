@@ -132,8 +132,6 @@ namespace ET
 				}
 			}
 			
-			this.Service.Recycle(message, stream);
-			
 			if (!this.isSending)
 			{
 				//this.StartSend();

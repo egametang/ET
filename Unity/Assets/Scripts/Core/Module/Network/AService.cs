@@ -21,23 +21,15 @@ namespace ET
                 Log.Debug($"message serialize cache: {message.GetType().FullName}");
                 return lastMessageInfo.MemoryStream;
             }
+            
+            // 回收上一个消息跟MemoryBuffer
+            NetServices.Instance.RecycleMessage(this.lastMessageInfo.Message);
+            NetServices.Instance.RecycleMemoryBuffer(this.lastMessageInfo.MemoryStream);
 
             MemoryBuffer stream = NetServices.Instance.FetchMemoryBuffer();
             MessageSerializeHelper.MessageToStream(stream, message);
             this.lastMessageInfo = (message, stream);
             return stream;
-        }
-        
-        public void Recycle(MessageObject message, MemoryBuffer memoryBuffer)
-        {
-            if (ReferenceEquals(message, this.lastMessageInfo.Message))
-            {
-                return;
-            }
-            NetServices.Instance.RecycleMessage(this.lastMessageInfo.Message);
-            NetServices.Instance.RecycleMemoryBuffer(this.lastMessageInfo.MemoryStream);
-
-            this.lastMessageInfo = (message, memoryBuffer);
         }
         
         public virtual void Dispose()

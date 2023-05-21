@@ -217,11 +217,6 @@ namespace ET
         public IPEndPointNonAlloc(IPAddress address, int port) : base(address, port)
         {
         }
-        
-        public IPEndPoint DeepCopyIPEndPoint()
-        {
-            return new IPEndPoint(this.Address, this.Port);
-        }
 #endif
         
         public bool Equals(IPEndPoint ipEndPoint)
@@ -237,6 +232,20 @@ namespace ET
             }
 
             return true;
+        }
+    }
+    
+    public static class EndPointHelper
+    {
+        public static IPEndPoint Clone(this EndPoint endPoint)
+        {
+#if UNITY
+            IPEndPoint ip = ((IPEndPointNonAlloc)endPoint).DeepCopyIPEndPoint();
+#else
+            IPEndPoint ip = (IPEndPoint)endPoint;
+            ip = new IPEndPoint(ip.Address, ip.Port);
+#endif
+            return ip;
         }
     }
 }
