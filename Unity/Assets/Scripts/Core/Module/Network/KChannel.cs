@@ -52,7 +52,25 @@ namespace ET
 
 		private MemoryBuffer readMemory;
 		private int needReadSplitCount;
+
+		private IPEndPoint remoteAddress;
 		
+		public IPEndPointNonAlloc RemoteAddressNonAlloc { get; private set; }
+
+		public IPEndPoint RemoteAddress
+		{
+			get
+			{
+				return this.remoteAddress;
+			}
+			set
+			{
+				Log.Debug($"111111111111111111111111111111 set RemoteAddress: {value}");
+				this.remoteAddress = value;
+				this.RemoteAddressNonAlloc = new IPEndPointNonAlloc(value.Address, value.Port);
+			}
+		}
+
 		private void InitKcp()
 		{
 			this.Service.KcpPtrChannels.Add(this.kcp, this);
@@ -131,7 +149,7 @@ namespace ET
 			{
 				if (this.Error != ErrorCore.ERR_PeerDisconnect)
 				{
-					this.Service.Disconnect(localConn, remoteConn, this.Error, this.RemoteAddress, 3);
+					this.Service.Disconnect(localConn, remoteConn, this.Error, this.RemoteAddressNonAlloc, 3);
 				}
 			}
 			catch (Exception e)
@@ -207,8 +225,9 @@ namespace ET
 				buffer.WriteTo(0, KcpProtocalType.SYN);
 				buffer.WriteTo(1, this.LocalConn);
 				buffer.WriteTo(5, this.RemoteConn);
-				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
-				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
+				this.socket.SendTo_NonAlloc(buffer, 0, 9, SocketFlags.None, this.RemoteAddressNonAlloc);
+				// 这里很奇怪 调用socket.LocalEndPoint会动到this.RemoteAddressNonAlloc里面的temp，这里就不仔细研究了
+				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress}");
 
 				this.lastConnectTime = timeNow;
 
@@ -382,7 +401,7 @@ namespace ET
 				// 每个消息头部写下该channel的id;
 				buffer.WriteTo(1, this.LocalConn);
 				Marshal.Copy(bytes, buffer, 5, count);
-				this.socket.SendTo(buffer, 0, count + 5, SocketFlags.None, this.RemoteAddress);
+				this.socket.SendTo_NonAlloc(buffer, 0, count + 5, SocketFlags.None, this.RemoteAddressNonAlloc);
 			}
 			catch (Exception e)
 			{

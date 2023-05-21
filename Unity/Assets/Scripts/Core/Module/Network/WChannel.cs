@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.WebSockets;
 using System.Threading;
 
@@ -21,6 +22,8 @@ namespace ET
         private bool isConnected;
 
         private readonly MemoryBuffer recvStream;
+        
+        public IPEndPoint RemoteAddress { get; set; }
 
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 

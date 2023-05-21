@@ -144,7 +144,7 @@ namespace ET
         private readonly Dictionary<long, KChannel> waitAcceptChannels = new Dictionary<long, KChannel>();
 
         private readonly byte[] cache = new byte[2048];
-        private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        private IPEndPointNonAlloc ipEndPoint = new IPEndPointNonAlloc(IPAddress.Any, 0);
 
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
@@ -197,8 +197,9 @@ namespace ET
 
         private IPEndPoint CloneAddress()
         {
-            IPEndPoint ip = (IPEndPoint) this.ipEndPoint;
-            return new IPEndPoint(ip.Address, ip.Port);
+            IPEndPoint ip = this.ipEndPoint.DeepCopyIPEndPoint();
+            Log.Debug($"111111111111111111111 clone: {this.ipEndPoint} {ip}");
+            return ip;
         }
 
         private void Recv()
@@ -210,7 +211,9 @@ namespace ET
 
             while (socket != null && this.socket.Available > 0)
             {
-                int messageLength = this.socket.ReceiveFrom(this.cache, ref this.ipEndPoint);
+                int messageLength = this.socket.ReceiveFrom_NonAlloc(this.cache, ref this.ipEndPoint);
+                
+                Log.Debug($"11111111111111111111111111111111 recv: {this.ipEndPoint}");
 
                 // 长度小于1，不是正常的消息
                 if (messageLength < 1)
@@ -264,7 +267,7 @@ namespace ET
                             }
 
                             // 重连的时候router地址变化, 这个不能放到msg中，必须经过严格的验证才能切换
-                            if (!Equals(kChannel.RemoteAddress, this.ipEndPoint))
+                            if (!this.ipEndPoint.Equals(kChannel.RemoteAddress))
                             {
                                 kChannel.RemoteAddress = this.CloneAddress();
                             }
@@ -276,7 +279,7 @@ namespace ET
                                 buffer.WriteTo(1, kChannel.LocalConn);
                                 buffer.WriteTo(5, kChannel.RemoteConn);
                                 buffer.WriteTo(9, connectId);
-                                this.socket.SendTo(buffer, 0, 13, SocketFlags.None, this.ipEndPoint);
+                                this.socket.SendTo_NonAlloc(buffer, 0, 13, SocketFlags.None, this.ipEndPoint);
                             }
                             catch (Exception e)
                             {
@@ -344,7 +347,9 @@ namespace ET
                                 buffer.WriteTo(1, kChannel.LocalConn);
                                 buffer.WriteTo(5, kChannel.RemoteConn);
                                 Log.Info($"kservice syn: {kChannel.Id} {remoteConn} {localConn}");
-                                this.socket.SendTo(buffer, 0, 9, SocketFlags.None, kChannel.RemoteAddress);
+                                
+                                Log.Debug($"11111111111111111111111111111111111111: {kChannel.RemoteAddressNonAlloc} {kChannel.RemoteAddress}");
+                                this.socket.SendTo_NonAlloc(buffer, 0, 9, SocketFlags.None, kChannel.RemoteAddressNonAlloc);
                             }
                             catch (Exception e)
                             {
@@ -414,7 +419,7 @@ namespace ET
                             if (kChannel == null)
                             {
                                 // 通知对方断开
-                                this.Disconnect(localConn, remoteConn, ErrorCore.ERR_KcpNotFoundChannel, (IPEndPoint) this.ipEndPoint, 1);
+                                this.Disconnect(localConn, remoteConn, ErrorCore.ERR_KcpNotFoundChannel, this.ipEndPoint, 1);
                                 break;
                             }
                             
@@ -494,7 +499,7 @@ namespace ET
             kChannel.Dispose();
         }
 
-        public void Disconnect(uint localConn, uint remoteConn, int error, IPEndPoint address, int times)
+        public void Disconnect(uint localConn, uint remoteConn, int error, IPEndPointNonAlloc address, int times)
         {
             try
             {
@@ -510,7 +515,7 @@ namespace ET
                 buffer.WriteTo(9, (uint) error);
                 for (int i = 0; i < times; ++i)
                 {
-                    this.socket.SendTo(buffer, 0, 13, SocketFlags.None, address);
+                    this.socket.SendTo_NonAlloc(buffer, 0, 13, SocketFlags.None, address);
                 }
             }
             catch (Exception e)

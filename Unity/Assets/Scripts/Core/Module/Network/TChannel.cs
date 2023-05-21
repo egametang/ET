@@ -23,6 +23,8 @@ namespace ET
 		private bool isConnected;
 
 		private readonly PacketParser parser;
+		
+		public IPEndPoint RemoteAddress { get; set; }
 
 		private readonly byte[] sendCache = new byte[Packet.OpcodeLength + Packet.ActorIdLength];
 

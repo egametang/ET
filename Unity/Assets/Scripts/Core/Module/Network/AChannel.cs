@@ -32,10 +32,8 @@ namespace ET
 		public ChannelType ChannelType { get; protected set; }
 
 		public int Error { get; set; }
-		
-		public IPEndPoint RemoteAddress { get; set; }
 
-		
+
 		public bool IsDisposed
 		{
 			get
