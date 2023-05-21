@@ -40,10 +40,6 @@ namespace ET
         
         public void Recycle(MemoryBuffer memoryStream)
         {
-            if (!memoryStream.IsFromPool)
-            {
-                return;
-            }
             NetServices.Instance.Recycle(memoryStream);
         }
         

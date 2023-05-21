@@ -449,14 +449,20 @@ namespace ET
 		
 		public void Send(long actorId, MessageObject message)
 		{
-			MemoryBuffer stream = this.Service.Fetch(message);
-			KcpWaitPacket kcpWaitPacket = new() { ActorId = actorId, MemoryStream = stream };
+			KcpWaitPacket kcpWaitPacket;
+			MemoryBuffer stream;
 			if (!this.IsConnected)
 			{
+				// 没连接成功的时候MemoryBuffer不用对象池，因为这个时候可能会堆积大量消息，造成池过大
+				stream = new MemoryBuffer();
+				MessageSerializeHelper.MessageToStream(stream, message);
+				kcpWaitPacket = new KcpWaitPacket { ActorId = actorId, MemoryStream = stream };
 				this.sendBuffer.Enqueue(kcpWaitPacket);
 				return;
 			}
 			
+			stream = this.Service.Fetch(message);
+			kcpWaitPacket = new KcpWaitPacket { ActorId = actorId, MemoryStream = stream };
 			if (this.kcp == IntPtr.Zero)
 			{
 				throw new Exception("kchannel connected but kcp is zero!");
