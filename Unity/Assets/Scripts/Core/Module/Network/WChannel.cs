@@ -136,8 +136,6 @@ namespace ET
                     {
                         await this.webSocket.SendAsync(bytes.GetMemory(), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
                         
-                        this.Service.Recycle(bytes);
-                        
                         if (this.IsDisposed)
                         {
                             return;

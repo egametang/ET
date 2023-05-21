@@ -12,8 +12,10 @@ namespace ET
             return this.Fetch(typeof (T)) as T;
         }
 
+        // 只有客户端才用消息池，服务端不使用
         public MessageObject Fetch(Type type)
         {
+#if UNITY
             lock (this.pool)
             {
                 MessageObject messageObject;
@@ -34,6 +36,11 @@ namespace ET
                 messageObject.IsFromPool = true;
                 return messageObject;
             }
+#else
+            return Activator.CreateInstance(type) as MessageObject;
+#endif
+            
+
         }
 
         public void Recycle(MessageObject obj)

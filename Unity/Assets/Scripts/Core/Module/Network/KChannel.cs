@@ -9,10 +9,10 @@ namespace ET
 {
 
 	
-	public struct KcpWaitPacket
+	public struct KcpWaitSendMessage
 	{
 		public long ActorId;
-		public MemoryBuffer MemoryStream;
+		public MessageObject Message;
 	}
 	
 	public class KChannel : AChannel
@@ -23,7 +23,7 @@ namespace ET
 
 		public IntPtr kcp { get; private set; }
 
-		private readonly Queue<KcpWaitPacket> sendBuffer = new Queue<KcpWaitPacket>();
+		private readonly Queue<KcpWaitSendMessage> waitSendMessages = new Queue<KcpWaitSendMessage>();
 		
 		public readonly uint CreateTime;
 
@@ -164,13 +164,13 @@ namespace ET
 			
 			while (true)
 			{
-				if (this.sendBuffer.Count <= 0)
+				if (this.waitSendMessages.Count <= 0)
 				{
 					break;
 				}
 				
-				KcpWaitPacket buffer = this.sendBuffer.Dequeue();
-				this.KcpSend(buffer);
+				KcpWaitSendMessage buffer = this.waitSendMessages.Dequeue();
+				this.Send(buffer.ActorId, buffer.Message);
 			}
 		}
 
@@ -391,19 +391,18 @@ namespace ET
 			}
 		}
 
-        private void KcpSend(KcpWaitPacket kcpWaitPacket)
+        private void KcpSend(long actorId, MemoryBuffer memoryStream)
 		{
 			if (this.IsDisposed)
 			{
 				return;
 			}
-			MemoryBuffer memoryStream = kcpWaitPacket.MemoryStream;
 			
 			switch (this.Service.ServiceType)
 			{
 				case ServiceType.Inner:
 				{
-					memoryStream.GetBuffer().WriteTo(0, kcpWaitPacket.ActorId);
+					memoryStream.GetBuffer().WriteTo(0, actorId);
 					break;
 				}
 				case ServiceType.Outer:
@@ -442,27 +441,19 @@ namespace ET
 			}
 
 			this.Service.AddToUpdate(0, this.Id);
-			
-			// 回收MemoryBuffer，减少GC
-			this.Service.Recycle(memoryStream);
 		}
 		
 		public void Send(long actorId, MessageObject message)
 		{
-			KcpWaitPacket kcpWaitPacket;
-			MemoryBuffer stream;
 			if (!this.IsConnected)
 			{
-				// 没连接成功的时候MemoryBuffer不用对象池，因为这个时候可能会堆积大量消息，造成池过大
-				stream = new MemoryBuffer();
-				MessageSerializeHelper.MessageToStream(stream, message);
-				kcpWaitPacket = new KcpWaitPacket { ActorId = actorId, MemoryStream = stream };
-				this.sendBuffer.Enqueue(kcpWaitPacket);
+				KcpWaitSendMessage kcpWaitSendMessage = new() { ActorId = actorId, Message = message };
+				this.waitSendMessages.Enqueue(kcpWaitSendMessage);
 				return;
 			}
 			
-			stream = this.Service.Fetch(message);
-			kcpWaitPacket = new KcpWaitPacket { ActorId = actorId, MemoryStream = stream };
+			MemoryBuffer memoryStream = this.Service.Fetch(message);
+
 			if (this.kcp == IntPtr.Zero)
 			{
 				throw new Exception("kchannel connected but kcp is zero!");
@@ -490,7 +481,10 @@ namespace ET
 				return;
 			}
 
-			this.KcpSend(kcpWaitPacket);
+			this.KcpSend(actorId, memoryStream);
+			
+			// 回收Message跟MemoryBuffer，减少GC
+			this.Service.Recycle(message, memoryStream);
 		}
 		
 		private void OnRead(MemoryBuffer memoryStream)

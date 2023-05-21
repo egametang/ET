@@ -33,6 +33,7 @@ namespace ET.Client
                 {
                     C2G_Ping c2GPing = NetServices.Instance.FetchMessage<C2G_Ping>();
                     G2C_Ping response = await session.Call(c2GPing) as G2C_Ping;
+                    NetServices.Instance.RecycleMessage(response);
 
                     if (self.InstanceId != instanceId)
                     {

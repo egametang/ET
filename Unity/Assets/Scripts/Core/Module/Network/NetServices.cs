@@ -287,7 +287,7 @@ namespace ET
 
         private readonly Queue<MemoryBuffer> pool = new();
 
-        public MemoryBuffer Fetch()
+        public MemoryBuffer FetchMemoryBuffer()
         {
             if (this.pool.Count > 0)
             {
@@ -298,7 +298,7 @@ namespace ET
             return memoryBuffer;
         }
 
-        public void Recycle(MemoryBuffer memoryBuffer)
+        public void RecycleMemoryBuffer(MemoryBuffer memoryBuffer)
         {
             if (!memoryBuffer.IsFromPool)
             {
