@@ -7,6 +7,8 @@ namespace ET.Client
     {
         protected override async ETTask Run(Session session, OneFrameInputs input)
         {
+            using var _ = input ; // 方法结束时回收消息
+            
             Room room = session.DomainScene().GetComponent<Room>();
             
             Log.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
@@ -42,8 +44,6 @@ namespace ET.Client
                     room.SendHash(room.AuthorityFrame);
                 }
             }
-            // 回收消息，减少GC
-            NetServices.Instance.RecycleMessage(input);
             await ETTask.CompletedTask;
         }
     }

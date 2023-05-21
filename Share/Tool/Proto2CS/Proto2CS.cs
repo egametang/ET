@@ -81,10 +81,11 @@ namespace ET
             sb.Append("{\n");
             
             bool isMsgStart = false;
+            string msgName = "";
             foreach (string line in s.Split('\n'))
             {
                 string newline = line.Trim();
-
+                
                 if (newline == "")
                 {
                     continue;
@@ -107,7 +108,7 @@ namespace ET
                 {
                     string parentClass = "";
                     isMsgStart = true;
-                    string msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
+                    msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
                     string[] ss = newline.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (ss.Length == 2)
@@ -120,6 +121,7 @@ namespace ET
                     sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[MemoryPackable]\n");
                     sb.Append($"\tpublic partial class {msgName}: MessageObject");
+
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
                         sb.Append($", {parentClass}\n");
@@ -141,6 +143,9 @@ namespace ET
                     if (newline == "{")
                     {
                         sb.Append("\t{\n");
+                        
+                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = false) {{ return !isFromPool? new {msgName}() : NetServices.Instance.FetchMessage(typeof({msgName})) as {msgName}; }}\n\n");
+                        sb.Append($"\t\tpublic override void Dispose() {{ NetServices.Instance.RecycleMessage(this); }}\n\n");
                         continue;
                     }
 

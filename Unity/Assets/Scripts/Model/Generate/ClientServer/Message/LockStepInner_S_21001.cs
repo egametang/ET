@@ -9,6 +9,10 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2Match_Match: MessageObject, IActorRequest
 	{
+		public static G2Match_Match Create(bool isFromPool = false) { return !isFromPool? new G2Match_Match() : NetServices.Instance.FetchMessage(typeof(G2Match_Match)) as G2Match_Match; }
+
+		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
@@ -21,6 +25,10 @@ namespace ET
 	[MemoryPackable]
 	public partial class Match2G_Match: MessageObject, IActorResponse
 	{
+		public static Match2G_Match Create(bool isFromPool = false) { return !isFromPool? new Match2G_Match() : NetServices.Instance.FetchMessage(typeof(Match2G_Match)) as Match2G_Match; }
+
+		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
@@ -37,6 +45,10 @@ namespace ET
 	[MemoryPackable]
 	public partial class Match2Map_GetRoom: MessageObject, IActorRequest
 	{
+		public static Match2Map_GetRoom Create(bool isFromPool = false) { return !isFromPool? new Match2Map_GetRoom() : NetServices.Instance.FetchMessage(typeof(Match2Map_GetRoom)) as Match2Map_GetRoom; }
+
+		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
@@ -49,6 +61,10 @@ namespace ET
 	[MemoryPackable]
 	public partial class Map2Match_GetRoom: MessageObject, IActorResponse
 	{
+		public static Map2Match_GetRoom Create(bool isFromPool = false) { return !isFromPool? new Map2Match_GetRoom() : NetServices.Instance.FetchMessage(typeof(Map2Match_GetRoom)) as Map2Match_GetRoom; }
+
+		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
@@ -69,6 +85,10 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2Room_Reconnect: MessageObject, IActorRequest
 	{
+		public static G2Room_Reconnect Create(bool isFromPool = false) { return !isFromPool? new G2Room_Reconnect() : NetServices.Instance.FetchMessage(typeof(G2Room_Reconnect)) as G2Room_Reconnect; }
+
+		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
@@ -81,6 +101,10 @@ namespace ET
 	[MemoryPackable]
 	public partial class Room2G_Reconnect: MessageObject, IActorResponse
 	{
+		public static Room2G_Reconnect Create(bool isFromPool = false) { return !isFromPool? new Room2G_Reconnect() : NetServices.Instance.FetchMessage(typeof(Room2G_Reconnect)) as Room2G_Reconnect; }
+
+		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 

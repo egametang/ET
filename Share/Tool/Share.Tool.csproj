@@ -6,7 +6,7 @@
         <ImplicitUsings>false</ImplicitUsings>
         <Nullable>disable</Nullable>
         <RootNamespace>ET</RootNamespace>
-        <LangVersion>10</LangVersion>
+        <LangVersion>11</LangVersion>
         <PackageId>Apps.Tool</PackageId>
         <AssemblyName>Tool</AssemblyName>
     </PropertyGroup>
