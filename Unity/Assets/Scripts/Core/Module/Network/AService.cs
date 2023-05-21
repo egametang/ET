@@ -15,6 +15,7 @@ namespace ET
         // 缓存上一个发送的消息，这样广播消息的时候省掉多次序列化
         public MemoryBuffer Fetch(MessageObject message)
         {
+            // 这里虽然用了对象池，但是相邻的两个消息不会是池中来的同一个消息，因为lastMessageInfo中的消息还没回收
             if (ReferenceEquals(message, this.lastMessageInfo.Message))
             {
                 Log.Debug($"message serialize cache: {message.GetType().FullName}");

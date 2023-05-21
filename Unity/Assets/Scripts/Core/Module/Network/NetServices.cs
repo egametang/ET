@@ -294,7 +294,7 @@ namespace ET
                 return this.pool.Dequeue();
             }
 
-            MemoryBuffer memoryBuffer = new() { IsFromPool = true };
+            MemoryBuffer memoryBuffer = new(128) { IsFromPool = true };
             return memoryBuffer;
         }
 
