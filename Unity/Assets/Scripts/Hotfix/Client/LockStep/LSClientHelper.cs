@@ -63,7 +63,7 @@ namespace ET
                 return;
             }
             long hash = self.FrameBuffer.GetHash(frame);
-            C2Room_CheckHash c2RoomCheckHash = C2Room_CheckHash.Create();
+            C2Room_CheckHash c2RoomCheckHash = C2Room_CheckHash.Create(true);
             c2RoomCheckHash.Frame = frame;
             c2RoomCheckHash.Hash = hash;
             self.GetParent<Scene>().GetComponent<SessionComponent>().Session.Send(c2RoomCheckHash);

@@ -17,6 +17,8 @@ namespace ET.Client
             {
                 Log.Debug($"check hash fail, client: {message.Frame} {clientWorld.ToJson()}");
             }
+            
+            message.Dispose();
             await ETTask.CompletedTask;
         }
     }
