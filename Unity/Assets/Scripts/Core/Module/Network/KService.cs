@@ -149,9 +149,10 @@ namespace ET
 
 
         
-#if UNITY
-        private List<long> updateIds = new List<long>();
-#else
+
+        private readonly List<long> cacheIds = new List<long>();
+        
+#if !UNITY
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
         // 下次时间更新的channel
@@ -544,10 +545,9 @@ namespace ET
             this.UpdateChannel(timeNow);
         }
 
-        private readonly List<KChannel> removeWaitAcceptChannels = new List<KChannel>();
         private void CheckWaitAcceptChannel(uint timeNow)
         {
-            removeWaitAcceptChannels.Clear();
+            cacheIds.Clear();
             foreach (var kv in this.waitAcceptChannels)
             {
                 KChannel kChannel = kv.Value;
@@ -566,11 +566,15 @@ namespace ET
                     continue;
                 }
 
-                removeWaitAcceptChannels.Add(kChannel);
+                cacheIds.Add(kChannel.Id);
             }
 
-            foreach (KChannel kChannel in this.removeWaitAcceptChannels)
+            foreach (long id in this.cacheIds)
             {
+                if (!this.waitAcceptChannels.TryGetValue(id, out KChannel kChannel))
+                {
+                    continue;
+                }
                 kChannel.OnError(ErrorCore.ERR_KcpAcceptTimeout);
             }
         }
@@ -579,17 +583,17 @@ namespace ET
         {
 #if UNITY
             // Unity中，每帧更新Channel
-            this.updateIds.Clear();
+            this.cacheIds.Clear();
             foreach (var kv in this.waitAcceptChannels)
             {
-                this.updateIds.Add(kv.Key);
+                this.cacheIds.Add(kv.Key);
             }
             foreach (var kv in this.localConnChannels)
             {
-                this.updateIds.Add(kv.Key);
+                this.cacheIds.Add(kv.Key);
             }
 
-            foreach (long id in this.updateIds)
+            foreach (long id in this.cacheIds)
             {
                 KChannel kChannel = this.Get(id);
                 if (kChannel == null)
