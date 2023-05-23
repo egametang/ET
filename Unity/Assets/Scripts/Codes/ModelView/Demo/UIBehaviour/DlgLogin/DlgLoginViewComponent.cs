@@ -75,7 +75,7 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.UI.Button E_LoginButton
+		public UnityEngine.UI.Button E_LoginBtnButton
      	{
      		get
      		{
@@ -84,15 +84,15 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_E_LoginButton == null )
+     			if( this.m_E_LoginBtnButton == null )
      			{
-		    		this.m_E_LoginButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"Panel/E_Login");
+		    		this.m_E_LoginBtnButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"Panel/E_LoginBtn");
      			}
-     			return this.m_E_LoginButton;
+     			return this.m_E_LoginBtnButton;
      		}
      	}
 
-		public UnityEngine.UI.Image E_LoginImage
+		public UnityEngine.UI.Image E_LoginBtnImage
      	{
      		get
      		{
@@ -101,11 +101,11 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_E_LoginImage == null )
+     			if( this.m_E_LoginBtnImage == null )
      			{
-		    		this.m_E_LoginImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"Panel/E_Login");
+		    		this.m_E_LoginBtnImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"Panel/E_LoginBtn");
      			}
-     			return this.m_E_LoginImage;
+     			return this.m_E_LoginBtnImage;
      		}
      	}
 
@@ -115,8 +115,8 @@ namespace ET
 			this.m_E_AccountImage = null;
 			this.m_E_PasswordInputField = null;
 			this.m_E_PasswordImage = null;
-			this.m_E_LoginButton = null;
-			this.m_E_LoginImage = null;
+			this.m_E_LoginBtnButton = null;
+			this.m_E_LoginBtnImage = null;
 			this.uiTransform = null;
 		}
 
@@ -124,8 +124,8 @@ namespace ET
 		private UnityEngine.UI.Image m_E_AccountImage = null;
 		private UnityEngine.UI.InputField m_E_PasswordInputField = null;
 		private UnityEngine.UI.Image m_E_PasswordImage = null;
-		private UnityEngine.UI.Button m_E_LoginButton = null;
-		private UnityEngine.UI.Image m_E_LoginImage = null;
+		private UnityEngine.UI.Button m_E_LoginBtnButton = null;
+		private UnityEngine.UI.Image m_E_LoginBtnImage = null;
 		public Transform uiTransform = null;
 	}
 }
