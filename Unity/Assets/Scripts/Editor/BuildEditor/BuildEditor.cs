@@ -26,11 +26,18 @@ namespace ET
 		Development,
 		Release,
 	}
-
+	public enum ConfigFolder
+	{
+		Localhost,
+		Release,
+		RouterTest,
+		Benchmark
+	}
 	public class BuildEditor : EditorWindow
 	{
 		private PlatformType activePlatform;
 		private PlatformType platformType;
+		private ConfigFolder configFolder;
 		private bool clearFolder;
 		private bool isBuildExe;
 		private bool isContainAB;
@@ -172,17 +179,25 @@ namespace ET
 				ShowNotification("Build Hotfix Success!");
 			}
 			
-			if (GUILayout.Button("ExcelExporter"))
+			EditorGUILayout.BeginHorizontal();
 			{
-				//Directory.Delete("Assets/Bundles/Config", true);
-				ToolsEditor.ExcelExporter();
+				this.configFolder = (ConfigFolder)EditorGUILayout.EnumPopup(this.configFolder, GUILayout.Width(200f));
+
+				if (GUILayout.Button("ExcelExporter"))
+				{
+					ToolsEditor.ExcelExporter(globalConfig.CodeMode, this.configFolder);
+
+					const string clientProtoDir = "../Unity/Assets/Bundles/Config/GameConfig";
+					if (Directory.Exists(clientProtoDir))
+					{
+						Directory.Delete(clientProtoDir, true);
+					}
+					FileHelper.CopyDirectory("../Config/Excel/c/GameConfig", clientProtoDir);
 				
-				// 设置ab包
-				AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
-				assetImporter.assetBundleName = "Config.unity3d";
-				AssetDatabase.SaveAssets();
-				AssetDatabase.Refresh();
+					AssetDatabase.Refresh();
+				}
 			}
+			EditorGUILayout.EndHorizontal();
 			
 			if (GUILayout.Button("Proto2CS"))
 			{

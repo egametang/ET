@@ -1,17 +1,63 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 
 namespace ET
 {
     public static class ToolsEditor
     {
-        public static void ExcelExporter()
+public static void ExcelExporter(CodeMode codeMode, ConfigFolder configFolder)
         {
+            string genCode = string.Empty;
+
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
-            const string tools = "./Tool";
+            switch (codeMode)
+            {
+                case CodeMode.Client:
+                    genCode = $"sh gen_code_client.sh {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    break;
+                case CodeMode.Server:
+                    genCode = $"sh gen_code_server.sh {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    break;
+                case CodeMode.ClientServer:
+                    genCode = $"sh gen_code_client.sh {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    
+                    genCode = $"sh gen_code_server.sh {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    
+                    genCode = $"sh gen_code_client_server.sh {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof (codeMode), codeMode, null);
+            }
 #else
-            const string tools = ".\\Tool.exe";
+            switch (codeMode)
+            {
+                case CodeMode.Client:
+                    genCode = $"gen_code_client.bat {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    break;
+                case CodeMode.Server:
+                    genCode = $"gen_code_server.bat {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    break;
+                case CodeMode.ClientServer:
+                    genCode = $"gen_code_client.bat {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+
+                    genCode = $"gen_code_server.bat {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+
+                    genCode = $"gen_code_client_server.bat {configFolder}";
+                    ShellHelper.Run($"{genCode}", "../Tools/Luban/");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof (codeMode), codeMode, null);
+            }
 #endif
-            ShellHelper.Run($"{tools} --AppType=ExcelExporter --Console=1", "../Bin/");
         }
         
         public static void Proto2CS()

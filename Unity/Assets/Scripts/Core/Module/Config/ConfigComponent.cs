@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bright.Serialization;
 
 namespace ET
 {
@@ -18,7 +19,7 @@ namespace ET
             public string ConfigName;
         }
 		
-        private readonly Dictionary<Type, ISingleton> allConfig = new Dictionary<Type, ISingleton>();
+        private readonly Dictionary<string, IConfigSingleton> allConfig = new Dictionary<string, IConfigSingleton>(20);
 
 		public override void Dispose()
 		{
@@ -30,60 +31,81 @@ namespace ET
 
 		public object LoadOneConfig(Type configType)
 		{
-			this.allConfig.TryGetValue(configType, out ISingleton oneConfig);
+			this.allConfig.TryGetValue(configType.Name, out IConfigSingleton oneConfig);
 			if (oneConfig != null)
 			{
 				oneConfig.Destroy();
 			}
 			
-			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
+			ByteBuf oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, ByteBuf>(new GetOneConfigBytes() {ConfigName = configType.FullName});
 
-			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-			ISingleton singleton = category as ISingleton;
+			object category = Activator.CreateInstance(configType, oneConfigBytes);
+			IConfigSingleton singleton = category as IConfigSingleton;
 			singleton.Register();
 			
-			this.allConfig[configType] = singleton;
+			this.allConfig[configType.Name] = singleton;
 			return category;
 		}
 		
 		public void Load()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
+			Dictionary<Type, ByteBuf> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, ByteBuf>>(new GetAllConfigBytes());
 
 			foreach (Type type in configBytes.Keys)
 			{
-				byte[] oneConfigBytes = configBytes[type];
+				ByteBuf oneConfigBytes = configBytes[type];
 				this.LoadOneInThread(type, oneConfigBytes);
+			}
+			
+			foreach (IConfigSingleton category in this.allConfig.Values)
+			{
+				category.Register();
+				category.Resolve(allConfig);
 			}
 		}
 		
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
+			Dictionary<Type, ByteBuf> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, ByteBuf>>(new GetAllConfigBytes());
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			
 			foreach (Type type in configBytes.Keys)
 			{
-				byte[] oneConfigBytes = configBytes[type];
+				ByteBuf oneConfigBytes = configBytes[type];
 				Task task = Task.Run(() => LoadOneInThread(type, oneConfigBytes));
 				listTasks.Add(task);
 			}
 
 			await Task.WhenAll(listTasks.ToArray());
+
+			foreach (IConfigSingleton category in this.allConfig.Values)
+			{
+				category.Register();
+			}
+			
+			foreach (IConfigSingleton category in this.allConfig.Values)
+			{
+				category.Resolve(allConfig);
+			}
 		}
 		
-		private void LoadOneInThread(Type configType, byte[] oneConfigBytes)
+		private void LoadOneInThread(Type configType, ByteBuf oneConfigBytes)
 		{
-			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-			
+			object category = Activator.CreateInstance(configType, oneConfigBytes);
 			lock (this)
 			{
-				ISingleton singleton = category as ISingleton;
-				singleton.Register();
-				this.allConfig[configType] = singleton;
+				this.allConfig[configType.Name] = category as IConfigSingleton;	
+			}
+		}
+		
+		public void TranslateText(Func<string, string, string> translator)
+		{
+			foreach (IConfigSingleton category in this.allConfig.Values)
+			{
+				category.TranslateText(translator);
 			}
 		}
 	}

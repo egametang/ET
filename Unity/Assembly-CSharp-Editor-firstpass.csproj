@@ -43,6 +43,7 @@
   <ItemGroup>
      <Folder Include="Assets\Plugins\Sirenix\Odin Validator\Editor\Config" />
      <Folder Include="Assets\Plugins\Sirenix\Odin Inspector\Assets\Editor" />
+     <Folder Include="Assets\Standard Assets\Skills\Editor" />
      <Folder Include="Assets\Plugins\Sirenix\Odin Validator\Editor" />
      <Folder Include="Assets\Plugins\Sirenix\Odin Inspector\Config\Editor" />
      <Reference Include="UnityEngine">

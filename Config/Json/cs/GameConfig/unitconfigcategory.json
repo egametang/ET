@@ -1,0 +1,46 @@
+[
+  {
+    "Id": 1001,
+    "Type": 1,
+    "Name": {
+      "key": "UnitConfig.Name.1001",
+      "text": "米克尔"
+    },
+    "Position": 1,
+    "Height": 178,
+    "Weight": 68
+  },
+  {
+    "Id": 1002,
+    "Type": 1,
+    "Name": {
+      "key": "UnitConfig.Name.1002",
+      "text": "米克尔2"
+    },
+    "Position": 2,
+    "Height": 278,
+    "Weight": 78
+  },
+  {
+    "Id": 1003,
+    "Type": 1,
+    "Name": {
+      "key": "UnitConfig.Name.1003",
+      "text": "米克尔3"
+    },
+    "Position": 1,
+    "Height": 178,
+    "Weight": 68
+  },
+  {
+    "Id": 1004,
+    "Type": 1,
+    "Name": {
+      "key": "UnitConfig.Name.1004",
+      "text": "米克尔4"
+    },
+    "Position": 2,
+    "Height": 278,
+    "Weight": 78
+  }
+]

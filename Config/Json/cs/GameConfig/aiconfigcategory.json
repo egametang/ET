@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 101,
+    "AIConfigId": 1,
+    "Order": 1,
+    "Name": "AI_Attack",
+    "Desc": "攻击",
+    "NodeParams": []
+  },
+  {
+    "Id": 102,
+    "AIConfigId": 1,
+    "Order": 2,
+    "Name": "AI_XunLuo",
+    "Desc": "巡逻",
+    "NodeParams": []
+  },
+  {
+    "Id": 201,
+    "AIConfigId": 2,
+    "Order": 1,
+    "Name": "AI_XunLuo",
+    "Desc": "巡逻",
+    "NodeParams": []
+  }
+]

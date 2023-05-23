@@ -9,7 +9,8 @@
         "Unity.ModelView.Codes",
         "Unity.Mathematics",
         "Unity.Loader",
-        "YooAsset"
+        "YooAsset",
+        "Animancer"
     ],
     "includePlatforms": [
         "Editor"

@@ -18,5 +18,10 @@ namespace ET.Client
         {
             return "Assets/Scenes/"+scene;
         }
+        
+        public static string GetConfigPath(string config)
+        {
+            return "Assets/Config/"+config;
+        }
     }
 }

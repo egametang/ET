@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 1,
+    "MachineId": 1,
+    "InnerPort": 20101
+  },
+  {
+    "Id": 2,
+    "MachineId": 1,
+    "InnerPort": 20102
+  },
+  {
+    "Id": 3,
+    "MachineId": 1,
+    "InnerPort": 20103
+  },
+  {
+    "Id": 4,
+    "MachineId": 1,
+    "InnerPort": 20104
+  },
+  {
+    "Id": 5,
+    "MachineId": 1,
+    "InnerPort": 20105
+  },
+  {
+    "Id": 6,
+    "MachineId": 1,
+    "InnerPort": 20106
+  },
+  {
+    "Id": 7,
+    "MachineId": 1,
+    "InnerPort": 20107
+  }
+]

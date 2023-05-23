@@ -14,8 +14,8 @@ namespace ET
 		{
 			if (Define.EnableCodes)
 			{
-				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-				if (globalConfig.CodeMode != CodeMode.ClientServer)
+				
+				if (GlobalConfig.Instance.CodeMode != CodeMode.ClientServer)
 				{
 					throw new Exception("ENABLE_CODES mode must use ClientServer code mode!");
 				}

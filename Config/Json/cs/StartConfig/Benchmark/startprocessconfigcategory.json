@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 1,
+    "MachineId": 1,
+    "InnerPort": 20101
+  },
+  {
+    "Id": 2,
+    "MachineId": 1,
+    "InnerPort": 20102
+  },
+  {
+    "Id": 3,
+    "MachineId": 1,
+    "InnerPort": 20103
+  }
+]

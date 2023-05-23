@@ -13,6 +13,7 @@ namespace ET
     [CreateAssetMenu(menuName = "ET/CreateGlobalConfig", fileName = "GlobalConfig", order = 0)]
     public class GlobalConfig: ScriptableObject
     {
+        public static GlobalConfig Instance;
         public CodeMode CodeMode;
         public EPlayMode PlayMode;
     }

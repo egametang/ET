@@ -1,9 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
-    public abstract class ConfigSingleton<T>: ProtoObject, ISingleton where T: ConfigSingleton<T>, new()
+    public interface IConfigCategory
     {
+        void Resolve(Dictionary<string, IConfigSingleton> _tables);
+        
+        void TranslateText(System.Func<string, string, string> translator);
+    }
+
+    public interface IConfigSingleton: IConfigCategory, ISingleton
+    {
+        
+    }
+    public abstract class ConfigSingleton<T>: IConfigSingleton where T: ConfigSingleton<T>
+    {
+        private bool isDisposed;
+
         [StaticField]
         private static T instance;
 
@@ -26,6 +40,12 @@ namespace ET
 
         void ISingleton.Destroy()
         {
+            if (this.isDisposed)
+            {
+                return;
+            }
+            this.isDisposed = true;
+            
             T t = instance;
             instance = null;
             t.Dispose();
@@ -33,15 +53,24 @@ namespace ET
 
         bool ISingleton.IsDisposed()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void AfterEndInit()
-        {
+            return this.isDisposed;
         }
 
         public virtual void Dispose()
         {
         }
+        
+        public virtual void TrimExcess()
+        {
+        }
+    
+        public virtual string ConfigName()
+        {
+            return string.Empty;
+        }
+
+        public abstract void Resolve(Dictionary<string, IConfigSingleton> _tables);
+
+        public abstract void TranslateText(Func<string, string, string> translator);
     }
 }

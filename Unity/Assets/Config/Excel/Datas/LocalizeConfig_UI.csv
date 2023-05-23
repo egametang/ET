@@ -1,0 +1,33 @@
+﻿##,key,name,TextCHS,TextCHT,TextEN
+##type,string,string,string,string,string
+##comment,,控件名，方便查找,简体中文,繁体中文,英文
+##,HotUpdate/HotUpdatePanel.xml,,,,
+,2f8jqefflobh0-n0_lobh,n0,热更新,熱更新,HotUpdate
+##,Lobby/LobbyPanel.xml,,,,
+,ti3ka994t52l0-n2_lobh,TestABtn,打开测试A,打開測試A,OpenTestA
+,ti3ka994t52l0-n3_lobh,EnterMap,进入地图,進入地圖,EnterMap
+##,Login/LoginPanel.xml,,,,
+,rgfb0w498omm0-n27_lobh,LoginBtn,进入地图,進入地圖,EnterMap
+##,TestA/Button1.xml,,,,
+,2kcjlx6nw6rg2-n3_w6rg,Text1,文字1,文字1,Text1
+,2kcjlx6nw6rg2-n4_w6rg,Text2,文字2,文字2,Text2
+,2kcjlx6nw6rg2-n5_w6rg,title,标题,標題,Title
+##,TestA/TestAPanel.xml,,,,
+,2kcjlx6nlobh1-n1_lobh,n1,多语言测试,測試A,TestA
+,2kcjlx6nlobh1-n2_lobh,HideBtn,隐藏测试A界面,"隱藏"",""測試A,界面",HideTestA
+,2kcjlx6nlobh1-n0_lobh,OpenTestBBtn,打开测试B界面,打開測試B界面,OpenTestB
+,2kcjlx6nlobh1-n7_lbin,n7,标签,標簽,Label
+,2kcjlx6nlobh1-n9_lbin,n9,测试\n换行,測試\n換行,Test\nLineFeed
+,2kcjlx6nlobh1-n12_lbin,n12,"""引'号"",""逗号，测'试""","""引'號"",""逗號，測'試""","""quote"", ""comma, test"""
+,2kcjlx6nlobh1-n13_lbin,n13,制表符\t测试,製表符\t測試,Tab\tTest
+,2kcjlx6nlobh1-n14_lbin,n14,测试\n换行,測試\n換行,Test\nLineFeed
+,2kcjlx6nlobh1-n15_w6rg,n15,按钮,按鈕,Button
+,2kcjlx6nlobh1-n15_w6rg-0,n15,选中标题,選中標題,Select Title
+,2kcjlx6nlobh1-n19_w6rg,n19,选项2,選項2,Option2
+,2kcjlx6nlobh1-n19_w6rg-0,n19,选中选项2,選中選項2,Select Option2
+,2kcjlx6nlobh1-n18_w6rg,n18,选项1,選項1,Option1
+,2kcjlx6nlobh1-n18_w6rg-0,n18,选中选项1,選中選項1,Select Option1
+,2kcjlx6nlobh1-n23_w6rg,n23,富文本,富文本繁體,RichText
+##,TestB/TestBPanel.xml,,,,
+,296l7tjhlobh0-n0_lobh,n0,测试B,測試B,TestB
+,296l7tjhlobh0-n1_lobh,CloseBtn,关闭测试B界面,關閉測試B界面,CloseTestB

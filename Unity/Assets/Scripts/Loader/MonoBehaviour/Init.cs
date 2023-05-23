@@ -33,6 +33,8 @@ namespace ET
 			Game.AddSingleton<TimerComponent>();
 			Game.AddSingleton<CoroutineLockComponent>();
 			
+			GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+			GlobalConfig.Instance = globalConfig;
 			ETTask.ExceptionHandler += Log.Error;
 			YooAssets.Initialize();
 			StartCoroutine(InitPackage(StartProgram));
@@ -57,7 +59,7 @@ namespace ET
 				YooAssets.SetDefaultPackage(package);
 			}
 
-			var playMode = Resources.Load<GlobalConfig>("GlobalConfig").PlayMode;
+			var playMode = GlobalConfig.Instance.PlayMode;
 			// 编辑器下的模拟模式
 			InitializationOperation initializationOperation = null;
 			if (playMode == EPlayMode.EditorSimulateMode)

@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 1,
+    "DBConnection": "mongodb://127.0.0.1",
+    "DBName": "ET1",
+    "Desc": "游戏区"
+  },
+  {
+    "Id": 2,
+    "DBConnection": "",
+    "DBName": " ",
+    "Desc": "机器人区"
+  },
+  {
+    "Id": 3,
+    "DBConnection": "",
+    "DBName": "",
+    "Desc": "路由区"
+  }
+]

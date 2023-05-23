@@ -29,7 +29,6 @@ namespace ET.Client
 					unit.MoveToAsync(unitInfo.MoveInfo.Points).Coroutine();
 				}
 	        }
-
 	        unit.AddComponent<ObjectWait>();
 
 	        unit.AddComponent<XunLuoPathComponent>();

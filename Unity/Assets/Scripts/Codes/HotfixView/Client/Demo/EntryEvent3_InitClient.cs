@@ -10,7 +10,7 @@ namespace ET.Client
         {
             // 加载配置
             //Root.Instance.Scene.AddComponent<ResourcesComponent>();
-            Root.Instance.Scene.AddComponent<ResComponent>();
+
             Root.Instance.Scene.AddComponent<GlobalComponent>();
 
             //await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");

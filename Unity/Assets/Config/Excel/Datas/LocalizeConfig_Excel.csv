@@ -1,0 +1,7 @@
+﻿##,key,TextCHS,TextCHT,TextEN
+##type,string,string,string,string
+##comment,,简体中文,繁体中文,英文
+,UnitConfig.Name.1001,米克尔,米克爾,kemier
+,UnitConfig.Name.1002,米克尔2,米克爾2,kemier2
+,UnitConfig.Name.1003,米克尔3,米克爾3,kemier3
+,UnitConfig.Name.1004,米克尔4,米克爾4,kemier4
