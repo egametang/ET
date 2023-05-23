@@ -5,7 +5,7 @@
 	{
 		protected override async ETTask Run(Scene scene, EventType.AppStartInitFinish args)
 		{
-			await UIHelper.Create(scene, UIType.UILogin, UILayer.Mid);
+			await scene.GetComponent<UIComponent>().ShowWindowAsync<DlgLogin>();
 		}
 	}
 }

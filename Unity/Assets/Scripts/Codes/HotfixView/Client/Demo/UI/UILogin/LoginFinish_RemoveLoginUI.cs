@@ -5,7 +5,7 @@
 	{
 		protected override async ETTask Run(Scene scene, EventType.LoginFinish args)
 		{
-			await UIHelper.Remove(scene, UIType.UILogin);
+			await scene.GetComponent<UIComponent>().ShowWindowAsync<DlgLogin>();
 		}
 	}
 }

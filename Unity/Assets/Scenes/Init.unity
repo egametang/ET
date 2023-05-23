@@ -135,8 +135,8 @@ GameObject:
   - component: {fileID: 251107987}
   - component: {fileID: 251107986}
   - component: {fileID: 251107985}
-  m_Layer: 0
-  m_Name: Low
+  m_Layer: 5
+  m_Name: FixedRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 823
 --- !u!114 &251107986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!1 &429867060
 GameObject:
@@ -303,8 +303,8 @@ GameObject:
   - component: {fileID: 493985073}
   - component: {fileID: 493985072}
   - component: {fileID: 493985071}
-  m_Layer: 0
-  m_Name: Mid
+  m_Layer: 5
+  m_Name: PopUpRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 823
 --- !u!114 &493985072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,7 +389,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!1 &575235018
 GameObject:
@@ -425,6 +425,7 @@ Transform:
   - {fileID: 1245951402}
   - {fileID: 1784017108}
   - {fileID: 630054496}
+  - {fileID: 1212466537}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -499,8 +500,8 @@ GameObject:
   - component: {fileID: 872594943}
   - component: {fileID: 872594942}
   - component: {fileID: 872594941}
-  m_Layer: 0
-  m_Name: Hidden
+  m_Layer: 5
+  m_Name: NormalRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,7 +543,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 823
 --- !u!114 &872594942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,6 +588,37 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1212466536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1212466537}
+  m_Layer: 0
+  m_Name: PoolRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1212466537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212466536}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 575235020}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1245951401
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,8 +758,8 @@ GameObject:
   - component: {fileID: 1439952252}
   - component: {fileID: 1439952251}
   - component: {fileID: 1439952250}
-  m_Layer: 0
-  m_Name: High
+  m_Layer: 5
+  m_Name: OtherRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +801,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 823
 --- !u!114 &1439952251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,7 +844,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 20
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!1 &1784017107
 GameObject:
@@ -823,8 +855,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1784017108}
-  - component: {fileID: 1784017109}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,27 +881,6 @@ Transform:
   m_Father: {fileID: 575235020}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1784017109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784017107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 502d8cafd6a5a0447ab1db9a24cdcb10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-  - key: Hidden
-    gameObject: {fileID: 872594939}
-  - key: Low
-    gameObject: {fileID: 251107983}
-  - key: Mid
-    gameObject: {fileID: 493985069}
-  - key: High
-    gameObject: {fileID: 1439952248}
 --- !u!850595691 &1972482029
 LightingSettings:
   m_ObjectHideFlags: 0
