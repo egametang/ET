@@ -20,8 +20,7 @@ namespace ET
         {
             try
             {
-                ResourcesComponent.Instance.LoadBundle(atlasName.StringToAB());
-                SpriteAtlas spriteAtlas = ResourcesComponent.Instance.GetAsset(atlasName.StringToAB(),atlasName) as SpriteAtlas ;
+                SpriteAtlas spriteAtlas = ResComponent.Instance.LoadAsset<SpriteAtlas>(ResPathHelper.GetSpriteAltasPath(atlasName) );
                 Sprite sprite = spriteAtlas.GetSprite(spriteName);
                 if ( null == sprite )
                 {
@@ -45,8 +44,7 @@ namespace ET
         {
             try
             {
-                await ResourcesComponent.Instance.LoadBundleAsync(atlasName.StringToAB());
-                SpriteAtlas spriteAtlas = ResourcesComponent.Instance.GetAsset(atlasName.StringToAB(),atlasName) as SpriteAtlas ;
+                SpriteAtlas spriteAtlas =await  ResComponent.Instance.LoadAssetAsync<SpriteAtlas>(ResPathHelper.GetSpriteAltasPath(atlasName) );
                 Sprite sprite = spriteAtlas.GetSprite(spriteName);
                 if (null == sprite)
                 {

@@ -23,5 +23,10 @@ namespace ET.Client
         {
             return "Assets/Config/"+config;
         }
+        
+        public static string GetSpriteAltasPath(string sa)
+        {
+            return "Assets/SpriteAltas/"+sa;
+        }
     }
 }
