@@ -203,7 +203,10 @@ namespace ET
 			{
 				ToolsEditor.Proto2CS();
 			}
-
+			if (GUILayout.Button("Clear Process"))
+			{
+				PortHelper.ClearUnityProcess();
+			}
 			GUILayout.Space(5);
 		}
 		
