@@ -5,20 +5,20 @@ namespace ET
 {
     public static partial class LSClientHelper
     {
-        public static void RunRollbackSystem(Entity entity)
+        public static void RunLSRollbackSystem(Entity entity)
         {
             if (entity is LSEntity)
             {
                 return;
             }
             
-            LSEntitySystemSington.Instance.Rollback(entity);
+            LSEntitySystemSington.Instance.LSRollback(entity);
             
             if (entity.ComponentsCount() > 0)
             {
                 foreach (var kv in entity.Components)
                 {
-                    RunRollbackSystem(kv.Value);
+                    RunLSRollbackSystem(kv.Value);
                 }
             }
 
@@ -26,7 +26,7 @@ namespace ET
             {
                 foreach (var kv in entity.Children)
                 {
-                    RunRollbackSystem(kv.Value);
+                    RunLSRollbackSystem(kv.Value);
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace ET
                 room.Update(oneFrameInputs);
             }
             
-            RunRollbackSystem(room);
+            RunLSRollbackSystem(room);
         }
         
         public static void SendHash(this Room self, int frame)
@@ -116,7 +116,7 @@ namespace ET
                 LSWorld lsWorld = MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer, 0, memoryBuffer.Length) as LSWorld;
                 room.LSWorld = lsWorld;
                 room.AuthorityFrame = snapshotIndex * LSConstValue.SaveLSWorldFrameCount;
-                RunRollbackSystem(room);
+                RunLSRollbackSystem(room);
             }
             
             room.FixedTimeCounter.Reset(TimeHelper.ServerFrameTime() - frame * LSConstValue.UpdateInterval, 0);

@@ -47,29 +47,29 @@ namespace ET
             return this.typeSystems.GetOneTypeSystems(type);
         }
         
-        public void Rollback(Entity entity)
+        public void LSRollback(Entity entity)
         {
-            if (entity is not IRollback)
+            if (entity is not ILSRollback)
             {
                 return;
             }
             
-            List<object> iRollbackSystems = this.typeSystems.GetSystems(entity.GetType(), typeof (IRollbackSystem));
-            if (iRollbackSystems == null)
+            List<object> iLSRollbackSystems = this.typeSystems.GetSystems(entity.GetType(), typeof (ILSRollbackSystem));
+            if (iLSRollbackSystems == null)
             {
                 return;
             }
 
-            foreach (IRollbackSystem iRollbackSystem in iRollbackSystems)
+            foreach (ILSRollbackSystem iLSRollbackSystem in iLSRollbackSystems)
             {
-                if (iRollbackSystem == null)
+                if (iLSRollbackSystem == null)
                 {
                     continue;
                 }
 
                 try
                 {
-                    iRollbackSystem.Run(entity);
+                    iLSRollbackSystem.Run(entity);
                 }
                 catch (Exception e)
                 {

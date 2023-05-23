@@ -15,7 +15,7 @@ namespace ET.Client
         }
         
         [LSEntitySystem]
-        private static void Rollback(this LSUnitView self)
+        private static void LSRollback(this LSUnitView self)
         {
             //LSUnit unit = self.GetUnit();
             //self.Transform.position = unit.Position.ToVector();

@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public interface IRollback
+    public interface ILSRollback
     {
     }
     
-    public interface IRollbackSystem: ISystemType
+    public interface ILSRollbackSystem: ISystemType
     {
         void Run(Entity o);
     }
     
     [LSEntitySystem]
-    public abstract class RollbackSystem<T> : IRollbackSystem where T: Entity, IRollback
+    public abstract class LSRollbackSystem<T> : ILSRollbackSystem where T: Entity, ILSRollback
     {
-        void IRollbackSystem.Run(Entity o)
+        void ILSRollbackSystem.Run(Entity o)
         {
-            this.Rollback((T)o);
+            this.LSRollback((T)o);
         }
 
         Type ISystemType.Type()
@@ -27,7 +27,7 @@ namespace ET
 
         Type ISystemType.SystemType()
         {
-            return typeof(IRollbackSystem);
+            return typeof(ILSRollbackSystem);
         }
 
         int ISystemType.GetInstanceQueueIndex()
@@ -35,6 +35,6 @@ namespace ET
             return InstanceQueueIndex.None;
         }
 
-        protected abstract void Rollback(T self);
+        protected abstract void LSRollback(T self);
     }
 }
