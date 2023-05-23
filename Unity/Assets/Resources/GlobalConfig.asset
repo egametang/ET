@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
   CodeMode: 1
-  BuildType: 2
+  BuildType: 1
   AppType: 8

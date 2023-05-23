@@ -100,6 +100,37 @@ namespace ET
             }
         }
         
+        public void Serialize(Entity component)
+        {
+            if (component is not ISerialize)
+            {
+                return;
+            }
+            
+            List<object> iSerializeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ISerializeSystem));
+            if (iSerializeSystems == null)
+            {
+                return;
+            }
+
+            foreach (ISerializeSystem serializeSystem in iSerializeSystems)
+            {
+                if (serializeSystem == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    serializeSystem.Run(component);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
         public void Deserialize(Entity component)
         {
             if (component is not IDeserialize)
