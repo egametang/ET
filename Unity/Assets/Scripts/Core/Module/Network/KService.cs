@@ -147,10 +147,13 @@ namespace ET
         
         private EndPoint ipEndPoint = new IPEndPointNonAlloc(IPAddress.Any, 0);
 
+
+        
+#if UNITY
+        private List<long> updateIds = new List<long>();
+#else
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
-        
-#if !UNITY
         // 下次时间更新的channel
         private readonly MultiMap<long, long> timeId = new();
         private readonly List<long> timeOutTime = new List<long>();
@@ -574,6 +577,34 @@ namespace ET
 
         private void UpdateChannel(uint timeNow)
         {
+#if UNITY
+            // Unity中，每帧更新Channel
+            this.updateIds.Clear();
+            foreach (var kv in this.waitAcceptChannels)
+            {
+                this.updateIds.Add(kv.Key);
+            }
+            foreach (var kv in this.localConnChannels)
+            {
+                this.updateIds.Add(kv.Key);
+            }
+
+            foreach (long id in this.updateIds)
+            {
+                KChannel kChannel = this.Get(id);
+                if (kChannel == null)
+                {
+                    continue;
+                }
+
+                if (kChannel.Id == 0)
+                {
+                    continue;
+                }
+                kChannel.Update(timeNow);
+            }
+            
+#else
             foreach (long id in this.updateIds)
             {
                 KChannel kChannel = this.Get(id);
@@ -590,6 +621,7 @@ namespace ET
                 kChannel.Update(timeNow);
             }
             this.updateIds.Clear();
+#endif
         }
         
         // 服务端需要看channel的update时间是否已到
@@ -606,8 +638,6 @@ namespace ET
                 this.minTime = time;
             }
             this.timeId.Add(time, id);
-#else
-            this.updateIds.Add(id);
 #endif
         }
         
