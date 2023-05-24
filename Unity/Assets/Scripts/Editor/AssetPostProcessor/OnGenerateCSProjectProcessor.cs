@@ -97,7 +97,7 @@ namespace ET
                 XmlElement compile = newDoc.CreateElement("Compile", newDoc.DocumentElement.NamespaceURI);
                 XmlElement link = newDoc.CreateElement("Link", newDoc.DocumentElement.NamespaceURI);
                 link.InnerText = linkStr;
-                compile.AppendChild(link);
+                //compile.AppendChild(link);
                 compile.SetAttribute("Include", p);
                 itemGroup.AppendChild(compile);
             }
