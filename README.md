@@ -2,16 +2,30 @@
 
 # __讨论QQ群 : 474643097__  
 
-# 预告：双端帧同步框架课程即将推出，熊猫出品，必属精品     
+# 双端预测回滚帧同步框架课程2023年5月25日推出，熊猫出品，必属精品，有需要请加QQ:80081771    
 # [帧同步预告视频](https://www.bilibili.com/video/BV1tX4y1C7pM/?share_source=copy_web&vd_source=001b901865c99550d1b2a8cd663695d4)  
-1. 实现了一个极其优美的帧同步框架，ET框架为帧同步做了调整，整个框架实现更加合理，可扩展性更强了，注意，并不是只能做帧同步，帧同步框架只是ET框架一小部分  
-2. 网络多线程0GC实现，优美的实现，性能提升  
-3. 逻辑层表现层分离，前后端共享逻辑层实现, 服务端会同时跑战斗，杜绝结果作弊  
-4. 帧同步预测回滚实现  
-5. 客户端时间动态膨胀收缩  
-6. 录像文件随时保存，播放可以随意跳转播放，加速播放  
-7. 断线重连，瞬间重连  
-8. 双端共享代码，都有战斗，可以做出一些神奇的操作，课程中再介绍  
+### 1. 网络多线程0GC实现，优美的实现，性能提升  
+### 2. ET框架调整：  
+    a. EntityRef Entity弱引用机制  
+    b. Entity不再统一注册到Root中，只有Actor对象挂载了MailboxComponent的注册到  ActorMessageDispatcherComponent中  
+    c. TypeSystem EntitySystemSingleton，可扩展的Entity System机制，自定义System极其轻松  
+    d. Domain IScene, 更完善，Scene的代码都简化了  
+    e. Entity中Components改成SortedDictionary，保证有序  
+    f. Mongo序列化BeginInit, 增加了一个SerializeSystem  
+    g. 配置文件改成了Bson，直接支持Dictionary以及更复杂的配置  
+### 3. 实现了一个极其优美的预测回滚的帧同步框架，包含客户端跟服务端。注意，并不是只能做帧同步，帧同步框架只是ET框架一小部分  
+    a. 帧同步专用的LSEntity，LSWorld帧同步定点数domain  
+    b. LSUpdateSystem 处理帧的Update逻辑  
+    c. LSRollbackSystem 处理表现层和解   
+    d. 客户端可膨胀收缩的FixedUpdate  
+    ......
+### 4. 逻辑层表现层分离，前后端共享逻辑层实现, 服务端会同时跑战斗，杜绝结果作弊  
+### 5. 帧同步预测回滚实现  
+### 6. 客户端时间动态膨胀收缩  
+### 7. 录像文件随时保存，播放可以随意跳转播放，加速播放  
+### 8. 断线重连，瞬间重连  
+### 9. ET状态帧实现方式，学会ET帧同步，状态帧非常简单。
+### 10.还有更多同步方式......  
 
 # 熊猫的课程ET框架设计课：《网络游戏架构设计》已经完结，有需要请加QQ:80081771 课程详细介绍了ET框架的设计思路跟细节，以下是课程目录:
 01. 代码结构
