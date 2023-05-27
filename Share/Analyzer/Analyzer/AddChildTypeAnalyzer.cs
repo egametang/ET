@@ -60,14 +60,14 @@ namespace ET.Analyzer
             
             
             // 对于Entity基类会报错 除非标记了EnableAccessEntiyChild
-            if (parentTypeSymbol.ToString()==Definition.EntityType)
+            if (parentTypeSymbol.ToString() is Definition.EntityType or Definition.LSEntityType)
             {
                 HandleAcessEntityChild(context);
                 return;
             }
 
             // 非Entity的子类 跳过
-            if (parentTypeSymbol.BaseType?.ToString()!= Definition.EntityType)
+            if (parentTypeSymbol.BaseType?.ToString()!= Definition.EntityType  && parentTypeSymbol.BaseType?.ToString()!=Definition.LSEntityType)
             {
                 return;
             }

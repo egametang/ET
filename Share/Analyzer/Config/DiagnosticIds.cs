@@ -46,5 +46,7 @@
 
         public const string ClientClassInServerAnalyzerRuleId = "ET0022";
 
+        public const string LSEntityFloatMemberAnalyzerRuleId = "ET0023";
+
     }
 }

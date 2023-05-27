@@ -305,4 +305,22 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+
+    public static class LSEntityFloatMemberAnalyzer
+    {
+        private const string Title = "LSEntity类禁止声明浮点数字段或属性";
+
+        private const string MessageFormat = "LSEntity类: {0} 禁止声明浮点数字段或属性: {1}";
+
+        private const string Description = "LSEntity类禁止声明浮点数字段或属性.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.LSEntityFloatMemberAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

@@ -58,14 +58,14 @@ namespace ET.Analyzer
             }
             
             // 对于Entity基类会报错 除非标记了EnableAccessEntiyChild
-            if (parentTypeSymbol.ToString()==Definition.EntityType)
+            if (parentTypeSymbol.ToString() is Definition.EntityType or Definition.LSEntityType)
             {
                 HandleAcessEntityChild(context);
                 return;
             }
 
             // 非Entity的子类 跳过
-            if (parentTypeSymbol.BaseType?.ToString()!= Definition.EntityType)
+            if (parentTypeSymbol.BaseType?.ToString()!= Definition.EntityType && parentTypeSymbol.BaseType?.ToString()!= Definition.LSEntityType)
             {
                 return;
             }
@@ -172,7 +172,7 @@ namespace ET.Analyzer
             }
 
             // 组件类型为Entity时 忽略检查
-            if (componentTypeSymbol.ToString()== Definition.EntityType)
+            if (componentTypeSymbol.ToString() is Definition.EntityType or Definition.LSEntityType)
             {
                 return;
             }

@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-	[ComponentOf(typeof(Scene))]
+	[ComponentOf(typeof(LSWorld))]
 	public class LSUnitComponent: LSEntity, IAwake, ISerializeToEntity
 	{
 	}

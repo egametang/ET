@@ -61,7 +61,7 @@ namespace ET.Analyzer
                 return;
             }
 
-            if (filedSymbol.ContainingType.BaseType?.ToString() != Definition.EntityType)
+            if (filedSymbol.ContainingType.BaseType?.ToString() != Definition.EntityType && filedSymbol.ContainingType.BaseType?.ToString() != Definition.LSEntityType)
             {
                 return;
             }
@@ -83,7 +83,7 @@ namespace ET.Analyzer
             }
 
             // 实体基类忽略处理
-            if (accessFieldClassSymbol.ToString() == Definition.EntityType)
+            if (accessFieldClassSymbol.ToString() is Definition.EntityType or Definition.LSEntityType)
             {
                 return;
             }

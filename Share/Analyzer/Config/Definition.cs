@@ -3,6 +3,8 @@
     public static class Definition
     {
         public const string EntityType = "ET.Entity";
+
+        public const string LSEntityType = "ET.LSEntity";
         
         public const string ETTask = "ETTask";
 

@@ -9,7 +9,8 @@ namespace ET.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class EntityMemberDeclarationAnalyzer: DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>ImmutableArray.Create(EntityDelegateDeclarationAnalyzerRule.Rule,EntityFieldDeclarationInEntityAnalyzerRule.Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>ImmutableArray.Create(EntityDelegateDeclarationAnalyzerRule.Rule,
+            EntityFieldDeclarationInEntityAnalyzerRule.Rule, LSEntityFloatMemberAnalyzer.Rule);
         
         public override void Initialize(AnalysisContext context)
         {
@@ -34,14 +35,18 @@ namespace ET.Analyzer
                 return;
             }
 
+            var baseType = namedTypeSymbol.BaseType?.ToString();
             // 筛选出实体类
-            if (namedTypeSymbol.BaseType?.ToString() != Definition.EntityType)
+            if (baseType== Definition.EntityType)
             {
-                return;
+                AnalyzeDelegateMember(context, namedTypeSymbol);
+                AnalyzeEntityMember(context, namedTypeSymbol);
+            }else if (baseType == Definition.LSEntityType)
+            {
+                AnalyzeDelegateMember(context, namedTypeSymbol);
+                AnalyzeEntityMember(context, namedTypeSymbol);
+                AnalyzeFloatMemberInLSEntity(context,namedTypeSymbol);
             }
-
-            AnalyzeDelegateMember(context, namedTypeSymbol);
-            AnalyzeEntityMember(context, namedTypeSymbol);
         }
 
         /// <summary>
@@ -95,7 +100,7 @@ namespace ET.Analyzer
                 {
                     continue;
                 }
-                if (fieldSymbol.Type.ToString()== Definition.EntityType || fieldSymbol.Type.BaseType?.ToString()== Definition.EntityType)
+                if (fieldSymbol.Type.ToString()is Definition.EntityType or Definition.LSEntityType || fieldSymbol.Type.BaseType?.ToString()is Definition.EntityType or Definition.LSEntityType)
                 {
                     var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault();
                     if (syntaxReference==null)
@@ -103,6 +108,43 @@ namespace ET.Analyzer
                         continue;
                     }
                     Diagnostic diagnostic = Diagnostic.Create(EntityFieldDeclarationInEntityAnalyzerRule.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,fieldSymbol.Name);
+                    context.ReportDiagnostic(diagnostic);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 检查LSEntity中 是否有浮点数字段
+        /// </summary>
+        private void AnalyzeFloatMemberInLSEntity(SymbolAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
+        {
+            foreach (var member in namedTypeSymbol.GetMembers())
+            {
+                ITypeSymbol? memberType = null;
+                
+                if (member is IFieldSymbol fieldSymbol)
+                {
+                    memberType = fieldSymbol.Type;
+                }
+
+                if (member is IPropertySymbol propertySymbol)
+                {
+                    memberType = propertySymbol.Type;
+                }
+
+                if (memberType==null)
+                {
+                    continue;
+                }
+                
+                if (memberType.SpecialType is  SpecialType.System_Single or SpecialType.System_Double)
+                {
+                    var syntaxReference = member.DeclaringSyntaxReferences.FirstOrDefault();
+                    if (syntaxReference==null)
+                    {
+                        continue;
+                    }
+                    Diagnostic diagnostic = Diagnostic.Create(LSEntityFloatMemberAnalyzer.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,member.Name);
                     context.ReportDiagnostic(diagnostic);
                 }
             }

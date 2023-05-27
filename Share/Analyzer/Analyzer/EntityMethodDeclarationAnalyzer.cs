@@ -54,7 +54,7 @@ namespace ET.Analyzer
             }
 
             // 筛选出实体类
-            if (namedTypeSymbol.BaseType?.ToString() != Definition.EntityType)
+            if (namedTypeSymbol.BaseType?.ToString() != Definition.EntityType && namedTypeSymbol.BaseType?.ToString() != Definition.LSEntityType)
             {
                 return;
             }
