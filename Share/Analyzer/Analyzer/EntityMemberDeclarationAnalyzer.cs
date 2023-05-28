@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -118,18 +119,19 @@ namespace ET.Analyzer
         /// </summary>
         private void AnalyzeFloatMemberInLSEntity(SymbolAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
         {
+            
             foreach (var member in namedTypeSymbol.GetMembers())
             {
-                ITypeSymbol? memberType = null;
+                INamedTypeSymbol? memberType = null;
                 
                 if (member is IFieldSymbol fieldSymbol)
                 {
-                    memberType = fieldSymbol.Type;
+                    memberType = fieldSymbol.Type as INamedTypeSymbol;
                 }
 
                 if (member is IPropertySymbol propertySymbol)
                 {
-                    memberType = propertySymbol.Type;
+                    memberType = propertySymbol.Type as INamedTypeSymbol;
                 }
 
                 if (memberType==null)
@@ -146,8 +148,55 @@ namespace ET.Analyzer
                     }
                     Diagnostic diagnostic = Diagnostic.Create(LSEntityFloatMemberAnalyzer.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,member.Name);
                     context.ReportDiagnostic(diagnostic);
+                    continue;
+                }
+
+                if (memberType.IsGenericType && GenericTypeHasFloatTypeArgs(memberType))
+                {
+                    var syntaxReference = member.DeclaringSyntaxReferences.FirstOrDefault();
+                    if (syntaxReference==null)
+                    {
+                        continue;
+                    }
+                    Diagnostic diagnostic = Diagnostic.Create(LSEntityFloatMemberAnalyzer.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,member.Name);
+                    context.ReportDiagnostic(diagnostic);
+                    continue;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 泛型类 是否含有浮点数类型参数
+        /// 对于嵌套泛型参数 递归判断
+        /// </summary>
+        private bool GenericTypeHasFloatTypeArgs(INamedTypeSymbol namedTypeSymbol)
+        {
+            var typeArgs = namedTypeSymbol.TypeArguments;
+            foreach (var typeSymbol in typeArgs)
+            {
+                if (typeSymbol is not INamedTypeSymbol namedTypeSymbol2)
+                {
+                    break;
+                }
+
+                if (namedTypeSymbol2.IsGenericType)
+                {
+                    if (GenericTypeHasFloatTypeArgs(namedTypeSymbol2))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (namedTypeSymbol2.SpecialType is SpecialType.System_Single or SpecialType.System_Double)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
