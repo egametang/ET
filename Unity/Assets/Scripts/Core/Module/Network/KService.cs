@@ -366,7 +366,7 @@ namespace ET
                             {
                                 Log.Info($"kservice ack: {localConn} {remoteConn}");
                                 kChannel.RemoteConn = remoteConn;
-                                kChannel.HandleConnnect();
+                                kChannel.HandleConnect();
                             }
 
                             break;

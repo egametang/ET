@@ -148,7 +148,7 @@ namespace ET
 			this.socket = null;
 		}
 
-		public void HandleConnnect()
+		public void HandleConnect()
 		{
 			// 如果连接上了就不用处理了
 			if (this.IsConnected)
