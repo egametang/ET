@@ -43,6 +43,7 @@ namespace ET
 					//assBytes = ((TextAsset)dictionary["Codes.dll"]).bytes;
 					//pdbBytes = ((TextAsset)dictionary["Codes.pdb"]).bytes;
 					
+					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Codes.dll，真正打包要还原使用上面注释的代码
 					assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Codes.dll"));
 					pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Codes.pdb"));
 

@@ -92,3 +92,4 @@ Publish/
 
 /Unity/*.csproj
 /Unity/Assets/Plugins/Share.SourceGenerator.dll
+/Unity/*.vsconfig
