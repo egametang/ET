@@ -9,8 +9,23 @@ namespace ET
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void KcpLog(IntPtr buf, int len, IntPtr kcp, IntPtr user);
 
-    public static class Kcp
+    public class Kcp
     {
+        private IntPtr intPtr;
+
+        public Kcp(uint conv, IntPtr user)
+        {
+            this.intPtr = ikcp_create(conv, user);
+        }
+
+        public long Id
+        {
+            get
+            {
+                return this.intPtr.ToInt64();
+            }
+        }
+
         public const int OneM = 1024 * 1024;
         public const int InnerMaxWaitSize = 1024 * 1024;
         public const int OuterMaxWaitSize = 1024 * 1024;
@@ -62,42 +77,37 @@ namespace ET
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern int ikcp_wndsize(IntPtr kcp, int sndwnd, int rcvwnd);
         
-        public static uint KcpCheck(IntPtr kcp, uint current)
+        public uint Check(uint current)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            uint ret = ikcp_check(kcp, current);
+            uint ret = ikcp_check(this.intPtr, current);
             return ret;
         }
         
-        public static IntPtr KcpCreate(uint conv, IntPtr user)
+        public void Flush()
         {
-            return ikcp_create(conv, user);
-        }
-
-        public static void KcpFlush(IntPtr kcp)
-        {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            ikcp_flush(kcp);
+            ikcp_flush(this.intPtr);
         }
 
-        public static uint KcpGetconv(IntPtr ptr)
+        public uint GetConv()
         {
-            if (ptr == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            return ikcp_getconv(ptr);
+            return ikcp_getconv(this.intPtr);
         }
 
-        public static int KcpInput(IntPtr kcp, byte[] buffer, int offset, int len)
+        public int Input(byte[] buffer, int offset, int len)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
@@ -105,32 +115,32 @@ namespace ET
             {
                 throw new Exception($"kcp error, KcpInput {buffer.Length} {offset} {len}");
             }
-            int ret = ikcp_input(kcp, buffer, offset, len);
+            int ret = ikcp_input(this.intPtr, buffer, offset, len);
             return ret;
         }
 
-        public static int KcpNodelay(IntPtr kcp, int nodelay, int interval, int resend, int nc)
+        public int Nodelay(int nodelay, int interval, int resend, int nc)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            return ikcp_nodelay(kcp, nodelay, interval, resend, nc);
+            return ikcp_nodelay(this.intPtr, nodelay, interval, resend, nc);
         }
 
-        public static int KcpPeeksize(IntPtr kcp)
+        public int Peeksize()
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            int ret = ikcp_peeksize(kcp);
+            int ret = ikcp_peeksize(this.intPtr);
             return ret;
         }
 
-        public static int KcpRecv(IntPtr kcp, byte[] buffer, int index, int len)
+        public int Recv(byte[] buffer, int index, int len)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
@@ -140,22 +150,23 @@ namespace ET
                 throw new Exception($"kcp error, KcpRecv error: {index} {len}");
             }
             
-            int ret = ikcp_recv(kcp, buffer, index, len);
+            int ret = ikcp_recv(this.intPtr, buffer, index, len);
             return ret;
         }
 
-        public static void KcpRelease(IntPtr kcp)
+        public void Release()
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            ikcp_release(kcp);
+            ikcp_release(this.intPtr);
+            this.intPtr = IntPtr.Zero;
         }
 
-        public static int KcpSend(IntPtr kcp, byte[] buffer, int offset, int len)
+        public int Send(byte[] buffer, int offset, int len)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
@@ -165,66 +176,66 @@ namespace ET
                 throw new Exception($"kcp error, KcpSend {buffer.Length} {offset} {len}");
             }
             
-            int ret = ikcp_send(kcp, buffer, offset, len);
+            int ret = ikcp_send(this.intPtr, buffer, offset, len);
             return ret;
         }
 
-        public static void KcpSetminrto(IntPtr kcp, int minrto)
+        public void SetMinrto(int minrto)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            ikcp_setminrto(kcp, minrto);
+            ikcp_setminrto(this.intPtr, minrto);
         }
 
-        public static int KcpSetmtu(IntPtr kcp, int mtu)
+        public int SetMtu(int mtu)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            return ikcp_setmtu(kcp, mtu);
+            return ikcp_setmtu(this.intPtr, mtu);
         }
 
-        public static void KcpSetoutput(KcpOutput output)
+        public static void SetOutput(KcpOutput output)
         {
             KcpOutput = output;
             ikcp_setoutput(KcpOutput);
         }
         
-        public static void KcpSetLog(KcpLog kcpLog)
+        public static void SetLog(KcpLog kcpLog)
         {
             KcpLog = kcpLog;
             ikcp_setlog(KcpLog);
         }
 
-        public static void KcpUpdate(IntPtr kcp, uint current)
+        public void Update(uint current)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            ikcp_update(kcp, current);
+            ikcp_update(this.intPtr, current);
         }
 
-        public static int KcpWaitsnd(IntPtr kcp)
+        public int Waitsnd()
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            int ret = ikcp_waitsnd(kcp);
+            int ret = ikcp_waitsnd(this.intPtr);
             return ret;
         }
 
-        public static int KcpWndsize(IntPtr kcp, int sndwnd, int rcvwnd)
+        public int SetWndSize(int sndwnd, int rcvwnd)
         {
-            if (kcp == IntPtr.Zero)
+            if (this.intPtr == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            return ikcp_wndsize(kcp, sndwnd, rcvwnd);
+            return ikcp_wndsize(this.intPtr, sndwnd, rcvwnd);
         }
     }
 }

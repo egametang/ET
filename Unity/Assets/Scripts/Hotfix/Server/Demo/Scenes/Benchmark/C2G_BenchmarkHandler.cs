@@ -6,7 +6,8 @@ namespace ET.Server
     public class C2G_BenchmarkHandler: MessageHandler<C2G_Benchmark, G2C_Benchmark>
     {
         protected override async ETTask Run(Session session, C2G_Benchmark request, G2C_Benchmark response)
-        {            
+        {
+            using C2G_Benchmark _ = request;
             BenchmarkServerComponent benchmarkServerComponent = session.DomainScene().GetComponent<BenchmarkServerComponent>();
             if (benchmarkServerComponent.Count++ % 1000000 == 0)
             {

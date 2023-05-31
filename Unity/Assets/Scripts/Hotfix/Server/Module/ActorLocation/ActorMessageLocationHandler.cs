@@ -41,7 +41,7 @@ namespace ET.Server
     
     
     [EnableClass]
-    public abstract class ActorMessageLocationHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : class, IActorLocationRequest where Response : class, IActorLocationResponse
+    public abstract class ActorMessageLocationHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : MessageObject, IActorLocationRequest where Response : MessageObject, IActorLocationResponse
     {
         protected abstract ETTask Run(E unit, Request request, Response response);
 
@@ -62,7 +62,7 @@ namespace ET.Server
                 }
 
                 int rpcId = request.RpcId;
-                Response response = Activator.CreateInstance<Response>();
+                Response response = NetServices.Instance.FetchMessage<Response>();
                 
                 try
                 {

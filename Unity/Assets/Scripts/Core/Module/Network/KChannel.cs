@@ -17,11 +17,9 @@ namespace ET
 	
 	public class KChannel : AChannel
 	{
-		public readonly KService Service;
-		
-		private Socket socket;
+		private readonly KService Service;
 
-		public IntPtr kcp { get; private set; }
+		private Kcp kcp { get; set; }
 
 		private readonly Queue<KcpWaitSendMessage> waitSendMessages = new Queue<KcpWaitSendMessage>();
 		
@@ -69,38 +67,36 @@ namespace ET
 
 		private void InitKcp()
 		{
-			this.Service.KcpPtrChannels.Add(this.kcp, this);
+			this.Service.KcpPtrChannels.Add(this.kcp.Id, this);
 			
 			switch (this.Service.ServiceType)
 			{
 				case ServiceType.Inner:
-					Kcp.KcpNodelay(kcp, 1, 10, 2, 1);
-					Kcp.KcpWndsize(kcp, 1024, 1024);
-					Kcp.KcpSetmtu(kcp, 1400); // 默认1400
-					Kcp.KcpSetminrto(kcp, 30);
+					this.kcp.Nodelay(1, 10, 2, 1);
+					this.kcp.SetWndSize(1024, 1024);
+					this.kcp.SetMtu(1400); // 默认1400
+					this.kcp.SetMinrto(30);
 					break;
 				case ServiceType.Outer:
-					Kcp.KcpNodelay(kcp, 1, 10, 2, 1);
-					Kcp.KcpWndsize(kcp, 256, 256);
-					Kcp.KcpSetmtu(kcp, 470);
-					Kcp.KcpSetminrto(kcp, 30);
+					this.kcp.Nodelay(1, 10, 2, 1);
+					this.kcp.SetWndSize(256, 256);
+					this.kcp.SetMtu(470);
+					this.kcp.SetMinrto(30);
 					break;
 			}
 
 		}
 		
 		// connect
-		public KChannel(uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService)
+		public KChannel(uint localConn, IPEndPoint remoteEndPoint, KService kService)
 		{
 			this.LocalConn = localConn;
 			this.ChannelType = ChannelType.Connect;
 			
 			Log.Info($"channel create: {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
 			
-			this.kcp = IntPtr.Zero;
 			this.Service = kService;
 			this.RemoteAddress = remoteEndPoint;
-			this.socket = socket;
 			this.CreateTime = kService.TimeNow;
 
 			this.Connect(this.CreateTime);
@@ -108,7 +104,7 @@ namespace ET
 		}
 
 		// accept
-		public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService)
+		public KChannel(uint localConn, uint remoteConn, IPEndPoint remoteEndPoint, KService kService)
 		{
 			this.ChannelType = ChannelType.Accept;
 			
@@ -118,8 +114,7 @@ namespace ET
 			this.LocalConn = localConn;
 			this.RemoteConn = remoteConn;
 			this.RemoteAddress = remoteEndPoint;
-			this.socket = socket;
-			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.Service.Id));
+			this.kcp = new Kcp(this.RemoteConn, new IntPtr(this.Service.Id));
 			this.InitKcp();
 			
 			this.CreateTime = kService.TimeNow;
@@ -153,13 +148,12 @@ namespace ET
 				Log.Error(e);
 			}
 
-			if (this.kcp != IntPtr.Zero)
+			if (this.kcp != null)
 			{
-				Kcp.KcpRelease(this.kcp);
-				this.kcp = IntPtr.Zero;
+				this.Service.KcpPtrChannels.Remove(this.kcp.Id);
+				this.kcp.Release();
+				this.kcp = null;
 			}
-
-			this.socket = null;
 		}
 
 		public void HandleConnnect()
@@ -170,7 +164,7 @@ namespace ET
 				return;
 			}
 
-			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.Service.Id));
+			this.kcp = new Kcp(this.RemoteConn, new IntPtr(this.Service.Id));
 			this.InitKcp();
 
 			Log.Info($"channel connected: {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
@@ -221,7 +215,7 @@ namespace ET
 				buffer.WriteTo(0, KcpProtocalType.SYN);
 				buffer.WriteTo(1, this.LocalConn);
 				buffer.WriteTo(5, this.RemoteConn);
-				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
+				this.Service.Socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
 				// 这里很奇怪 调用socket.LocalEndPoint会动到this.RemoteAddressNonAlloc里面的temp，这里就不仔细研究了
 				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress}");
 
@@ -250,14 +244,14 @@ namespace ET
 				return;
 			}
 
-			if (this.kcp == IntPtr.Zero)
+			if (this.kcp == null)
 			{
 				return;
 			}
 			
 			try
 			{
-				Kcp.KcpUpdate(this.kcp, timeNow);
+				this.kcp.Update(timeNow);
 			}
 			catch (Exception e)
 			{
@@ -266,7 +260,7 @@ namespace ET
 				return;
 			}
 
-			uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
+			uint nextUpdateTime = this.kcp.Check(timeNow);
 			this.Service.AddToUpdate(nextUpdateTime, this.Id);
 		}
 
@@ -277,7 +271,7 @@ namespace ET
 				return;
 			}
 
-			Kcp.KcpInput(this.kcp, date, offset, length);
+			this.kcp.Input(date, offset, length);
 			this.Service.AddToUpdate(0, this.Id);
 
 			while (true)
@@ -286,7 +280,7 @@ namespace ET
 				{
 					break;
 				}
-				int n = Kcp.KcpPeeksize(this.kcp);
+				int n = this.kcp.Peeksize();
 				if (n < 0)
 				{
 					break;
@@ -300,7 +294,7 @@ namespace ET
 				if (this.needReadSplitCount > 0) // 说明消息分片了
 				{
 					byte[] buffer = readMemory.GetBuffer();
-					int count = Kcp.KcpRecv(this.kcp, buffer, (int)this.readMemory.Length - this.needReadSplitCount, n);
+					int count = this.kcp.Recv(buffer, (int)this.readMemory.Length - this.needReadSplitCount, n);
 					this.needReadSplitCount -= count;
 					if (n != count)
 					{
@@ -329,7 +323,7 @@ namespace ET
 					this.readMemory.Seek(0, SeekOrigin.Begin);
 					
 					byte[] buffer = readMemory.GetBuffer();
-					int count = Kcp.KcpRecv(this.kcp, buffer, 0, n);
+					int count = this.kcp.Recv(buffer, 0, n);
 					if (n != count)
 					{
 						break;
@@ -397,7 +391,7 @@ namespace ET
 				// 每个消息头部写下该channel的id;
 				buffer.WriteTo(1, this.LocalConn);
 				Marshal.Copy(bytes, buffer, 5, count);
-				this.socket.SendTo(buffer, 0, count + 5, SocketFlags.None, this.RemoteAddress);
+				this.Service.Socket.SendTo(buffer, 0, count + 5, SocketFlags.None, this.RemoteAddress);
 			}
 			catch (Exception e)
 			{
@@ -432,14 +426,14 @@ namespace ET
 			// 超出maxPacketSize需要分片
 			if (count <= maxPacketSize)
 			{
-				Kcp.KcpSend(this.kcp, memoryStream.GetBuffer(), (int)memoryStream.Position, count);
+				this.kcp.Send(memoryStream.GetBuffer(), (int)memoryStream.Position, count);
 			}
 			else
 			{
 				// 先发分片信息
 				this.sendCache.WriteTo(0, 0);
 				this.sendCache.WriteTo(4, count);
-				Kcp.KcpSend(this.kcp, this.sendCache, 0, 8);
+				this.kcp.Send(this.sendCache, 0, 8);
 
 				// 分片发送
 				int alreadySendCount = 0;
@@ -449,7 +443,7 @@ namespace ET
 					
 					int sendCount = leftCount < maxPacketSize? leftCount: maxPacketSize;
 					
-					Kcp.KcpSend(this.kcp, memoryStream.GetBuffer(), (int)memoryStream.Position + alreadySendCount, sendCount);
+					this.kcp.Send(memoryStream.GetBuffer(), (int)memoryStream.Position + alreadySendCount, sendCount);
 					
 					alreadySendCount += sendCount;
 				}
@@ -469,13 +463,13 @@ namespace ET
 			
 			MemoryBuffer memoryStream = this.Service.Fetch(message);
 
-			if (this.kcp == IntPtr.Zero)
+			if (this.kcp == null)
 			{
 				throw new Exception("kchannel connected but kcp is zero!");
 			}
 			
 			// 检查等待发送的消息，如果超出最大等待大小，应该断开连接
-			int n = Kcp.KcpWaitsnd(this.kcp);
+			int n = this.kcp.Waitsnd();
 			int maxWaitSize = 0;
 			switch (this.Service.ServiceType)
 			{

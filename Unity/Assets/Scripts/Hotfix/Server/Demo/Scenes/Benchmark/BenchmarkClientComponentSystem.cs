@@ -29,7 +29,7 @@ namespace ET.Server
 
             async ETTask Call(Session s)
             {
-                await s.Call(new C2G_Benchmark());
+                using G2C_Benchmark benchmark = await s.Call(C2G_Benchmark.Create(true)) as G2C_Benchmark;
             }
             
             for (int j = 0; j < 100000000; ++j)

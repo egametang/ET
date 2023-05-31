@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Server
 {
-    public abstract class MessageHandler<Request, Response>: IMHandler where Request : class, IRequest where Response : class, IResponse
+    public abstract class MessageHandler<Request, Response>: IMHandler where Request : MessageObject, IRequest where Response : MessageObject, IResponse
     {
         protected abstract ETTask Run(Session session, Request request, Response response);
 
@@ -24,7 +24,7 @@ namespace ET.Server
                 int rpcId = request.RpcId;
                 long instanceId = session.InstanceId;
 
-                Response response = Activator.CreateInstance<Response>();
+                Response response = NetServices.Instance.FetchMessage<Response>();
 
                 try
                 {
