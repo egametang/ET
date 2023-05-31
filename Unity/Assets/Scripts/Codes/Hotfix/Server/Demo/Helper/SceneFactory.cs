@@ -15,6 +15,9 @@ namespace ET.Server
             switch (scene.SceneType)
             {
                 case SceneType.Router:
+                    // 云服务器中，一般来说router要单独部署，不过大家经常放在一起，那么下面要修改
+                    // startSceneConfig.OuterIPPort改成startSceneConfig.InnerIPOutPort
+                    // 然后云服务器防火墙把端口映射过来
                     scene.AddComponent<RouterComponent, IPEndPoint, string>(startSceneConfig.OuterIPPort,
                         startSceneConfig.StartProcessConfig.InnerIP
                     );
