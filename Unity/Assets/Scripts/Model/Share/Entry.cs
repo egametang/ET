@@ -29,13 +29,29 @@ namespace ET
         {
             StartAsync().Coroutine();
         }
+
+        private static async ETTask Test1()
+        {
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, 1, 2000))
+            {
+                await TimerComponent.Instance.WaitAsync(100000);
+            }
+        }
+        
+        private static async ETTask Test2()
+        {
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, 1, 10000))
+            {
+                await TimerComponent.Instance.WaitAsync(100000);
+            }
+        }
         
         private static async ETTask StartAsync()
         {
             WinPeriod.Init();
             
-            MongoHelper.Register();
             MongoHelper.RegisterStruct<LSInput>();
+            MongoHelper.Register();
             
             Game.AddSingleton<EntitySystemSingleton>();
             Game.AddSingleton<LSEntitySystemSington>();
