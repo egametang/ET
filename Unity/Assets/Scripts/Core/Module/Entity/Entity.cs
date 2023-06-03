@@ -4,23 +4,27 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
+    // 定义一个表示实体状态的枚举类型，使用[Flags] 特性表示可以组合多个状态
     [Flags]
     public enum EntityStatus: byte
     {
-        None = 0,
-        IsFromPool = 1,
-        IsRegister = 1 << 1,
-        IsComponent = 1 << 2,
-        IsCreated = 1 << 3,
-        IsNew = 1 << 4,
+        None = 0,                     // 无状态
+        IsFromPool = 1,               // 来自对象池
+        IsRegister = 1 << 1,          // 已注册
+        IsComponent = 1 << 2,         // 是组件
+        IsCreated = 1 << 3,           // 已创建
+        IsNew = 1 << 4,               // 是新的
     }
 
+    // 定义实体类
     public partial class Entity: DisposeObject
     {
 #if ENABLE_VIEW && UNITY_EDITOR
         private UnityEngine.GameObject viewGO;
 #endif
-        
+
+        // 使用[BsonIgnore]特性表示该属性在序列化或反序列化时被忽略，不保存到数据库或从数据库查询
+        // 实例的标识
         [BsonIgnore]
         public long InstanceId
         {
@@ -32,9 +36,15 @@ namespace ET
         {
         }
 
+        /// <summary>
+        /// 实例的状态
+        /// </summary>
         [BsonIgnore]
         private EntityStatus status = EntityStatus.None;
 
+        /// <summary>
+        /// 是否来自对象池
+        /// </summary>
         [BsonIgnore]
         private bool IsFromPool
         {
@@ -52,6 +62,9 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 是否已注册
+        /// </summary>
         [BsonIgnore]
         protected bool IsRegister
         {
@@ -65,20 +78,23 @@ namespace ET
 
                 if (value)
                 {
+                    // 进行注册
                     this.status |= EntityStatus.IsRegister;
                 }
                 else
                 {
+                    // 取消注册
                     this.status &= ~EntityStatus.IsRegister;
                 }
 				
-				
                 if (!value)
                 {
+                    // 取消注册
                     Root.Instance.Remove(this.InstanceId);
                 }
                 else
                 {
+                    // 进行注册
                     Root.Instance.Add(this);
                     EventSystem.Instance.RegisterSystem(this);
                 }
@@ -98,7 +114,10 @@ namespace ET
 #endif
             }
         }
-        
+
+        /// <summary>
+        /// 当前对象的类型名称
+        /// </summary>
         protected virtual string ViewName
         {
             get
@@ -107,6 +126,9 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 是否为组件
+        /// </summary>
         [BsonIgnore]
         private bool IsComponent
         {
@@ -124,6 +146,9 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 是否已创建
+        /// </summary>
         [BsonIgnore]
         protected bool IsCreated
         {
@@ -141,6 +166,9 @@ namespace ET
             }
         }
         
+        /// <summary>
+        /// 是否是新的
+        /// </summary>
         [BsonIgnore]
         protected bool IsNew
         {
@@ -158,9 +186,15 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 对象是否已被释放
+        /// </summary>
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
 
+        /// <summary>
+        /// 父节点
+        /// </summary>
         [BsonIgnore]
         protected Entity parent;
 
@@ -173,18 +207,18 @@ namespace ET
             {
                 if (value == null)
                 {
-                    throw new Exception($"cant set parent null: {this.GetType().Name}");
+                    throw new Exception($"cannot not set parent null: {this.GetType().Name}");
                 }
                 
                 if (value == this)
                 {
-                    throw new Exception($"cant set parent self: {this.GetType().Name}");
+                    throw new Exception($"cannot set parent self: {this.GetType().Name}");
                 }
 
                 // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
                 if (value.Domain == null)
                 {
-                    throw new Exception($"cant set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
+                    throw new Exception($"cannot set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
                 }
 
                 if (this.parent != null) // 之前有parent
@@ -227,18 +261,18 @@ namespace ET
             {
                 if (value == null)
                 {
-                    throw new Exception($"cant set parent null: {this.GetType().Name}");
+                    throw new Exception($"cannot set parent null: {this.GetType().Name}");
                 }
                 
                 if (value == this)
                 {
-                    throw new Exception($"cant set parent self: {this.GetType().Name}");
+                    throw new Exception($"cannot set parent self: {this.GetType().Name}");
                 }
                 
                 // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
                 if (value.Domain == null)
                 {
-                    throw new Exception($"cant set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
+                    throw new Exception($"cannot set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
                 }
                 
                 if (this.parent != null) // 之前有parent
@@ -259,11 +293,19 @@ namespace ET
             }
         }
 
+        // 返回父节点
         public T GetParent<T>() where T : Entity
         {
             return this.Parent as T;
         }
-
+        /// <summary>
+        /// 使用了 Bson 相关的特性，表示它是用于和 MongoDB 数据库交互的。
+        /// 使用了 BsonIgnoreIfDefault 特性，表示如果它的值是默认值，那么它不会被序列化或者保存到数据库中。
+        /// 使用了 BsonDefaultValue 特性，表示它的默认值是 0L，即一个长整型的零。
+        /// 使用了 BsonElement 特性，表示它是一个数据库文档的元素，它的名称和字段名相同。
+        /// 使用了 BsonId 特性，表示它是一个数据库文档的唯一标识符。
+        /// 有一个公共的 get 和 set 访问器，表示它可以被读取和修改
+        /// </summary>
         [BsonIgnoreIfDefault]
         [BsonDefaultValue(0L)]
         [BsonElement]
@@ -288,7 +330,7 @@ namespace ET
             {
                 if (value == null)
                 {
-                    throw new Exception($"domain cant set null: {this.GetType().Name}");
+                    throw new Exception($"domain cannot set null: {this.GetType().Name}");
                 }
                 
                 if (this.domain == value)
