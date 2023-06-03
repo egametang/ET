@@ -5,7 +5,6 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// }} 
 
 	// {{ AOT generic type
-	//ET.AEvent`1<ET.EventType.AfterUnitCreate>
 	//ET.AEvent`1<ET.EventType.NumbericChange>
 	//ET.AEvent`1<ET.Client.NetClientComponentOnRead>
 	//ET.AEvent`1<ET.EventType.EntryEvent3>
@@ -13,41 +12,42 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	//ET.AEvent`1<ET.EventType.AfterCreateCurrentScene>
 	//ET.AEvent`1<ET.EventType.SceneChangeStart>
 	//ET.AEvent`1<ET.EventType.SceneChangeFinish>
-	//ET.AEvent`1<ET.EventType.LoginFinish>
 	//ET.AEvent`1<ET.EventType.AppStartInitFinish>
+	//ET.AEvent`1<ET.EventType.LoginFinish>
 	//ET.AEvent`1<ET.EventType.ChangePosition>
 	//ET.AEvent`1<ET.EventType.ChangeRotation>
+	//ET.AEvent`1<ET.EventType.AfterUnitCreate>
 	//ET.AEvent`1<ET.EventType.EntryEvent1>
 	//ET.AInvokeHandler`2<ET.ConfigComponent/GetOneConfigBytes,System.Object>
 	//ET.AInvokeHandler`2<ET.ConfigComponent/GetAllConfigBytes,System.Object>
 	//ET.ATimer`1<System.Object>
 	//ET.AwakeSystem`1<System.Object>
 	//ET.AwakeSystem`2<System.Object,System.Int32>
-	//ET.AwakeSystem`2<System.Object,System.Object>
 	//ET.AwakeSystem`2<System.Object,System.Net.Sockets.AddressFamily>
+	//ET.AwakeSystem`2<System.Object,System.Object>
 	//ET.AwakeSystem`3<System.Object,System.Object,System.Object>
 	//ET.AwakeSystem`3<System.Object,System.Object,System.Int32>
 	//ET.ConfigSingleton`1<System.Object>
 	//ET.DestroySystem`1<System.Object>
-	//ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_SceneChangeFinish>
-	//ET.ETAsyncTaskMethodBuilder`1<System.UInt32>
-	//ET.ETAsyncTaskMethodBuilder`1<System.ValueTuple`2<System.UInt32,System.Object>>
-	//ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_UnitStop>
+	//ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_CreateMyUnit>
 	//ET.ETAsyncTaskMethodBuilder`1<System.Byte>
 	//ET.ETAsyncTaskMethodBuilder`1<System.Int32>
-	//ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_CreateMyUnit>
+	//ET.ETAsyncTaskMethodBuilder`1<System.ValueTuple`2<System.UInt32,System.Object>>
+	//ET.ETAsyncTaskMethodBuilder`1<System.UInt32>
+	//ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_UnitStop>
 	//ET.ETAsyncTaskMethodBuilder`1<System.Object>
-	//ET.ETTask`1<ET.Client.Wait_CreateMyUnit>
-	//ET.ETTask`1<System.UInt32>
-	//ET.ETTask`1<System.ValueTuple`2<System.UInt32,System.Object>>
+	//ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_SceneChangeFinish>
 	//ET.ETTask`1<ET.Client.Wait_UnitStop>
 	//ET.ETTask`1<ET.Client.Wait_SceneChangeFinish>
-	//ET.ETTask`1<System.Int32>
-	//ET.ETTask`1<System.Byte>
+	//ET.ETTask`1<System.UInt32>
+	//ET.ETTask`1<ET.Client.Wait_CreateMyUnit>
 	//ET.ETTask`1<System.Object>
+	//ET.ETTask`1<System.Byte>
+	//ET.ETTask`1<System.ValueTuple`2<System.UInt32,System.Object>>
+	//ET.ETTask`1<System.Int32>
+	//ET.IAwake`1<System.Net.Sockets.AddressFamily>
 	//ET.IAwake`1<System.Int32>
 	//ET.IAwake`1<System.Object>
-	//ET.IAwake`1<System.Net.Sockets.AddressFamily>
 	//ET.IAwake`2<System.Object,System.Object>
 	//ET.IAwake`2<System.Object,System.Int32>
 	//ET.LateUpdateSystem`1<System.Object>
@@ -58,29 +58,29 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	//ET.UpdateSystem`1<System.Object>
 	//System.Action`2<System.Int64,System.Int32>
 	//System.Action`3<System.Int64,System.Int64,System.Object>
+	//System.Collections.Generic.Dictionary`2<System.Object,System.Int64>
 	//System.Collections.Generic.Dictionary`2<System.Int32,ET.RpcInfo>
+	//System.Collections.Generic.Dictionary`2<System.Object,System.Int32>
+	//System.Collections.Generic.Dictionary`2<System.Object,System.Object>
 	//System.Collections.Generic.Dictionary`2<System.Int32,System.Int64>
 	//System.Collections.Generic.Dictionary`2<System.UInt16,System.Object>
-	//System.Collections.Generic.Dictionary`2<System.Object,System.Object>
-	//System.Collections.Generic.Dictionary`2<System.Object,System.Int64>
-	//System.Collections.Generic.Dictionary`2<System.Object,System.Int32>
 	//System.Collections.Generic.Dictionary`2<System.Int32,System.Object>
-	//System.Collections.Generic.Dictionary`2/Enumerator<System.Int32,System.Int64>
 	//System.Collections.Generic.Dictionary`2/Enumerator<System.Object,System.Object>
 	//System.Collections.Generic.Dictionary`2/Enumerator<System.Int32,System.Object>
+	//System.Collections.Generic.Dictionary`2/Enumerator<System.Int32,System.Int64>
 	//System.Collections.Generic.Dictionary`2/ValueCollection<System.Object,System.Object>
 	//System.Collections.Generic.Dictionary`2/ValueCollection<System.Int32,System.Object>
 	//System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator<System.Int32,System.Object>
 	//System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator<System.Object,System.Object>
-	//System.Collections.Generic.HashSet`1<System.UInt16>
 	//System.Collections.Generic.HashSet`1<System.Object>
+	//System.Collections.Generic.HashSet`1<System.UInt16>
 	//System.Collections.Generic.HashSet`1/Enumerator<System.Object>
 	//System.Collections.Generic.KeyValuePair`2<System.Int32,System.Int64>
 	//System.Collections.Generic.KeyValuePair`2<System.Int32,System.Object>
-	//System.Collections.Generic.KeyValuePair`2<System.Object,System.Object>
 	//System.Collections.Generic.KeyValuePair`2<System.Object,System.Int32>
-	//System.Collections.Generic.List`1<System.Int64>
+	//System.Collections.Generic.KeyValuePair`2<System.Object,System.Object>
 	//System.Collections.Generic.List`1<System.Object>
+	//System.Collections.Generic.List`1<System.Int64>
 	//System.Collections.Generic.List`1<Unity.Mathematics.float3>
 	//System.Collections.Generic.List`1/Enumerator<System.Int64>
 	//System.Collections.Generic.List`1/Enumerator<Unity.Mathematics.float3>
@@ -133,7 +133,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// System.Void ET.ETAsyncTaskMethodBuilder`1<System.Byte>::Start<System.Object>(System.Object&)
 		// System.Void ET.ETAsyncTaskMethodBuilder`1<System.UInt32>::Start<System.Object>(System.Object&)
 		// System.Void ET.ETAsyncTaskMethodBuilder`1<ET.Client.Wait_SceneChangeFinish>::Start<System.Object>(System.Object&)
-		// System.Object ET.EventSystem::Invoke<ET.NavmeshComponent/RecastFileLoader,System.Object>(System.Int32,ET.NavmeshComponent/RecastFileLoader)
+		// System.Object ET.EventSystem::Invoke<ET.NavmeshComponent/RecastFileLoader,System.Object>(ET.NavmeshComponent/RecastFileLoader)
 		// System.Void ET.EventSystem::Publish<ET.EventType.MoveStop>(ET.Scene,ET.EventType.MoveStop)
 		// System.Void ET.EventSystem::Publish<ET.EventType.SceneChangeStart>(ET.Scene,ET.EventType.SceneChangeStart)
 		// System.Void ET.EventSystem::Publish<ET.EventType.SceneChangeFinish>(ET.Scene,ET.EventType.SceneChangeFinish)
