@@ -5,15 +5,19 @@ using UnityEngine;
 
 namespace ET
 {
+	// 客户端初始化脚本
 	public class Init: MonoBehaviour
 	{
 		private void Start()
 		{
-			DontDestroyOnLoad(gameObject);
-			
-			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            // 使当前游戏对象在加载新场景时不被销毁
+            DontDestroyOnLoad(gameObject);
+
+            // 为当前应用程序域添加未处理异常的事件处理器
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
-				Log.Error(e.ExceptionObject.ToString());
+                // 记录异常信息到日志中
+                Log.Error(e.ExceptionObject.ToString());
 			};
 				
 			Game.AddSingleton<MainThreadSynchronizationContext>();
