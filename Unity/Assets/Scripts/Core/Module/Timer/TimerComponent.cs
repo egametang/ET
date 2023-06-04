@@ -2,16 +2,19 @@
 
 namespace ET
 {
+    // TimerClass是一个枚举类型，表示定时器的类别
     public enum TimerClass
     {
         None,
-        OnceTimer,
-        OnceWaitTimer,
-        RepeatedTimer,
+        OnceTimer,       // 一次性定时器，到达指定时间后执行一次事件
+        OnceWaitTimer,   // 一次性等待定时器，到达指定时间后完成一个ETTask
+        RepeatedTimer,   // 重复性定时器，每隔指定时间执行一次事件
     }
 
+    // 定时器的行为
     public class TimerAction
     {
+        // Create方法是一个静态方法，用于从对象池中获取或创建一个TimerAction对象，并设置其属性
         public static TimerAction Create(long id, TimerClass timerClass, long startTime, long time, int type, object obj)
         {
             TimerAction timerAction = ObjectPool.Instance.Fetch<TimerAction>();
@@ -24,18 +27,39 @@ namespace ET
             return timerAction;
         }
 
+        /// <summary>
+        ///  定时器的唯一标识
+        /// </summary>
         public long Id;
-        
+
+        /// <summary>
+        /// 定时器的类别
+        /// </summary>
         public TimerClass TimerClass;
 
+        /// <summary>
+        /// 定时器的参数或任务
+        /// </summary>
         public object Object;
 
+        /// <summary>
+        /// 定时器的开始时间
+        /// </summary>
         public long StartTime;
 
+        /// <summary>
+        /// 定时器的间隔时间或结束时间
+        /// </summary>
         public long Time;
 
+        /// <summary>
+        /// 定时器的事件类型或调用类型
+        /// </summary>
         public int Type;
-        
+
+        /// <summary>
+        /// Recycle方法用于重置定时器的属性，并将其回收到对象池中
+        /// </summary>
         public void Recycle()
         {
             this.Id = 0;
@@ -48,39 +72,57 @@ namespace ET
         }
     }
 
+    // 定时器的回调参数
     public struct TimerCallback
     {
         public object Args;
     }
 
+    /// <summary>
+    /// 用于管理所有的定时器
+    /// </summary>
     public class TimerComponent: Singleton<TimerComponent>, ISingletonUpdate
     {
         /// <summary>
         /// key: time, value: timer id
+        /// TimeId是一个多映射，将一个时间点映射到一组定时器id
         /// </summary>
         private readonly MultiMap<long, long> TimeId = new();
 
+        /// <summary>
+        /// 用于存储超时的时间点
+        /// </summary>
         private readonly Queue<long> timeOutTime = new();
 
+        /// <summary>
+        /// 用于存储超时的定时器id
+        /// </summary>
         private readonly Queue<long> timeOutTimerIds = new();
 
+        /// <summary>
+        /// 将一个定时器id映射到一个TimerAction对象
+        /// </summary>
         private readonly Dictionary<long, TimerAction> timerActions = new();
 
+        // 用于生成唯一的定时器id
         private long idGenerator;
 
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime = long.MaxValue;
 
+        // GetId方法返回下一个可用的定时器id，并自增idGenerator
         private long GetId()
         {
             return ++this.idGenerator;
         }
 
+        // 返回当前的客户端帧时间
         private static long GetNow()
         {
             return TimeHelper.ClientFrameTime();
         }
 
+        // Update方法在每帧调用，检查并执行超时的定时器
         public void Update()
         {
             if (this.TimeId.Count == 0)
@@ -95,6 +137,7 @@ namespace ET
                 return;
             }
 
+            // 遍历TimeId，将超时的时间点加入到timeOutTime队列中
             foreach (KeyValuePair<long, List<long>> kv in this.TimeId)
             {
                 long k = kv.Key;
@@ -107,6 +150,7 @@ namespace ET
                 this.timeOutTime.Enqueue(k);
             }
 
+            // 遍历timeOutTime队列，将对应的定时器id加入到timeOutTimerIds队列中，并从TimeId中移除
             while (this.timeOutTime.Count > 0)
             {
                 long time = this.timeOutTime.Dequeue();

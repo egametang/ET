@@ -5,19 +5,27 @@ using System.Text;
 
 namespace ET
 {
+    // EventSystem是一个单例类，负责管理游戏中所有实体的生命周期和事件
     public class EventSystem: Singleton<EventSystem>, ISingletonUpdate, ISingletonLateUpdate
     {
+        // OneTypeSystems是一个辅助类，用于存储一个实体类型的系统和标志
         private class OneTypeSystems
         {
+            // Map是一个多映射，将一个系统类型映射到一个实体类型的系统对象列表
             public readonly UnOrderMultiMap<Type, object> Map = new();
+
+            // QueueFlag是一个布尔数组，表示一个实体类型是否需要被加入到不同的实例队列索引中
             // 这里不用hash，数量比较少，直接for循环速度更快
             public readonly bool[] QueueFlag = new bool[(int)InstanceQueueIndex.Max];
         }
-        
+
+        // TypeSystems是一个辅助类，用于存储所有实体类型的OneTypeSystems
         private class TypeSystems
         {
+            // typeSystemsMap是一个字典，将一个实体类型映射到其对应的OneTypeSystems
             private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
 
+            // 返回给定实体类型的OneTypeSystems，如果不存在则创建一个
             public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
             {
                 OneTypeSystems systems = null;
@@ -32,6 +40,7 @@ namespace ET
                 return systems;
             }
 
+            // 返回给定实体类型的OneTypeSystems，或者返回null如果不存在
             public OneTypeSystems GetOneTypeSystems(Type type)
             {
                 OneTypeSystems systems = null;
@@ -39,6 +48,7 @@ namespace ET
                 return systems;
             }
 
+            // 返回给定实体类型和系统类型的系统对象列表，或者返回null如果不存在
             public List<object> GetSystems(Type type, Type systemType)
             {
                 OneTypeSystems oneTypeSystems = null;
@@ -56,31 +66,42 @@ namespace ET
             }
         }
 
+        // EventInfo是一个辅助类，用于存储事件类型的事件对象和场景类型
         private class EventInfo
         {
+            // IEvent是实现了IEvent接口的事件对象
             public IEvent IEvent { get; }
-            
+
+            // SceneType是这个事件所属的场景类型
             public SceneType SceneType {get; }
 
+            // 接受一个事件对象和一个场景类型作为参数
             public EventInfo(IEvent iEvent, SceneType sceneType)
             {
                 this.IEvent = iEvent;
                 this.SceneType = sceneType;
             }
         }
-        
+
+        // allTypes是一个字典，将一个类型的全名映射到其Type对象
         private readonly Dictionary<string, Type> allTypes = new();
 
+        // types是一个多映射集合，将一个基础属性类型映射到一组具有该属性的类型
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
 
+        // allEvents是一个字典，将一个事件类型映射到该事件类型的EventInfo对象列表
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
-        
-        private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
+        // allInvokes是一个字典，将一个调用参数类型映射到另一个字典，该字典将一个调用子类型映射到一个调用处理器对象
+        private Dictionary<Type, Dictionary<int, object>> allInvokes = new();
+
+        // typeSystems是一个TypeSystems类的实例，用于存储所有实体类型的OneTypeSystems
         private TypeSystems typeSystems = new();
 
+        // queues是一个队列数组，用于存储不同实例队列索引的实体的实例id
         private readonly Queue<long>[] queues = new Queue<long>[(int)InstanceQueueIndex.Max];
 
+        // EventSystem构造函数用空队列初始化queues数组
         public EventSystem()
         {
             for (int i = 0; i < this.queues.Length; i++)
@@ -89,6 +110,7 @@ namespace ET
             }
         }
 
+        // Add方法接受一个类型的字典，并将它们添加到allTypes和types集合中，同时为它们创建系统，事件和调用对象
         public void Add(Dictionary<string, Type> addTypes)
         {
             this.allTypes.Clear();
@@ -114,6 +136,7 @@ namespace ET
 
             this.typeSystems = new TypeSystems();
 
+            // 为每个具有ObjectSystemAttribute的实体类型创建系统对象
             foreach (Type type in this.GetTypes(typeof (ObjectSystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
