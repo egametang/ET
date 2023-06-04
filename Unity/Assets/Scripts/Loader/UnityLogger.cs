@@ -2,6 +2,9 @@
 
 namespace ET
 {
+    /// <summary>
+    /// 在Unity中输出日志信息
+    /// </summary>
     public class UnityLogger: ILog
     {
         public void Trace(string msg)

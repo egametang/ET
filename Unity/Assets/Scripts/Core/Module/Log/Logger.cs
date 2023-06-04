@@ -5,6 +5,9 @@ namespace ET
 {
     public class Logger: Singleton<Logger>
     {
+        /// <summary>
+        /// 日志接口
+        /// </summary>
         private ILog iLog;
 
         public ILog ILog
@@ -15,11 +18,16 @@ namespace ET
             }
         }
         
-        private const int TraceLevel = 1;
-        private const int DebugLevel = 2;
-        private const int InfoLevel = 3;
-        private const int WarningLevel = 4;
+        private const int TraceLevel = 1;           // 定义Trace级别的常量
+        private const int DebugLevel = 2;           // 定义Debug级别的常量
+        private const int InfoLevel = 3;            // 定义Info级别的常量
+        private const int WarningLevel = 4;         // 定义Warning级别的常量
 
+        /// <summary>
+        /// 检查日志的级别
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
         private bool CheckLogLevel(int level)
         {
             if (Options.Instance == null)
@@ -29,16 +37,26 @@ namespace ET
             return Options.Instance.LogLevel <= level;
         }
         
+        /// <summary>
+        /// 显示堆栈
+        /// </summary>
+        /// <param name="msg"></param>
         public void Trace(string msg)
         {
             if (!CheckLogLevel(DebugLevel))
             {
                 return;
             }
+
+            // 创建一个StackTrace对象，从第二个栈帧开始，包含源文件信息
             StackTrace st = new StackTrace(2, true);
             this.iLog.Trace($"{msg}\n{st}");
         }
 
+        /// <summary>
+        /// 显示Debug信息
+        /// </summary>
+        /// <param name="msg"></param>
         public void Debug(string msg)
         {
             if (!CheckLogLevel(DebugLevel))
@@ -48,6 +66,10 @@ namespace ET
             this.iLog.Debug(msg);
         }
 
+        /// <summary>
+        /// 显示普通消息
+        /// </summary>
+        /// <param name="msg"></param>
         public void Info(string msg)
         {
             if (!CheckLogLevel(InfoLevel))
@@ -57,6 +79,10 @@ namespace ET
             this.iLog.Info(msg);
         }
 
+        /// <summary>
+        /// 显示追踪栈信息
+        /// </summary>
+        /// <param name="msg"></param>
         public void TraceInfo(string msg)
         {
             if (!CheckLogLevel(InfoLevel))
@@ -67,6 +93,10 @@ namespace ET
             this.iLog.Trace($"{msg}\n{st}");
         }
 
+        /// <summary>
+        /// 显示警告信息
+        /// </summary>
+        /// <param name="msg"></param>
         public void Warning(string msg)
         {
             if (!CheckLogLevel(WarningLevel))
@@ -77,12 +107,20 @@ namespace ET
             this.iLog.Warning(msg);
         }
 
+        /// <summary>
+        /// 显示错误信息
+        /// </summary>
+        /// <param name="msg"></param>
         public void Error(string msg)
         {
             StackTrace st = new StackTrace(2, true);
             this.iLog.Error($"{msg}\n{st}");
         }
 
+        /// <summary>
+        /// 显示错误信息
+        /// </summary>
+        /// <param name="e"></param>
         public void Error(Exception e)
         {
             if (e.Data.Contains("StackTrace"))
@@ -94,6 +132,11 @@ namespace ET
             this.iLog.Error(str);
         }
 
+        /// <summary>
+        /// 显示栈追踪信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
         public void Trace(string message, params object[] args)
         {
             if (!CheckLogLevel(TraceLevel))
@@ -104,6 +147,11 @@ namespace ET
             this.iLog.Trace($"{string.Format(message, args)}\n{st}");
         }
 
+        /// <summary>
+        /// 显示警告信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
         public void Warning(string message, params object[] args)
         {
             if (!CheckLogLevel(WarningLevel))
@@ -113,6 +161,11 @@ namespace ET
             this.iLog.Warning(string.Format(message, args));
         }
 
+        /// <summary>
+        /// 显示普通信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
         public void Info(string message, params object[] args)
         {
             if (!CheckLogLevel(InfoLevel))
@@ -122,6 +175,11 @@ namespace ET
             this.iLog.Info(string.Format(message, args));
         }
 
+        /// <summary>
+        /// 显示调试信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
         public void Debug(string message, params object[] args)
         {
             if (!CheckLogLevel(DebugLevel))
@@ -129,9 +187,13 @@ namespace ET
                 return;
             }
             this.iLog.Debug(string.Format(message, args));
-
         }
 
+        /// <summary>
+        /// 显示错误信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
         public void Error(string message, params object[] args)
         {
             StackTrace st = new StackTrace(2, true);
@@ -139,6 +201,10 @@ namespace ET
             this.iLog.Error(s);
         }
         
+        /// <summary>
+        /// 在控制台显示日志
+        /// </summary>
+        /// <param name="message"></param>
         public void Console(string message)
         {
             if (Options.Instance.Console == 1)
@@ -148,6 +214,11 @@ namespace ET
             this.iLog.Debug(message);
         }
         
+        /// <summary>
+        /// 在控制台显示日志
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
         public void Console(string message, params object[] args)
         {
             string s = string.Format(message, args);
