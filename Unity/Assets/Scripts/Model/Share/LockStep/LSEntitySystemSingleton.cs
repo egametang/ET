@@ -35,7 +35,7 @@ namespace ET
                 TypeSystems.OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                 oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
                 int index = iSystemType.GetInstanceQueueIndex();
-                if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
+                if (index > LSQueneUpdateIndex.None && index < LSQueneUpdateIndex.Max)
                 {
                     oneTypeSystems.QueueFlag[index] = true;
                 }
