@@ -39,8 +39,9 @@ namespace ET.Client
                     LSClientHelper.Rollback(room, room.AuthorityFrame);
                     Log.Debug($"roll back finish {room.AuthorityFrame}");
                 }
-                else
+                else // 对比成功
                 {
+                    room.Record(room.AuthorityFrame);
                     room.SendHash(room.AuthorityFrame);
                 }
             }

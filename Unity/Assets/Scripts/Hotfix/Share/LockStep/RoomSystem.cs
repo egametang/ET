@@ -63,7 +63,7 @@ namespace ET
             return lsWorld;
         }
 
-        public static void SaveLSWorld(this Room self)
+        private static void SaveLSWorld(this Room self)
         {
             int frame = self.LSWorld.Frame;
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
@@ -81,6 +81,10 @@ namespace ET
         // 记录需要存档的数据
         public static void Record(this Room self, int frame)
         {
+            if (frame > self.AuthorityFrame)
+            {
+                return;
+            }
             OneFrameInputs oneFrameInputs = self.FrameBuffer.FrameInputs(frame);
             OneFrameInputs saveInput = new();
             oneFrameInputs.CopyTo(saveInput);
