@@ -11,9 +11,9 @@ namespace ET
         private readonly List<MemoryBuffer> snapshots;
         private readonly List<long> hashs;
 
-        public FrameBuffer(int frame = 0, int capacity = LSConstValue.FrameCountPerSecond * 10)
+        public FrameBuffer(int frame = 0, int capacity = LSConstValue.FrameCountPerSecond * 60)
         {
-            this.MaxFrame = frame + LSConstValue.FrameCountPerSecond;
+            this.MaxFrame = frame + LSConstValue.FrameCountPerSecond * 30;
             this.frameInputs = new List<OneFrameInputs>(capacity);
             this.snapshots = new List<MemoryBuffer>(capacity);
             this.hashs = new List<long>(capacity);
