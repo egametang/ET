@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    [FriendOfAttribute(typeof(ET.LSUnitView))]
     public static partial class LSUnitViewSystem
     {
         [EntitySystem]
@@ -11,9 +12,9 @@ namespace ET.Client
         {
             self.GameObject = go;
             self.Transform = go.transform;
-            
+
         }
-        
+
         [LSEntitySystem]
         private static void LSRollback(this LSUnitView self)
         {
@@ -23,16 +24,16 @@ namespace ET.Client
             //self.t = 0;
             //self.totalTime = 0;
         }
-        
+
         [EntitySystem]
         private static void Update(this LSUnitView self)
         {
             LSUnit unit = self.GetUnit();
-            
+
             Vector3 unitPos = unit.Position.ToVector();
             const float speed = 6f;
             float speed2 = speed;// * self.Room().SpeedMultiply;
-            
+
             if (unitPos != self.Position)
             {
                 float distance = (unitPos - self.Position).magnitude;
@@ -41,8 +42,8 @@ namespace ET.Client
                 self.Position = unit.Position.ToVector();
                 self.Rotation = unit.Rotation.ToQuaternion();
             }
-            
-            
+
+
             LSInput input = unit.GetComponent<LSInputComponent>().LSInput;
             if (input.V != TSVector2.zero)
             {

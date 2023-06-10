@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ET.Analyzer
@@ -21,21 +23,43 @@ namespace ET.Analyzer
             }
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
+            context.RegisterCompilationStartAction((analysisContext =>
+            {
+                if (analysisContext.Compilation.AssemblyName==AnalyzeAssembly.UnityCodes)
+                {
+                    analysisContext.RegisterSemanticModelAction((modelAnalysisContext =>
+                    {
+                        if (AnalyzerHelper.IsSemanticModelNeedAnalyze(modelAnalysisContext.SemanticModel,UnityCodesPath.AllModel))
+                        {
+                            AnalyzeSemanticModel(modelAnalysisContext);
+                        }
+                        
+                    } ));
+                    return;
+                }
+                
+                if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName,AnalyzeAssembly.AllModel))
+                {
+                    analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));
+                }
+            } ));
+        }
+        
+        private void AnalyzeSemanticModel(SemanticModelAnalysisContext analysisContext)
+        {
+            foreach (var classDeclarationSyntax in analysisContext.SemanticModel.SyntaxTree.GetRoot().DescendantNodes<ClassDeclarationSyntax>())
+            {
+                var classTypeSymbol = analysisContext.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+                if (classTypeSymbol!=null)
+                {
+                    Analyzer(analysisContext, classTypeSymbol);
+                }
+            }
         }
 
-        private void Analyzer(SymbolAnalysisContext context)
+        private void Analyzer(SemanticModelAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllModel))
-            {
-                return;
-            }
             
-            if (!(context.Symbol is INamedTypeSymbol namedTypeSymbol))
-            {
-                return;
-            }
-
             var baseType = namedTypeSymbol.BaseType?.ToString();
             // 筛选出实体类
             if (baseType== Definition.EntityType)
@@ -53,7 +77,7 @@ namespace ET.Analyzer
         /// <summary>
         /// 检查委托成员
         /// </summary>
-        private void AnalyzeDelegateMember(SymbolAnalysisContext context,INamedTypeSymbol namedTypeSymbol)
+        private void AnalyzeDelegateMember(SemanticModelAnalysisContext context,INamedTypeSymbol namedTypeSymbol)
         {
             foreach (var member in namedTypeSymbol.GetMembers())
             {
@@ -87,7 +111,7 @@ namespace ET.Analyzer
         /// <summary>
         /// 检查实体成员
         /// </summary>
-        private void AnalyzeEntityMember(SymbolAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
+        private void AnalyzeEntityMember(SemanticModelAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
         {
             foreach (var member in namedTypeSymbol.GetMembers())
             {
@@ -117,7 +141,7 @@ namespace ET.Analyzer
         /// <summary>
         /// 检查LSEntity中 是否有浮点数字段
         /// </summary>
-        private void AnalyzeFloatMemberInLSEntity(SymbolAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
+        private void AnalyzeFloatMemberInLSEntity(SemanticModelAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
         {
             
             foreach (var member in namedTypeSymbol.GetMembers())

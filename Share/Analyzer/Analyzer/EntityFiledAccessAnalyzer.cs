@@ -33,23 +33,39 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+            context.RegisterCompilationStartAction((analysisContext =>
+            {
+                if (analysisContext.Compilation.AssemblyName==AnalyzeAssembly.UnityCodes)
+                {
+                    analysisContext.RegisterSemanticModelAction((modelAnalysisContext =>
+                    {
+                        if (AnalyzerHelper.IsSemanticModelNeedAnalyze(modelAnalysisContext.SemanticModel,UnityCodesPath.AllModelHotfix))
+                        {
+                            AnalyzeSemanticModel(modelAnalysisContext);
+                        }
+                        
+                    } ));
+                    return;
+                }
+                
+                if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName, AnalyzeAssembly.AllModelHotfix))
+                {
+                    analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));
+                }
+            } ));
+        }
+        
+        private void AnalyzeSemanticModel(SemanticModelAnalysisContext analysisContext)
+        {
+            foreach (var memberAccessExpressionSyntax in analysisContext.SemanticModel.SyntaxTree.GetRoot().DescendantNodes<MemberAccessExpressionSyntax>())
+            {
+                AnalyzeMemberAccessExpression(analysisContext, memberAccessExpressionSyntax);
+            }
         }
 
-        private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
+        private void AnalyzeMemberAccessExpression(SemanticModelAnalysisContext context, MemberAccessExpressionSyntax memberAccessExpressionSyntax)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllModelHotfix))
-            {
-                return;
-            }
-
-            if (!(context.Node is MemberAccessExpressionSyntax memberAccessExpressionSyntax))
-            {
-                return;
-            }
-
             // -----筛选出实体类的字段symbol-----
-
             ISymbol? filedSymbol = context.SemanticModel.GetSymbolInfo(memberAccessExpressionSyntax).Symbol;
             if (filedSymbol == null || !(filedSymbol is IFieldSymbol))
             {

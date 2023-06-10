@@ -22,16 +22,21 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+            //context.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+           context.RegisterCompilationStartAction((analysisContext =>
+           {
+               if (analysisContext.Compilation.AssemblyName==AnalyzeAssembly.UnityCodes)
+               {
+                   analysisContext.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+               }else if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName,AnalyzeAssembly.AllModelHotfix))
+               {
+                   analysisContext.RegisterSyntaxNodeAction(this.AnalyzeMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+               }
+           }));
         }
 
         private void AnalyzeMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllModelHotfix))
-            {
-                return;
-            }
-
             if (!(context.Node is MemberAccessExpressionSyntax memberAccessExpressionSyntax))
             {
                 return;

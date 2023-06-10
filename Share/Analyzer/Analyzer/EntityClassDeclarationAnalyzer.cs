@@ -4,44 +4,54 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ET.Analyzer
 {
-    /*
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class EntityClassDeclarationAnalyzer: DiagnosticAnalyzer
-    {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(EntityClassDeclarationAnalyzerRule.Rule);
+     
+     [DiagnosticAnalyzer(LanguageNames.CSharp)]
+     public class EntityClassDeclarationAnalyzer: DiagnosticAnalyzer
+     {
+         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(EntityClassDeclarationAnalyzerRule.Rule);
 
-        public override void Initialize(AnalysisContext context)
-        {
-            if (!AnalyzerGlobalSetting.EnableAnalyzer)
-            {
-                return;
-            }
+         public override void Initialize(AnalysisContext context)
+         {
+             if (!AnalyzerGlobalSetting.EnableAnalyzer)
+             {
+                 return;
+             }
 
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.EnableConcurrentExecution();
-            context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
-        }
+             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+             context.EnableConcurrentExecution();
+             context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
+         }
 
-        private void Analyzer(SymbolAnalysisContext context)
-        {
-            if (!(context.Symbol is INamedTypeSymbol namedTypeSymbol))
-            {
-                return;
-            }
+         private void Analyzer(SymbolAnalysisContext context)
+         {
+             if (!(context.Symbol is INamedTypeSymbol namedTypeSymbol))
+             {
+                 return;
+             }
 
-            string? t = namedTypeSymbol.BaseType?.BaseType?.ToString();
-            if (t != Definition.EntityType && t != "ET.LSEntity")
-            {
-                return;
-            }
+             string? t = namedTypeSymbol.BaseType?.BaseType?.ToString();
 
-            foreach (SyntaxReference? declaringSyntaxReference in namedTypeSymbol.DeclaringSyntaxReferences)
-            {
-                SyntaxNode classSyntax = declaringSyntaxReference.GetSyntax();
-                Diagnostic diagnostic = Diagnostic.Create(EntityClassDeclarationAnalyzerRule.Rule, classSyntax.GetLocation(), namedTypeSymbol.Name, context.Compilation.AssemblyName);
-                context.ReportDiagnostic(diagnostic);
-            }
-        }
-    }
-    */
+             if (t=="ET.LSEntity")
+             {
+                 foreach (SyntaxReference? declaringSyntaxReference in namedTypeSymbol.DeclaringSyntaxReferences)
+                 {
+                     SyntaxNode classSyntax = declaringSyntaxReference.GetSyntax();
+                     Diagnostic diagnostic = Diagnostic.Create(EntityClassDeclarationAnalyzerRule.Rule, classSyntax.GetLocation(), namedTypeSymbol.Name,Definition.LSEntityType );
+                     context.ReportDiagnostic(diagnostic);
+                 }
+                 return;
+             }
+
+             if (namedTypeSymbol.BaseType?.ToString()!="ET.LSEntity" && t == Definition.EntityType)
+             {
+                 foreach (SyntaxReference? declaringSyntaxReference in namedTypeSymbol.DeclaringSyntaxReferences)
+                 {
+                     SyntaxNode classSyntax = declaringSyntaxReference.GetSyntax();
+                     Diagnostic diagnostic = Diagnostic.Create(EntityClassDeclarationAnalyzerRule.Rule, classSyntax.GetLocation(), namedTypeSymbol.Name,Definition.EntityType);
+                     context.ReportDiagnostic(diagnostic);
+                 }
+             }
+         }
+     }
+     
 }

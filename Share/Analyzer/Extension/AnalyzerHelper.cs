@@ -398,5 +398,20 @@ namespace ET.Analyzer
 
             return namespaceName;
         }
+
+        /// <summary>
+        /// 根据语义模型的文件路径 判断是否需要分析
+        /// </summary>
+        public static bool IsSemanticModelNeedAnalyze(SemanticModel semanticModel, params string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+            {
+                if (semanticModel.SyntaxTree.FilePath.Contains(filePath))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

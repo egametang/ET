@@ -1,5 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ET.Analyzer
@@ -30,21 +32,42 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSymbolAction(this.Analyzer, SymbolKind.NamedType);
+            context.RegisterCompilationStartAction((analysisContext =>
+            {
+                if (analysisContext.Compilation.AssemblyName==AnalyzeAssembly.UnityCodes)
+                {
+                    analysisContext.RegisterSemanticModelAction((modelAnalysisContext =>
+                    {
+                        if (AnalyzerHelper.IsSemanticModelNeedAnalyze(modelAnalysisContext.SemanticModel,UnityCodesPath.AllHotfix))
+                        {
+                            AnalyzeSemanticModel(modelAnalysisContext);
+                        }
+                        
+                    } ));
+                    return;
+                }
+                
+                if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName,AnalyzeAssembly.AllHotfix))
+                {
+                    analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));
+                }
+            } ));
+        }
+        
+        private void AnalyzeSemanticModel(SemanticModelAnalysisContext analysisContext)
+        {
+            foreach (var classDeclarationSyntax in analysisContext.SemanticModel.SyntaxTree.GetRoot().DescendantNodes<ClassDeclarationSyntax>())
+            {
+                var classTypeSymbol = analysisContext.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+                if (classTypeSymbol!=null)
+                {
+                    Analyzer(analysisContext, classTypeSymbol);
+                }
+            }
         }
 
-        private void Analyzer(SymbolAnalysisContext context)
+        private void Analyzer(SemanticModelAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllHotfix))
-            {
-                return;
-            }
-
-            if (!(context.Symbol is INamedTypeSymbol namedTypeSymbol))
-            {
-                return;
-            }
-
             foreach (ISymbol? memberSymbol in namedTypeSymbol.GetMembers())
             {
                 // 筛选出属性成员
