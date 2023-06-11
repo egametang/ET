@@ -7,7 +7,7 @@ namespace ET
 	/// <summary>
     /// Config组件会扫描所有的有ConfigAttribute标签的配置,加载进来
     /// </summary>
-    public class ConfigComponent: Singleton<ConfigComponent>
+    public class ConfigComponent: ProcessSingleton<ConfigComponent>
     {
         public struct GetAllConfigBytes
         {
@@ -18,7 +18,7 @@ namespace ET
             public string ConfigName;
         }
 		
-        private readonly Dictionary<Type, ISingleton> allConfig = new Dictionary<Type, ISingleton>();
+        private readonly Dictionary<Type, IProcessSingleton> allConfig = new Dictionary<Type, IProcessSingleton>();
 
 		public override void Dispose()
 		{
@@ -30,7 +30,7 @@ namespace ET
 
 		public object LoadOneConfig(Type configType)
 		{
-			this.allConfig.TryGetValue(configType, out ISingleton oneConfig);
+			this.allConfig.TryGetValue(configType, out IProcessSingleton oneConfig);
 			if (oneConfig != null)
 			{
 				oneConfig.Destroy();
@@ -39,7 +39,7 @@ namespace ET
 			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
 
 			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-			ISingleton singleton = category as ISingleton;
+			IProcessSingleton singleton = category as IProcessSingleton;
 			singleton.Register();
 			
 			this.allConfig[configType] = singleton;
@@ -81,7 +81,7 @@ namespace ET
 			
 			lock (this)
 			{
-				ISingleton singleton = category as ISingleton;
+				IProcessSingleton singleton = category as IProcessSingleton;
 				singleton.Register();
 				this.allConfig[configType] = singleton;
 			}

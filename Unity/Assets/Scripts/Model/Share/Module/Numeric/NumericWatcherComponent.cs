@@ -50,7 +50,7 @@ namespace ET
                 return;
             }
 
-            SceneType unitDomainSceneType = unit.Domain.SceneType;
+            SceneType unitDomainSceneType = unit.IScene.SceneType;
             foreach (NumericWatcherInfo numericWatcher in list)
             {
                 if (!numericWatcher.SceneType.HasSameFlag(unitDomainSceneType))

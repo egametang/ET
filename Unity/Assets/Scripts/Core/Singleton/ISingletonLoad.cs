@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public interface ISingletonLoad
+    public interface IProcessSingletonLoad
     {
         void Load();
     }

@@ -2,19 +2,22 @@
 
 namespace ET
 {
-    public interface ISingleton: IDisposable
+    public interface IProcessSingleton: IDisposable
     {
+        Process Process { get; set; }
         void Register();
         void Destroy();
         bool IsDisposed();
     }
     
-    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
+    public abstract class ProcessSingleton<T>: IProcessSingleton where T: ProcessSingleton<T>, new()
     {
         private bool isDisposed; 
         [ThreadStatic]
         [StaticField]
         private static T instance;
+
+        public Process Process { get; set; }
 
         public static T Instance
         {
@@ -24,12 +27,12 @@ namespace ET
             }
         }
 
-        void ISingleton.Register()
+        void IProcessSingleton.Register()
         {
             instance = (T)this;
         }
 
-        void ISingleton.Destroy()
+        void IProcessSingleton.Destroy()
         {
             if (this.isDisposed)
             {
@@ -41,7 +44,7 @@ namespace ET
             instance = null;
         }
 
-        bool ISingleton.IsDisposed()
+        bool IProcessSingleton.IsDisposed()
         {
             return this.isDisposed;
         }

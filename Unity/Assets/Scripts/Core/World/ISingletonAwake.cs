@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public interface IWorldSingletonAwake
+    public interface ISingletonAwake
     {
         void Awake();
     }

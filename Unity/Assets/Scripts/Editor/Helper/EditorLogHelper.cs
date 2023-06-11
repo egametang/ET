@@ -45,7 +45,7 @@ namespace ET
             }
 
             var log = new Logger();
-            ((ISingleton)log).Register();
+            ((IProcessSingleton)log).Register();
             log.ILog = new UnityLogger();
         }
 
@@ -56,7 +56,7 @@ namespace ET
                 return;
             }
 
-            ((ISingleton)Logger.Instance).Destroy();
+            ((IProcessSingleton)Logger.Instance).Destroy();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace ET
             }
         }
 
+        [ThreadStatic]
         private static readonly Queue<ETTask> queue = new Queue<ETTask>();
 
         /// <summary>

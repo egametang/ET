@@ -66,7 +66,7 @@ namespace ET.Client
                 return unit;
             }
 
-            self.Unit = (self.Domain as Room).LSWorld.GetComponent<LSUnitComponent>().GetChild<LSUnit>(self.Id);
+            self.Unit = (self.IScene as Room).LSWorld.GetComponent<LSUnitComponent>().GetChild<LSUnit>(self.Id);
             return self.Unit;
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public interface IWorldSingletonUpdate
+    public interface ISingletonUpdate
     {
         void Update();
     }

@@ -8,6 +8,6 @@ namespace ET.Server
     {
         public static WatcherComponent Instance { get; set; }
 
-        public readonly Dictionary<int, Process> Processes = new Dictionary<int, Process>();
+        public readonly Dictionary<int, System.Diagnostics.Process> Processes = new Dictionary<int, System.Diagnostics.Process>();
     }
 }

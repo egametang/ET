@@ -139,7 +139,7 @@ namespace ET
         }
     }
 
-    public class IdGenerater: Singleton<IdGenerater>
+    public class IdGenerater: ProcessSingleton<IdGenerater>
     {
         public const int Mask18bit = 0x03ffff;
 

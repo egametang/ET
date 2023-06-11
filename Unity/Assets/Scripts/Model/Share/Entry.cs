@@ -29,22 +29,6 @@ namespace ET
         {
             StartAsync().Coroutine();
         }
-
-        private static async ETTask Test1()
-        {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, 1, 2000))
-            {
-                await TimerComponent.Instance.WaitAsync(100000);
-            }
-        }
-        
-        private static async ETTask Test2()
-        {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, 1, 10000))
-            {
-                await TimerComponent.Instance.WaitAsync(100000);
-            }
-        }
         
         private static async ETTask StartAsync()
         {
@@ -53,14 +37,14 @@ namespace ET
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
             
-            Game.AddSingleton<EntitySystemSingleton>();
-            Game.AddSingleton<LSEntitySystemSington>();
+            Process process = EventSystem.Instance.Process;
+            process.AddSingleton<EntitySystemSingleton>();
+            process.AddSingleton<LSEntitySystemSington>();
 
-            Game.AddSingleton<NetServices>();
-            Game.AddSingleton<Root>();
+            process.AddSingleton<NetServices>();
+            process.AddSingleton<Root>();
 
-            
-            await Game.AddSingleton<ConfigComponent>().LoadAsync();
+            await process.AddSingleton<ConfigComponent>().LoadAsync();
 
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent1());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent2());

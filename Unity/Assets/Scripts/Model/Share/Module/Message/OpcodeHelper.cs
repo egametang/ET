@@ -47,7 +47,7 @@ namespace ET
                 return;
             }
             
-            Logger.Instance.Debug($"{entity.Domain.SceneType} {message}");
+            Logger.Instance.Debug($"{entity.IScene.SceneType} {message}");
         }
     }
 }

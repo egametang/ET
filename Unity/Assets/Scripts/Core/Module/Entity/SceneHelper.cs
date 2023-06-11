@@ -4,17 +4,17 @@ namespace ET
     {
         public static int DomainZone(this Entity entity)
         {
-            return (entity.Domain as Scene)?.Zone ?? 0;
+            return (entity.IScene as Scene)?.Zone ?? 0;
         }
 
         public static Scene DomainScene(this Entity entity)
         {
-            return entity.Domain as Scene;
+            return entity.IScene as Scene;
         }
         
         public static SceneType DomainSceneType(this Entity entity)
         {
-            return entity.Domain.SceneType;
+            return entity.IScene.SceneType;
         }
     }
 }

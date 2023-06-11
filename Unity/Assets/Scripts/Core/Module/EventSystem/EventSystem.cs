@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ET
 {
-    public class EventSystem: Singleton<EventSystem>
+    public class EventSystem: ProcessSingleton<EventSystem>
     {
         private class EventInfo
         {
@@ -109,7 +109,7 @@ namespace ET
                 }
             }
             
-            Game.Load();
+            Process.Load();
         }
 
         public HashSet<Type> GetTypes(Type systemAttributeType)

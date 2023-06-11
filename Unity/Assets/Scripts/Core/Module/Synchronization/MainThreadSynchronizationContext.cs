@@ -4,7 +4,7 @@ using System.Threading;
 namespace ET
 {
 
-    public class MainThreadSynchronizationContext: Singleton<MainThreadSynchronizationContext>, ISingletonUpdate
+    public class MainThreadSynchronizationContext: ProcessSingleton<MainThreadSynchronizationContext>, ISingletonUpdate
     {
         private readonly ThreadSynchronizationContext threadSynchronizationContext = new ThreadSynchronizationContext();
 

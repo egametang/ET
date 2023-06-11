@@ -15,7 +15,7 @@ namespace ET.Client
 
             SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalComponent.Instance.GlobalConfig.AppType.ToString());
             
-            Scene clientScene = await SceneFactory.CreateClientScene(1, sceneType, sceneType.ToString());
+            Scene clientScene = await SceneFactory.CreateClientScene(scene.Process, 1, sceneType, sceneType.ToString());
             
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }

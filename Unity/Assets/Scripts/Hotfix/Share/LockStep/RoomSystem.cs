@@ -9,7 +9,7 @@ namespace ET
     {
         public static Room Room(this Entity entity)
         {
-            return entity.Domain as Room;
+            return entity.IScene as Room;
         }
         
         public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime, int frame = -1)

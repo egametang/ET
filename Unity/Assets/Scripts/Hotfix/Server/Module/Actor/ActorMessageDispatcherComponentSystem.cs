@@ -96,7 +96,7 @@ namespace ET.Server
                 throw new Exception($"not found message handler: {message} {entity.GetType().FullName}");
             }
 
-            SceneType sceneType = entity.Domain.SceneType;
+            SceneType sceneType = entity.IScene.SceneType;
             foreach (ActorMessageDispatcherInfo actorMessageDispatcherInfo in list)
             {
                 if (!actorMessageDispatcherInfo.SceneType.HasSameFlag(sceneType))

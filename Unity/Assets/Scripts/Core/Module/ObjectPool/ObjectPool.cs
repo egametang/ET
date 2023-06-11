@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ObjectPool: Singleton<ObjectPool>
+    public class ObjectPool: ProcessSingleton<ObjectPool>
     {
         private readonly Dictionary<Type, Queue<object>> pool = new();
         

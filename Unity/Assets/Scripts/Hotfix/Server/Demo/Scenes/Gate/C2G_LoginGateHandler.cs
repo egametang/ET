@@ -56,7 +56,7 @@ namespace ET.Server
 
         private static async ETTask CheckRoom(Player player, Session session)
         {
-            await Game.WaitFrameFinish();
+            await player.Process.WaitFrameFinish();
             
             Room2G_Reconnect room2GateReconnect = await ActorMessageSenderComponent.Instance.Call(
                 player.GetComponent<PlayerRoomComponent>().RoomInstanceId,

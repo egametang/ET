@@ -11,7 +11,7 @@ namespace ET
         public const int Max = 1;
     }
     
-    public class LSEntitySystemSington: Singleton<LSEntitySystemSington>, ISingletonAwake, ISingletonLoad
+    public class LSEntitySystemSington: ProcessSingleton<LSEntitySystemSington>, ISingletonAwake, ISingletonLoad
     {
         private TypeSystems typeSystems;
         

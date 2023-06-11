@@ -7,6 +7,8 @@ namespace ET
 {
 	public class Init: MonoBehaviour
 	{
+		private Process process;
+		
 		private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
@@ -15,46 +17,48 @@ namespace ET
 			{
 				Log.Error(e.ExceptionObject.ToString());
 			};
-				
-			Game.AddSingleton<MainThreadSynchronizationContext>();
 
-			Game.AddSingleton<GlobalComponent>();
-			
 			// 命令行参数
 			string[] args = "".Split(" ");
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-				.WithParsed(Game.AddSingleton);
+				.WithParsed(Game.Instance.AddSingleton);
+			
+			process = Game.Instance.Create(false);
+				
+			process.AddSingleton<MainThreadSynchronizationContext>();
+
+			process.AddSingleton<GlobalComponent>();
 			
 			Options.Instance.StartConfig = $"StartConfig/Localhost";
 
-			Game.AddSingleton<TimeInfo>();
-			Game.AddSingleton<Logger>().ILog = new UnityLogger();
-			Game.AddSingleton<ObjectPool>();
-			Game.AddSingleton<IdGenerater>();
-			Game.AddSingleton<EventSystem>();
-			Game.AddSingleton<TimerComponent>();
-			Game.AddSingleton<CoroutineLockComponent>();
+			process.AddSingleton<TimeInfo>();
+			process.AddSingleton<Logger>().ILog = new UnityLogger();
+			process.AddSingleton<ObjectPool>();
+			process.AddSingleton<IdGenerater>();
+			process.AddSingleton<EventSystem>();
+			process.AddSingleton<TimerComponent>();
+			process.AddSingleton<CoroutineLockComponent>();
 
 			ETTask.ExceptionHandler += Log.Error;
 
-			Game.AddSingleton<CodeLoader>().Start();
+			process.AddSingleton<CodeLoader>().Start();
 		}
 
 		private void Update()
 		{
-			Game.Update();
+			process.Update();
 		}
 
 		private void LateUpdate()
 		{
-			Game.LateUpdate();
-			Game.FrameFinishUpdate();
+			process.LateUpdate();
+			process.FrameFinishUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			Game.Close();
+			Game.Instance.Remove(this.process.Id);
 		}
 	}
 	

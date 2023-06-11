@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public interface IWorldSingletonLateUpdate
+    public interface ISingletonLateUpdate
     {
         void LateUpdate();
     }

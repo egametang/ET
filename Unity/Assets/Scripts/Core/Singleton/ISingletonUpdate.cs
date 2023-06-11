@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public interface ISingletonUpdate
+    public interface IProcessSingletonUpdate
     {
         void Update();
     }

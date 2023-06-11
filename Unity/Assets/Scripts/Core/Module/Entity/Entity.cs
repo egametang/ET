@@ -160,6 +160,8 @@ namespace ET
 
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
+        
+        public Process Process { get; protected set; }
 
         [BsonIgnore]
         private Entity parent;
@@ -182,7 +184,7 @@ namespace ET
                 }
 
                 // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
-                if (value.Domain == null)
+                if (value.IScene == null)
                 {
                     throw new Exception($"cant set parent because parent domain is null: {this.GetType().FullName} {value.GetType().FullName}");
                 }
@@ -203,7 +205,8 @@ namespace ET
                 this.IsComponent = false;
                 this.parent.AddToChildren(this);
 
-                this.Domain = this is IScene? this as IScene : this.parent.domain;
+                this.IScene = this is IScene? this as IScene : this.parent.iScene;
+                this.Process = this.parent.Process;
 
 #if ENABLE_VIEW && UNITY_EDITOR
                 this.viewGO.GetComponent<ComponentView>().Component = this;
@@ -238,7 +241,7 @@ namespace ET
                 }
 
                 // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
-                if (value.Domain == null)
+                if (value.IScene == null)
                 {
                     throw new Exception($"cant set parent because parent domain is null: {this.GetType().FullName} {value.GetType().FullName}");
                 }
@@ -258,7 +261,7 @@ namespace ET
                 this.parent = value;
                 this.IsComponent = true;
                 this.parent.AddToComponents(this);
-                this.Domain = this is IScene? this as IScene : this.parent.domain;
+                this.IScene = this is IScene? this as IScene : this.parent.iScene;
             }
         }
 
@@ -274,14 +277,14 @@ namespace ET
         public long Id { get; protected set; }
 
         [BsonIgnore]
-        protected IScene domain;
+        protected IScene iScene;
 
         [BsonIgnore]
-        public IScene Domain
+        public IScene IScene
         {
             get
             {
-                return this.domain;
+                return this.iScene;
             }
             protected set
             {
@@ -290,15 +293,15 @@ namespace ET
                     throw new Exception($"domain cant set null: {this.GetType().FullName}");
                 }
 
-                if (this.domain == value)
+                if (this.iScene == value)
                 {
                     return;
                 }
 
-                IScene preDomain = this.domain;
-                this.domain = value;
+                IScene preScene = this.iScene;
+                this.iScene = value;
 
-                if (preDomain == null)
+                if (preScene == null)
                 {
                     if (this.InstanceId == 0)
                     {
@@ -334,7 +337,7 @@ namespace ET
                 {
                     foreach (Entity entity in this.children.Values)
                     {
-                        entity.Domain = this.domain;
+                        entity.IScene = this.iScene;
                     }
                 }
 
@@ -342,7 +345,7 @@ namespace ET
                 {
                     foreach (Entity component in this.components.Values)
                     {
-                        component.Domain = this.domain;
+                        component.IScene = this.iScene;
                     }
                 }
 
@@ -489,7 +492,7 @@ namespace ET
                 EntitySystemSingleton.Instance.Destroy(this);
             }
 
-            this.domain = null;
+            this.iScene = null;
 
             if (this.parent != null && !this.parent.IsDisposed)
             {

@@ -7,6 +7,8 @@ namespace ET.Server
 {
     internal static class Init
     {
+        private static Process process;
+        
         private static int Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -16,28 +18,29 @@ namespace ET.Server
             
             try
             {
-                // 异步方法全部会回掉到主线程
-                Game.AddSingleton<MainThreadSynchronizationContext>();
-				
                 // 命令行参数
                 Parser.Default.ParseArguments<Options>(args)
                     .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-                    .WithParsed(Game.AddSingleton);
+                    .WithParsed(Game.Instance.AddSingleton);
+                
+                process = Game.Instance.Create(false);
+                // 异步方法全部会回掉到主线程
+                process.AddSingleton<MainThreadSynchronizationContext>();
 				
-                Game.AddSingleton<TimeInfo>();
-                Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
-                Game.AddSingleton<ObjectPool>();
-                Game.AddSingleton<IdGenerater>();
+                process.AddSingleton<TimeInfo>();
+                process.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
+                process.AddSingleton<ObjectPool>();
+                process.AddSingleton<IdGenerater>();
                 
                 ETTask.ExceptionHandler += Log.Error;
                 
-                Game.AddSingleton<EventSystem>();
-                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly);
+                process.AddSingleton<EventSystem>();
+                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Process).Assembly);
                 EventSystem.Instance.Add(types);
 
-                Game.AddSingleton<EntitySystemSingleton>();
+                process.AddSingleton<EntitySystemSingleton>();
                 
-                Game.AddSingleton<Root>();
+                process.AddSingleton<Root>();
 
                 MongoHelper.Register();
 				

@@ -22,12 +22,14 @@ namespace ET
             get;
         }
 
-        public Scene()
+        public Scene(Process process)
         {
+            this.Process = process;
         }
 
-        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(Process process, long id, long instanceId, int zone, SceneType sceneType, string name)
         {
+            this.Process = process;
             this.Id = id;
             this.InstanceId = instanceId;
             this.Zone = zone;
@@ -36,7 +38,7 @@ namespace ET
             this.IsCreated = true;
             this.IsNew = true;
             this.IsRegister = true;
-            this.domain = this;
+            this.IScene = this;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 

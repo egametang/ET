@@ -9,7 +9,7 @@ namespace ET
     {
         public static LSWorld LSWorld(this LSEntity entity)
         {
-            return entity.Domain as LSWorld;
+            return entity.IScene as LSWorld;
         }
 
         public static long GetId(this LSEntity entity)

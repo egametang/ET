@@ -42,7 +42,7 @@ namespace ET
         public object Object; // 参数
     }
 
-    public class NetServices: Singleton<NetServices>, ISingletonUpdate
+    public class NetServices: ProcessSingleton<NetServices>, ISingletonUpdate
     {
 #if !SINGLE_THREAD
         private readonly ConcurrentQueue<NetOperator> netThreadOperators = new ConcurrentQueue<NetOperator>();
@@ -71,7 +71,7 @@ namespace ET
 
 #if !SINGLE_THREAD
             // 网络线程
-            this.thread = new Thread(this.NetThreadUpdate);
+            this.thread = new System.Threading.Thread(this.NetThreadUpdate);
             this.thread.Start();
 #endif
         }
@@ -348,7 +348,7 @@ namespace ET
 #if !SINGLE_THREAD
 
         private bool isStop;
-        private readonly Thread thread;
+        private readonly System.Threading.Thread thread;
 
         // 网络线程Update
         private void NetThreadUpdate()
@@ -356,7 +356,7 @@ namespace ET
             while (!this.isStop)
             {
                 this.UpdateInNetThread();
-                Thread.Sleep(1);
+                System.Threading.Thread.Sleep(1);
             }
 
             // 停止的时候再执行一帧，把队列中的消息处理完成

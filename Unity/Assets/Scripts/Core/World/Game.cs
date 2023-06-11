@@ -1,59 +1,98 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ET
 {
-    public class Game: IDisposable
+    public class Game
     {
-        public int Id { get; private set; }
+        [StaticField]
+        public static Game Instance = new Game();
         
-        public Barrier Barrier { get; set; }
-
-        public Game(int id)
+        private Game()
         {
-            this.Id = id;
-
-            this.loop = new WaitCallback((_) =>
-            {
-                this.Init();
-                this.Update();
-                this.LateUpdate();
-                this.FrameFinishUpdate();
-                this.Barrier.RemoveParticipant();
-            });
         }
         
-        [StaticField]
         private readonly Stack<ISingleton> singletons = new();
-        [StaticField]
+
         private readonly Queue<ISingleton> updates = new();
-        [StaticField]
+
         private readonly Queue<ISingleton> lateUpdates = new();
-        [StaticField]
+
         private readonly Queue<ISingleton> loads = new();
-        [StaticField]
-        private readonly Queue<ETTask> frameFinishTask = new();
 
-        private readonly WaitCallback loop;
+        private readonly ConcurrentQueue<Process> loops = new();
 
-        private void Init()
+        private readonly ConcurrentDictionary<int, Process> processes = new();
+
+        private int idGenerate;
+
+        public Process Create(bool loop = true)
         {
-            foreach (ISingleton singleton in this.singletons)
+            Process process = new(++this.idGenerate);
+            this.processes.TryAdd(process.Id, process);
+            if (loop)
             {
-                singleton.Register();
+                this.loops.Enqueue(process);
+            }
+            return process;
+        }
+        
+        public void Remove(int id)
+        {
+            if (this.processes.Remove(id, out Process thread))
+            {
+                thread.Dispose();    
             }
         }
         
-        public T AddSingleton<T>() where T: Singleton<T>, new()
+        
+        // 简单线程调度，每次Loop会把所有Game Loop一遍
+        public void Loop()
         {
-            T singleton = new T();
-            AddSingleton(singleton);
-            return singleton;
+            int count = this.loops.Count;
+
+            using Barrier barrier = new Barrier(1);
+            
+            while (count-- > 0)
+            {
+                this.loops.TryDequeue(out Process thread);
+                if (thread == null)
+                {
+                    continue;
+                }
+                barrier.AddParticipant();
+                thread.Barrier = barrier;
+                if (thread.Id == 0)
+                {
+                    continue;
+                }
+                this.loops.Enqueue(thread);
+                ThreadPool.QueueUserWorkItem(thread.Loop);
+            }
+
+            barrier.SignalAndWait();
         }
 
+        public void Send(int threadId, MessageObject messageObject)
+        {
+            if (this.processes.TryGetValue(threadId, out Process thread))
+            {
+                return;
+            }
+            thread.AddMessage(messageObject);
+        }
+        
+        
+        
+        
+        
         public void AddSingleton(ISingleton singleton)
         {
+            
             singleton.Register();
             
             singletons.Push(singleton);
@@ -77,13 +116,6 @@ namespace ET
             {
                 loads.Enqueue(singleton);
             }
-        }
-
-        public async ETTask WaitFrameFinish()
-        {
-            ETTask task = ETTask.Create(true);
-            frameFinishTask.Enqueue(task);
-            await task;
         }
         
         public void Update()
@@ -144,14 +176,6 @@ namespace ET
             }
         }
 
-        public WaitCallback Loop
-        {
-            get
-            {
-                return this.loop;
-            }
-        }
-        
         public void Load()
         {
             int count = loads.Count;
@@ -178,32 +202,6 @@ namespace ET
                 {
                     Log.Error(e);
                 }
-            }
-        }
-
-        public void FrameFinishUpdate()
-        {
-            while (frameFinishTask.Count > 0)
-            {
-                ETTask task = frameFinishTask.Dequeue();
-                task.SetResult();
-            }
-        }
-
-        public void Dispose()
-        {
-            if (this.Id == 0)
-            {
-                return;
-            }
-            
-            this.Id = 0;
-            
-            // 顺序反过来清理
-            while (singletons.Count > 0)
-            {
-                ISingleton iSingleton = singletons.Pop();
-                iSingleton.Destroy();
             }
         }
     }
