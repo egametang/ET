@@ -40,7 +40,7 @@ namespace ET
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
 
         private readonly WaitCallback loop;
-
+        
         private int rpcId;
 
         public void AddMessage(MessageObject messageObject)
@@ -242,12 +242,16 @@ namespace ET
 
         public void Dispose()
         {
-            if (this.Id == 0)
+            int id = this.Id;
+            
+            if (id == 0)
             {
                 return;
             }
             
             this.Id = 0;
+            
+            Game.Instance.Remove(id);
             
             // 顺序反过来清理
             while (singletons.Count > 0)

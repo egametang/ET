@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 using CommandLine;
 using UnityEngine;
 
@@ -23,6 +23,7 @@ namespace ET
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.Instance.AddSingleton);
+			Game.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
 			
 			process = Game.Instance.Create(false);
 				
@@ -33,7 +34,6 @@ namespace ET
 			Options.Instance.StartConfig = $"StartConfig/Localhost";
 
 			process.AddSingleton<TimeInfo>();
-			process.AddSingleton<Logger>().ILog = new UnityLogger();
 			process.AddSingleton<ObjectPool>();
 			process.AddSingleton<IdGenerater>();
 			process.AddSingleton<EventSystem>();
@@ -43,6 +43,14 @@ namespace ET
 			ETTask.ExceptionHandler += Log.Error;
 
 			process.AddSingleton<CodeLoader>().Start();
+
+			Task.Run(() =>
+			{
+				while (true)
+				{
+					Game.Instance.Loop();
+				}
+			});
 		}
 
 		private void Update()
@@ -58,7 +66,7 @@ namespace ET
 
 		private void OnApplicationQuit()
 		{
-			Game.Instance.Remove(this.process.Id);
+			this.process.Dispose();
 		}
 	}
 	

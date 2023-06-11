@@ -18,7 +18,7 @@ namespace ET
 					Log.Error(e.ExceptionObject.ToString());
 				};
 
-				process = Game.Instance.Create(false);
+				process = Game.Instance.Create();
 				
 				// 异步方法全部会回掉到主线程
 				process.AddSingleton<MainThreadSynchronizationContext>();
@@ -27,16 +27,16 @@ namespace ET
 				Parser.Default.ParseArguments<Options>(System.Environment.GetCommandLineArgs())
 					.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 					.WithParsed(Game.Instance.AddSingleton);
+				Game.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
+				ETTask.ExceptionHandler += Log.Error;
 				
 				process.AddSingleton<TimeInfo>();
-				process.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				process.AddSingleton<ObjectPool>();
 				process.AddSingleton<IdGenerater>();
 				process.AddSingleton<EventSystem>();
 				process.AddSingleton<TimerComponent>();
 				process.AddSingleton<CoroutineLockComponent>();
 				
-				ETTask.ExceptionHandler += Log.Error;
 				
 				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
 

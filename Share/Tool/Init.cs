@@ -7,8 +7,6 @@ namespace ET.Server
 {
     internal static class Init
     {
-        private static Process process;
-        
         private static int Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -22,13 +20,12 @@ namespace ET.Server
                 Parser.Default.ParseArguments<Options>(args)
                     .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
                     .WithParsed(Game.Instance.AddSingleton);
+                Game.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
                 
-                process = Game.Instance.Create(false);
+                Process process = Game.Instance.Create(false);
                 // 异步方法全部会回掉到主线程
                 process.AddSingleton<MainThreadSynchronizationContext>();
-				
                 process.AddSingleton<TimeInfo>();
-                process.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
                 process.AddSingleton<ObjectPool>();
                 process.AddSingleton<IdGenerater>();
                 

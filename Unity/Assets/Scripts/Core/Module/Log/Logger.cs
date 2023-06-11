@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ET
 {
-    public class Logger: ProcessSingleton<Logger>
+    public class Logger: Singleton<Logger>
     {
         private ILog iLog;
 

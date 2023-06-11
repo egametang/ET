@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,29 +9,36 @@ namespace ET
     public class Game
     {
         [StaticField]
-        public static Game Instance = new Game();
+        public static Game Instance = new();
         
         private Game()
         {
         }
         
-        private readonly Stack<ISingleton> singletons = new();
+        private readonly ConcurrentStack<ISingleton> singletons = new();
 
-        private readonly Queue<ISingleton> updates = new();
+        private readonly ConcurrentQueue<ISingleton> updates = new();
 
-        private readonly Queue<ISingleton> lateUpdates = new();
+        private readonly ConcurrentQueue<ISingleton> lateUpdates = new();
 
-        private readonly Queue<ISingleton> loads = new();
+        private readonly ConcurrentQueue<ISingleton> loads = new();
 
+        #region 线程安全
+
+        private bool needLoad;
+        
         private readonly ConcurrentQueue<Process> loops = new();
 
         private readonly ConcurrentDictionary<int, Process> processes = new();
+        
+        private readonly Queue<ETTask> frameFinishTask = new();
 
-        private int idGenerate;
+        private int idGenerator;
 
         public Process Create(bool loop = true)
         {
-            Process process = new(++this.idGenerate);
+            int id = Interlocked.Increment(ref this.idGenerator);
+            Process process = new(id);
             this.processes.TryAdd(process.Id, process);
             if (loop)
             {
@@ -43,56 +49,92 @@ namespace ET
         
         public void Remove(int id)
         {
-            if (this.processes.Remove(id, out Process thread))
+            if (this.processes.Remove(id, out Process process))
             {
-                thread.Dispose();    
+                process.Dispose();    
             }
         }
         
+        public async ETTask WaitGameFrameFinish()
+        {
+            ETTask task = ETTask.Create(true);
+            frameFinishTask.Enqueue(task);
+            await task;
+        }
         
-        // 简单线程调度，每次Loop会把所有Game Loop一遍
+        private void FrameFinishUpdateInner()
+        {
+            while (frameFinishTask.Count > 0)
+            {
+                ETTask task = frameFinishTask.Dequeue();
+                task.SetResult();
+            }
+        }
+
+        public void Load()
+        {
+            this.needLoad = true;
+        }
+        
+        // 简单线程调度，每次Loop会把所有Process Loop一遍
         public void Loop()
         {
             int count = this.loops.Count;
 
-            using Barrier barrier = new Barrier(1);
+            using Barrier barrier = new(1);
             
             while (count-- > 0)
             {
-                this.loops.TryDequeue(out Process thread);
-                if (thread == null)
+                this.loops.TryDequeue(out Process process);
+                if (process == null)
                 {
                     continue;
                 }
                 barrier.AddParticipant();
-                thread.Barrier = barrier;
-                if (thread.Id == 0)
+                process.Barrier = barrier;
+                if (process.Id == 0)
                 {
                     continue;
                 }
-                this.loops.Enqueue(thread);
-                ThreadPool.QueueUserWorkItem(thread.Loop);
+                this.loops.Enqueue(process);
+                ThreadPool.QueueUserWorkItem(process.Loop);
             }
 
             barrier.SignalAndWait();
+            
+            // 此时没有线程竞争，进行 Load Update LateUpdate等操作
+            if (this.needLoad)
+            {
+                this.needLoad = false;
+                this.LoadInner();
+            }
+            this.UpdateInner();
+            this.LateUpdateInner();
+            this.FrameFinishUpdateInner();
         }
 
-        public void Send(int threadId, MessageObject messageObject)
+        #endregion
+
+
+        public void Send(int processId, MessageObject messageObject)
         {
-            if (this.processes.TryGetValue(threadId, out Process thread))
+            if (this.processes.TryGetValue(processId, out Process process))
             {
                 return;
             }
-            thread.AddMessage(messageObject);
+            process.AddMessage(messageObject);
         }
         
-        
-        
-        
-        
+        // 为了保证线程安全，只允许在Start之前AddSingleton，主要用于线程共用的一些东西
+        public T AddSingleton<T>() where T: Singleton<T>, new()
+        {
+            T singleton = new T();
+            AddSingleton(singleton);
+            return singleton;
+        }
+
         public void AddSingleton(ISingleton singleton)
         {
-            
             singleton.Register();
             
             singletons.Push(singleton);
@@ -117,13 +159,16 @@ namespace ET
                 loads.Enqueue(singleton);
             }
         }
-        
-        public void Update()
+
+        private void UpdateInner()
         {
             int count = updates.Count;
             while (count-- > 0)
             {
-                ISingleton singleton = updates.Dequeue();
+                if (!updates.TryDequeue(out ISingleton singleton))
+                {
+                    continue;
+                }
 
                 if (singleton.IsDisposed())
                 {
@@ -146,14 +191,17 @@ namespace ET
                 }
             }
         }
-        
-        public void LateUpdate()
+
+        private void LateUpdateInner()
         {
             int count = lateUpdates.Count;
             while (count-- > 0)
             {
-                ISingleton singleton = lateUpdates.Dequeue();
-                
+                if (!lateUpdates.TryDequeue(out ISingleton singleton))
+                {
+                    continue;
+                }
+
                 if (singleton.IsDisposed())
                 {
                     continue;
@@ -176,12 +224,15 @@ namespace ET
             }
         }
 
-        public void Load()
+        private void LoadInner()
         {
             int count = loads.Count;
             while (count-- > 0)
             {
-                ISingleton singleton = loads.Dequeue();
+                if (!this.loads.TryDequeue(out ISingleton singleton))
+                {
+                    continue;
+                }
                 
                 if (singleton.IsDisposed())
                 {
