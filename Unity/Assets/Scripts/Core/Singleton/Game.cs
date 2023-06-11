@@ -1,29 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ET
 {
-    public static class Game
+    public class Game: IDisposable
     {
-        [StaticField]
-        private static readonly Stack<ISingleton> singletons = new();
-        [StaticField]
-        private static readonly Queue<ISingleton> updates = new();
-        [StaticField]
-        private static readonly Queue<ISingleton> lateUpdates = new();
-        [StaticField]
-        private static readonly Queue<ISingleton> loads = new();
-        [StaticField]
-        private static readonly Queue<ETTask> frameFinishTask = new();
+        public int Id { get; private set; }
+        
+        public Barrier Barrier { get; set; }
 
-        public static T AddSingleton<T>() where T: Singleton<T>, new()
+        public Game(int id)
+        {
+            this.Id = id;
+
+            this.loop = new WaitCallback((_) =>
+            {
+                this.Init();
+                this.Update();
+                this.LateUpdate();
+                this.FrameFinishUpdate();
+                this.Barrier.RemoveParticipant();
+            });
+        }
+        
+        [StaticField]
+        private readonly Stack<ISingleton> singletons = new();
+        [StaticField]
+        private readonly Queue<ISingleton> updates = new();
+        [StaticField]
+        private readonly Queue<ISingleton> lateUpdates = new();
+        [StaticField]
+        private readonly Queue<ISingleton> loads = new();
+        [StaticField]
+        private readonly Queue<ETTask> frameFinishTask = new();
+
+        private readonly WaitCallback loop;
+
+        private void Init()
+        {
+            foreach (ISingleton singleton in this.singletons)
+            {
+                singleton.Register();
+            }
+        }
+        
+        public T AddSingleton<T>() where T: Singleton<T>, new()
         {
             T singleton = new T();
             AddSingleton(singleton);
             return singleton;
         }
-        
-        public static void AddSingleton(ISingleton singleton)
+
+        public void AddSingleton(ISingleton singleton)
         {
             singleton.Register();
             
@@ -50,14 +79,14 @@ namespace ET
             }
         }
 
-        public static async ETTask WaitFrameFinish()
+        public async ETTask WaitFrameFinish()
         {
             ETTask task = ETTask.Create(true);
             frameFinishTask.Enqueue(task);
             await task;
         }
-
-        public static void Update()
+        
+        public void Update()
         {
             int count = updates.Count;
             while (count-- > 0)
@@ -86,7 +115,7 @@ namespace ET
             }
         }
         
-        public static void LateUpdate()
+        public void LateUpdate()
         {
             int count = lateUpdates.Count;
             while (count-- > 0)
@@ -114,8 +143,16 @@ namespace ET
                 }
             }
         }
+
+        public WaitCallback Loop
+        {
+            get
+            {
+                return this.loop;
+            }
+        }
         
-        public static void Load()
+        public void Load()
         {
             int count = loads.Count;
             while (count-- > 0)
@@ -144,7 +181,7 @@ namespace ET
             }
         }
 
-        public static void FrameFinishUpdate()
+        public void FrameFinishUpdate()
         {
             while (frameFinishTask.Count > 0)
             {
@@ -153,8 +190,15 @@ namespace ET
             }
         }
 
-        public static void Close()
+        public void Dispose()
         {
+            if (this.Id == 0)
+            {
+                return;
+            }
+            
+            this.Id = 0;
+            
             // 顺序反过来清理
             while (singletons.Count > 0)
             {

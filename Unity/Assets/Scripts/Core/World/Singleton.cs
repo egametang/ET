@@ -2,16 +2,16 @@
 
 namespace ET
 {
-    public interface ISingleton: IDisposable
+    public interface IWorldSingleton: IDisposable
     {
         void Register();
         void Destroy();
         bool IsDisposed();
     }
     
-    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
+    public abstract class WorldSingleton<T>: IWorldSingleton where T: WorldSingleton<T>, new()
     {
-        private bool isDisposed; 
+        private bool isDisposed;
         [ThreadStatic]
         [StaticField]
         private static T instance;
@@ -24,12 +24,16 @@ namespace ET
             }
         }
 
-        void ISingleton.Register()
+        void IWorldSingleton.Register()
         {
+            if (instance != null)
+            {
+                throw new Exception($"singleton register twice! {typeof (T).Name}");
+            }
             instance = (T)this;
         }
 
-        void ISingleton.Destroy()
+        void IWorldSingleton.Destroy()
         {
             if (this.isDisposed)
             {
@@ -41,7 +45,7 @@ namespace ET
             instance = null;
         }
 
-        bool ISingleton.IsDisposed()
+        bool IWorldSingleton.IsDisposed()
         {
             return this.isDisposed;
         }

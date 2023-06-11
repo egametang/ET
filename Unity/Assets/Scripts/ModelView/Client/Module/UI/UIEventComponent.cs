@@ -10,6 +10,7 @@ namespace ET.Client
 	[ComponentOf(typeof(Scene))]
 	public class UIEventComponent: Entity, IAwake
 	{
+		[ThreadStatic]
 		[StaticField]
 		public static UIEventComponent Instance;
 		

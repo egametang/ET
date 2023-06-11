@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace ET.Server
 {
@@ -29,6 +30,7 @@ namespace ET.Server
         
         public NetworkProtocol InnerProtocol = NetworkProtocol.KCP;
 
+        [ThreadStatic]
         [StaticField]
         public static NetInnerComponent Instance;
     }

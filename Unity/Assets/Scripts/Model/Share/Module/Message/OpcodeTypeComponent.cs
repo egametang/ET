@@ -83,6 +83,7 @@ namespace ET
     [ComponentOf(typeof (Scene))]
     public class OpcodeTypeComponent: Entity, IAwake, IDestroy
     {
+        [ThreadStatic]
         [StaticField]
         public static OpcodeTypeComponent Instance;
 
