@@ -9,7 +9,7 @@ namespace ET
 
         private EntityRef(T t)
         {
-            this.instanceId = t.InstanceId;
+            this.instanceId = t != null ? t.InstanceId : 0;
             this.entity = t;
         }
         
