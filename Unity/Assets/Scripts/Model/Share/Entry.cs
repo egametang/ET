@@ -44,7 +44,7 @@ namespace ET
             process.AddSingleton<NetServices>();
             process.AddSingleton<Root>();
 
-            await process.AddSingleton<ConfigComponent>().LoadAsync();
+            await Game.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent1());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent2());
