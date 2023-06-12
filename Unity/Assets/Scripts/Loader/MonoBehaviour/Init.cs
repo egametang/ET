@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using CommandLine;
 using UnityEngine;
 
@@ -7,10 +7,18 @@ namespace ET
 {
 	public class Init: MonoBehaviour
 	{
-		private Process process;
+		public static Init Instance { get; private set; }
+
+		public ThreadSynchronizationContext ThreadSynchronizationContext = new();
+
+		public bool IsStart;
+		
+		public Process Process;
 		
 		private void Start()
 		{
+			Instance = this;
+			
 			DontDestroyOnLoad(gameObject);
 			
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -24,9 +32,10 @@ namespace ET
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.Instance.AddSingleton);
 			Game.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
+			Game.Instance.AddSingleton<UnityScheduler>();
 			
-			process = Game.Instance.Create(false);
-				
+			Process process = Game.Instance.Create();
+			
 			process.AddSingleton<MainThreadSynchronizationContext>();
 
 			process.AddSingleton<GlobalComponent>();
@@ -39,34 +48,35 @@ namespace ET
 			process.AddSingleton<EventSystem>();
 			process.AddSingleton<TimerComponent>();
 			process.AddSingleton<CoroutineLockComponent>();
+			
+			UnityScheduler.Instance.Add(process);
 
 			ETTask.ExceptionHandler += Log.Error;
 
 			process.AddSingleton<CodeLoader>().Start();
-
-			Task.Run(() =>
-			{
-				while (true)
-				{
-					Game.Instance.Loop();
-				}
-			});
 		}
 
 		private void Update()
 		{
-			process.Update();
+			this.ThreadSynchronizationContext.Update();
+
+			if (!this.IsStart)
+			{
+				return;
+			}
+			
+			this.Process.Update();
 		}
 
 		private void LateUpdate()
 		{
-			process.LateUpdate();
-			process.FrameFinishUpdate();
+			this.Process.LateUpdate();
+			this.Process.FrameFinishUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.process.Dispose();
+			Game.Instance.Dispose();
 		}
 	}
 	

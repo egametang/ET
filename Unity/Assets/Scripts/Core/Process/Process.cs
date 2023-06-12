@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -8,8 +7,10 @@ namespace ET
     public class Process: IDisposable
     {
         public int Id { get; private set; }
-        
-        public Barrier Barrier { get; set; }
+
+        public bool IsRuning;
+
+        public ISingletonScheduler Scheduler;
 
         public Process(int id)
         {
@@ -17,11 +18,11 @@ namespace ET
 
             this.loop = (_) =>
             {
-                this.Init();
+                this.Register();
                 this.Update();
                 this.LateUpdate();
                 this.FrameFinishUpdate();
-                this.Barrier?.RemoveParticipant();
+                this.IsRuning = false;
             };
         }
 
@@ -37,8 +38,10 @@ namespace ET
         
         private readonly WaitCallback loop;
 
-        private void Init()
+        private void Register()
         {
+            this.IsRuning = true;
+            
             foreach (IProcessSingleton singleton in this.singletons)
             {
                 singleton.Register();
@@ -190,6 +193,8 @@ namespace ET
                 ETTask task = frameFinishTask.Dequeue();
                 task.SetResult();
             }
+            
+            this.IsRuning = false;
         }
 
         public void Dispose()
@@ -204,6 +209,8 @@ namespace ET
             this.Id = 0;
             
             Game.Instance.Remove(id);
+
+            this.IsRuning = false;
             
             // 顺序反过来清理
             while (singletons.Count > 0)

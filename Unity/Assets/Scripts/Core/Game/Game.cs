@@ -6,8 +6,27 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    public class Game
+    public class Game: IDisposable
     {
+        // 用来卡住所有的Process的执行
+        public struct Locker: IDisposable
+        {
+            public Locker(int _ = 0)
+            {
+                Monitor.Enter(Instance);
+            
+                // 停止调度
+                Instance.StopScheduler();
+            }
+        
+            public void Dispose()
+            {
+                Instance.StartScheduler();
+                Monitor.Exit(Instance);
+            }
+        }
+        
+        
         [StaticField]
         public static Game Instance = new();
         
@@ -15,143 +34,125 @@ namespace ET
         {
         }
         
-        private readonly ConcurrentStack<ISingleton> singletons = new();
+        private readonly Stack<ISingleton> singletons = new();
 
-        private readonly ConcurrentQueue<ISingleton> updates = new();
+        private readonly Queue<ISingleton> updates = new();
 
-        private readonly ConcurrentQueue<ISingleton> lateUpdates = new();
+        private readonly Queue<ISingleton> lateUpdates = new();
 
-        private readonly ConcurrentQueue<ISingleton> loads = new();
-
-        #region 线程安全
-
-        private bool needLoad;
+        private readonly Queue<ISingleton> loads = new();
         
-        private readonly ConcurrentQueue<Process> loops = new();
+        private readonly Queue<ISingleton> schedulers = new();
 
-        private readonly ConcurrentDictionary<int, Process> processes = new();
-        
-        private readonly Queue<ETTask> frameFinishTask = new();
+        private readonly Dictionary<int, Process> processes = new();
 
         private int idGenerator;
-
-        public Process Create(bool loop = true)
+        
+        public Process Create()
         {
-            int id = Interlocked.Increment(ref this.idGenerator);
-            Process process = new(id);
-            this.processes.TryAdd(process.Id, process);
-            if (loop)
+            lock (this)
             {
-                this.loops.Enqueue(process);
+                int id = ++this.idGenerator;
+                Process process = new(id);
+                this.processes.TryAdd(process.Id, process);
+                return process;
             }
-            return process;
         }
         
         public void Remove(int id)
         {
-            if (this.processes.Remove(id, out Process process))
+            lock (this)
             {
-                process.Dispose();    
-            }
-        }
-        
-        public async ETTask WaitGameFrameFinish()
-        {
-            ETTask task = ETTask.Create(true);
-            frameFinishTask.Enqueue(task);
-            await task;
-        }
-        
-        private void FrameFinishUpdateInner()
-        {
-            while (frameFinishTask.Count > 0)
-            {
-                ETTask task = frameFinishTask.Dequeue();
-                task.SetResult();
+                if (this.processes.Remove(id, out Process process))
+                {
+                    process.Dispose();
+                }
             }
         }
 
-        public void Load()
-        {
-            this.needLoad = true;
-        }
-        
-        // 简单线程调度，每次Loop会把所有Process Loop一遍
         public void Loop()
         {
-            int count = this.loops.Count;
-
-            using Barrier barrier = new(1);
-            
-            while (count-- > 0)
+            lock (this)
             {
-                this.loops.TryDequeue(out Process process);
-                if (process == null)
-                {
-                    continue;
-                }
-                barrier.AddParticipant();
-                process.Barrier = barrier;
-                if (process.Id == 0)
-                {
-                    continue;
-                }
-                this.loops.Enqueue(process);
-                ThreadPool.QueueUserWorkItem(process.Loop);
+                this.Update();
+                this.LateUpdate();
             }
-
-            barrier.SignalAndWait();
-            
-            // 此时没有线程竞争，进行 Load Update LateUpdate等操作
-            if (this.needLoad)
-            {
-                this.needLoad = false;
-                this.LoadInner();
-            }
-            this.UpdateInner();
-            this.LateUpdateInner();
-            this.FrameFinishUpdateInner();
         }
-
-        #endregion
         
-        
-        // 为了保证线程安全，只允许在Start之前AddSingleton，主要用于线程共用的一些东西
         public T AddSingleton<T>() where T: Singleton<T>, new()
         {
-            T singleton = new T();
-            AddSingleton(singleton);
-            return singleton;
+            lock (this)
+            {
+                ISingleton singleton = new T();
+                singleton.Register();
+
+                singletons.Push(singleton);
+
+                if (singleton is ISingletonAwake awake)
+                {
+                    awake.Awake();
+                }
+
+                if (singleton is ISingletonUpdate)
+                {
+                    updates.Enqueue(singleton);
+                }
+
+                if (singleton is ISingletonLateUpdate)
+                {
+                    lateUpdates.Enqueue(singleton);
+                }
+
+                if (singleton is ISingletonLoad)
+                {
+                    loads.Enqueue(singleton);
+                }
+                
+                if (singleton is ISingletonScheduler)
+                {
+                    this.schedulers.Enqueue(singleton);
+                }
+
+                return singleton as T;
+            }
         }
 
         public void AddSingleton(ISingleton singleton)
         {
-            singleton.Register();
-            
-            singletons.Push(singleton);
-            
-            if (singleton is ISingletonAwake awake)
+            lock (this)
             {
-                awake.Awake();
-            }
-            
-            if (singleton is ISingletonUpdate)
-            {
-                updates.Enqueue(singleton);
-            }
-            
-            if (singleton is ISingletonLateUpdate)
-            {
-                lateUpdates.Enqueue(singleton);
-            }
+                singleton.Register();
 
-            if (singleton is ISingletonLoad)
-            {
-                loads.Enqueue(singleton);
+                singletons.Push(singleton);
+
+                if (singleton is ISingletonAwake awake)
+                {
+                    awake.Awake();
+                }
+
+                if (singleton is ISingletonUpdate)
+                {
+                    updates.Enqueue(singleton);
+                }
+
+                if (singleton is ISingletonLateUpdate)
+                {
+                    lateUpdates.Enqueue(singleton);
+                }
+
+                if (singleton is ISingletonLoad)
+                {
+                    loads.Enqueue(singleton);
+                }
+                
+                if (singleton is ISingletonScheduler)
+                {
+                    this.schedulers.Enqueue(singleton);
+                }
             }
         }
 
-        private void UpdateInner()
+        private void Update()
         {
             int count = updates.Count;
             while (count-- > 0)
@@ -183,7 +184,7 @@ namespace ET
             }
         }
 
-        private void LateUpdateInner()
+        private void LateUpdate()
         {
             int count = lateUpdates.Count;
             while (count-- > 0)
@@ -215,8 +216,10 @@ namespace ET
             }
         }
 
-        private void LoadInner()
+        public void Load()
         {
+            using Locker _ = new();  // 执行Load需要停止所有的Process执行
+            
             int count = loads.Count;
             while (count-- > 0)
             {
@@ -224,7 +227,7 @@ namespace ET
                 {
                     continue;
                 }
-                
+
                 if (singleton.IsDisposed())
                 {
                     continue;
@@ -234,7 +237,7 @@ namespace ET
                 {
                     continue;
                 }
-                
+
                 loads.Enqueue(singleton);
                 try
                 {
@@ -245,6 +248,85 @@ namespace ET
                     Log.Error(e);
                 }
             }
+        }
+
+        private void StartScheduler()
+        {
+            int count = this.schedulers.Count;
+            while (count-- > 0)
+            {
+                if (!this.schedulers.TryDequeue(out ISingleton singleton))
+                {
+                    continue;
+                }
+
+                if (singleton.IsDisposed())
+                {
+                    continue;
+                }
+
+                if (singleton is not ISingletonScheduler scheduler)
+                {
+                    continue;
+                }
+
+                schedulers.Enqueue(singleton);
+                try
+                {
+                    scheduler.StartScheduler();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
+        private void StopScheduler()
+        {
+            int count = this.schedulers.Count;
+            while (count-- > 0)
+            {
+                if (!this.schedulers.TryDequeue(out ISingleton singleton))
+                {
+                    continue;
+                }
+
+                if (singleton.IsDisposed())
+                {
+                    continue;
+                }
+
+                if (singleton is not ISingletonScheduler scheduler)
+                {
+                    continue;
+                }
+
+                schedulers.Enqueue(singleton);
+                try
+                {
+                    scheduler.StopScheduler();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+            
+        }
+
+        public void Dispose()
+        {
+            using (Locker _ = new())
+            {
+                // 顺序反过来清理
+                while (singletons.Count > 0)
+                {
+                    ISingleton iSingleton = singletons.Pop();
+                    iSingleton.Destroy();
+                }
+            }
+            Instance = null;
         }
     }
 }

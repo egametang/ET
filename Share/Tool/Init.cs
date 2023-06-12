@@ -22,7 +22,7 @@ namespace ET.Server
                     .WithParsed(Game.Instance.AddSingleton);
                 Game.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
                 
-                Process process = Game.Instance.Create(false);
+                Process process = Game.Instance.Create();
                 // 异步方法全部会回掉到主线程
                 process.AddSingleton<MainThreadSynchronizationContext>();
                 process.AddSingleton<TimeInfo>();
