@@ -6,8 +6,7 @@ namespace ET
     public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, ISingletonScheduler, ISingletonUpdate
     {
         private bool isStart;
-        private HashSet<Process> Processes { get; } = new();
-        private readonly List<Process> removeProcesses = new();
+        private Dictionary<int, Process> Processes { get; } = new();
         private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
 
         public void StartScheduler()
@@ -24,26 +23,15 @@ namespace ET
             
             this.threadSynchronizationContext.Update();
             
-            removeProcesses.Clear();
-            foreach (Process process in this.Processes)
+            foreach ((int _, Process process) in this.Processes)
             {
                 if (process.IsRuning)
                 {
                     continue;
                 }
 
-                if (process.Id == 0)
-                {
-                    this.removeProcesses.Add(process);
-                }
-
                 process.IsRuning = true;
                 ThreadPool.QueueUserWorkItem(process.Loop);
-            }
-
-            foreach (Process process in this.removeProcesses)
-            {
-                this.Processes.Remove(process);
             }
         }
 
@@ -56,7 +44,7 @@ namespace ET
             {
                 int count = 0;
                 
-                foreach (Process process in this.Processes)
+                foreach ((int _, Process process) in this.Processes)
                 {
                     if (process.IsRuning)
                     {
@@ -75,7 +63,18 @@ namespace ET
 
         public void Add(Process process)
         {
-            threadSynchronizationContext.Post(()=>this.Processes.Add(process));
+            lock (Game.Instance)
+            {
+                this.Processes.Add(process.Id, process);
+            }
+        }
+
+        public void Remove(Process process)
+        {
+            lock (Game.Instance)
+            {
+                this.Processes.Remove(process.Id);
+            }
         }
     }
 }
