@@ -18,34 +18,43 @@ namespace ET
             public string ConfigName;
         }
 		
-        private readonly Dictionary<Type, ISingleton> allConfig = new();
+        private readonly Dictionary<Type, object> allConfig = new();
 
 		public override void Dispose()
 		{
-			foreach (var kv in this.allConfig)
+		}
+
+		public T GetOneConfig<T>() where T: class
+		{
+			Type configType = typeof (T);
+			lock (this)
 			{
-				kv.Value.Destroy();
+				if (this.allConfig.TryGetValue(configType, out object oneConfig))
+				{
+					return oneConfig as T;
+				}
+				
+				byte[] oneConfigBytes =
+						EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.FullName });
+
+				object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+				ISingleton singleton = category as ISingleton;
+				singleton.Register();
+
+				this.allConfig[configType] = singleton;
+				return category as T;
 			}
 		}
 
-		public object LoadOneConfig(Type configType)
+		public void RemoveOneConfig(Type configType)
 		{
-			this.allConfig.TryGetValue(configType, out ISingleton oneConfig);
-			if (oneConfig != null)
+			lock (this)
 			{
-				oneConfig.Destroy();
+				this.allConfig.Remove(configType);
 			}
-			
-			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
-
-			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-			ISingleton singleton = category as ISingleton;
-			singleton.Register();
-			
-			this.allConfig[configType] = singleton;
-			return category;
 		}
 		
+		// 程序开始的时候调用，不加锁
 		public void Load()
 		{
 			this.allConfig.Clear();
@@ -58,6 +67,7 @@ namespace ET
 			}
 		}
 		
+		// 程序开始的时候调用，不加锁
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();

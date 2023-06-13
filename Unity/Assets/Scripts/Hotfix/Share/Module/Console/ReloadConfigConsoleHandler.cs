@@ -23,7 +23,7 @@ namespace ET
                         Log.Console($"reload config but not find {category}");
                         return;
                     }
-                    ConfigComponent.Instance.LoadOneConfig(type);
+                    ConfigComponent.Instance.RemoveOneConfig(type);
                     Log.Console($"reload config {configName} finish!");
                     break;
             }

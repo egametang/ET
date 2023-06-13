@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ET
 {
@@ -109,7 +107,7 @@ namespace ET
                 }
             }
             
-            Process.Load();
+            Game.Instance.Load();
         }
 
         public HashSet<Type> GetTypes(Type systemAttributeType)
