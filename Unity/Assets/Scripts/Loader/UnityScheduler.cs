@@ -10,7 +10,7 @@ namespace ET
 
         public void StartScheduler()
         {
-            Init.Instance.ThreadSynchronizationContext.Post(() => { Init.Instance.IsStart = true; });
+            Init.Instance.IsStart = true;
         }
 
         public void StopScheduler()
@@ -29,14 +29,11 @@ namespace ET
 
         public void Add(Process process)
         {
-            this.process = process;
-            Init.Instance.ThreadSynchronizationContext.Post(()=>{ Init.Instance.Process = process; });
-        }
-        
-        public void Remove(Process process)
-        {
-            this.process = null;
-            Init.Instance.ThreadSynchronizationContext.Post(()=>{ Init.Instance.Process = null; });
+            lock (Game.Instance)
+            {
+                this.process = process;
+                Init.Instance.ThreadSynchronizationContext.Post(() => { Init.Instance.Process = process; });
+            }
         }
     }
 }

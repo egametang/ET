@@ -15,15 +15,6 @@ namespace ET
         public Process(int id)
         {
             this.Id = id;
-
-            this.loop = (_) =>
-            {
-                this.Register();
-                this.Update();
-                this.LateUpdate();
-                this.FrameFinishUpdate();
-                this.IsRuning = false;
-            };
         }
 
         private readonly Stack<IProcessSingleton> singletons = new();
@@ -35,8 +26,6 @@ namespace ET
         private readonly Queue<IProcessSingleton> loads = new();
 
         private readonly Queue<ETTask> frameFinishTask = new();
-        
-        private readonly WaitCallback loop;
 
         private void Register()
         {
@@ -149,12 +138,12 @@ namespace ET
             }
         }
 
-        public WaitCallback Loop
+        public void LoopOnce()
         {
-            get
-            {
-                return this.loop;
-            }
+            this.Register();
+            this.Update();
+            this.LateUpdate();
+            this.FrameFinishUpdate();
         }
         
         public void Load()
@@ -207,8 +196,6 @@ namespace ET
             }
             
             this.Id = 0;
-            
-            Game.Instance.Remove(id);
 
             this.IsRuning = false;
             

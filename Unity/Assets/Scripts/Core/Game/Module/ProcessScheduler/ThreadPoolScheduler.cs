@@ -1,79 +1,98 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace ET
 {
-    public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, ISingletonScheduler, ISingletonUpdate
+    public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, ISingletonScheduler
     {
         private bool isStart;
-        private Dictionary<int, Process> Processes { get; } = new();
-        private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
+        
+        private readonly HashSet<Thread> threads = new();
+        
+        public int ThreadCount { get; set; }
+
+        private readonly ConcurrentDictionary<int, Process> dictionary = new();
+
+        private readonly ConcurrentQueue<int> idQueue = new();
 
         public void StartScheduler()
         {
             this.isStart = true;
-        }
-        
-        public void Update()
-        {
-            if (!this.isStart)
+            for (int i = 0; i < this.ThreadCount; ++i)
             {
-                return;
+                this.threads.Add(new Thread(this.Loop));
             }
-            
-            this.threadSynchronizationContext.Update();
-            
-            foreach ((int _, Process process) in this.Processes)
-            {
-                if (process.IsRuning)
-                {
-                    continue;
-                }
 
-                process.IsRuning = true;
-                ThreadPool.QueueUserWorkItem(process.Loop);
+            foreach (Thread thread in this.threads)
+            {
+                thread.Start();
+            }
+        }
+
+        private void Loop()
+        {
+            while (this.isStart)
+            {
+                try
+                {
+                    if (!this.idQueue.TryDequeue(out int id))
+                    {
+                        Thread.Sleep(1);
+                        continue;
+                    }
+
+                    if (!this.dictionary.TryGetValue(id, out Process process))
+                    {
+                        Thread.Sleep(1);
+                        continue;
+                    }
+
+                    // 执行过的或者正在执行的进程放到队尾
+                    if (process.IsRuning)
+                    {
+                        process.LoopOnce();
+                    }
+
+                    this.idQueue.Enqueue(id);
+                    
+                    Thread.Sleep(1);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
             }
         }
 
         public void StopScheduler()
         {
             this.isStart = false;
-            
-            // 等待线程池中的Process Loop完成
-            while (true)
+            foreach (Thread thread in this.threads)
             {
-                int count = 0;
-                
-                foreach ((int _, Process process) in this.Processes)
-                {
-                    if (process.IsRuning)
-                    {
-                        break;
-                    }
-
-                    ++count;
-                }
-
-                if (count == this.Processes.Count)
-                {
-                    break;
-                }
+                thread.Join();
             }
         }
 
         public void Add(Process process)
         {
+            int id = 0;
             lock (Game.Instance)
             {
-                this.Processes.Add(process.Id, process);
-            }
-        }
+                id = process.Id;
+                if (id == 0)
+                {
+                    return;
+                }
+                
+                if (this.dictionary.ContainsKey(id))
+                {
+                    return;
+                }
 
-        public void Remove(Process process)
-        {
-            lock (Game.Instance)
-            {
-                this.Processes.Remove(process.Id);
+                this.dictionary[id] = process;
+                this.idQueue.Enqueue(id);
             }
         }
     }

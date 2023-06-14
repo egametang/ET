@@ -47,6 +47,10 @@ namespace ET
         private readonly Dictionary<int, Process> processes = new();
 
         private int idGenerator;
+
+        private Thread thread;
+
+        private bool isStart;
         
         public Process Create()
         {
@@ -70,13 +74,21 @@ namespace ET
             }
         }
 
-        public void Loop()
+        public void Start()
         {
-            lock (this)
+            this.thread = new Thread(() =>
             {
-                this.Update();
-                this.LateUpdate();
-            }
+                while (this.isStart)
+                {
+                    lock (this)
+                    {
+                        this.Update();
+                        this.LateUpdate();
+                    }
+                    Thread.Sleep(1);
+                }
+            });
+            this.thread.Start();
         }
         
         public T AddSingleton<T>() where T: Singleton<T>, new()
@@ -317,6 +329,9 @@ namespace ET
 
         public void Dispose()
         {
+            this.isStart = false;
+            this.thread.Join();
+            
             using (Locker _ = new())
             {
                 // 顺序反过来清理
