@@ -45,7 +45,7 @@ namespace ET
         private readonly Queue<ISingleton> schedulers = new();
 
         private readonly Dictionary<int, Process> processes = new();
-
+        
         private int idGenerator;
 
         private Thread thread;
@@ -74,6 +74,15 @@ namespace ET
             }
         }
 
+        public Process Get(int id)
+        {
+            lock (this)
+            {
+                this.processes.TryGetValue(id, out Process process);
+                return process;
+            }
+        }
+
         public void Start()
         {
             this.thread = new Thread(() =>
@@ -96,8 +105,7 @@ namespace ET
             lock (this)
             {
                 ISingleton singleton = new T();
-                singleton.Register();
-
+                
                 singletons.Push(singleton);
 
                 if (singleton is ISingletonAwake awake)
@@ -125,6 +133,7 @@ namespace ET
                     this.schedulers.Enqueue(singleton);
                 }
 
+                singleton.Register();
                 return singleton as T;
             }
         }
@@ -133,8 +142,6 @@ namespace ET
         {
             lock (this)
             {
-                singleton.Register();
-
                 singletons.Push(singleton);
 
                 if (singleton is ISingletonAwake awake)
@@ -161,6 +168,8 @@ namespace ET
                 {
                     this.schedulers.Enqueue(singleton);
                 }
+                
+                singleton.Register();
             }
         }
 
@@ -230,34 +239,35 @@ namespace ET
 
         public void Load()
         {
-            using Locker _ = new();  // 执行Load需要停止所有的Process执行
-            
-            int count = loads.Count;
-            while (count-- > 0)
+            lock(this)
             {
-                if (!this.loads.TryDequeue(out ISingleton singleton))
+                int count = loads.Count;
+                while (count-- > 0)
                 {
-                    continue;
-                }
+                    if (!this.loads.TryDequeue(out ISingleton singleton))
+                    {
+                        continue;
+                    }
 
-                if (singleton.IsDisposed())
-                {
-                    continue;
-                }
+                    if (singleton.IsDisposed())
+                    {
+                        continue;
+                    }
 
-                if (singleton is not ISingletonLoad load)
-                {
-                    continue;
-                }
+                    if (singleton is not ISingletonLoad load)
+                    {
+                        continue;
+                    }
 
-                loads.Enqueue(singleton);
-                try
-                {
-                    load.Load();
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
+                    loads.Enqueue(singleton);
+                    try
+                    {
+                        load.Load();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
                 }
             }
         }

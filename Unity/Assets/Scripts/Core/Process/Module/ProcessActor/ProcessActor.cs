@@ -5,7 +5,9 @@ namespace ET
     public class ProcessActor: ProcessSingleton<ProcessActor>, IProcessSingletonUpdate, IProcessSingletonAwake
     {
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
-        
+
+        private readonly List<MessageObject> list = new();
+
         private int rpcId;
         
         public void Awake()
@@ -20,14 +22,11 @@ namespace ET
 
         public void Update()
         {
-            while (true)
+            this.list.Clear();
+            GameActor.Instance.Fetch(this.Process.Id, 1000, this.list);
+            foreach (MessageObject messageObject in this.list)
             {
-                MessageObject messageObject = GameActor.Instance.Fetch(this.Process.Id);
-                if (messageObject == null)
-                {
-                    return;
-                }
-                this.HandleMessage(messageObject);
+                this.HandleMessage(messageObject);    
             }
         }
         

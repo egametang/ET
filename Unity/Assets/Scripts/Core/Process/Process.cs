@@ -26,6 +26,8 @@ namespace ET
         private readonly Queue<IProcessSingleton> loads = new();
 
         private readonly Queue<ETTask> frameFinishTask = new();
+        
+        private ThreadSynchronizationContext ThreadSynchronizationContext = new();
 
         private void Register()
         {

@@ -28,12 +28,16 @@ namespace ET
 					.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 					.WithParsed(Game.Instance.AddSingleton);
 				Game.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
+				Game.Instance.AddSingleton<EventSystem>();
+				ThreadPoolScheduler threadPoolScheduler = Game.Instance.AddSingleton<ThreadPoolScheduler>();
+				threadPoolScheduler.ThreadCount = 10;
+				
 				ETTask.ExceptionHandler += Log.Error;
 				
 				process.AddSingleton<TimeInfo>();
 				process.AddSingleton<ObjectPool>();
 				process.AddSingleton<IdGenerater>();
-				process.AddSingleton<EventSystem>();
+				
 				process.AddSingleton<TimerComponent>();
 				process.AddSingleton<CoroutineLockComponent>();
 				

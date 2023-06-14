@@ -1,15 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace ET
 {
-    public abstract class ConfigSingleton<T>: ProtoObject where T: ConfigSingleton<T>, new()
+    public abstract class ConfigSingleton<T>: Singleton<T>, ISupportInitialize where T: ConfigSingleton<T>, new()
     {
-        public static T Instance
+        public virtual void BeginInit()
         {
-            get
-            {
-                return ConfigComponent.Instance.GetOneConfig<T>();
-            }
+        }
+        
+        
+        public virtual void EndInit()
+        {
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,40 +19,25 @@ namespace ET
             public string ConfigName;
         }
 		
-        private readonly Dictionary<Type, object> allConfig = new();
+        private readonly ConcurrentDictionary<Type, ISingleton> allConfig = new();
 
-		public override void Dispose()
+		public void ReloadOneConfig(string configName)
 		{
-		}
+			Type configType = EventSystem.Instance.GetType(configName);
+			
+			byte[] oneConfigBytes =
+					EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.FullName });
 
-		public T GetOneConfig<T>() where T: class
-		{
-			Type configType = typeof (T);
-			lock (this)
-			{
-				if (this.allConfig.TryGetValue(configType, out object oneConfig))
-				{
-					return oneConfig as T;
-				}
-				
-				byte[] oneConfigBytes =
-						EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.FullName });
-
-				object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-				ISingleton singleton = category as ISingleton;
-				singleton.Register();
-
-				this.allConfig[configType] = singleton;
-				return category as T;
-			}
+			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			ISingleton singleton = category as ISingleton;
+			this.allConfig[configType] = singleton;
+			
+			singleton.Register();
 		}
 
 		public void RemoveOneConfig(Type configType)
 		{
-			lock (this)
-			{
-				this.allConfig.Remove(configType);
-			}
+			this.allConfig.Remove(configType, out _);
 		}
 		
 		// 程序开始的时候调用，不加锁
@@ -92,9 +78,10 @@ namespace ET
 			lock (this)
 			{
 				ISingleton singleton = category as ISingleton;
-				singleton.Register();
 				this.allConfig[configType] = singleton;
+				
+				singleton.Register();
 			}
 		}
-	}
+    }
 }

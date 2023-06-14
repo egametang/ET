@@ -13,8 +13,6 @@ namespace ET
         
         public int ThreadCount { get; set; }
 
-        private readonly ConcurrentDictionary<int, Process> dictionary = new();
-
         private readonly ConcurrentQueue<int> idQueue = new();
 
         public void StartScheduler()
@@ -43,7 +41,8 @@ namespace ET
                         continue;
                     }
 
-                    if (!this.dictionary.TryGetValue(id, out Process process))
+                    Process process = Game.Instance.Get(id);
+                    if (process == null)
                     {
                         Thread.Sleep(1);
                         continue;
@@ -77,21 +76,13 @@ namespace ET
 
         public void Add(Process process)
         {
-            int id = 0;
             lock (Game.Instance)
             {
-                id = process.Id;
+                int id = process.Id;
                 if (id == 0)
                 {
                     return;
                 }
-                
-                if (this.dictionary.ContainsKey(id))
-                {
-                    return;
-                }
-
-                this.dictionary[id] = process;
                 this.idQueue.Enqueue(id);
             }
         }

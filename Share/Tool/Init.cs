@@ -22,26 +22,26 @@ namespace ET.Server
                     .WithParsed(Game.Instance.AddSingleton);
                 Game.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
                 
-                Process process = Game.Instance.Create();
+                //Process process = Game.Instance.Create();
                 // 异步方法全部会回掉到主线程
-                process.AddSingleton<MainThreadSynchronizationContext>();
-                process.AddSingleton<TimeInfo>();
-                process.AddSingleton<ObjectPool>();
-                process.AddSingleton<IdGenerater>();
+                //process.AddSingleton<MainThreadSynchronizationContext>();
+                //process.AddSingleton<TimeInfo>();
+                //process.AddSingleton<ObjectPool>();
+                //process.AddSingleton<IdGenerater>();
                 
                 ETTask.ExceptionHandler += Log.Error;
                 
-                process.AddSingleton<EventSystem>();
-                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Process).Assembly);
-                EventSystem.Instance.Add(types);
+                //process.AddSingleton<EventSystem>();
+                //Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Process).Assembly);
+                //EventSystem.Instance.Add(types);
+//
+                //process.AddSingleton<EntitySystemSingleton>();
+                //
+                //process.AddSingleton<Root>();
 
-                process.AddSingleton<EntitySystemSingleton>();
-                
-                process.AddSingleton<Root>();
-
-                MongoHelper.Register();
+                //MongoHelper.Register();
 				
-                Log.Info($"server start........................ {Root.Instance.Scene.Id}");
+                Log.Info($"server start........................ ");
 				
                 switch (Options.Instance.AppType)
                 {

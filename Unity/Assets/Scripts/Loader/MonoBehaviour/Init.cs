@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using CommandLine;
 using UnityEngine;
 
@@ -9,11 +10,9 @@ namespace ET
 	{
 		public static Init Instance { get; private set; }
 
-		public ThreadSynchronizationContext ThreadSynchronizationContext = new();
-
 		public bool IsStart;
-		
-		public Process Process;
+
+		private Process process;
 		
 		private void Start()
 		{
@@ -32,9 +31,12 @@ namespace ET
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.Instance.AddSingleton);
 			Game.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
-			Game.Instance.AddSingleton<UnityScheduler>();
+			Game.Instance.AddSingleton<EventSystem>();
+			Game.Instance.AddSingleton<ThreadScheduler>();
 			
-			Process process = Game.Instance.Create();
+			ETTask.ExceptionHandler += Log.Error;
+			
+			process = Game.Instance.Create();
 			
 			process.AddSingleton<MainThreadSynchronizationContext>();
 
@@ -45,33 +47,25 @@ namespace ET
 			process.AddSingleton<TimeInfo>();
 			process.AddSingleton<ObjectPool>();
 			process.AddSingleton<IdGenerater>();
-			process.AddSingleton<EventSystem>();
 			process.AddSingleton<TimerComponent>();
 			process.AddSingleton<CoroutineLockComponent>();
-			
-			UnityScheduler.Instance.Add(process);
-
-			ETTask.ExceptionHandler += Log.Error;
-
 			process.AddSingleton<CodeLoader>().Start();
 		}
 
 		private void Update()
 		{
-			this.ThreadSynchronizationContext.Update();
-
 			if (!this.IsStart)
 			{
 				return;
 			}
 			
-			this.Process.Update();
+			this.process.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.Process.LateUpdate();
-			this.Process.FrameFinishUpdate();
+			this.process.LateUpdate();
+			this.process.FrameFinishUpdate();
 		}
 
 		private void OnApplicationQuit()

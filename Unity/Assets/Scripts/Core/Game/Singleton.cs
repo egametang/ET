@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ET
 {
@@ -12,42 +13,99 @@ namespace ET
     public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
     {
         private bool isDisposed;
+
+        [StaticField]
+        private static SpinLock spinLock;
         
         [StaticField]
         private static T instance;
 
+        // 自旋锁保证线程安全
         public static T Instance
         {
             get
             {
-                return instance;
+                bool lockTaken = false;
+                try
+                {
+                    spinLock.Enter(ref lockTaken);
+                    return instance;
+                }
+                finally
+                {
+                    if (lockTaken)
+                    {
+                        spinLock.Exit();
+                    }
+                }
+            }
+            set
+            {
+                bool lockTaken = false;
+                try
+                {
+                    spinLock.Enter(ref lockTaken);
+                    instance = value;
+                }
+                finally
+                {
+                    if (lockTaken)
+                    {
+                        spinLock.Exit();
+                    }
+                }
             }
         }
 
         void ISingleton.Register()
         {
-            if (instance != null)
-            {
-                throw new Exception($"singleton register twice! {typeof (T).Name}");
-            }
-            instance = (T)this;
+            Instance = (T)this;
         }
 
         void ISingleton.Destroy()
         {
-            if (this.isDisposed)
+            bool lockTaken = false;
+            try
             {
-                return;
+                spinLock.Enter(ref lockTaken);
+                
+                if (this.isDisposed)
+                {
+                    return;
+                }
+                this.isDisposed = true;
+                
+                T t = instance;
+                instance = null;
+                t.Dispose();
             }
-            this.isDisposed = true;
-            
-            instance.Dispose();
-            instance = null;
+            finally
+            {
+                if (lockTaken)
+                {
+                    spinLock.Exit();
+                }
+            }
         }
 
         bool ISingleton.IsDisposed()
         {
-            return this.isDisposed;
+            bool lockTaken = false;
+            try
+            {
+                spinLock.Enter(ref lockTaken);
+                
+                return this.isDisposed;
+            }
+            finally
+            {
+                if (lockTaken)
+                {
+                    spinLock.Exit();
+                }
+            }
+            
+            
         }
 
         public virtual void Dispose()

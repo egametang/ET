@@ -37,7 +37,7 @@ namespace ET
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
             
-            Process process = EventSystem.Instance.Process;
+            Process process = CoroutineLockComponent.Instance.Process;
             process.AddSingleton<EntitySystemSingleton>();
             process.AddSingleton<LSEntitySystemSington>();
 

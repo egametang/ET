@@ -59,19 +59,21 @@ namespace ET
             queue.Enqueue(messageObject);
         }
         
-        public MessageObject Fetch(int processId)
+        public void Fetch(int processId, int count, List<MessageObject> list)
         {
             if (!this.messages.TryGetValue(processId, out var queue))
             {
-                return null;
+                return;
             }
 
-            if (!queue.TryDequeue(out var message))
+            for (int i = 0; i < count; ++i)
             {
-                return null;
+                if (!queue.TryDequeue(out var message))
+                {
+                    break;
+                }
+                list.Add(message);
             }
-
-            return message;
         }
 
         public void AddActor(int processId)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EventSystem: ProcessSingleton<EventSystem>
+    public class EventSystem: Singleton<EventSystem>
     {
         private class EventInfo
         {
