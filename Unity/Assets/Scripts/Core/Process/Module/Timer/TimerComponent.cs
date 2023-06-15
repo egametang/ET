@@ -53,7 +53,7 @@ namespace ET
         public object Args;
     }
 
-    public class TimerComponent: ProcessSingleton<TimerComponent>, ISingletonUpdate
+    public class TimerComponent: VProcessSingleton<TimerComponent>, ISingletonUpdate
     {
         /// <summary>
         /// key: time, value: timer id

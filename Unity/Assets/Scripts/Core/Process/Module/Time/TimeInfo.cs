@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class TimeInfo: ProcessSingleton<TimeInfo>, ISingletonUpdate
+    public class TimeInfo: VProcessSingleton<TimeInfo>, ISingletonUpdate
     {
         private int timeZone;
         

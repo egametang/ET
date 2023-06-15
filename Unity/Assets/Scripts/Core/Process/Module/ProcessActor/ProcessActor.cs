@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class ProcessActor: ProcessSingleton<ProcessActor>, IProcessSingletonUpdate, IProcessSingletonAwake
+    public class IvVProcessActor: VProcessSingleton<IvVProcessActor>, IVProcessSingletonUpdate, IVProcessSingletonAwake
     {
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
 
@@ -12,18 +12,18 @@ namespace ET
         
         public void Awake()
         {
-            GameActor.Instance.AddActor(this.Process.Id);
+            WorldActor.Instance.AddActor(this.VProcess.Id);
         }
 
         public override void Dispose()
         {
-            GameActor.Instance.RemoveActor(this.Process.Id);
+            WorldActor.Instance.RemoveActor(this.VProcess.Id);
         }
 
         public void Update()
         {
             this.list.Clear();
-            GameActor.Instance.Fetch(this.Process.Id, 1000, this.list);
+            WorldActor.Instance.Fetch(this.VProcess.Id, 1000, this.list);
             foreach (MessageObject messageObject in this.list)
             {
                 this.HandleMessage(messageObject);    
@@ -44,12 +44,12 @@ namespace ET
                 }
                 case IRequest iRequest:
                 {
-                    GameActor.Instance.Handle(messageObject);
+                    WorldActor.Instance.Handle(messageObject);
                     break;
                 }
                 default: // IMessage:
                 {
-                    GameActor.Instance.Handle(messageObject);
+                    WorldActor.Instance.Handle(messageObject);
                     break;
                 }
             }
@@ -57,7 +57,7 @@ namespace ET
         
         public void Send(int processId, MessageObject messageObject)
         {
-            GameActor.Instance.Send(processId, messageObject);
+            WorldActor.Instance.Send(processId, messageObject);
         }
         
         public async ETTask<IResponse> Call(int processId, IRequest request)

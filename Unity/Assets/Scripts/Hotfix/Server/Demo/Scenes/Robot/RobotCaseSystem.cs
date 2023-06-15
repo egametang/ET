@@ -73,7 +73,7 @@ namespace ET.Server
             Scene clientScene = null;
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Process, zone, SceneType.Robot, name);
+                clientScene = await Client.SceneFactory.CreateClientScene(self.VProcess, zone, SceneType.Robot, name);
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
@@ -94,7 +94,7 @@ namespace ET.Server
 
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Process, zone, SceneType.Robot, $"Robot_{zone}");
+                clientScene = await Client.SceneFactory.CreateClientScene(self.VProcess, zone, SceneType.Robot, $"Robot_{zone}");
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");

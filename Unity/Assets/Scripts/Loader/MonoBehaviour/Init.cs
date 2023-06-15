@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using CommandLine;
 using UnityEngine;
 
@@ -9,10 +7,6 @@ namespace ET
 	public class Init: MonoBehaviour
 	{
 		public static Init Instance { get; private set; }
-
-		public bool IsStart;
-
-		private Process process;
 		
 		private void Start()
 		{
@@ -29,48 +23,42 @@ namespace ET
 			string[] args = "".Split(" ");
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-				.WithParsed(Game.Instance.AddSingleton);
-			Game.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
-			Game.Instance.AddSingleton<EventSystem>();
-			Game.Instance.AddSingleton<ThreadScheduler>();
+				.WithParsed(World.Instance.AddSingleton);
+			Options.Instance.StartConfig = $"StartConfig/Localhost";
+			
+			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
+			World.Instance.AddSingleton<ObjectPool>();
+			World.Instance.AddSingleton<EventSystem>();
+			MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<MainThreadScheduler>();
 			
 			ETTask.ExceptionHandler += Log.Error;
 			
-			process = Game.Instance.Create();
+			VProcess vProcess = VProcessSingleton.Instance.Create();
+			mainThreadScheduler.Add(vProcess);
 			
-			process.AddSingleton<MainThreadSynchronizationContext>();
-
-			process.AddSingleton<GlobalComponent>();
+			vProcess.AddSingleton<MainThreadSynchronizationContext>();
+			vProcess.AddSingleton<GlobalComponent>();
+			vProcess.AddSingleton<TimeInfo>();
+			vProcess.AddSingleton<IdGenerater>();
+			vProcess.AddSingleton<TimerComponent>();
+			vProcess.AddSingleton<CoroutineLockComponent>();
 			
-			Options.Instance.StartConfig = $"StartConfig/Localhost";
-
-			process.AddSingleton<TimeInfo>();
-			process.AddSingleton<ObjectPool>();
-			process.AddSingleton<IdGenerater>();
-			process.AddSingleton<TimerComponent>();
-			process.AddSingleton<CoroutineLockComponent>();
-			process.AddSingleton<CodeLoader>().Start();
+			World.Instance.AddSingleton<CodeLoader>().Start();
 		}
 
 		private void Update()
 		{
-			if (!this.IsStart)
-			{
-				return;
-			}
-			
-			this.process.Update();
+			MainThreadScheduler.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.process.LateUpdate();
-			this.process.FrameFinishUpdate();
+			MainThreadScheduler.Instance.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			Game.Instance.Dispose();
+			World.Instance.Dispose();
 		}
 	}
 	

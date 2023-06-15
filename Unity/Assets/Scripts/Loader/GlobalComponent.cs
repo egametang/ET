@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class GlobalComponent: ProcessSingleton<GlobalComponent>, ISingletonAwake
+    public class GlobalComponent: VProcessSingleton<GlobalComponent>, ISingletonAwake
     {
         public Transform Global;
         public Transform Unit { get; set; }

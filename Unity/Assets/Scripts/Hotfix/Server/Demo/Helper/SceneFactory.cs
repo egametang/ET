@@ -8,7 +8,7 @@ namespace ET.Server
         public static async ETTask<Scene> CreateServerScene(Entity parent, long id, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
             await ETTask.CompletedTask;
-            Scene scene = EntitySceneFactory.CreateScene(parent.Process, id, instanceId, zone, sceneType, name, parent);
+            Scene scene = EntitySceneFactory.CreateScene(parent.VProcess, id, instanceId, zone, sceneType, name, parent);
 
             scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
 

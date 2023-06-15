@@ -7,7 +7,7 @@ namespace ET
 {
 	public static class Init
 	{
-		private static Process process;
+		private static VProcess vProcess;
 		
 		public static void Start()
 		{
@@ -17,34 +17,33 @@ namespace ET
 				{
 					Log.Error(e.ExceptionObject.ToString());
 				};
-
-				process = Game.Instance.Create();
 				
-				// 异步方法全部会回掉到主线程
-				process.AddSingleton<MainThreadSynchronizationContext>();
-
 				// 命令行参数
 				Parser.Default.ParseArguments<Options>(System.Environment.GetCommandLineArgs())
-					.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-					.WithParsed(Game.Instance.AddSingleton);
-				Game.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
-				Game.Instance.AddSingleton<EventSystem>();
-				ThreadPoolScheduler threadPoolScheduler = Game.Instance.AddSingleton<ThreadPoolScheduler>();
-				threadPoolScheduler.ThreadCount = 10;
-				
+						.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
+						.WithParsed(World.Instance.AddSingleton);
+				World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				ETTask.ExceptionHandler += Log.Error;
 				
-				process.AddSingleton<TimeInfo>();
-				process.AddSingleton<ObjectPool>();
-				process.AddSingleton<IdGenerater>();
+				World.Instance.AddSingleton<VProcessSingleton>();
+				World.Instance.AddSingleton<EventSystem>();
+				World.Instance.AddSingleton<ObjectPool>();
+				ThreadPoolScheduler threadPoolScheduler = World.Instance.AddSingleton<ThreadPoolScheduler>();
+				threadPoolScheduler.ThreadCount = 10;
+
+				vProcess = VProcessSingleton.Instance.Create();
 				
-				process.AddSingleton<TimerComponent>();
-				process.AddSingleton<CoroutineLockComponent>();
+				// 异步方法全部会回掉到主线程
+				vProcess.AddSingleton<MainThreadSynchronizationContext>();
+				vProcess.AddSingleton<TimeInfo>();
+				vProcess.AddSingleton<IdGenerater>();
+				vProcess.AddSingleton<TimerComponent>();
+				vProcess.AddSingleton<CoroutineLockComponent>();
 				
 				
 				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
 
-				process.AddSingleton<CodeLoader>().Start();
+				vProcess.AddSingleton<CodeLoader>().Start();
 			}
 			catch (Exception e)
 			{
@@ -54,17 +53,17 @@ namespace ET
 
 		public static void Update()
 		{
-			process.Update();
+			vProcess.Update();
 		}
 
 		public static void LateUpdate()
 		{
-			process.LateUpdate();
+			vProcess.LateUpdate();
 		}
 
 		public static void FrameFinishUpdate()
 		{
-			process.FrameFinishUpdate();
+			vProcess.FrameFinishUpdate();
 		}
 	}
 }

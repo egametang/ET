@@ -56,7 +56,7 @@ namespace ET
                 return;
             }
 
-            ((ISingleton)Logger.Instance).Destroy();
+            ((ISingleton)Logger.Instance).Dispose();
         }
     }
 }

@@ -6,13 +6,13 @@ using System.Text;
 namespace ET
 {
     // 管理根部的Scene
-    public class Root: ProcessSingleton<Root>, ISingletonAwake
+    public class Root: VProcessSingleton<Root>, ISingletonAwake
     {
         public Scene Scene { get; private set; }
 
         public void Awake()
         {
-            this.Scene = EntitySceneFactory.CreateScene(this.Process, 0, SceneType.Process, "Process");
+            this.Scene = EntitySceneFactory.CreateScene(this.VProcess, 0, SceneType.Process, "Process");
         }
 
         public override void Dispose()

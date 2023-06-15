@@ -7,7 +7,7 @@ using System.Runtime.Loader;
 namespace ET
 {
    
-    public class CodeLoader: ProcessSingleton<CodeLoader>
+    public class CodeLoader: VProcessSingleton<CodeLoader>
     {
         private AssemblyLoadContext assemblyLoadContext;
 
@@ -39,7 +39,7 @@ namespace ET
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
 
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (Process).Assembly, this.model, hotfixAssembly);
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (VProcess).Assembly, this.model, hotfixAssembly);
 			
             EventSystem.Instance.Add(types);
         }

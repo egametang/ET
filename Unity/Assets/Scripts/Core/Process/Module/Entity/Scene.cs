@@ -22,14 +22,14 @@ namespace ET
             get;
         }
 
-        public Scene(Process process)
+        public Scene(VProcess vProcess)
         {
-            this.Process = process;
+            this.VProcess = vProcess;
         }
 
-        public Scene(Process process, long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(VProcess vProcess, long id, long instanceId, int zone, SceneType sceneType, string name)
         {
-            this.Process = process;
+            this.VProcess = vProcess;
             this.Id = id;
             this.InstanceId = instanceId;
             this.Zone = zone;

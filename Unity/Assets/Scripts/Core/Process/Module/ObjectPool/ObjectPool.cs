@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ObjectPool: ProcessSingleton<ObjectPool>
+    public class ObjectPool: Singleton<ObjectPool>
     {
         private readonly Dictionary<Type, Queue<object>> pool = new();
         
@@ -14,35 +14,42 @@ namespace ET
 
         public object Fetch(Type type)
         {
-            Queue<object> queue = null;
-            if (!pool.TryGetValue(type, out queue))
+            lock (this)
             {
-                return Activator.CreateInstance(type);
-            }
+                Queue<object> queue = null;
+                if (!pool.TryGetValue(type, out queue))
+                {
+                    return Activator.CreateInstance(type);
+                }
 
-            if (queue.Count == 0)
-            {
-                return Activator.CreateInstance(type);
+                if (queue.Count == 0)
+                {
+                    return Activator.CreateInstance(type);
+                }
+                return queue.Dequeue();
             }
-            return queue.Dequeue();
         }
 
         public void Recycle(object obj)
         {
             Type type = obj.GetType();
-            Queue<object> queue = null;
-            if (!pool.TryGetValue(type, out queue))
+            lock (this)
             {
-                queue = new Queue<object>();
-                pool.Add(type, queue);
-            }
+                Queue<object> queue = null;
+                if (!pool.TryGetValue(type, out queue))
+                {
+                    queue = new Queue<object>();
+                    pool.Add(type, queue);
+                }
 
-            // 一种对象最大为1000个
-            if (queue.Count > 1000)
-            {
-                return;
+                // 一种对象最大为1000个
+                if (queue.Count > 1000)
+                {
+                    return;
+                }
+
+                queue.Enqueue(obj);
             }
-            queue.Enqueue(obj);
         }
     }
 }

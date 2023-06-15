@@ -161,7 +161,7 @@ namespace ET
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
         
-        public Process Process { get; protected set; }
+        public VProcess VProcess { get; protected set; }
 
         [BsonIgnore]
         private Entity parent;
@@ -206,7 +206,7 @@ namespace ET
                 this.parent.AddToChildren(this);
 
                 this.IScene = this is IScene? this as IScene : this.parent.iScene;
-                this.Process = this.parent.Process;
+                this.VProcess = this.parent.VProcess;
 
 #if ENABLE_VIEW && UNITY_EDITOR
                 this.viewGO.GetComponent<ComponentView>().Component = this;

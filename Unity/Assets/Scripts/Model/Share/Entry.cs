@@ -37,14 +37,14 @@ namespace ET
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
             
-            Process process = CoroutineLockComponent.Instance.Process;
-            process.AddSingleton<EntitySystemSingleton>();
-            process.AddSingleton<LSEntitySystemSington>();
+            VProcess vProcess = CoroutineLockComponent.Instance.VProcess;
+            vProcess.AddSingleton<EntitySystemSingleton>();
+            vProcess.AddSingleton<LSEntitySystemSington>();
 
-            process.AddSingleton<NetServices>();
-            process.AddSingleton<Root>();
+            vProcess.AddSingleton<NetServices>();
+            vProcess.AddSingleton<Root>();
 
-            await Game.Instance.AddSingleton<ConfigComponent>().LoadAsync();
+            await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent1());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent2());
