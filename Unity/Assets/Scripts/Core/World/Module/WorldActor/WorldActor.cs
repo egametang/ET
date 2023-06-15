@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class WorldActor: Singleton<WorldActor>, ISingletonAwake, ISingletonLoad
+    public class WorldActor: Singleton<WorldActor>, ISingletonAwake, IVProcessSingletonLoad
     {
         private readonly Dictionary<Type, List<IProcessActorHandler>> handlers = new();
 

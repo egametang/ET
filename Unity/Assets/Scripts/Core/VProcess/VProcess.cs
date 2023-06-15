@@ -5,33 +5,34 @@ namespace ET
 {
     public class VProcess: IDisposable
     {
+        [ThreadStatic]
+        [StaticField]
+        public static VProcess Instance;
+        
         public int Id { get; private set; }
 
         public bool IsRuning;
 
-        public VProcess(int id)
-        {
-            this.Id = id;
-        }
+        // 保存虚拟进程中的Instance，方便快速获取
+        private readonly Dictionary<Type, object> instances = new();
 
         private readonly Stack<IVProcessSingleton> singletons = new();
 
         private readonly Queue<IVProcessSingleton> updates = new();
 
         private readonly Queue<IVProcessSingleton> lateUpdates = new();
-        
-        private readonly Queue<IVProcessSingleton> loads = new();
 
         private readonly Queue<ETTask> frameFinishTask = new();
+        
+        public VProcess(int id)
+        {
+            this.Id = id;
+        }
 
         private void Register()
         {
             this.IsRuning = true;
-            
-            foreach (IVProcessSingleton singleton in this.singletons)
-            {
-                singleton.Register();
-            }
+            Instance = this;
         }
         
         public T AddSingleton<T>() where T: VProcessSingleton<T>, new()
@@ -45,10 +46,10 @@ namespace ET
         {
             singleton.VProcess = this;
             
-            singleton.Register();
+            this.AddInstance(singleton);
             
             singletons.Push(singleton);
-            
+
             if (singleton is IVProcessSingletonAwake awake)
             {
                 awake.Awake();
@@ -63,11 +64,28 @@ namespace ET
             {
                 lateUpdates.Enqueue(singleton);
             }
+        }
 
-            if (singleton is IVProcessSingletonLoad)
-            {
-                loads.Enqueue(singleton);
-            }
+        public void AddInstance(object obj)
+        {
+            this.instances.Add(obj.GetType(), obj);
+        }
+
+        public void RemoveInstance(Type type)
+        {
+            this.instances.Remove(type);
+        }
+        
+        public object GetInstance(Type type)
+        {
+            this.instances.TryGetValue(type, out var instance);
+            return instance;
+        }
+        
+        public T GetInstance<T>() where T: class
+        {
+            this.instances.TryGetValue(typeof(T), out var instance);
+            return instance as T;
         }
 
         public async ETTask WaitFrameFinish()
@@ -137,40 +155,22 @@ namespace ET
                     Log.Error(e);
                 }
             }
+
+            FrameFinishUpdate();
         }
 
         public void Load()
         {
-            this.Register();
-            
-            int count = loads.Count;
-            while (count-- > 0)
+            foreach (IVProcessSingleton singleton in this.singletons)
             {
-                IVProcessSingleton singleton = loads.Dequeue();
-                
-                if (singleton.IsDisposed())
+                if (singleton is IVProcessSingletonLoad singletonLoad)
                 {
-                    continue;
-                }
-
-                if (singleton is not IVProcessSingletonLoad load)
-                {
-                    continue;
-                }
-                
-                loads.Enqueue(singleton);
-                try
-                {
-                    load.Load();
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
+                    singletonLoad.Load();
                 }
             }
         }
 
-        public void FrameFinishUpdate()
+        private void FrameFinishUpdate()
         {
             this.Register();
             

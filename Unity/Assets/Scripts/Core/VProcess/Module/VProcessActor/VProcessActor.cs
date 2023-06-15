@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class IvVProcessActor: VProcessSingleton<IvVProcessActor>, IVProcessSingletonUpdate, IVProcessSingletonAwake
+    public class VProcessActor: VProcessSingleton<VProcessActor>, IVProcessSingletonUpdate, IVProcessSingletonAwake
     {
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
 

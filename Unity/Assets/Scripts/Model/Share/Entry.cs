@@ -36,8 +36,14 @@ namespace ET
             
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
+
+            VProcess vProcess = VProcess.Instance;
             
-            VProcess vProcess = CoroutineLockComponent.Instance.VProcess;
+            vProcess.AddSingleton<MainThreadSynchronizationContext>();
+            vProcess.AddSingleton<TimeInfo>();
+            vProcess.AddSingleton<IdGenerater>();
+            vProcess.AddSingleton<TimerComponent>();
+            vProcess.AddSingleton<CoroutineLockComponent>();
             vProcess.AddSingleton<EntitySystemSingleton>();
             vProcess.AddSingleton<LSEntitySystemSington>();
 

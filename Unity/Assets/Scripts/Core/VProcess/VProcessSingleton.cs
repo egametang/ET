@@ -5,48 +5,34 @@ namespace ET
     public interface IVProcessSingleton: IDisposable
     {
         VProcess VProcess { get; set; }
-        void Register();
         void Destroy();
         bool IsDisposed();
     }
     
     public abstract class VProcessSingleton<T>: IVProcessSingleton where T: VProcessSingleton<T>, new()
     {
-        private bool isDisposed; 
-        [ThreadStatic]
-        [StaticField]
-        private static T instance;
-
         public VProcess VProcess { get; set; }
 
         public static T Instance
         {
             get
             {
-                return instance;
+                return VProcess.Instance.GetInstance<T>();
             }
-        }
-
-        void IVProcessSingleton.Register()
-        {
-            instance = (T)this;
         }
 
         void IVProcessSingleton.Destroy()
         {
-            if (this.isDisposed)
+            if (this.VProcess == null)
             {
                 return;
             }
-            this.isDisposed = true;
-            
-            instance.Dispose();
-            instance = null;
+            this.VProcess = null;
         }
 
         bool IVProcessSingleton.IsDisposed()
         {
-            return this.isDisposed;
+            return this.VProcess == null;
         }
 
         public virtual void Dispose()

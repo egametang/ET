@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockComponent: VProcessSingleton<CoroutineLockComponent>, ISingletonUpdate
+    public class CoroutineLockComponent: VProcessSingleton<CoroutineLockComponent>, IVProcessSingletonUpdate
     {
         private readonly Dictionary<int, CoroutineLockQueueType> dictionary = new();
         private readonly Queue<(int, long, int)> nextFrameRun = new Queue<(int, long, int)>();

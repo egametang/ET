@@ -6,12 +6,8 @@ namespace ET
 {
 	public class Init: MonoBehaviour
 	{
-		public static Init Instance { get; private set; }
-		
 		private void Start()
 		{
-			Instance = this;
-			
 			DontDestroyOnLoad(gameObject);
 			
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -27,33 +23,29 @@ namespace ET
 			Options.Instance.StartConfig = $"StartConfig/Localhost";
 			
 			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
-			World.Instance.AddSingleton<ObjectPool>();
-			World.Instance.AddSingleton<EventSystem>();
-			MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<MainThreadScheduler>();
-			
 			ETTask.ExceptionHandler += Log.Error;
 			
-			VProcess vProcess = VProcessSingleton.Instance.Create();
-			mainThreadScheduler.Add(vProcess);
+			World.Instance.AddSingleton<ObjectPool>();
+			World.Instance.AddSingleton<WorldActor>();
+			World.Instance.AddSingleton<CodeLoader>();
 			
-			vProcess.AddSingleton<MainThreadSynchronizationContext>();
-			vProcess.AddSingleton<GlobalComponent>();
-			vProcess.AddSingleton<TimeInfo>();
-			vProcess.AddSingleton<IdGenerater>();
-			vProcess.AddSingleton<TimerComponent>();
-			vProcess.AddSingleton<CoroutineLockComponent>();
+			World.Instance.AddSingleton<VProcessManager>();
+			VProcessManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<VProcessManager.MainThreadScheduler>();
+
+			int vProcessId = mainThreadScheduler.Create();
 			
-			World.Instance.AddSingleton<CodeLoader>().Start();
+			// 发送消息
+			WorldActor.Instance.Send(vProcessId, null);
 		}
 
 		private void Update()
 		{
-			MainThreadScheduler.Instance.Update();
+			VProcessManager.MainThreadScheduler.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
-			MainThreadScheduler.Instance.LateUpdate();
+			VProcessManager.MainThreadScheduler.Instance.LateUpdate();
 		}
 
 		private void OnApplicationQuit()

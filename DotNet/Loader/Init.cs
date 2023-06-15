@@ -7,8 +7,6 @@ namespace ET
 {
 	public static class Init
 	{
-		private static VProcess vProcess;
-		
 		public static void Start()
 		{
 			try
@@ -24,46 +22,24 @@ namespace ET
 						.WithParsed(World.Instance.AddSingleton);
 				World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				ETTask.ExceptionHandler += Log.Error;
-				
-				World.Instance.AddSingleton<VProcessSingleton>();
-				World.Instance.AddSingleton<EventSystem>();
 				World.Instance.AddSingleton<ObjectPool>();
-				ThreadPoolScheduler threadPoolScheduler = World.Instance.AddSingleton<ThreadPoolScheduler>();
-				threadPoolScheduler.ThreadCount = 10;
+				World.Instance.AddSingleton<WorldActor>();
+				World.Instance.AddSingleton<CodeLoader>();
+				World.Instance.AddSingleton<VProcessManager>();
 
-				vProcess = VProcessSingleton.Instance.Create();
+				VProcessManager.ThreadPoolScheduler threadPoolScheduler = World.Instance.AddSingleton<VProcessManager.ThreadPoolScheduler>();
+				threadPoolScheduler.ThreadCount = 10;
 				
-				// 异步方法全部会回掉到主线程
-				vProcess.AddSingleton<MainThreadSynchronizationContext>();
-				vProcess.AddSingleton<TimeInfo>();
-				vProcess.AddSingleton<IdGenerater>();
-				vProcess.AddSingleton<TimerComponent>();
-				vProcess.AddSingleton<CoroutineLockComponent>();
+				int vProcessId = VProcessManager.Instance.Create();
 				
+				WorldActor.Instance.Send(vProcessId, null);
 				
 				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
-
-				vProcess.AddSingleton<CodeLoader>().Start();
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
 			}
-		}
-
-		public static void Update()
-		{
-			vProcess.Update();
-		}
-
-		public static void LateUpdate()
-		{
-			vProcess.LateUpdate();
-		}
-
-		public static void FrameFinishUpdate()
-		{
-			vProcess.FrameFinishUpdate();
 		}
 	}
 }

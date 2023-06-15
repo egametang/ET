@@ -43,7 +43,7 @@
             <Link>Module\Log\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Core\Game\Module\Network\OpcodeRangeDefine.cs">
+        <Compile Include="..\..\Unity\Assets\Scripts\Core\World\Module\Network\OpcodeRangeDefine.cs">
             <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
     </ItemGroup>

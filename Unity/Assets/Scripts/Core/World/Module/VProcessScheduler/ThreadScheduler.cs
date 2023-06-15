@@ -5,57 +5,61 @@ using System.Threading;
 
 namespace ET
 {
-    // 一个Process一个固定的线程
-    public class ThreadScheduler: Singleton<ThreadScheduler>, IVProcessScheduler
+    public partial class VProcessManager: Singleton<VProcessManager>
     {
-        private bool isStart;
-        
-        private readonly ConcurrentDictionary<VProcess, Thread> dictionary = new();
-
-        public void Start()
+        // 一个Process一个固定的线程
+        public class ThreadScheduler: Singleton<ThreadScheduler>, IVProcessScheduler
         {
-            this.isStart = true;
-        }
+            private bool isStart;
 
-        private void Loop(VProcess vProcess)
-        {
-            while (this.isStart)
+            private readonly ConcurrentDictionary<VProcess, Thread> dictionary = new();
+
+            public void Awake()
             {
-                try
-                {
-                    vProcess.Update();
-                    vProcess.LateUpdate();
-                    vProcess.FrameFinishUpdate();
-                    
-                    Thread.Sleep(1);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+                this.isStart = true;
             }
-        }
 
-        public void Stop()
-        {
-            this.isStart = false;
-            foreach (var kv in this.dictionary)
+            private void Loop(int vProcessId)
             {
-                kv.Value.Join();
-            }
-        }
-
-        public void Add(VProcess vProcess)
-        {
-            lock (World.Instance)
-            {
-                if (vProcess.Id == 0)
+                VProcess vProcess = VProcessManager.Instance.Get(vProcessId);
+                if (vProcess == null)
                 {
                     return;
                 }
 
-                Thread thread = new(()=>this.Loop(vProcess));
+                while (this.isStart)
+                {
+                    try
+                    {
+                        vProcess.Update();
+                        vProcess.LateUpdate();
+
+                        Thread.Sleep(1);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                }
+            }
+
+            public override void Dispose()
+            {
+                base.Dispose();
+                
+                this.isStart = false;
+                foreach (var kv in this.dictionary)
+                {
+                    kv.Value.Join();
+                }
+            }
+
+            public int Create(int vProcessId = 0)
+            {
+                vProcessId = VProcessManager.Instance.Create(vProcessId);
+                Thread thread = new(() => this.Loop(vProcessId));
                 thread.Start();
+                return vProcessId;
             }
         }
     }

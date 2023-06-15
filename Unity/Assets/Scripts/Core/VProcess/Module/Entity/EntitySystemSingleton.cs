@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EntitySystemSingleton: VProcessSingleton<EntitySystemSingleton>, ISingletonAwake, ISingletonUpdate, ISingletonLateUpdate, ISingletonLoad
+    public class EntitySystemSingleton: VProcessSingleton<EntitySystemSingleton>, ISingletonAwake, IVProcessSingletonUpdate, IVProcessSingletonLateUpdate, IVProcessSingletonLoad
     {
         private TypeSystems typeSystems;
 

@@ -2,72 +2,72 @@
 
 namespace ET
 {
-    public class MainThreadScheduler: Singleton<MainThreadScheduler>, IVProcessScheduler, ISingletonUpdate, ISingletonLateUpdate
+    public partial class VProcessManager: Singleton<VProcessManager>
     {
-        private readonly Queue<int> idQueue = new();
-        private readonly Queue<int> addIds = new();
-
-        public void Update()
+        public class MainThreadScheduler: Singleton<MainThreadScheduler>, IVProcessScheduler
         {
-            int count = this.idQueue.Count;
-            while (count-- == 0)
+            private readonly Queue<int> idQueue = new();
+            private readonly Queue<int> addIds = new();
+
+            public void Awake()
             {
-                if (!this.idQueue.TryDequeue(out int id))
-                {
-                    continue;
-                }
-
-                VProcess vProcess = VProcessSingleton.Instance.Get(id);
-                if (vProcess == null)
-                {
-                    continue;
-                }
-
-                this.idQueue.Enqueue(id);
-
-                vProcess.Update();
-            }
-        }
-
-        public void LateUpdate()
-        {
-            int count = this.idQueue.Count;
-            while (count-- == 0)
-            {
-                if (!this.idQueue.TryDequeue(out int id))
-                {
-                    continue;
-                }
-
-                VProcess vProcess = VProcessSingleton.Instance.Get(id);
-                if (vProcess == null)
-                {
-                    continue;
-                }
-
-                this.idQueue.Enqueue(id);
-
-                vProcess.LateUpdate();
-                vProcess.FrameFinishUpdate();
             }
 
-            while (this.addIds.Count > 0)
+            public void Update()
             {
-                this.idQueue.Enqueue(this.addIds.Dequeue());
+                int count = this.idQueue.Count;
+                while (count-- == 0)
+                {
+                    if (!this.idQueue.TryDequeue(out int id))
+                    {
+                        continue;
+                    }
+
+                    VProcess vProcess = VProcessManager.Instance.Get(id);
+                    if (vProcess == null)
+                    {
+                        continue;
+                    }
+
+                    this.idQueue.Enqueue(id);
+
+                    vProcess.Update();
+                }
             }
-        }
 
-        public void Start()
-        {
-        }
+            public void LateUpdate()
+            {
+                int count = this.idQueue.Count;
+                while (count-- == 0)
+                {
+                    if (!this.idQueue.TryDequeue(out int id))
+                    {
+                        continue;
+                    }
 
-        public void Stop()
-        {
-        }
+                    VProcess vProcess = VProcessManager.Instance.Get(id);
+                    if (vProcess == null)
+                    {
+                        continue;
+                    }
 
-        public void Add(VProcess vProcess)
-        {
-            this.addIds.Enqueue(vProcess.Id);
+                    this.idQueue.Enqueue(id);
+
+                    vProcess.LateUpdate();
+                }
+
+                while (this.addIds.Count > 0)
+                {
+                    this.idQueue.Enqueue(this.addIds.Dequeue());
+                }
+            }
+
+            public int Create(int vProcessId = 0)
+            {
+                vProcessId = VProcessManager.Instance.Create(vProcessId);
+                this.addIds.Enqueue(vProcessId);
+                return vProcessId;
+            }
         }
     }
 }

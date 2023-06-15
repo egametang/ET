@@ -2,23 +2,28 @@
 
 namespace ET
 {
-    public class VProcessSingleton: Singleton<VProcessSingleton>
+    public partial class VProcessManager: Singleton<VProcessManager>
     {
-        private int idGenerator;
+        private int idGenerator = int.MaxValue;
         private readonly Dictionary<int, VProcess> vProcesses = new();
         
-        public VProcess Create()
+        public int Create(int processId = 0)
         {
             lock (this)
             {
-                int id = ++this.idGenerator;
-                VProcess vProcess = new(id);
+                if (processId == 0)
+                {
+                    processId = --this.idGenerator;
+                }
+                VProcess vProcess = new(processId);
+                vProcess.AddSingleton<VProcessActor>();
                 this.vProcesses.TryAdd(vProcess.Id, vProcess);
-                return vProcess;
+                return vProcess.Id;
             }
         }
         
-        public void Remove(int id)
+        // 不允许外部调用，容易出现多线程问题
+        private void Remove(int id)
         {
             lock (this)
             {
@@ -29,7 +34,8 @@ namespace ET
             }
         }
 
-        public VProcess Get(int id)
+        // 不允许外部调用，容易出现多线程问题
+        private VProcess Get(int id)
         {
             lock (this)
             {

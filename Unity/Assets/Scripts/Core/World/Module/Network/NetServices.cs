@@ -5,7 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -42,7 +41,7 @@ namespace ET
         public object Object; // 参数
     }
 
-    public class NetServices: VProcessSingleton<NetServices>, ISingletonUpdate
+    public class NetServices: VProcessSingleton<NetServices>, IVProcessSingletonUpdate
     {
 #if !SINGLE_THREAD
         private readonly ConcurrentQueue<NetOperator> netThreadOperators = new ConcurrentQueue<NetOperator>();

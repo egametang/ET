@@ -29,7 +29,7 @@ namespace ET
             int processId = request.ProcessId;
             Response response = new();
             this.Run(request, response);
-            IvVProcessActor.Instance.Send(processId, response);
+            VProcessActor.Instance.Send(processId, response);
         }
 
         public Type GetMessageType()

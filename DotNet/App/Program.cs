@@ -19,12 +19,11 @@ namespace ET
             
             while (true)
             {
-                System.Threading.Thread.Sleep(1);
+                Thread.Sleep(1);
                 try
                 {
-                    Init.Update();
-                    Init.LateUpdate();
-                    Init.FrameFinishUpdate();
+                    VProcessManager.MainThreadScheduler.Instance.Update();
+                    VProcessManager.MainThreadScheduler.Instance.LateUpdate();
                 }
                 catch (Exception e)
                 {

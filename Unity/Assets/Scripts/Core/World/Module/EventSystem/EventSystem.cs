@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EventSystem: Singleton<EventSystem>
+    public class EventSystem: Singleton<EventSystem>, ISingletonAwake<Dictionary<string, Type>>
     {
         private class EventInfo
         {
@@ -26,7 +26,7 @@ namespace ET
         
         private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
         
-        public void Add(Dictionary<string, Type> addTypes)
+        public void Awake(Dictionary<string, Type> addTypes)
         {
             this.allTypes.Clear();
             this.types.Clear();
@@ -106,8 +106,6 @@ namespace ET
                     }
                 }
             }
-            
-            World.Instance.Load();
         }
 
         public HashSet<Type> GetTypes(Type systemAttributeType)

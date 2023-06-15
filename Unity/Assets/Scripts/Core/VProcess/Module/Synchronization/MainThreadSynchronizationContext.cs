@@ -4,9 +4,9 @@ using System.Threading;
 namespace ET
 {
 
-    public class MainThreadSynchronizationContext: VProcessSingleton<MainThreadSynchronizationContext>, ISingletonUpdate
+    public class MainThreadSynchronizationContext: VProcessSingleton<MainThreadSynchronizationContext>, IVProcessSingletonUpdate
     {
-        private readonly ThreadSynchronizationContext threadSynchronizationContext = new ThreadSynchronizationContext();
+        private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
 
         public MainThreadSynchronizationContext()
         {

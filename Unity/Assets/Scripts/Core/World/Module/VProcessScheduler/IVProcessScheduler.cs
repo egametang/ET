@@ -1,9 +1,7 @@
 ﻿namespace ET
 {
-    public interface IVProcessScheduler
+    public interface IVProcessScheduler: IVProcessSingletonAwake
     {
-        void Start();
-        void Stop();
-        void Add(VProcess vProcess);
+        int Create(int vProcessId = 0);
     }
 }

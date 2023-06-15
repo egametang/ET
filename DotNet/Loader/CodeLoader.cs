@@ -7,13 +7,13 @@ using System.Runtime.Loader;
 namespace ET
 {
    
-    public class CodeLoader: VProcessSingleton<CodeLoader>
+    public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
         private AssemblyLoadContext assemblyLoadContext;
 
         private Assembly model;
 
-        public void Start()
+        public void Awake()
         {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly assembly in assemblies)
@@ -40,8 +40,8 @@ namespace ET
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
 
             Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (VProcess).Assembly, this.model, hotfixAssembly);
-			
-            EventSystem.Instance.Add(types);
+
+            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
         }
     }
 }
