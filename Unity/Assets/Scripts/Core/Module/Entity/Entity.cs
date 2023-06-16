@@ -420,7 +420,7 @@ namespace ET
             // 清理Children
             if (this.children != null)
             {
-                foreach (Entity child in this.children.Values)
+                foreach (Entity child in this.children.Values.ToArray())
                 {
                     child.Dispose();
                 }
