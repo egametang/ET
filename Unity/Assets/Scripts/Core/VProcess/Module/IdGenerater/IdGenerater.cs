@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using MongoDB.Bson;
 
 namespace ET
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct IdStruct
     {
-        public uint Time;    // 30bit
         public int Process;  // 18bit
+        public uint Time;    // 30bit
         public ushort Value; // 16bit
 
         public long ToLong()
@@ -45,8 +46,8 @@ namespace ET
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct InstanceIdStruct
     {
-        public uint Time;   // 当年开始的tick 28bit
         public int Process; // 18bit
+        public uint Time;   // 当年开始的tick 28bit
         public uint Value;  // 18bit
 
         public long ToLong()

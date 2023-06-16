@@ -31,7 +31,7 @@ namespace ET
             if (self.NavMesh == 0)
             {
                 Log.Debug("寻路| Find 失败 pathfinding ptr is zero");
-                throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
+                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 
             self.StartPos[0] = -start.x;
@@ -65,7 +65,7 @@ namespace ET
         {
             if (self.NavMesh == 0)
             {
-                throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
+                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 
             if (raduis > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f)
@@ -97,7 +97,7 @@ namespace ET
         {
             if (self.NavMesh == 0)
             {
-                throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
+                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 
             if (width > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f || height > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f)
@@ -117,7 +117,7 @@ namespace ET
         {
             if (self.NavMesh == 0)
             {
-                throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
+                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 
             if (maxRadius > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f)
@@ -140,7 +140,7 @@ namespace ET
         {
             if (self.NavMesh == 0)
             {
-                throw new Exception($"pathfinding ptr is zero: {self.DomainScene().Name}");
+                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 
             self.StartPos[0] = -pos.x;
@@ -150,7 +150,7 @@ namespace ET
             int ret = Recast.RecastFindNearestPoint(self.NavMesh, PathfindingComponent.extents, self.StartPos, self.EndPos);
             if (ret == 0)
             {
-                throw new Exception($"RecastFindNearestPoint fail, 可能是位置配置有问题: sceneName:{self.DomainScene().Name} {pos} {self.Name} {self.GetParent<Unit>().Id} {self.GetParent<Unit>().Config.Id} {self.EndPos.ArrayToString()}");
+                throw new Exception($"RecastFindNearestPoint fail, 可能是位置配置有问题: sceneName:{self.Scene().Name} {pos} {self.Name} {self.GetParent<Unit>().Id} {self.GetParent<Unit>().Config.Id} {self.EndPos.ArrayToString()}");
             }
             
             return new float3(-self.EndPos[0], self.EndPos[1], self.EndPos[2]);

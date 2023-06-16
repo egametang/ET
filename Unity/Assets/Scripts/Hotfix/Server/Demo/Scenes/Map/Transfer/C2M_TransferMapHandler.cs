@@ -9,7 +9,7 @@ namespace ET.Server
 		{
 			await ETTask.CompletedTask;
 
-			string currentMap = unit.DomainScene().Name;
+			string currentMap = unit.Scene().Name;
 			string toMap = null;
 			if (currentMap == "Map1")
 			{
@@ -20,7 +20,7 @@ namespace ET.Server
 				toMap = "Map1";
 			}
 
-			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(unit.DomainScene().Zone, toMap);
+			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(unit.Scene().Zone, toMap);
 			
 			TransferHelper.TransferAtFrameFinish(unit, startSceneConfig.InstanceId, toMap).Coroutine();
 		}

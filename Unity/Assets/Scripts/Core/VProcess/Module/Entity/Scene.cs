@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
@@ -6,6 +7,9 @@ namespace ET
     [ChildOf]
     public class Scene: Entity, IScene
     {
+        [BsonIgnore]
+        public RootEntity Root { get; set; }
+        
         public int Zone
         {
             get;
@@ -22,14 +26,12 @@ namespace ET
             get;
         }
 
-        public Scene(VProcess vProcess)
+        public Scene()
         {
-            this.VProcess = vProcess;
         }
 
-        public Scene(VProcess vProcess, long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
         {
-            this.VProcess = vProcess;
             this.Id = id;
             this.InstanceId = instanceId;
             this.Zone = zone;

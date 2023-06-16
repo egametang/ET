@@ -22,7 +22,7 @@ namespace ET.Client
         public static void OnLogin(this UILSLoginComponent self)
         {
             LoginHelper.Login(
-                self.DomainScene(),
+                self.Scene(),
                 self.account.GetComponent<InputField>().text,
                 self.password.GetComponent<InputField>().text).Coroutine();
         }

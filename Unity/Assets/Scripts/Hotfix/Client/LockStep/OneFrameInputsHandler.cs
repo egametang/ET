@@ -9,7 +9,7 @@ namespace ET.Client
         {
             using var _ = input ; // 方法结束时回收消息
             
-            Room room = session.DomainScene().GetComponent<Room>();
+            Room room = session.Scene().GetComponent<Room>();
             
             Log.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
                         

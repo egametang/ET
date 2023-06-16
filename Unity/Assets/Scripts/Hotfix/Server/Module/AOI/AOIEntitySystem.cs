@@ -10,13 +10,13 @@ namespace ET.Server
         private static void Awake(this AOIEntity self, int distance, float3 pos)
         {
             self.ViewDistance = distance;
-            self.DomainScene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
+            self.Scene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
         }
         
         [EntitySystem]
         private static void Destroy(this AOIEntity self)
         {
-            self.DomainScene().GetComponent<AOIManagerComponent>()?.Remove(self);
+            self.Scene().GetComponent<AOIManagerComponent>()?.Remove(self);
             self.ViewDistance = 0;
             self.SeeUnits.Clear();
             self.SeePlayers.Clear();
@@ -133,7 +133,7 @@ namespace ET.Server
                     enter.BeSeeUnits.Add(self.Id, self);
                 }
             }
-            EventSystem.Instance.Publish(self.DomainScene(), new EventType.UnitEnterSightRange() { A = self, B = enter });
+            EventSystem.Instance.Publish(self.Scene(), new EventType.UnitEnterSightRange() { A = self, B = enter });
         }
 
         // leave离开self视野
@@ -161,7 +161,7 @@ namespace ET.Server
                 leave.BeSeePlayers.Remove(self.Id);
             }
 
-            EventSystem.Instance.Publish(self.DomainScene(), new EventType.UnitLeaveSightRange { A = self, B = leave });
+            EventSystem.Instance.Publish(self.Scene(), new EventType.UnitLeaveSightRange { A = self, B = leave });
         }
 
         /// <summary>

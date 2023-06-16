@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf(typeof(RootEntity))]
     public class NavmeshComponent: Entity, IAwake
     {
         [ThreadStatic]

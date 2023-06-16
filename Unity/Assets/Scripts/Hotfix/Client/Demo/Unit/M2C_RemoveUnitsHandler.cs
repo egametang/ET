@@ -5,7 +5,7 @@
 	{
 		protected override async ETTask Run(Session session, M2C_RemoveUnits message)
 		{	
-			UnitComponent unitComponent = session.DomainScene().CurrentScene()?.GetComponent<UnitComponent>();
+			UnitComponent unitComponent = session.Scene().CurrentScene()?.GetComponent<UnitComponent>();
 			if (unitComponent == null)
 			{
 				return;

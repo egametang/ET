@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    /*
     [Invoke]
     public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
     {
@@ -55,7 +56,7 @@ namespace ET.Client
             }
             else
             {
-                using (Root.Instance.Scene.AddComponent<ResourcesComponent>())
+                using (RootEntity.Instance.AddComponent<ResourcesComponent>())
                 {
                     const string configBundleName = "config.unity3d";
                     ResourcesComponent.Instance.LoadBundle(configBundleName);
@@ -82,4 +83,5 @@ namespace ET.Client
             throw new NotImplementedException("client cant use LoadOneConfig");
         }
     }
+    */
 }

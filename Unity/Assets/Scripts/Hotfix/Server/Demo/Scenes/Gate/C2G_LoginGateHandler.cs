@@ -8,7 +8,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response)
         {
-            Scene scene = session.DomainScene();
+            Scene scene = session.Scene();
             string account = scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
             if (account == null)
             {
@@ -56,7 +56,7 @@ namespace ET.Server
 
         private static async ETTask CheckRoom(Player player, Session session)
         {
-            await player.VProcess.WaitFrameFinish();
+            await player.VProcess().WaitFrameFinish();
             
             Room2G_Reconnect room2GateReconnect = await ActorMessageSenderComponent.Instance.Call(
                 player.GetComponent<PlayerRoomComponent>().RoomInstanceId,

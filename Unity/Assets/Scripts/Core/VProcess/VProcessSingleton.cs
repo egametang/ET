@@ -5,11 +5,15 @@ namespace ET
     public interface IVProcessSingleton: IDisposable
     {
         VProcess VProcess { get; set; }
-        void Destroy();
-        bool IsDisposed();
+        bool IsDisposed { get; }
     }
     
-    public abstract class VProcessSingleton<T>: IVProcessSingleton where T: VProcessSingleton<T>, new()
+    public interface IInstance<T> where T: class
+    {
+
+    }
+    
+    public abstract class VProcessSingleton<T>: IVProcessSingleton, IInstance<T> where T: VProcessSingleton<T>, new()
     {
         public VProcess VProcess { get; set; }
 
@@ -21,22 +25,21 @@ namespace ET
             }
         }
 
-        void IVProcessSingleton.Destroy()
+        bool IVProcessSingleton.IsDisposed
+        {
+            get
+            {
+                return this.VProcess == null;
+            }
+        }
+
+        public virtual void Dispose()
         {
             if (this.VProcess == null)
             {
                 return;
             }
             this.VProcess = null;
-        }
-
-        bool IVProcessSingleton.IsDisposed()
-        {
-            return this.VProcess == null;
-        }
-
-        public virtual void Dispose()
-        {
         }
     }
 }

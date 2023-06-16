@@ -91,7 +91,7 @@ namespace ET
             self.Speed = speed;
             self.tcs = ETTask<bool>.Create(true);
 
-            EventSystem.Instance.Publish(self.DomainScene(), new EventType.MoveStart() {Unit = self.GetParent<Unit>()});
+            EventSystem.Instance.Publish(self.Scene(), new EventType.MoveStart() {Unit = self.GetParent<Unit>()});
             
             self.StartMove();
             
@@ -99,7 +99,7 @@ namespace ET
 
             if (moveRet)
             {
-                EventSystem.Instance.Publish(self.DomainScene(), new EventType.MoveStop() {Unit = self.GetParent<Unit>()});
+                EventSystem.Instance.Publish(self.Scene(), new EventType.MoveStop() {Unit = self.GetParent<Unit>()});
             }
             return moveRet;
         }

@@ -8,14 +8,15 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent3 args)
         {
+            RootEntity root = scene.Root();
             // 加载配置
-            Root.Instance.Scene.AddComponent<ResourcesComponent>();
+            root.AddComponent<ResourcesComponent>();
 
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
 
             SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalComponent.Instance.GlobalConfig.AppType.ToString());
             
-            Scene clientScene = await SceneFactory.CreateClientScene(scene.VProcess, 1, sceneType, sceneType.ToString());
+            Scene clientScene = await SceneFactory.CreateClientScene(1, sceneType, sceneType.ToString());
             
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }

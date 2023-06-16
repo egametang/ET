@@ -42,6 +42,9 @@ namespace ET
         }
 
         private readonly LSUpdater updater = new();
+        
+        [BsonIgnore]
+        public RootEntity Root { get; set; }
 
         [BsonElement]
         private long idGenerator;

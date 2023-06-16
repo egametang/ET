@@ -5,7 +5,7 @@ namespace ET.Client
     {
         protected override async ETTask Run(Session session, Match2G_NotifyMatchSuccess message)
         {
-            await LSSceneChangeHelper.SceneChangeTo(session.DomainScene(), "Map1", message.InstanceId);
+            await LSSceneChangeHelper.SceneChangeTo(session.Scene(), "Map1", message.InstanceId);
         }
     }
 }

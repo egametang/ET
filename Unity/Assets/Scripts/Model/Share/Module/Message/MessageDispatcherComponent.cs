@@ -17,7 +17,7 @@ namespace ET
     /// <summary>
     /// 消息分发组件
     /// </summary>
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf(typeof(RootEntity))]
     public class MessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
     {
         public static MessageDispatcherComponent Instance

@@ -6,6 +6,7 @@ namespace ET
     [ComponentOf]
     public class Room: Entity, IScene, IAwake, IUpdate
     {
+        public RootEntity Root { get; set; }
         public SceneType SceneType { get; set; } = SceneType.Room;
         public string Name { get; set; }
         

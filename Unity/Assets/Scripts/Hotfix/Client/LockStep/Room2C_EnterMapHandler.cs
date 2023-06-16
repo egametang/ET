@@ -5,7 +5,7 @@ namespace ET.Client
     {
         protected override async ETTask Run(Session session, Room2C_Start message)
         {
-            session.DomainScene().GetComponent<ObjectWait>().Notify(new WaitType.Wait_Room2C_Start() {Message = message});
+            session.Scene().GetComponent<ObjectWait>().Notify(new WaitType.Wait_Room2C_Start() {Message = message});
             await ETTask.CompletedTask;
         }
     }

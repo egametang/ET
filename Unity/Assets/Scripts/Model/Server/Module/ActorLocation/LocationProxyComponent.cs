@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf(typeof(RootEntity))]
     public class LocationProxyComponent: Entity, IAwake, IDestroy
     {
         [ThreadStatic]

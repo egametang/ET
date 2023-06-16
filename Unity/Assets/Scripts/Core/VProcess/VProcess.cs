@@ -35,7 +35,7 @@ namespace ET
             Instance = this;
         }
         
-        public T AddSingleton<T>() where T: VProcessSingleton<T>, new()
+        public T AddSingleton<T>() where T: IVProcessSingleton, new()
         {
             T singleton = new T();
             AddSingleton(singleton);
@@ -104,7 +104,7 @@ namespace ET
             {
                 IVProcessSingleton singleton = updates.Dequeue();
 
-                if (singleton.IsDisposed())
+                if (singleton.IsDisposed)
                 {
                     continue;
                 }
@@ -135,7 +135,7 @@ namespace ET
             {
                 IVProcessSingleton singleton = lateUpdates.Dequeue();
                 
-                if (singleton.IsDisposed())
+                if (singleton.IsDisposed)
                 {
                     continue;
                 }
@@ -200,7 +200,7 @@ namespace ET
             while (singletons.Count > 0)
             {
                 IVProcessSingleton iSingleton = singletons.Pop();
-                iSingleton.Destroy();
+                iSingleton.Dispose();
             }
         }
     }

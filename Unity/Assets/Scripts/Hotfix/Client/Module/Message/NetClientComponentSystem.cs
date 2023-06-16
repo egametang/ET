@@ -32,7 +32,7 @@ namespace ET.Client
             
             self.LogMsg(message);
             
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetClientComponentOnRead() {Session = session, Message = message});
+            EventSystem.Instance.Publish(self.IScene, new NetClientComponentOnRead() {Session = session, Message = message});
         }
 
         private static void OnError(this NetClientComponent self, long channelId, int error)

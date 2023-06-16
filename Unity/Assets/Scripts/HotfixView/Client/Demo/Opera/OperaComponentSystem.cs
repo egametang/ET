@@ -29,7 +29,7 @@ namespace ET.Client
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                self.VProcess.Load();
+                self.VProcess().Load();
                 Log.Debug("hot reload success!");
             }
         

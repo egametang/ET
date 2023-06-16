@@ -48,13 +48,13 @@ namespace ET
             vProcess.AddSingleton<LSEntitySystemSington>();
 
             vProcess.AddSingleton<NetServices>();
-            vProcess.AddSingleton<Root>();
+            RootEntity root = vProcess.AddSingleton<RootEntity>();
 
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 
-            await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new EventType.EntryEvent3());
+            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent3());
         }
     }
 }

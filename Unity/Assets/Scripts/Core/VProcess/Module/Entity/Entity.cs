@@ -17,6 +17,7 @@ namespace ET
 
     public interface IScene
     {
+        RootEntity Root { get; set; }
         SceneType SceneType { get; set; }
     }
 
@@ -161,8 +162,6 @@ namespace ET
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
         
-        public VProcess VProcess { get; protected set; }
-
         [BsonIgnore]
         private Entity parent;
 
@@ -205,8 +204,17 @@ namespace ET
                 this.IsComponent = false;
                 this.parent.AddToChildren(this);
 
+                if (this is IScene scene)
+                {
+                    scene.Root = this.parent.iScene.Root;
+                    this.IScene = scene;
+                }
+                else
+                {
+                    this.IScene = this.parent.iScene;
+                }
+
                 this.IScene = this is IScene? this as IScene : this.parent.iScene;
-                this.VProcess = this.parent.VProcess;
 
 #if ENABLE_VIEW && UNITY_EDITOR
                 this.viewGO.GetComponent<ComponentView>().Component = this;

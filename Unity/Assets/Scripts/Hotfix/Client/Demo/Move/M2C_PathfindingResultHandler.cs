@@ -5,7 +5,7 @@
 	{
 		protected override async ETTask Run(Session session, M2C_PathfindingResult message)
 		{
-			Unit unit = session.DomainScene().CurrentScene().GetComponent<UnitComponent>().Get(message.Id);
+			Unit unit = session.Scene().CurrentScene().GetComponent<UnitComponent>().Get(message.Id);
 
 			float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
 

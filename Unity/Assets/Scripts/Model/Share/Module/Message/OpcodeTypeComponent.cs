@@ -80,7 +80,7 @@ namespace ET
         }
     }
 
-    [ComponentOf(typeof (Scene))]
+    [ComponentOf(typeof (RootEntity))]
     public class OpcodeTypeComponent: Entity, IAwake, IDestroy
     {
         [ThreadStatic]

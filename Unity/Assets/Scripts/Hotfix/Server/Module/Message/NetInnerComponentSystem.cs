@@ -74,7 +74,7 @@ namespace ET.Server
 
         public static void HandleMessage(this NetInnerComponent self, long actorId, object message)
         {
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetInnerComponentOnRead() { ActorId = actorId, Message = message });
+            EventSystem.Instance.Publish(self.Root(), new NetInnerComponentOnRead() { ActorId = actorId, Message = message });
         }
 
         private static void OnError(this NetInnerComponent self, long channelId, int error)

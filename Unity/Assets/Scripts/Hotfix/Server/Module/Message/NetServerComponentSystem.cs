@@ -58,7 +58,7 @@ namespace ET.Server
             
             self.LogMsg(message);
 			
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetServerComponentOnRead() {Session = session, Message = message});
+            EventSystem.Instance.Publish(self.IScene, new NetServerComponentOnRead() {Session = session, Message = message});
         }
     }
 }
