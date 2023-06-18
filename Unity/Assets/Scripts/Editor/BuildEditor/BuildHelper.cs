@@ -31,17 +31,17 @@ namespace ET
         }
 
               
-#if ENABLE_CODES
-        [MenuItem("ET/ChangeDefine/Remove ENABLE_CODES")]
-        public static void RemoveEnableCodes()
+#if ENABLE_DLL
+        [MenuItem("ET/ChangeDefine/Remove ENABLE_DLL")]
+        public static void RemoveEnableDll()
         {
-            EnableDefineSymbols("ENABLE_CODES", false);
+            EnableDefineSymbols("ENABLE_DLL", false);
         }
 #else
-        [MenuItem("ET/ChangeDefine/Add ENABLE_CODES")]
-        public static void AddEnableCodes()
+        [MenuItem("ET/ChangeDefine/Add ENABLE_DLL")]
+        public static void AddEnableDll()
         {
-            EnableDefineSymbols("ENABLE_CODES", true);
+            EnableDefineSymbols("ENABLE_DLL", true);
         }
 #endif
 

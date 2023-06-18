@@ -16,7 +16,7 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "!ENABLE_CODES"
+        "!ENABLE_DLL"
     ],
     "versionDefines": [],
     "noEngineReferences": true

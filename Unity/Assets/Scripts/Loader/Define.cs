@@ -22,10 +22,10 @@
         public static bool IsEditor = false;
 #endif
 		
-#if ENABLE_CODES
-		public static bool EnableCodes = true;
+#if ENABLE_DLL
+		public static bool EnableDll = true;
 #else
-        public static bool EnableCodes = false;
+        public static bool EnableDll = false;
 #endif
 		
 #if ENABLE_VIEW

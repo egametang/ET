@@ -294,7 +294,6 @@ namespace ET
                             }
 
                             string realAddress = null;
-                            remoteConn = BitConverter.ToUInt32(this.cache, 1);
                             if (messageLength > 9)
                             {
                                 realAddress = this.cache.ToStr(9, messageLength - 9);

@@ -842,7 +842,7 @@ PlayerSettings:
     Android: UNITY;SINGLE_THREAD
     Server: UNITY
     Standalone: UNITY;SINGLE_THREAD;ENABLE_VIEW;ENABLE_CODES
-    WebGL: UNITY
+    WebGL: UNITY;ENABLE_CODES;ENABLE_DLL
     iPhone: UNITY;SINGLE_THREAD;ENABLE_CODES
   additionalCompilerArguments: {}
   platformArchitecture:

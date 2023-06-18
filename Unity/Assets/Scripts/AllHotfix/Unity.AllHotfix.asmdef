@@ -1,12 +1,13 @@
 {
-    "name": "Unity.Codes",
+    "name": "Unity.AllHotfix",
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
         "Unity.Loader",
-        "MemoryPack"
+        "MemoryPack",
+        "Unity.AllModel"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -15,7 +16,7 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "ENABLE_CODES"
+        "ENABLE_DLL"
     ],
     "versionDefines": [],
     "noEngineReferences": false
