@@ -98,7 +98,7 @@ namespace ET.Server
         {
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
-            if (actorLocationSender.ActorId != 0)
+            if (actorLocationSender.ActorId != default)
             {
                 actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
                 ActorMessageSenderComponent.Instance.Send(actorLocationSender.ActorId, message);
@@ -115,7 +115,7 @@ namespace ET.Server
                     throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{message}");
                 }
                 
-                if (actorLocationSender.ActorId == 0)
+                if (actorLocationSender.ActorId == default)
                 {
                     actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
@@ -135,7 +135,7 @@ namespace ET.Server
         {
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
-            if (actorLocationSender.ActorId != 0)
+            if (actorLocationSender.ActorId != default)
             {
                 actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
                 return await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, request);
@@ -151,7 +151,7 @@ namespace ET.Server
                     throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{request}");
                 }
 
-                if (actorLocationSender.ActorId == 0)
+                if (actorLocationSender.ActorId == default)
                 {
                     actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
@@ -218,7 +218,7 @@ namespace ET.Server
             
             while (true)
             {
-                if (actorLocationSender.ActorId == 0)
+                if (actorLocationSender.ActorId == default)
                 {
                     actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
@@ -227,7 +227,7 @@ namespace ET.Server
                     }
                 }
 
-                if (actorLocationSender.ActorId == 0)
+                if (actorLocationSender.ActorId == default)
                 {
                     actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
@@ -259,7 +259,7 @@ namespace ET.Server
                             throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iActorRequest}");
                         }
 
-                        actorLocationSender.ActorId = 0;
+                        actorLocationSender.ActorId = default;
                         continue;
                     }
                     case ErrorCore.ERR_ActorTimeout:

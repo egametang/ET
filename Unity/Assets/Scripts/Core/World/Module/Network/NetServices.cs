@@ -37,7 +37,7 @@ namespace ET
         public NetOp Op; // 操作码
         public int ServiceId;
         public long ChannelId;
-        public long ActorId;
+        public ActorId ActorId;
         public object Object; // 参数
     }
 
@@ -124,7 +124,7 @@ namespace ET
         #region 主线程
 
         private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new();
-        private readonly Dictionary<int, Action<long, long, object>> readCallback = new();
+        private readonly Dictionary<int, Action<long, ActorId, object>> readCallback = new();
         private readonly Dictionary<int, Action<long, int>> errorCallback = new();
 
         private int serviceIdGenerator;
@@ -162,7 +162,7 @@ namespace ET
             ToNetThread(ref netOperator);
         }
 
-        public void SendMessage(int serviceId, long channelId, long actorId, MessageObject message)
+        public void SendMessage(int serviceId, long channelId, ActorId actorId, MessageObject message)
         {
             NetOperator netOperator = new NetOperator()
             {
@@ -178,26 +178,26 @@ namespace ET
         public int AddService(AService aService)
         {
             aService.Id = ++this.serviceIdGenerator;
-            NetOperator netOperator = new NetOperator() { Op = NetOp.AddService, ServiceId = aService.Id, ChannelId = 0, Object = aService };
+            NetOperator netOperator = new() { Op = NetOp.AddService, ServiceId = aService.Id, ChannelId = 0, Object = aService };
             ToNetThread(ref netOperator);
             return aService.Id;
         }
 
         public void RemoveService(int serviceId)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveService, ServiceId = serviceId };
+            NetOperator netOperator = new() { Op = NetOp.RemoveService, ServiceId = serviceId };
             ToNetThread(ref netOperator);
         }
 
         public void RemoveChannel(int serviceId, long channelId, int error)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId, ActorId = error };
+            NetOperator netOperator = new() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId, ActorId = new ActorId(0, error, 0) };
             ToNetThread(ref netOperator);
         }
 
         public void CreateChannel(int serviceId, long channelId, IPEndPoint address)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.CreateChannel, ServiceId = serviceId, ChannelId = channelId, Object = address };
+            NetOperator netOperator = new() { Op = NetOp.CreateChannel, ServiceId = serviceId, ChannelId = channelId, Object = address };
             ToNetThread(ref netOperator);
         }
 
@@ -206,7 +206,7 @@ namespace ET
             this.acceptCallback.Add(serviceId, action);
         }
 
-        public void RegisterReadCallback(int serviceId, Action<long, long, object> action)
+        public void RegisterReadCallback(int serviceId, Action<long, ActorId, object> action)
         {
             this.readCallback.Add(serviceId, action);
         }
@@ -244,12 +244,12 @@ namespace ET
                     }
                     case NetOp.OnError:
                     {
-                        if (!this.errorCallback.TryGetValue(op.ServiceId, out var action))
+                        if (!this.errorCallback.TryGetValue(op.ServiceId, out Action<long, int> action))
                         {
                             return;
                         }
 
-                        action.Invoke(op.ChannelId, (int) op.ActorId);
+                        action.Invoke(op.ChannelId, op.ActorId.VProcess);
                         break;
                     }
                     default:
@@ -394,7 +394,7 @@ namespace ET
                         AService service = this.Get(op.ServiceId);
                         if (service != null)
                         {
-                            service.Remove(op.ChannelId, (int) op.ActorId);
+                            service.Remove(op.ChannelId, op.ActorId.Process);
                         }
 
                         break;
@@ -485,13 +485,13 @@ namespace ET
 
         public void OnAccept(int serviceId, long channelId, IPEndPoint ipEndPoint)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.OnAccept, ServiceId = serviceId, ChannelId = channelId, Object = ipEndPoint };
+            NetOperator netOperator = new() { Op = NetOp.OnAccept, ServiceId = serviceId, ChannelId = channelId, Object = ipEndPoint };
             ToMainThread(ref netOperator);
         }
 
-        public void OnRead(int serviceId, long channelId, long actorId, object message)
+        public void OnRead(int serviceId, long channelId, ActorId actorId, object message)
         {
-            NetOperator netOperator = new NetOperator()
+            NetOperator netOperator = new()
             {
                 Op = NetOp.OnRead,
                 ServiceId = serviceId,
@@ -504,7 +504,7 @@ namespace ET
 
         public void OnError(int serviceId, long channelId, int error)
         {
-            NetOperator netOperator = new NetOperator() { Op = NetOp.OnError, ServiceId = serviceId, ChannelId = channelId, ActorId = error };
+            NetOperator netOperator = new() { Op = NetOp.OnError, ServiceId = serviceId, ChannelId = channelId, ActorId = new ActorId(0, error, 0) };
             ToMainThread(ref netOperator);
         }
 

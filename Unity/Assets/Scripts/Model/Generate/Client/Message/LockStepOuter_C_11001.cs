@@ -48,9 +48,9 @@ namespace ET
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
-// 房间的instanceId
+// 房间的ActorId
 		[MemoryPackOrder(1)]
-		public long InstanceId { get; set; }
+		public ActorId ActorId { get; set; }
 
 	}
 

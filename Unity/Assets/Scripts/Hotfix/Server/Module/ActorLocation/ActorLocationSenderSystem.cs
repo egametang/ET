@@ -9,7 +9,7 @@ namespace ET.Server
         private static void Awake(this ActorLocationSender self)
         {
             self.LastSendOrRecvTime = TimeHelper.ServerNow();
-            self.ActorId = 0;
+            self.ActorId = default;
             self.Error = 0;
         }
         
@@ -18,7 +18,7 @@ namespace ET.Server
         {
             Log.Debug($"actor location remove: {self.Id}");
             self.LastSendOrRecvTime = 0;
-            self.ActorId = 0;
+            self.ActorId = default;
             self.Error = 0;
         }
     }

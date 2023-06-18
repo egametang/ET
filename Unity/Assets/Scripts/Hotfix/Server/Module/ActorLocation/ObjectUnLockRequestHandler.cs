@@ -7,7 +7,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene scene, ObjectUnLockRequest request, ObjectUnLockResponse response)
         {
-            scene.GetComponent<LocationManagerComoponent>().Get(request.Type).UnLock(request.Key, request.OldInstanceId, request.InstanceId);
+            scene.GetComponent<LocationManagerComoponent>().Get(request.Type).UnLock(request.Key, request.OldActorId, request.NewActorId);
 
             await ETTask.CompletedTask;
         }

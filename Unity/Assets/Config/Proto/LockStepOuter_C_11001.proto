@@ -18,8 +18,8 @@ message G2C_Match // IResponse
 message Match2G_NotifyMatchSuccess // IActorMessage
 {
 	int32 RpcId = 1;
-	// 房间的instanceId
-	int64 InstanceId = 2;
+	// 房间的ActorId
+	ActorId ActorId = 2;
 }
 
 // 客户端通知房间切换场景完成

@@ -92,7 +92,7 @@ namespace ET
 			this.socket = null;
 		}
 
-		public void Send(long actorId, MessageObject message)
+		public void Send(ActorId actorId, MessageObject message)
 		{
 			if (this.IsDisposed)
 			{
@@ -362,7 +362,7 @@ namespace ET
 			{
 				long channelId = this.Id;
 				object message = null;
-				long actorId = 0;
+				ActorId actorId = default;
 				switch (this.Service.ServiceType)
 				{
 					case ServiceType.Outer:
@@ -374,8 +374,11 @@ namespace ET
 					}
 					case ServiceType.Inner:
 					{
-						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
-						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
+						byte[] buffer = memoryStream.GetBuffer();
+						actorId.Process = BitConverter.ToInt16(buffer, Packet.ActorIdIndex);
+						actorId.VProcess = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 2);
+						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 6);
+						ushort opcode = BitConverter.ToUInt16(buffer, Packet.OpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
 						message = MessageSerializeHelper.Deserialize(type, memoryStream);
 						break;

@@ -48,7 +48,7 @@ namespace ET.Server
         /// </summary>
         /// <param name="actorId">注册Actor的InstanceId</param>
         /// <param name="message"></param>
-        public static void SendActor(long actorId, IActorMessage message)
+        public static void SendActor(ActorId actorId, IActorMessage message)
         {
             ActorMessageSenderComponent.Instance.Send(actorId, message);
         }

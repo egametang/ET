@@ -59,7 +59,7 @@ namespace ET.Server
             NetServices.Instance.RemoveService(self.ServiceId);
         }
 
-        private static void OnRead(this NetInnerComponent self, long channelId, long actorId, object message)
+        private static void OnRead(this NetInnerComponent self, long channelId, ActorId actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -72,7 +72,7 @@ namespace ET.Server
             self.HandleMessage(actorId, message);
         }
 
-        public static void HandleMessage(this NetInnerComponent self, long actorId, object message)
+        public static void HandleMessage(this NetInnerComponent self, ActorId actorId, object message)
         {
             EventSystem.Instance.Publish(self.Root(), new NetInnerComponentOnRead() { ActorId = actorId, Message = message });
         }

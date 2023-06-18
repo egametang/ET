@@ -7,7 +7,7 @@ namespace ET.Server
     {
         protected abstract ETTask Run(E entity, Message message);
 
-        public async ETTask Handle(Entity entity, int fromProcess, object actorMessage)
+        public async ETTask Handle(Entity entity, ActorId actorId, object actorMessage)
         {
             if (actorMessage is not Message msg)
             {
@@ -47,7 +47,7 @@ namespace ET.Server
     {
         protected abstract ETTask Run(E unit, Request request, Response response);
 
-        public async ETTask Handle(Entity entity, int fromProcess, object actorMessage)
+        public async ETTask Handle(Entity entity, ActorId actorId, object actorMessage)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace ET.Server
                 }
                 
                 response.RpcId = rpcId;
-                ActorHandleHelper.Reply(fromProcess, response);
+                ActorHandleHelper.Reply(actorId, response);
             }
             catch (Exception e)
             {

@@ -20,17 +20,17 @@
                 case FrameMessage frameMessage:
                 {
                     Player player = session.GetComponent<SessionPlayerComponent>().Player;
-                    long roomInstanceId = player.GetComponent<PlayerRoomComponent>().RoomInstanceId;
+                    ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
                     frameMessage.PlayerId = player.Id;
-                    ActorMessageSenderComponent.Instance.Send(roomInstanceId, frameMessage);
+                    ActorMessageSenderComponent.Instance.Send(roomActorId, frameMessage);
                     break;
                 }
                 case IActorRoom actorRoom:
                 {
                     Player player = session.GetComponent<SessionPlayerComponent>().Player;
-                    long roomInstanceId = player.GetComponent<PlayerRoomComponent>().RoomInstanceId;
+                    ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
                     actorRoom.PlayerId = player.Id;
-                    ActorMessageSenderComponent.Instance.Send(roomInstanceId, actorRoom);
+                    ActorMessageSenderComponent.Instance.Send(roomActorId, actorRoom);
                     break;
                 }
                 case IActorLocationMessage actorLocationMessage:

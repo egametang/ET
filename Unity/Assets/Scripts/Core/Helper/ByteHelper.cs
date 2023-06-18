@@ -67,6 +67,13 @@ namespace ET
 			bytes[offset + 3] = (byte)((num & 0xff000000) >> 24);
 		}
 		
+		public static void WriteTo(this byte[] bytes, int offset, ActorId num)
+		{
+			bytes.WriteTo(offset, num.Process);
+			bytes.WriteTo(offset + 4, num.VProcess);
+			bytes.WriteTo(offset + 8, num.InstanceId);
+		}
+		
 		public static void WriteTo(this byte[] bytes, int offset, int num)
 		{
 			bytes[offset] = (byte)(num & 0xff);

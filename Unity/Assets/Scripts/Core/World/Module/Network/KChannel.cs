@@ -11,7 +11,7 @@ namespace ET
 	
 	public struct KcpWaitSendMessage
 	{
-		public long ActorId;
+		public ActorId ActorId;
 		public MessageObject Message;
 	}
 	
@@ -400,7 +400,7 @@ namespace ET
 			}
 		}
 
-        private void KcpSend(long actorId, MemoryBuffer memoryStream)
+        private void KcpSend(ActorId actorId, MemoryBuffer memoryStream)
 		{
 			if (this.IsDisposed)
 			{
@@ -452,7 +452,7 @@ namespace ET
 			this.Service.AddToUpdate(0, this.Id);
 		}
 		
-		public void Send(long actorId, MessageObject message)
+		public void Send(ActorId actorId, MessageObject message)
 		{
 			if (!this.IsConnected)
 			{
@@ -499,7 +499,7 @@ namespace ET
 			{
 				long channelId = this.Id;
 				object message = null;
-				long actorId = 0;
+				ActorId actorId = default;
 				switch (this.Service.ServiceType)
 				{
 					case ServiceType.Outer:
@@ -511,7 +511,10 @@ namespace ET
 					}
 					case ServiceType.Inner:
 					{
-						actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
+						byte[] buffer = memoryStream.GetBuffer();
+						actorId.Process = BitConverter.ToInt16(buffer, Packet.ActorIdIndex);
+						actorId.VProcess = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 2);
+						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 6);
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
 						message = MessageSerializeHelper.Deserialize(type, memoryStream);

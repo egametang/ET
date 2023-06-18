@@ -6,7 +6,7 @@ namespace ET.Server
     [ChildOf(typeof(ActorLocationSenderOneType))]
     public class ActorLocationSender: Entity, IAwake, IDestroy
     {
-        public long ActorId;
+        public ActorId ActorId;
 
         // 最近接收或者发送消息的时间
         public long LastSendOrRecvTime;

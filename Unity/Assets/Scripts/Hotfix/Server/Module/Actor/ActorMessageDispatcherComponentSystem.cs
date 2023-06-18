@@ -88,7 +88,7 @@ namespace ET.Server
             self.ActorMessageHandlers[type].Add(handler);
         }
 
-        private static async ETTask Handle(this ActorMessageDispatcherComponent self, Entity entity, int fromProcess, object message)
+        private static async ETTask Handle(this ActorMessageDispatcherComponent self, Entity entity, ActorId actorId, object message)
         {
             List<ActorMessageDispatcherInfo> list;
             if (!self.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
@@ -103,7 +103,7 @@ namespace ET.Server
                 {
                     continue;
                 }
-                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, fromProcess, message);   
+                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, actorId, message);   
             }
         }
 
@@ -112,13 +112,13 @@ namespace ET.Server
         /// 分发actor消息
         /// </summary>
         [EnableAccessEntiyChild]
-        public static async ETTask HandleIActorRequest(this ActorMessageDispatcherComponent self, int fromProcess, long actorId, IActorRequest iActorRequest)
+        public static async ETTask HandleIActorRequest(this ActorMessageDispatcherComponent self, ActorId actorId, IActorRequest iActorRequest)
         {
-            Entity entity = self.Get(actorId);
+            Entity entity = self.Get(actorId.InstanceId);
             if (entity == null)
             {
                 IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
-                ActorHandleHelper.Reply(fromProcess, response);
+                ActorHandleHelper.Reply(actorId, response);
                 return;
             }
             
@@ -129,7 +129,7 @@ namespace ET.Server
             {
                 Log.Warning($"actor not found mailbox: {entity.GetType().FullName} {actorId} {iActorRequest}");
                 IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
-                ActorHandleHelper.Reply(fromProcess, response);
+                ActorHandleHelper.Reply(actorId, response);
                 return;
             }
             
@@ -137,21 +137,21 @@ namespace ET.Server
             {
                 case MailboxType.OrderedMessage:
                 {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId.InstanceId))
                     {
-                        if (entity.InstanceId != actorId)
+                        if (entity.InstanceId != actorId.InstanceId)
                         {
                             IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
-                            ActorHandleHelper.Reply(fromProcess, response);
+                            ActorHandleHelper.Reply(actorId, response);
                             break;
                         }
-                        await self.Handle(entity, fromProcess, iActorRequest);
+                        await self.Handle(entity, actorId, iActorRequest);
                     }
                     break;
                 }
                 case MailboxType.UnOrderMessageDispatcher:
                 {
-                    await self.Handle(entity, fromProcess, iActorRequest);
+                    await self.Handle(entity, actorId, iActorRequest);
                     break;
                 }
                 default:
@@ -163,9 +163,9 @@ namespace ET.Server
         /// 分发actor消息
         /// </summary>
         [EnableAccessEntiyChild]
-        public static async ETTask HandleIActorMessage(this ActorMessageDispatcherComponent self, int fromProcess, long actorId, IActorMessage iActorMessage)
+        public static async ETTask HandleIActorMessage(this ActorMessageDispatcherComponent self, ActorId actorId, IActorMessage iActorMessage)
         {
-            Entity entity = self.Get(actorId);
+            Entity entity = self.Get(actorId.InstanceId);
             if (entity == null)
             {
                 Log.Error($"not found actor: {actorId} {iActorMessage}");
@@ -183,19 +183,19 @@ namespace ET.Server
             {
                 case MailboxType.OrderedMessage:
                 {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId.InstanceId))
                     {
-                        if (entity.InstanceId != actorId)
+                        if (entity.InstanceId != actorId.InstanceId)
                         {
                             break;
                         }
-                        await self.Handle(entity, fromProcess, iActorMessage);
+                        await self.Handle(entity, actorId, iActorMessage);
                     }
                     break;
                 }
                 case MailboxType.UnOrderMessageDispatcher:
                 {
-                    await self.Handle(entity, fromProcess, iActorMessage);
+                    await self.Handle(entity, actorId, iActorMessage);
                     break;
                 }
                 case MailboxType.GateSession:

@@ -88,17 +88,16 @@ namespace ET.Server
             self.TimeoutActorMessageSenders.Clear();
         }
 
-        public static void Send(this ActorMessageSenderComponent self, long actorId, IMessage message)
+        public static void Send(this ActorMessageSenderComponent self, ActorId actorId, IMessage message)
         {
-            if (actorId == 0)
+            if (actorId == default)
             {
                 throw new Exception($"actor id is 0: {message}");
             }
             
-            ProcessActorId processActorId = new(actorId);
             
             // 这里做了优化，如果发向同一个进程，则等一帧直接处理，不需要通过网络层
-            if (processActorId.Process == Options.Instance.Process)
+            if (actorId.Process == Options.Instance.Process)
             {
                 async ETTask HandleMessageInNextFrame()
                 {
@@ -109,8 +108,8 @@ namespace ET.Server
                 return;
             }
             
-            Session session = NetInnerComponent.Instance.Get(processActorId.Process);
-            session.Send(processActorId.ActorId, message);
+            Session session = NetInnerComponent.Instance.Get(actorId.Process);
+            session.Send(actorId, message);
         }
 
 
@@ -122,14 +121,14 @@ namespace ET.Server
 
         public static async ETTask<IActorResponse> Call(
                 this ActorMessageSenderComponent self,
-                long actorId,
+                ActorId actorId,
                 IActorRequest request,
                 bool needException = true
         )
         {
             request.RpcId = self.GetRpcId();
             
-            if (actorId == 0)
+            if (actorId == default)
             {
                 throw new Exception($"actor id is 0: {request}");
             }
@@ -139,13 +138,13 @@ namespace ET.Server
         
         public static async ETTask<IActorResponse> Call(
                 this ActorMessageSenderComponent self,
-                long actorId,
+                ActorId actorId,
                 int rpcId,
                 IActorRequest iActorRequest,
                 bool needException = true
         )
         {
-            if (actorId == 0)
+            if (actorId == default)
             {
                 throw new Exception($"actor id is 0: {iActorRequest}");
             }

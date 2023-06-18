@@ -16,30 +16,30 @@ namespace ET.Server
             LocationProxyComponent.Instance = null;
         }
         
-        private static long GetLocationSceneId(long key)
+        private static ActorId GetLocationSceneId(long key)
         {
-            return StartSceneConfigCategory.Instance.LocationConfig.InstanceId;
+            return StartSceneConfigCategory.Instance.LocationConfig.ActorId;
         }
 
-        public static async ETTask Add(this LocationProxyComponent self, int type, long key, long instanceId)
+        public static async ETTask Add(this LocationProxyComponent self, int type, long key, ActorId actorId)
         {
-            Log.Info($"location proxy add {key}, {instanceId} {TimeHelper.ServerNow()}");
+            Log.Info($"location proxy add {key}, {actorId} {TimeHelper.ServerNow()}");
             await ActorMessageSenderComponent.Instance.Call(GetLocationSceneId(key),
-                new ObjectAddRequest() { Type = type, Key = key, InstanceId = instanceId });
+                new ObjectAddRequest() { Type = type, Key = key, ActorId = actorId });
         }
 
-        public static async ETTask Lock(this LocationProxyComponent self, int type, long key, long instanceId, int time = 60000)
+        public static async ETTask Lock(this LocationProxyComponent self, int type, long key, ActorId actorId, int time = 60000)
         {
-            Log.Info($"location proxy lock {key}, {instanceId} {TimeHelper.ServerNow()}");
+            Log.Info($"location proxy lock {key}, {actorId} {TimeHelper.ServerNow()}");
             await ActorMessageSenderComponent.Instance.Call(GetLocationSceneId(key),
-                new ObjectLockRequest() { Type = type, Key = key, InstanceId = instanceId, Time = time });
+                new ObjectLockRequest() { Type = type, Key = key, ActorId = actorId, Time = time });
         }
 
-        public static async ETTask UnLock(this LocationProxyComponent self, int type, long key, long oldInstanceId, long instanceId)
+        public static async ETTask UnLock(this LocationProxyComponent self, int type, long key, ActorId oldActorId, ActorId newActorId)
         {
-            Log.Info($"location proxy unlock {key}, {instanceId} {TimeHelper.ServerNow()}");
+            Log.Info($"location proxy unlock {key}, {newActorId} {TimeHelper.ServerNow()}");
             await ActorMessageSenderComponent.Instance.Call(GetLocationSceneId(key),
-                new ObjectUnLockRequest() { Type = type, Key = key, OldInstanceId = oldInstanceId, InstanceId = instanceId });
+                new ObjectUnLockRequest() { Type = type, Key = key, OldActorId = oldActorId, NewActorId = newActorId });
         }
 
         public static async ETTask Remove(this LocationProxyComponent self, int type, long key)
@@ -49,7 +49,7 @@ namespace ET.Server
                 new ObjectRemoveRequest() { Type = type, Key = key });
         }
 
-        public static async ETTask<long> Get(this LocationProxyComponent self, int type, long key)
+        public static async ETTask<ActorId> Get(this LocationProxyComponent self, int type, long key)
         {
             if (key == 0)
             {
@@ -60,12 +60,12 @@ namespace ET.Server
             ObjectGetResponse response =
                     (ObjectGetResponse) await ActorMessageSenderComponent.Instance.Call(GetLocationSceneId(key),
                         new ObjectGetRequest() { Type = type, Key = key });
-            return response.InstanceId;
+            return response.ActorId;
         }
 
         public static async ETTask AddLocation(this Entity self, int type)
         {
-            await LocationProxyComponent.Instance.Add(type, self.Id, self.InstanceId);
+            await LocationProxyComponent.Instance.Add(type, self.Id, self.GetActorId());
         }
 
         public static async ETTask RemoveLocation(this Entity self, int type)

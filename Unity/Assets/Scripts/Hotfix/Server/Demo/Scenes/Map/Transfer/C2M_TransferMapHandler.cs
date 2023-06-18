@@ -22,7 +22,7 @@ namespace ET.Server
 
 			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(unit.Scene().Zone, toMap);
 			
-			TransferHelper.TransferAtFrameFinish(unit, startSceneConfig.InstanceId, toMap).Coroutine();
+			TransferHelper.TransferAtFrameFinish(unit, startSceneConfig.ActorId, toMap).Coroutine();
 		}
 	}
 }

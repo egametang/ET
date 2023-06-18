@@ -39,7 +39,7 @@ namespace ET.Server
             {
                 // 判断是否在战斗
                 PlayerRoomComponent playerRoomComponent = player.GetComponent<PlayerRoomComponent>();
-                if (playerRoomComponent.RoomInstanceId != 0)
+                if (playerRoomComponent.RoomActorId != default)
                 {
                     CheckRoom(player, session).Coroutine();
                 }
@@ -59,7 +59,7 @@ namespace ET.Server
             await player.VProcess().WaitFrameFinish();
             
             Room2G_Reconnect room2GateReconnect = await ActorMessageSenderComponent.Instance.Call(
-                player.GetComponent<PlayerRoomComponent>().RoomInstanceId,
+                player.GetComponent<PlayerRoomComponent>().RoomActorId,
                 new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
             session.Send(new G2C_Reconnect() { StartTime = room2GateReconnect.StartTime, UnitInfos = room2GateReconnect.UnitInfos, Frame = room2GateReconnect.Frame});
             session.AddComponent<SessionPlayerComponent>().Player = player;

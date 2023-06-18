@@ -30,8 +30,8 @@ message Map2Match_GetRoom // IActorResponse
 	int32 Error = 2;
 	string Message = 3;
 	
-	// 房间的instanceId
-	int64 InstanceId = 4;
+	// 房间的ActorId
+	ActorId ActorId = 4;
 }
 
 //ResponseType Room2G_Reconnect

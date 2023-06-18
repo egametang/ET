@@ -44,7 +44,7 @@ namespace ET
 
         public abstract void Create(long id, IPEndPoint address);
 
-        public abstract void Send(long channelId, long actorId, MessageObject message);
+        public abstract void Send(long channelId, ActorId actorId, MessageObject message);
 
         public virtual (uint, uint) GetChannelConn(long channelId)
         {

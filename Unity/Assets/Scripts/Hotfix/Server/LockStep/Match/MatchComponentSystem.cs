@@ -31,9 +31,9 @@ namespace ET.Server
             self.waitMatchPlayers.Clear();
             
             Map2Match_GetRoom map2MatchGetRoom = await ActorMessageSenderComponent.Instance.Call(
-                startSceneConfig.InstanceId, match2MapGetRoom) as Map2Match_GetRoom;
+                startSceneConfig.ActorId, match2MapGetRoom) as Map2Match_GetRoom;
 
-            Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { InstanceId = map2MatchGetRoom.InstanceId };
+            Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };
             foreach (long id in match2MapGetRoom.PlayerIds) // 这里发送消息线程不会修改PlayerInfo，所以可以直接使用
             {
                 ActorLocationSenderComponent.Instance.Get(LocationType.Player).Send(id, match2GNotifyMatchSuccess);

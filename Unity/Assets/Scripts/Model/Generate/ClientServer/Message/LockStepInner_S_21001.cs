@@ -74,9 +74,9 @@ namespace ET
 		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
-// 房间的instanceId
+// 房间的ActorId
 		[MemoryPackOrder(3)]
-		public long InstanceId { get; set; }
+		public ActorId ActorId { get; set; }
 
 	}
 

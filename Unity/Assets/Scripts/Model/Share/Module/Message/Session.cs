@@ -113,10 +113,10 @@ namespace ET
 
         public static void Send(this Session self, IMessage message)
         {
-            self.Send(0, message);
+            self.Send(default, message);
         }
         
-        public static void Send(this Session self, long actorId, IMessage message)
+        public static void Send(this Session self, ActorId actorId, IMessage message)
         {
             self.LastSendTime = TimeHelper.ClientNow();
             self.LogMsg(message);

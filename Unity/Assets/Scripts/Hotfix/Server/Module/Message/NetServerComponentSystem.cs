@@ -47,7 +47,7 @@ namespace ET.Server
             }
         }
         
-        private static void OnRead(this NetServerComponent self, long channelId, long actorId, object message)
+        private static void OnRead(this NetServerComponent self, long channelId, ActorId actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)

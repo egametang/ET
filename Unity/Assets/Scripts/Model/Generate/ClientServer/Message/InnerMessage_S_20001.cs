@@ -154,7 +154,7 @@ namespace ET
 		public long Key { get; set; }
 
 		[MemoryPackOrder(3)]
-		public long InstanceId { get; set; }
+		public ActorId ActorId { get; set; }
 
 	}
 
@@ -196,7 +196,7 @@ namespace ET
 		public long Key { get; set; }
 
 		[MemoryPackOrder(3)]
-		public long InstanceId { get; set; }
+		public ActorId ActorId { get; set; }
 
 		[MemoryPackOrder(4)]
 		public int Time { get; set; }
@@ -241,10 +241,10 @@ namespace ET
 		public long Key { get; set; }
 
 		[MemoryPackOrder(3)]
-		public long OldInstanceId { get; set; }
+		public ActorId OldActorId { get; set; }
 
 		[MemoryPackOrder(4)]
-		public long InstanceId { get; set; }
+		public ActorId NewActorId { get; set; }
 
 	}
 
@@ -347,7 +347,7 @@ namespace ET
 		public int Type { get; set; }
 
 		[MemoryPackOrder(4)]
-		public long InstanceId { get; set; }
+		public ActorId ActorId { get; set; }
 
 	}
 
@@ -441,7 +441,7 @@ namespace ET
 		public int RpcId { get; set; }
 
 		[MemoryPackOrder(1)]
-		public long OldInstanceId { get; set; }
+		public ActorId OldActorId { get; set; }
 
 		[MemoryPackOrder(2)]
 		public byte[] Unit { get; set; }

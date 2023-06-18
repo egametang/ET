@@ -31,6 +31,11 @@ namespace ET
         [BsonIgnore]
         public long InstanceId { get; protected set; }
 
+        public ActorId GetActorId()
+        {
+            return new ActorId((short)Options.Instance.Process, this.VProcess().Id, this.InstanceId);
+        }
+
         protected Entity()
         {
         }

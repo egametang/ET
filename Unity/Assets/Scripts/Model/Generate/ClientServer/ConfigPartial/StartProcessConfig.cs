@@ -6,7 +6,7 @@ namespace ET
     {
         private IPEndPoint innerIPPort;
 
-        public long SceneId;
+        public ActorId ActorId;
 
         public IPEndPoint InnerIPPort
         {
@@ -29,9 +29,8 @@ namespace ET
 
         public override void EndInit()
         {
-            InstanceIdStruct instanceIdStruct = new InstanceIdStruct((int)this.Id, 0);
-            this.SceneId = instanceIdStruct.ToLong();
-            Log.Info($"StartProcess info: {this.MachineId} {this.Id} {this.SceneId}");
+            this.ActorId = new ActorId((short)this.Id, 0, 0);
+            Log.Info($"StartProcess info: {this.MachineId} {this.Id} {this.ActorId}");
         }
     }
 }

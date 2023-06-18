@@ -161,7 +161,7 @@ namespace ET
 			this.idChannels.Remove(id);
 		}
 
-		public override void Send(long channelId, long actorId, MessageObject message)
+		public override void Send(long channelId, ActorId actorId, MessageObject message)
 		{
 			try
 			{

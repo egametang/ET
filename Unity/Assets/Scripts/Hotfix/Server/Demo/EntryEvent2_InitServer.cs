@@ -29,7 +29,7 @@ namespace ET.Server
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Options.Instance.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
+                        await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, startConfig.Id, startConfig.ActorId.InstanceId, startConfig.Zone, startConfig.Name,
                             startConfig.Type, startConfig);
                     }
 

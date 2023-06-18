@@ -220,7 +220,6 @@ namespace ET
             {
                 long channelId = this.Id;
                 object message = null;
-                long actorId = 0;
                 switch (this.Service.ServiceType)
                 {
                     case ServiceType.Outer:
@@ -230,16 +229,8 @@ namespace ET
                         message = MessageSerializeHelper.Deserialize(type, memoryStream);
                         break;
                     }
-                    case ServiceType.Inner:
-                    {
-                        actorId = BitConverter.ToInt64(memoryStream.GetBuffer(), Packet.ActorIdIndex);
-                        ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
-                        Type type = NetServices.Instance.GetType(opcode);
-                        message = MessageSerializeHelper.Deserialize(type, memoryStream);
-                        break;
-                    }
                 }
-                NetServices.Instance.OnRead(this.Service.Id, channelId, actorId, message);
+                NetServices.Instance.OnRead(this.Service.Id, channelId, new ActorId(), message);
             }
             catch (Exception e)
             {

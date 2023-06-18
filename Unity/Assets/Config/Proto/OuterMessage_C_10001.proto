@@ -22,7 +22,7 @@ message C2M_TestRequest // IActorLocationRequest
 
 message M2C_TestResponse // IActorResponse
 {
-    int32 RpcId = 1;
+	int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
 	string response = 4;

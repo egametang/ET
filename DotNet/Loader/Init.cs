@@ -22,6 +22,7 @@ namespace ET
 						.WithParsed(World.Instance.AddSingleton);
 				World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				ETTask.ExceptionHandler += Log.Error;
+				World.Instance.AddSingleton<IdValueGenerater>();
 				World.Instance.AddSingleton<ObjectPool>();
 				World.Instance.AddSingleton<WorldActor>();
 				World.Instance.AddSingleton<CodeLoader>();

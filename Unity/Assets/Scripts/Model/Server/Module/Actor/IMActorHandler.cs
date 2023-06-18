@@ -4,7 +4,7 @@ namespace ET.Server
 {
     public interface IMActorHandler
     {
-        ETTask Handle(Entity entity, int fromProcess, object actorMessage);
+        ETTask Handle(Entity entity, ActorId actorId, object actorMessage);
         Type GetRequestType();
         Type GetResponseType();
     }

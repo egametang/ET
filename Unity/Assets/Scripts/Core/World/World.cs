@@ -25,7 +25,7 @@ namespace ET
             }
 
             singletons[singleton.GetType()] = singleton;
-
+            singleton.Register();
             return (T)singleton;
         }
         
@@ -39,7 +39,7 @@ namespace ET
             }
 
             singletons[singleton.GetType()] = singleton;
-
+            singleton.Register();
             return (T)singleton;
         }
         
@@ -53,7 +53,7 @@ namespace ET
             }
 
             singletons[singleton.GetType()] = singleton;
-
+            singleton.Register();
             return (T)singleton;
         }
         
@@ -67,7 +67,7 @@ namespace ET
             }
 
             singletons[singleton.GetType()] = singleton;
-
+            singleton.Register();
             return (T)singleton;
         }
 
@@ -79,7 +79,6 @@ namespace ET
             }
             
             singletons[singleton.GetType()] = singleton;
-
             singleton.Register();
         }
 

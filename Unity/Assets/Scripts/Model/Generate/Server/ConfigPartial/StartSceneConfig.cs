@@ -81,7 +81,7 @@ namespace ET
     
     public partial class StartSceneConfig: ISupportInitialize
     {
-        public long InstanceId;
+        public ActorId ActorId;
         
         public SceneType Type;
 
@@ -136,8 +136,6 @@ namespace ET
         public override void EndInit()
         {
             this.Type = EnumHelper.FromString<SceneType>(this.SceneType);
-            InstanceIdStruct instanceIdStruct = new InstanceIdStruct(this.Process, (uint) this.Id);
-            this.InstanceId = instanceIdStruct.ToLong();
         }
     }
 }

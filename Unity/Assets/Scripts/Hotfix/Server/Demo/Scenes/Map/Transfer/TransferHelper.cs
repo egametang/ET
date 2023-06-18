@@ -5,7 +5,7 @@ namespace ET.Server
 {
     public static partial class TransferHelper
     {
-        public static async ETTask TransferAtFrameFinish(Unit unit, long sceneInstanceId, string sceneName)
+        public static async ETTask TransferAtFrameFinish(Unit unit, ActorId sceneInstanceId, string sceneName)
         {
             await unit.VProcess().WaitFrameFinish();
 
@@ -13,14 +13,13 @@ namespace ET.Server
         }
         
 
-        public static async ETTask Transfer(Unit unit, long sceneInstanceId, string sceneName)
+        public static async ETTask Transfer(Unit unit, ActorId sceneInstanceId, string sceneName)
         {
             // location加锁
             long unitId = unit.Id;
-            long unitInstanceId = unit.InstanceId;
             
-            M2M_UnitTransferRequest request = new M2M_UnitTransferRequest() {Entitys = new List<byte[]>()};
-            request.OldInstanceId = unitInstanceId;
+            M2M_UnitTransferRequest request = new() {Entitys = new List<byte[]>()};
+            request.OldActorId = unit.GetActorId();
             request.Unit = unit.ToBson();
             foreach (Entity entity in unit.Components.Values)
             {
@@ -31,7 +30,7 @@ namespace ET.Server
             }
             unit.Dispose();
             
-            await LocationProxyComponent.Instance.Lock(LocationType.Unit, unitId, unitInstanceId);
+            await LocationProxyComponent.Instance.Lock(LocationType.Unit, unitId, request.OldActorId);
             await ActorMessageSenderComponent.Instance.Call(sceneInstanceId, request);
         }
     }

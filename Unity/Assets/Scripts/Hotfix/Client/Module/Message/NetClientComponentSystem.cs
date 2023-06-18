@@ -20,7 +20,7 @@ namespace ET.Client
             NetServices.Instance.RemoveService(self.ServiceId);
         }
 
-        private static void OnRead(this NetClientComponent self, long channelId, long actorId, object message)
+        private static void OnRead(this NetClientComponent self, long channelId, ActorId actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)

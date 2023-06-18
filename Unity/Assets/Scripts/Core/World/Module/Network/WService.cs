@@ -133,7 +133,7 @@ namespace ET
             throw new NotImplementedException();
         }
 
-        public override void Send(long channelId, long actorId, MessageObject message)
+        public override void Send(long channelId, ActorId actorId, MessageObject message)
         {
             this.channels.TryGetValue(channelId, out WChannel channel);
             if (channel == null)

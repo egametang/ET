@@ -14,9 +14,9 @@ namespace ET.Server
     }
     
     [ChildOf(typeof(LocationOneType))]
-    public class LockInfo: Entity, IAwake<long, CoroutineLock>, IDestroy
+    public class LockInfo: Entity, IAwake<ActorId, CoroutineLock>, IDestroy
     {
-        public long LockInstanceId;
+        public ActorId LockActorId;
 
         public CoroutineLock CoroutineLock;
     }
@@ -26,7 +26,7 @@ namespace ET.Server
     {
         public int LocationType;
         
-        public readonly Dictionary<long, long> locations = new Dictionary<long, long>();
+        public readonly Dictionary<long, ActorId> locations = new Dictionary<long, ActorId>();
 
         public readonly Dictionary<long, LockInfo> lockInfos = new Dictionary<long, LockInfo>();
     }

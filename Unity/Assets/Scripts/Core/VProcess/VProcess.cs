@@ -14,7 +14,7 @@ namespace ET
         public bool IsRuning;
 
         // 保存虚拟进程中的Instance，方便快速获取
-        private readonly Dictionary<Type, object> instances = new(); 
+        private readonly Dictionary<Type, object> instances = new();
 
         private readonly Stack<IVProcessSingleton> singletons = new();
 
