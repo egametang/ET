@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    [ComponentOf(typeof(RootEntity))]
+    [ComponentOf(typeof(Scene))]
     public class ServerSceneManagerComponent: Entity, IAwake, IDestroy
     {
         [ThreadStatic]

@@ -28,7 +28,6 @@ namespace ET
 			World.Instance.AddSingleton<ObjectPool>();
 			World.Instance.AddSingleton<WorldActor>();
 			World.Instance.AddSingleton<CodeLoader>();
-			
 			World.Instance.AddSingleton<VProcessManager>();
 			VProcessManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<VProcessManager.MainThreadScheduler>();
 

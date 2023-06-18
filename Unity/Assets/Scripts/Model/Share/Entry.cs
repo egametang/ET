@@ -36,6 +36,9 @@ namespace ET
             
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
+            
+            World.Instance.AddSingleton<EntitySystemSingleton>();
+            World.Instance.AddSingleton<LSEntitySystemSingleton>();
 
             VProcess vProcess = VProcess.Instance;
             
@@ -44,17 +47,15 @@ namespace ET
             vProcess.AddSingleton<IdGenerater>();
             vProcess.AddSingleton<TimerComponent>();
             vProcess.AddSingleton<CoroutineLockComponent>();
-            vProcess.AddSingleton<EntitySystemSingleton>();
-            vProcess.AddSingleton<LSEntitySystemSington>();
-
+            
             vProcess.AddSingleton<NetServices>();
-            RootEntity root = vProcess.AddSingleton<RootEntity>();
+            Root root = vProcess.AddSingleton<Root>();
 
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 
-            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent3());
+            await EventSystem.Instance.PublishAsync(root.Scene, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(root.Scene, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(root.Scene, new EventType.EntryEvent3());
         }
     }
 }

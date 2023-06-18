@@ -8,8 +8,11 @@ namespace ET
     public class Scene: Entity, IScene
     {
         [BsonIgnore]
-        public RootEntity Root { get; set; }
+        public VProcess VProcess { get; set; }
         
+        [BsonIgnore]
+        public IScene Root { get; set; }
+
         public int Zone
         {
             get;

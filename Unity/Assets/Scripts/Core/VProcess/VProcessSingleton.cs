@@ -25,7 +25,7 @@ namespace ET
             }
         }
 
-        bool IVProcessSingleton.IsDisposed
+        public bool IsDisposed
         {
             get
             {

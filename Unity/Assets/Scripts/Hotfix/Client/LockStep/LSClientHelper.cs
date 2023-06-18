@@ -12,7 +12,7 @@ namespace ET
                 return;
             }
             
-            LSEntitySystemSington.Instance.LSRollback(entity);
+            LSEntitySystemSingleton.Instance.LSRollback(entity);
             
             if (entity.ComponentsCount() > 0)
             {

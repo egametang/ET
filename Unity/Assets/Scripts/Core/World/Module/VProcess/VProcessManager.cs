@@ -16,7 +16,8 @@ namespace ET
                     processId = --this.idGenerator;
                 }
                 VProcess vProcess = new(processId);
-                vProcess.AddSingleton<VProcessActor>();
+                vProcess.AddSingleton<Root>();
+                vProcess.AddSingleton<EntitySystem>();
                 this.vProcesses.TryAdd(vProcess.Id, vProcess);
                 return vProcess.Id;
             }

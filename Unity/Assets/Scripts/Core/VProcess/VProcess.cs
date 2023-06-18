@@ -7,14 +7,14 @@ namespace ET
     {
         [ThreadStatic]
         [StaticField]
-        public static VProcess Instance;
+        public static VProcess Instance;    
         
         public int Id { get; private set; }
 
         public bool IsRuning;
 
         // 保存虚拟进程中的Instance，方便快速获取
-        private readonly Dictionary<Type, object> instances = new();
+        private readonly Dictionary<Type, object> instances = new(); 
 
         private readonly Stack<IVProcessSingleton> singletons = new();
 

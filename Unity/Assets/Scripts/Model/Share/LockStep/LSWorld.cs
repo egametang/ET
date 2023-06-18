@@ -44,7 +44,10 @@ namespace ET
         private readonly LSUpdater updater = new();
         
         [BsonIgnore]
-        public RootEntity Root { get; set; }
+        public VProcess VProcess { get; set; }
+        
+        [BsonIgnore]
+        public IScene Root { get; set; }
 
         [BsonElement]
         private long idGenerator;

@@ -5,12 +5,11 @@ namespace ET
     {
         protected override async ETTask Run(Scene scene, EventType.EntryEvent1 args)
         {
-            RootEntity root = scene.Root();
-            root.AddComponent<OpcodeTypeComponent>();
-            root.AddComponent<MessageDispatcherComponent>();
-            root.AddComponent<NumericWatcherComponent>();
-            root.AddComponent<AIDispatcherComponent>();
-            root.AddComponent<ClientSceneManagerComponent>();
+            scene.AddComponent<OpcodeTypeComponent>();
+            scene.AddComponent<MessageDispatcherComponent>();
+            scene.AddComponent<NumericWatcherComponent>();
+            scene.AddComponent<AIDispatcherComponent>();
+            scene.AddComponent<ClientSceneManagerComponent>();
 
             await ETTask.CompletedTask;
         }

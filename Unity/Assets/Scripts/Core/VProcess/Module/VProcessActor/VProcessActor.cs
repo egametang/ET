@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class VProcessActor: VProcessSingleton<VProcessActor>, IVProcessSingletonUpdate, IVProcessSingletonAwake
+    public class VProcessActor: VProcessSingleton<VProcessActor>, IVProcessSingletonAwake
     {
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
 
@@ -10,14 +10,21 @@ namespace ET
 
         private int rpcId;
         
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            
+            base.Dispose();
+            
+            WorldActor.Instance.RemoveActor(this.VProcess.Id);
+        }
+
         public void Awake()
         {
             WorldActor.Instance.AddActor(this.VProcess.Id);
-        }
-
-        public override void Dispose()
-        {
-            WorldActor.Instance.RemoveActor(this.VProcess.Id);
         }
 
         public void Update()

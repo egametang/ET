@@ -19,7 +19,7 @@ namespace ET.Server
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
-    [ComponentOf(typeof(RootEntity))]
+    [ComponentOf(typeof(Scene))]
     public class ActorMessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
     {
         [ThreadStatic]

@@ -4,7 +4,7 @@
     {
         public static void Init(VProcess vProcess)
         {
-            vProcess.AddSingleton<RootEntity>();
+            vProcess.AddSingleton<Root>();
         }
     }
 }

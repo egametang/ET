@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(RootEntity))]
+    [ComponentOf(typeof(Scene))]
     public class WatcherComponent: Entity, IAwake, IDestroy
     {
         public static WatcherComponent Instance { get; set; }

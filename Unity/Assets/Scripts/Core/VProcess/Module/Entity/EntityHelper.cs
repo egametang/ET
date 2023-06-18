@@ -12,7 +12,7 @@ namespace ET
             return entity.IScene as Scene;
         }
         
-        public static RootEntity Root(this Entity entity)
+        public static IScene Root(this Entity entity)
         {
             return entity.IScene.Root;
         }

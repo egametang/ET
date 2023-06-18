@@ -8,9 +8,8 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent3 args)
         {
-            RootEntity root = scene.Root();
             // 加载配置
-            root.AddComponent<ResourcesComponent>();
+            scene.AddComponent<ResourcesComponent>();
 
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
 

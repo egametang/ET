@@ -23,7 +23,7 @@ namespace ET
 				
 				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 				Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
-				EventSystem.Instance.Add(types);
+				World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
 				foreach (Assembly ass in assemblies)
 				{
 					string name = ass.GetName().Name;
@@ -89,8 +89,8 @@ namespace ET
 			
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
 			
-			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
-			EventSystem.Instance.Add(types);
+			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
+			World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
 		}
 	}
 }

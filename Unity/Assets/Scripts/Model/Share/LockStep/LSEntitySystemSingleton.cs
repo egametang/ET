@@ -11,18 +11,13 @@ namespace ET
         public const int Max = 1;
     }
     
-    public class LSEntitySystemSington: VProcessSingleton<LSEntitySystemSington>, ISingletonAwake, IVProcessSingletonLoad
+    public class LSEntitySystemSingleton: Singleton<LSEntitySystemSingleton>, ISingletonAwake
     {
-        private TypeSystems typeSystems;
+        public TypeSystems TypeSystems { get; private set; }
         
         public void Awake()
         {
-            this.Load();
-        }
-        
-        public void Load()
-        {
-            this.typeSystems = new(LSQueneUpdateIndex.Max);
+            this.TypeSystems = new(LSQueneUpdateIndex.Max);
             foreach (Type type in EventSystem.Instance.GetTypes(typeof (LSEntitySystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
@@ -32,7 +27,7 @@ namespace ET
                     continue;
                 }
 
-                TypeSystems.OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+                TypeSystems.OneTypeSystems oneTypeSystems = this.TypeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                 oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
                 int index = iSystemType.GetInstanceQueueIndex();
                 if (index > LSQueneUpdateIndex.None && index < LSQueneUpdateIndex.Max)
@@ -44,7 +39,7 @@ namespace ET
         
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)
         {
-            return this.typeSystems.GetOneTypeSystems(type);
+            return this.TypeSystems.GetOneTypeSystems(type);
         }
         
         public void LSRollback(Entity entity)
@@ -54,7 +49,7 @@ namespace ET
                 return;
             }
             
-            List<object> iLSRollbackSystems = this.typeSystems.GetSystems(entity.GetType(), typeof (ILSRollbackSystem));
+            List<object> iLSRollbackSystems = this.TypeSystems.GetSystems(entity.GetType(), typeof (ILSRollbackSystem));
             if (iLSRollbackSystems == null)
             {
                 return;
@@ -85,7 +80,7 @@ namespace ET
                 return;
             }
             
-            List<object> iLSUpdateSystems = typeSystems.GetSystems(entity.GetType(), typeof (ILSUpdateSystem));
+            List<object> iLSUpdateSystems = TypeSystems.GetSystems(entity.GetType(), typeof (ILSUpdateSystem));
             if (iLSUpdateSystems == null)
             {
                 return;

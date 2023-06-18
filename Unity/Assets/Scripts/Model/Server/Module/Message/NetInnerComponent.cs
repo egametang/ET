@@ -23,7 +23,7 @@ namespace ET.Server
         public object Message;
     }
     
-    [ComponentOf(typeof(RootEntity))]
+    [ComponentOf(typeof(Scene))]
     public class NetInnerComponent: Entity, IAwake<IPEndPoint>, IAwake, IDestroy
     {
         public int ServiceId;
