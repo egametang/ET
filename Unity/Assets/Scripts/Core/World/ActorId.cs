@@ -24,13 +24,13 @@ namespace ET
         }
 
         [MemoryPackOrder(0)]
-        public short Process;
+        public int Process;
         [MemoryPackOrder(1)]
         public int VProcess;
         [MemoryPackOrder(2)]
         public long InstanceId;
         
-        public ActorId(short process, int vProcess, long instanceId)
+        public ActorId(int process, int vProcess, long instanceId)
         {
             this.Process = process;
             this.VProcess = vProcess;
@@ -45,6 +45,11 @@ namespace ET
         public static bool operator !=(ActorId left, ActorId right)
         {
             return !(left == right);
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Process}:{this.VProcess}:{this.InstanceId}";
         }
     }
 }

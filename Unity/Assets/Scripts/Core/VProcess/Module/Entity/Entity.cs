@@ -15,14 +15,7 @@ namespace ET
         IsNew = 1 << 4,
     }
 
-    public interface IScene
-    {
-        IScene Root { get; set; }
-        VProcess VProcess { get; set; }
-        SceneType SceneType { get; set; }
-    }
-
-    public partial class Entity: DisposeObject
+    public partial class Entity: DisposeObject, IPool
     {
 #if ENABLE_VIEW && UNITY_EDITOR
         private UnityEngine.GameObject viewGO;
@@ -44,7 +37,7 @@ namespace ET
         private EntityStatus status = EntityStatus.None;
 
         [BsonIgnore]
-        private bool IsFromPool
+        public bool IsFromPool
         {
             get => (this.status & EntityStatus.IsFromPool) == EntityStatus.IsFromPool;
             set

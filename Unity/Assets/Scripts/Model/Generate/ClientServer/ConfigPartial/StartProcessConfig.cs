@@ -6,8 +6,6 @@ namespace ET
     {
         private IPEndPoint innerIPPort;
 
-        public ActorId ActorId;
-
         public IPEndPoint InnerIPPort
         {
             get
@@ -29,8 +27,6 @@ namespace ET
 
         public override void EndInit()
         {
-            this.ActorId = new ActorId((short)this.Id, 0, 0);
-            Log.Info($"StartProcess info: {this.MachineId} {this.Id} {this.ActorId}");
         }
     }
 }

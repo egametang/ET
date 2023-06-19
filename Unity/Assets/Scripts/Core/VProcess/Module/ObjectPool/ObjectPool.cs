@@ -17,22 +17,51 @@ namespace ET
             lock (this)
             {
                 Queue<object> queue = null;
+                object o;
                 if (!pool.TryGetValue(type, out queue))
                 {
-                    return Activator.CreateInstance(type);
+                    o = Activator.CreateInstance(type);
                 }
-
-                if (queue.Count == 0)
+                else if (queue.Count == 0)
                 {
-                    return Activator.CreateInstance(type);
+                    o = Activator.CreateInstance(type);
                 }
-                return queue.Dequeue();
+                else
+                {
+                    o = queue.Dequeue();    
+                }
+                
+                if (o is IPool iPool)
+                {
+                    iPool.IsFromPool = true;
+                }
+                return o;
             }
         }
 
         public void Recycle(object obj)
         {
             Type type = obj.GetType();
+
+            if (obj is IPool p)
+            {
+                if (!p.IsFromPool)
+                {
+                    return;
+                }
+
+                p.Dispose();
+
+                RecycleInner(type, obj);
+            }
+            else
+            {
+                RecycleInner(type, obj);
+            }
+        }
+
+        private void RecycleInner(Type type, object obj)
+        {
             lock (this)
             {
                 Queue<object> queue = null;

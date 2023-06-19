@@ -23,7 +23,7 @@ namespace ET
             }
             
             // 回收上一个消息跟MemoryBuffer
-            NetServices.Instance.RecycleMessage(this.lastMessageInfo.Message);
+            ObjectPool.Instance.Recycle(this.lastMessageInfo.Message);
             NetServices.Instance.RecycleMemoryBuffer(this.lastMessageInfo.MemoryStream);
 
             MemoryBuffer stream = NetServices.Instance.FetchMemoryBuffer();

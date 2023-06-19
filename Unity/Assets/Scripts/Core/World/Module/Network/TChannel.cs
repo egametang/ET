@@ -375,9 +375,9 @@ namespace ET
 					case ServiceType.Inner:
 					{
 						byte[] buffer = memoryStream.GetBuffer();
-						actorId.Process = BitConverter.ToInt16(buffer, Packet.ActorIdIndex);
-						actorId.VProcess = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 2);
-						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 6);
+						actorId.Process = BitConverter.ToInt32(buffer, Packet.ActorIdIndex);
+						actorId.VProcess = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 4);
+						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 8);
 						ushort opcode = BitConverter.ToUInt16(buffer, Packet.OpcodeIndex);
 						Type type = NetServices.Instance.GetType(opcode);
 						message = MessageSerializeHelper.Deserialize(type, memoryStream);

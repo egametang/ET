@@ -19,7 +19,7 @@ namespace ET
         
         public static VProcess VProcess(this Entity entity)
         {
-            return entity.Root().VProcess;
+            return entity.IScene.VProcess;
         }
     }
 }

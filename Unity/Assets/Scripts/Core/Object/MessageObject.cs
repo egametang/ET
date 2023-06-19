@@ -6,11 +6,11 @@ namespace ET
 {
     public abstract class MessageObject: ProtoObject, IDisposable
     {
-        [BsonIgnore]
-        public bool IsFromPool;
-
         public virtual void Dispose()
         {
         }
+
+        [BsonIgnore]
+        public bool IsFromPool { get; set; }
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class CoroutineLock: IDisposable
+    public class CoroutineLock: IPool
     {
         private int type;
         private long key;
@@ -27,5 +27,7 @@ namespace ET
             
             ObjectPool.Instance.Recycle(this);
         }
+
+        public bool IsFromPool { get; set; }
     }
 }

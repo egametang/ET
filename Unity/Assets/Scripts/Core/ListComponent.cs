@@ -5,6 +5,10 @@ namespace ET
 {
     public class ListComponent<T>: List<T>, IDisposable
     {
+        private ListComponent()
+        {
+        }
+        
         public static ListComponent<T> Create()
         {
             return ObjectPool.Instance.Fetch(typeof (ListComponent<T>)) as ListComponent<T>;

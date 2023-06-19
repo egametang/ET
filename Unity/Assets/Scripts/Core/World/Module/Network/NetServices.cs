@@ -1,11 +1,7 @@
-﻿//#undef SINGLE_THREAD
-
-using System;
-using System.Collections.Concurrent;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
 
 
@@ -18,36 +14,8 @@ namespace ET
         Websocket,
     }
 
-    public enum NetOp: byte
-    {
-        AddService = 1,
-        RemoveService = 2,
-        OnAccept = 3,
-        OnRead = 4,
-        OnError = 5,
-        CreateChannel = 6,
-        RemoveChannel = 7,
-        SendMessage = 9,
-        GetChannelConn = 10,
-        ChangeAddress = 11,
-    }
-
-    public struct NetOperator
-    {
-        public NetOp Op; // 操作码
-        public int ServiceId;
-        public long ChannelId;
-        public ActorId ActorId;
-        public object Object; // 参数
-    }
-
     public class NetServices: VProcessSingleton<NetServices>, IVProcessSingletonUpdate
     {
-#if !SINGLE_THREAD
-        private readonly ConcurrentQueue<NetOperator> netThreadOperators = new ConcurrentQueue<NetOperator>();
-        private readonly ConcurrentQueue<NetOperator> mainThreadOperators = new ConcurrentQueue<NetOperator>();
-#endif
-
         public NetServices()
         {
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
@@ -67,25 +35,7 @@ namespace ET
 
                 this.typeOpcode.Add(type, messageAttribute.Opcode);
             }
-
-#if !SINGLE_THREAD
-            // 网络线程
-            this.thread = new System.Threading.Thread(this.NetThreadUpdate);
-            this.thread.Start();
-#endif
         }
-
-        public void Destroy()
-        {
-#if !SINGLE_THREAD
-            this.isStop = true;
-            this.thread.Join(1000);
-#endif
-        }
-
-        #region 线程安全
-
-        private readonly MessagePool messagePool = new();
 
         // 初始化后不变，所以主线程，网络线程都可以读
         private readonly DoubleMap<Type, ushort> typeOpcode = new();
@@ -100,105 +50,71 @@ namespace ET
             return this.typeOpcode.GetKeyByValue(opcode);
         }
 
-        public MessageObject FetchMessage(Type type)
-        {
-            return this.messagePool.Fetch(type);
-        }
-        
-        public T FetchMessage<T>() where T: MessageObject
-        {
-            return this.messagePool.Fetch<T>();
-        }
-
-        public void RecycleMessage(MessageObject obj)
-        {
-            if (obj == null)
-            {
-                return;
-            }
-            this.messagePool.Recycle(obj);
-        }
-
-        #endregion
-
-        #region 主线程
-
         private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new();
         private readonly Dictionary<int, Action<long, ActorId, object>> readCallback = new();
         private readonly Dictionary<int, Action<long, int>> errorCallback = new();
 
         private int serviceIdGenerator;
 
-        public async Task<(uint, uint)> GetChannelConn(int serviceId, long channelId)
+        public (uint, uint) GetChannelConn(int serviceId, long channelId)
         {
-            TaskCompletionSource<(uint, uint)> tcs = new TaskCompletionSource<(uint, uint)>();
-            NetOperator netOperator = new NetOperator() { Op = NetOp.GetChannelConn, ServiceId = serviceId, ChannelId = channelId, Object = tcs };
-            ToNetThread(ref netOperator);
-            return await tcs.Task;
-        }
+            AService service = this.Get(serviceId);
+            if (service == null)
+            {
+                return (0, 0);
+            }
 
-        private void ToNetThread(ref NetOperator netOperator)
-        {
-#if !SINGLE_THREAD
-            this.netThreadOperators.Enqueue(netOperator);
-#else
-            NetThreadExecute(ref netOperator);
-#endif
-        }
-
-        private void ToMainThread(ref NetOperator netOperator)
-        {
-#if !SINGLE_THREAD
-            this.mainThreadOperators.Enqueue(netOperator);
-#else
-            MainThreadExecute(ref netOperator);
-#endif
+            return service.GetChannelConn(channelId);
         }
 
         public void ChangeAddress(int serviceId, long channelId, IPEndPoint ipEndPoint)
         {
-            NetOperator netOperator =
-                    new NetOperator() { Op = NetOp.ChangeAddress, ServiceId = serviceId, ChannelId = channelId, Object = ipEndPoint };
-            ToNetThread(ref netOperator);
+            AService service = this.Get(serviceId);
+            if (service == null)
+            {
+                return;
+            }
+
+            service.ChangeAddress(channelId, ipEndPoint);
         }
 
         public void SendMessage(int serviceId, long channelId, ActorId actorId, MessageObject message)
         {
-            NetOperator netOperator = new NetOperator()
+            AService service = this.Get(serviceId);
+            if (service != null)
             {
-                Op = NetOp.SendMessage,
-                ServiceId = serviceId,
-                ChannelId = channelId,
-                ActorId = actorId,
-                Object = message
-            };
-            ToNetThread(ref netOperator);
+                service.Send(channelId, actorId, message);
+            }
         }
 
         public int AddService(AService aService)
         {
             aService.Id = ++this.serviceIdGenerator;
-            NetOperator netOperator = new() { Op = NetOp.AddService, ServiceId = aService.Id, ChannelId = 0, Object = aService };
-            ToNetThread(ref netOperator);
+            this.Add(aService);
             return aService.Id;
         }
 
         public void RemoveService(int serviceId)
         {
-            NetOperator netOperator = new() { Op = NetOp.RemoveService, ServiceId = serviceId };
-            ToNetThread(ref netOperator);
+            this.Remove(serviceId);
         }
 
         public void RemoveChannel(int serviceId, long channelId, int error)
         {
-            NetOperator netOperator = new() { Op = NetOp.RemoveChannel, ServiceId = serviceId, ChannelId = channelId, ActorId = new ActorId(0, error, 0) };
-            ToNetThread(ref netOperator);
+            AService service = this.Get(serviceId);
+            if (service != null)
+            {
+                service.Remove(channelId, error);
+            }
         }
 
         public void CreateChannel(int serviceId, long channelId, IPEndPoint address)
         {
-            NetOperator netOperator = new() { Op = NetOp.CreateChannel, ServiceId = serviceId, ChannelId = channelId, Object = address };
-            ToNetThread(ref netOperator);
+            AService service = this.Get(serviceId);
+            if (service != null)
+            {
+                service.Create(channelId, address);
+            }
         }
 
         public void RegisterAcceptCallback(int serviceId, Action<long, IPEndPoint> action)
@@ -216,70 +132,6 @@ namespace ET
             this.errorCallback.Add(serviceId, action);
         }
 
-        private void MainThreadExecute(ref NetOperator op)
-        {
-            try
-            {
-                switch (op.Op)
-                {
-                    case NetOp.OnAccept:
-                    {
-                        if (!this.acceptCallback.TryGetValue(op.ServiceId, out var action))
-                        {
-                            return;
-                        }
-
-                        action.Invoke(op.ChannelId, op.Object as IPEndPoint);
-                        break;
-                    }
-                    case NetOp.OnRead:
-                    {
-                        if (!this.readCallback.TryGetValue(op.ServiceId, out var action))
-                        {
-                            return;
-                        }
-
-                        action.Invoke(op.ChannelId, op.ActorId, op.Object);
-                        break;
-                    }
-                    case NetOp.OnError:
-                    {
-                        if (!this.errorCallback.TryGetValue(op.ServiceId, out Action<long, int> action))
-                        {
-                            return;
-                        }
-
-                        action.Invoke(op.ChannelId, op.ActorId.VProcess);
-                        break;
-                    }
-                    default:
-                        throw new Exception($"not found net operator: {op.Op}");
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
-
-        private void UpdateInMainThread()
-        {
-#if !SINGLE_THREAD
-            while (true)
-            {
-                if (!this.mainThreadOperators.TryDequeue(out NetOperator op))
-                {
-                    return;
-                }
-
-                MainThreadExecute(ref op);
-            }
-#endif
-        }
-
-        #endregion
-
-        #region 网络线程
 
         private readonly Dictionary<int, AService> services = new();
         private readonly Queue<int> queue = new();
@@ -344,128 +196,7 @@ namespace ET
             }
         }
 
-#if !SINGLE_THREAD
-
-        private bool isStop;
-        private readonly System.Threading.Thread thread;
-
-        // 网络线程Update
-        private void NetThreadUpdate()
-        {
-            while (!this.isStop)
-            {
-                this.UpdateInNetThread();
-                System.Threading.Thread.Sleep(1);
-            }
-
-            // 停止的时候再执行一帧，把队列中的消息处理完成
-            this.UpdateInNetThread();
-        }
-#endif
-
-        private void NetThreadExecute(ref NetOperator op)
-        {
-            try
-            {
-                switch (op.Op)
-                {
-                    case NetOp.AddService:
-                    {
-                        this.Add(op.Object as AService);
-                        break;
-                    }
-                    case NetOp.RemoveService:
-                    {
-                        this.Remove(op.ServiceId);
-                        break;
-                    }
-                    case NetOp.CreateChannel:
-                    {
-                        AService service = this.Get(op.ServiceId);
-                        if (service != null)
-                        {
-                            service.Create(op.ChannelId, op.Object as IPEndPoint);
-                        }
-
-                        break;
-                    }
-                    case NetOp.RemoveChannel:
-                    {
-                        AService service = this.Get(op.ServiceId);
-                        if (service != null)
-                        {
-                            service.Remove(op.ChannelId, op.ActorId.Process);
-                        }
-
-                        break;
-                    }
-                    case NetOp.SendMessage:
-                    {
-                        AService service = this.Get(op.ServiceId);
-                        if (service != null)
-                        {
-                            service.Send(op.ChannelId, op.ActorId, op.Object as MessageObject);
-                        }
-
-                        break;
-                    }
-                    case NetOp.GetChannelConn:
-                    {
-                        var tcs = op.Object as TaskCompletionSource<ValueTuple<uint, uint>>;
-                        try
-                        {
-                            AService service = this.Get(op.ServiceId);
-                            if (service == null)
-                            {
-                                break;
-                            }
-
-                            tcs.SetResult(service.GetChannelConn(op.ChannelId));
-                        }
-                        catch (Exception e)
-                        {
-                            tcs.SetException(e);
-                        }
-
-                        break;
-                    }
-                    case NetOp.ChangeAddress:
-                    {
-                        AService service = this.Get(op.ServiceId);
-                        if (service == null)
-                        {
-                            break;
-                        }
-
-                        service.ChangeAddress(op.ChannelId, op.Object as IPEndPoint);
-                        break;
-                    }
-                    default:
-                        throw new Exception($"not found net operator: {op.Op}");
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
-
-        private void RunNetThreadOperator()
-        {
-#if !SINGLE_THREAD
-            while (true)
-            {
-                if (!this.netThreadOperators.TryDequeue(out NetOperator op))
-                {
-                    return;
-                }
-                
-                NetThreadExecute(ref op);
-            }
-#endif
-        }
-
-        private void UpdateInNetThread()
+        public void Update()
         {
             int count = this.queue.Count;
             while (count-- > 0)
@@ -479,38 +210,36 @@ namespace ET
                 this.queue.Enqueue(serviceId);
                 service.Update();
             }
-
-            this.RunNetThreadOperator();
         }
 
         public void OnAccept(int serviceId, long channelId, IPEndPoint ipEndPoint)
         {
-            NetOperator netOperator = new() { Op = NetOp.OnAccept, ServiceId = serviceId, ChannelId = channelId, Object = ipEndPoint };
-            ToMainThread(ref netOperator);
+            if (!this.acceptCallback.TryGetValue(serviceId, out var action))
+            {
+                return;
+            }
+
+            action.Invoke(channelId, ipEndPoint);
         }
 
         public void OnRead(int serviceId, long channelId, ActorId actorId, object message)
         {
-            NetOperator netOperator = new()
+            if (!this.readCallback.TryGetValue(serviceId, out var action))
             {
-                Op = NetOp.OnRead,
-                ServiceId = serviceId,
-                ChannelId = channelId,
-                ActorId = actorId,
-                Object = message
-            };
-            ToMainThread(ref netOperator);
+                return;
+            }
+
+            action.Invoke(channelId, actorId, message);
         }
 
         public void OnError(int serviceId, long channelId, int error)
         {
-            NetOperator netOperator = new() { Op = NetOp.OnError, ServiceId = serviceId, ChannelId = channelId, ActorId = new ActorId(0, error, 0) };
-            ToMainThread(ref netOperator);
+            if (!this.errorCallback.TryGetValue(serviceId, out Action<long, int> action))
+            {
+                return;
+            }
+            action.Invoke(channelId, error);
         }
-
-        #endregion
-
-        #region 主线程kcp id生成
 
         // 这个因为是NetClientComponent中使用，不会与Accept冲突
         public uint CreateConnectChannelId()
@@ -518,26 +247,12 @@ namespace ET
             return RandomGenerator.RandUInt32();
         }
 
-        #endregion
-
-        #region 网络线程kcp id生成
-
         // 防止与内网进程号的ChannelId冲突，所以设置为一个大的随机数
         private uint acceptIdGenerator = uint.MaxValue;
 
         public uint CreateAcceptChannelId()
         {
             return --this.acceptIdGenerator;
-        }
-
-        #endregion
-
-        public void Update()
-        {
-#if SINGLE_THREAD
-            UpdateInNetThread();
-#endif
-            UpdateInMainThread();
         }
     }
 }

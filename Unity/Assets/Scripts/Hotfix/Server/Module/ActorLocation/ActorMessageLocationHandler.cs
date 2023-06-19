@@ -62,7 +62,7 @@ namespace ET.Server
                 }
 
                 int rpcId = request.RpcId;
-                Response response = NetServices.Instance.FetchMessage<Response>();
+                Response response = ObjectPool.Instance.Fetch<Response>();
                 
                 try
                 {
