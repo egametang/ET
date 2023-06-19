@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ET
 {
-    public class Logger: Singleton<Logger>
+    public class Logger: Singleton<Logger>, ISingletonAwake
     {
         private ILog iLog;
 
@@ -19,6 +19,10 @@ namespace ET
         private const int DebugLevel = 2;
         private const int InfoLevel = 3;
         private const int WarningLevel = 4;
+        
+        public void Awake()
+        {
+        }
 
         private bool CheckLogLevel(int level)
         {

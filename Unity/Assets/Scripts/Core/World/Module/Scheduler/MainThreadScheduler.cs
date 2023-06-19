@@ -4,7 +4,7 @@ namespace ET
 {
     public partial class VProcessManager: Singleton<VProcessManager>
     {
-        public class MainThreadScheduler: Singleton<MainThreadScheduler>, IScheduler
+        public class MainThreadScheduler: Singleton<MainThreadScheduler>, IScheduler, ISingletonAwake
         {
             private readonly Queue<int> idQueue = new();
             private readonly Queue<int> addIds = new();

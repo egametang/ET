@@ -8,7 +8,7 @@ namespace ET
 	/// <summary>
     /// Config组件会扫描所有的有ConfigAttribute标签的配置,加载进来
     /// </summary>
-    public class ConfigComponent: Singleton<ConfigComponent>
+    public class ConfigComponent: Singleton<ConfigComponent>, ISingletonAwake
     {
         public struct GetAllConfigBytes
         {
@@ -20,6 +20,10 @@ namespace ET
         }
 		
         private readonly ConcurrentDictionary<Type, ISingleton> allConfig = new();
+        
+        public void Awake()
+        {
+        }
 
 		public void ReloadOneConfig(string configName)
 		{
@@ -40,7 +44,6 @@ namespace ET
 			this.allConfig.Remove(configType, out _);
 		}
 		
-		// 程序开始的时候调用，不加锁
 		public void Load()
 		{
 			this.allConfig.Clear();
@@ -53,7 +56,6 @@ namespace ET
 			}
 		}
 		
-		// 程序开始的时候调用，不加锁
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();

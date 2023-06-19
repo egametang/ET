@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class IdValueGenerater: Singleton<IdValueGenerater>
+    public class IdValueGenerater: Singleton<IdValueGenerater>, ISingletonAwake
     {
         private uint value;
 
@@ -17,6 +17,11 @@
                     return this.value;
                 }
             }
+        }
+
+        public void Awake()
+        {
+            
         }
     }
 }

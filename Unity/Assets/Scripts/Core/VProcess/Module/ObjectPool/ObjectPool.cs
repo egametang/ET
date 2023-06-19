@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ObjectPool: Singleton<ObjectPool>
+    public class ObjectPool: Singleton<ObjectPool>, ISingletonAwake
     {
         private readonly Dictionary<Type, Queue<object>> pool = new();
+        
+        public void Awake()
+        {
+        }
         
         public T Fetch<T>() where T: class
         {

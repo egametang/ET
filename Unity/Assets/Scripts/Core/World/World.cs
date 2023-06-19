@@ -15,69 +15,44 @@ namespace ET
 
         private readonly ConcurrentDictionary<Type, ISingleton> singletons = new();
 
-        public T AddSingleton<T>() where T : Singleton<T>, new()
+        public T AddSingleton<T>() where T : Singleton<T>, ISingletonAwake, new()
         {
-            ISingleton singleton = new T();
-            
-            if (singleton is ISingletonAwake awake)
-            {
-                awake.Awake();
-            }
+            T singleton = new();
+            singleton.Awake();
 
-            singletons[singleton.GetType()] = singleton;
-            singleton.Register();
-            return (T)singleton;
+            AddSingleton(singleton);
+            return singleton;
         }
         
-        public T AddSingleton<T, A>(A a) where T : Singleton<T>, new()
+        public T AddSingleton<T, A>(A a) where T : Singleton<T>, ISingletonAwake<A>, new()
         {
-            ISingleton singleton = new T();
-            
-            if (singleton is ISingletonAwake<A> awake)
-            {
-                awake.Awake(a);
-            }
+            T singleton = new();
+            singleton.Awake(a);
 
-            singletons[singleton.GetType()] = singleton;
-            singleton.Register();
-            return (T)singleton;
+            AddSingleton(singleton);
+            return singleton;
         }
         
-        public T AddSingleton<T, A, B>(A a, B b) where T : Singleton<T>, new()
+        public T AddSingleton<T, A, B>(A a, B b) where T : Singleton<T>, ISingletonAwake<A, B>, new()
         {
-            ISingleton singleton = new T();
-            
-            if (singleton is ISingletonAwake<A, B> awake)
-            {
-                awake.Awake(a, b);
-            }
+            T singleton = new();
+            singleton.Awake(a, b);
 
-            singletons[singleton.GetType()] = singleton;
-            singleton.Register();
-            return (T)singleton;
+            AddSingleton(singleton);
+            return singleton;
         }
         
-        public T AddSingleton<T, A, B, C>(A a, B b, C c) where T : Singleton<T>, new()
+        public T AddSingleton<T, A, B, C>(A a, B b, C c) where T : Singleton<T>, ISingletonAwake<A, B, C>, new()
         {
-            ISingleton singleton = new T();
-            
-            if (singleton is ISingletonAwake<A, B, C> awake)
-            {
-                awake.Awake(a, b, c);
-            }
+            T singleton = new();
+            singleton.Awake(a, b, c);
 
-            singletons[singleton.GetType()] = singleton;
-            singleton.Register();
-            return (T)singleton;
+            AddSingleton(singleton);
+            return singleton;
         }
 
         public void AddSingleton(ISingleton singleton)
         {
-            if (singleton is ISingletonAwake awake)
-            {
-                awake.Awake();
-            }
-            
             singletons[singleton.GetType()] = singleton;
             singleton.Register();
         }

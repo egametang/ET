@@ -7,9 +7,13 @@ using UnityEngine;
 
 namespace ET
 {
-	public class CodeLoader: Singleton<CodeLoader>
+	public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
 	{
 		private Assembly assembly;
+		
+		public void Awake()
+		{
+		}
 
 		public void Start()
 		{

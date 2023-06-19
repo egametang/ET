@@ -36,7 +36,7 @@ namespace ET
 			mainThreadScheduler.Add(vProcessId);
 			
 			// 发送消息
-			WorldActor.Instance.Send(new ActorId(Options.Instance.Process, vProcessId, 0), null);
+			WorldActor.Instance.Send(new ActorId(Options.Instance.Process, vProcessId, 1), null);
 		}
 
 		private void Update()
