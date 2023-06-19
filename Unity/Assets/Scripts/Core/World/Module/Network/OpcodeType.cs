@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using MongoDB.Driver.Core.Events;
 
 namespace ET
 {
-    [FriendOf(typeof (OpcodeTypeComponent))]
-    public static partial class OpcodeTypeComponentSystem
+    public class OpcodeType: Singleton<OpcodeType>, ISingletonAwake
     {
-        [EntitySystem]
-        private static void Destroy(this OpcodeTypeComponent self)
-        {
-            OpcodeTypeComponent.Instance = null;
-        }
+        // 初始化后不变，所以主线程，网络线程都可以读
+        private readonly DoubleMap<Type, ushort> typeOpcode = new();
         
-        [EntitySystem]
-        private static void Awake(this OpcodeTypeComponent self)
-        {
-            OpcodeTypeComponent.Instance = self;
-            
-            self.requestResponse.Clear();
+        private readonly HashSet<ushort> outrActorMessage = new HashSet<ushort>();
 
+        private readonly Dictionary<Type, Type> requestResponse = new Dictionary<Type, Type>();
+        
+        public void Awake()
+        {
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
             foreach (Type type in types)
             {
@@ -36,10 +30,12 @@ namespace ET
                 }
 
                 ushort opcode = messageAttribute.Opcode;
+                
+                this.typeOpcode.Add(type, opcode);
 
                 if (OpcodeHelper.IsOuterMessage(opcode) && typeof (IActorMessage).IsAssignableFrom(type))
                 {
-                    self.outrActorMessage.Add(opcode);
+                    this.outrActorMessage.Add(opcode);
                 }
 
                 // 检查request response
@@ -47,7 +43,7 @@ namespace ET
                 {
                     if (typeof (IActorLocationMessage).IsAssignableFrom(type))
                     {
-                        self.requestResponse.Add(type, typeof (ActorResponse));
+                        this.requestResponse.Add(type, typeof (ActorResponse));
                         continue;
                     }
 
@@ -59,36 +55,34 @@ namespace ET
                     }
 
                     ResponseTypeAttribute responseTypeAttribute = attrs[0] as ResponseTypeAttribute;
-                    self.requestResponse.Add(type, EventSystem.Instance.GetType($"ET.{responseTypeAttribute.Type}"));
+                    this.requestResponse.Add(type, EventSystem.Instance.GetType($"ET.{responseTypeAttribute.Type}"));
                 }
             }
         }
-
-        public static bool IsOutrActorMessage(this OpcodeTypeComponent self, ushort opcode)
+        
+        public ushort GetOpcode(Type type)
         {
-            return self.outrActorMessage.Contains(opcode);
+            return this.typeOpcode.GetValueByKey(type);
         }
 
-        public static Type GetResponseType(this OpcodeTypeComponent self, Type request)
+        public Type GetType(ushort opcode)
         {
-            if (!self.requestResponse.TryGetValue(request, out Type response))
+            return this.typeOpcode.GetKeyByValue(opcode);
+        }
+
+        public bool IsOutrActorMessage(ushort opcode)
+        {
+            return this.outrActorMessage.Contains(opcode);
+        }
+
+        public Type GetResponseType(Type request)
+        {
+            if (!this.requestResponse.TryGetValue(request, out Type response))
             {
-                throw new Exception($"not found response type, request type: {request.GetType().FullName}");
+                throw new Exception($"not found response type, request type: {request.FullName}");
             }
 
             return response;
         }
-    }
-
-    [ComponentOf(typeof (Scene))]
-    public class OpcodeTypeComponent: Entity, IAwake, IDestroy
-    {
-        [ThreadStatic]
-        [StaticField]
-        public static OpcodeTypeComponent Instance;
-
-        public HashSet<ushort> outrActorMessage = new HashSet<ushort>();
-
-        public readonly Dictionary<Type, Type> requestResponse = new Dictionary<Type, Type>();
     }
 }

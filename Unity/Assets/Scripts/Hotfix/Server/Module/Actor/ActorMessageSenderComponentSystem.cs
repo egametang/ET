@@ -97,7 +97,7 @@ namespace ET.Server
             
             
             // 这里做了优化，如果发向同一个进程，则等一帧直接处理，不需要通过网络层
-            if (actorId.Process == Options.Instance.Process)
+            if (actorId.Process == VProcess.Instance.Process)
             {
                 async ETTask HandleMessageInNextFrame()
                 {

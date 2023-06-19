@@ -7,9 +7,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class HttpGetRouterResponse: MessageObject
 	{
-		public static HttpGetRouterResponse Create(bool isFromPool = false) { return !isFromPool? new HttpGetRouterResponse() : NetServices.Instance.FetchMessage(typeof(HttpGetRouterResponse)) as HttpGetRouterResponse; }
+		public static HttpGetRouterResponse Create(bool isFromPool = false) { return !isFromPool? new HttpGetRouterResponse() : ObjectPool.Instance.Fetch(typeof(HttpGetRouterResponse)) as HttpGetRouterResponse; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public List<string> Realms { get; set; }
@@ -23,9 +23,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class RouterSync: MessageObject
 	{
-		public static RouterSync Create(bool isFromPool = false) { return !isFromPool? new RouterSync() : NetServices.Instance.FetchMessage(typeof(RouterSync)) as RouterSync; }
+		public static RouterSync Create(bool isFromPool = false) { return !isFromPool? new RouterSync() : ObjectPool.Instance.Fetch(typeof(RouterSync)) as RouterSync; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public uint ConnectId { get; set; }
@@ -40,9 +40,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_TestRequest: MessageObject, IActorLocationRequest
 	{
-		public static C2M_TestRequest Create(bool isFromPool = false) { return !isFromPool? new C2M_TestRequest() : NetServices.Instance.FetchMessage(typeof(C2M_TestRequest)) as C2M_TestRequest; }
+		public static C2M_TestRequest Create(bool isFromPool = false) { return !isFromPool? new C2M_TestRequest() : ObjectPool.Instance.Fetch(typeof(C2M_TestRequest)) as C2M_TestRequest; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -56,9 +56,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_TestResponse: MessageObject, IActorResponse
 	{
-		public static M2C_TestResponse Create(bool isFromPool = false) { return !isFromPool? new M2C_TestResponse() : NetServices.Instance.FetchMessage(typeof(M2C_TestResponse)) as M2C_TestResponse; }
+		public static M2C_TestResponse Create(bool isFromPool = false) { return !isFromPool? new M2C_TestResponse() : ObjectPool.Instance.Fetch(typeof(M2C_TestResponse)) as M2C_TestResponse; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -79,9 +79,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class Actor_TransferRequest: MessageObject, IActorLocationRequest
 	{
-		public static Actor_TransferRequest Create(bool isFromPool = false) { return !isFromPool? new Actor_TransferRequest() : NetServices.Instance.FetchMessage(typeof(Actor_TransferRequest)) as Actor_TransferRequest; }
+		public static Actor_TransferRequest Create(bool isFromPool = false) { return !isFromPool? new Actor_TransferRequest() : ObjectPool.Instance.Fetch(typeof(Actor_TransferRequest)) as Actor_TransferRequest; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -95,9 +95,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class Actor_TransferResponse: MessageObject, IActorLocationResponse
 	{
-		public static Actor_TransferResponse Create(bool isFromPool = false) { return !isFromPool? new Actor_TransferResponse() : NetServices.Instance.FetchMessage(typeof(Actor_TransferResponse)) as Actor_TransferResponse; }
+		public static Actor_TransferResponse Create(bool isFromPool = false) { return !isFromPool? new Actor_TransferResponse() : ObjectPool.Instance.Fetch(typeof(Actor_TransferResponse)) as Actor_TransferResponse; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -115,9 +115,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2G_EnterMap: MessageObject, IRequest
 	{
-		public static C2G_EnterMap Create(bool isFromPool = false) { return !isFromPool? new C2G_EnterMap() : NetServices.Instance.FetchMessage(typeof(C2G_EnterMap)) as C2G_EnterMap; }
+		public static C2G_EnterMap Create(bool isFromPool = false) { return !isFromPool? new C2G_EnterMap() : ObjectPool.Instance.Fetch(typeof(C2G_EnterMap)) as C2G_EnterMap; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -128,9 +128,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2C_EnterMap: MessageObject, IResponse
 	{
-		public static G2C_EnterMap Create(bool isFromPool = false) { return !isFromPool? new G2C_EnterMap() : NetServices.Instance.FetchMessage(typeof(G2C_EnterMap)) as G2C_EnterMap; }
+		public static G2C_EnterMap Create(bool isFromPool = false) { return !isFromPool? new G2C_EnterMap() : ObjectPool.Instance.Fetch(typeof(G2C_EnterMap)) as G2C_EnterMap; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -151,9 +151,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class MoveInfo: MessageObject
 	{
-		public static MoveInfo Create(bool isFromPool = false) { return !isFromPool? new MoveInfo() : NetServices.Instance.FetchMessage(typeof(MoveInfo)) as MoveInfo; }
+		public static MoveInfo Create(bool isFromPool = false) { return !isFromPool? new MoveInfo() : ObjectPool.Instance.Fetch(typeof(MoveInfo)) as MoveInfo; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public List<Unity.Mathematics.float3> Points { get; set; }
@@ -170,9 +170,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class UnitInfo: MessageObject
 	{
-		public static UnitInfo Create(bool isFromPool = false) { return !isFromPool? new UnitInfo() : NetServices.Instance.FetchMessage(typeof(UnitInfo)) as UnitInfo; }
+		public static UnitInfo Create(bool isFromPool = false) { return !isFromPool? new UnitInfo() : ObjectPool.Instance.Fetch(typeof(UnitInfo)) as UnitInfo; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public long UnitId { get; set; }
@@ -201,9 +201,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_CreateUnits: MessageObject, IActorMessage
 	{
-		public static M2C_CreateUnits Create(bool isFromPool = false) { return !isFromPool? new M2C_CreateUnits() : NetServices.Instance.FetchMessage(typeof(M2C_CreateUnits)) as M2C_CreateUnits; }
+		public static M2C_CreateUnits Create(bool isFromPool = false) { return !isFromPool? new M2C_CreateUnits() : ObjectPool.Instance.Fetch(typeof(M2C_CreateUnits)) as M2C_CreateUnits; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public List<UnitInfo> Units { get; set; }
@@ -214,9 +214,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_CreateMyUnit: MessageObject, IActorMessage
 	{
-		public static M2C_CreateMyUnit Create(bool isFromPool = false) { return !isFromPool? new M2C_CreateMyUnit() : NetServices.Instance.FetchMessage(typeof(M2C_CreateMyUnit)) as M2C_CreateMyUnit; }
+		public static M2C_CreateMyUnit Create(bool isFromPool = false) { return !isFromPool? new M2C_CreateMyUnit() : ObjectPool.Instance.Fetch(typeof(M2C_CreateMyUnit)) as M2C_CreateMyUnit; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public UnitInfo Unit { get; set; }
@@ -227,9 +227,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_StartSceneChange: MessageObject, IActorMessage
 	{
-		public static M2C_StartSceneChange Create(bool isFromPool = false) { return !isFromPool? new M2C_StartSceneChange() : NetServices.Instance.FetchMessage(typeof(M2C_StartSceneChange)) as M2C_StartSceneChange; }
+		public static M2C_StartSceneChange Create(bool isFromPool = false) { return !isFromPool? new M2C_StartSceneChange() : ObjectPool.Instance.Fetch(typeof(M2C_StartSceneChange)) as M2C_StartSceneChange; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public long SceneInstanceId { get; set; }
@@ -243,9 +243,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_RemoveUnits: MessageObject, IActorMessage
 	{
-		public static M2C_RemoveUnits Create(bool isFromPool = false) { return !isFromPool? new M2C_RemoveUnits() : NetServices.Instance.FetchMessage(typeof(M2C_RemoveUnits)) as M2C_RemoveUnits; }
+		public static M2C_RemoveUnits Create(bool isFromPool = false) { return !isFromPool? new M2C_RemoveUnits() : ObjectPool.Instance.Fetch(typeof(M2C_RemoveUnits)) as M2C_RemoveUnits; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public List<long> Units { get; set; }
@@ -256,9 +256,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_PathfindingResult: MessageObject, IActorLocationMessage
 	{
-		public static C2M_PathfindingResult Create(bool isFromPool = false) { return !isFromPool? new C2M_PathfindingResult() : NetServices.Instance.FetchMessage(typeof(C2M_PathfindingResult)) as C2M_PathfindingResult; }
+		public static C2M_PathfindingResult Create(bool isFromPool = false) { return !isFromPool? new C2M_PathfindingResult() : ObjectPool.Instance.Fetch(typeof(C2M_PathfindingResult)) as C2M_PathfindingResult; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -272,9 +272,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_Stop: MessageObject, IActorLocationMessage
 	{
-		public static C2M_Stop Create(bool isFromPool = false) { return !isFromPool? new C2M_Stop() : NetServices.Instance.FetchMessage(typeof(C2M_Stop)) as C2M_Stop; }
+		public static C2M_Stop Create(bool isFromPool = false) { return !isFromPool? new C2M_Stop() : ObjectPool.Instance.Fetch(typeof(C2M_Stop)) as C2M_Stop; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -285,9 +285,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_PathfindingResult: MessageObject, IActorMessage
 	{
-		public static M2C_PathfindingResult Create(bool isFromPool = false) { return !isFromPool? new M2C_PathfindingResult() : NetServices.Instance.FetchMessage(typeof(M2C_PathfindingResult)) as M2C_PathfindingResult; }
+		public static M2C_PathfindingResult Create(bool isFromPool = false) { return !isFromPool? new M2C_PathfindingResult() : ObjectPool.Instance.Fetch(typeof(M2C_PathfindingResult)) as M2C_PathfindingResult; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public long Id { get; set; }
@@ -304,9 +304,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_Stop: MessageObject, IActorMessage
 	{
-		public static M2C_Stop Create(bool isFromPool = false) { return !isFromPool? new M2C_Stop() : NetServices.Instance.FetchMessage(typeof(M2C_Stop)) as M2C_Stop; }
+		public static M2C_Stop Create(bool isFromPool = false) { return !isFromPool? new M2C_Stop() : ObjectPool.Instance.Fetch(typeof(M2C_Stop)) as M2C_Stop; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int Error { get; set; }
@@ -327,9 +327,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2G_Ping: MessageObject, IRequest
 	{
-		public static C2G_Ping Create(bool isFromPool = false) { return !isFromPool? new C2G_Ping() : NetServices.Instance.FetchMessage(typeof(C2G_Ping)) as C2G_Ping; }
+		public static C2G_Ping Create(bool isFromPool = false) { return !isFromPool? new C2G_Ping() : ObjectPool.Instance.Fetch(typeof(C2G_Ping)) as C2G_Ping; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -340,9 +340,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2C_Ping: MessageObject, IResponse
 	{
-		public static G2C_Ping Create(bool isFromPool = false) { return !isFromPool? new G2C_Ping() : NetServices.Instance.FetchMessage(typeof(G2C_Ping)) as G2C_Ping; }
+		public static G2C_Ping Create(bool isFromPool = false) { return !isFromPool? new G2C_Ping() : ObjectPool.Instance.Fetch(typeof(G2C_Ping)) as G2C_Ping; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -362,9 +362,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2C_Test: MessageObject, IMessage
 	{
-		public static G2C_Test Create(bool isFromPool = false) { return !isFromPool? new G2C_Test() : NetServices.Instance.FetchMessage(typeof(G2C_Test)) as G2C_Test; }
+		public static G2C_Test Create(bool isFromPool = false) { return !isFromPool? new G2C_Test() : ObjectPool.Instance.Fetch(typeof(G2C_Test)) as G2C_Test; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 	}
 
@@ -373,9 +373,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_Reload: MessageObject, IRequest
 	{
-		public static C2M_Reload Create(bool isFromPool = false) { return !isFromPool? new C2M_Reload() : NetServices.Instance.FetchMessage(typeof(C2M_Reload)) as C2M_Reload; }
+		public static C2M_Reload Create(bool isFromPool = false) { return !isFromPool? new C2M_Reload() : ObjectPool.Instance.Fetch(typeof(C2M_Reload)) as C2M_Reload; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -392,9 +392,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_Reload: MessageObject, IResponse
 	{
-		public static M2C_Reload Create(bool isFromPool = false) { return !isFromPool? new M2C_Reload() : NetServices.Instance.FetchMessage(typeof(M2C_Reload)) as M2C_Reload; }
+		public static M2C_Reload Create(bool isFromPool = false) { return !isFromPool? new M2C_Reload() : ObjectPool.Instance.Fetch(typeof(M2C_Reload)) as M2C_Reload; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -412,9 +412,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2R_Login: MessageObject, IRequest
 	{
-		public static C2R_Login Create(bool isFromPool = false) { return !isFromPool? new C2R_Login() : NetServices.Instance.FetchMessage(typeof(C2R_Login)) as C2R_Login; }
+		public static C2R_Login Create(bool isFromPool = false) { return !isFromPool? new C2R_Login() : ObjectPool.Instance.Fetch(typeof(C2R_Login)) as C2R_Login; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -431,9 +431,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class R2C_Login: MessageObject, IResponse
 	{
-		public static R2C_Login Create(bool isFromPool = false) { return !isFromPool? new R2C_Login() : NetServices.Instance.FetchMessage(typeof(R2C_Login)) as R2C_Login; }
+		public static R2C_Login Create(bool isFromPool = false) { return !isFromPool? new R2C_Login() : ObjectPool.Instance.Fetch(typeof(R2C_Login)) as R2C_Login; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -460,9 +460,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2G_LoginGate: MessageObject, IRequest
 	{
-		public static C2G_LoginGate Create(bool isFromPool = false) { return !isFromPool? new C2G_LoginGate() : NetServices.Instance.FetchMessage(typeof(C2G_LoginGate)) as C2G_LoginGate; }
+		public static C2G_LoginGate Create(bool isFromPool = false) { return !isFromPool? new C2G_LoginGate() : ObjectPool.Instance.Fetch(typeof(C2G_LoginGate)) as C2G_LoginGate; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -479,9 +479,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2C_LoginGate: MessageObject, IResponse
 	{
-		public static G2C_LoginGate Create(bool isFromPool = false) { return !isFromPool? new G2C_LoginGate() : NetServices.Instance.FetchMessage(typeof(G2C_LoginGate)) as G2C_LoginGate; }
+		public static G2C_LoginGate Create(bool isFromPool = false) { return !isFromPool? new G2C_LoginGate() : ObjectPool.Instance.Fetch(typeof(G2C_LoginGate)) as G2C_LoginGate; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -501,9 +501,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2C_TestHotfixMessage: MessageObject, IMessage
 	{
-		public static G2C_TestHotfixMessage Create(bool isFromPool = false) { return !isFromPool? new G2C_TestHotfixMessage() : NetServices.Instance.FetchMessage(typeof(G2C_TestHotfixMessage)) as G2C_TestHotfixMessage; }
+		public static G2C_TestHotfixMessage Create(bool isFromPool = false) { return !isFromPool? new G2C_TestHotfixMessage() : ObjectPool.Instance.Fetch(typeof(G2C_TestHotfixMessage)) as G2C_TestHotfixMessage; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public string Info { get; set; }
@@ -515,9 +515,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_TestRobotCase: MessageObject, IActorLocationRequest
 	{
-		public static C2M_TestRobotCase Create(bool isFromPool = false) { return !isFromPool? new C2M_TestRobotCase() : NetServices.Instance.FetchMessage(typeof(C2M_TestRobotCase)) as C2M_TestRobotCase; }
+		public static C2M_TestRobotCase Create(bool isFromPool = false) { return !isFromPool? new C2M_TestRobotCase() : ObjectPool.Instance.Fetch(typeof(C2M_TestRobotCase)) as C2M_TestRobotCase; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -531,9 +531,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_TestRobotCase: MessageObject, IActorLocationResponse
 	{
-		public static M2C_TestRobotCase Create(bool isFromPool = false) { return !isFromPool? new M2C_TestRobotCase() : NetServices.Instance.FetchMessage(typeof(M2C_TestRobotCase)) as M2C_TestRobotCase; }
+		public static M2C_TestRobotCase Create(bool isFromPool = false) { return !isFromPool? new M2C_TestRobotCase() : ObjectPool.Instance.Fetch(typeof(M2C_TestRobotCase)) as M2C_TestRobotCase; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -553,9 +553,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_TestRobotCase2: MessageObject, IActorLocationMessage
 	{
-		public static C2M_TestRobotCase2 Create(bool isFromPool = false) { return !isFromPool? new C2M_TestRobotCase2() : NetServices.Instance.FetchMessage(typeof(C2M_TestRobotCase2)) as C2M_TestRobotCase2; }
+		public static C2M_TestRobotCase2 Create(bool isFromPool = false) { return !isFromPool? new C2M_TestRobotCase2() : ObjectPool.Instance.Fetch(typeof(C2M_TestRobotCase2)) as C2M_TestRobotCase2; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -569,9 +569,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_TestRobotCase2: MessageObject, IActorLocationMessage
 	{
-		public static M2C_TestRobotCase2 Create(bool isFromPool = false) { return !isFromPool? new M2C_TestRobotCase2() : NetServices.Instance.FetchMessage(typeof(M2C_TestRobotCase2)) as M2C_TestRobotCase2; }
+		public static M2C_TestRobotCase2 Create(bool isFromPool = false) { return !isFromPool? new M2C_TestRobotCase2() : ObjectPool.Instance.Fetch(typeof(M2C_TestRobotCase2)) as M2C_TestRobotCase2; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -586,9 +586,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2M_TransferMap: MessageObject, IActorLocationRequest
 	{
-		public static C2M_TransferMap Create(bool isFromPool = false) { return !isFromPool? new C2M_TransferMap() : NetServices.Instance.FetchMessage(typeof(C2M_TransferMap)) as C2M_TransferMap; }
+		public static C2M_TransferMap Create(bool isFromPool = false) { return !isFromPool? new C2M_TransferMap() : ObjectPool.Instance.Fetch(typeof(C2M_TransferMap)) as C2M_TransferMap; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -599,9 +599,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class M2C_TransferMap: MessageObject, IActorLocationResponse
 	{
-		public static M2C_TransferMap Create(bool isFromPool = false) { return !isFromPool? new M2C_TransferMap() : NetServices.Instance.FetchMessage(typeof(M2C_TransferMap)) as M2C_TransferMap; }
+		public static M2C_TransferMap Create(bool isFromPool = false) { return !isFromPool? new M2C_TransferMap() : ObjectPool.Instance.Fetch(typeof(M2C_TransferMap)) as M2C_TransferMap; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -619,9 +619,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class C2G_Benchmark: MessageObject, IRequest
 	{
-		public static C2G_Benchmark Create(bool isFromPool = false) { return !isFromPool? new C2G_Benchmark() : NetServices.Instance.FetchMessage(typeof(C2G_Benchmark)) as C2G_Benchmark; }
+		public static C2G_Benchmark Create(bool isFromPool = false) { return !isFromPool? new C2G_Benchmark() : ObjectPool.Instance.Fetch(typeof(C2G_Benchmark)) as C2G_Benchmark; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
@@ -632,9 +632,9 @@ namespace ET
 	[MemoryPackable]
 	public partial class G2C_Benchmark: MessageObject, IResponse
 	{
-		public static G2C_Benchmark Create(bool isFromPool = false) { return !isFromPool? new G2C_Benchmark() : NetServices.Instance.FetchMessage(typeof(G2C_Benchmark)) as G2C_Benchmark; }
+		public static G2C_Benchmark Create(bool isFromPool = false) { return !isFromPool? new G2C_Benchmark() : ObjectPool.Instance.Fetch(typeof(G2C_Benchmark)) as G2C_Benchmark; }
 
-		public override void Dispose() { NetServices.Instance.RecycleMessage(this); }
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
 
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }

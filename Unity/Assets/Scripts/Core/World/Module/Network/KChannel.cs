@@ -505,7 +505,7 @@ namespace ET
 					case ServiceType.Outer:
 					{
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
-						Type type = NetServices.Instance.GetType(opcode);
+						Type type = OpcodeType.Instance.GetType(opcode);
 						message = MessageSerializeHelper.Deserialize(type, memoryStream);
 						break;
 					}
@@ -516,7 +516,7 @@ namespace ET
 						actorId.VProcess = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 4);
 						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 8);
 						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
-						Type type = NetServices.Instance.GetType(opcode);
+						Type type = OpcodeType.Instance.GetType(opcode);
 						message = MessageSerializeHelper.Deserialize(type, memoryStream);
 						break;
 					}

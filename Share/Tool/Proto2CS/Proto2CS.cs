@@ -144,8 +144,8 @@ namespace ET
                     {
                         sb.Append("\t{\n");
                         
-                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = false) {{ return !isFromPool? new {msgName}() : NetServices.Instance.FetchMessage(typeof({msgName})) as {msgName}; }}\n\n");
-                        sb.Append($"\t\tpublic override void Dispose() {{ NetServices.Instance.RecycleMessage(this); }}\n\n");
+                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = false) {{ return !isFromPool? new {msgName}() : ObjectPool.Instance.Fetch(typeof({msgName})) as {msgName}; }}\n\n");
+                        sb.Append($"\t\tpublic override void Dispose() {{ ObjectPool.Instance.Recycle(this); }}\n\n");
                         continue;
                     }
 

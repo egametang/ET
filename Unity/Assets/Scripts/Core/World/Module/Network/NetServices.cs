@@ -16,45 +16,30 @@ namespace ET
 
     public class NetServices: VProcessSingleton<NetServices>, IVProcessSingletonUpdate
     {
-        public NetServices()
-        {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
-            foreach (Type type in types)
-            {
-                object[] attrs = type.GetCustomAttributes(typeof (MessageAttribute), false);
-                if (attrs.Length == 0)
-                {
-                    continue;
-                }
-
-                MessageAttribute messageAttribute = attrs[0] as MessageAttribute;
-                if (messageAttribute == null)
-                {
-                    continue;
-                }
-
-                this.typeOpcode.Add(type, messageAttribute.Opcode);
-            }
-        }
-
-        // 初始化后不变，所以主线程，网络线程都可以读
-        private readonly DoubleMap<Type, ushort> typeOpcode = new();
-
-        public ushort GetOpcode(Type type)
-        {
-            return this.typeOpcode.GetValueByKey(type);
-        }
-
-        public Type GetType(ushort opcode)
-        {
-            return this.typeOpcode.GetKeyByValue(opcode);
-        }
-
         private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new();
         private readonly Dictionary<int, Action<long, ActorId, object>> readCallback = new();
         private readonly Dictionary<int, Action<long, int>> errorCallback = new();
+        
+        private readonly Dictionary<int, AService> services = new();
+        private readonly Queue<int> queue = new();
+
+        private readonly Queue<MemoryBuffer> pool = new();
 
         private int serviceIdGenerator;
+
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            base.Dispose();
+
+            foreach (var kv in this.services)
+            {
+                kv.Value.Dispose();
+            }
+        }
 
         public (uint, uint) GetChannelConn(int serviceId, long channelId)
         {
@@ -83,6 +68,13 @@ namespace ET
             AService service = this.Get(serviceId);
             if (service != null)
             {
+                // 同一进程
+                if (actorId.Process == this.VProcess.Process)
+                {
+                    VProcessActor.Instance.Send(actorId, message);
+                    return;
+                }
+
                 service.Send(channelId, actorId, message);
             }
         }
@@ -131,12 +123,7 @@ namespace ET
         {
             this.errorCallback.Add(serviceId, action);
         }
-
-
-        private readonly Dictionary<int, AService> services = new();
-        private readonly Queue<int> queue = new();
-
-        private readonly Queue<MemoryBuffer> pool = new();
+        
 
         public MemoryBuffer FetchMemoryBuffer()
         {

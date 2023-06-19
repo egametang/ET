@@ -2,7 +2,7 @@
 {
     public interface IProcessActorHandler
     {
-        void Handle(MessageObject messageObject);
+        void Handle(ActorId actorId, MessageObject messageObject);
         System.Type GetMessageType();
     }
 }

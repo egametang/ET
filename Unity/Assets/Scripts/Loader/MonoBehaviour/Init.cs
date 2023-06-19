@@ -24,6 +24,7 @@ namespace ET
 			
 			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
+			World.Instance.AddSingleton<OpcodeType>();
 			World.Instance.AddSingleton<IdValueGenerater>();
 			World.Instance.AddSingleton<ObjectPool>();
 			World.Instance.AddSingleton<WorldActor>();
@@ -31,10 +32,11 @@ namespace ET
 			World.Instance.AddSingleton<VProcessManager>();
 			VProcessManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<VProcessManager.MainThreadScheduler>();
 
-			int vProcessId = mainThreadScheduler.Create();
+			int vProcessId = VProcessManager.Instance.Create();
+			mainThreadScheduler.Add(vProcessId);
 			
 			// 发送消息
-			WorldActor.Instance.Send(vProcessId, null);
+			WorldActor.Instance.Send(new ActorId(Options.Instance.Process, vProcessId, 0), null);
 		}
 
 		private void Update()

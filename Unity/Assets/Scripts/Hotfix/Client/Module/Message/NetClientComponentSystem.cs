@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using MongoDB.Bson;
 
 namespace ET.Client
 {
@@ -30,7 +31,7 @@ namespace ET.Client
 
             session.LastRecvTime = TimeHelper.ClientNow();
             
-            self.LogMsg(message);
+            Log.Debug(message.ToJson());
             
             EventSystem.Instance.Publish(self.IScene, new NetClientComponentOnRead() {Session = session, Message = message});
         }

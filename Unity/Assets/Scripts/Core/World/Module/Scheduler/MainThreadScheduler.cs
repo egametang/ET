@@ -4,7 +4,7 @@ namespace ET
 {
     public partial class VProcessManager: Singleton<VProcessManager>
     {
-        public class MainThreadScheduler: Singleton<MainThreadScheduler>, IVProcessScheduler
+        public class MainThreadScheduler: Singleton<MainThreadScheduler>, IScheduler
         {
             private readonly Queue<int> idQueue = new();
             private readonly Queue<int> addIds = new();
@@ -62,11 +62,9 @@ namespace ET
                 }
             }
 
-            public int Create(int vProcessId = 0)
+            public void Add(int vProcessId = 0)
             {
-                vProcessId = VProcessManager.Instance.Create(vProcessId);
                 this.addIds.Enqueue(vProcessId);
-                return vProcessId;
             }
         }
     }

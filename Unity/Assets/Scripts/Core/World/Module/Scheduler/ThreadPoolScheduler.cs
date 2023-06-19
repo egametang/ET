@@ -7,19 +7,20 @@ namespace ET
 {
     public partial class VProcessManager: Singleton<VProcessManager>
     {
-        public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, IVProcessScheduler, IAwake
+        public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, IScheduler, ISingletonAwake<int>
         {
             private bool isStart;
 
             private readonly HashSet<Thread> threads = new();
 
-            public int ThreadCount { get; set; }
+            private int ThreadCount { get; set; }
 
             private readonly ConcurrentQueue<int> idQueue = new();
 
-            public void Awake()
+            public void Awake(int count)
             {
                 this.isStart = true;
+                this.ThreadCount = count;
                 for (int i = 0; i < this.ThreadCount; ++i)
                 {
                     this.threads.Add(new Thread(this.Loop));
@@ -79,11 +80,9 @@ namespace ET
                 }
             }
 
-            public int Create(int vProcessId = 0)
+            public void Add(int vProcessId)
             {
-                vProcessId = VProcessManager.Instance.Create(vProcessId);
                 this.idQueue.Enqueue(vProcessId);
-                return vProcessId;
             }
         }
     }

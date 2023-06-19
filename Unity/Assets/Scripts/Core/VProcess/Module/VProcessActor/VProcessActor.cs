@@ -6,7 +6,7 @@ namespace ET
     {
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
 
-        private readonly List<MessageObject> list = new();
+        private readonly List<ActorMessageInfo> list = new();
 
         private int rpcId;
         
@@ -31,13 +31,13 @@ namespace ET
         {
             this.list.Clear();
             WorldActor.Instance.Fetch(this.VProcess.Id, 1000, this.list);
-            foreach (MessageObject messageObject in this.list)
+            foreach (ActorMessageInfo actorMessageInfo in this.list)
             {
-                this.HandleMessage(messageObject);    
+                this.HandleMessage(actorMessageInfo.ActorId, actorMessageInfo.MessageObject);    
             }
         }
         
-        private void HandleMessage(MessageObject messageObject)
+        private void HandleMessage(ActorId actorId, MessageObject messageObject)
         {
             switch (messageObject)
             {
@@ -51,28 +51,28 @@ namespace ET
                 }
                 case IRequest iRequest:
                 {
-                    WorldActor.Instance.Handle(messageObject);
+                    WorldActor.Instance.Handle(actorId, messageObject);
                     break;
                 }
                 default: // IMessage:
                 {
-                    WorldActor.Instance.Handle(messageObject);
+                    WorldActor.Instance.Handle(actorId, messageObject);
                     break;
                 }
             }
         }
         
-        public void Send(int processId, MessageObject messageObject)
+        public void Send(ActorId actorId, MessageObject messageObject)
         {
-            WorldActor.Instance.Send(processId, messageObject);
+            WorldActor.Instance.Send(actorId, messageObject);
         }
         
-        public async ETTask<IResponse> Call(int processId, IRequest request)
+        public async ETTask<IResponse> Call(ActorId actorId, IRequest request)
         {
             ETTask<IResponse> task = ETTask<IResponse>.Create(true);
             request.RpcId = ++this.rpcId;
             this.requestCallbacks.Add(request.RpcId, task);
-            this.Send(processId, request as MessageObject);
+            this.Send(actorId, request as MessageObject);
             return await task;
         }
     }

@@ -15,15 +15,15 @@ namespace ET
                 {
                     processId = --this.idGenerator;
                 }
-                VProcess vProcess = new(processId);
+                VProcess vProcess = new(Options.Instance.Process, processId);
                 vProcess.AddSingleton<Root>();
                 vProcess.AddSingleton<EntitySystem>();
                 this.vProcesses.TryAdd(vProcess.Id, vProcess);
-                return vProcess.Id;
+                return processId;
             }
         }
         
-        // 不允许外部调用，容易出现多线程问题
+        // 不允许外部调用,只能由Schecher执行完成一帧调用，否则容易出现多线程问题
         private void Remove(int id)
         {
             lock (this)

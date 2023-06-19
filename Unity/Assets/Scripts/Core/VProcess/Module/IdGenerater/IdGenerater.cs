@@ -123,7 +123,7 @@ namespace ET
             }
             this.value = IdValueGenerater.Instance.Value;
 
-            IdStruct idStruct = new(this.lastIdTime, (short)Options.Instance.Process, value);
+            IdStruct idStruct = new(this.lastIdTime, (short)this.VProcess.Process, value);
             return idStruct.ToLong();
         }
         

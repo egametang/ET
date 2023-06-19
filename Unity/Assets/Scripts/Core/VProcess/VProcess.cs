@@ -11,6 +11,8 @@ namespace ET
         
         public int Id { get; private set; }
 
+        public int Process { get; private set; }
+
         public bool IsRuning;
 
         // 保存虚拟进程中的Instance，方便快速获取
@@ -24,9 +26,10 @@ namespace ET
 
         private readonly Queue<ETTask> frameFinishTask = new();
         
-        public VProcess(int id)
+        public VProcess(int process, int id)
         {
             this.Id = id;
+            this.Process = process;
         }
 
         private void Register()

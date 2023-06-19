@@ -7,7 +7,7 @@ namespace ET
     {
         protected abstract void Run(T messageObject);
 
-        public void Handle(MessageObject messageObject)
+        public void Handle(ActorId actorId, MessageObject messageObject)
         {
             this.Run((T)messageObject);
         }
@@ -23,13 +23,12 @@ namespace ET
     {
         protected abstract void Run(Request request, Response response);
 
-        public void Handle(MessageObject messageObject)
+        public void Handle(ActorId actorId, MessageObject messageObject)
         {
             Request request = (Request)messageObject;
-            int processId = request.ProcessId;
             Response response = new();
             this.Run(request, response);
-            VProcessActor.Instance.Send(processId, response);
+            VProcessActor.Instance.Send(actorId, response);
         }
 
         public Type GetMessageType()

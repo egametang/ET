@@ -26,7 +26,7 @@ namespace ET
 
         public ActorId GetActorId()
         {
-            return new ActorId((short)Options.Instance.Process, this.VProcess().Id, this.InstanceId);
+            return new ActorId(this.VProcess().Process, this.VProcess().Id, this.InstanceId);
         }
 
         protected Entity()

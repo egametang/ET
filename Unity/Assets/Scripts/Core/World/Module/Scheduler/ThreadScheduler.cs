@@ -8,7 +8,7 @@ namespace ET
     public partial class VProcessManager: Singleton<VProcessManager>
     {
         // 一个Process一个固定的线程
-        public class ThreadScheduler: Singleton<ThreadScheduler>, IVProcessScheduler
+        public class ThreadScheduler: Singleton<ThreadScheduler>, IScheduler
         {
             private bool isStart;
 
@@ -54,12 +54,10 @@ namespace ET
                 }
             }
 
-            public int Create(int vProcessId = 0)
+            public void Add(int vProcessId)
             {
-                vProcessId = VProcessManager.Instance.Create(vProcessId);
                 Thread thread = new(() => this.Loop(vProcessId));
                 thread.Start();
-                return vProcessId;
             }
         }
     }

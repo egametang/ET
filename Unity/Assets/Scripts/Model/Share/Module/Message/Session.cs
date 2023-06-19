@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -82,7 +81,7 @@ namespace ET
                 }
 
                 self.requestCallbacks.Remove(rpcId);
-                Type responseType = OpcodeTypeComponent.Instance.GetResponseType(action.Request.GetType());
+                Type responseType = OpcodeType.Instance.GetResponseType(action.Request.GetType());
                 IResponse response = (IResponse) Activator.CreateInstance(responseType);
                 response.Error = ErrorCore.ERR_Cancel;
                 action.Tcs.SetResult(response);
@@ -119,7 +118,7 @@ namespace ET
         public static void Send(this Session self, ActorId actorId, IMessage message)
         {
             self.LastSendTime = TimeHelper.ClientNow();
-            self.LogMsg(message);
+            Log.Debug(message.ToString());
             NetServices.Instance.SendMessage(self.ServiceId, self.Id, actorId, message as MessageObject);
         }
     }

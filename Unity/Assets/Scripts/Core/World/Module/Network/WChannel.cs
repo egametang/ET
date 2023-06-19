@@ -225,7 +225,7 @@ namespace ET
                     case ServiceType.Outer:
                     {
                         ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
-                        Type type = NetServices.Instance.GetType(opcode);
+                        Type type = OpcodeType.Instance.GetType(opcode);
                         message = MessageSerializeHelper.Deserialize(type, memoryStream);
                         break;
                     }

@@ -33,7 +33,7 @@ namespace ET
         {
             int headOffset = Packet.ActorIdLength;
 
-            ushort opcode = NetServices.Instance.GetOpcode(message.GetType());
+            ushort opcode = OpcodeType.Instance.GetOpcode(message.GetType());
             
             stream.Seek(headOffset + Packet.OpcodeLength, SeekOrigin.Begin);
             stream.SetLength(headOffset + Packet.OpcodeLength);

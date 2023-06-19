@@ -8,12 +8,7 @@ namespace ET
         bool IsDisposed { get; }
     }
     
-    public interface IInstance<T> where T: class
-    {
-
-    }
-    
-    public abstract class VProcessSingleton<T>: IVProcessSingleton, IInstance<T> where T: VProcessSingleton<T>, new()
+    public abstract class VProcessSingleton<T>: IVProcessSingleton where T: VProcessSingleton<T>, new()
     {
         public VProcess VProcess { get; set; }
 
@@ -23,6 +18,11 @@ namespace ET
             {
                 return VProcess.Instance.GetInstance<T>();
             }
+        }
+
+        public virtual void Register()
+        {
+            this.VProcess.AddInstance(this);
         }
 
         public bool IsDisposed
@@ -39,6 +39,9 @@ namespace ET
             {
                 return;
             }
+            
+            this.VProcess.RemoveInstance(typeof(T));
+            
             this.VProcess = null;
         }
     }
