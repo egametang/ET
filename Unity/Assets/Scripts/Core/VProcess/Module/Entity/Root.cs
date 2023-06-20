@@ -6,6 +6,8 @@ namespace ET
     [EnableMethod]
     public class Root: VProcessSingleton<Root>
     {
+        private readonly Dictionary<long, Entity> mailboxEntities = new();
+        
         public Scene Scene { get; private set; }
 
         public Root()
@@ -21,9 +23,7 @@ namespace ET
             }
             
             base.Dispose();
-            
-            
-            
+
             Scene scene = this.Scene;
             this.Scene = null;
             scene.Dispose();

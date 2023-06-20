@@ -39,7 +39,10 @@ namespace ET
             
             World.Instance.AddSingleton<EntitySystemSingleton>();
             World.Instance.AddSingleton<LSEntitySystemSingleton>();
-
+            World.Instance.AddSingleton<MessageDispatcherComponent>();
+            World.Instance.AddSingleton<NumericWatcherComponent>();
+            World.Instance.AddSingleton<AIDispatcherComponent>();
+            
             VProcess vProcess = VProcess.Instance;
             
             vProcess.AddSingleton<MainThreadSynchronizationContext>();

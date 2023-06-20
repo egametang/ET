@@ -7,6 +7,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene scene, NetInnerComponentOnRead args)
         {
+            await ETTask.CompletedTask;
             try
             {
                 ActorId actorId = args.ActorId;
@@ -24,12 +25,12 @@ namespace ET.Server
                 {
                     case IActorRequest iActorRequest:
                     {
-                        await ActorMessageDispatcherComponent.Instance.HandleIActorRequest(actorId, iActorRequest);
+                        //await ActorMessageDispatcherComponent.Instance.HandleIActorRequest(actorId, iActorRequest);
                         break;
                     }
                     case IActorMessage iActorMessage:
                     {
-                        await ActorMessageDispatcherComponent.Instance.HandleIActorMessage(actorId, iActorMessage);
+                        //await ActorMessageDispatcherComponent.Instance.HandleIActorMessage(actorId, iActorMessage);
                         break;
                     }
                 }

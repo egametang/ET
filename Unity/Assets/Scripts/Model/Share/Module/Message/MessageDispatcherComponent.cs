@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace ET
 {
@@ -14,18 +15,81 @@ namespace ET
         }
     }
     
-    /// <summary>
-    /// 消息分发组件
-    /// </summary>
-    [ComponentOf(typeof(Scene))]
-    public class MessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
+    public class MessageDispatcherComponent: Singleton<MessageDispatcherComponent>, ISingletonAwake
     {
-        public static MessageDispatcherComponent Instance
+        private readonly Dictionary<ushort, List<MessageDispatcherInfo>> handlers = new();
+        
+        public void Awake()
         {
-            get;
-            set;
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageHandlerAttribute));
+
+            foreach (Type type in types)
+            {
+                IMHandler iMHandler = Activator.CreateInstance(type) as IMHandler;
+                if (iMHandler == null)
+                {
+                    Log.Error($"message handle {type.Name} 需要继承 IMHandler");
+                    continue;
+                }
+
+                object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), true);
+                
+                foreach (object attr in attrs)
+                {
+                    MessageHandlerAttribute messageHandlerAttribute = attr as MessageHandlerAttribute;
+                    
+                    Type messageType = iMHandler.GetMessageType();
+                    
+                    ushort opcode = OpcodeType.Instance.GetOpcode(messageType);
+                    if (opcode == 0)
+                    {
+                        Log.Error($"消息opcode为0: {messageType.Name}");
+                        continue;
+                    }
+
+                    MessageDispatcherInfo messageDispatcherInfo = new (messageHandlerAttribute.SceneType, iMHandler);
+                    this.RegisterHandler(opcode, messageDispatcherInfo);
+                }
+            }
+        }
+        
+        private void RegisterHandler(ushort opcode, MessageDispatcherInfo handler)
+        {
+            if (!this.handlers.ContainsKey(opcode))
+            {
+                this.handlers.Add(opcode, new List<MessageDispatcherInfo>());
+            }
+
+            this.handlers[opcode].Add(handler);
         }
 
-        public readonly Dictionary<ushort, List<MessageDispatcherInfo>> Handlers = new();
+        public void Handle(Session session, object message)
+        {
+            List<MessageDispatcherInfo> actions;
+            ushort opcode = OpcodeType.Instance.GetOpcode(message.GetType());
+            if (!this.handlers.TryGetValue(opcode, out actions))
+            {
+                Log.Error($"消息没有处理: {opcode} {message}");
+                return;
+            }
+
+            SceneType sceneType = session.IScene.SceneType;
+            foreach (MessageDispatcherInfo ev in actions)
+            {
+                if (!ev.SceneType.HasSameFlag(sceneType))
+                {
+                    continue;
+                }
+                
+                try
+                {
+                    ev.IMHandler.Handle(session, message);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
     }
 }

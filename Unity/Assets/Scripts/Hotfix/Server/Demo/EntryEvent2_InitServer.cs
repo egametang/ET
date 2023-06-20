@@ -7,13 +7,14 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent2 args)
         {
+            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
+            
             // 发送普通actor消息
             scene.AddComponent<ActorMessageSenderComponent>();
             // 发送location actor消息
             scene.AddComponent<ActorLocationSenderComponent>();
             // 访问location server的组件
             scene.AddComponent<LocationProxyComponent>();
-            scene.AddComponent<ActorMessageDispatcherComponent>();
             scene.AddComponent<ServerSceneManagerComponent>();
             scene.AddComponent<RobotCaseComponent>();
 

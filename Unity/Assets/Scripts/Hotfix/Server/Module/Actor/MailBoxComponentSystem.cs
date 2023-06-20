@@ -10,13 +10,11 @@ namespace ET.Server
         {
             self.MailboxType = mailboxType;
             self.ParentInstanceId = self.Parent.InstanceId;
-            ActorMessageDispatcherComponent.Instance.Add(self.Parent);
         }
         
         [EntitySystem]
         private static void Destroy(this MailBoxComponent self)
         {
-            ActorMessageDispatcherComponent.Instance?.Remove(self.ParentInstanceId);
         }
     }
 }

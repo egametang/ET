@@ -51,7 +51,7 @@ namespace ET
             foreach (AIConfig aiConfig in oneAI.Values)
             {
 
-                AIDispatcherComponent.Instance.AIHandlers.TryGetValue(aiConfig.Name, out AAIHandler aaiHandler);
+                AAIHandler aaiHandler = AIDispatcherComponent.Instance.Get(aiConfig.Name);
 
                 if (aaiHandler == null)
                 {

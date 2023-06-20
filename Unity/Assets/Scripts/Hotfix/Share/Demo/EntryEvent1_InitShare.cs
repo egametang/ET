@@ -5,9 +5,6 @@ namespace ET
     {
         protected override async ETTask Run(Scene scene, EventType.EntryEvent1 args)
         {
-            scene.AddComponent<MessageDispatcherComponent>();
-            scene.AddComponent<NumericWatcherComponent>();
-            scene.AddComponent<AIDispatcherComponent>();
             scene.AddComponent<ClientSceneManagerComponent>();
 
             await ETTask.CompletedTask;

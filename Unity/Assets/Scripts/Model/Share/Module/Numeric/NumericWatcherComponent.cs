@@ -3,26 +3,27 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [FriendOf(typeof(NumericWatcherComponent))]
-    public static partial class NumericWatcherComponentSystem
+    public class NumericWatcherInfo
     {
-        [EntitySystem]
-        private static void Awake(this NumericWatcherComponent self)
-        {
-            NumericWatcherComponent.Instance = self;
-            self.Init();
-        }
+        public SceneType SceneType { get; }
+        public INumericWatcher INumericWatcher { get; }
 
-	    [EntitySystem]
-        private static void Load(this NumericWatcherComponent self)
+        public NumericWatcherInfo(SceneType sceneType, INumericWatcher numericWatcher)
         {
-            self.Init();
+            this.SceneType = sceneType;
+            this.INumericWatcher = numericWatcher;
         }
-            
-        private static void Init(this NumericWatcherComponent self)
-        {
-            self.allWatchers = new Dictionary<int, List<NumericWatcherInfo>>();
+    }
 
+    /// <summary>
+    /// 监视数值变化组件,分发监听
+    /// </summary>
+    public class NumericWatcherComponent : Singleton<NumericWatcherComponent>, ISingletonAwake, ISingletonLoad
+    {
+        private readonly Dictionary<int, List<NumericWatcherInfo>> allWatchers = new();
+        
+        public void Awake()
+        {
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(NumericWatcherAttribute));
             foreach (Type type in types)
             {
@@ -32,20 +33,24 @@ namespace ET
                 {
                     NumericWatcherAttribute numericWatcherAttribute = (NumericWatcherAttribute)attr;
                     INumericWatcher obj = (INumericWatcher)Activator.CreateInstance(type);
-                    NumericWatcherInfo numericWatcherInfo = new NumericWatcherInfo(numericWatcherAttribute.SceneType, obj);
-                    if (!self.allWatchers.ContainsKey(numericWatcherAttribute.NumericType))
+                    NumericWatcherInfo numericWatcherInfo = new(numericWatcherAttribute.SceneType, obj);
+                    if (!this.allWatchers.ContainsKey(numericWatcherAttribute.NumericType))
                     {
-                        self.allWatchers.Add(numericWatcherAttribute.NumericType, new List<NumericWatcherInfo>());
+                        this.allWatchers.Add(numericWatcherAttribute.NumericType, new List<NumericWatcherInfo>());
                     }
-                    self.allWatchers[numericWatcherAttribute.NumericType].Add(numericWatcherInfo);
+                    this.allWatchers[numericWatcherAttribute.NumericType].Add(numericWatcherInfo);
                 }
             }
         }
 
-        public static void Run(this NumericWatcherComponent self, Unit unit, EventType.NumbericChange args)
+        public void Load()
+        {
+        }
+        
+        public void Run(Unit unit, EventType.NumbericChange args)
         {
             List<NumericWatcherInfo> list;
-            if (!self.allWatchers.TryGetValue(args.NumericType, out list))
+            if (!this.allWatchers.TryGetValue(args.NumericType, out list))
             {
                 return;
             }
@@ -60,29 +65,5 @@ namespace ET
                 numericWatcher.INumericWatcher.Run(unit, args);
             }
         }
-    }
-
-    public class NumericWatcherInfo
-    {
-        public SceneType SceneType { get; }
-        public INumericWatcher INumericWatcher { get; }
-
-        public NumericWatcherInfo(SceneType sceneType, INumericWatcher numericWatcher)
-        {
-            this.SceneType = sceneType;
-            this.INumericWatcher = numericWatcher;
-        }
-    }
-    
-    
-    /// <summary>
-    /// 监视数值变化组件,分发监听
-    /// </summary>
-    [ComponentOf(typeof(Scene))]
-    public class NumericWatcherComponent : Entity, IAwake, ILoad
-    {
-        public static NumericWatcherComponent Instance { get; set; }
-		
-        public Dictionary<int, List<NumericWatcherInfo>> allWatchers;
     }
 }

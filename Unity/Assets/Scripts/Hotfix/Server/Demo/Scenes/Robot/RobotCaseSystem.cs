@@ -8,9 +8,16 @@ namespace ET.Server
         [EntitySystem]
         private static void Destroy(this RobotCase self)
         {
+            Scene root = self.Root();
+            if (root.Id == 0)
+            {
+                return;
+            }
+
+            ClientSceneManagerComponent clientSceneManagerComponent = root.GetComponent<ClientSceneManagerComponent>();
             foreach (long id in self.Scenes)
             {
-                ClientSceneManagerComponent.Instance.Remove(id);
+                clientSceneManagerComponent.Remove(id);
             }
         }
 
@@ -73,7 +80,7 @@ namespace ET.Server
             Scene clientScene = null;
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(zone, SceneType.Robot, name);
+                clientScene = await Client.SceneFactory.CreateClientScene(self.Root(), zone, SceneType.Robot, name);
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
@@ -94,7 +101,7 @@ namespace ET.Server
 
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(zone, SceneType.Robot, $"Robot_{zone}");
+                clientScene = await Client.SceneFactory.CreateClientScene(self.Root(), zone, SceneType.Robot, $"Robot_{zone}");
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");

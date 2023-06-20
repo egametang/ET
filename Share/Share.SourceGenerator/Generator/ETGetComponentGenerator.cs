@@ -13,7 +13,7 @@ public class ETGetComponentGenerator : ISourceGenerator
     
     public void Initialize(GeneratorInitializationContext context)
     {
-        context.RegisterForSyntaxNotifications(SyntaxContextReceiver.Create);
+        //context.RegisterForSyntaxNotifications(SyntaxContextReceiver.Create);
     }
 
     public void Execute(GeneratorExecutionContext context)

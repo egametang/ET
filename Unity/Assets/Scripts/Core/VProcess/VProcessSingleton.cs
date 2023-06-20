@@ -20,7 +20,7 @@ namespace ET
             }
         }
 
-        public virtual void Register()
+        public void Register()
         {
             this.VProcess.AddInstance(this);
         }
