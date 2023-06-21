@@ -2,8 +2,8 @@ using System;
 
 namespace ET
 {
-    [ComponentOf(typeof(Scene))]
-    public class ClientSceneManagerComponent: Entity, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class ClientSceneManagerComponent: SingletonEntity<ClientSceneManagerComponent>, IAwake
     {
     }
 }

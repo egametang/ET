@@ -9,8 +9,6 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this NetInnerComponent self)
         {
-            NetInnerComponent.Instance = self;
-            
             switch (self.InnerProtocol)
             {
                 case NetworkProtocol.TCP:
@@ -32,8 +30,6 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this NetInnerComponent self, IPEndPoint address)
         {
-            NetInnerComponent.Instance = self;
-                
             switch (self.InnerProtocol)
             {
                 case NetworkProtocol.TCP:

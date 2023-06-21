@@ -2,19 +2,17 @@
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(Scene))]
-    public class ActorMessageSenderComponent: Entity, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class ActorMessageSenderComponent: SingletonEntity<ActorMessageSenderComponent>, IAwake, IDestroy
     {
         public const long TIMEOUT_TIME = 40 * 1000;
 
-        public static ActorMessageSenderComponent Instance { get; set; }
-
         public int RpcId;
 
-        public readonly SortedDictionary<int, ActorMessageSender> requestCallback = new SortedDictionary<int, ActorMessageSender>();
+        public readonly SortedDictionary<int, ActorMessageSender> requestCallback = new();
 
         public long TimeoutCheckTimer;
 
-        public List<int> TimeoutActorMessageSenders = new List<int>();
+        public List<int> TimeoutActorMessageSenders = new();
     }
 }

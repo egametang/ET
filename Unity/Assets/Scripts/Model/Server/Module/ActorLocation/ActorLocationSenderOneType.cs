@@ -14,12 +14,10 @@ namespace ET.Server
     }
     
     
-    [ComponentOf(typeof(Scene))]
-    public class ActorLocationSenderComponent: Entity, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class ActorLocationSenderComponent: SingletonEntity<ActorLocationSenderComponent>, IAwake, IDestroy
     {
         public const long TIMEOUT_TIME = 60 * 1000;
-
-        public static ActorLocationSenderComponent Instance { get; set; }
 
         public long CheckTimer;
 

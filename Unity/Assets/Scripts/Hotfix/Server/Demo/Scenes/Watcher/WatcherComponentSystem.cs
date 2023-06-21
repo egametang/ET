@@ -6,18 +6,6 @@ namespace ET.Server
     [FriendOf(typeof(WatcherComponent))]
     public static partial class WatcherComponentSystem
     {
-        [EntitySystem]
-        private static void Awake(this WatcherComponent self)
-        {
-            WatcherComponent.Instance = self;
-        }
-    
-        [EntitySystem]
-        private static void Destroy(this WatcherComponent self)
-        {
-            WatcherComponent.Instance = null;
-        }
-        
         public static void Start(this WatcherComponent self, int createScenes = 0)
         {
             string[] localIP = NetworkHelper.GetAddressIPs();

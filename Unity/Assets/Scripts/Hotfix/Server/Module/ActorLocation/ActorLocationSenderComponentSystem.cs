@@ -284,7 +284,6 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this ActorLocationSenderComponent self)
         {
-            ActorLocationSenderComponent.Instance = self;
             for (int i = 0; i < self.ActorLocationSenderComponents.Length; ++i)
             {
                 self.ActorLocationSenderComponents[i] = self.AddChild<ActorLocationSenderOneType, int>(i);

@@ -13,8 +13,6 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this UIEventComponent self)
         {
-            UIEventComponent.Instance = self;
-
             GameObject uiRoot = GameObject.Find("/Global/UI");
             ReferenceCollector referenceCollector = uiRoot.GetComponent<ReferenceCollector>();
 

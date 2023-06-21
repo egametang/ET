@@ -5,12 +5,6 @@ namespace ET
     [FriendOf(typeof(NavmeshComponent))]
     public static partial class NavmeshComponentSystem
     {
-        [EntitySystem]
-        private static void Awake(this NavmeshComponent self)
-        {
-            NavmeshComponent.Instance = self;
-        }
-        
         public static long Get(this NavmeshComponent self, string name)
         {
             long ptr;

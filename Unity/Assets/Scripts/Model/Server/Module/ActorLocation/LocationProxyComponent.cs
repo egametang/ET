@@ -2,11 +2,8 @@
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(Scene))]
-    public class LocationProxyComponent: Entity, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class LocationProxyComponent: SingletonEntity<LocationProxyComponent>, IAwake
     {
-        [ThreadStatic]
-        [StaticField]
-        public static LocationProxyComponent Instance;
     }
 }

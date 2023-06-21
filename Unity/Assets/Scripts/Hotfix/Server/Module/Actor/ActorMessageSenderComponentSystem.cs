@@ -25,15 +25,12 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this ActorMessageSenderComponent self)
         {
-            ActorMessageSenderComponent.Instance = self;
-
             self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
         }
         
         [EntitySystem]
         private static void Destroy(this ActorMessageSenderComponent self)
         {
-            ActorMessageSenderComponent.Instance = null;
             TimerComponent.Instance?.Remove(ref self.TimeoutCheckTimer);
             self.TimeoutCheckTimer = 0;
             self.TimeoutActorMessageSenders.Clear();

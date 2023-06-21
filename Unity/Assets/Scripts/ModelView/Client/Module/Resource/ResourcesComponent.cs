@@ -109,7 +109,6 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this ResourcesComponent self)
         {
-            ResourcesComponent.Instance = self;
             if (Define.IsAsync)
             {
                 self.LoadOneBundle("StreamingAssets");
@@ -121,8 +120,6 @@ namespace ET.Client
         [EntitySystem]
         private static void Destroy(this ResourcesComponent self)
         {
-            ResourcesComponent.Instance = null;
-
             foreach (var abInfo in self.bundles)
             {
                 abInfo.Value.Destroy();
@@ -553,25 +550,22 @@ namespace ET.Client
         }
     }
 
-    [ComponentOf]
-    public class ResourcesComponent: Entity, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class ResourcesComponent: SingletonEntity<ResourcesComponent>, IAwake, IDestroy
     {
-        public static ResourcesComponent Instance { get; set; }
-
         public AssetBundleManifest AssetBundleManifestObject { get; set; }
 
-        public Dictionary<int, string> IntToStringDict = new Dictionary<int, string>();
+        public Dictionary<int, string> IntToStringDict = new();
 
-        public Dictionary<string, string> StringToABDict = new Dictionary<string, string>();
+        public Dictionary<string, string> StringToABDict = new();
 
-        public Dictionary<string, string> BundleNameToLowerDict = new Dictionary<string, string>() { { "StreamingAssets", "StreamingAssets" } };
+        public Dictionary<string, string> BundleNameToLowerDict = new() { { "StreamingAssets", "StreamingAssets" } };
 
-        public readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache =
-                new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
+        public readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache = new();
 
-        public readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
+        public readonly Dictionary<string, ABInfo> bundles = new();
 
         // 缓存包依赖，不用每次计算
-        public readonly Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
+        public readonly Dictionary<string, string[]> DependenciesCache = new();
     }
 }

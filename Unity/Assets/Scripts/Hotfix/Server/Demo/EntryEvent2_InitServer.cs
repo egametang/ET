@@ -20,14 +20,14 @@ namespace ET.Server
 
             scene.AddComponent<NavmeshComponent>();
 
-            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Options.Instance.Process);
+            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(scene.Process);
             switch (Options.Instance.AppType)
             {
                 case AppType.Server:
                 {
                     scene.AddComponent<NetInnerComponent, IPEndPoint>(processConfig.InnerIPPort);
 
-                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Options.Instance.Process);
+                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(scene.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
                         await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, startConfig.Id, startConfig.ActorId.InstanceId, startConfig.Zone, startConfig.Name,

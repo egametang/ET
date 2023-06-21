@@ -9,15 +9,11 @@ namespace ET.Server
         public object Message;
     }
     
-    [ComponentOf(typeof(Scene))]
-    public class NetInnerComponent: Entity, IAwake<IPEndPoint>, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class NetInnerComponent: SingletonEntity<NetInnerComponent>, IAwake<IPEndPoint>, IAwake, IDestroy
     {
         public int ServiceId;
         
         public NetworkProtocol InnerProtocol = NetworkProtocol.KCP;
-
-        [ThreadStatic]
-        [StaticField]
-        public static NetInnerComponent Instance;
     }
 }

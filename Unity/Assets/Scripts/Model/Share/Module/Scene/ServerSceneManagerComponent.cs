@@ -2,11 +2,8 @@ using System;
 
 namespace ET
 {
-    [ComponentOf(typeof(Scene))]
-    public class ServerSceneManagerComponent: Entity, IAwake, IDestroy
+    [ComponentOf(typeof(VProcess))]
+    public class ServerSceneManagerComponent: SingletonEntity<ServerSceneManagerComponent>, IAwake, IDestroy
     {
-        [ThreadStatic]
-        [StaticField]
-        public static ServerSceneManagerComponent Instance;
     }
 }

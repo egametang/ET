@@ -4,18 +4,6 @@ namespace ET.Server
 {
     public static partial class LocationProxyComponentSystem
     {
-        [EntitySystem]
-        private static void Awake(this LocationProxyComponent self)
-        {
-            LocationProxyComponent.Instance = self;
-        }
-    
-        [EntitySystem]
-        private static void Destroy(this LocationProxyComponent self)
-        {
-            LocationProxyComponent.Instance = null;
-        }
-        
         private static ActorId GetLocationSceneId(long key)
         {
             return StartSceneConfigCategory.Instance.LocationConfig.ActorId;

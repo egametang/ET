@@ -3,13 +3,9 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ComponentOf(typeof(Scene))]
-    public class NavmeshComponent: Entity, IAwake
+    [ComponentOf(typeof(VProcess))]
+    public class NavmeshComponent: SingletonEntity<NavmeshComponent>, IAwake
     {
-        [ThreadStatic]
-        [StaticField]
-        public static NavmeshComponent Instance;
-        
         public struct RecastFileLoader
         {
             public string Name { get; set; }

@@ -6,18 +6,6 @@ namespace ET.Server
     [FriendOf(typeof(RobotCaseComponent))]
     public static partial class RobotCaseComponentSystem
     {
-        [EntitySystem]
-        private static void Awake(this RobotCaseComponent self)
-        {
-            RobotCaseComponent.Instance = self;
-        }
-
-        [EntitySystem]
-        private static void Destroy(this RobotCaseComponent self)
-        {
-            RobotCaseComponent.Instance = null;
-        }
-        
         public static int GetN(this RobotCaseComponent self)
         {
             return ++self.N;
