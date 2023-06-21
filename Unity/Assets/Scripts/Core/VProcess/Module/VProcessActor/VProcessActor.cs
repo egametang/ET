@@ -20,61 +20,43 @@ namespace ET
             
             base.Dispose();
             
-            WorldActor.Instance.RemoveActor((int)this.Root().Id);
+            ActorQueue.Instance.RemoveQueue((int)this.Root().Id);
         }
 
         public void Awake()
         {
-            WorldActor.Instance.AddActor((int)this.Root().Id);
+            ActorQueue.Instance.AddQueue((int)this.Root().Id);
         }
 
         public void Update()
         {
             this.list.Clear();
-            WorldActor.Instance.Fetch((int)this.Root().Id, 1000, this.list);
+            VProcess vProcess = this.Root();
+            ActorQueue.Instance.Fetch((int)vProcess.Id, 1000, this.list);
+            
+            ActorMessageDispatcherComponent actorMessageDispatcherComponent = ActorMessageDispatcherComponent.Instance;
             foreach (ActorMessageInfo actorMessageInfo in this.list)
             {
-                this.HandleMessage(actorMessageInfo.ActorId, actorMessageInfo.MessageObject);    
+                if (actorMessageInfo.MessageObject is IResponse response)
+                {
+                    HandleResponse(response);
+                    continue;
+                }
+
+                Entity entity = vProcess.ActorEntities.Get(actorMessageInfo.ActorId);
+                actorMessageDispatcherComponent.Handle(entity, actorMessageInfo.ActorId, actorMessageInfo.MessageObject).Coroutine();    
             }
         }
-        
-        private void HandleMessage(ActorId actorId, MessageObject messageObject)
+
+        private void HandleResponse(IResponse response)
         {
-            switch (messageObject)
-            {
-                case IResponse iResponse:
-                {
-                    if (this.requestCallbacks.TryGetValue(iResponse.RpcId, out ETTask<IResponse> task))
-                    {
-                        task.SetResult(iResponse);
-                    }
-                    break;
-                }
-                case IRequest iRequest:
-                {
-                    WorldActor.Instance.Handle(actorId, messageObject);
-                    break;
-                }
-                default: // IMessage:
-                {
-                    WorldActor.Instance.Handle(actorId, messageObject);
-                    break;
-                }
-            }
+            
         }
         
         public void Send(ActorId actorId, MessageObject messageObject)
         {
-            WorldActor.Instance.Send(actorId, messageObject);
-        }
-        
-        public async ETTask<IResponse> Call(ActorId actorId, IRequest request)
-        {
-            ETTask<IResponse> task = ETTask<IResponse>.Create(true);
-            request.RpcId = ++this.rpcId;
-            this.requestCallbacks.Add(request.RpcId, task);
-            this.Send(actorId, request as MessageObject);
-            return await task;
+            VProcess vProcess = this.Root();
+            ActorQueue.Instance.Send(new Address(vProcess.Process, (int)vProcess.Id), actorId, messageObject);
         }
     }
 }

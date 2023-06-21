@@ -45,6 +45,7 @@ namespace ET
 
         public void Load()
         {
+            World.Instance.AddSingleton<NumericWatcherComponent>();
         }
         
         public void Run(Unit unit, EventType.NumbericChange args)

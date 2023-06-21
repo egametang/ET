@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -11,7 +12,7 @@ namespace ET
         {
         }
         
-        public int Create(int processId = 0)
+        public int Create(int processId, SceneType sceneType)
         {
             lock (this)
             {
@@ -19,7 +20,7 @@ namespace ET
                 {
                     processId = --this.idGenerator;
                 }
-                VProcess vProcess = new(Options.Instance.Process, processId);
+                VProcess vProcess = new(processId, Options.Instance.Process, sceneType);
                 vProcess.AddComponent<VProcessActor>();
                 this.vProcesses.Add((int)vProcess.Id, vProcess);
                 return processId;

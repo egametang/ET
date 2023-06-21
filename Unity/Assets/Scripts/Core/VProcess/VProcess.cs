@@ -7,7 +7,23 @@ namespace ET
     {
         [ThreadStatic]
         [StaticField]
-        public static VProcess Instance;
+        private static VProcess instance;
+
+        public static VProcess Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        public Address Address
+        {
+            get
+            {
+                return new Address(this.Process, (int)this.Id);
+            }
+        }
         
         public IScene Root { get; set; }
         public SceneType SceneType { get; set; }
@@ -17,24 +33,26 @@ namespace ET
         public EntitySystem EntitySystem { get; }
         public TimeInfo TimeInfo { get; }
         public IdGenerater IdGenerater { get; }
+        public ActorEntities ActorEntities { get; }
 
         public bool IsRuning;
         
-        // actor
-        private readonly Dictionary<long, Entity> actors = new();
-
-        public VProcess(int process, int id)
+        public VProcess(int id, int process, SceneType sceneType)
         {
+            this.SceneType = sceneType;
             this.Id = id;
             this.Process = process;
             this.Root = this;
             this.EntitySystem = new EntitySystem();
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
+            this.ActorEntities = new ActorEntities();
         }
 
         public void Update()
         {
+            instance = this;
+            
             this.TimeInfo.Update();
             
             this.EntitySystem.Update();
@@ -42,6 +60,8 @@ namespace ET
         
         public void LateUpdate()
         {
+            instance = this;
+            
             this.EntitySystem.LateUpdate();
 
             FrameFinishUpdate();
@@ -66,9 +86,11 @@ namespace ET
             base.Dispose();
             
             this.IsRuning = false;
+
+            instance = null;
         }
 
-#region AddComponent
+        #region AddComponent
 
         public new K AddComponent<K>(bool isFromPool = false) where K : SingletonEntity<K>, IAwake, new()
         {

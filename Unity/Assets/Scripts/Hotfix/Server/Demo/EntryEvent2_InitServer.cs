@@ -17,7 +17,6 @@ namespace ET.Server
             scene.AddComponent<LocationProxyComponent>();
             scene.AddComponent<ServerSceneManagerComponent>();
             scene.AddComponent<RobotCaseComponent>();
-
             scene.AddComponent<NavmeshComponent>();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(scene.Process);

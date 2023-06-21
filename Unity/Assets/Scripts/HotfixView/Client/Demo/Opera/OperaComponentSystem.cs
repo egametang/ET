@@ -29,8 +29,8 @@ namespace ET.Client
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                World.Instance.Load();
-                Log.Debug("hot reload success!");
+                CodeLoader.Instance.LoadHotfix();
+                return;
             }
         
             if (Input.GetKeyDown(KeyCode.T))

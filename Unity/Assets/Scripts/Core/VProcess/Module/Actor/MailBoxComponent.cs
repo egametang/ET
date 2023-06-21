@@ -1,4 +1,4 @@
-﻿namespace ET.Server
+﻿namespace ET
 {
     /// <summary>
     /// 挂上这个组件表示该Entity是一个Actor,接收的消息将会队列处理

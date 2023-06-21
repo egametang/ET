@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class OpcodeType: Singleton<OpcodeType>, ISingletonAwake
+    public class OpcodeType: Singleton<OpcodeType>, ISingletonAwake, ISingletonLoad
     {
         // 初始化后不变，所以主线程，网络线程都可以读
         private readonly DoubleMap<Type, ushort> typeOpcode = new();
@@ -83,6 +83,11 @@ namespace ET
             }
 
             return response;
+        }
+
+        public void Load()
+        {
+            World.Instance.AddSingleton<OpcodeType>();
         }
     }
 }

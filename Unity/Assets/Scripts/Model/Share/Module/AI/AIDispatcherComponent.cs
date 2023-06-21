@@ -24,6 +24,7 @@ namespace ET
 
         public void Load()
         {
+            World.Instance.AddSingleton<AIDispatcherComponent>();
         }
 
         public AAIHandler Get(string key)

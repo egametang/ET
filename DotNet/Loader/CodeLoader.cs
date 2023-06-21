@@ -42,6 +42,8 @@ namespace ET
             Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (VProcess).Assembly, this.model, hotfixAssembly);
 
             World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+            
+            World.Instance.Load();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ET.Server
+namespace ET
 {
     public class ActorMessageDispatcherInfo
     {
@@ -43,6 +43,7 @@ namespace ET.Server
         
         public void Load()
         {
+            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
         }
 
         private void Register(Type type)
@@ -89,7 +90,7 @@ namespace ET.Server
             this.ActorMessageHandlers[type].Add(handler);
         }
 
-        private async ETTask Handle(Entity entity, ActorId actorId, object message)
+        public async ETTask Handle(Entity entity, ActorId actorId, object message)
         {
             List<ActorMessageDispatcherInfo> list;
             if (!this.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
@@ -209,6 +210,7 @@ namespace ET.Server
                 default:
                     throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorMessage}");
             }
-        }*/
+        }
+        */
     }
 }

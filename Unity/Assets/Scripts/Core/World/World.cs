@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ET
 {
@@ -67,7 +67,20 @@ namespace ET
 
         public void Load()
         {
-            
+            foreach (Type type in this.singletons.Keys.ToArray())
+            {
+                if (!this.singletons.TryGetValue(type, out ISingleton singleton))
+                {
+                    continue;
+                }
+
+                if (singleton is not ISingletonLoad singletonLoad)
+                {
+                    continue;
+                }
+                
+                singletonLoad.Load();
+            }
         }
     }
 }

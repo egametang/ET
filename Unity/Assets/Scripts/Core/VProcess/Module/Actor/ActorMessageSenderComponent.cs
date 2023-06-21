@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ET.Server
+namespace ET
 {
     [ComponentOf(typeof(VProcess))]
     public class ActorMessageSenderComponent: SingletonEntity<ActorMessageSenderComponent>, IAwake, IDestroy
