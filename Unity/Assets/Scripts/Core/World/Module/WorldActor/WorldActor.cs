@@ -10,7 +10,7 @@ namespace ET
         public MessageObject MessageObject;
     }
     
-    public class WorldActor: Singleton<WorldActor>, ISingletonAwake, IVProcessSingletonLoad
+    public class WorldActor: Singleton<WorldActor>, ISingletonAwake
     {
         private readonly Dictionary<Type, List<IProcessActorHandler>> handlers = new();
 

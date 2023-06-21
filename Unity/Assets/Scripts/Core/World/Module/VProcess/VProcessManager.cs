@@ -20,12 +20,8 @@ namespace ET
                     processId = --this.idGenerator;
                 }
                 VProcess vProcess = new(Options.Instance.Process, processId);
-                vProcess.AddSingleton<TimeInfo>();
-                vProcess.AddSingleton<IdGenerater>();
-                vProcess.AddSingleton<EntitySystem>();
-                vProcess.AddSingleton<VProcessActor>();
-                vProcess.AddSingleton<Root>();
-                this.vProcesses.TryAdd(vProcess.Id, vProcess);
+                vProcess.AddComponent<VProcessActor>();
+                this.vProcesses.Add((int)vProcess.Id, vProcess);
                 return processId;
             }
         }

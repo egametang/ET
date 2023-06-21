@@ -2,7 +2,8 @@
 
 namespace ET
 {
-    public class VProcessActor: VProcessSingleton<VProcessActor>, IVProcessSingletonAwake
+    [ComponentOf(typeof(VProcess))]
+    public class VProcessActor: SingletonEntity<VProcessActor>, IAwake
     {
         private readonly Dictionary<int, ETTask<IResponse>> requestCallbacks = new();
 
@@ -19,18 +20,18 @@ namespace ET
             
             base.Dispose();
             
-            WorldActor.Instance.RemoveActor(this.VProcess.Id);
+            WorldActor.Instance.RemoveActor((int)this.Root().Id);
         }
 
         public void Awake()
         {
-            WorldActor.Instance.AddActor(this.VProcess.Id);
+            WorldActor.Instance.AddActor((int)this.Root().Id);
         }
 
         public void Update()
         {
             this.list.Clear();
-            WorldActor.Instance.Fetch(this.VProcess.Id, 1000, this.list);
+            WorldActor.Instance.Fetch((int)this.Root().Id, 1000, this.list);
             foreach (ActorMessageInfo actorMessageInfo in this.list)
             {
                 this.HandleMessage(actorMessageInfo.ActorId, actorMessageInfo.MessageObject);    

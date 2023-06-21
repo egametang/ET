@@ -9,11 +9,19 @@ namespace ET
         [StaticField]
         public static World Instance = new();
 
+        private readonly ConcurrentDictionary<Type, ISingleton> singletons = new();
+        
         private World()
         {
         }
-
-        private readonly ConcurrentDictionary<Type, ISingleton> singletons = new();
+        
+        public void Dispose()
+        {
+            foreach (ISingleton singleton in this.singletons.Values)
+            {
+                singleton.Dispose();
+            }
+        }
 
         public T AddSingleton<T>() where T : Singleton<T>, ISingletonAwake, new()
         {
@@ -57,12 +65,9 @@ namespace ET
             singleton.Register();
         }
 
-        public void Dispose()
+        public void Load()
         {
-            foreach (ISingleton singleton in this.singletons.Values)
-            {
-                singleton.Dispose();
-            }
+            
         }
     }
 }

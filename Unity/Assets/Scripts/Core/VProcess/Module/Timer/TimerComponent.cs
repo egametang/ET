@@ -53,7 +53,8 @@ namespace ET
         public object Args;
     }
 
-    public class TimerComponent: VProcessSingleton<TimerComponent>, IVProcessSingletonUpdate
+    [ComponentOf(typeof(VProcess))]
+    public class TimerComponent: SingletonEntity<TimerComponent>, IAwake
     {
         /// <summary>
         /// key: time, value: timer id

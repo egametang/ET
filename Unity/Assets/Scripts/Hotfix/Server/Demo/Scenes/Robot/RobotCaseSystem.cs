@@ -8,7 +8,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Destroy(this RobotCase self)
         {
-            Scene root = self.Root();
+            VProcess root = self.Root();
             if (root.Id == 0)
             {
                 return;

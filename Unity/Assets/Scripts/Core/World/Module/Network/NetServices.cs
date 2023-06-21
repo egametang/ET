@@ -14,7 +14,8 @@ namespace ET
         Websocket,
     }
 
-    public class NetServices: VProcessSingleton<NetServices>, IVProcessSingletonUpdate
+    [ComponentOf(typeof(VProcess))]
+    public class NetServices: SingletonEntity<NetServices>, IAwake
     {
         private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new();
         private readonly Dictionary<int, Action<long, ActorId, object>> readCallback = new();
@@ -69,7 +70,7 @@ namespace ET
             if (service != null)
             {
                 // 同一进程
-                if (actorId.Process == this.VProcess.Process)
+                if (actorId.Process == this.Root().Process)
                 {
                     VProcessActor.Instance.Send(actorId, message);
                     return;

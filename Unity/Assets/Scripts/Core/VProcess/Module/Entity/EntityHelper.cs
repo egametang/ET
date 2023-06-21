@@ -12,14 +12,9 @@ namespace ET
             return entity.IScene as Scene;
         }
         
-        public static Scene Root(this Entity entity)
+        public static VProcess Root(this Entity entity)
         {
-            return entity.IScene.Root as Scene;
-        }
-        
-        public static VProcess VProcess(this Entity entity)
-        {
-            return entity.IScene.VProcess;
+            return entity.IScene.Root as VProcess;
         }
     }
 }

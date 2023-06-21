@@ -3,8 +3,8 @@ using System.Threading;
 
 namespace ET
 {
-
-    public class MainThreadSynchronizationContext: VProcessSingleton<MainThreadSynchronizationContext>, IVProcessSingletonUpdate
+    [ComponentOf(typeof(VProcess))]
+    public class MainThreadSynchronizationContext: SingletonEntity<MainThreadSynchronizationContext>, IAwake
     {
         private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
 

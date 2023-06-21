@@ -1,9 +1,9 @@
 namespace ET
 {
     [Event(SceneType.Process)]
-    public class EntryEvent1_InitShare: AEvent<Scene, EventType.EntryEvent1>
+    public class EntryEvent1_InitShare: AEvent<VProcess, EventType.EntryEvent1>
     {
-        protected override async ETTask Run(Scene scene, EventType.EntryEvent1 args)
+        protected override async ETTask Run(VProcess scene, EventType.EntryEvent1 args)
         {
             scene.AddComponent<ClientSceneManagerComponent>();
 

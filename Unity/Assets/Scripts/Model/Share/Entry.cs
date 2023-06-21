@@ -45,20 +45,17 @@ namespace ET
             
             VProcess vProcess = VProcess.Instance;
             
-            vProcess.AddSingleton<MainThreadSynchronizationContext>();
-            vProcess.AddSingleton<TimeInfo>();
-            vProcess.AddSingleton<IdGenerater>();
-            vProcess.AddSingleton<TimerComponent>();
-            vProcess.AddSingleton<CoroutineLockComponent>();
+            vProcess.AddComponent<MainThreadSynchronizationContext>();
+            vProcess.AddComponent<TimerComponent>();
+            vProcess.AddComponent<CoroutineLockComponent>();
             
-            vProcess.AddSingleton<NetServices>();
-            Root root = vProcess.AddSingleton<Root>();
+            vProcess.AddComponent<NetServices>();
 
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 
-            await EventSystem.Instance.PublishAsync(root.Scene, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(root.Scene, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(root.Scene, new EventType.EntryEvent3());
+            await EventSystem.Instance.PublishAsync(vProcess, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(vProcess, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(vProcess, new EventType.EntryEvent3());
         }
     }
 }

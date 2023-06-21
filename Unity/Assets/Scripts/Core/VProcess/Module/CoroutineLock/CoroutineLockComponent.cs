@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockComponent: VProcessSingleton<CoroutineLockComponent>, IVProcessSingletonUpdate
+    [ComponentOf(typeof(VProcess))]
+    public class CoroutineLockComponent: SingletonEntity<CoroutineLockComponent>, IAwake
     {
         private readonly Dictionary<int, CoroutineLockQueueType> dictionary = new();
         private readonly Queue<(int, long, int)> nextFrameRun = new Queue<(int, long, int)>();

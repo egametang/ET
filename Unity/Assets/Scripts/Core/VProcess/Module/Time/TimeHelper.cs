@@ -14,7 +14,7 @@ namespace ET
         /// <returns></returns>
         public static long ClientNow()
         {
-            return TimeInfo.Instance.ClientNow();
+            return VProcess.Instance.TimeInfo.ClientNow();
         }
 
         public static long ClientNowSeconds()
@@ -29,17 +29,17 @@ namespace ET
 
         public static long ServerNow()
         {
-            return TimeInfo.Instance.ServerNow();
+            return VProcess.Instance.TimeInfo.ServerNow();
         }
 
         public static long ClientFrameTime()
         {
-            return TimeInfo.Instance.ClientFrameTime();
+            return VProcess.Instance.TimeInfo.ClientFrameTime();
         }
         
         public static long ServerFrameTime()
         {
-            return TimeInfo.Instance.ServerFrameTime();
+            return VProcess.Instance.TimeInfo.ServerFrameTime();
         }
     }
 }

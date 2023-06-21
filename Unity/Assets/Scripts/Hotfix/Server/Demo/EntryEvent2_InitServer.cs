@@ -3,9 +3,9 @@ using System.Net;
 namespace ET.Server
 {
     [Event(SceneType.Process)]
-    public class EntryEvent2_InitServer: AEvent<Scene, ET.EventType.EntryEvent2>
+    public class EntryEvent2_InitServer: AEvent<VProcess, ET.EventType.EntryEvent2>
     {
-        protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent2 args)
+        protected override async ETTask Run(VProcess scene, ET.EventType.EntryEvent2 args)
         {
             World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
             

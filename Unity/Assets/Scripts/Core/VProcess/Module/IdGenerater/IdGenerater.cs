@@ -62,7 +62,7 @@ namespace ET
 
         public InstanceIdStruct(uint time, uint value)
         {
-            this.Time = (uint)time;
+            this.Time = time;
             this.Value = value;
         }
 
@@ -80,7 +80,7 @@ namespace ET
         }
     }
 
-    public class IdGenerater: VProcessSingleton<IdGenerater>
+    public class IdGenerater
     {
         public const int MaxZone = 1024;
         
@@ -88,14 +88,20 @@ namespace ET
         public const int Mask30bit = 0x3fffffff;
         public const int Mask20bit = 0xfffff;
         
-        private long epoch2022;
+        private readonly long epoch2022;
         private uint value;
         private uint lastIdTime;
+
+        private readonly TimeInfo timeInfo;
+        private readonly int process;
         
         private uint instanceIdValue;
         
-        public IdGenerater()
+        public IdGenerater(int process, TimeInfo timeInfo)
         {
+            this.process = process;
+            this.timeInfo = timeInfo;
+            
             long epoch1970tick = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
             this.epoch2022 = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000 - epoch1970tick;
             this.lastIdTime = TimeSince2022();
@@ -108,7 +114,7 @@ namespace ET
 
         private uint TimeSince2022()
         {
-            uint a = (uint)((TimeInfo.Instance.FrameTime - this.epoch2022) / 1000);
+            uint a = (uint)((this.timeInfo.FrameTime - this.epoch2022) / 1000);
             return a;
         }
         
@@ -123,7 +129,7 @@ namespace ET
             }
             this.value = IdValueGenerater.Instance.Value;
 
-            IdStruct idStruct = new(this.lastIdTime, (short)this.VProcess.Process, value);
+            IdStruct idStruct = new(this.lastIdTime, (short)this.process, value);
             return idStruct.ToLong();
         }
         

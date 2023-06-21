@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class TimeInfo: VProcessSingleton<TimeInfo>, IVProcessSingletonUpdate
+    public class TimeInfo
     {
         private int timeZone;
         
@@ -54,7 +54,7 @@ namespace ET
         
         public long ServerNow()
         {
-            return ClientNow() + Instance.ServerMinusClientTime;
+            return ClientNow() + this.ServerMinusClientTime;
         }
         
         public long ClientFrameTime()
@@ -64,7 +64,7 @@ namespace ET
         
         public long ServerFrameTime()
         {
-            return this.FrameTime + Instance.ServerMinusClientTime;
+            return this.FrameTime + this.ServerMinusClientTime;
         }
         
         public long Transition(DateTime d)
