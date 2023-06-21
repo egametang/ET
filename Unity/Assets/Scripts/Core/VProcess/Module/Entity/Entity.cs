@@ -387,7 +387,7 @@ namespace ET
                 if (!this.IsCreated)
                 {
                     this.IsCreated = true;
-                    this.GetEntitySystem().Deserialize(this);
+                    EntitySystemSingleton.Instance.Deserialize(this);
                 }
             }
         }
@@ -473,6 +473,7 @@ namespace ET
             this.IsRegister = false;
             this.InstanceId = 0;
 
+            ObjectPool objectPool = ObjectPool.Instance;
             // 清理Children
             if (this.children != null)
             {
@@ -482,7 +483,7 @@ namespace ET
                 }
 
                 this.children.Clear();
-                ObjectPool.Instance.Recycle(this.children);
+                objectPool.Recycle(this.children);
                 this.children = null;
 
                 if (this.childrenDB != null)
@@ -491,7 +492,7 @@ namespace ET
                     // 创建的才需要回到池中,从db中不需要回收
                     if (this.IsNew)
                     {
-                        ObjectPool.Instance.Recycle(this.childrenDB);
+                        objectPool.Recycle(this.childrenDB);
                         this.childrenDB = null;
                     }
                 }
@@ -506,7 +507,7 @@ namespace ET
                 }
 
                 this.components.Clear();
-                ObjectPool.Instance.Recycle(this.components);
+                objectPool.Recycle(this.components);
                 this.components = null;
 
                 // 创建的才需要回到池中,从db中不需要回收
@@ -515,7 +516,7 @@ namespace ET
                     this.componentsDB.Clear();
                     if (this.IsNew)
                     {
-                        ObjectPool.Instance.Recycle(this.componentsDB);
+                        objectPool.Recycle(this.componentsDB);
                         this.componentsDB = null;
                     }
                 }
@@ -524,7 +525,7 @@ namespace ET
             // 触发Destroy事件
             if (this is IDestroy)
             {
-                this.GetEntitySystem().Destroy(this);
+                EntitySystemSingleton.Instance.Destroy(this);
             }
 
             this.iScene = null;
@@ -684,7 +685,7 @@ namespace ET
             // 如果有IGetComponent接口，则触发GetComponentSystem
             if (this is IGetComponent)
             {
-                this.GetEntitySystem().GetComponent(this, component);
+                EntitySystemSingleton.Instance.GetComponent(this, component);
             }
 
             return (K) component;
@@ -706,7 +707,7 @@ namespace ET
             // 如果有IGetComponent接口，则触发GetComponentSystem
             if (this is IGetComponent)
             {
-                this.GetEntitySystem().GetComponent(this, component);
+                EntitySystemSingleton.Instance.GetComponent(this, component);
             }
 
             return component;
@@ -743,7 +744,7 @@ namespace ET
 
             if (this is IAddComponent)
             {
-                this.GetEntitySystem().AddComponent(this, component);
+                EntitySystemSingleton.Instance.AddComponent(this, component);
             }
 
             return component;
@@ -759,11 +760,12 @@ namespace ET
             Entity component = Create(type, isFromPool);
             component.Id = this.Id;
             component.ComponentParent = this;
-            this.GetEntitySystem().Awake(component);
+            EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
+            entitySystemSingleton.Awake(component);
 
             if (this is IAddComponent)
             {
-                this.GetEntitySystem().AddComponent(this, component);
+                entitySystemSingleton.AddComponent(this, component);
             }
 
             return component;
@@ -780,11 +782,12 @@ namespace ET
             Entity component = Create(type, isFromPool);
             component.Id = id;
             component.ComponentParent = this;
-            this.GetEntitySystem().Awake(component);
+            EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
+            entitySystemSingleton.Awake(component);
 
             if (this is IAddComponent)
             {
-                this.GetEntitySystem().AddComponent(this, component);
+                entitySystemSingleton.AddComponent(this, component);
             }
 
             return component as K;
@@ -801,11 +804,12 @@ namespace ET
             Entity component = Create(type, isFromPool);
             component.Id = id;
             component.ComponentParent = this;
-            this.GetEntitySystem().Awake(component, p1);
+            EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
+            entitySystemSingleton.Awake(component, p1);
 
             if (this is IAddComponent)
             {
-                this.GetEntitySystem().AddComponent(this, component);
+                entitySystemSingleton.AddComponent(this, component);
             }
 
             return component as K;
@@ -822,11 +826,12 @@ namespace ET
             Entity component = Create(type, isFromPool);
             component.Id = id;
             component.ComponentParent = this;
-            this.GetEntitySystem().Awake(component, p1, p2);
+            EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
+            entitySystemSingleton.Awake(component, p1, p2);
 
             if (this is IAddComponent)
             {
-                this.GetEntitySystem().AddComponent(this, component);
+                entitySystemSingleton.AddComponent(this, component);
             }
 
             return component as K;
@@ -843,11 +848,12 @@ namespace ET
             Entity component = Create(type, isFromPool);
             component.Id = id;
             component.ComponentParent = this;
-            this.GetEntitySystem().Awake(component, p1, p2, p3);
+            EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
+            entitySystemSingleton.Awake(component, p1, p2, p3);
 
             if (this is IAddComponent)
             {
-                this.GetEntitySystem().AddComponent(this, component);
+                entitySystemSingleton.AddComponent(this, component);
             }
 
             return component as K;
@@ -886,7 +892,7 @@ namespace ET
             component.Id = this.GetIdGenerater().GenerateId();
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component);
+            EntitySystemSingleton.Instance.Awake(component);
             return component;
         }
 
@@ -897,7 +903,7 @@ namespace ET
             component.Id = this.GetIdGenerater().GenerateId();
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component, a);
+            EntitySystemSingleton.Instance.Awake(component, a);
             return component;
         }
 
@@ -908,7 +914,7 @@ namespace ET
             component.Id = this.GetIdGenerater().GenerateId();
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component, a, b);
+            EntitySystemSingleton.Instance.Awake(component, a, b);
             return component;
         }
 
@@ -919,7 +925,7 @@ namespace ET
             component.Id = this.GetIdGenerater().GenerateId();
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component, a, b, c);
+            EntitySystemSingleton.Instance.Awake(component, a, b, c);
             return component;
         }
 
@@ -929,7 +935,7 @@ namespace ET
             T component = Entity.Create(type, isFromPool) as T;
             component.Id = id;
             component.Parent = this;
-            this.GetEntitySystem().Awake(component);
+            EntitySystemSingleton.Instance.Awake(component);
             return component;
         }
 
@@ -940,7 +946,7 @@ namespace ET
             component.Id = id;
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component, a);
+            EntitySystemSingleton.Instance.Awake(component, a);
             return component;
         }
 
@@ -951,7 +957,7 @@ namespace ET
             component.Id = id;
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component, a, b);
+            EntitySystemSingleton.Instance.Awake(component, a, b);
             return component;
         }
 
@@ -962,17 +968,18 @@ namespace ET
             component.Id = id;
             component.Parent = this;
 
-            this.GetEntitySystem().Awake(component, a, b, c);
+            EntitySystemSingleton.Instance.Awake(component, a, b, c);
             return component;
         }
 
         public override void BeginInit()
         {
-            this.GetEntitySystem().Serialize(this);
+            EntitySystemSingleton.Instance.Serialize(this);
             
             this.componentsDB?.Clear();
             if (this.components != null && this.components.Count != 0)
             {
+                ObjectPool objectPool = ObjectPool.Instance;
                 foreach (Entity entity in this.components.Values)
                 {
                     if (entity is not ISerializeToEntity)
@@ -980,7 +987,7 @@ namespace ET
                         continue;
                     }
 
-                    this.componentsDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
+                    this.componentsDB ??= objectPool.Fetch<List<Entity>>();
                     this.componentsDB.Add(entity);
 
                     entity.BeginInit();
@@ -990,6 +997,7 @@ namespace ET
             this.childrenDB?.Clear();
             if (this.children != null && this.children.Count != 0)
             {
+                ObjectPool objectPool = ObjectPool.Instance;
                 foreach (Entity entity in this.children.Values)
                 {
                     if (entity is not ISerializeToEntity)
@@ -997,7 +1005,7 @@ namespace ET
                         continue;
                     }
 
-                    this.childrenDB ??= ObjectPool.Instance.Fetch<List<Entity>>();
+                    this.childrenDB ??= objectPool.Fetch<List<Entity>>();
                     this.childrenDB.Add(entity);
 
                     entity.BeginInit();
