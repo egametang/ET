@@ -3,12 +3,10 @@ using System.Net;
 namespace ET.Server
 {
     [Event(SceneType.Process)]
-    public class EntryEvent2_InitServer: AEvent<VProcess, ET.EventType.EntryEvent2>
+    public class EntryEvent2_InitServer: AEvent<Fiber, ET.EventType.EntryEvent2>
     {
-        protected override async ETTask Run(VProcess scene, ET.EventType.EntryEvent2 args)
+        protected override async ETTask Run(Fiber scene, ET.EventType.EntryEvent2 args)
         {
-            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
-            
             // 发送普通actor消息
             scene.AddComponent<ActorMessageSenderComponent>();
             // 发送location actor消息

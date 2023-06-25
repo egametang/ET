@@ -40,36 +40,36 @@ namespace ET
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<IdValueGenerater>();
             World.Instance.AddSingleton<ObjectPool>();
-            World.Instance.AddSingleton<WorldActor>();
-            World.Instance.AddSingleton<ActorQueue>();
+            World.Instance.AddSingleton<ActorMessageQueue>();
             World.Instance.AddSingleton<EntitySystemSingleton>();
             World.Instance.AddSingleton<LSEntitySystemSingleton>();
             World.Instance.AddSingleton<MessageDispatcherComponent>();
             World.Instance.AddSingleton<NumericWatcherComponent>();
             World.Instance.AddSingleton<AIDispatcherComponent>();
-            World.Instance.AddSingleton<VProcessManager>();
-            VProcessManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<VProcessManager.MainThreadScheduler>();
+            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
+            World.Instance.AddSingleton<FiberManager>();
+            FiberManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<FiberManager.MainThreadScheduler>();
 
-            int vProcessId = VProcessManager.Instance.Create(0, SceneType.Main);
-            mainThreadScheduler.Add(vProcessId);
+            int fiberId = FiberManager.Instance.Create(0, SceneType.Main);
+            mainThreadScheduler.Add(fiberId);
 			
             // 发送消息
-            ActorQueue.Instance.Send(new ActorId(Options.Instance.Process, vProcessId, 1), null);
+            ActorMessageQueue.Instance.Send(new ActorId(Options.Instance.Process, fiberId, 1), null);
 
 
-            VProcess vProcess = VProcess.Instance;
+            Fiber fiber = Fiber.Instance;
             
-            vProcess.AddComponent<MainThreadSynchronizationContext>();
-            vProcess.AddComponent<TimerComponent>();
-            vProcess.AddComponent<CoroutineLockComponent>();
+            fiber.AddComponent<MainThreadSynchronizationContext>();
+            fiber.AddComponent<TimerComponent>();
+            fiber.AddComponent<CoroutineLockComponent>();
             
-            vProcess.AddComponent<NetServices>();
+            fiber.AddComponent<NetServices>();
 
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 
-            await EventSystem.Instance.PublishAsync(vProcess, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(vProcess, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(vProcess, new EventType.EntryEvent3());
+            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent3());
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ET
     [ComponentOf]
     public class Room: Entity, IScene, IAwake, IUpdate
     {
-        public VProcess VProcess { get; set; }
+        public Fiber Fiber { get; set; }
         public IScene Root { get; set; }
         public SceneType SceneType { get; set; } = SceneType.Room;
         public string Name { get; set; }

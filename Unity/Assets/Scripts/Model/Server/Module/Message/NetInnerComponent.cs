@@ -9,7 +9,7 @@ namespace ET.Server
         public object Message;
     }
     
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class NetInnerComponent: SingletonEntity<NetInnerComponent>, IAwake<IPEndPoint>, IAwake, IDestroy
     {
         public int ServiceId;

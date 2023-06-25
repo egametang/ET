@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class NavmeshComponent: SingletonEntity<NavmeshComponent>, IAwake
     {
         public struct RecastFileLoader

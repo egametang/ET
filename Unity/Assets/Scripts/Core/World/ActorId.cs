@@ -12,11 +12,11 @@ namespace ET
         [MemoryPackOrder(0)]
         public int Process;
         [MemoryPackOrder(1)]
-        public int VProcess;
+        public int Fiber;
         
         public bool Equals(Address other)
         {
-            return this.Process == other.Process && this.VProcess == other.VProcess;
+            return this.Process == other.Process && this.Fiber == other.Fiber;
         }
 
         public override bool Equals(object obj)
@@ -26,18 +26,18 @@ namespace ET
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Process, this.VProcess);
+            return HashCode.Combine(this.Process, this.Fiber);
         }
         
-        public Address(int process, int vProcess)
+        public Address(int process, int fiber)
         {
             this.Process = process;
-            this.VProcess = vProcess;
+            this.Fiber = fiber;
         }
 
         public static bool operator ==(Address left, Address right)
         {
-            return left.Process == right.Process && left.VProcess == right.VProcess;
+            return left.Process == right.Process && left.Fiber == right.Fiber;
         }
 
         public static bool operator !=(Address left, Address right)
@@ -47,7 +47,7 @@ namespace ET
 
         public override string ToString()
         {
-            return $"{this.Process}:{this.VProcess}";
+            return $"{this.Process}:{this.Fiber}";
         }
     }
     
@@ -89,21 +89,21 @@ namespace ET
         }
         
         [BsonIgnore]
-        public int VProcess
+        public int Fiber
         {
             get
             {
-                return this.Address.VProcess;
+                return this.Address.Fiber;
             }
             set
             {
-                this.Address.VProcess = value;
+                this.Address.Fiber = value;
             }
         }
         
-        public ActorId(int process, int vProcess, long instanceId)
+        public ActorId(int process, int fiber, long instanceId)
         {
-            this.Address = new Address(process, vProcess);
+            this.Address = new Address(process, fiber);
             this.InstanceId = instanceId;
         }
         
@@ -125,7 +125,7 @@ namespace ET
 
         public override string ToString()
         {
-            return $"{this.Process}:{this.VProcess}:{this.InstanceId}";
+            return $"{this.Process}:{this.Fiber}:{this.InstanceId}";
         }
     }
 }

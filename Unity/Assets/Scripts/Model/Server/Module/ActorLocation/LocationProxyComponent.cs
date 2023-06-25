@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class LocationProxyComponent: SingletonEntity<LocationProxyComponent>, IAwake
     {
     }

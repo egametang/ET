@@ -550,7 +550,7 @@ namespace ET.Client
         }
     }
 
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class ResourcesComponent: SingletonEntity<ResourcesComponent>, IAwake, IDestroy
     {
         public AssetBundleManifest AssetBundleManifestObject { get; set; }

@@ -39,7 +39,7 @@ namespace ET
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
 
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (VProcess).Assembly, this.model, hotfixAssembly);
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (Fiber).Assembly, this.model, hotfixAssembly);
 
             World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
             

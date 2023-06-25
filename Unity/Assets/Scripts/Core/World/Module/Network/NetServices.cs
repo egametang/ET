@@ -14,7 +14,7 @@ namespace ET
         Websocket,
     }
 
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class NetServices: SingletonEntity<NetServices>, IAwake
     {
         private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new();
@@ -72,7 +72,7 @@ namespace ET
                 // 同一进程
                 if (actorId.Process == this.Root().Process)
                 {
-                    VProcessActor.Instance.Send(actorId, message);
+                    FiberActor.Instance.Send(actorId, message);
                     return;
                 }
 

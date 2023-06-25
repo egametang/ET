@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ET
 {
-    public partial class VProcessManager: Singleton<VProcessManager>
+    public partial class FiberManager: Singleton<FiberManager>
     {
         public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, IScheduler, ISingletonAwake<int>
         {
@@ -44,18 +44,18 @@ namespace ET
                             continue;
                         }
 
-                        VProcess vProcess = VProcessManager.Instance.Get(id);
-                        if (vProcess == null)
+                        Fiber fiber = FiberManager.Instance.Get(id);
+                        if (fiber == null)
                         {
                             Thread.Sleep(1);
                             continue;
                         }
 
                         // 执行过的或者正在执行的进程放到队尾
-                        if (vProcess.IsRuning)
+                        if (fiber.IsRuning)
                         {
-                            vProcess.Update();
-                            vProcess.LateUpdate();
+                            fiber.Update();
+                            fiber.LateUpdate();
                         }
 
                         this.idQueue.Enqueue(id);
@@ -80,9 +80,9 @@ namespace ET
                 }
             }
 
-            public void Add(int vProcessId)
+            public void Add(int fiberId)
             {
-                this.idQueue.Enqueue(vProcessId);
+                this.idQueue.Enqueue(fiberId);
             }
         }
     }

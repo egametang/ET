@@ -44,7 +44,7 @@ namespace ET
         private readonly LSUpdater updater = new();
         
         [BsonIgnore]
-        public VProcess VProcess { get; set; }
+        public Fiber Fiber { get; set; }
         
         [BsonIgnore]
         public IScene Root { get; set; }

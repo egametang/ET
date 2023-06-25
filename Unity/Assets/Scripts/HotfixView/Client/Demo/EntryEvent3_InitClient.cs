@@ -4,9 +4,9 @@ using System.IO;
 namespace ET.Client
 {
     [Event(SceneType.Process)]
-    public class EntryEvent3_InitClient: AEvent<VProcess, ET.EventType.EntryEvent3>
+    public class EntryEvent3_InitClient: AEvent<Fiber, ET.EventType.EntryEvent3>
     {
-        protected override async ETTask Run(VProcess scene, ET.EventType.EntryEvent3 args)
+        protected override async ETTask Run(Fiber scene, ET.EventType.EntryEvent3 args)
         {
             // 加载配置
             scene.AddComponent<ResourcesComponent>();

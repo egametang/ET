@@ -14,7 +14,7 @@ namespace ET.Server
     }
     
     
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class ActorLocationSenderComponent: SingletonEntity<ActorLocationSenderComponent>, IAwake, IDestroy
     {
         public const long TIMEOUT_TIME = 60 * 1000;

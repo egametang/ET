@@ -6,7 +6,7 @@ namespace ET.Server
     {
         public static void Reply(ActorId actorId, IActorResponse response)
         {
-            if (actorId.Process == VProcess.Instance.Process) // 返回消息是同一个进程
+            if (actorId.Process == Fiber.Instance.Process) // 返回消息是同一个进程
             {
                 async ETTask HandleMessageInNextFrame()
                 {

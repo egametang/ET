@@ -94,9 +94,9 @@ namespace ET.Server
             
             
             // 这里做了优化，如果发向同一个进程，则等一帧直接处理，不需要通过网络层
-            if (actorId.Process == VProcess.Instance.Process)
+            if (actorId.Process == Fiber.Instance.Process)
             {
-                ActorQueue.Instance.Send(VProcess.Instance.Address, actorId, message as MessageObject);
+                ActorMessageQueue.Instance.Send(Fiber.Instance.Address, actorId, message as MessageObject);
                 return;
             }
             

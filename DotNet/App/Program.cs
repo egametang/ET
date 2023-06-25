@@ -22,8 +22,8 @@ namespace ET
                 Thread.Sleep(1);
                 try
                 {
-                    VProcessManager.MainThreadScheduler.Instance.Update();
-                    VProcessManager.MainThreadScheduler.Instance.LateUpdate();
+                    FiberManager.MainThreadScheduler.Instance.Update();
+                    FiberManager.MainThreadScheduler.Instance.LateUpdate();
                 }
                 catch (Exception e)
                 {

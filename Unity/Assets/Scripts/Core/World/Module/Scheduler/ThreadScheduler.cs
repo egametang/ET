@@ -5,24 +5,24 @@ using System.Threading;
 
 namespace ET
 {
-    public partial class VProcessManager: Singleton<VProcessManager>
+    public partial class FiberManager: Singleton<FiberManager>
     {
         // 一个Process一个固定的线程
         public class ThreadScheduler: Singleton<ThreadScheduler>, IScheduler
         {
             private bool isStart;
 
-            private readonly ConcurrentDictionary<VProcess, Thread> dictionary = new();
+            private readonly ConcurrentDictionary<Fiber, Thread> dictionary = new();
 
             public void Awake()
             {
                 this.isStart = true;
             }
 
-            private void Loop(int vProcessId)
+            private void Loop(int fiberId)
             {
-                VProcess vProcess = VProcessManager.Instance.Get(vProcessId);
-                if (vProcess == null)
+                Fiber fiber = FiberManager.Instance.Get(fiberId);
+                if (fiber == null)
                 {
                     return;
                 }
@@ -31,8 +31,8 @@ namespace ET
                 {
                     try
                     {
-                        vProcess.Update();
-                        vProcess.LateUpdate();
+                        fiber.Update();
+                        fiber.LateUpdate();
 
                         Thread.Sleep(1);
                     }
@@ -54,9 +54,9 @@ namespace ET
                 }
             }
 
-            public void Add(int vProcessId)
+            public void Add(int fiberId)
             {
-                Thread thread = new(() => this.Loop(vProcessId));
+                Thread thread = new(() => this.Loop(fiberId));
                 thread.Start();
             }
         }

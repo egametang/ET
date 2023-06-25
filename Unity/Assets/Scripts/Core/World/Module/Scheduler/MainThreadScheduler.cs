@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public partial class VProcessManager: Singleton<VProcessManager>
+    public partial class FiberManager: Singleton<FiberManager>
     {
         public class MainThreadScheduler: Singleton<MainThreadScheduler>, IScheduler, ISingletonAwake
         {
@@ -23,15 +23,15 @@ namespace ET
                         continue;
                     }
 
-                    VProcess vProcess = VProcessManager.Instance.Get(id);
-                    if (vProcess == null)
+                    Fiber fiber = FiberManager.Instance.Get(id);
+                    if (fiber == null)
                     {
                         continue;
                     }
 
                     this.idQueue.Enqueue(id);
 
-                    vProcess.Update();
+                    fiber.Update();
                 }
             }
 
@@ -45,15 +45,15 @@ namespace ET
                         continue;
                     }
 
-                    VProcess vProcess = VProcessManager.Instance.Get(id);
-                    if (vProcess == null)
+                    Fiber fiber = FiberManager.Instance.Get(id);
+                    if (fiber == null)
                     {
                         continue;
                     }
 
                     this.idQueue.Enqueue(id);
 
-                    vProcess.LateUpdate();
+                    fiber.LateUpdate();
                 }
 
                 while (this.addIds.Count > 0)
@@ -62,9 +62,9 @@ namespace ET
                 }
             }
 
-            public void Add(int vProcessId = 0)
+            public void Add(int fiberId = 0)
             {
-                this.addIds.Enqueue(vProcessId);
+                this.addIds.Enqueue(fiberId);
             }
         }
     }

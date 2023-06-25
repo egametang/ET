@@ -2,6 +2,6 @@
 {
     public interface IScheduler
     {
-        void Add(int vProcessId);
+        void Add(int fiberId);
     }
 }

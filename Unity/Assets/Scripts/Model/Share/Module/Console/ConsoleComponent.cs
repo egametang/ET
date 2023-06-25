@@ -14,7 +14,7 @@ namespace ET
         public const string Robot = "Robot";
     }
 
-    [ComponentOf(typeof(VProcess))]
+    [ComponentOf(typeof(Fiber))]
     public class ConsoleComponent: SingletonEntity<ConsoleComponent>, IAwake, ILoad
     {
         public CancellationTokenSource CancellationTokenSource;

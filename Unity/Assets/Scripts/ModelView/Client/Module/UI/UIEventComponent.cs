@@ -7,7 +7,7 @@ namespace ET.Client
 	/// <summary>
 	/// 管理所有UI GameObject
 	/// </summary>
-	[ComponentOf(typeof(VProcess))]
+	[ComponentOf(typeof(Fiber))]
 	public class UIEventComponent: SingletonEntity<UIEventComponent>, IAwake
 	{
 		public Dictionary<string, AUIEvent> UIEvents = new Dictionary<string, AUIEvent>();
