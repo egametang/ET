@@ -10,31 +10,32 @@ namespace ET.Client
         {
             async ETTask UnLoadAsync()
             {
-                using (ListComponent<string> list = ListComponent<string>.Create())
+                using ListComponent<string> list = ListComponent<string>.Create();
+                
+                TimerComponent timerComponent = self.Fiber().GetComponent<TimerComponent>();
+                list.AddRange(self.LoadedResource);
+                self.LoadedResource = null;
+
+                if (timerComponent == null)
                 {
-                    list.AddRange(self.LoadedResource);
-                    self.LoadedResource = null;
+                    return;
+                }
 
-                    if (TimerComponent.Instance == null)
+                // 延迟5秒卸载包，因为包卸载是引用计数，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
+                await timerComponent.WaitAsync(5000);
+
+                CoroutineLockComponent coroutineLockComponent = self.Fiber().GetComponent<CoroutineLockComponent>();
+                foreach (string abName in list)
+                {
+                    using CoroutineLock coroutineLock =
+                            await coroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
                     {
-                        return;
-                    }
-
-                    // 延迟5秒卸载包，因为包卸载是引用计数，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
-                    await TimerComponent.Instance.WaitAsync(5000);
-
-                    foreach (string abName in list)
-                    {
-                        using CoroutineLock coroutineLock =
-                                await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
+                        if (ResourcesComponent.Instance == null)
                         {
-                            if (ResourcesComponent.Instance == null)
-                            {
-                                return;
-                            }
-
-                            await ResourcesComponent.Instance.UnloadBundleAsync(abName);
+                            return;
                         }
+
+                        await ResourcesComponent.Instance.UnloadBundleAsync(abName);
                     }
                 }
             }
@@ -44,7 +45,7 @@ namespace ET.Client
 
         public static async ETTask LoadAsync(this ResourcesLoaderComponent self, string ab)
         {
-            using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
+            using CoroutineLock coroutineLock = await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
 
             if (self.IsDisposed)
             {

@@ -36,7 +36,7 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this Session self)
         {
-            NetServices.Instance.RemoveChannel(self.ServiceId, self.Id, self.Error);
+            self.Fiber().GetComponent<NetServices>().RemoveChannel(self.ServiceId, self.Id, self.Error);
             
             foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
             {
@@ -119,7 +119,7 @@ namespace ET
         {
             self.LastSendTime = TimeHelper.ClientNow();
             Log.Debug(message.ToString());
-            NetServices.Instance.SendMessage(self.ServiceId, self.Id, actorId, message as MessageObject);
+            self.Fiber().GetComponent<NetServices>().SendMessage(self.ServiceId, self.Id, actorId, message as MessageObject);
         }
     }
 

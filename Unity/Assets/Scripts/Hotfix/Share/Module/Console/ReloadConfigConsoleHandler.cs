@@ -5,7 +5,7 @@ namespace ET
     [ConsoleHandler(ConsoleMode.ReloadConfig)]
     public class ReloadConfigConsoleHandler: IConsoleHandler
     {
-        public async ETTask Run(ModeContex contex, string content)
+        public async ETTask Run(Fiber fiber, ModeContex contex, string content)
         {
             switch (content)
             {

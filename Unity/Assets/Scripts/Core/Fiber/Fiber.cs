@@ -98,49 +98,5 @@ namespace ET
 
             instance = null;
         }
-
-        #region AddComponent
-
-        public new K AddComponent<K>(bool isFromPool = false) where K : SingletonEntity<K>, IAwake, new()
-        {
-            return base.AddComponent<K>(isFromPool);
-        }
-
-        public new K AddComponent<K, P1>(P1 p1, bool isFromPool = false) where K : SingletonEntity<K>, IAwake<P1>, new()
-        {
-            return base.AddComponent<K, P1>(p1, isFromPool);
-        }
-
-        public new K AddComponent<K, P1, P2>(P1 p1, P2 p2, bool isFromPool = false) where K : SingletonEntity<K>, IAwake<P1, P2>, new()
-        {
-            return base.AddComponent<K, P1, P2>(p1, p2, isFromPool);
-        }
-
-        public new K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3, bool isFromPool = false) where K : SingletonEntity<K>, IAwake<P1, P2, P3>, new()
-        {
-            return base.AddComponent<K, P1, P2, P3>(p1, p2, p3, isFromPool);
-        }
-        
-        public new K AddComponentWithId<K>(long id, bool isFromPool = false) where K : SingletonEntity<K>, IAwake, new()
-        {
-            return base.AddComponentWithId<K>(id, isFromPool);
-        }
-
-        public new K AddComponentWithId<K, P1>(long id, P1 p1, bool isFromPool = false) where K : SingletonEntity<K>, IAwake<P1>, new()
-        {
-            return base.AddComponentWithId<K, P1>(id, p1, isFromPool);
-        }
-
-        public new K AddComponentWithId<K, P1, P2>(long id, P1 p1, P2 p2, bool isFromPool = false) where K : SingletonEntity<K>, IAwake<P1, P2>, new()
-        {
-            return base.AddComponentWithId<K, P1, P2>(id, p1, p2, isFromPool);
-        }
-
-        public new K AddComponentWithId<K, P1, P2, P3>(long id, P1 p1, P2 p2, P3 p3, bool isFromPool = false) where K : SingletonEntity<K>, IAwake<P1, P2, P3>, new()
-        {
-            return base.AddComponentWithId<K, P1, P2, P3>(id, p1, p2, p3, isFromPool);
-        }
-        
-#endregion
     }
 }

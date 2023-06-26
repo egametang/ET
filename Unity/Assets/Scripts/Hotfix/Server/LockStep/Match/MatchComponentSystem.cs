@@ -30,13 +30,14 @@ namespace ET.Server
             }
             self.waitMatchPlayers.Clear();
             
-            Map2Match_GetRoom map2MatchGetRoom = await ActorMessageSenderComponent.Instance.Call(
+            Map2Match_GetRoom map2MatchGetRoom = await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(
                 startSceneConfig.ActorId, match2MapGetRoom) as Map2Match_GetRoom;
 
             Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };
+            ActorLocationSenderComponent actorLocationSenderComponent = self.Fiber().GetComponent<ActorLocationSenderComponent>();
             foreach (long id in match2MapGetRoom.PlayerIds) // 这里发送消息线程不会修改PlayerInfo，所以可以直接使用
             {
-                ActorLocationSenderComponent.Instance.Get(LocationType.Player).Send(id, match2GNotifyMatchSuccess);
+                actorLocationSenderComponent.Get(LocationType.Player).Send(id, match2GNotifyMatchSuccess);
                 // 等待进入房间的确认消息，如果超时要通知所有玩家退出房间，重新匹配
             }
         }

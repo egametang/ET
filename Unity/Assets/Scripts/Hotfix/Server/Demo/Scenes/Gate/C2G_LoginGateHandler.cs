@@ -58,7 +58,7 @@ namespace ET.Server
         {
             await player.Fiber().WaitFrameFinish();
             
-            Room2G_Reconnect room2GateReconnect = await ActorMessageSenderComponent.Instance.Call(
+            Room2G_Reconnect room2GateReconnect = await player.Fiber().GetComponent<ActorMessageSenderComponent>().Call(
                 player.GetComponent<PlayerRoomComponent>().RoomActorId,
                 new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
             session.Send(new G2C_Reconnect() { StartTime = room2GateReconnect.StartTime, UnitInfos = room2GateReconnect.UnitInfos, Frame = room2GateReconnect.Frame});

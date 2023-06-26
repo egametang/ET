@@ -2,47 +2,39 @@
 
 namespace ET
 {
-    public class CoroutineLockQueueType
+    [FriendOf(typeof(CoroutineLockQueueType))]
+    public static partial class CoroutineLockQueueTypeSystem
     {
-        private readonly int type;
+        [EntitySystem]
+        private static void Awake(this CoroutineLockQueueType self)
+        {
+        }
         
-        private readonly Dictionary<long, CoroutineLockQueue> coroutineLockQueues = new Dictionary<long, CoroutineLockQueue>();
-
-        public CoroutineLockQueueType(int type)
+        public static CoroutineLockQueue Get(this CoroutineLockQueueType self, long key)
         {
-            this.type = type;
+            return self.GetChild<CoroutineLockQueue>(key);
         }
 
-        private CoroutineLockQueue Get(long key)
+        public static CoroutineLockQueue New(this CoroutineLockQueueType self, long key)
         {
-            this.coroutineLockQueues.TryGetValue(key, out CoroutineLockQueue queue);
+            CoroutineLockQueue queue = self.AddChildWithId<CoroutineLockQueue, int>(key, (int)self.Id, true);
             return queue;
         }
 
-        private CoroutineLockQueue New(long key)
+        public static void Remove(this CoroutineLockQueueType self, long key)
         {
-            CoroutineLockQueue queue = CoroutineLockQueue.Create(this.type, key);
-            this.coroutineLockQueues.Add(key, queue);
-            return queue;
+            self.RemoveChild(key);
         }
 
-        private void Remove(long key)
+        public static async ETTask<CoroutineLock> Wait(this CoroutineLockQueueType self, long key, int time)
         {
-            if (this.coroutineLockQueues.Remove(key, out CoroutineLockQueue queue))
-            {
-                queue.Dispose();
-            }
-        }
-
-        public async ETTask<CoroutineLock> Wait(long key, int time)
-        {
-            CoroutineLockQueue queue = this.Get(key) ?? this.New(key);
+            CoroutineLockQueue queue = self.Get(key) ?? self.New(key);
             return await queue.Wait(time);
         }
 
-        public void Notify(long key, int level)
+        public static void Notify(this CoroutineLockQueueType self, long key, int level)
         {
-            CoroutineLockQueue queue = this.Get(key);
+            CoroutineLockQueue queue = self.Get(key);
             if (queue == null)
             {
                 return;
@@ -50,10 +42,15 @@ namespace ET
             
             if (queue.Count == 0)
             {
-                this.Remove(key);
+                self.Remove(key);
             }
 
             queue.Notify(level);
         }
+    }
+    
+    [ChildOf(typeof(CoroutineLockComponent))]
+    public class CoroutineLockQueueType: Entity, IAwake
+    {
     }
 }

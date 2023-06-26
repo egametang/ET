@@ -10,15 +10,21 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this NetClientComponent self, AddressFamily addressFamily)
         {
-            self.ServiceId = NetServices.Instance.AddService(new KService(addressFamily, ServiceType.Outer));
-            NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-            NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+            NetServices netServices = self.Fiber().GetComponent<NetServices>();
+            self.ServiceId = netServices.AddService(new KService(addressFamily, ServiceType.Outer));
+            netServices.RegisterReadCallback(self.ServiceId, self.OnRead);
+            netServices.RegisterErrorCallback(self.ServiceId, self.OnError);
         }
         
         [EntitySystem]
         private static void Destroy(this NetClientComponent self)
         {
-            NetServices.Instance.RemoveService(self.ServiceId);
+            if (self.Fiber().IsDisposed)
+            {
+                return;
+            }
+            NetServices netServices = self.Fiber().GetComponent<NetServices>();
+            netServices.RemoveService(self.ServiceId);
         }
 
         private static void OnRead(this NetClientComponent self, long channelId, ActorId actorId, object message)
@@ -50,20 +56,22 @@ namespace ET.Client
 
         public static Session Create(this NetClientComponent self, IPEndPoint realIPEndPoint)
         {
-            long channelId = NetServices.Instance.CreateConnectChannelId();
+            NetServices netServices = self.Fiber().GetComponent<NetServices>();
+            long channelId = netServices.CreateConnectChannelId();
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = realIPEndPoint;
             if (self.IScene.SceneType != SceneType.Benchmark)
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
-            NetServices.Instance.CreateChannel(self.ServiceId, session.Id, realIPEndPoint);
+            netServices.CreateChannel(self.ServiceId, session.Id, realIPEndPoint);
 
             return session;
         }
         
         public static Session Create(this NetClientComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
         {
+            NetServices netServices = self.Fiber().GetComponent<NetServices>();
             long channelId = localConn;
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = realIPEndPoint;
@@ -71,8 +79,7 @@ namespace ET.Client
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
-            NetServices.Instance.CreateChannel(self.ServiceId, session.Id, routerIPEndPoint);
-
+            netServices.CreateChannel(self.ServiceId, session.Id, routerIPEndPoint);
             return session;
         }
     }

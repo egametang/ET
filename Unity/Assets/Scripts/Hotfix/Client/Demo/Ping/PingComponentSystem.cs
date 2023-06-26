@@ -20,6 +20,7 @@ namespace ET.Client
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;
+            Fiber fiber = self.Fiber();
             
             while (true)
             {
@@ -42,9 +43,9 @@ namespace ET.Client
                     long time2 = TimeHelper.ClientNow();
                     self.Ping = time2 - time1;
                     
-                    self.Fiber().TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+                    fiber.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
                     
-                    await TimerComponent.Instance.WaitAsync(2000);
+                    await fiber.GetComponent<TimerComponent>().WaitAsync(2000);
                 }
                 catch (RpcException e)
                 {

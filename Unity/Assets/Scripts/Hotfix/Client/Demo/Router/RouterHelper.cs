@@ -78,7 +78,7 @@ namespace ET.Client
                     socket.SendTo(sendCache, 0, addressBytes.Length + 13, SocketFlags.None, routerAddress);
                 }
                     
-                await TimerComponent.Instance.WaitFrameAsync();
+                await Fiber.Instance.GetComponent<TimerComponent>().WaitFrameAsync();
                     
                 // 接收
                 if (socket.Available > 0)

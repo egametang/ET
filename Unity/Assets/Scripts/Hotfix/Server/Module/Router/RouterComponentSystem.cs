@@ -247,7 +247,8 @@ namespace ET.Server
                     self.ConnectIdNodes.TryGetValue(connectId, out routerNode);
                     if (routerNode == null)
                     {
-                        outerConn = NetServices.Instance.CreateConnectChannelId();
+                        NetServices netServices = self.Fiber().GetComponent<NetServices>();
+                        outerConn = netServices.CreateConnectChannelId();
                         routerNode = self.New(realAddress, connectId, outerConn, innerConn, self.CloneAddress());
                         Log.Info($"router create: {realAddress} {connectId} {outerConn} {innerConn} {routerNode.SyncIpEndPoint}");
                         self.OuterNodes.Add(routerNode.OuterConn, routerNode);

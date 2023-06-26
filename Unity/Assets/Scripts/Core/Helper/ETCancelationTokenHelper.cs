@@ -9,7 +9,7 @@ namespace ET
                 return;
             }
 
-            await TimerComponent.Instance.WaitAsync(afterTimeCancel);
+            await Fiber.Instance.GetComponent<TimerComponent>().WaitAsync(afterTimeCancel);
             
             if (self.IsCancel())
             {

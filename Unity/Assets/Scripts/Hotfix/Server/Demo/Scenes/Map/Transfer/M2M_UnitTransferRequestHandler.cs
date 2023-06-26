@@ -27,11 +27,11 @@ namespace ET.Server
             unit.AddComponent<MailBoxComponent, MailboxType>(MailboxType.OrderedMessage);
 
             // 通知客户端开始切场景
-            M2C_StartSceneChange m2CStartSceneChange = new M2C_StartSceneChange() { SceneInstanceId = scene.InstanceId, SceneName = scene.Name };
+            M2C_StartSceneChange m2CStartSceneChange = new() { SceneInstanceId = scene.InstanceId, SceneName = scene.Name };
             MessageHelper.SendToClient(unit, m2CStartSceneChange);
 
             // 通知客户端创建My Unit
-            M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
+            M2C_CreateMyUnit m2CCreateUnits = new();
             m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
             MessageHelper.SendToClient(unit, m2CCreateUnits);
 
@@ -39,7 +39,7 @@ namespace ET.Server
             unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);
 
             // 解锁location，可以接收发给Unit的消息
-            await LocationProxyComponent.Instance.UnLock(LocationType.Unit, unit.Id, request.OldActorId, unit.GetActorId());
+            await scene.Fiber().GetComponent<LocationProxyComponent>().UnLock(LocationType.Unit, unit.Id, request.OldActorId, unit.GetActorId());
         }
     }
 }

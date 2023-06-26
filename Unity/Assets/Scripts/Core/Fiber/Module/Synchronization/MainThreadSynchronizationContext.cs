@@ -4,7 +4,7 @@ using System.Threading;
 namespace ET
 {
     [ComponentOf(typeof(Fiber))]
-    public class MainThreadSynchronizationContext: SingletonEntity<MainThreadSynchronizationContext>, IAwake
+    public class MainThreadSynchronizationContext: Entity, IAwake
     {
         private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
 

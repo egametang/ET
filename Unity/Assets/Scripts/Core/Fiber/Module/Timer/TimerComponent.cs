@@ -54,7 +54,7 @@ namespace ET
     }
 
     [ComponentOf(typeof(Fiber))]
-    public class TimerComponent: SingletonEntity<TimerComponent>, IAwake
+    public class TimerComponent: Entity, IAwake
     {
         /// <summary>
         /// key: time, value: timer id

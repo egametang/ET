@@ -6,7 +6,7 @@ namespace ET.Server
     [ConsoleHandler(ConsoleMode.Robot)]
     public class RobotConsoleHandler: IConsoleHandler
     {
-        public async ETTask Run(ModeContex contex, string content)
+        public async ETTask Run(Fiber fiber, ModeContex contex, string content)
         {
             string[] ss = content.Split(" ");
             switch (ss[0])
@@ -21,7 +21,7 @@ namespace ET.Server
                     try
                     {
                         RobotLog.Debug($"run case start: {caseType}");
-                        await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Content = content });
+                        await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Fiber = fiber, Content = content });
                         RobotLog.Debug($"run case finish: {caseType}");
                     }
                     catch (Exception e)
@@ -44,7 +44,7 @@ namespace ET.Server
                         try
                         {
                             RobotLog.Debug($"run case start: {caseType}");
-                            await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Content = content});
+                            await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Fiber = fiber, Content = content});
                             RobotLog.Debug($"---------run case finish: {caseType}");
                         }
                         catch (Exception e)

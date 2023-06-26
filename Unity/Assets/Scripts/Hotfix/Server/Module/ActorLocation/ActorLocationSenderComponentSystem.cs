@@ -30,13 +30,17 @@ namespace ET.Server
             self.LocationType = locationType;
             // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
             // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
-            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
+            self.CheckTimer = self.Fiber().GetComponent<TimerComponent>().NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
         }
         
         [EntitySystem]
         private static void Destroy(this ActorLocationSenderOneType self)
         {
-            TimerComponent.Instance?.Remove(ref self.CheckTimer);
+            if (self.Fiber().InstanceId == 0)
+            {
+                return;
+            }
+            self.Fiber().GetComponent<TimerComponent>().Remove(ref self.CheckTimer);
         }
 
         private static void Check(this ActorLocationSenderOneType self)
@@ -101,14 +105,14 @@ namespace ET.Server
             if (actorLocationSender.ActorId != default)
             {
                 actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
-                ActorMessageSenderComponent.Instance.Send(actorLocationSender.ActorId, message);
+                self.Fiber().GetComponent<ActorMessageSenderComponent>().Send(actorLocationSender.ActorId, message);
                 return;
             }
             
             long instanceId = actorLocationSender.InstanceId;
             
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
-            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, entityId))
+            using (await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != instanceId)
                 {
@@ -117,7 +121,7 @@ namespace ET.Server
                 
                 if (actorLocationSender.ActorId == default)
                 {
-                    actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
+                    actorLocationSender.ActorId = await self.Fiber().GetComponent<LocationProxyComponent>().Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
                     {
                         throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{message}");
@@ -125,7 +129,7 @@ namespace ET.Server
                 }
                 
                 actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
-                ActorMessageSenderComponent.Instance.Send(actorLocationSender.ActorId, message);
+                self.Fiber().GetComponent<ActorMessageSenderComponent>().Send(actorLocationSender.ActorId, message);
             }
         }
 
@@ -138,13 +142,13 @@ namespace ET.Server
             if (actorLocationSender.ActorId != default)
             {
                 actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
-                return await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, request);
+                return await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(actorLocationSender.ActorId, request);
             }
             
             long instanceId = actorLocationSender.InstanceId;
             
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
-            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, entityId))
+            using (await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != instanceId)
                 {
@@ -153,7 +157,7 @@ namespace ET.Server
 
                 if (actorLocationSender.ActorId == default)
                 {
-                    actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
+                    actorLocationSender.ActorId = await self.Fiber().GetComponent<LocationProxyComponent>().Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
                     {
                         throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{request}");
@@ -162,7 +166,7 @@ namespace ET.Server
             }
 
             actorLocationSender.LastSendOrRecvTime = TimeHelper.ServerNow();
-            return await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, request);
+            return await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(actorLocationSender.ActorId, request);
         }
 
         public static void Send(this ActorLocationSenderOneType self, long entityId, IActorLocationMessage message)
@@ -175,12 +179,12 @@ namespace ET.Server
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
             // 先序列化好
-            int rpcId = ActorMessageSenderComponent.Instance.GetRpcId();
+            int rpcId = self.Fiber().GetComponent<ActorMessageSenderComponent>().GetRpcId();
             iActorRequest.RpcId = rpcId;
             
             long actorLocationSenderInstanceId = actorLocationSender.InstanceId;
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
-            using (await CoroutineLockComponent.Instance.Wait(coroutineLockType, entityId))
+            using (await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
@@ -220,7 +224,7 @@ namespace ET.Server
             {
                 if (actorLocationSender.ActorId == default)
                 {
-                    actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(self.LocationType, actorLocationSender.Id);
+                    actorLocationSender.ActorId = await self.Fiber().GetComponent<LocationProxyComponent>().Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
                     {
                         throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{iActorRequest}");
@@ -232,7 +236,7 @@ namespace ET.Server
                     actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
-                IActorResponse response = await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, rpcId, iActorRequest, false);
+                IActorResponse response = await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(actorLocationSender.ActorId, rpcId, iActorRequest, false);
                 if (actorLocationSender.InstanceId != instanceId)
                 {
                     throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iActorRequest}");
@@ -253,7 +257,7 @@ namespace ET.Server
                         }
 
                         // 等待0.5s再发送
-                        await TimerComponent.Instance.WaitAsync(500);
+                        await self.Fiber().GetComponent<TimerComponent>().WaitAsync(500);
                         if (actorLocationSender.InstanceId != instanceId)
                         {
                             throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iActorRequest}");

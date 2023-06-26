@@ -17,7 +17,7 @@ namespace ET.Server
 
         private static async ETTask Start(this BenchmarkClientComponent self)
         {
-            await TimerComponent.Instance.WaitAsync(1000);
+            await self.Fiber().GetComponent<TimerComponent>().WaitAsync(1000);
 
             Scene scene = await SceneFactory.CreateServerScene(self, Fiber.Instance.IdGenerater.GenerateId(), Fiber.Instance.IdGenerater.GenerateInstanceId(),
                 self.DomainZone(), "bechmark", SceneType.Benchmark);

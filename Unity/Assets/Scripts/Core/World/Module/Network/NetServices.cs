@@ -15,7 +15,7 @@ namespace ET
     }
 
     [ComponentOf(typeof(Fiber))]
-    public class NetServices: SingletonEntity<NetServices>, IAwake
+    public class NetServices: Entity, IAwake
     {
         private readonly Dictionary<int, Action<long, IPEndPoint>> acceptCallback = new();
         private readonly Dictionary<int, Action<long, ActorId, object>> readCallback = new();

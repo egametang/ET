@@ -23,7 +23,7 @@
 
         private static async ETTask TimeoutRemoveKey(this GateSessionKeyComponent self, long key)
         {
-            await TimerComponent.Instance.WaitAsync(20000);
+            await self.Fiber().GetComponent<TimerComponent>().WaitAsync(20000);
             self.sessionKey.Remove(key);
         }
     }

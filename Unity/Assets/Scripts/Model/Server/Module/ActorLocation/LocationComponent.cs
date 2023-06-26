@@ -18,7 +18,19 @@ namespace ET.Server
     {
         public ActorId LockActorId;
 
-        public CoroutineLock CoroutineLock;
+        private EntityRef<CoroutineLock> coroutineLock;
+
+        public CoroutineLock CoroutineLock
+        {
+            get
+            {
+                return this.coroutineLock;
+            }
+            set
+            {
+                this.coroutineLock = value;
+            }
+        }
     }
 
     [ChildOf(typeof(LocationManagerComoponent))]
@@ -26,9 +38,9 @@ namespace ET.Server
     {
         public int LocationType;
         
-        public readonly Dictionary<long, ActorId> locations = new Dictionary<long, ActorId>();
+        public readonly Dictionary<long, ActorId> locations = new();
 
-        public readonly Dictionary<long, LockInfo> lockInfos = new Dictionary<long, LockInfo>();
+        public readonly Dictionary<long, LockInfo> lockInfos = new();
     }
 
     [ComponentOf(typeof(Scene))]

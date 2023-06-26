@@ -26,23 +26,27 @@ namespace ET
         private static void Awake(this AIComponent self, int aiConfigId)
         {
             self.AIConfigId = aiConfigId;
-            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
+            self.Timer = self.Fiber().GetComponent<TimerComponent>().NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
         }
 
         [EntitySystem]
         private static void Destroy(this AIComponent self)
         {
-            TimerComponent.Instance?.Remove(ref self.Timer);
+            if (self.Fiber().InstanceId == 0)
+            {
+                return;
+            }
+            self.Fiber().GetComponent<TimerComponent>().Remove(ref self.Timer);
             self.CancellationToken?.Cancel();
             self.CancellationToken = null;
             self.Current = 0;
         }
-        
-        public static void Check(this AIComponent self)
+
+        private static void Check(this AIComponent self)
         {
             if (self.Parent == null)
             {
-                TimerComponent.Instance.Remove(ref self.Timer);
+                self.Fiber().GetComponent<TimerComponent>().Remove(ref self.Timer);
                 return;
             }
 

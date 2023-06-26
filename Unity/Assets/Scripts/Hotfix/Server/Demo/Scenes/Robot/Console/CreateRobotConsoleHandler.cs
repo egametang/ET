@@ -7,7 +7,7 @@ namespace ET.Server
     [ConsoleHandler(ConsoleMode.CreateRobot)]
     public class CreateRobotConsoleHandler: IConsoleHandler
     {
-        public async ETTask Run(ModeContex contex, string content)
+        public async ETTask Run(Fiber fiber, ModeContex contex, string content)
         {
             switch (content)
             {
@@ -34,16 +34,17 @@ namespace ET.Server
                         }
                         
                         // 创建机器人
+                        TimerComponent timerComponent = fiber.GetComponent<TimerComponent>();
                         for (int i = 0; i < options.Num; ++i)
                         {
                             int index = i % thisProcessRobotScenes.Count;
                             StartSceneConfig robotSceneConfig = thisProcessRobotScenes[index];
-                            Scene robotScene = ServerSceneManagerComponent.Instance.Get(robotSceneConfig.Id);
+                            Scene robotScene = fiber.GetComponent<ServerSceneManagerComponent>().Get(robotSceneConfig.Id);
                             RobotManagerComponent robotManagerComponent = robotScene.GetComponent<RobotManagerComponent>();
                             Scene robot = await robotManagerComponent.NewRobot(Options.Instance.Process * 10000 + i);
                             robot.AddComponent<AIComponent, int>(1);
                             Log.Console($"create robot {robot.Zone}");
-                            await TimerComponent.Instance.WaitAsync(2000);
+                            await timerComponent.WaitAsync(2000);
                         }
                     }
                     break;

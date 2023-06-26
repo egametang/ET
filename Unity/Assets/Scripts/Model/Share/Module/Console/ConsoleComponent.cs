@@ -15,7 +15,7 @@ namespace ET
     }
 
     [ComponentOf(typeof(Fiber))]
-    public class ConsoleComponent: SingletonEntity<ConsoleComponent>, IAwake, ILoad
+    public class ConsoleComponent: Entity, IAwake, ILoad
     {
         public CancellationTokenSource CancellationTokenSource;
         public Dictionary<string, IConsoleHandler> Handlers = new Dictionary<string, IConsoleHandler>();

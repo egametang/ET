@@ -4,21 +4,12 @@ using System.Collections.Generic;
 namespace ET
 {
     [ComponentOf(typeof(Fiber))]
-    public class CoroutineLockComponent: SingletonEntity<CoroutineLockComponent>, IAwake
+    public class CoroutineLockComponent: Entity, IAwake, IScene
     {
-        private readonly Dictionary<int, CoroutineLockQueueType> dictionary = new();
-        private readonly Queue<(int, long, int)> nextFrameRun = new Queue<(int, long, int)>();
-
-        public override void Dispose()
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-            base.Dispose();
-            
-            this.nextFrameRun.Clear();
-        }
+        public IScene Root { get; set; }
+        public SceneType SceneType { get; set; }
+        
+        private readonly Queue<(int, long, int)> nextFrameRun = new();
 
         public void Update()
         {
@@ -43,23 +34,17 @@ namespace ET
 
         public async ETTask<CoroutineLock> Wait(int coroutineLockType, long key, int time = 60000)
         {
-            CoroutineLockQueueType coroutineLockQueueType;
-            if (!this.dictionary.TryGetValue(coroutineLockType, out coroutineLockQueueType))
-            {
-                coroutineLockQueueType = new CoroutineLockQueueType(coroutineLockType);
-                this.dictionary.Add(coroutineLockType, coroutineLockQueueType);
-            }
+            CoroutineLockQueueType coroutineLockQueueType = this.GetChild<CoroutineLockQueueType>(coroutineLockType) ?? this.AddChildWithId<CoroutineLockQueueType>(coroutineLockType);
             return await coroutineLockQueueType.Wait(key, time);
         }
 
         private void Notify(int coroutineLockType, long key, int level)
         {
-            CoroutineLockQueueType coroutineLockQueueType;
-            if (!this.dictionary.TryGetValue(coroutineLockType, out coroutineLockQueueType))
+            CoroutineLockQueueType coroutineLockQueueType = this.GetChild<CoroutineLockQueueType>(coroutineLockType);
+            if (coroutineLockQueueType == null)
             {
                 return;
             }
-            
             coroutineLockQueueType.Notify(key, level);
         }
     }

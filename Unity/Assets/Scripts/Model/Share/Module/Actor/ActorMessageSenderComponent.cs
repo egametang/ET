@@ -3,7 +3,7 @@
 namespace ET
 {
     [ComponentOf(typeof(Fiber))]
-    public class ActorMessageSenderComponent: SingletonEntity<ActorMessageSenderComponent>, IAwake, IDestroy
+    public class ActorMessageSenderComponent: Entity, IAwake, IDestroy
     {
         public const long TIMEOUT_TIME = 40 * 1000;
 

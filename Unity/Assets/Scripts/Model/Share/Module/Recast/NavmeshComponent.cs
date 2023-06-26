@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ET
 {
     [ComponentOf(typeof(Fiber))]
-    public class NavmeshComponent: SingletonEntity<NavmeshComponent>, IAwake
+    public class NavmeshComponent: Entity, IAwake
     {
         public struct RecastFileLoader
         {

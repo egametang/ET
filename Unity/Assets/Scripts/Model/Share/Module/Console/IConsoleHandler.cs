@@ -2,6 +2,6 @@ namespace ET
 {
     public interface IConsoleHandler
     {
-        ETTask Run(ModeContex contex, string content);
+        ETTask Run(Fiber fiber, ModeContex contex, string content);
     }
 }

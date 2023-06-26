@@ -6,7 +6,8 @@ namespace ET.Server
         public static void BroadCast(Room room, IActorMessage message)
         {
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
-            
+
+            ActorLocationSenderComponent actorLocationSenderComponent = room.Fiber().GetComponent<ActorLocationSenderComponent>();
             foreach (var kv in roomServerComponent.Children)
             {
                 RoomPlayer roomPlayer = kv.Value as RoomPlayer;
@@ -16,7 +17,7 @@ namespace ET.Server
                     continue;
                 }
                 
-                ActorLocationSenderComponent.Instance.Get(LocationType.GateSession).Send(roomPlayer.Id, message);
+                actorLocationSenderComponent.Get(LocationType.GateSession).Send(roomPlayer.Id, message);
             }
         }
     }

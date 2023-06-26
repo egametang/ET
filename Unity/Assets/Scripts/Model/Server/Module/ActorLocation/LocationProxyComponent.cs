@@ -3,7 +3,7 @@
 namespace ET.Server
 {
     [ComponentOf(typeof(Fiber))]
-    public class LocationProxyComponent: SingletonEntity<LocationProxyComponent>, IAwake
+    public class LocationProxyComponent: Entity, IAwake
     {
     }
 }

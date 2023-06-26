@@ -86,7 +86,7 @@ namespace ET
                                 modeContex = self.AddComponent<ModeContex>();
                                 modeContex.Mode = mode;
                             }
-                            await iConsoleHandler.Run(modeContex, line);
+                            await iConsoleHandler.Run(self.Fiber(), modeContex, line);
                             break;
                         }
                     }

@@ -9,16 +9,18 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this NetServerComponent self, IPEndPoint address)
         {
-            self.ServiceId = NetServices.Instance.AddService(new KService(address, ServiceType.Outer));
-            NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
-            NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-            NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
+            NetServices netServices = self.Fiber().GetComponent<NetServices>();
+            self.ServiceId = netServices.AddService(new KService(address, ServiceType.Outer));
+            netServices.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
+            netServices.RegisterReadCallback(self.ServiceId, self.OnRead);
+            netServices.RegisterErrorCallback(self.ServiceId, self.OnError);
         }
 
         [EntitySystem]
         private static void Destroy(this NetServerComponent self)
         {
-            NetServices.Instance.RemoveService(self.ServiceId);
+            NetServices netServices = self.Fiber().GetComponent<NetServices>();
+            netServices.RemoveService(self.ServiceId);
         }
 
         private static void OnError(this NetServerComponent self, long channelId, int error)

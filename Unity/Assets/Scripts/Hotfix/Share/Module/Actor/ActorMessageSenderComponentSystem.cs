@@ -25,13 +25,17 @@ namespace ET
         [EntitySystem]
         private static void Awake(this ActorMessageSenderComponent self)
         {
-            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
+            self.TimeoutCheckTimer = self.Fiber().GetComponent<TimerComponent>().NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
         }
         
         [EntitySystem]
         private static void Destroy(this ActorMessageSenderComponent self)
         {
-            TimerComponent.Instance?.Remove(ref self.TimeoutCheckTimer);
+            if (self.Fiber().InstanceId == 0)
+            {
+                return;
+            }
+            self.Fiber().GetComponent<TimerComponent>().Remove(ref self.TimeoutCheckTimer);
             self.TimeoutCheckTimer = 0;
             self.TimeoutActorMessageSenders.Clear();
         }

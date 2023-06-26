@@ -12,6 +12,11 @@ namespace ET
             return entity.IScene as Scene;
         }
         
+        public static T Scene<T>(this Entity entity) where T: class, IScene 
+        {
+            return entity.IScene as T;
+        }
+        
         public static Fiber Fiber(this Entity entity)
         {
             return entity.IScene.Root as Fiber;

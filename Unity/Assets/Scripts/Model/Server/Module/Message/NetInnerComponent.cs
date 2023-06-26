@@ -4,7 +4,7 @@ using System.Net;
 namespace ET.Server
 {
     [ComponentOf(typeof(Fiber))]
-    public class NetInnerComponent: SingletonEntity<NetInnerComponent>, IAwake<IPEndPoint>, IAwake, IDestroy
+    public class NetInnerComponent: Entity, IAwake<IPEndPoint>, IAwake, IDestroy
     {
         public int ServiceId;
         

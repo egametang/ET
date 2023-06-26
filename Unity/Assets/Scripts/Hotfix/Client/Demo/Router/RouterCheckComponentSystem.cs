@@ -15,6 +15,7 @@ namespace ET.Client
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;
+            Fiber fiber = self.Fiber();
             
             while (true)
             {
@@ -23,7 +24,7 @@ namespace ET.Client
                     return;
                 }
 
-                await TimerComponent.Instance.WaitAsync(1000);
+                await fiber.GetComponent<TimerComponent>().WaitAsync(1000);
                 
                 if (self.InstanceId != instanceId)
                 {

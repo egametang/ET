@@ -5,29 +5,29 @@ namespace ET.Server
     [Event(SceneType.Process)]
     public class EntryEvent2_InitServer: AEvent<Fiber, ET.EventType.EntryEvent2>
     {
-        protected override async ETTask Run(Fiber scene, ET.EventType.EntryEvent2 args)
+        protected override async ETTask Run(Fiber fiber, ET.EventType.EntryEvent2 args)
         {
             // 发送普通actor消息
-            scene.AddComponent<ActorMessageSenderComponent>();
+            fiber.AddComponent<ActorMessageSenderComponent>();
             // 发送location actor消息
-            scene.AddComponent<ActorLocationSenderComponent>();
+            fiber.AddComponent<ActorLocationSenderComponent>();
             // 访问location server的组件
-            scene.AddComponent<LocationProxyComponent>();
-            scene.AddComponent<ServerSceneManagerComponent>();
-            scene.AddComponent<RobotCaseComponent>();
-            scene.AddComponent<NavmeshComponent>();
+            fiber.AddComponent<LocationProxyComponent>();
+            ServerSceneManagerComponent serverSceneManagerComponent = fiber.AddComponent<ServerSceneManagerComponent>();
+            fiber.AddComponent<RobotCaseComponent>();
+            fiber.AddComponent<NavmeshComponent>();
 
-            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(scene.Process);
+            StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(fiber.Process);
             switch (Options.Instance.AppType)
             {
                 case AppType.Server:
                 {
-                    scene.AddComponent<NetInnerComponent, IPEndPoint>(processConfig.InnerIPPort);
+                    fiber.AddComponent<NetInnerComponent, IPEndPoint>(processConfig.InnerIPPort);
 
-                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(scene.Process);
+                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(fiber.Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, startConfig.Id, startConfig.ActorId.InstanceId, startConfig.Zone, startConfig.Name,
+                        await SceneFactory.CreateServerScene(serverSceneManagerComponent, startConfig.Id, startConfig.ActorId.InstanceId, startConfig.Zone, startConfig.Name,
                             startConfig.Type, startConfig);
                     }
 
@@ -36,9 +36,9 @@ namespace ET.Server
                 case AppType.Watcher:
                 {
                     StartMachineConfig startMachineConfig = WatcherHelper.GetThisMachineConfig();
-                    WatcherComponent watcherComponent = scene.AddComponent<WatcherComponent>();
+                    WatcherComponent watcherComponent = fiber.AddComponent<WatcherComponent>();
                     watcherComponent.Start(Options.Instance.CreateScenes);
-                    scene.AddComponent<NetInnerComponent, IPEndPoint>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"));
+                    fiber.AddComponent<NetInnerComponent, IPEndPoint>(NetworkHelper.ToIPEndPoint($"{startMachineConfig.InnerIP}:{startMachineConfig.WatcherPort}"));
                     break;
                 }
                 case AppType.GameTool:
@@ -47,7 +47,7 @@ namespace ET.Server
 
             if (Options.Instance.Console == 1)
             {
-                scene.AddComponent<ConsoleComponent>();
+                fiber.AddComponent<ConsoleComponent>();
             }
         }
     }
