@@ -10,7 +10,7 @@ namespace ET.Server
             Scene clientScene = null;
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Root(), zone, SceneType.Robot, "Robot");
+                clientScene = await Client.SceneFactory.CreateClientScene(self.Fiber(), zone, SceneType.Robot, "Robot");
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");

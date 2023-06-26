@@ -22,6 +22,11 @@ namespace ET
             this.Send(actorId.Address, actorId, messageObject);
         }
         
+        public void Reply(ActorId actorId, MessageObject messageObject)
+        {
+            this.Send(actorId.Address, actorId, messageObject);
+        }
+        
         public void Send(Address fromAddress, ActorId actorId, MessageObject messageObject)
         {
             if (!this.messages.TryGetValue(actorId.Address.Fiber, out var queue))

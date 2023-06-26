@@ -26,7 +26,6 @@ namespace ET
                     fiberId = --this.idGenerator;
                 }
                 Fiber fiber = new(fiberId, Options.Instance.Process, sceneType);
-                fiber.AddComponent<FiberActor>();
                 this.fibers.Add((int)fiber.Id, fiber);
                 EventSystem.Instance.Invoke((int)sceneType, new FiberInit());
                 return fiberId;

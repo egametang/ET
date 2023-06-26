@@ -69,13 +69,6 @@ namespace ET
             AService service = this.Get(serviceId);
             if (service != null)
             {
-                // 同一进程
-                if (actorId.Process == this.Root().Process)
-                {
-                    FiberActor.Instance.Send(actorId, message);
-                    return;
-                }
-
                 service.Send(channelId, actorId, message);
             }
         }

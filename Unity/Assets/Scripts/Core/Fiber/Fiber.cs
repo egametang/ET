@@ -7,7 +7,7 @@ namespace ET
     {
         public static ActorId GetActorId(this Entity self)
         {
-            Fiber root = self.Root();
+            Fiber root = self.Fiber();
             return new ActorId(root.Process, (int)root.Id, self.InstanceId);
         }
     }
@@ -42,7 +42,7 @@ namespace ET
         public EntitySystem EntitySystem { get; }
         public TimeInfo TimeInfo { get; }
         public IdGenerater IdGenerater { get; }
-        public ActorEntities ActorEntities { get; }
+        public Mailboxes Mailboxes { get; }
 
         public bool IsRuning;
         
@@ -55,7 +55,7 @@ namespace ET
             this.EntitySystem = new EntitySystem();
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
-            this.ActorEntities = new ActorEntities();
+            this.Mailboxes = new Mailboxes();
         }
 
         public void Update()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ET.Server
+namespace ET
 {
     [FriendOf(typeof(ActorMessageSenderComponent))]
     public static partial class ActorMessageSenderComponentSystem
@@ -84,6 +84,11 @@ namespace ET.Server
 
             self.TimeoutActorMessageSenders.Clear();
         }
+        
+        public static void Reply(this ActorMessageSenderComponent self, ActorId actorId, IMessage message)
+        {
+            self.Send(actorId, message);
+        }
 
         public static void Send(this ActorMessageSenderComponent self, ActorId actorId, IMessage message)
         {
@@ -92,16 +97,14 @@ namespace ET.Server
                 throw new Exception($"actor id is 0: {message}");
             }
             
-            
-            // 这里做了优化，如果发向同一个进程，则等一帧直接处理，不需要通过网络层
-            if (actorId.Process == Fiber.Instance.Process)
+            // 如果发向同一个进程，则扔到消息队列中
+            if (actorId.Process == self.Fiber().Process)
             {
-                ActorMessageQueue.Instance.Send(Fiber.Instance.Address, actorId, message as MessageObject);
+                ActorMessageQueue.Instance.Send(self.Fiber().Address, actorId, message as MessageObject);
                 return;
             }
             
-            Session session = NetInnerComponent.Instance.Get(actorId.Process);
-            session.Send(actorId, message);
+            // 扔到NetInner纤程
         }
 
 

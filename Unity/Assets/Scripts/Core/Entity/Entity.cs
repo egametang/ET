@@ -25,7 +25,7 @@ namespace ET
         IdGenerater IdGenerater { get; }
     }
 
-    public partial class Entity: DisposeObject, IPool
+    public partial class Entity: DisposeObject
     {
 #if ENABLE_VIEW && UNITY_EDITOR
         private UnityEngine.GameObject viewGO;

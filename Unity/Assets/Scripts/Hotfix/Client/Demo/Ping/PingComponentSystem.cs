@@ -42,7 +42,7 @@ namespace ET.Client
                     long time2 = TimeHelper.ClientNow();
                     self.Ping = time2 - time1;
                     
-                    self.Root().TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+                    self.Fiber().TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
                     
                     await TimerComponent.Instance.WaitAsync(2000);
                 }

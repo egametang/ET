@@ -12,7 +12,7 @@ namespace ET
             return entity.IScene as Scene;
         }
         
-        public static Fiber Root(this Entity entity)
+        public static Fiber Fiber(this Entity entity)
         {
             return entity.IScene.Root as Fiber;
         }

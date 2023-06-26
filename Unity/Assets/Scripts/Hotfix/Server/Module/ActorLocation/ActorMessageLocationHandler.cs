@@ -22,7 +22,7 @@ namespace ET.Server
             }
             
             ActorResponse response = new() {RpcId = message.RpcId};
-            ActorHandleHelper.Reply(actorId, response);
+            ActorMessageSenderComponent.Instance.Reply(actorId, response);
 
             await this.Run(e, message);
         }
@@ -75,7 +75,7 @@ namespace ET.Server
                     response.Message = exception.ToString();
                 }
                 response.RpcId = rpcId;
-                ActorHandleHelper.Reply(actorId, response);
+                ActorMessageSenderComponent.Instance.Reply(actorId, response);
             }
             catch (Exception e)
             {

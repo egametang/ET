@@ -1,6 +1,7 @@
 ﻿using System;
+using ET.Server;
 
-namespace ET.Server
+namespace ET
 {
     [EnableClass]
     public abstract class ActorMessageHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorMessage
@@ -78,7 +79,7 @@ namespace ET.Server
                 }
                 
                 response.RpcId = rpcId;
-                ActorHandleHelper.Reply(actorId, response);
+                ActorMessageSenderComponent.Instance.Reply(actorId, response);
             }
             catch (Exception e)
             {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockQueue: IPool
+    public class CoroutineLockQueue: IDisposable
     {
         private int type;
         private long key;
@@ -77,8 +77,8 @@ namespace ET
             this.key = 0;
             this.type = 0;
             this.currentCoroutineLock = null;
+            
+            ObjectPool.Instance.Recycle(this);
         }
-
-        public bool IsFromPool { get; set; }
     }
 }

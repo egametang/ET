@@ -45,23 +45,19 @@ namespace ET
 
         public void Recycle(object obj)
         {
-            Type type = obj.GetType();
-
             if (obj is IPool p)
             {
                 if (!p.IsFromPool)
                 {
                     return;
                 }
-
-                p.Dispose();
-
-                RecycleInner(type, obj);
+                // 防止多次入池
+                p.IsFromPool = false;
             }
-            else
-            {
-                RecycleInner(type, obj);
-            }
+            
+            Type type = obj.GetType();
+
+            RecycleInner(type, obj);
         }
 
         private void RecycleInner(Type type, object obj)

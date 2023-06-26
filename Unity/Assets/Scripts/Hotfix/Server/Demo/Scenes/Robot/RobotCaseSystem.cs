@@ -8,7 +8,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Destroy(this RobotCase self)
         {
-            Fiber root = self.Root();
+            Fiber root = self.Fiber();
             if (root.Id == 0)
             {
                 return;
@@ -80,7 +80,7 @@ namespace ET.Server
             Scene clientScene = null;
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Root(), zone, SceneType.Robot, name);
+                clientScene = await Client.SceneFactory.CreateClientScene(self.Fiber(), zone, SceneType.Robot, name);
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");
@@ -101,7 +101,7 @@ namespace ET.Server
 
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Root(), zone, SceneType.Robot, $"Robot_{zone}");
+                clientScene = await Client.SceneFactory.CreateClientScene(self.Fiber(), zone, SceneType.Robot, $"Robot_{zone}");
                 await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
                 await Client.EnterMapHelper.EnterMapAsync(clientScene);
                 Log.Debug($"create robot ok: {zone}");

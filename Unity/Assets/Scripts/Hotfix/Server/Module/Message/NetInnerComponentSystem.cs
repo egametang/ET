@@ -68,9 +68,10 @@ namespace ET.Server
             self.HandleMessage(actorId, message);
         }
 
-        public static void HandleMessage(this NetInnerComponent self, ActorId actorId, object message)
+        private static void HandleMessage(this NetInnerComponent self, ActorId actorId, object message)
         {
-            EventSystem.Instance.Publish(self.Root(), new NetInnerComponentOnRead() { ActorId = actorId, Message = message });
+            // 扔到队列中
+            ActorMessageQueue.Instance.Send(actorId, message as MessageObject);
         }
 
         private static void OnError(this NetInnerComponent self, long channelId, int error)

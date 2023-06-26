@@ -19,7 +19,7 @@ namespace ET
         }
     }
 
-    public interface IPool: IDisposable
+    public interface IPool
     {
         bool IsFromPool
         {

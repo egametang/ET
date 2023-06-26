@@ -30,7 +30,7 @@ namespace ET
         {
             if (this.coroutineLockQueues.Remove(key, out CoroutineLockQueue queue))
             {
-                queue.Recycle();
+                queue.Dispose();
             }
         }
 

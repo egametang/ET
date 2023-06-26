@@ -5,7 +5,7 @@
     {
         public static Scene ClientScene(this Entity entity)
         {
-            return entity.Root().GetComponent<ClientSceneManagerComponent>().Get(entity.DomainZone());
+            return entity.Fiber().GetComponent<ClientSceneManagerComponent>().Get(entity.DomainZone());
         }
         
         public static Scene Get(this ClientSceneManagerComponent self, long id)

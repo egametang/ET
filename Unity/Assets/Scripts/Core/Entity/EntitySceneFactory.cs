@@ -11,7 +11,7 @@
 
         public static Scene CreateScene(int zone, SceneType sceneType, string name, Entity parent = null)
         {
-            long instanceId = parent.Root().IdGenerater.GenerateInstanceId();
+            long instanceId = parent.Fiber().IdGenerater.GenerateInstanceId();
             Scene scene = new(zone, instanceId, zone, sceneType, name);
             parent?.AddChild(scene);
             return scene;

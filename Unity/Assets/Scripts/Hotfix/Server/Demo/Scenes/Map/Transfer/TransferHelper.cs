@@ -7,7 +7,7 @@ namespace ET.Server
     {
         public static async ETTask TransferAtFrameFinish(Unit unit, ActorId sceneInstanceId, string sceneName)
         {
-            await unit.Root().WaitFrameFinish();
+            await unit.Fiber().WaitFrameFinish();
 
             await TransferHelper.Transfer(unit, sceneInstanceId, sceneName);
         }

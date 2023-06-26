@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class CoroutineLock: IPool
+    public class CoroutineLock: IDisposable
     {
         private int type;
         private long key;
