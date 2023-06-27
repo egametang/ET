@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [Invoke((int)MailBoxType.UnOrderMessage)]
+    [Invoke((long)MailBoxType.UnOrderedMessage)]
     public class MailBoxType_UnOrderedMessageHandler: AInvokeHandler<MailBoxInvoker>
     {
         public override void Handle(MailBoxInvoker args)

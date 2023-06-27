@@ -143,7 +143,7 @@ namespace ET
             }
             ++this.instanceIdValue;
                 
-            if (this.instanceIdValue > Mask20bit - 1)
+            if (this.instanceIdValue >= int.MaxValue)
             {
                 this.instanceIdValue = 0;
             }

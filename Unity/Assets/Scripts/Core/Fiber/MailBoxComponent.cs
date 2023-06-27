@@ -23,7 +23,7 @@
         public static void Add(this MailBoxComponent self, Address fromAddress, MessageObject messageObject)
         {
             // 根据mailboxType进行分发处理
-            EventSystem.Instance.Invoke((int)self.MailBoxType, new MailBoxInvoker() {MailBoxComponent = self, MessageObject = messageObject, FromAddress = fromAddress});
+            EventSystem.Instance.Invoke((long)self.MailBoxType, new MailBoxInvoker() {MailBoxComponent = self, MessageObject = messageObject, FromAddress = fromAddress});
         }
     }
 

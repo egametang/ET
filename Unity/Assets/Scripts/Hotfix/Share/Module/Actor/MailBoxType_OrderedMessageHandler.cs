@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [Invoke((int)MailBoxType.OrderedMessage)]
+    [Invoke((long)MailBoxType.OrderedMessage)]
     public class MailBoxType_OrderedMessageHandler: AInvokeHandler<MailBoxInvoker>
     {
         public override void Handle(MailBoxInvoker args)
@@ -26,7 +26,7 @@
                     if (messageObject is IActorRequest request)
                     {
                         IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
-                        mailBoxComponent.Fiber().GetComponent<ActorMessageSenderComponent>().Reply(args.FromAddress, resp);
+                        mailBoxComponent.Fiber().GetComponent<ActorSenderComponent>().Reply(args.FromAddress, resp);
                     }
                     return;
                 }

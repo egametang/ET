@@ -8,7 +8,7 @@ namespace ET.Server
         protected override async ETTask Run(Fiber fiber, ET.EventType.EntryEvent2 args)
         {
             // 发送普通actor消息
-            fiber.AddComponent<ActorMessageSenderComponent>();
+            fiber.AddComponent<ActorSenderComponent>();
             // 发送location actor消息
             fiber.AddComponent<ActorLocationSenderComponent>();
             // 访问location server的组件

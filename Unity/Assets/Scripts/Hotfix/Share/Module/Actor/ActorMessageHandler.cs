@@ -79,7 +79,7 @@ namespace ET
                 }
                 
                 response.RpcId = rpcId;
-                entity.Fiber().GetComponent<ActorMessageSenderComponent>().Reply(fromAddress, response);
+                entity.Fiber().GetComponent<ActorSenderComponent>().Reply(fromAddress, response);
             }
             catch (Exception e)
             {

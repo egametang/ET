@@ -12,28 +12,28 @@ namespace ET.Server
         public static async ETTask Add(this LocationProxyComponent self, int type, long key, ActorId actorId)
         {
             Log.Info($"location proxy add {key}, {actorId} {TimeHelper.ServerNow()}");
-            await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(GetLocationSceneId(key),
+            await self.Fiber().GetComponent<ActorSenderComponent>().Call(GetLocationSceneId(key),
                 new ObjectAddRequest() { Type = type, Key = key, ActorId = actorId });
         }
 
         public static async ETTask Lock(this LocationProxyComponent self, int type, long key, ActorId actorId, int time = 60000)
         {
             Log.Info($"location proxy lock {key}, {actorId} {TimeHelper.ServerNow()}");
-            await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(GetLocationSceneId(key),
+            await self.Fiber().GetComponent<ActorSenderComponent>().Call(GetLocationSceneId(key),
                 new ObjectLockRequest() { Type = type, Key = key, ActorId = actorId, Time = time });
         }
 
         public static async ETTask UnLock(this LocationProxyComponent self, int type, long key, ActorId oldActorId, ActorId newActorId)
         {
             Log.Info($"location proxy unlock {key}, {newActorId} {TimeHelper.ServerNow()}");
-            await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(GetLocationSceneId(key),
+            await self.Fiber().GetComponent<ActorSenderComponent>().Call(GetLocationSceneId(key),
                 new ObjectUnLockRequest() { Type = type, Key = key, OldActorId = oldActorId, NewActorId = newActorId });
         }
 
         public static async ETTask Remove(this LocationProxyComponent self, int type, long key)
         {
             Log.Info($"location proxy add {key}, {TimeHelper.ServerNow()}");
-            await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(GetLocationSceneId(key),
+            await self.Fiber().GetComponent<ActorSenderComponent>().Call(GetLocationSceneId(key),
                 new ObjectRemoveRequest() { Type = type, Key = key });
         }
 
@@ -46,7 +46,7 @@ namespace ET.Server
 
             // location server配置到共享区，一个大战区可以配置N多个location server,这里暂时为1
             ObjectGetResponse response =
-                    (ObjectGetResponse) await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(GetLocationSceneId(key),
+                    (ObjectGetResponse) await self.Fiber().GetComponent<ActorSenderComponent>().Call(GetLocationSceneId(key),
                         new ObjectGetRequest() { Type = type, Key = key });
             return response.ActorId;
         }

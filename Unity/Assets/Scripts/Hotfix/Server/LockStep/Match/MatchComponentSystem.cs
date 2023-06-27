@@ -30,7 +30,7 @@ namespace ET.Server
             }
             self.waitMatchPlayers.Clear();
             
-            Map2Match_GetRoom map2MatchGetRoom = await self.Fiber().GetComponent<ActorMessageSenderComponent>().Call(
+            Map2Match_GetRoom map2MatchGetRoom = await self.Fiber().GetComponent<ActorSenderComponent>().Call(
                 startSceneConfig.ActorId, match2MapGetRoom) as Map2Match_GetRoom;
 
             Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };

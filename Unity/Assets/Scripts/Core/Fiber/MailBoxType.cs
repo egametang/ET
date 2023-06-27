@@ -3,7 +3,7 @@
     public enum MailBoxType
     {
         OrderedMessage = 1,
-        UnOrderMessage,
+        UnOrderedMessage,
         GateSession,
     }
 }

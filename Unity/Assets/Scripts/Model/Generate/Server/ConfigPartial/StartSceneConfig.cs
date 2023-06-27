@@ -6,21 +6,21 @@ namespace ET
 {
     public partial class StartSceneConfigCategory
     {
-        public MultiMap<int, StartSceneConfig> Gates = new MultiMap<int, StartSceneConfig>();
+        public MultiMap<int, StartSceneConfig> Gates = new();
         
-        public MultiMap<int, StartSceneConfig> ProcessScenes = new MultiMap<int, StartSceneConfig>();
+        public MultiMap<int, StartSceneConfig> ProcessScenes = new();
         
-        public Dictionary<long, Dictionary<string, StartSceneConfig>> ClientScenesByName = new Dictionary<long, Dictionary<string, StartSceneConfig>>();
+        public Dictionary<long, Dictionary<string, StartSceneConfig>> ClientScenesByName = new();
 
         public StartSceneConfig LocationConfig;
 
-        public List<StartSceneConfig> Realms = new List<StartSceneConfig>();
+        public List<StartSceneConfig> Realms = new();
         
-        public List<StartSceneConfig> Routers = new List<StartSceneConfig>();
+        public List<StartSceneConfig> Routers = new();
         
-        public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
+        public List<StartSceneConfig> Robots = new();
         
-        public List<StartSceneConfig> Maps = new List<StartSceneConfig>();
+        public List<StartSceneConfig> Maps = new();
 
         public StartSceneConfig BenchmarkServer;
 
@@ -35,7 +35,7 @@ namespace ET
         {
             return this.ClientScenesByName[zone][name];
         }
-
+        
         public override void EndInit()
         {
             foreach (StartSceneConfig startSceneConfig in this.GetAll().Values)

@@ -3,7 +3,7 @@
 namespace ET
 {
 	[Flags]
-	public enum SceneType: ulong
+	public enum SceneType: long
 	{
 		None = 0,
 		Process = 1,
@@ -25,12 +25,14 @@ namespace ET
 		LockStepServer = 1 << 17,
 		Main = 1 << 18,
 
-		// 客户端Model层
+		// 客户端
 		Demo = 1 << 30,
-		Current = 1ul << 31,
-		LockStep = 1ul << 32,
+		Current = 1L << 31,
+		LockStep = 1L << 32,
+		LockStepView = 1L << 33,
+		DemoView = 1L << 34,
 
-		All = ulong.MaxValue,
+		All = long.MaxValue,
 	}
 
 	public static class SceneTypeHelper
