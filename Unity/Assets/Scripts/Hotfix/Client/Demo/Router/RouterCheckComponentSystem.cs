@@ -16,7 +16,6 @@ namespace ET.Client
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;
             Fiber fiber = self.Fiber();
-            
             while (true)
             {
                 if (self.InstanceId != instanceId)
@@ -42,7 +41,7 @@ namespace ET.Client
                 {
                     long sessionId = session.Id;
 
-                    (uint localConn, uint remoteConn) = NetServices.Instance.GetChannelConn(session.ServiceId, sessionId);
+                    (uint localConn, uint remoteConn) = session.AService.GetChannelConn(sessionId);
                     
                     IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
                     Log.Info($"get recvLocalConn start: {self.ClientScene().Id} {realAddress} {localConn} {remoteConn}");
@@ -58,7 +57,7 @@ namespace ET.Client
                     
                     session.LastRecvTime = TimeHelper.ClientNow();
                     
-                    NetServices.Instance.ChangeAddress(session.ServiceId, sessionId, routerAddress);
+                    session.AService.ChangeAddress(sessionId, routerAddress);
                 }
                 catch (Exception e)
                 {

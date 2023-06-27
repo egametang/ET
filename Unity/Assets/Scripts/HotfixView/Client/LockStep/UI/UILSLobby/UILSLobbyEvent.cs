@@ -8,8 +8,9 @@ namespace ET.Client
         public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
         {
             await ETTask.CompletedTask;
-            await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAsync(UIType.UILSLobby.StringToAB());
-            GameObject bundleGameObject = (GameObject) ResourcesComponent.Instance.GetAsset(UIType.UILSLobby.StringToAB(), UIType.UILSLobby);
+            ResourcesComponent resourcesComponent = uiComponent.Fiber().GetComponent<ResourcesComponent>();
+            await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAsync(resourcesComponent.StringToAB(UIType.UILSLobby));
+            GameObject bundleGameObject = (GameObject) resourcesComponent.GetAsset(resourcesComponent.StringToAB(UIType.UILSLobby), UIType.UILSLobby);
             GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UIEventComponent.Instance.GetLayer((int)uiLayer));
             UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILSLobby, gameObject);
 
@@ -19,7 +20,6 @@ namespace ET.Client
 
         public override void OnRemove(UIComponent uiComponent)
         {
-            ResourcesComponent.Instance.UnloadBundle(UIType.UILSLobby.StringToAB());
         }
     }
 }

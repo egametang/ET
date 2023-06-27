@@ -59,7 +59,7 @@ namespace ET
     }
     
     [ChildOf(typeof(CoroutineLockQueueType))]
-    public class CoroutineLockQueue: Entity, IAwake<int>
+    public class CoroutineLockQueue: Entity, IAwake<int>, IDestroy
     {
         public int type;
 

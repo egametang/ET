@@ -58,26 +58,6 @@ namespace ET
 #if ENABLE_IL2CPP
 		[AOT.MonoPInvokeCallback(typeof(KcpOutput))]
 #endif
-        private static void KcpLog(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
-        {
-            try
-            {
-                unsafe
-                {
-                    //Marshal.Copy(bytes, logBuffer, 0, len);
-                    Span<byte> span = new Span<byte>(bytes.ToPointer(), len);
-                    Log.Info(span.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
-
-#if ENABLE_IL2CPP
-		[AOT.MonoPInvokeCallback(typeof(KcpOutput))]
-#endif
         private static int KcpOutput(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
         {
             try
@@ -87,7 +67,7 @@ namespace ET
                     return 0;
                 }
                 
-                KService kService = NetServices.Instance.Get((int)user.ToInt64()) as KService;
+                KService kService = NetServices.Instance.Get(user.ToInt64()) as KService;
                 
                 if (!kService.KcpPtrChannels.TryGetValue(kcp.ToInt64(), out KChannel kChannel))
                 {
@@ -321,7 +301,7 @@ namespace ET
                                 kChannel.RealAddress = realAddress;
 
                                 IPEndPoint realEndPoint = kChannel.RealAddress == null? kChannel.RemoteAddress : NetworkHelper.ToIPEndPoint(kChannel.RealAddress);
-                                NetServices.Instance.OnAccept(this.Id, kChannel.Id, realEndPoint);
+                                this.AcceptCallback(kChannel.Id, realEndPoint);
                             }
                             if (kChannel.RemoteConn != remoteConn)
                             {

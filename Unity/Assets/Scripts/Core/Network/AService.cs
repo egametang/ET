@@ -6,7 +6,11 @@ namespace ET
 {
     public abstract class AService: IDisposable
     {
-        public int Id { get; set; }
+        public Action<long, IPEndPoint> AcceptCallback;
+        public Action<long, ActorId, object> ReadCallback;
+        public Action<long, int> ErrorCallback;
+        
+        public long Id { get; set; }
         
         public ServiceType ServiceType { get; protected set; }
         
@@ -31,9 +35,15 @@ namespace ET
             this.lastMessageInfo = (message, stream);
             return stream;
         }
+
+        public AService()
+        {
+            NetServices.Instance.Add(this);
+        }
         
         public virtual void Dispose()
         {
+            NetServices.Instance.Remove(this.Id);
         }
 
         public abstract void Update();

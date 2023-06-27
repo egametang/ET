@@ -11,6 +11,6 @@ namespace ET.Server
     [ComponentOf(typeof(Scene))]
     public class NetServerComponent: Entity, IAwake<IPEndPoint>, IDestroy
     {
-        public int ServiceId;
+        public AService AService;
     }
 }

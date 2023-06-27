@@ -9,57 +9,50 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this NetInnerComponent self)
         {
-            NetServices netServices = self.Fiber().GetComponent<NetServices>();
             switch (self.InnerProtocol)
             {
                 case NetworkProtocol.TCP:
                 {
-                    self.ServiceId = netServices.AddService(new TService(AddressFamily.InterNetwork, ServiceType.Inner));
+                    self.AService = new TService(AddressFamily.InterNetwork, ServiceType.Inner);
                     break;
                 }
                 case NetworkProtocol.KCP:
                 {
-                    self.ServiceId = netServices.AddService(new KService(AddressFamily.InterNetwork, ServiceType.Inner));
+                    self.AService = new KService(AddressFamily.InterNetwork, ServiceType.Inner);
                     break;
                 }
             }
                 
-            netServices.RegisterReadCallback(self.ServiceId, self.OnRead);
-            netServices.RegisterErrorCallback(self.ServiceId, self.OnError);
+            self.AService.ReadCallback = self.OnRead;
+            self.AService.ErrorCallback = self.OnError;
         }
 
         [EntitySystem]
         private static void Awake(this NetInnerComponent self, IPEndPoint address)
         {
-            NetServices netServices = self.Fiber().GetComponent<NetServices>();
             switch (self.InnerProtocol)
             {
                 case NetworkProtocol.TCP:
                 {
-                    self.ServiceId = netServices.AddService(new TService(address, ServiceType.Inner));
+                    self.AService = new TService(address, ServiceType.Inner);
                     break;
                 }
                 case NetworkProtocol.KCP:
                 {
-                    self.ServiceId = netServices.AddService(new KService(address, ServiceType.Inner));
+                    self.AService = new KService(address, ServiceType.Inner);
                     break;
                 }
             }
                 
-            netServices.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
-            netServices.RegisterReadCallback(self.ServiceId, self.OnRead);
-            netServices.RegisterErrorCallback(self.ServiceId, self.OnError);
+            self.AService.AcceptCallback = self.OnAccept;
+            self.AService.ReadCallback = self.OnRead;
+            self.AService.ErrorCallback = self.OnError;
         }
 
         [EntitySystem]
         private static void Destroy(this NetInnerComponent self)
         {
-            if (self.Fiber().InstanceId == 0)
-            {
-                return;
-            }
-            NetServices netServices = self.Fiber().GetComponent<NetServices>();
-            netServices.RemoveService(self.ServiceId);
+            self.AService.Dispose();
         }
 
         private static void OnRead(this NetInnerComponent self, long channelId, ActorId actorId, object message)
@@ -96,17 +89,16 @@ namespace ET.Server
         // 这个channelId是由CreateAcceptChannelId生成的
         private static void OnAccept(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
         {
-            Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
 
         private static Session CreateInner(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
         {
-            Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
-            NetServices netServices = self.Fiber().GetComponent<NetServices>();
-            netServices.CreateChannel(self.ServiceId, channelId, ipEndPoint);
+            self.AService.Create(channelId, ipEndPoint);
 
             //session.AddComponent<InnerPingComponent>();
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);

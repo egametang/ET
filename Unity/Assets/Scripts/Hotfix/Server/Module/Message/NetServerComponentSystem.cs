@@ -9,18 +9,16 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this NetServerComponent self, IPEndPoint address)
         {
-            NetServices netServices = self.Fiber().GetComponent<NetServices>();
-            self.ServiceId = netServices.AddService(new KService(address, ServiceType.Outer));
-            netServices.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
-            netServices.RegisterReadCallback(self.ServiceId, self.OnRead);
-            netServices.RegisterErrorCallback(self.ServiceId, self.OnError);
+            self.AService = new KService(address, ServiceType.Outer);
+            self.AService.AcceptCallback = self.OnAccept;
+            self.AService.ReadCallback = self.OnRead;
+            self.AService.ErrorCallback = self.OnError;
         }
 
         [EntitySystem]
         private static void Destroy(this NetServerComponent self)
         {
-            NetServices netServices = self.Fiber().GetComponent<NetServices>();
-            netServices.RemoveService(self.ServiceId);
+            self.AService.Dispose();
         }
 
         private static void OnError(this NetServerComponent self, long channelId, int error)
@@ -38,7 +36,7 @@ namespace ET.Server
         // 这个channelId是由CreateAcceptChannelId生成的
         private static void OnAccept(this NetServerComponent self, long channelId, IPEndPoint ipEndPoint)
         {
-            Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
 
             if (self.IScene.SceneType != SceneType.BenchmarkServer)

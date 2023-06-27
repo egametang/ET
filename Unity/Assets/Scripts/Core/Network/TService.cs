@@ -24,13 +24,13 @@ namespace ET
 	
 	public sealed class TService : AService
 	{
-		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
+		private readonly Dictionary<long, TChannel> idChannels = new();
 
-		private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
+		private readonly SocketAsyncEventArgs innArgs = new();
 		
 		private Socket acceptor;
 
-		public ConcurrentQueue<TArgs> Queue = new ConcurrentQueue<TArgs>();
+		public ConcurrentQueue<TArgs> Queue = new();
 
 		public TService(AddressFamily addressFamily, ServiceType serviceType)
 		{
@@ -40,7 +40,6 @@ namespace ET
 		public TService(IPEndPoint ipEndPoint, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
-			
 			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			// 容易出问题，先注释掉，按需开启
 			//this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
@@ -91,7 +90,7 @@ namespace ET
 				this.idChannels.Add(channel.Id, channel);
 				long channelId = channel.Id;
 				
-				NetServices.Instance.OnAccept(this.Id, channelId, channel.RemoteAddress);
+				this.AcceptCallback(channelId, channel.RemoteAddress);
 			}
 			catch (Exception exception)
 			{
@@ -168,7 +167,7 @@ namespace ET
 				TChannel aChannel = this.Get(channelId);
 				if (aChannel == null)
 				{
-					NetServices.Instance.OnError(this.Id, channelId, ErrorCore.ERR_SendMessageNotFoundTChannel);
+					this.ErrorCallback(channelId, ErrorCore.ERR_SendMessageNotFoundTChannel);
 					return;
 				}
 				

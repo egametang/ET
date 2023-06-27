@@ -11,6 +11,6 @@ namespace ET.Client
     [ComponentOf(typeof(Scene))]
     public class NetClientComponent: Entity, IAwake<AddressFamily>, IDestroy
     {
-        public int ServiceId;
+        public AService AService;
     }
 }

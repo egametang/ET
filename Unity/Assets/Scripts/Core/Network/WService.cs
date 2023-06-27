@@ -105,7 +105,7 @@ namespace ET
 
                         this.channels[channel.Id] = channel;
 
-                        NetServices.Instance.OnAccept(this.Id, channel.Id, channel.RemoteAddress);
+                        this.AcceptCallback(channel.Id, channel.RemoteAddress);
                     }
                     catch (Exception e)
                     {

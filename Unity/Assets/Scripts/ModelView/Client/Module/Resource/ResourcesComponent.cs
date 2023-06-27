@@ -57,47 +57,48 @@ namespace ET.Client
     [FriendOf(typeof (ResourcesComponent))]
     public static class AssetBundleHelper
     {
-        public static string IntToString(this int value)
+        public static string IntToString(this ResourcesComponent resourcesComponent, int value)
         {
             string result;
-            if (ResourcesComponent.Instance.IntToStringDict.TryGetValue(value, out result))
+            if (resourcesComponent.IntToStringDict.TryGetValue(value, out result))
             {
                 return result;
             }
 
             result = value.ToString();
-            ResourcesComponent.Instance.IntToStringDict[value] = result;
+            resourcesComponent.IntToStringDict[value] = result;
             return result;
         }
 
-        public static string StringToAB(this string value)
+        public static string StringToAB(this ResourcesComponent resourcesComponent, string value)
         {
             string result;
-            if (ResourcesComponent.Instance.StringToABDict.TryGetValue(value, out result))
+            if (resourcesComponent.StringToABDict.TryGetValue(value, out result))
             {
                 return result;
             }
 
             result = value + ".unity3d";
-            ResourcesComponent.Instance.StringToABDict[value] = result;
+            resourcesComponent.StringToABDict[value] = result;
             return result;
         }
 
-        public static string IntToAB(this int value)
+        public static string IntToAB(this ResourcesComponent resourcesComponent, int value)
         {
-            return value.IntToString().StringToAB();
+            string s = resourcesComponent.IntToString(value);
+            return resourcesComponent.StringToAB(s);
         }
 
-        public static string BundleNameToLower(this string value)
+        public static string BundleNameToLower(this ResourcesComponent resourcesComponent, string value)
         {
             string result;
-            if (ResourcesComponent.Instance.BundleNameToLowerDict.TryGetValue(value, out result))
+            if (resourcesComponent.BundleNameToLowerDict.TryGetValue(value, out result))
             {
                 return result;
             }
 
             result = value.ToLower();
-            ResourcesComponent.Instance.BundleNameToLowerDict[value] = result;
+            resourcesComponent.BundleNameToLowerDict[value] = result;
             return result;
         }
     }
@@ -206,7 +207,7 @@ namespace ET.Client
         public static UnityEngine.Object GetAsset(this ResourcesComponent self, string bundleName, string prefab)
         {
             Dictionary<string, UnityEngine.Object> dict;
-            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
+            if (!self.resourceCache.TryGetValue(self.BundleNameToLower(bundleName), out dict))
             {
                 throw new Exception($"not found asset: {bundleName} {prefab}");
             }
@@ -223,7 +224,7 @@ namespace ET.Client
         // 一帧卸载一个包，避免卡死
         public static async ETTask UnloadBundleAsync(this ResourcesComponent self, string assetBundleName, bool unload = true)
         {
-            assetBundleName = assetBundleName.BundleNameToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
 
             string[] dependencies = self.GetSortedDependencies(assetBundleName);
 
@@ -243,7 +244,7 @@ namespace ET.Client
         // 只允许场景设置unload为false
         public static void UnloadBundle(this ResourcesComponent self, string assetBundleName, bool unload = true)
         {
-            assetBundleName = assetBundleName.BundleNameToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
 
             string[] dependencies = self.GetSortedDependencies(assetBundleName);
 
@@ -258,7 +259,7 @@ namespace ET.Client
 
         private static void UnloadOneBundle(this ResourcesComponent self, string assetBundleName, bool unload = true)
         {
-            assetBundleName = assetBundleName.BundleNameToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
 
             ABInfo abInfo;
             if (!self.bundles.TryGetValue(assetBundleName, out abInfo))
@@ -289,7 +290,7 @@ namespace ET.Client
         /// <returns></returns>
         public static void LoadBundle(this ResourcesComponent self, string assetBundleName)
         {
-            assetBundleName = assetBundleName.ToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
 
             string[] dependencies = self.GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
@@ -309,7 +310,7 @@ namespace ET.Client
         private static void AddResource(this ResourcesComponent self, string bundleName, string assetName, UnityEngine.Object resource)
         {
             Dictionary<string, UnityEngine.Object> dict;
-            if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
+            if (!self.resourceCache.TryGetValue(self.BundleNameToLower(bundleName), out dict))
             {
                 dict = new Dictionary<string, UnityEngine.Object>();
                 self.resourceCache[bundleName] = dict;
@@ -320,7 +321,7 @@ namespace ET.Client
 
         private static void LoadOneBundle(this ResourcesComponent self, string assetBundleName)
         {
-            assetBundleName = assetBundleName.BundleNameToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
             ABInfo abInfo;
             if (self.bundles.TryGetValue(assetBundleName, out abInfo))
             {
@@ -397,7 +398,7 @@ namespace ET.Client
         /// </summary>
         public static async ETTask LoadBundleAsync(this ResourcesComponent self, string assetBundleName)
         {
-            assetBundleName = assetBundleName.BundleNameToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
 
             string[] dependencies = self.GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load async start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
@@ -442,7 +443,7 @@ namespace ET.Client
 
         private static async ETTask<ABInfo> LoadOneBundleAsync(this ResourcesComponent self, string assetBundleName)
         {
-            assetBundleName = assetBundleName.BundleNameToLower();
+            assetBundleName = self.BundleNameToLower(assetBundleName);
             ABInfo abInfo;
             if (self.bundles.TryGetValue(assetBundleName, out abInfo))
             {
@@ -552,7 +553,7 @@ namespace ET.Client
     }
 
     [ComponentOf(typeof(Fiber))]
-    public class ResourcesComponent: SingletonEntity<ResourcesComponent>, IAwake, IDestroy
+    public class ResourcesComponent: Entity, IAwake, IDestroy
     {
         public AssetBundleManifest AssetBundleManifestObject { get; set; }
 

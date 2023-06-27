@@ -6,16 +6,20 @@ namespace ET.Client
     [Event(SceneType.Process)]
     public class EntryEvent3_InitClient: AEvent<Fiber, ET.EventType.EntryEvent3>
     {
-        protected override async ETTask Run(Fiber scene, ET.EventType.EntryEvent3 args)
+        protected override async ETTask Run(Fiber fiber, ET.EventType.EntryEvent3 args)
         {
-            // 加载配置
-            scene.AddComponent<ResourcesComponent>();
-
-            await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
-
-            SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalComponent.Instance.GlobalConfig.AppType.ToString());
+            World.Instance.AddSingleton<UIEventComponent>();
             
-            Scene clientScene = await SceneFactory.CreateClientScene(scene, 1, sceneType, sceneType.ToString());
+            // 加载配置
+            ResourcesComponent resourcesComponent = fiber.AddComponent<ResourcesComponent>();
+
+            await resourcesComponent.LoadBundleAsync("unit.unity3d");
+
+            GlobalComponent globalComponent = fiber.GetComponent<GlobalComponent>();
+
+            SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
+            
+            Scene clientScene = await SceneFactory.CreateClientScene(fiber, 1, sceneType, sceneType.ToString());
             
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }

@@ -230,7 +230,7 @@ namespace ET
                         break;
                     }
                 }
-                NetServices.Instance.OnRead(this.Service.Id, channelId, new ActorId(), message);
+                this.Service.ReadCallback(channelId, new ActorId(), message);
             }
             catch (Exception e)
             {
@@ -248,7 +248,7 @@ namespace ET
 			
             this.Service.Remove(channelId);
 			
-            NetServices.Instance.OnError(this.Service.Id, channelId, error);
+            this.Service.ErrorCallback(channelId, error);
         }
     }
 }

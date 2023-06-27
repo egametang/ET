@@ -21,9 +21,9 @@ namespace ET
     public static partial class SessionSystem
     {
         [EntitySystem]
-        private static void Awake(this Session self, int serviceId)
+        private static void Awake(this Session self, AService aService)
         {
-            self.ServiceId = serviceId;
+            self.AService = aService;
             long timeNow = TimeHelper.ClientNow();
             self.LastRecvTime = timeNow;
             self.LastSendTime = timeNow;
@@ -36,7 +36,7 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this Session self)
         {
-            self.Fiber().GetComponent<NetServices>().RemoveChannel(self.ServiceId, self.Id, self.Error);
+            self.AService.Remove(self.Id, self.Error);
             
             foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
             {
@@ -103,7 +103,7 @@ namespace ET
         public static async ETTask<IResponse> Call(this Session self, IRequest request)
         {
             int rpcId = ++Session.RpcId;
-            RpcInfo rpcInfo = new RpcInfo(request);
+            RpcInfo rpcInfo = new(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
             self.Send(request);
@@ -119,14 +119,14 @@ namespace ET
         {
             self.LastSendTime = TimeHelper.ClientNow();
             Log.Debug(message.ToString());
-            self.Fiber().GetComponent<NetServices>().SendMessage(self.ServiceId, self.Id, actorId, message as MessageObject);
+            self.AService.Send(self.Id, actorId, message as MessageObject);
         }
     }
 
     [ChildOf]
-    public sealed class Session: Entity, IAwake<int>, IDestroy
+    public sealed class Session: Entity, IAwake<AService>, IDestroy
     {
-        public int ServiceId { get; set; }
+        public AService AService { get; set; }
         
         public static int RpcId
         {
@@ -134,7 +134,7 @@ namespace ET
             set;
         }
 
-        public readonly Dictionary<int, RpcInfo> requestCallbacks = new Dictionary<int, RpcInfo>();
+        public readonly Dictionary<int, RpcInfo> requestCallbacks = new();
         
         public long LastRecvTime
         {

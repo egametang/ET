@@ -30,12 +30,12 @@ namespace ET.Client
                     using CoroutineLock coroutineLock =
                             await coroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
                     {
-                        if (ResourcesComponent.Instance == null)
+                        if (self.Fiber().IsDisposed)
                         {
                             return;
                         }
 
-                        await ResourcesComponent.Instance.UnloadBundleAsync(abName);
+                        await self.Fiber().GetComponent<ResourcesComponent>().UnloadBundleAsync(abName);
                     }
                 }
             }
@@ -59,7 +59,7 @@ namespace ET.Client
             }
 
             self.LoadedResource.Add(ab);
-            await ResourcesComponent.Instance.LoadBundleAsync(ab);
+            await self.Fiber().GetComponent<ResourcesComponent>().LoadBundleAsync(ab);
         }
     }
 
