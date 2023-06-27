@@ -32,14 +32,14 @@ namespace ET.Client
             RouterAddressComponent routerAddressComponent = clientScene.GetComponent<RouterAddressComponent>();
             IPEndPoint routerInfo = routerAddressComponent.GetAddress();
             
-            uint recvLocalConn = await Connect(routerInfo, address, localConn, remoteConn);
+            uint recvLocalConn = await Connect(clientScene, routerInfo, address, localConn, remoteConn);
             
             Log.Info($"finish get router address: {clientScene.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
             return (recvLocalConn, routerInfo);
         }
 
         // 向router申请
-        private static async ETTask<uint> Connect(IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
+        private static async ETTask<uint> Connect(Scene clientScene, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
             uint connectId = RandomGenerator.RandUInt32();
             
@@ -78,7 +78,7 @@ namespace ET.Client
                     socket.SendTo(sendCache, 0, addressBytes.Length + 13, SocketFlags.None, routerAddress);
                 }
                     
-                await Fiber.Instance.GetComponent<TimerComponent>().WaitFrameAsync();
+                await clientScene.Fiber().GetComponent<TimerComponent>().WaitFrameAsync();
                     
                 // 接收
                 if (socket.Available > 0)

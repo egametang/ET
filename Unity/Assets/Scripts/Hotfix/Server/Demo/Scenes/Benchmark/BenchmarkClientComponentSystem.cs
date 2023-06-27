@@ -19,7 +19,7 @@ namespace ET.Server
         {
             await self.Fiber().GetComponent<TimerComponent>().WaitAsync(1000);
 
-            Scene scene = await SceneFactory.CreateServerScene(self, Fiber.Instance.IdGenerater.GenerateId(), Fiber.Instance.IdGenerater.GenerateInstanceId(),
+            Scene scene = await SceneFactory.CreateServerScene(self, self.Fiber().IdGenerater.GenerateId(), self.Fiber().IdGenerater.GenerateInstanceId(),
                 self.DomainZone(), "bechmark", SceneType.Benchmark);
             
             Client.NetClientComponent netClientComponent = scene.AddComponent<Client.NetClientComponent, AddressFamily>(AddressFamily.InterNetwork);
