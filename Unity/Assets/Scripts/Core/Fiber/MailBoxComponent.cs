@@ -4,11 +4,13 @@
     public static partial class MailBoxComponentSystem
     {
         [EntitySystem]       
-        private static void Awake(this MailBoxComponent self, MailboxType mailboxType)
+        private static void Awake(this MailBoxComponent self, MailBoxType mailBoxType)
         {
-            self.MailboxType = mailboxType;
+            Fiber fiber = self.Fiber();
+            self.MailBoxType = mailBoxType;
             self.ParentInstanceId = self.Parent.InstanceId;
-            self.Fiber().Mailboxes.Add(self);
+            fiber.Mailboxes.Add(self);
+            self.CoroutineLockComponent = fiber.GetComponent<CoroutineLockComponent>();
         }
         
         [EntitySystem]
@@ -18,20 +20,30 @@
         }
 
         // 加到mailbox
-        public static void Add(this MailBoxComponent self, MessageObject messageObject)
+        public static void Add(this MailBoxComponent self, Address fromAddress, MessageObject messageObject)
         {
-            
+            // 根据mailboxType进行分发处理
+            EventSystem.Instance.Invoke((int)self.MailBoxType, new MailBoxInvoker() {MailBoxComponent = self, MessageObject = messageObject, FromAddress = fromAddress});
         }
+    }
+
+    public struct MailBoxInvoker
+    {
+        public Address FromAddress;
+        public MessageObject MessageObject;
+        public MailBoxComponent MailBoxComponent;
     }
     
     /// <summary>
     /// 挂上这个组件表示该Entity是一个Actor,接收的消息将会队列处理
     /// </summary>
     [ComponentOf]
-    public class MailBoxComponent: Entity, IAwake<MailboxType>, IDestroy
+    public class MailBoxComponent: Entity, IAwake<MailBoxType>, IDestroy
     {
-        public long ParentInstanceId;
+        public long ParentInstanceId { get; set; }
         // Mailbox的类型
-        public MailboxType MailboxType { get; set; }
+        public MailBoxType MailBoxType { get; set; }
+
+        public EntityRef<CoroutineLockComponent> CoroutineLockComponent { get; set; }
     }
 }

@@ -90,7 +90,7 @@ namespace ET
             this.ActorMessageHandlers[type].Add(handler);
         }
 
-        public async ETTask Handle(Entity entity, ActorId actorId, object message)
+        public async ETTask Handle(Entity entity, Address fromAddress, object message)
         {
             List<ActorMessageDispatcherInfo> list;
             if (!this.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
@@ -105,7 +105,7 @@ namespace ET
                 {
                     continue;
                 }
-                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, actorId, message);   
+                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, fromAddress, message);   
             }
         }
     }

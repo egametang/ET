@@ -8,7 +8,7 @@ namespace ET.Server
         public object Message;
     }
     
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf(typeof(Fiber))]
     public class NetServerComponent: Entity, IAwake<IPEndPoint>, IDestroy
     {
         public AService AService;

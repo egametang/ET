@@ -8,8 +8,8 @@ namespace ET.Server
     {
         protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response)
         {
-            Scene scene = session.Scene();
-            string account = scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
+            Fiber fiber = session.Fiber();
+            string account = fiber.GetComponent<GateSessionKeyComponent>().Get(request.Key);
             if (account == null)
             {
                 response.Error = ErrorCore.ERR_ConnectGateKeyError;
@@ -19,17 +19,17 @@ namespace ET.Server
             
             session.RemoveComponent<SessionAcceptTimeoutComponent>();
 
-            PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = fiber.GetComponent<PlayerComponent>();
             Player player = playerComponent.GetByAccount(account);
             if (player == null)
             {
                 player = playerComponent.AddChild<Player, string>(account);
                 playerComponent.Add(player);
                 PlayerSessionComponent playerSessionComponent = player.AddComponent<PlayerSessionComponent>();
-                playerSessionComponent.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
+                playerSessionComponent.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.GateSession);
                 await playerSessionComponent.AddLocation(LocationType.GateSession);
 			
-                player.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
+                player.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderMessage);
                 await player.AddLocation(LocationType.Player);
 			
                 session.AddComponent<SessionPlayerComponent>().Player = player;

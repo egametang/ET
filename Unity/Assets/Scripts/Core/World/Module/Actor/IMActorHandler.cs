@@ -4,7 +4,7 @@ namespace ET
 {
     public interface IMActorHandler
     {
-        ETTask Handle(Entity entity, ActorId actorId, object actorMessage);
+        ETTask Handle(Entity entity, Address fromAddress, object actorMessage);
         Type GetRequestType();
         Type GetResponseType();
     }

@@ -7,7 +7,7 @@ namespace ET.Server
     {
         protected abstract ETTask Run(E entity, Message message);
 
-        public async ETTask Handle(Entity entity, ActorId actorId, object actorMessage)
+        public async ETTask Handle(Entity entity, Address fromAddress, object actorMessage)
         {
             if (actorMessage is not Message message)
             {
@@ -22,7 +22,7 @@ namespace ET.Server
             }
             
             ActorResponse response = new() {RpcId = message.RpcId};
-            entity.Fiber().GetComponent<ActorMessageSenderComponent>().Reply(actorId, response);
+            entity.Fiber().GetComponent<ActorMessageSenderComponent>().Reply(fromAddress, response);
 
             await this.Run(e, message);
         }
@@ -45,7 +45,7 @@ namespace ET.Server
     {
         protected abstract ETTask Run(E unit, Request request, Response response);
 
-        public async ETTask Handle(Entity entity, ActorId actorId, object actorMessage)
+        public async ETTask Handle(Entity entity, Address fromAddress, object actorMessage)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace ET.Server
                     response.Message = exception.ToString();
                 }
                 response.RpcId = rpcId;
-                entity.Fiber().GetComponent<ActorMessageSenderComponent>().Reply(actorId, response);
+                entity.Fiber().GetComponent<ActorMessageSenderComponent>().Reply(fromAddress, response);
             }
             catch (Exception e)
             {

@@ -16,7 +16,7 @@ namespace ET.Server
 
             room.LSWorld = new LSWorld(SceneType.LockStepServer);
 
-            room.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
+            room.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderMessage);
             
             return room;
         }

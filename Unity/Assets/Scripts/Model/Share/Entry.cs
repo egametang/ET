@@ -59,9 +59,7 @@ namespace ET
 
             Fiber fiber = Fiber.Instance;
             
-            fiber.AddComponent<MainThreadSynchronizationContext>();
-            fiber.AddComponent<TimerComponent>();
-            fiber.AddComponent<CoroutineLockComponent>();
+
 
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
 

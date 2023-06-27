@@ -16,7 +16,7 @@ namespace ET.Server
             Log.Info($"create scene: {sceneType} {name} {zone}");
             Scene scene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name, parent);
 
-            scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
+            scene.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderMessage);
 
             switch (scene.SceneType)
             {

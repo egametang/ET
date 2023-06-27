@@ -89,9 +89,9 @@ namespace ET
             self.TimeoutActorMessageSenders.Clear();
         }
         
-        public static void Reply(this ActorMessageSenderComponent self, ActorId actorId, IMessage message)
+        public static void Reply(this ActorMessageSenderComponent self, Address fromAddress, IMessage message)
         {
-            self.Send(actorId, message);
+            self.Send(new ActorId(fromAddress, 0), message);
         }
 
         public static void Send(this ActorMessageSenderComponent self, ActorId actorId, IMessage message)

@@ -10,7 +10,7 @@ namespace ET.Server
             await ETTask.CompletedTask;
             Scene scene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name, parent);
 
-            scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
+            scene.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderMessage);
 
             switch (scene.SceneType)
             {
@@ -24,12 +24,12 @@ namespace ET.Server
                     scene.AddComponent<HttpComponent, string>($"http://*:{startSceneConfig.OuterPort}/");
                     break;
                 case SceneType.Realm:
-                    scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
+                    //scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
                     break;
                 case SceneType.Gate:
-                    scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
-                    scene.AddComponent<PlayerComponent>();
-                    scene.AddComponent<GateSessionKeyComponent>();
+                    //scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
+                    //scene.AddComponent<PlayerComponent>();
+                    //scene.AddComponent<GateSessionKeyComponent>();
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
@@ -44,7 +44,7 @@ namespace ET.Server
                     break;
                 case SceneType.BenchmarkServer:
                     scene.AddComponent<BenchmarkServerComponent>();
-                    scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
+                    //scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
                     break;
                 case SceneType.BenchmarkClient:
                     scene.AddComponent<BenchmarkClientComponent>();

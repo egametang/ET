@@ -50,6 +50,7 @@ namespace ET
         {
             this.SceneType = sceneType;
             this.Id = id;
+            this.InstanceId = 1;
             this.Process = process;
             this.Root = this;
             this.EntitySystem = new EntitySystem();

@@ -35,16 +35,19 @@ namespace ET
 
                 ActorId actorId = actorMessageInfo.ActorId;
                 MessageObject message = actorMessageInfo.MessageObject;
-                actorId.Address = fiber.Address;
+
                 MailBoxComponent mailBoxComponent = self.Fiber().Mailboxes.Get(actorId.InstanceId);
                 if (mailBoxComponent == null)
                 {
                     Log.Warning($"actor not found mailbox: {actorId} {message}");
-                    IActorResponse resp = ActorHelper.CreateResponse((IActorRequest)message, ErrorCore.ERR_NotFoundActor);
-                    actorMessageSenderComponent.Reply(actorId, resp);
+                    if (message is IActorRequest request)
+                    {
+                        IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                        actorMessageSenderComponent.Reply(actorId.Address, resp);
+                    }
                     return;
                 }
-                mailBoxComponent.Add(message);
+                mailBoxComponent.Add(actorId.Address, message);
             }
         }
     }

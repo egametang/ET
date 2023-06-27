@@ -24,7 +24,7 @@ namespace ET.Server
             unit.AddComponent<PathfindingComponent, string>(scene.Name);
             unit.Position = new float3(-10, 0, -10);
 
-            unit.AddComponent<MailBoxComponent, MailboxType>(MailboxType.OrderedMessage);
+            unit.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.OrderedMessage);
 
             // 通知客户端开始切场景
             M2C_StartSceneChange m2CStartSceneChange = new() { SceneInstanceId = scene.InstanceId, SceneName = scene.Name };
