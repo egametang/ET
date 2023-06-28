@@ -199,13 +199,6 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
-[linux部署，mongo安装，资源服搭建](http://www.tinkingli.com/?p=25)  
-[ET框架心跳包组件开发](http://www.tinkingli.com/?p=111)  
-[ET框架Actor使用与心得](http://www.tinkingli.com/?p=117)  
-[基于ET框架和UGUI的简单UI框架实现（渐渐写）](http://www.tinkingli.com/?p=124)  
-[ET框架笔记 (笑览世界写)](http://www.tinkingli.com/?p=76)  
-[ET框架如何用MAC开发](http://www.tinkingli.com/?p=147)  
-[ET的动态添加事件和触发组件](http://www.tinkingli.com/?p=145)  
 
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
