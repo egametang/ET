@@ -81,7 +81,9 @@ namespace ET.Server
             return (ActorLocationSender) actorLocationSender;
         }
 
-        private static void Remove(this ActorLocationSenderOneType self, long id)
+        // 有需要主动删除actorMessageSender的需求，比如断线重连，玩家登录了不同的Gate，这时候需要通知map删掉之前的actorMessageSender
+        // 然后重新创建新的，重新请求新的ActorId
+        public static void Remove(this ActorLocationSenderOneType self, long id)
         {
             if (!self.Children.TryGetValue(id, out Entity actorMessageSender))
             {

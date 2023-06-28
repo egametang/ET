@@ -69,10 +69,8 @@ namespace ET
                 }
             }
 
-            public override void Dispose()
+            public override void Destroy()
             {
-                base.Dispose();
-                
                 this.isStart = false;
                 foreach (Thread thread in this.threads)
                 {

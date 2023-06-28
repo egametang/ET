@@ -43,10 +43,8 @@ namespace ET
                 }
             }
 
-            public override void Dispose()
+            public override void Destroy()
             {
-                base.Dispose();
-                
                 this.isStart = false;
                 foreach (var kv in this.dictionary)
                 {

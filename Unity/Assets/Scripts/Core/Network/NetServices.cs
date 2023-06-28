@@ -17,15 +17,8 @@ namespace ET
         
         private long idGenerator;
 
-        public override void Dispose()
+        public override void Destroy()
         {
-            if (this.IsDisposed())
-            {
-                return;
-            }
-            
-            base.Dispose();
-            
             foreach (var kv in this.services)
             {
                 kv.Value.Dispose();
