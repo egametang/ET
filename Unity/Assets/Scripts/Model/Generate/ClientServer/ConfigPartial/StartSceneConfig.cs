@@ -135,7 +135,7 @@ namespace ET
 
         public override void EndInit()
         {
-            this.ActorId = new ActorId(this.Process, 0, 0);
+            this.ActorId = new ActorId(this.Process, this.Id, 1);
             this.Type = EnumHelper.FromString<SceneType>(this.SceneType);
         }
     }

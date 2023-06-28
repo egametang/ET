@@ -39,8 +39,7 @@ namespace ET.Server
                         {
                             int index = i % thisProcessRobotScenes.Count;
                             StartSceneConfig robotSceneConfig = thisProcessRobotScenes[index];
-                            Scene robotScene = fiber.GetComponent<ServerSceneManagerComponent>().Get(robotSceneConfig.Id);
-                            RobotManagerComponent robotManagerComponent = robotScene.GetComponent<RobotManagerComponent>();
+                            RobotManagerComponent robotManagerComponent = fiber.GetComponent<RobotManagerComponent>();
                             Scene robot = await robotManagerComponent.NewRobot(Options.Instance.Process * 10000 + i);
                             robot.AddComponent<AIComponent, int>(1);
                             Log.Console($"create robot {robot.Zone}");

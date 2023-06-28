@@ -36,6 +36,7 @@ namespace ET
         
         public IScene Root { get; set; }
         public SceneType SceneType { get; set; }
+        public int Zone { get; set; }
         
         public int Process { get; private set; }
         

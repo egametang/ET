@@ -5,7 +5,7 @@
     {
         protected override async ETTask Run(Session session, G2C_Reconnect message)
         {
-            await LSSceneChangeHelper.SceneChangeToReconnect(session.ClientScene(), message);
+            await LSSceneChangeHelper.SceneChangeToReconnect(session.Fiber(), message);
             await ETTask.CompletedTask;
         }
     }

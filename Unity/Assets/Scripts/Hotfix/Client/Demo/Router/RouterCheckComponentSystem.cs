@@ -44,16 +44,16 @@ namespace ET.Client
                     (uint localConn, uint remoteConn) = session.AService.GetChannelConn(sessionId);
                     
                     IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
-                    Log.Info($"get recvLocalConn start: {self.ClientScene().Id} {realAddress} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn start: {fiber.Id} {realAddress} {localConn} {remoteConn}");
 
-                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(self.ClientScene(), realAddress, localConn, remoteConn);
+                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(self.Fiber(), realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
-                        Log.Error($"get recvLocalConn fail: {self.ClientScene().Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
+                        Log.Error($"get recvLocalConn fail: {fiber.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
                         continue;
                     }
                     
-                    Log.Info($"get recvLocalConn ok: {self.ClientScene().Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn ok: {fiber.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
                     
                     session.LastRecvTime = TimeHelper.ClientNow();
                     

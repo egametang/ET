@@ -16,9 +16,9 @@ namespace ET.Client
 
         public override async ETTask Execute(AIComponent aiComponent, AIConfig aiConfig, ETCancellationToken cancellationToken)
         {
-            Scene clientScene = aiComponent.Scene();
+            Fiber fiber = aiComponent.Fiber();
 
-            Unit myUnit = UnitHelper.GetMyUnitFromClientScene(clientScene);
+            Unit myUnit = UnitHelper.GetMyUnitFromClientScene(fiber);
             if (myUnit == null)
             {
                 return;

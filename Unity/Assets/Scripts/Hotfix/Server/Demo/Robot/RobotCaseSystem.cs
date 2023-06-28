@@ -13,12 +13,6 @@ namespace ET.Server
             {
                 return;
             }
-
-            ClientSceneManagerComponent clientSceneManagerComponent = root.GetComponent<ClientSceneManagerComponent>();
-            foreach (long id in self.Scenes)
-            {
-                clientSceneManagerComponent.Remove(id);
-            }
         }
 
         // 创建机器人，生命周期是RobotCase
@@ -80,9 +74,9 @@ namespace ET.Server
             Scene clientScene = null;
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Fiber(), zone, SceneType.Robot, name);
-                await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
-                await Client.EnterMapHelper.EnterMapAsync(clientScene);
+                clientScene = await Client.SceneFactory.CreateClientFiber(self.Fiber(), zone, SceneType.Robot, name);
+                await Client.LoginHelper.Login(self.Fiber(), zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(self.Fiber());
                 Log.Debug($"create robot ok: {zone}");
                 self.Scenes.Add(clientScene.Id);
                 return clientScene;
@@ -101,9 +95,9 @@ namespace ET.Server
 
             try
             {
-                clientScene = await Client.SceneFactory.CreateClientScene(self.Fiber(), zone, SceneType.Robot, $"Robot_{zone}");
-                await Client.LoginHelper.Login(clientScene, zone.ToString(), zone.ToString());
-                await Client.EnterMapHelper.EnterMapAsync(clientScene);
+                clientScene = await Client.SceneFactory.CreateClientFiber(self.Fiber(), zone, SceneType.Robot, $"Robot_{zone}");
+                await Client.LoginHelper.Login(self.Fiber(), zone.ToString(), zone.ToString());
+                await Client.EnterMapHelper.EnterMapAsync(self.Fiber());
                 Log.Debug($"create robot ok: {zone}");
                 self.Scenes.Add(clientScene.Id);
                 return clientScene;

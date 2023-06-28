@@ -1,6 +1,6 @@
 ﻿namespace ET.Client
 {
-	[ComponentOf(typeof(Scene))]
+	[ComponentOf(typeof(Fiber))]
 	public class SessionComponent: Entity, IAwake, IDestroy
 	{
 		private EntityRef<Session> session;

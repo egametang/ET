@@ -17,13 +17,15 @@ namespace ET
             Entry.Init();
             Init.Start();
             
+            FiberManager.MainThreadScheduler mainThreadScheduler = FiberManager.MainThreadScheduler.Instance;
+            
             while (true)
             {
                 Thread.Sleep(1);
                 try
                 {
-                    FiberManager.MainThreadScheduler.Instance.Update();
-                    FiberManager.MainThreadScheduler.Instance.LateUpdate();
+                    mainThreadScheduler.Update();
+                    mainThreadScheduler.LateUpdate();
                 }
                 catch (Exception e)
                 {

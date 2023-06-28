@@ -50,22 +50,10 @@ namespace ET
             World.Instance.AddSingleton<FiberManager>();
             FiberManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<FiberManager.MainThreadScheduler>();
 
-            int fiberId = FiberManager.Instance.Create(0, SceneType.Main);
+            int fiberId = FiberManager.Instance.Create(ConstFiberId.Main, SceneType.Main);
             mainThreadScheduler.Add(fiberId);
-			
-            // 发送消息
-            ActorMessageQueue.Instance.Send(new ActorId(Options.Instance.Process, fiberId, 1), null);
-
-
-            Fiber fiber = Fiber.Instance;
-            
-
 
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
-
-            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent3());
         }
     }
 }

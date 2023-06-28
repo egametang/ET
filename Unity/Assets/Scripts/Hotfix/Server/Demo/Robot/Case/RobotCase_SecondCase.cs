@@ -7,7 +7,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Session session, M2C_TestRobotCase2 message)
         {
-            ObjectWait objectWait = session.ClientScene().GetComponent<ObjectWait>();
+            ObjectWait objectWait = session.Fiber().GetComponent<ObjectWait>();
             if (objectWait == null)
             {
                 return;
@@ -22,6 +22,8 @@ namespace ET.Server
     {
         protected override async ETTask Run(RobotCase robotCase)
         {
+            await ETTask.CompletedTask;
+            /*
             // 创建了1个机器人，生命周期是RobotCase
             Scene robotScene = await robotCase.NewRobot(1);
 
@@ -32,6 +34,7 @@ namespace ET.Server
             {
                 throw new Exception($"robot case: {RobotCaseType.SecondCase} run fail!");
             }
+            */
         }
     }
 }

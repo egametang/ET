@@ -12,6 +12,7 @@ namespace ET.Server
             StartSceneConfig startSceneConfig = null
         )
         {
+            /*
             await ETTask.CompletedTask;
             Log.Info($"create scene: {sceneType} {name} {zone}");
             Scene scene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name, parent);
@@ -26,6 +27,9 @@ namespace ET.Server
             }
 
             return scene;
+            */
+            await ETTask.CompletedTask;
+            return null;
         }
     }
 }

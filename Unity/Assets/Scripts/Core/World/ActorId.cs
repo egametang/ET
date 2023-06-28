@@ -101,6 +101,12 @@ namespace ET
             }
         }
         
+        public ActorId(int process, int fiber)
+        {
+            this.Address = new Address(process, fiber);
+            this.InstanceId = 1;
+        }
+        
         public ActorId(int process, int fiber, long instanceId)
         {
             this.Address = new Address(process, fiber);

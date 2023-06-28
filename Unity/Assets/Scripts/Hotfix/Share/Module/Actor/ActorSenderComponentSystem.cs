@@ -89,26 +89,34 @@ namespace ET
             self.TimeoutActorMessageSenders.Clear();
         }
         
-        public static void Reply(this ActorSenderComponent self, Address fromAddress, IMessage message)
+        public static void Reply(this ActorSenderComponent self, Address fromAddress, IActorResponse message)
         {
-            self.Send(new ActorId(fromAddress, 0), message);
+            self.SendInner(new ActorId(fromAddress, 0), message as MessageObject);
         }
 
-        public static void Send(this ActorSenderComponent self, ActorId actorId, IMessage message)
+        public static void Send(this ActorSenderComponent self, ActorId actorId, IActorMessage message)
+        {
+            self.SendInner(actorId, message as MessageObject);
+        }
+
+        private static void SendInner(this ActorSenderComponent self, ActorId actorId, MessageObject message)
         {
             if (actorId == default)
             {
                 throw new Exception($"actor id is 0: {message}");
             }
-            
+
+            Fiber fiber = self.Fiber();
             // 如果发向同一个进程，则扔到消息队列中
-            if (actorId.Process == self.Fiber().Process)
+            if (actorId.Process == fiber.Process)
             {
-                ActorMessageQueue.Instance.Send(self.Fiber().Address, actorId, message as MessageObject);
+                ActorMessageQueue.Instance.Send(self.Fiber().Address, actorId, message);
                 return;
             }
-            
+
+            A2NetInner_Message netInnerMessage = new() { FromAddress = fiber.Address, ActorId = actorId, MessageObject = message };
             // 扔到NetInner纤程
+            ActorMessageQueue.Instance.Send(new ActorId(actorId.Process, ConstFiberId.NetInner), netInnerMessage);
         }
 
 
@@ -152,7 +160,7 @@ namespace ET
             
             self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
             
-            self.Send(actorId, iActorRequest);
+            self.SendInner(actorId, iActorRequest as MessageObject);
 
             long beginTime = TimeHelper.ServerFrameTime();
             IActorResponse response = await tcs;

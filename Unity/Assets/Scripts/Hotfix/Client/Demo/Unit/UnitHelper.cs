@@ -2,16 +2,16 @@
 {
     public static partial class UnitHelper
     {
-        public static Unit GetMyUnitFromClientScene(Scene clientScene)
+        public static Unit GetMyUnitFromClientScene(Fiber fiber)
         {
-            PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
-            Scene currentScene = clientScene.GetComponent<CurrentScenesComponent>().Scene;
+            PlayerComponent playerComponent = fiber.GetComponent<PlayerComponent>();
+            Scene currentScene = fiber.GetComponent<CurrentScenesComponent>().Scene;
             return currentScene.GetComponent<UnitComponent>().Get(playerComponent.MyId);
         }
         
         public static Unit GetMyUnitFromCurrentScene(Scene currentScene)
         {
-            PlayerComponent playerComponent = currentScene.Parent.GetParent<Scene>().GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = currentScene.Parent.GetParent<Fiber>().GetComponent<PlayerComponent>();
             return currentScene.GetComponent<UnitComponent>().Get(playerComponent.MyId);
         }
     }

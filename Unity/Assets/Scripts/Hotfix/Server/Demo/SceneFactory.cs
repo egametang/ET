@@ -40,7 +40,7 @@ namespace ET.Server
                     scene.AddComponent<LocationManagerComoponent>();
                     break;
                 case SceneType.Robot:
-                    scene.AddComponent<RobotManagerComponent>();
+                    //scene.AddComponent<RobotManagerComponent>();
                     break;
                 case SceneType.BenchmarkServer:
                     scene.AddComponent<BenchmarkServerComponent>();

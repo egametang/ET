@@ -10,7 +10,7 @@ namespace ET.Client
         private static void Awake(this LSClientUpdater self)
         {
             Room room = self.GetParent<Room>();
-            self.MyId = room.GetParent<Scene>().GetComponent<PlayerComponent>().MyId;
+            self.MyId = room.GetParent<Fiber>().GetComponent<PlayerComponent>().MyId;
         }
         
         [EntitySystem]
@@ -18,7 +18,7 @@ namespace ET.Client
         {
             Room room = self.GetParent<Room>();
             long timeNow = TimeHelper.ServerNow();
-            Scene clientScene = room.GetParent<Scene>();
+            Fiber fiber = room.GetParent<Fiber>();
 
             int i = 0;
             while (true)
@@ -45,7 +45,7 @@ namespace ET.Client
                 FrameMessage frameMessage = FrameMessage.Create(true);
                 frameMessage.Frame = room.PredictionFrame;
                 frameMessage.Input = self.Input;
-                clientScene.GetComponent<SessionComponent>().Session.Send(frameMessage);
+                fiber.GetComponent<SessionComponent>().Session.Send(frameMessage);
                 
                 long timeNow2 = TimeHelper.ServerNow();
                 if (timeNow2 - timeNow > 5)

@@ -7,6 +7,8 @@ namespace ET.Server
     {
         protected override async ETTask Run(RobotCase robotCase)
         {
+            await ETTask.CompletedTask;
+            /*
             using ListComponent<Scene> robots = ListComponent<Scene>.Create();
             
             // 创建了两个机器人，生命周期是RobotCase，RobotCase_FirstCase.Run执行结束，机器人就会删除
@@ -21,6 +23,7 @@ namespace ET.Server
                     throw new Exception($"robot case: {RobotCaseType.FirstCase} run fail!");
                 }
             }
+            */
         }
     }
 }

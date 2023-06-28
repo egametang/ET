@@ -25,7 +25,7 @@ namespace ET.Client
 
         private static async ETTask EnterMap(this UILSLobbyComponent self)
         {
-            await EnterMapHelper.Match(self.ClientScene());
+            await EnterMapHelper.Match(self.Fiber());
         }
         
         private static void Replay(this UILSLobbyComponent self)
@@ -34,7 +34,7 @@ namespace ET.Client
             
             Replay replay = MemoryPackHelper.Deserialize(typeof (Replay), bytes, 0, bytes.Length) as Replay;
             Log.Debug($"start replay: {replay.Snapshots.Count} {replay.FrameInputs.Count} {replay.UnitInfos.Count}");
-            LSSceneChangeHelper.SceneChangeToReplay(self.ClientScene(), replay).Coroutine();
+            LSSceneChangeHelper.SceneChangeToReplay(self.Fiber(), replay).Coroutine();
         }
     }
 }

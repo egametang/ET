@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ET.Client
 {
-    [Event(SceneType.Process)]
+    [Event(SceneType.Main)]
     public class EntryEvent3_InitClient: AEvent<Fiber, ET.EventType.EntryEvent3>
     {
         protected override async ETTask Run(Fiber fiber, ET.EventType.EntryEvent3 args)
@@ -19,7 +19,7 @@ namespace ET.Client
 
             SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
             
-            Scene clientScene = await SceneFactory.CreateClientScene(fiber, 1, sceneType, sceneType.ToString());
+            Scene clientScene = await SceneFactory.CreateClientFiber(fiber, 1, sceneType, sceneType.ToString());
             
             await EventSystem.Instance.PublishAsync(clientScene, new EventType.AppStartInitFinish());
         }
