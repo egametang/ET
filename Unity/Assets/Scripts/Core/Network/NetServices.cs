@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Threading;
 
 namespace ET
@@ -18,8 +15,6 @@ namespace ET
     {
         private readonly ConcurrentDictionary<long, AService> services = new();
         
-        private readonly ConcurrentQueue<MemoryBuffer> pool = new();
-
         private long idGenerator;
 
         public override void Dispose()
@@ -35,44 +30,6 @@ namespace ET
             {
                 kv.Value.Dispose();
             }
-        }
-     
-        public MemoryBuffer FetchMemoryBuffer()
-        {
-            MemoryBuffer memoryBuffer;
-            if (this.pool.TryDequeue(out memoryBuffer))
-            {
-                return memoryBuffer;
-            }
-
-            memoryBuffer = new(128) { IsFromPool = true };
-            return memoryBuffer;
-        }
-
-        public void RecycleMemoryBuffer(MemoryBuffer memoryBuffer)
-        {
-            if (memoryBuffer == null)
-            {
-                return;
-            }
-            
-            if (!memoryBuffer.IsFromPool)
-            {
-                return;
-            }
-            if (memoryBuffer.Capacity > 128) // 太大的不回收，GC
-            {
-                return;
-            }
-
-            if (this.pool.Count > 1000)
-            {
-                return;
-            }
-
-            memoryBuffer.SetLength(0);
-            memoryBuffer.Seek(0, SeekOrigin.Begin);
-            this.pool.Enqueue(memoryBuffer);
         }
 
         public void Add(AService aService)

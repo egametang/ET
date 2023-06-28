@@ -12,11 +12,11 @@ namespace ET
 	{
 		private readonly TService Service;
 		private Socket socket;
-		private SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
-		private SocketAsyncEventArgs outArgs = new SocketAsyncEventArgs();
+		private SocketAsyncEventArgs innArgs = new();
+		private SocketAsyncEventArgs outArgs = new();
 
-		private readonly CircularBuffer recvBuffer = new CircularBuffer();
-		private readonly CircularBuffer sendBuffer = new CircularBuffer();
+		private readonly CircularBuffer recvBuffer = new();
+		private readonly CircularBuffer sendBuffer = new();
 
 		private bool isSending;
 
@@ -98,8 +98,10 @@ namespace ET
 			{
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
-			
-			MemoryBuffer stream = this.Service.Fetch(message);
+
+			MemoryBuffer stream = this.Service.Fetch();
+			MessageSerializeHelper.MessageToStream(stream, message);
+			message.Dispose();
 
 			switch (this.Service.ServiceType)
 			{
@@ -137,6 +139,8 @@ namespace ET
 				//this.StartSend();
 				this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
 			}
+			
+			this.Service.Recycle(stream);
 		}
 
 		public void ConnectAsync()
@@ -250,13 +254,15 @@ namespace ET
 				}
 				try
 				{
-					bool ret = this.parser.Parse();
+					bool ret = this.parser.Parse(out MemoryBuffer memoryBuffer);
 					if (!ret)
 					{
 						break;
 					}
 					
-					this.OnRead(this.parser.MemoryStream);
+					this.OnRead(memoryBuffer);
+					
+					this.Service.Recycle(memoryBuffer);
 				}
 				catch (Exception ee)
 				{

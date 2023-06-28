@@ -1,14 +1,12 @@
 using System;
 using System.Buffers;
 using System.IO;
-using MemoryPack;
 
 namespace ET
 {
     public class MemoryBuffer: MemoryStream, IBufferWriter<byte>
     {
         private int origin;
-        public bool IsFromPool;
         
         public MemoryBuffer()
         {
@@ -25,11 +23,6 @@ namespace ET
         public MemoryBuffer(byte[] buffer, int index, int length): base(buffer, index, length)
         {
             this.origin = index;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            this.Seek(0, SeekOrigin.Begin);
         }
         
         public ReadOnlyMemory<byte> WrittenMemory => this.GetBuffer().AsMemory(this.origin, (int)this.Position);

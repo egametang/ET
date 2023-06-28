@@ -8,7 +8,7 @@ namespace ET
     {
         protected abstract ETTask Run(E entity, Message message);
 
-        public async ETTask Handle(Entity entity, Address fromAddress, object actorMessage)
+        public async ETTask Handle(Entity entity, Address fromAddress, MessageObject actorMessage)
         {
             if (actorMessage is not Message msg)
             {
@@ -48,7 +48,7 @@ namespace ET
     {
         protected abstract ETTask Run(E unit, Request request, Response response);
 
-        public async ETTask Handle(Entity entity, Address fromAddress, object actorMessage)
+        public async ETTask Handle(Entity entity, Address fromAddress, MessageObject actorMessage)
         {
             try
             {

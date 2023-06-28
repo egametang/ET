@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
@@ -14,28 +15,48 @@ namespace ET
         
         public ServiceType ServiceType { get; protected set; }
         
-        private (MessageObject Message, MemoryBuffer MemoryStream) lastMessageInfo;
-        
-        // 缓存上一个发送的消息，这样广播消息的时候省掉多次序列化
-        public MemoryBuffer Fetch(MessageObject message)
+        public const int MaxCacheBufferSize = 1024;
+		
+        private readonly Queue<MemoryBuffer> pool = new();
+
+        public MemoryBuffer Fetch(int size = 0)
         {
-            // 这里虽然用了对象池，但是相邻的两个消息不会是池中来的同一个消息，因为lastMessageInfo中的消息还没回收
-            if (ReferenceEquals(message, this.lastMessageInfo.Message))
+            if (size > MaxCacheBufferSize)
             {
-                Log.Debug($"message serialize cache: {message.GetType().FullName}");
-                return lastMessageInfo.MemoryStream;
+                return new MemoryBuffer(size);
             }
             
-            // 回收上一个消息跟MemoryBuffer
-            ObjectPool.Instance.Recycle(this.lastMessageInfo.Message);
-            NetServices.Instance.RecycleMemoryBuffer(this.lastMessageInfo.MemoryStream);
-
-            MemoryBuffer stream = NetServices.Instance.FetchMemoryBuffer();
-            MessageSerializeHelper.MessageToStream(stream, message);
-            this.lastMessageInfo = (message, stream);
-            return stream;
+            if (size < MaxCacheBufferSize)
+            {
+                size = MaxCacheBufferSize;
+            }
+            
+            if (this.pool.Count == 0)
+            {
+                return new MemoryBuffer(size);
+            }
+            
+            return pool.Dequeue();
         }
 
+        public void Recycle(MemoryBuffer memoryBuffer)
+        {
+            if (memoryBuffer.Capacity > 1024)
+            {
+                return;
+            }
+            
+            if (this.pool.Count > 10) // 这里不需要太大，其实Kcp跟Tcp,这里1就足够了
+            {
+                return;
+            }
+            
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
+            memoryBuffer.SetLength(0);
+            
+            this.pool.Enqueue(memoryBuffer);
+        }
+        
         public AService()
         {
             NetServices.Instance.Add(this);

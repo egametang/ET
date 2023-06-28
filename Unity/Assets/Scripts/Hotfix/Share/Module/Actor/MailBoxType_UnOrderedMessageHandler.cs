@@ -5,15 +5,22 @@
     {
         public override void Handle(MailBoxInvoker args)
         {
+            HandleAsync(args).Coroutine();
+        }
+        
+        private static async ETTask HandleAsync(MailBoxInvoker args)
+        {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
-            MessageObject messageObject = args.MessageObject;
+            
+            using MessageObject messageObject = args.MessageObject;
+            
             CoroutineLockComponent coroutineLockComponent = mailBoxComponent.CoroutineLockComponent;
             if (coroutineLockComponent == null)
             {
                 return;
             }
 
-            ActorMessageDispatcherComponent.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject).Coroutine();
+            await ActorMessageDispatcherComponent.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
         }
     }
 }

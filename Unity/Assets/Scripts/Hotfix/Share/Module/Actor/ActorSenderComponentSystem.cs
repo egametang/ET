@@ -110,11 +110,15 @@ namespace ET
             // 如果发向同一个进程，则扔到消息队列中
             if (actorId.Process == fiber.Process)
             {
-                ActorMessageQueue.Instance.Send(self.Fiber().Address, actorId, message);
+                ActorMessageQueue.Instance.Send(fiber.Address, actorId, message);
                 return;
             }
 
-            A2NetInner_Message netInnerMessage = new() { FromAddress = fiber.Address, ActorId = actorId, MessageObject = message };
+
+            A2NetInner_Message netInnerMessage = A2NetInner_Message.Create(true);
+            netInnerMessage.FromAddress = fiber.Address;
+            netInnerMessage.ActorId = actorId;
+            netInnerMessage.MessageObject = message;
             // 扔到NetInner纤程
             ActorMessageQueue.Instance.Send(new ActorId(actorId.Process, ConstFiberId.NetInner), netInnerMessage);
         }

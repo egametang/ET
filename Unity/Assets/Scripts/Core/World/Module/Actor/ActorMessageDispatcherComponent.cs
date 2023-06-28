@@ -90,7 +90,7 @@ namespace ET
             this.ActorMessageHandlers[type].Add(handler);
         }
 
-        public async ETTask Handle(Entity entity, Address fromAddress, object message)
+        public async ETTask Handle(Entity entity, Address fromAddress, MessageObject message)
         {
             List<ActorMessageDispatcherInfo> list;
             if (!this.ActorMessageHandlers.TryGetValue(message.GetType(), out list))

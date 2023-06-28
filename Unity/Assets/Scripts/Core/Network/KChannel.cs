@@ -7,21 +7,13 @@ using System.Runtime.InteropServices;
 
 namespace ET
 {
-
-	
-	public struct KcpWaitSendMessage
-	{
-		public ActorId ActorId;
-		public MessageObject Message;
-	}
-	
 	public class KChannel : AChannel
 	{
 		private readonly KService Service;
 
 		private Kcp kcp { get; set; }
 
-		private readonly Queue<KcpWaitSendMessage> waitSendMessages = new Queue<KcpWaitSendMessage>();
+		private readonly Queue<ActorMessageInfo> waitSendMessages = new Queue<ActorMessageInfo>();
 		
 		public readonly uint CreateTime;
 
@@ -44,10 +36,6 @@ namespace ET
 
 		public string RealAddress { get; set; }
 		
-		private const int maxPacketSize = 10000;
-
-		private readonly MemoryBuffer ms = new MemoryBuffer(maxPacketSize);
-
 		private MemoryBuffer readMemory;
 		private int needReadSplitCount;
 
@@ -177,8 +165,8 @@ namespace ET
 					break;
 				}
 				
-				KcpWaitSendMessage buffer = this.waitSendMessages.Dequeue();
-				this.Send(buffer.ActorId, buffer.Message);
+				ActorMessageInfo buffer = this.waitSendMessages.Dequeue();
+				this.Send(buffer.ActorId, buffer.MessageObject);
 			}
 		}
 
@@ -264,7 +252,7 @@ namespace ET
 			this.Service.AddToUpdate(nextUpdateTime, this.Id);
 		}
 
-		public void HandleRecv(byte[] date, int offset, int length)
+		public unsafe void HandleRecv(byte[] date, int offset, int length)
 		{
 			if (this.IsDisposed)
 			{
@@ -273,7 +261,6 @@ namespace ET
 
 			this.kcp.Input(date, offset, length);
 			this.Service.AddToUpdate(0, this.Id);
-
 			while (true)
 			{
 				if (this.IsDisposed)
@@ -318,11 +305,12 @@ namespace ET
 				}
 				else
 				{
-					this.readMemory = this.ms;
+					this.readMemory = this.Service.Fetch(n);
 					this.readMemory.SetLength(n);
 					this.readMemory.Seek(0, SeekOrigin.Begin);
 					
 					byte[] buffer = readMemory.GetBuffer();
+					
 					int count = this.kcp.Recv(buffer, 0, n);
 					if (n != count)
 					{
@@ -336,13 +324,12 @@ namespace ET
 						if (headInt == 0)
 						{
 							this.needReadSplitCount = BitConverter.ToInt32(readMemory.GetBuffer(), 4);
-							if (this.needReadSplitCount <= maxPacketSize)
+							if (this.needReadSplitCount <= AService.MaxCacheBufferSize)
 							{
 								Log.Error($"kchannel read error3: {this.needReadSplitCount} {this.LocalConn} {this.RemoteConn}");
 								this.OnError(ErrorCore.ERR_KcpSplitCountError);
 								return;
 							}
-							this.readMemory = new MemoryBuffer(this.needReadSplitCount);
 							this.readMemory.SetLength(this.needReadSplitCount);
 							this.readMemory.Seek(0, SeekOrigin.Begin);
 							continue;
@@ -360,9 +347,10 @@ namespace ET
 						this.readMemory.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
 						break;
 				}
-				MemoryBuffer mem = this.readMemory;
+				MemoryBuffer memoryBuffer = this.readMemory;
 				this.readMemory = null;
-				this.OnRead(mem);
+				this.OnRead(memoryBuffer);
+				this.Service.Recycle(memoryBuffer);
 			}
 		}
 
@@ -424,7 +412,7 @@ namespace ET
 			int count = (int) (memoryStream.Length - memoryStream.Position);
 
 			// 超出maxPacketSize需要分片
-			if (count <= maxPacketSize)
+			if (count <= AService.MaxCacheBufferSize)
 			{
 				this.kcp.Send(memoryStream.GetBuffer(), (int)memoryStream.Position, count);
 			}
@@ -441,7 +429,7 @@ namespace ET
 				{
 					int leftCount = count - alreadySendCount;
 					
-					int sendCount = leftCount < maxPacketSize? leftCount: maxPacketSize;
+					int sendCount = leftCount < AService.MaxCacheBufferSize? leftCount: AService.MaxCacheBufferSize;
 					
 					this.kcp.Send(memoryStream.GetBuffer(), (int)memoryStream.Position + alreadySendCount, sendCount);
 					
@@ -456,12 +444,14 @@ namespace ET
 		{
 			if (!this.IsConnected)
 			{
-				KcpWaitSendMessage kcpWaitSendMessage = new() { ActorId = actorId, Message = message };
-				this.waitSendMessages.Enqueue(kcpWaitSendMessage);
+				ActorMessageInfo actorMessageInfo = new() { ActorId = actorId, MessageObject = message };
+				this.waitSendMessages.Enqueue(actorMessageInfo);
 				return;
 			}
-			
-			MemoryBuffer memoryStream = this.Service.Fetch(message);
+
+			MemoryBuffer stream = this.Service.Fetch();
+			MessageSerializeHelper.MessageToStream(stream, message);
+			message.Dispose();
 
 			if (this.kcp == null)
 			{
@@ -490,7 +480,9 @@ namespace ET
 				return;
 			}
 
-			this.KcpSend(actorId, memoryStream);
+			this.KcpSend(actorId, stream);
+			
+			this.Service.Recycle(stream);
 		}
 		
 		private void OnRead(MemoryBuffer memoryStream)

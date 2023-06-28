@@ -6,10 +6,13 @@
         public override void Handle(MailBoxInvoker args)
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
+            
+            // 这里messageObject要发送出去，不能回收
             MessageObject messageObject = args.MessageObject;
+            
             if (mailBoxComponent.Parent is PlayerSessionComponent playerSessionComponent)
             {
-                playerSessionComponent.Session?.Send(messageObject as IMessage);
+                playerSessionComponent.Session?.Send(messageObject);
             }
         }
     }

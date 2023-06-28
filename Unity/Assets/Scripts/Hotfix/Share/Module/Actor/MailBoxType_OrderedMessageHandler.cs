@@ -8,10 +8,13 @@
             HandleInner(args).Coroutine();
         }
 
-        private async ETTask HandleInner(MailBoxInvoker args)
+        private static async ETTask HandleInner(MailBoxInvoker args)
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
-            MessageObject messageObject = args.MessageObject;
+            
+            // 对象池回收
+            using MessageObject messageObject = args.MessageObject;
+            
             CoroutineLockComponent coroutineLockComponent = mailBoxComponent.CoroutineLockComponent;
             if (coroutineLockComponent == null)
             {

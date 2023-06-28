@@ -15,13 +15,11 @@ namespace ET
 
         private readonly WebSocket webSocket;
 
-        private readonly Queue<MemoryBuffer> queue = new();
+        private readonly Queue<MessageObject> queue = new();
 
         private bool isSending;
 
         private bool isConnected;
-
-        private readonly MemoryBuffer recvStream;
         
         public IPEndPoint RemoteAddress { get; set; }
 
@@ -34,7 +32,6 @@ namespace ET
             this.ChannelType = ChannelType.Accept;
             this.WebSocketContext = webSocketContext;
             this.webSocket = webSocketContext.WebSocket;
-            this.recvStream = new MemoryBuffer(ushort.MaxValue);
 
             isConnected = true;
             
@@ -51,7 +48,6 @@ namespace ET
             this.Service = service;
             this.ChannelType = ChannelType.Connect;
             this.webSocket = webSocket;
-            this.recvStream = new MemoryBuffer(ushort.MaxValue);
 
             isConnected = false;
             
@@ -91,18 +87,7 @@ namespace ET
 
         public void Send(MessageObject message)
         {
-            MemoryBuffer stream = this.Service.Fetch(message);
-            
-            switch (this.Service.ServiceType)
-            {
-                case ServiceType.Inner:
-                    break;
-                case ServiceType.Outer:
-                    stream.Seek(Packet.ActorIdLength, SeekOrigin.Begin);
-                    break;
-            }
-            
-            this.queue.Enqueue(stream);
+            this.queue.Enqueue(message);
 
             if (this.isConnected)
             {
@@ -134,10 +119,27 @@ namespace ET
                         return;
                     }
 
-                    MemoryBuffer bytes = this.queue.Dequeue();
+                    MessageObject message = this.queue.Dequeue();
+
+                    MemoryBuffer stream = this.Service.Fetch();
+                    
+                    MessageSerializeHelper.MessageToStream(stream, message);
+                    message.Dispose();
+            
+                    switch (this.Service.ServiceType)
+                    {
+                        case ServiceType.Inner:
+                            break;
+                        case ServiceType.Outer:
+                            stream.Seek(Packet.ActorIdLength, SeekOrigin.Begin);
+                            break;
+                    }
+                    
                     try
                     {
-                        await this.webSocket.SendAsync(bytes.GetMemory(), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
+                        await this.webSocket.SendAsync(stream.GetMemory(), WebSocketMessageType.Binary, true, cancellationTokenSource.Token);
+                        
+                        this.Service.Recycle(stream);
                         
                         if (this.IsDisposed)
                         {
@@ -200,11 +202,13 @@ namespace ET
                         this.OnError(ErrorCore.ERR_WebsocketMessageTooBig);
                         return;
                     }
-                    
-                    this.recvStream.SetLength(receiveCount);
-                    this.recvStream.Seek(2, SeekOrigin.Begin);
-                    Array.Copy(this.cache, 0, this.recvStream.GetBuffer(), 0, receiveCount);
-                    this.OnRead(this.recvStream);
+
+                    MemoryBuffer memoryBuffer = this.Service.Fetch(receiveCount);
+                    memoryBuffer.SetLength(receiveCount);
+                    memoryBuffer.Seek(2, SeekOrigin.Begin);
+                    Array.Copy(this.cache, 0, memoryBuffer.GetBuffer(), 0, receiveCount);
+                    this.OnRead(memoryBuffer);
+                    this.Service.Recycle(memoryBuffer);
                 }
             }
             catch (Exception e)
