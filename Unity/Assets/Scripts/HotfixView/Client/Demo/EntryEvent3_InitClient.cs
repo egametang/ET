@@ -18,10 +18,11 @@ namespace ET.Client
             GlobalComponent globalComponent = fiber.GetComponent<GlobalComponent>();
 
             SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
+
+            // 根据配置修改掉Main Fiber的SceneType
+            fiber.SceneType = sceneType;
             
-            Scene clientScene = await SceneFactory.CreateClientFiber(fiber, 1, sceneType, sceneType.ToString());
-            
-            await EventSystem.Instance.PublishAsync(clientScene, new EventType.AppStartInitFinish());
+            await EventSystem.Instance.PublishAsync(fiber, new EventType.AppStartInitFinish());
         }
     }
 }

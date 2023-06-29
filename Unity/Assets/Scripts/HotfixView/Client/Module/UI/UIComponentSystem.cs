@@ -6,11 +6,17 @@ namespace ET.Client
 	/// 管理Scene上的UI
 	/// </summary>
 	[FriendOf(typeof(UIComponent))]
-	public static class UIComponentSystem
+	public static partial class UIComponentSystem
 	{
+		[EntitySystem]
+		private static void Awake(this UIComponent self)
+		{
+			self.UIGlobalComponent = self.Fiber().GetComponent<UIGlobalComponent>();
+		}
+		
 		public static async ETTask<UI> Create(this UIComponent self, string uiType, UILayer uiLayer)
 		{
-			UI ui = await UIEventComponent.Instance.OnCreate(self, uiType, uiLayer);
+			UI ui = await self.UIGlobalComponent.OnCreate(self, uiType, uiLayer);
 			self.UIs.Add(uiType, ui);
 			return ui;
 		}
@@ -22,7 +28,7 @@ namespace ET.Client
 				return;
 			}
 			
-			UIEventComponent.Instance.OnRemove(self, uiType);
+			self.UIGlobalComponent.OnRemove(self, uiType);
 			
 			self.UIs.Remove(uiType);
 			ui.Dispose();

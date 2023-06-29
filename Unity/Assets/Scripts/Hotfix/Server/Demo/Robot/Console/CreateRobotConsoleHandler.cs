@@ -20,32 +20,6 @@ namespace ET.Server
                             .WithNotParsed(error => throw new Exception($"CreateRobotArgs error!"))
                             .WithParsed(o => { options = o; });
 
-                    // 获取当前进程的RobotScene
-                    using (ListComponent<StartSceneConfig> thisProcessRobotScenes = ListComponent<StartSceneConfig>.Create())
-                    {
-                        List<StartSceneConfig> robotSceneConfigs = StartSceneConfigCategory.Instance.Robots;
-                        foreach (StartSceneConfig robotSceneConfig in robotSceneConfigs)
-                        {
-                            if (robotSceneConfig.Process != Options.Instance.Process)
-                            {
-                                continue;
-                            }
-                            thisProcessRobotScenes.Add(robotSceneConfig);
-                        }
-                        
-                        // 创建机器人
-                        TimerComponent timerComponent = fiber.GetComponent<TimerComponent>();
-                        for (int i = 0; i < options.Num; ++i)
-                        {
-                            int index = i % thisProcessRobotScenes.Count;
-                            StartSceneConfig robotSceneConfig = thisProcessRobotScenes[index];
-                            RobotManagerComponent robotManagerComponent = fiber.GetComponent<RobotManagerComponent>();
-                            Scene robot = await robotManagerComponent.NewRobot(Options.Instance.Process * 10000 + i);
-                            robot.AddComponent<AIComponent, int>(1);
-                            Log.Console($"create robot {robot.Zone}");
-                            await timerComponent.WaitAsync(2000);
-                        }
-                    }
                     break;
             }
             contex.Parent.RemoveComponent<ModeContex>();

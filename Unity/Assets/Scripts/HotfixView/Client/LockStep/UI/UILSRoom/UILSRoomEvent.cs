@@ -11,7 +11,7 @@ namespace ET.Client
             ResourcesComponent resourcesComponent = uiComponent.Fiber().GetComponent<ResourcesComponent>();
             await uiComponent.Room().GetComponent<ResourcesLoaderComponent>().LoadAsync(resourcesComponent.StringToAB(UIType.UILSRoom));
             GameObject bundleGameObject = (GameObject) resourcesComponent.GetAsset(resourcesComponent.StringToAB(UIType.UILSRoom), UIType.UILSRoom);
-            GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UIEventComponent.Instance.GetLayer((int)uiLayer));
+            GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));
             UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILSRoom, gameObject);
             ui.AddComponent<UILSRoomComponent>();
             return ui;

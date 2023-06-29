@@ -20,7 +20,9 @@ namespace ET
             fiber.AddComponent<TimerComponent>();
             fiber.AddComponent<CoroutineLockComponent>();
             fiber.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-                
+            fiber.AddComponent<ActorSenderComponent>();
+            fiber.AddComponent<ActorRecverComponent>();
+            
             // 根据Fiber的SceneType分发Init
             EventSystem.Instance.Invoke((long)sceneType, new FiberInit() {Fiber = fiber});
                 

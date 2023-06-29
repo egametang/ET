@@ -1,11 +1,11 @@
 ﻿namespace ET.Client
 {
 	[Event(SceneType.Demo)]
-	public class AppStartInitFinish_CreateLoginUI: AEvent<Scene, EventType.AppStartInitFinish>
+	public class AppStartInitFinish_CreateLoginUI: AEvent<Fiber, EventType.AppStartInitFinish>
 	{
-		protected override async ETTask Run(Scene scene, EventType.AppStartInitFinish args)
+		protected override async ETTask Run(Fiber fiber, EventType.AppStartInitFinish args)
 		{
-			await UIHelper.Create(scene, UIType.UILogin, UILayer.Mid);
+			await UIHelper.Create(fiber, UIType.UILogin, UILayer.Mid);
 		}
 	}
 }

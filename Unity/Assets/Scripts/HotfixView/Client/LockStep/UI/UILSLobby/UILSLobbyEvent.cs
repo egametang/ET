@@ -11,7 +11,7 @@ namespace ET.Client
             ResourcesComponent resourcesComponent = uiComponent.Fiber().GetComponent<ResourcesComponent>();
             await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAsync(resourcesComponent.StringToAB(UIType.UILSLobby));
             GameObject bundleGameObject = (GameObject) resourcesComponent.GetAsset(resourcesComponent.StringToAB(UIType.UILSLobby), UIType.UILSLobby);
-            GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UIEventComponent.Instance.GetLayer((int)uiLayer));
+            GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));
             UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILSLobby, gameObject);
 
             ui.AddComponent<UILSLobbyComponent>();
