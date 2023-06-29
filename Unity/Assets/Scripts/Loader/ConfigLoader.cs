@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace ET.Client
+namespace ET
 {
-    /*
     [Invoke]
     public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
     {
@@ -56,16 +55,11 @@ namespace ET.Client
             }
             else
             {
-                using (RootEntity.Instance.AddComponent<ResourcesComponent>())
+                Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("config.unity3d");
+                foreach (Type type in configTypes)
                 {
-                    const string configBundleName = "config.unity3d";
-                    ResourcesComponent.Instance.LoadBundle(configBundleName);
-                    
-                    foreach (Type configType in configTypes)
-                    {
-                        TextAsset v = ResourcesComponent.Instance.GetAsset(configBundleName, configType.Name) as TextAsset;
-                        output[configType] = v.bytes;
-                    }
+                    TextAsset v = dictionary[type.Name] as TextAsset;
+                    output[type] = v.bytes;
                 }
             }
 
@@ -78,10 +72,7 @@ namespace ET.Client
     {
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {
-            //TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
-            //return v.bytes;
             throw new NotImplementedException("client cant use LoadOneConfig");
         }
     }
-    */
 }
