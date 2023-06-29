@@ -24,17 +24,18 @@ namespace ET
         [EntitySystem]
         private static void Awake(this SessionAcceptTimeoutComponent self)
         {
-            self.Timer = self.Fiber().GetComponent<TimerComponent>().NewOnceTimer(TimeHelper.ServerNow() + 5000, TimerInvokeType.SessionAcceptTimeout, self);
+            self.Timer = self.Root().GetComponent<TimerComponent>().NewOnceTimer(TimeHelper.ServerNow() + 5000, TimerInvokeType.SessionAcceptTimeout, self);
         }
         
         [EntitySystem]
         private static void Destroy(this SessionAcceptTimeoutComponent self)
         {
-            if (self.Fiber().IsDisposed)
+            Scene root = self.Root();
+            if (root.IsDisposed)
             {
                 return;
             }
-            self.Fiber().GetComponent<TimerComponent>().Remove(ref self.Timer);
+            root.GetComponent<TimerComponent>().Remove(ref self.Timer);
         }
         
     }

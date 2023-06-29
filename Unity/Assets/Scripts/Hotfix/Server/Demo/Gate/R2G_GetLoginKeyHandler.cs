@@ -4,14 +4,14 @@
 namespace ET.Server
 {
 	[ActorMessageHandler(SceneType.Gate)]
-	public class R2G_GetLoginKeyHandler : ActorMessageHandler<Fiber, R2G_GetLoginKey, G2R_GetLoginKey>
+	public class R2G_GetLoginKeyHandler : ActorMessageHandler<Scene, R2G_GetLoginKey, G2R_GetLoginKey>
 	{
-		protected override async ETTask Run(Fiber fiber, R2G_GetLoginKey request, G2R_GetLoginKey response)
+		protected override async ETTask Run(Scene scene, R2G_GetLoginKey request, G2R_GetLoginKey response)
 		{
 			long key = RandomGenerator.RandInt64();
-			fiber.GetComponent<GateSessionKeyComponent>().Add(key, request.Account);
+			scene.GetComponent<GateSessionKeyComponent>().Add(key, request.Account);
 			response.Key = key;
-			response.GateId = fiber.Id;
+			response.GateId = scene.Id;
 			await ETTask.CompletedTask;
 		}
 	}

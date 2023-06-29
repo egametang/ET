@@ -101,12 +101,12 @@ namespace ET
 
         private EntitySystem GetEntitySystem()
         {
-            return (this.iScene.Root as IEntitySystem).EntitySystem;
+            return this.iScene.Fiber.EntitySystem;
         }
         
         private IdGenerater GetIdGenerater()
         {
-            return (this.iScene.Root as IIdGenerater).IdGenerater;
+            return this.iScene.Fiber.IdGenerater;
         }
 
         protected virtual void RegisterSystem()
@@ -220,7 +220,7 @@ namespace ET
 
                 if (this is IScene scene)
                 {
-                    scene.Root = this.parent.iScene.Root;
+                    scene.Fiber = this.parent.iScene.Fiber;
                     this.IScene = scene;
                 }
                 else
@@ -284,7 +284,7 @@ namespace ET
                 
                 if (this is IScene scene)
                 {
-                    scene.Root = this.parent.iScene.Root;
+                    scene.Fiber = this.parent.iScene.Fiber;
                     this.IScene = scene;
                 }
                 else

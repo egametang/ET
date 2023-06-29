@@ -8,8 +8,8 @@ namespace ET.Server
     {
         protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response)
         {
-            Fiber fiber = session.Fiber();
-            string account = fiber.GetComponent<GateSessionKeyComponent>().Get(request.Key);
+            Scene root = session.Root();
+            string account = root.GetComponent<GateSessionKeyComponent>().Get(request.Key);
             if (account == null)
             {
                 response.Error = ErrorCore.ERR_ConnectGateKeyError;
@@ -19,7 +19,7 @@ namespace ET.Server
             
             session.RemoveComponent<SessionAcceptTimeoutComponent>();
 
-            PlayerComponent playerComponent = fiber.GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = root.GetComponent<PlayerComponent>();
             Player player = playerComponent.GetByAccount(account);
             if (player == null)
             {
@@ -56,9 +56,10 @@ namespace ET.Server
 
         private static async ETTask CheckRoom(Player player, Session session)
         {
-            await player.Fiber().WaitFrameFinish();
+            Fiber fiber = player.Fiber();
+            await fiber.WaitFrameFinish();
             
-            Room2G_Reconnect room2GateReconnect = await player.Fiber().GetComponent<ActorSenderComponent>().Call(
+            Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<ActorSenderComponent>().Call(
                 player.GetComponent<PlayerRoomComponent>().RoomActorId,
                 new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
             session.Send(new G2C_Reconnect() { StartTime = room2GateReconnect.StartTime, UnitInfos = room2GateReconnect.UnitInfos, Frame = room2GateReconnect.Frame});

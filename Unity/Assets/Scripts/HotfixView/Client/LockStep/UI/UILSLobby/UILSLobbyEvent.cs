@@ -8,7 +8,7 @@ namespace ET.Client
         public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
         {
             await ETTask.CompletedTask;
-            ResourcesComponent resourcesComponent = uiComponent.Fiber().GetComponent<ResourcesComponent>();
+            ResourcesComponent resourcesComponent = uiComponent.Root().GetComponent<ResourcesComponent>();
             await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAsync(resourcesComponent.StringToAB(UIType.UILSLobby));
             GameObject bundleGameObject = (GameObject) resourcesComponent.GetAsset(resourcesComponent.StringToAB(UIType.UILSLobby), UIType.UILSLobby);
             GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));

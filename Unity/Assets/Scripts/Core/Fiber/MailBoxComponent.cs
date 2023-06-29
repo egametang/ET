@@ -10,7 +10,7 @@
             self.MailBoxType = mailBoxType;
             self.ParentInstanceId = self.Parent.InstanceId;
             fiber.Mailboxes.Add(self);
-            self.CoroutineLockComponent = fiber.GetComponent<CoroutineLockComponent>();
+            self.CoroutineLockComponent = fiber.Root.GetComponent<CoroutineLockComponent>();
         }
         
         [EntitySystem]

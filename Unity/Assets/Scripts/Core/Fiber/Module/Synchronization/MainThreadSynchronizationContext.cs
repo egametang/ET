@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace ET
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class MainThreadSynchronizationContext: Entity, IAwake
     {
         private readonly ThreadSynchronizationContext threadSynchronizationContext = new();

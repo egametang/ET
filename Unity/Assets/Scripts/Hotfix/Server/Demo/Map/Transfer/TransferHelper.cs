@@ -15,7 +15,7 @@ namespace ET.Server
 
         public static async ETTask Transfer(Unit unit, ActorId sceneInstanceId, string sceneName)
         {
-            Fiber fiber = unit.Fiber();
+            Scene root = unit.Root();
             
             // location加锁
             long unitId = unit.Id;
@@ -32,8 +32,8 @@ namespace ET.Server
             }
             unit.Dispose();
             
-            await fiber.GetComponent<LocationProxyComponent>().Lock(LocationType.Unit, unitId, request.OldActorId);
-            await fiber.GetComponent<ActorSenderComponent>().Call(sceneInstanceId, request);
+            await root.GetComponent<LocationProxyComponent>().Lock(LocationType.Unit, unitId, request.OldActorId);
+            await root.GetComponent<ActorSenderComponent>().Call(sceneInstanceId, request);
         }
     }
 }

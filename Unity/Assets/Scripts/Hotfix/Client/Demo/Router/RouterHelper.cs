@@ -7,39 +7,39 @@ namespace ET.Client
     public static partial class RouterHelper
     {
         // 注册router
-        public static async ETTask<Session> CreateRouterSession(Fiber fiber, IPEndPoint address)
+        public static async ETTask<Session> CreateRouterSession(Scene root, IPEndPoint address)
         {
-            (uint recvLocalConn, IPEndPoint routerAddress) = await GetRouterAddress(fiber, address, 0, 0);
+            (uint recvLocalConn, IPEndPoint routerAddress) = await GetRouterAddress(root, address, 0, 0);
 
             if (recvLocalConn == 0)
             {
-                throw new Exception($"get router fail: {fiber.Id} {address}");
+                throw new Exception($"get router fail: {root.Id} {address}");
             }
             
             Log.Info($"get router: {recvLocalConn} {routerAddress}");
 
-            Session routerSession = fiber.GetComponent<NetClientComponent>().Create(routerAddress, address, recvLocalConn);
+            Session routerSession = root.GetComponent<NetClientComponent>().Create(routerAddress, address, recvLocalConn);
             routerSession.AddComponent<PingComponent>();
             routerSession.AddComponent<RouterCheckComponent>();
             
             return routerSession;
         }
         
-        public static async ETTask<(uint, IPEndPoint)> GetRouterAddress(Fiber fiber, IPEndPoint address, uint localConn, uint remoteConn)
+        public static async ETTask<(uint, IPEndPoint)> GetRouterAddress(Scene root, IPEndPoint address, uint localConn, uint remoteConn)
         {
-            Log.Info($"start get router address: {fiber.Id} {address} {localConn} {remoteConn}");
+            Log.Info($"start get router address: {root.Id} {address} {localConn} {remoteConn}");
             //return (RandomHelper.RandUInt32(), address);
-            RouterAddressComponent routerAddressComponent = fiber.GetComponent<RouterAddressComponent>();
+            RouterAddressComponent routerAddressComponent = root.GetComponent<RouterAddressComponent>();
             IPEndPoint routerInfo = routerAddressComponent.GetAddress();
             
-            uint recvLocalConn = await Connect(fiber, routerInfo, address, localConn, remoteConn);
+            uint recvLocalConn = await Connect(root, routerInfo, address, localConn, remoteConn);
             
-            Log.Info($"finish get router address: {fiber.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
+            Log.Info($"finish get router address: {root.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
             return (recvLocalConn, routerInfo);
         }
 
         // 向router申请
-        private static async ETTask<uint> Connect(Fiber fiber, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
+        private static async ETTask<uint> Connect(Scene root, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
             uint connectId = RandomGenerator.RandUInt32();
             
@@ -78,7 +78,7 @@ namespace ET.Client
                     socket.SendTo(sendCache, 0, addressBytes.Length + 13, SocketFlags.None, routerAddress);
                 }
                     
-                await fiber.GetComponent<TimerComponent>().WaitFrameAsync();
+                await root.GetComponent<TimerComponent>().WaitFrameAsync();
                     
                 // 接收
                 if (socket.Available > 0)

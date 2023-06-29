@@ -8,7 +8,7 @@ namespace ET.Client
         public object Message;
     }
     
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class NetClientComponent: Entity, IAwake<AddressFamily>, IDestroy
     {
         public AService AService;

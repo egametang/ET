@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class NavmeshComponent: Entity, IAwake
     {
         public struct RecastFileLoader

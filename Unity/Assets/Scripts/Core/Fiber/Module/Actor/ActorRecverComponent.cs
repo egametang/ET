@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class ActorRecverComponent: Entity, IAwake, IDestroy, IUpdate
     {
         public readonly List<ActorMessageInfo> list = new();

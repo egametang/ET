@@ -46,9 +46,6 @@ namespace ET
         [BsonIgnore]
         public Fiber Fiber { get; set; }
         
-        [BsonIgnore]
-        public IScene Root { get; set; }
-
         [BsonElement]
         private long idGenerator;
 

@@ -2,7 +2,7 @@
 {
     public interface IScene
     {
-        IScene Root { get; set; }
+        Fiber Fiber { get; set; }
         SceneType SceneType { get; set; }
     }
 }

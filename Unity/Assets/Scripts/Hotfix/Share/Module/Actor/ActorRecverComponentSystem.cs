@@ -22,9 +22,9 @@ namespace ET
         {
             self.list.Clear();
             Fiber fiber = self.Fiber();
-            ActorMessageQueue.Instance.Fetch((int)fiber.Id, 1000, self.list);
+            ActorMessageQueue.Instance.Fetch(fiber.Id, 1000, self.list);
 
-            ActorSenderComponent actorSenderComponent = self.Fiber().GetComponent<ActorSenderComponent>();
+            ActorSenderComponent actorSenderComponent = fiber.Root.GetComponent<ActorSenderComponent>();
             foreach (ActorMessageInfo actorMessageInfo in self.list)
             {
                 if (actorMessageInfo.MessageObject is IActorResponse response)

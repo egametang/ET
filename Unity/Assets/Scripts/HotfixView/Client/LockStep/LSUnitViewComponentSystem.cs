@@ -9,14 +9,15 @@ namespace ET.Client
         {
             Room room = self.Room();
             LSUnitComponent lsUnitComponent = room.LSWorld.GetComponent<LSUnitComponent>();
+            Scene root = self.Root();
             foreach (long playerId in room.PlayerIds)
             {
                 LSUnit lsUnit = lsUnitComponent.GetChild<LSUnit>(playerId);
-                ResourcesComponent resourcesComponent = self.Fiber().GetComponent<ResourcesComponent>();
+                ResourcesComponent resourcesComponent = root.GetComponent<ResourcesComponent>();
                 GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset("Unit.unity3d", "Unit");
                 GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 
-                GlobalComponent globalComponent = self.Fiber().GetComponent<GlobalComponent>();
+                GlobalComponent globalComponent = root.GetComponent<GlobalComponent>();
                 GameObject unitGo = UnityEngine.Object.Instantiate(prefab, globalComponent.Unit, true);
                 unitGo.transform.position = lsUnit.Position.ToVector();
 

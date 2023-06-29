@@ -8,11 +8,11 @@ namespace ET
         public static ActorId GetActorId(this Entity self)
         {
             Fiber root = self.Fiber();
-            return new ActorId(root.Process, (int)root.Id, self.InstanceId);
+            return new ActorId(root.Process, root.Id, self.InstanceId);
         }
     }
     
-    public class Fiber: Entity, IScene, IEntitySystem, IIdGenerater
+    public class Fiber: IDisposable
     {
         [ThreadStatic]
         [StaticField]
@@ -26,17 +26,17 @@ namespace ET
             }
         }
 
+        public int Id;
+
+        public Scene Root { get; }
+
         public Address Address
         {
             get
             {
-                return new Address(this.Process, (int)this.Id);
+                return new Address(this.Process, this.Id);
             }
         }
-        
-        public IScene Root { get; set; }
-        public SceneType SceneType { get; set; }
-        public int Zone { get; set; }
         
         public int Process { get; private set; }
         
@@ -49,15 +49,14 @@ namespace ET
         
         public Fiber(int id, int process, SceneType sceneType)
         {
-            this.SceneType = sceneType;
             this.Id = id;
-            this.InstanceId = 1;
             this.Process = process;
-            this.Root = this;
             this.EntitySystem = new EntitySystem();
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
             this.Mailboxes = new Mailboxes();
+
+            this.Root = new Scene(id, 1, 0, sceneType, "");
         }
 
         public void Update()
@@ -87,15 +86,8 @@ namespace ET
         {
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-            
-            base.Dispose();
-            
             this.IsRuning = false;
 
             instance = null;

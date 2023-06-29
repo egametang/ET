@@ -53,7 +53,7 @@ namespace ET
         public object Args;
     }
 
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class TimerComponent: Entity, IAwake
     {
         /// <summary>

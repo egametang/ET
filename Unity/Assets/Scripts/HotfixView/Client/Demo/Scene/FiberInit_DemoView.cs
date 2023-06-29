@@ -7,10 +7,10 @@ namespace ET.Server
     {
         public override void Handle(FiberInit fiberInit)
         {
-            Fiber fiber = fiberInit.Fiber;
+            Scene root = fiberInit.Fiber.Root;
             
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)fiber.Id);
-            fiber.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)root.Id);
+            root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
         }
     }
 }

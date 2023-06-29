@@ -10,9 +10,6 @@ namespace ET
         [BsonIgnore]
         public Fiber Fiber { get; set; }
         
-        [BsonIgnore]
-        public IScene Root { get; set; }
-
         public int Zone
         {
             get;

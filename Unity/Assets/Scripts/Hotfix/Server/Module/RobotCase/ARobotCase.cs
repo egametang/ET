@@ -8,7 +8,7 @@ namespace ET.Server
 
         public override async ETTask Handle(RobotInvokeArgs a)
         {
-            using RobotCase robotCase = await a.Fiber.GetComponent<RobotCaseComponent>().New();
+            using RobotCase robotCase = await a.Fiber.Root.GetComponent<RobotCaseComponent>().New();
             
             try
             {

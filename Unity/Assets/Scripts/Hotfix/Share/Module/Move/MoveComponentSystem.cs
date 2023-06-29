@@ -181,7 +181,7 @@ namespace ET
             self.StartTime = self.BeginTime;
             self.SetNextTarget();
 
-            self.MoveTimer = self.Fiber().GetComponent<TimerComponent>().NewFrameTimer(TimerInvokeType.MoveTimer, self);
+            self.MoveTimer = self.Root().GetComponent<TimerComponent>().NewFrameTimer(TimerInvokeType.MoveTimer, self);
         }
 
         private static void SetNextTarget(this MoveComponent self)
@@ -266,7 +266,8 @@ namespace ET
 
         private static void MoveFinish(this MoveComponent self, bool ret)
         {
-            if (self.Fiber().IsDisposed)
+            Scene root = self.Root();
+            if (root.IsDisposed)
             {
                 return;
             }
@@ -279,7 +280,7 @@ namespace ET
             self.StartPos = float3.zero;
             self.BeginTime = 0;
             self.NeedTime = 0;
-            self.Fiber().GetComponent<TimerComponent>().Remove(ref self.MoveTimer);
+            root.GetComponent<TimerComponent>().Remove(ref self.MoveTimer);
             self.Targets.Clear();
             self.Speed = 0;
             self.N = 0;

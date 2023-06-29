@@ -18,7 +18,7 @@ namespace ET.Server
                 return;
             }
             
-            await room.Fiber().GetComponent<TimerComponent>().WaitAsync(1000);
+            await room.Root().GetComponent<TimerComponent>().WaitAsync(1000);
 
             Room2C_Start room2CStart = new() { StartTime = TimeHelper.ServerFrameTime() };
             foreach (RoomPlayer rp in roomServerComponent.Children.Values)

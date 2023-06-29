@@ -25,7 +25,7 @@ namespace ET.Server
         {
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
             // 网络底层做了优化，同一个消息不会多次序列化
-            ActorLocationSenderOneType oneTypeLocationType = unit.Fiber().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession);
+            ActorLocationSenderOneType oneTypeLocationType = unit.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession);
             foreach (AOIEntity u in dict.Values)
             {
                 oneTypeLocationType.Send(u.Unit.Id, message);
@@ -34,15 +34,15 @@ namespace ET.Server
         
         public static void SendToClient(Unit unit, IActorMessage message)
         {
-            unit.Fiber().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession).Send(unit.Id, message);
+            unit.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession).Send(unit.Id, message);
         }
         
         /// <summary>
         /// 发送协议给Actor
         /// </summary>
-        public static void SendActor(Fiber fiber, ActorId actorId, IActorMessage message)
+        public static void SendActor(Scene root, ActorId actorId, IActorMessage message)
         {
-            fiber.GetComponent<ActorSenderComponent>().Send(actorId, message);
+            root.GetComponent<ActorSenderComponent>().Send(actorId, message);
         }
     }
 }

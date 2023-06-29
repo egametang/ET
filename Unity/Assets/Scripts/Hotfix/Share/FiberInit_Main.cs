@@ -12,9 +12,9 @@
         {
             Fiber fiber = fiberInit.Fiber;
 
-            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(fiber, new EventType.EntryEvent3());
+            await EventSystem.Instance.PublishAsync(fiber.Root, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(fiber.Root, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(fiber.Root, new EventType.EntryEvent3());
         }
     }
 }

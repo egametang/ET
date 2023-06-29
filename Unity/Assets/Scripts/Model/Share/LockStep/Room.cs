@@ -7,7 +7,6 @@ namespace ET
     public class Room: Entity, IScene, IAwake, IUpdate
     {
         public Fiber Fiber { get; set; }
-        public IScene Root { get; set; }
         public SceneType SceneType { get; set; } = SceneType.Room;
         public string Name { get; set; }
         

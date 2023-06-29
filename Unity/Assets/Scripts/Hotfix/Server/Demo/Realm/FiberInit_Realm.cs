@@ -10,7 +10,7 @@ namespace ET.Server
             Fiber fiber = fiberInit.Fiber;
             
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)fiber.Id);
-            fiber.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
+            fiber.Root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
         }
     }
 }

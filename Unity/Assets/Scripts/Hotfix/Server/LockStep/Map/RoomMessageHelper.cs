@@ -7,7 +7,7 @@ namespace ET.Server
         {
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
 
-            ActorLocationSenderComponent actorLocationSenderComponent = room.Fiber().GetComponent<ActorLocationSenderComponent>();
+            ActorLocationSenderComponent actorLocationSenderComponent = room.Root().GetComponent<ActorLocationSenderComponent>();
             foreach (var kv in roomServerComponent.Children)
             {
                 RoomPlayer roomPlayer = kv.Value as RoomPlayer;

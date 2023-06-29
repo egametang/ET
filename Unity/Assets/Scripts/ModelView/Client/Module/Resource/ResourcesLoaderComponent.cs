@@ -10,9 +10,10 @@ namespace ET.Client
         {
             async ETTask UnLoadAsync()
             {
+                Scene root = self.Root();
                 using ListComponent<string> list = ListComponent<string>.Create();
                 
-                TimerComponent timerComponent = self.Fiber().GetComponent<TimerComponent>();
+                TimerComponent timerComponent = root.GetComponent<TimerComponent>();
                 list.AddRange(self.LoadedResource);
                 self.LoadedResource = null;
 
@@ -24,18 +25,18 @@ namespace ET.Client
                 // 延迟5秒卸载包，因为包卸载是引用计数，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
                 await timerComponent.WaitAsync(5000);
 
-                CoroutineLockComponent coroutineLockComponent = self.Fiber().GetComponent<CoroutineLockComponent>();
+                CoroutineLockComponent coroutineLockComponent = root.GetComponent<CoroutineLockComponent>();
                 foreach (string abName in list)
                 {
                     using CoroutineLock coroutineLock =
                             await coroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
                     {
-                        if (self.Fiber().IsDisposed)
+                        if (root.IsDisposed)
                         {
                             return;
                         }
 
-                        await self.Fiber().GetComponent<ResourcesComponent>().UnloadBundleAsync(abName);
+                        await root.GetComponent<ResourcesComponent>().UnloadBundleAsync(abName);
                     }
                 }
             }
@@ -45,7 +46,7 @@ namespace ET.Client
 
         public static async ETTask LoadAsync(this ResourcesLoaderComponent self, string ab)
         {
-            using CoroutineLock coroutineLock = await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
+            using CoroutineLock coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
 
             if (self.IsDisposed)
             {
@@ -59,7 +60,7 @@ namespace ET.Client
             }
 
             self.LoadedResource.Add(ab);
-            await self.Fiber().GetComponent<ResourcesComponent>().LoadBundleAsync(ab);
+            await self.Root().GetComponent<ResourcesComponent>().LoadBundleAsync(ab);
         }
     }
 

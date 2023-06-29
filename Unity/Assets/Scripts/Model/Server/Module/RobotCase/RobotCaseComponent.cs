@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class RobotCaseComponent: Entity, IAwake, IDestroy
     {
         public Dictionary<int, RobotCase> RobotCases = new Dictionary<int, RobotCase>();

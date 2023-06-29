@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class LocationProxyComponent: Entity, IAwake
     {
     }

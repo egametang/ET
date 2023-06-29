@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ET.Server
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class WatcherComponent: Entity, IAwake, IDestroy
     {
         public readonly Dictionary<int, System.Diagnostics.Process> Processes = new Dictionary<int, System.Diagnostics.Process>();

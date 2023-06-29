@@ -1,6 +1,6 @@
 ﻿namespace ET.Client
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class PlayerComponent: Entity, IAwake
     {
         public long MyId { get; set; }

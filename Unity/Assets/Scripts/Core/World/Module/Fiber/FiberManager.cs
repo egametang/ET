@@ -17,11 +17,11 @@ namespace ET
         {
             Fiber fiber = new(fiberId, Options.Instance.Process, sceneType);
             
-            fiber.AddComponent<TimerComponent>();
-            fiber.AddComponent<CoroutineLockComponent>();
-            fiber.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            fiber.AddComponent<ActorSenderComponent>();
-            fiber.AddComponent<ActorRecverComponent>();
+            fiber.Root.AddComponent<TimerComponent>();
+            fiber.Root.AddComponent<CoroutineLockComponent>();
+            fiber.Root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+            fiber.Root.AddComponent<ActorSenderComponent>();
+            fiber.Root.AddComponent<ActorRecverComponent>();
             
             // 根据Fiber的SceneType分发Init
             EventSystem.Instance.Invoke((long)sceneType, new FiberInit() {Fiber = fiber});

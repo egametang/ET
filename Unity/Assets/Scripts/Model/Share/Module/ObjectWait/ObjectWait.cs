@@ -107,7 +107,7 @@ namespace ET
             ResultCallback<T> tcs = new ResultCallback<T>();
             async ETTask WaitTimeout()
             {
-                await self.Fiber().GetComponent<TimerComponent>().WaitAsync(timeout, cancellationToken);
+                await self.Root().GetComponent<TimerComponent>().WaitAsync(timeout, cancellationToken);
                 if (cancellationToken.IsCancel())
                 {
                     return;

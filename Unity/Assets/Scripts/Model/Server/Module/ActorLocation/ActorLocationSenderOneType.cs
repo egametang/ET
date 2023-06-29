@@ -14,7 +14,7 @@ namespace ET.Server
     }
     
     
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class ActorLocationSenderComponent: Entity, IAwake, IDestroy
     {
         public const long TIMEOUT_TIME = 60 * 1000;

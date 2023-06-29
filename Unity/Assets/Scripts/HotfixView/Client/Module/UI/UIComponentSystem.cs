@@ -11,7 +11,7 @@ namespace ET.Client
 		[EntitySystem]
 		private static void Awake(this UIComponent self)
 		{
-			self.UIGlobalComponent = self.Fiber().GetComponent<UIGlobalComponent>();
+			self.UIGlobalComponent = self.Root().GetComponent<UIGlobalComponent>();
 		}
 		
 		public static async ETTask<UI> Create(this UIComponent self, string uiType, UILayer uiLayer)

@@ -229,10 +229,11 @@ namespace ET.Client
             string[] dependencies = self.GetSortedDependencies(assetBundleName);
 
             //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
-            TimerComponent timerComponent = self.Fiber().GetComponent<TimerComponent>();
+            Scene root = self.Root();
+            TimerComponent timerComponent = root.GetComponent<TimerComponent>();
             foreach (string dependency in dependencies)
             {
-                using (await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode()))
+                using (await root.GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode()))
                 {
                     self.UnloadOneBundle(dependency, unload);
                     await timerComponent.WaitFrameAsync();
@@ -408,7 +409,7 @@ namespace ET.Client
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
                     using CoroutineLock coroutineLock =
-                            await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Resources, dependency.GetHashCode());
+                            await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Resources, dependency.GetHashCode());
 
                     ABInfo abInfo = await self.LoadOneBundleAsync(dependency);
                     if (abInfo == null || abInfo.RefCount > 1)
@@ -479,7 +480,7 @@ namespace ET.Client
                     }
 
                     // 编辑器模式也不能同步加载
-                    await self.Fiber().GetComponent<TimerComponent>().WaitAsync(100);
+                    await self.Root().GetComponent<TimerComponent>().WaitAsync(100);
 
                     return abInfo;
                 }
@@ -517,7 +518,7 @@ namespace ET.Client
         // 加载ab包中的all assets
         private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
-            using CoroutineLock coroutineLock = await self.Fiber().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
+            using CoroutineLock coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
 
             if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
             {
@@ -552,7 +553,7 @@ namespace ET.Client
         }
     }
 
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class ResourcesComponent: Entity, IAwake, IDestroy
     {
         public AssetBundleManifest AssetBundleManifestObject { get; set; }

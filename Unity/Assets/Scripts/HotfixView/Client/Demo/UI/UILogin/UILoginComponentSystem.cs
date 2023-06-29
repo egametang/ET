@@ -21,7 +21,7 @@ namespace ET.Client
 		public static void OnLogin(this UILoginComponent self)
 		{
 			LoginHelper.Login(
-				self.Fiber(), 
+				self.Root(), 
 				self.account.GetComponent<InputField>().text, 
 				self.password.GetComponent<InputField>().text).Coroutine();
 		}

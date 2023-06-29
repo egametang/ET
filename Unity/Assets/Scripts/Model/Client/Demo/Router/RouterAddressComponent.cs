@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace ET.Client
 {
-    [ComponentOf(typeof(Fiber))]
+    [ComponentOf(typeof(Scene))]
     public class RouterAddressComponent: Entity, IAwake<string, int>
     {
         public IPAddress RouterManagerIPAddress { get; set; }

@@ -3,9 +3,9 @@ using System.Net;
 namespace ET.Server
 {
     [Event(SceneType.Main)]
-    public class EntryEvent2_InitServer: AEvent<Fiber, ET.EventType.EntryEvent2>
+    public class EntryEvent2_InitServer: AEvent<Scene, ET.EventType.EntryEvent2>
     {
-        protected override async ETTask Run(Fiber fiber, ET.EventType.EntryEvent2 args)
+        protected override async ETTask Run(Scene root, ET.EventType.EntryEvent2 args)
         {
             await ETTask.CompletedTask;
             
@@ -29,7 +29,7 @@ namespace ET.Server
                     threadPoolScheduler.Add(fiberId);
                     
                     // 根据配置创建纤程
-                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(fiber.Process);
+                    var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
                         fiberId = FiberManager.Instance.Create(startConfig.Id, startConfig.Type);
@@ -55,7 +55,7 @@ namespace ET.Server
 
             if (Options.Instance.Console == 1)
             {
-                fiber.AddComponent<ConsoleComponent>();
+                root.AddComponent<ConsoleComponent>();
             }
         }
     }

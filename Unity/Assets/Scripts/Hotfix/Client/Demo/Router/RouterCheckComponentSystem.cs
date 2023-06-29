@@ -15,7 +15,7 @@ namespace ET.Client
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;
-            Fiber fiber = self.Fiber();
+            Scene root = self.Root();
             while (true)
             {
                 if (self.InstanceId != instanceId)
@@ -23,7 +23,7 @@ namespace ET.Client
                     return;
                 }
 
-                await fiber.GetComponent<TimerComponent>().WaitAsync(1000);
+                await root.GetComponent<TimerComponent>().WaitAsync(1000);
                 
                 if (self.InstanceId != instanceId)
                 {
@@ -44,16 +44,16 @@ namespace ET.Client
                     (uint localConn, uint remoteConn) = session.AService.GetChannelConn(sessionId);
                     
                     IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
-                    Log.Info($"get recvLocalConn start: {fiber.Id} {realAddress} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
 
-                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(self.Fiber(), realAddress, localConn, remoteConn);
+                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(root, realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
-                        Log.Error($"get recvLocalConn fail: {fiber.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
+                        Log.Error($"get recvLocalConn fail: {root.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
                         continue;
                     }
                     
-                    Log.Info($"get recvLocalConn ok: {fiber.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
                     
                     session.LastRecvTime = TimeHelper.ClientNow();
                     

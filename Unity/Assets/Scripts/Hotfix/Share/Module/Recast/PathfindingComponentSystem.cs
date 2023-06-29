@@ -11,7 +11,7 @@ namespace ET
         private static void Awake(this PathfindingComponent self, string name)
         {
             self.Name = name;
-            self.NavMesh = self.Fiber().GetComponent<NavmeshComponent>().Get(name);
+            self.NavMesh = self.Root().GetComponent<NavmeshComponent>().Get(name);
 
             if (self.NavMesh == 0)
             {

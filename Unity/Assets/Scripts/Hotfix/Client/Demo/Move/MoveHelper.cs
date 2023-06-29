@@ -10,7 +10,7 @@ namespace ET.Client
         public static async ETTask<int> MoveToAsync(this Unit unit, float3 targetPos, ETCancellationToken cancellationToken = null)
         {
             C2M_PathfindingResult msg = new C2M_PathfindingResult() { Position = targetPos };
-            unit.Fiber().GetComponent<SessionComponent>().Session.Send(msg);
+            unit.Root().GetComponent<SessionComponent>().Session.Send(msg);
 
             ObjectWait objectWait = unit.GetComponent<ObjectWait>();
             
