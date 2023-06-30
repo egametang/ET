@@ -7,7 +7,7 @@ namespace ET
         [StaticField]
         public static World Instance = new();
 
-        private readonly List<ISingleton> list = new();
+        private readonly Stack<Type> stack = new();
         private readonly Dictionary<Type, ISingleton> singletons = new();
         
         private World()
@@ -18,14 +18,15 @@ namespace ET
         {
             lock (this)
             {
-                for (int i = this.list.Count - 1; i >= 0; --i)
+                while (this.stack.Count > 0)
                 {
-                    this.list[i].Dispose();
+                    Type type = this.stack.Pop();
+                    this.singletons[type].Dispose();
                 }
             }
         }
 
-        public T AddSingleton<T>() where T : Singleton<T>, ISingletonAwake, new()
+        public T AddSingleton<T>() where T : class, ISingleton, ISingletonAwake, new()
         {
             T singleton = new();
             singleton.Awake();
@@ -34,7 +35,7 @@ namespace ET
             return singleton;
         }
         
-        public T AddSingleton<T, A>(A a) where T : Singleton<T>, ISingletonAwake<A>, new()
+        public T AddSingleton<T, A>(A a) where T : class, ISingleton, ISingletonAwake<A>, new()
         {
             T singleton = new();
             singleton.Awake(a);
@@ -43,7 +44,7 @@ namespace ET
             return singleton;
         }
         
-        public T AddSingleton<T, A, B>(A a, B b) where T : Singleton<T>, ISingletonAwake<A, B>, new()
+        public T AddSingleton<T, A, B>(A a, B b) where T : class, ISingleton, ISingletonAwake<A, B>, new()
         {
             T singleton = new();
             singleton.Awake(a, b);
@@ -52,7 +53,7 @@ namespace ET
             return singleton;
         }
         
-        public T AddSingleton<T, A, B, C>(A a, B b, C c) where T : Singleton<T>, ISingletonAwake<A, B, C>, new()
+        public T AddSingleton<T, A, B, C>(A a, B b, C c) where T : class, ISingleton, ISingletonAwake<A, B, C>, new()
         {
             T singleton = new();
             singleton.Awake(a, b, c);
@@ -65,45 +66,30 @@ namespace ET
         {
             lock (this)
             {
-                if (this.singletons.Remove(singleton.GetType(), out ISingleton removed))
-                {
-                    this.list.Remove(removed);
-                }
-                list.Add(singleton);
-                singletons.Add(singleton.GetType(), singleton);
+                Type type = singleton.GetType();
+                this.stack.Push(type);
+                singletons.Add(type, singleton);
             }
 
             singleton.Register();
         }
         
-        private void AddSingletonNoLock(ISingleton singleton)
-        {
-            if (this.singletons.Remove(singleton.GetType(), out ISingleton removed))
-            {
-                this.list.Remove(removed);
-            }
-            list.Add(singleton);
-            singletons.Add(singleton.GetType(), singleton);
-
-            singleton.Register();
-        }
-
         public void Load()
         {
             lock (this)
             {
-                ISingleton[] array = this.list.ToArray();
-                this.list.Clear();
-                this.singletons.Clear();
-                
-                foreach (ISingleton singleton in array)
+                foreach (Type type in this.stack)
                 {
-                    if (singleton is not ISingletonLoad singletonLoad)
+                    ISingleton singleton = this.singletons[type];
+
+                    if (singleton is not ISingletonLoad iSingletonLoad)
                     {
-                        this.AddSingletonNoLock(singleton);
                         continue;
                     }
-                    this.AddSingletonNoLock(singletonLoad.Load());
+                    
+                    singleton = iSingletonLoad.Load();
+                    this.singletons[type] = singleton;
+                    singleton.Register();
                 }
             }
         }

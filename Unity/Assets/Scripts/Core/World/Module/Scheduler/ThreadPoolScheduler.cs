@@ -45,18 +45,22 @@ namespace ET
                     Fiber fiber = FiberManager.Instance.Get(id);
                     if (fiber == null)
                     {
-                        Thread.Sleep(1);
                         continue;
                     }
 
-                    // 执行过的或者正在执行的进程放到队尾
-                    if (fiber.IsRuning)
+                    if (fiber.IsDisposed)
+                    {
+                        continue;
+                    }
+                    
+                    this.idQueue.Enqueue(id);
+
+                    // 正在执行的就不执行了
+                    if (!fiber.IsRuning)
                     {
                         fiber.Update();
                         fiber.LateUpdate();
                     }
-
-                    this.idQueue.Enqueue(id);
 
                     Thread.Sleep(1);
                 }
@@ -67,7 +71,7 @@ namespace ET
             }
         }
 
-        public override void Destroy()
+        protected override void Destroy()
         {
             this.isStart = false;
             foreach (Thread thread in this.threads)

@@ -6,6 +6,7 @@ namespace ET
     public interface ISingleton: IDisposable
     {
         void Register();
+        
     }
     
     public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
@@ -15,8 +16,57 @@ namespace ET
         [StaticField]
         private static T instance;
         
+        public static T Instance
+        {
+            get
+            {
+                return instance;
+            }
+            private set
+            {
+                instance = value;
+            }
+        }
+
+        public virtual void Register()
+        {
+            Instance = (T)this;
+        }
+
+        public bool IsDisposed()
+        {
+            return this.isDisposed;
+        }
+
+        protected virtual void Destroy()
+        {
+            
+        }
+
+        void IDisposable.Dispose()
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+            
+            this.isDisposed = true;
+
+            Instance = null;
+            
+            this.Destroy();
+        }
+    }
+    
+    public abstract class SingletonLock<T>: ISingleton, ISingletonLoad where T: SingletonLock<T>, new()
+    {
+        private bool isDisposed;
+        
         [StaticField]
-        private static readonly object lockObj = new();
+        private static T instance;
+        
+        [StaticField]
+        private static object lockObj = new();
 
         public static T Instance
         {
@@ -24,10 +74,10 @@ namespace ET
             {
                 lock (lockObj)
                 {
-                    return instance; 
+                    return instance;
                 }
             }
-            set
+            private set
             {
                 lock (lockObj)
                 {
@@ -43,33 +93,31 @@ namespace ET
 
         public bool IsDisposed()
         {
-            lock (lockObj)
-            {
-                return this.isDisposed;
-            }
+            return this.isDisposed;
         }
 
-        public virtual void Destroy()
+        protected virtual void Destroy()
         {
             
         }
 
         void IDisposable.Dispose()
         {
-            T t;
-            lock (lockObj)
+            if (this.isDisposed)
             {
-                if (this.isDisposed)
-                {
-                    return;
-                }
-                this.isDisposed = true;
-                
-                t = instance;
-                instance = null;
+                return;
             }
             
-            t.Destroy();
+            this.isDisposed = true;
+
+            Instance = null;
+            
+            this.Destroy();
+        }
+
+        public virtual ISingleton Load()
+        {
+            return new T();
         }
     }
 }

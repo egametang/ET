@@ -44,7 +44,7 @@ namespace ET
             return Create(fiberId, zone, sceneType, name);
         }
         
-        // 不允许外部调用,只能由Schecher执行完成一帧调用，否则容易出现多线程问题
+        // 不允许外部调用,只能由Schecher执行完成一帧再调用，否则容易出现多线程问题
         internal void Remove(int id)
         {
             if (this.fibers.Remove(id, out Fiber fiber))

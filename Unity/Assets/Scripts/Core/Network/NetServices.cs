@@ -21,7 +21,7 @@ namespace ET
         {
         }
 
-        public override void Destroy()
+        protected override void Destroy()
         {
             foreach (var kv in this.services)
             {

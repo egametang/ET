@@ -18,7 +18,7 @@ namespace ET
     /// <summary>
     /// 监视数值变化组件,分发监听
     /// </summary>
-    public class NumericWatcherComponent : Singleton<NumericWatcherComponent>, ISingletonAwake, ISingletonLoad
+    public class NumericWatcherComponent : SingletonLock<NumericWatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<int, List<NumericWatcherInfo>> allWatchers = new();
         
@@ -41,11 +41,6 @@ namespace ET
                     this.allWatchers[numericWatcherAttribute.NumericType].Add(numericWatcherInfo);
                 }
             }
-        }
-
-        public ISingleton Load()
-        {
-            return new NumericWatcherComponent();
         }
         
         public void Run(Unit unit, EventType.NumbericChange args)

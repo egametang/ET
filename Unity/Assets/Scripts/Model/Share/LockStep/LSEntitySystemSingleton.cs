@@ -11,7 +11,7 @@ namespace ET
         public const int Max = 1;
     }
     
-    public class LSEntitySystemSingleton: Singleton<LSEntitySystemSingleton>, ISingletonAwake, ISingletonLoad
+    public class LSEntitySystemSingleton: SingletonLock<LSEntitySystemSingleton>, ISingletonAwake
     {
         public TypeSystems TypeSystems { get; private set; }
         
@@ -35,11 +35,6 @@ namespace ET
                     oneTypeSystems.QueueFlag[index] = true;
                 }
             }
-        }
-        
-        public ISingleton Load()
-        {
-            return new LSEntitySystemSingleton();
         }
         
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)

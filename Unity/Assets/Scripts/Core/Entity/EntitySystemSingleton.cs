@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EntitySystemSingleton: Singleton<EntitySystemSingleton>, ISingletonAwake, ISingletonLoad
+    public class EntitySystemSingleton: SingletonLock<EntitySystemSingleton>, ISingletonAwake
     {
         public TypeSystems TypeSystems { get; private set; }
         
@@ -28,11 +28,6 @@ namespace ET
             }
         }
         
-        public ISingleton Load()
-        {
-            return new EntitySystemSingleton();
-        }
-        
         public void Serialize(Entity component)
         {
             if (component is not ISerialize)
@@ -40,7 +35,7 @@ namespace ET
                 return;
             }
             
-            List<object> iSerializeSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (ISerializeSystem));
+            List<object> iSerializeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (ISerializeSystem));
             if (iSerializeSystems == null)
             {
                 return;
@@ -71,7 +66,7 @@ namespace ET
                 return;
             }
             
-            List<object> iDeserializeSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
+            List<object> iDeserializeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
             if (iDeserializeSystems == null)
             {
                 return;
@@ -98,7 +93,7 @@ namespace ET
         // GetComponentSystem
         public void GetComponent(Entity entity, Entity component)
         {
-            List<object> iGetSystem = EntitySystemSingleton.Instance.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
+            List<object> iGetSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
             if (iGetSystem == null)
             {
                 return;
@@ -125,7 +120,7 @@ namespace ET
         // AddComponentSystem
         public void AddComponent(Entity entity, Entity component)
         {
-            List<object> iAddSystem = EntitySystemSingleton.Instance.TypeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
+            List<object> iAddSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
             if (iAddSystem == null)
             {
                 return;
@@ -151,7 +146,7 @@ namespace ET
 
         public void Awake(Entity component)
         {
-            List<object> iAwakeSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
             if (iAwakeSystems == null)
             {
                 return;
@@ -182,7 +177,7 @@ namespace ET
                 return;
             }
             
-            List<object> iAwakeSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -213,7 +208,7 @@ namespace ET
                 return;
             }
             
-            List<object> iAwakeSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -244,7 +239,7 @@ namespace ET
                 return;
             }
             
-            List<object> iAwakeSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
+            List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
             if (iAwakeSystems == null)
             {
                 return;
@@ -275,7 +270,7 @@ namespace ET
                 return;
             }
             
-            List<object> iDestroySystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
+            List<object> iDestroySystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
             if (iDestroySystems == null)
             {
                 return;

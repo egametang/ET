@@ -10,7 +10,7 @@ namespace ET
     {
         private bool isStart;
 
-        private readonly ConcurrentDictionary<Fiber, Thread> dictionary = new();
+        private readonly ConcurrentDictionary<int, Thread> dictionary = new();
 
         public void Awake()
         {
@@ -29,6 +29,12 @@ namespace ET
             {
                 try
                 {
+                    if (fiber.IsDisposed)
+                    {
+                        this.dictionary.Remove(fiberId, out _);
+                        return;
+                    }
+                    
                     fiber.Update();
                     fiber.LateUpdate();
 
@@ -41,7 +47,7 @@ namespace ET
             }
         }
 
-        public override void Destroy()
+        protected override void Destroy()
         {
             this.isStart = false;
             foreach (var kv in this.dictionary)

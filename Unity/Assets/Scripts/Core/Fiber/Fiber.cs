@@ -14,6 +14,8 @@ namespace ET
     
     public class Fiber: IDisposable
     {
+        public bool IsDisposed;
+        
         public int Id;
 
         public int Zone;
@@ -51,16 +53,18 @@ namespace ET
 
         public void Update()
         {
-            this.TimeInfo.Update();
+            this.IsRuning = true;
             
+            this.TimeInfo.Update();
             this.EntitySystem.Update();
         }
         
         public void LateUpdate()
         {
             this.EntitySystem.LateUpdate();
-
             FrameFinishUpdate();
+
+            this.IsRuning = false;
         }
 
         public async ETTask WaitFrameFinish()
@@ -74,6 +78,13 @@ namespace ET
 
         public void Dispose()
         {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this.IsDisposed = true;
+            
             this.IsRuning = false;
         }
     }

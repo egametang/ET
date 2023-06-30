@@ -26,6 +26,11 @@ namespace ET
                 {
                     continue;
                 }
+                
+                if (fiber.IsDisposed)
+                {
+                    continue;
+                }
 
                 this.idQueue.Enqueue(id);
 
@@ -45,6 +50,11 @@ namespace ET
 
                 Fiber fiber = FiberManager.Instance.Get(id);
                 if (fiber == null)
+                {
+                    continue;
+                }
+
+                if (fiber.IsDisposed)
                 {
                     continue;
                 }
