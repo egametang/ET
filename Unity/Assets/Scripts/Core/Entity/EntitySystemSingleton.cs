@@ -28,9 +28,9 @@ namespace ET
             }
         }
         
-        public void Load()
+        public ISingleton Load()
         {
-            World.Instance.AddSingleton<EntitySystemSingleton>();
+            return new EntitySystemSingleton();
         }
         
         public void Serialize(Entity component)

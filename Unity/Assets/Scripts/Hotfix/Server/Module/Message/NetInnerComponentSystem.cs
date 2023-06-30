@@ -48,6 +48,12 @@ namespace ET.Server
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }
+        
+        [EntitySystem]
+        private static void Update(this NetInnerComponent self)
+        {
+            self.AService.Update();
+        }
 
         [EntitySystem]
         private static void Destroy(this NetInnerComponent self)

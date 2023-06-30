@@ -27,9 +27,9 @@ namespace ET.Client
             Log.Debug($"start get router info: {url}");
             string routerInfo = await HttpClientHelper.Get(url);
             Log.Debug($"recv router info: {routerInfo}");
-            HttpGetRouterResponse httpGetRouterResponse = JsonHelper.FromJson<HttpGetRouterResponse>(routerInfo);
+            HttpGetRouterResponse httpGetRouterResponse = MongoHelper.FromJson<HttpGetRouterResponse>(routerInfo);
             self.Info = httpGetRouterResponse;
-            Log.Debug($"start get router info finish: {JsonHelper.ToJson(httpGetRouterResponse)}");
+            Log.Debug($"start get router info finish: {MongoHelper.ToJson(httpGetRouterResponse)}");
             
             // 打乱顺序
             RandomGenerator.BreakRank(self.Info.Routers);

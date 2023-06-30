@@ -2,9 +2,9 @@ namespace ET
 {
     public static class EntityHelper
     {
-        public static int DomainZone(this Entity entity)
+        public static int Zone(this Entity entity)
         {
-            return (entity.IScene as Scene)?.Zone ?? 0;
+            return entity.IScene.Fiber.Zone;
         }
 
         public static Scene Scene(this Entity entity)

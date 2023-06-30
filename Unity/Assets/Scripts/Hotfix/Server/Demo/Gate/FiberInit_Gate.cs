@@ -11,6 +11,8 @@ namespace ET.Server
 
             root.AddComponent<PlayerComponent>();
             root.AddComponent<GateSessionKeyComponent>();
+            root.AddComponent<LocationProxyComponent>();
+            root.AddComponent<ActorLocationSenderComponent>();
 
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)root.Id);
             root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);

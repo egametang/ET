@@ -14,6 +14,12 @@ namespace ET.Server
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }
+        
+        [EntitySystem]
+        private static void Update(this NetServerComponent self)
+        {
+            self.AService.Update();
+        }
 
         [EntitySystem]
         private static void Destroy(this NetServerComponent self)
@@ -50,6 +56,8 @@ namespace ET.Server
         
         private static void OnRead(this NetServerComponent self, long channelId, ActorId actorId, object message)
         {
+            Log.Debug($"111111111111111111111111111111111111111 onread");
+            
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
             {
@@ -59,7 +67,7 @@ namespace ET.Server
             
             Log.Debug(message.ToJson());
 			
-            EventSystem.Instance.Publish(self.IScene, new NetServerComponentOnRead() {Session = session, Message = message});
+            EventSystem.Instance.Publish(self.Scene(), new NetServerComponentOnRead() {Session = session, Message = message});
         }
     }
 }

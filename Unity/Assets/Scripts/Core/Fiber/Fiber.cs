@@ -16,6 +16,8 @@ namespace ET
     {
         public int Id;
 
+        public int Zone;
+
         public Scene Root { get; }
 
         public Address Address
@@ -35,15 +37,16 @@ namespace ET
 
         public bool IsRuning;
         
-        public Fiber(int id, int process, SceneType sceneType)
+        public Fiber(int id, int process, int zone, SceneType sceneType, string name)
         {
             this.Id = id;
             this.Process = process;
+            this.Zone = zone;
             this.EntitySystem = new EntitySystem();
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
             this.Mailboxes = new Mailboxes();
-            this.Root = new Scene(this, id, 1, 0, sceneType, "");
+            this.Root = new Scene(this, id, 1, sceneType, name);
         }
 
         public void Update()

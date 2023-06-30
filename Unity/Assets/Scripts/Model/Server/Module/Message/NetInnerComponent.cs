@@ -4,7 +4,7 @@ using System.Net;
 namespace ET.Server
 {
     [ComponentOf(typeof(Scene))]
-    public class NetInnerComponent: Entity, IAwake<IPEndPoint>, IAwake, IDestroy
+    public class NetInnerComponent: Entity, IAwake<IPEndPoint>, IAwake, IDestroy, IUpdate
     {
         public AService AService;
         

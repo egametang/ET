@@ -14,11 +14,11 @@ namespace ET
         {
         }
         
-        public int Create(int fiberId, SceneType sceneType)
+        public int Create(int fiberId, int zone, SceneType sceneType, string name)
         {
             try
             {
-                Fiber fiber = new(fiberId, Options.Instance.Process, sceneType);
+                Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
             
                 fiber.Root.AddComponent<TimerComponent>();
                 fiber.Root.AddComponent<CoroutineLockComponent>();
@@ -38,10 +38,10 @@ namespace ET
             }
         }
         
-        public int Create(SceneType sceneType)
+        public int Create(int zone, SceneType sceneType, string name)
         {
             int fiberId = Interlocked.Increment(ref this.idGenerator);
-            return Create(fiberId, sceneType);
+            return Create(fiberId, zone, sceneType, name);
         }
         
         // 不允许外部调用,只能由Schecher执行完成一帧调用，否则容易出现多线程问题

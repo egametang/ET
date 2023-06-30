@@ -5,10 +5,10 @@ namespace ET.Server
 {
     public static partial class SceneFactory
     {
-        public static async ETTask<Scene> CreateServerScene(Entity parent, long id, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
+        public static async ETTask<Scene> CreateServerScene(Entity parent, long id, long instanceId, SceneType sceneType, string name, StartSceneConfig startSceneConfig = null)
         {
             await ETTask.CompletedTask;
-            Scene scene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name, parent);
+            Scene scene = EntitySceneFactory.CreateScene(parent, id, instanceId, sceneType, name);
 
             scene.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
 

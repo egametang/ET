@@ -28,9 +28,9 @@ namespace ET.Client
             }
         }
 
-        public void Load()
+        public ISingleton Load()
         {
-	        World.Instance.AddSingleton<UIEventComponent>();
+	        return new UIEventComponent();
         }
 	}
 }

@@ -10,46 +10,37 @@ namespace ET
         [BsonIgnore]
         public Fiber Fiber { get; set; }
         
-        public int Zone
-        {
-            get;
-        }
-
+        public string Name { get; }
+        
         public SceneType SceneType
         {
             get;
             set;
         }
 
-        public string Name
-        {
-            get;
-        }
-
         public Scene()
         {
         }
 
-        public Scene(Fiber fiber, long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(Fiber fiber, long id, long instanceId, SceneType sceneType, string name)
         {
             this.Id = id;
-            this.InstanceId = instanceId;
-            this.Zone = zone;
-            this.SceneType = sceneType;
             this.Name = name;
+            this.InstanceId = instanceId;
+            this.SceneType = sceneType;
             this.IsCreated = true;
             this.IsNew = true;
             this.Fiber = fiber;
             this.IScene = this;
             this.IsRegister = true;
-            Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
+            Log.Info($"scene create: {this.SceneType} {this.Id} {this.InstanceId}");
         }
 
         public override void Dispose()
         {
             base.Dispose();
             
-            Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
+            Log.Info($"scene dispose: {this.SceneType} {this.Id} {this.InstanceId}");
         }
         
         protected override string ViewName

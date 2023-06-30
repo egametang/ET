@@ -22,9 +22,9 @@ namespace ET
             }
         }
 
-        public void Load()
+        public ISingleton Load()
         {
-            World.Instance.AddSingleton<AIDispatcherComponent>();
+            return new AIDispatcherComponent();
         }
 
         public AAIHandler Get(string key)

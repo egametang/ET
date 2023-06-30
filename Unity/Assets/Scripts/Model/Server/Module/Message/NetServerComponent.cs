@@ -9,7 +9,7 @@ namespace ET.Server
     }
     
     [ComponentOf(typeof(Scene))]
-    public class NetServerComponent: Entity, IAwake<IPEndPoint>, IDestroy
+    public class NetServerComponent: Entity, IAwake<IPEndPoint>, IDestroy, IUpdate
     {
         public AService AService;
     }

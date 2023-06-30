@@ -20,6 +20,12 @@ namespace ET.Client
         {
             self.AService.Dispose();
         }
+        
+        [EntitySystem]
+        private static void Update(this NetClientComponent self)
+        {
+            self.AService.Update();
+        }
 
         private static void OnRead(this NetClientComponent self, long channelId, ActorId actorId, object message)
         {
@@ -33,7 +39,7 @@ namespace ET.Client
             
             Log.Debug(message.ToJson());
             
-            EventSystem.Instance.Publish(self.IScene, new NetClientComponentOnRead() {Session = session, Message = message});
+            EventSystem.Instance.Publish(self.Scene(), new NetClientComponentOnRead() {Session = session, Message = message});
         }
 
         private static void OnError(this NetClientComponent self, long channelId, int error)

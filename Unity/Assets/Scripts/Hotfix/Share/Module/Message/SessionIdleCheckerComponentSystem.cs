@@ -16,7 +16,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"move timer error: {self.Id}\n{e}");
+                    Log.Error($"session idle checker timer error: {self.Id}\n{e}");
                 }
             }
         }
@@ -30,11 +30,12 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this SessionIdleCheckerComponent self)
         {
-            if (self.IsDisposed)
+            Scene root = self.Root();
+            if (root.IsDisposed)
             {
                 return;
             }
-            self.Root().GetComponent<TimerComponent>().Remove(ref self.RepeatedTimer);
+            root.GetComponent<TimerComponent>().Remove(ref self.RepeatedTimer);
         }
         
         public const int CheckInteral = 2000;

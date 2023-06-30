@@ -85,9 +85,9 @@ namespace ET
             return response;
         }
 
-        public void Load()
+        public ISingleton Load()
         {
-            World.Instance.AddSingleton<OpcodeType>();
+            return new OpcodeType();
         }
     }
 }

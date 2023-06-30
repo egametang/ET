@@ -53,9 +53,9 @@ namespace ET
             }
         }
         
-        public void Load()
+        public ISingleton Load()
         {
-            World.Instance.AddSingleton<MessageDispatcherComponent>();
+            return new MessageDispatcherComponent();
         }
         
         private void RegisterHandler(ushort opcode, MessageDispatcherInfo handler)

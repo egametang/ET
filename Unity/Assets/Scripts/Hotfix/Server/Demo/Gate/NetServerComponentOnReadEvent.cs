@@ -1,6 +1,6 @@
 ﻿namespace ET.Server
 {
-    [Event(SceneType.Process)]
+    [Event(SceneType.Realm | SceneType.Gate)]
     public class NetServerComponentOnReadEvent: AEvent<Scene, NetServerComponentOnRead>
     {
         protected override async ETTask Run(Scene scene, NetServerComponentOnRead args)

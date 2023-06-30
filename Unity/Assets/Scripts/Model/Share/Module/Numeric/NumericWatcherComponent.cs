@@ -43,9 +43,9 @@ namespace ET
             }
         }
 
-        public void Load()
+        public ISingleton Load()
         {
-            World.Instance.AddSingleton<NumericWatcherComponent>();
+            return new NumericWatcherComponent();
         }
         
         public void Run(Unit unit, EventType.NumbericChange args)

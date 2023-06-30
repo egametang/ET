@@ -4,7 +4,7 @@
     {
         public override string ToString()
         {
-            return JsonHelper.ToJson(this);
+            return MongoHelper.ToJson(this);
         }
         
         public string ToJson()

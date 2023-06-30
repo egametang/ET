@@ -41,9 +41,9 @@ namespace ET
         }
         
         
-        public void Load()
+        public ISingleton Load()
         {
-            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
+            return new ActorMessageDispatcherComponent();
         }
 
         private void Register(Type type)

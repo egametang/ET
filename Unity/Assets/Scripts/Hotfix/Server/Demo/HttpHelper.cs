@@ -7,7 +7,7 @@ namespace ET.Server
     {
         public static void Response(HttpListenerContext context, object response)
         {
-            byte[] bytes = JsonHelper.ToJson(response).ToUtf8();
+            byte[] bytes = MongoHelper.ToJson(response).ToUtf8();
             context.Response.StatusCode = 200;
             context.Response.ContentEncoding = Encoding.UTF8;
             context.Response.ContentLength64 = bytes.Length;

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Linq;
-
+using System.Collections.Generic;
 namespace ET
 {
     public class World: IDisposable
@@ -9,7 +7,8 @@ namespace ET
         [StaticField]
         public static World Instance = new();
 
-        private readonly ConcurrentDictionary<Type, ISingleton> singletons = new();
+        private readonly List<ISingleton> list = new();
+        private readonly Dictionary<Type, ISingleton> singletons = new();
         
         private World()
         {
@@ -17,9 +16,12 @@ namespace ET
         
         public void Dispose()
         {
-            foreach (ISingleton singleton in this.singletons.Values)
+            lock (this)
             {
-                singleton.Dispose();
+                for (int i = this.list.Count - 1; i >= 0; --i)
+                {
+                    this.list[i].Dispose();
+                }
             }
         }
 
@@ -61,25 +63,48 @@ namespace ET
 
         public void AddSingleton(ISingleton singleton)
         {
-            singletons[singleton.GetType()] = singleton;
+            lock (this)
+            {
+                if (this.singletons.Remove(singleton.GetType(), out ISingleton removed))
+                {
+                    this.list.Remove(removed);
+                }
+                list.Add(singleton);
+                singletons.Add(singleton.GetType(), singleton);
+            }
+
+            singleton.Register();
+        }
+        
+        private void AddSingletonNoLock(ISingleton singleton)
+        {
+            if (this.singletons.Remove(singleton.GetType(), out ISingleton removed))
+            {
+                this.list.Remove(removed);
+            }
+            list.Add(singleton);
+            singletons.Add(singleton.GetType(), singleton);
+
             singleton.Register();
         }
 
         public void Load()
         {
-            foreach (Type type in this.singletons.Keys.ToArray())
+            lock (this)
             {
-                if (!this.singletons.TryGetValue(type, out ISingleton singleton))
-                {
-                    continue;
-                }
-
-                if (singleton is not ISingletonLoad singletonLoad)
-                {
-                    continue;
-                }
+                ISingleton[] array = this.list.ToArray();
+                this.list.Clear();
+                this.singletons.Clear();
                 
-                singletonLoad.Load();
+                foreach (ISingleton singleton in array)
+                {
+                    if (singleton is not ISingletonLoad singletonLoad)
+                    {
+                        this.AddSingletonNoLock(singleton);
+                        continue;
+                    }
+                    this.AddSingletonNoLock(singletonLoad.Load());
+                }
             }
         }
     }

@@ -30,7 +30,7 @@ namespace ET
 
             self.requestCallbacks.Clear();
             
-            Log.Info($"session create: zone: {self.DomainZone()} id: {self.Id} {timeNow} ");
+            Log.Info($"session create: zone: {self.Zone()} id: {self.Id} {timeNow} ");
         }
         
         [EntitySystem]

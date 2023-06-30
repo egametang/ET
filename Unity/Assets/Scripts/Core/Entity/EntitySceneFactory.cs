@@ -2,9 +2,9 @@
 {
     public static class EntitySceneFactory
     {
-        public static Scene CreateScene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
+        public static Scene CreateScene(Entity parent, long id, long instanceId, SceneType sceneType, string name)
         {
-            Scene scene = new(parent.Fiber(), id, instanceId, zone, sceneType, name);
+            Scene scene = new(parent.Fiber(), id, instanceId, sceneType, name);
             parent?.AddChild(scene);
             return scene;
         }

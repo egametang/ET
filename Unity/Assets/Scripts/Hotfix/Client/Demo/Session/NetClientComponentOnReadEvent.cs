@@ -1,6 +1,6 @@
 ﻿namespace ET.Client
 {
-    [Event(SceneType.Process)]
+    [Event(SceneType.All)]
     public class NetClientComponentOnReadEvent: AEvent<Scene, NetClientComponentOnRead>
     {
         protected override async ETTask Run(Scene scene, NetClientComponentOnRead args)

@@ -539,13 +539,13 @@ namespace ET
             this.parent = null;
 
             base.Dispose();
+            
+            status = EntityStatus.None;
 
             if (this.IsFromPool)
             {
                 ObjectPool.Instance.Recycle(this);
             }
-
-            status = EntityStatus.None;
         }
 
         private void AddToComponents(Entity component)
