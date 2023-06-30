@@ -25,10 +25,8 @@ namespace ET
         {
         }
 
-		public void ReloadOneConfig(string configName)
+		public void Reload(Type configType)
 		{
-			Type configType = EventSystem.Instance.GetType(configName);
-			
 			byte[] oneConfigBytes =
 					EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.FullName });
 
@@ -37,11 +35,6 @@ namespace ET
 			this.allConfig[configType] = singleton;
 			
 			singleton.Register();
-		}
-
-		public void RemoveOneConfig(Type configType)
-		{
-			this.allConfig.Remove(configType, out _);
 		}
 		
 		public void Load()
