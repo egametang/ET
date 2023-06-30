@@ -30,7 +30,7 @@ namespace ET.Client
                     return;
                 }
 
-                long time = TimeHelper.ClientFrameTime();
+                long time = self.Fiber().TimeInfo.ClientFrameTime();
 
                 if (time - session.LastRecvTime < 7 * 1000)
                 {
@@ -55,7 +55,7 @@ namespace ET.Client
                     
                     Log.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
                     
-                    session.LastRecvTime = TimeHelper.ClientNow();
+                    session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
                     
                     session.AService.ChangeAddress(sessionId, routerAddress);
                 }

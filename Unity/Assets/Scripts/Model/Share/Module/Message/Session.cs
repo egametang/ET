@@ -24,7 +24,7 @@ namespace ET
         private static void Awake(this Session self, AService aService)
         {
             self.AService = aService;
-            long timeNow = TimeHelper.ClientNow();
+            long timeNow = self.Fiber().TimeInfo.ClientNow();
             self.LastRecvTime = timeNow;
             self.LastSendTime = timeNow;
 
@@ -43,7 +43,7 @@ namespace ET
                 responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
             }
 
-            Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
+            Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {self.Fiber().TimeInfo.ClientNow()}");
             
             self.requestCallbacks.Clear();
         }
@@ -117,7 +117,7 @@ namespace ET
         
         public static void Send(this Session self, ActorId actorId, IMessage message)
         {
-            self.LastSendTime = TimeHelper.ClientNow();
+            self.LastSendTime = self.Fiber().TimeInfo.ClientNow();
             Log.Debug(message.ToString());
             self.AService.Send(self.Id, actorId, message as MessageObject);
         }

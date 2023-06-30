@@ -32,6 +32,7 @@ namespace ET
 
         public readonly Dictionary<long, KChannel> KcpPtrChannels = new();
         
+        private DateTime dt1970;
         // KService创建的时间
         private readonly long startTime;
 
@@ -40,7 +41,7 @@ namespace ET
         {
             get
             {
-                return (uint) (TimeHelper.ClientNow() - this.startTime);
+                return (uint)((DateTime.UtcNow.Ticks - this.startTime) / 10000);
             }
         }
 
@@ -90,7 +91,7 @@ namespace ET
         public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
-            this.startTime = TimeHelper.ClientNow();
+            this.startTime = DateTime.UtcNow.Ticks;
             this.Socket = new Socket(ipEndPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
@@ -113,7 +114,7 @@ namespace ET
         public KService(AddressFamily addressFamily, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
-            this.startTime = TimeHelper.ClientNow();
+            this.startTime = DateTime.UtcNow.Ticks;
             this.Socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
 
             NetworkHelper.SetSioUdpConnReset(this.Socket);

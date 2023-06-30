@@ -77,9 +77,9 @@ namespace ET
             return ++this.idGenerator;
         }
 
-        private static long GetNow()
+        private long GetNow()
         {
-            return TimeHelper.ClientFrameTime();
+            return this.Fiber().TimeInfo.ClientFrameTime();
         }
 
         public void Update()

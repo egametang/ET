@@ -29,7 +29,7 @@ namespace ET.Client
                 return;
             }
 
-            session.LastRecvTime = TimeHelper.ClientNow();
+            session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
             
             Log.Debug(message.ToJson());
             

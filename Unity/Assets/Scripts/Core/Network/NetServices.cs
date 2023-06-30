@@ -11,11 +11,15 @@ namespace ET
         Websocket,
     }
 
-    public class NetServices: Singleton<NetServices>
+    public class NetServices: Singleton<NetServices>, ISingletonAwake
     {
         private readonly ConcurrentDictionary<long, AService> services = new();
         
         private long idGenerator;
+        
+        public void Awake()
+        {
+        }
 
         public override void Destroy()
         {
@@ -56,5 +60,6 @@ namespace ET
         {
             return --this.acceptIdGenerator;
         }
+        
     }
 }

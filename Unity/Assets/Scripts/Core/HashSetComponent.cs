@@ -5,7 +5,7 @@ namespace ET
 {
     public class HashSetComponent<T>: HashSet<T>, IDisposable
     {
-        private HashSetComponent()
+        public HashSetComponent()
         {
         }
         

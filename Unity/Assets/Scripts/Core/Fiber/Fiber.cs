@@ -14,18 +14,6 @@ namespace ET
     
     public class Fiber: IDisposable
     {
-        [ThreadStatic]
-        [StaticField]
-        private static Fiber instance;
-
-        public static Fiber Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-
         public int Id;
 
         public Scene Root { get; }
@@ -38,7 +26,7 @@ namespace ET
             }
         }
         
-        public int Process { get; private set; }
+        public int Process { get; }
         
         public EntitySystem EntitySystem { get; }
         public TimeInfo TimeInfo { get; }
@@ -55,14 +43,11 @@ namespace ET
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
             this.Mailboxes = new Mailboxes();
-
-            this.Root = new Scene(id, 1, 0, sceneType, "");
+            this.Root = new Scene(this, id, 1, 0, sceneType, "");
         }
 
         public void Update()
         {
-            instance = this;
-            
             this.TimeInfo.Update();
             
             this.EntitySystem.Update();
@@ -70,8 +55,6 @@ namespace ET
         
         public void LateUpdate()
         {
-            instance = this;
-            
             this.EntitySystem.LateUpdate();
 
             FrameFinishUpdate();
@@ -89,8 +72,6 @@ namespace ET
         public void Dispose()
         {
             this.IsRuning = false;
-
-            instance = null;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ET.Client
     {
         public override int Check(AIComponent aiComponent, AIConfig aiConfig)
         {
-            long sec = TimeHelper.ClientNow() / 1000 % 15;
+            long sec = aiComponent.Fiber().TimeInfo.ClientNow() / 1000 % 15;
             if (sec < 10)
             {
                 return 0;

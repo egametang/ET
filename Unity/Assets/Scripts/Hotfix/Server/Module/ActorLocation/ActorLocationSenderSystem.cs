@@ -8,7 +8,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this ActorLocationSender self)
         {
-            self.LastSendOrRecvTime = TimeHelper.ServerNow();
+            self.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
             self.ActorId = default;
             self.Error = 0;
         }

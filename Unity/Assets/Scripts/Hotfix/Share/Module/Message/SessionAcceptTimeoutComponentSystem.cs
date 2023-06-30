@@ -24,7 +24,7 @@ namespace ET
         [EntitySystem]
         private static void Awake(this SessionAcceptTimeoutComponent self)
         {
-            self.Timer = self.Root().GetComponent<TimerComponent>().NewOnceTimer(TimeHelper.ServerNow() + 5000, TimerInvokeType.SessionAcceptTimeout, self);
+            self.Timer = self.Root().GetComponent<TimerComponent>().NewOnceTimer(self.Fiber().TimeInfo.ServerNow() + 5000, TimerInvokeType.SessionAcceptTimeout, self);
         }
         
         [EntitySystem]

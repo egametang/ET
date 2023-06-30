@@ -8,7 +8,7 @@ namespace ET.Server
 	{
 		protected override async ETTask Run(Session session, C2G_Ping request, G2C_Ping response)
 		{
-			response.Time = TimeHelper.ServerNow();
+			response.Time = session.Fiber().TimeInfo.ServerNow();
 			await ETTask.CompletedTask;
 		}
 	}

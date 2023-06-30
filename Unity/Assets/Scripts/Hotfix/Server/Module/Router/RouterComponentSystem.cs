@@ -45,7 +45,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Update(this RouterComponent self)
         {
-            long timeNow = TimeHelper.ClientNow();
+            long timeNow = self.Fiber().TimeInfo.ClientNow();
             self.RecvOuter(timeNow);
             self.RecvInner(timeNow);
 
@@ -595,7 +595,7 @@ namespace ET.Server
             routerNode.InnerIpEndPoint = NetworkHelper.ToIPEndPoint(innerAddress);
             routerNode.SyncIpEndPoint = syncEndPoint;
             routerNode.InnerAddress = innerAddress;
-            routerNode.LastRecvInnerTime = TimeHelper.ClientNow();
+            routerNode.LastRecvInnerTime = self.Fiber().TimeInfo.ClientNow();
 
             self.ConnectIdNodes.Add(connectId, routerNode);
 

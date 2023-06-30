@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 using OfficeOpenXml;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
@@ -24,6 +25,7 @@ namespace ET
 
     class HeadInfo
     {
+        [BsonElement]
         public string FieldCS;
         public string FieldDesc;
         public string FieldName;

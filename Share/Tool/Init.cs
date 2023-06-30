@@ -29,11 +29,15 @@ namespace ET.Server
                 //process.AddSingleton<ObjectPool>();
                 //process.AddSingleton<IdGenerater>();
                 
+                
+                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Init).Assembly);
+                World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+                
+                MongoHelper.Register();
+                
                 ETTask.ExceptionHandler += Log.Error;
                 
-                //process.AddSingleton<EventSystem>();
-                //Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Process).Assembly);
-                //EventSystem.Instance.Add(types);
+
 //
                 //process.AddSingleton<EntitySystemSingleton>();
                 //

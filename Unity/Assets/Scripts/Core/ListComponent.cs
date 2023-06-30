@@ -5,7 +5,7 @@ namespace ET
 {
     public class ListComponent<T>: List<T>, IDisposable
     {
-        private ListComponent()
+        public ListComponent()
         {
         }
         

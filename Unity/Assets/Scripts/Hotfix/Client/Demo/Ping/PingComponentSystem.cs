@@ -29,7 +29,7 @@ namespace ET.Client
                     return;
                 }
 
-                long time1 = TimeHelper.ClientNow();
+                long time1 = self.Fiber().TimeInfo.ClientNow();
                 try
                 {
                     C2G_Ping c2GPing = C2G_Ping.Create(true);
@@ -40,7 +40,7 @@ namespace ET.Client
                         return;
                     }
 
-                    long time2 = TimeHelper.ClientNow();
+                    long time2 = self.Fiber().TimeInfo.ClientNow();
                     self.Ping = time2 - time1;
                     
                     fiber.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;

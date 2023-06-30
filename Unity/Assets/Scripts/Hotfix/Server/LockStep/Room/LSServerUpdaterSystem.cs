@@ -10,7 +10,7 @@ namespace ET.Server
         private static void Update(this LSServerUpdater self)
         {
             Room room = self.GetParent<Room>();
-            long timeNow = TimeHelper.ServerFrameTime();
+            long timeNow = room.Fiber().TimeInfo.ServerFrameTime();
             
             
             int frame = room.AuthorityFrame + 1;

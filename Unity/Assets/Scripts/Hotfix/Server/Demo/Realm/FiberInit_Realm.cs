@@ -9,7 +9,7 @@ namespace ET.Server
         {
             Fiber fiber = fiberInit.Fiber;
             
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)fiber.Id);
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(fiber.Id);
             fiber.Root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
         }
     }

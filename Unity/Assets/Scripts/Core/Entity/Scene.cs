@@ -30,7 +30,7 @@ namespace ET
         {
         }
 
-        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(Fiber fiber, long id, long instanceId, int zone, SceneType sceneType, string name)
         {
             this.Id = id;
             this.InstanceId = instanceId;
@@ -39,8 +39,9 @@ namespace ET
             this.Name = name;
             this.IsCreated = true;
             this.IsNew = true;
-            this.IsRegister = true;
+            this.Fiber = fiber;
             this.IScene = this;
+            this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 

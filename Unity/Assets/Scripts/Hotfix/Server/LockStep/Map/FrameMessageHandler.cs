@@ -13,7 +13,7 @@ namespace ET.Server
             if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)
             {
                 long nowFrameTime = room.FixedTimeCounter.FrameTime(message.Frame);
-                int diffTime = (int)(nowFrameTime - TimeHelper.ServerFrameTime());
+                int diffTime = (int)(nowFrameTime - room.Fiber().TimeInfo.ServerFrameTime());
 
                 room.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession).Send(message.PlayerId, new Room2C_AdjustUpdateTime() {DiffTime = diffTime});
             }

@@ -20,7 +20,7 @@ namespace ET.Server
             
             await room.Root().GetComponent<TimerComponent>().WaitAsync(1000);
 
-            Room2C_Start room2CStart = new() { StartTime = TimeHelper.ServerFrameTime() };
+            Room2C_Start room2CStart = new() { StartTime = room.Fiber().TimeInfo.ServerFrameTime() };
             foreach (RoomPlayer rp in roomServerComponent.Children.Values)
             {
                 room2CStart.UnitInfo.Add(new LockStepUnitInfo()

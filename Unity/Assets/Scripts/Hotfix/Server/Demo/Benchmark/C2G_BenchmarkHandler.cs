@@ -11,7 +11,7 @@ namespace ET.Server
             BenchmarkServerComponent benchmarkServerComponent = session.Scene().GetComponent<BenchmarkServerComponent>();
             if (benchmarkServerComponent.Count++ % 1000000 == 0)
             {
-                Log.Debug($"benchmark count: {benchmarkServerComponent.Count} {TimeHelper.ClientNow()}");
+                Log.Debug($"benchmark count: {benchmarkServerComponent.Count} {session.Fiber().TimeInfo.ClientNow()}");
             }
             await ETTask.CompletedTask;
         }

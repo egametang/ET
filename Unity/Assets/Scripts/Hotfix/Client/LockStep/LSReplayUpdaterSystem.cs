@@ -9,7 +9,8 @@ namespace ET.Client
         private static void Update(this LSReplayUpdater self)
         {
             Room room = self.GetParent<Room>();
-            long timeNow = TimeHelper.ServerNow();
+            Fiber fiber = self.Fiber();
+            long timeNow = fiber.TimeInfo.ServerNow();
 
             int i = 0;
             while (true)
@@ -31,7 +32,7 @@ namespace ET.Client
                 room.Update(oneFrameInputs);
                 room.SpeedMultiply = ++i;
                 
-                long timeNow2 = TimeHelper.ServerNow();
+                long timeNow2 = fiber.TimeInfo.ServerNow();
                 if (timeNow2 - timeNow > 5)
                 {
                     break;

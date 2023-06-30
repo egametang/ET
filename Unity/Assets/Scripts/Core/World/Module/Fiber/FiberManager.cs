@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -15,19 +16,26 @@ namespace ET
         
         public int Create(int fiberId, SceneType sceneType)
         {
-            Fiber fiber = new(fiberId, Options.Instance.Process, sceneType);
+            try
+            {
+                Fiber fiber = new(fiberId, Options.Instance.Process, sceneType);
             
-            fiber.Root.AddComponent<TimerComponent>();
-            fiber.Root.AddComponent<CoroutineLockComponent>();
-            fiber.Root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            fiber.Root.AddComponent<ActorSenderComponent>();
-            fiber.Root.AddComponent<ActorRecverComponent>();
+                fiber.Root.AddComponent<TimerComponent>();
+                fiber.Root.AddComponent<CoroutineLockComponent>();
+                fiber.Root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+                fiber.Root.AddComponent<ActorSenderComponent>();
+                fiber.Root.AddComponent<ActorRecverComponent>();
             
-            // 根据Fiber的SceneType分发Init
-            EventSystem.Instance.Invoke((long)sceneType, new FiberInit() {Fiber = fiber});
+                // 根据Fiber的SceneType分发Init
+                EventSystem.Instance.Invoke((long)sceneType, new FiberInit() {Fiber = fiber});
                 
-            this.fibers[(int)fiber.Id] = fiber;
-            return fiberId;
+                this.fibers[fiber.Id] = fiber;
+                return fiberId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"create fiber error: {fiberId} {sceneType}", e);
+            }
         }
         
         public int Create(SceneType sceneType)

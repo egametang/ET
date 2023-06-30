@@ -16,11 +16,11 @@ namespace ET
 
         public ETTask<IActorResponse> Tcs { get; }
 
-        public ActorMessageSender(ActorId actorId, IActorRequest iActorRequest, ETTask<IActorResponse> tcs, bool needException)
+        public ActorMessageSender(ActorId actorId, IActorRequest iActorRequest, ETTask<IActorResponse> tcs, bool needException, long createTime)
         {
             this.ActorId = actorId;
             this.Request = iActorRequest;
-            this.CreateTime = TimeHelper.ServerNow();
+            this.CreateTime = createTime;
             this.Tcs = tcs;
             this.NeedException = needException;
         }

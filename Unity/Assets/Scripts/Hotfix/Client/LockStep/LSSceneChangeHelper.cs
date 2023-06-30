@@ -38,7 +38,7 @@ namespace ET.Client
             room.IsReplay = true;
             room.Replay = replay;
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
-            room.Init(replay.UnitInfos, TimeHelper.ServerFrameTime());
+            room.Init(replay.UnitInfos, root.Fiber().TimeInfo.ServerFrameTime());
             
             // 等待表现层订阅的事件完成
             await EventSystem.Instance.PublishAsync(root, new EventType.LSSceneChangeStart() {Room = room});

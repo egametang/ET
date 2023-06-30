@@ -63,7 +63,7 @@ namespace ET.Server
                 return;
             }
             
-            session.LastRecvTime = TimeHelper.ClientFrameTime();
+            session.LastRecvTime = self.Fiber().TimeInfo.ClientFrameTime();
 
             self.HandleMessage(actorId, message);
         }

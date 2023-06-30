@@ -60,7 +60,7 @@ namespace ET
 
         private static void Check(this ActorSenderComponent self)
         {
-            long timeNow = TimeHelper.ServerNow();
+            long timeNow = self.Fiber().TimeInfo.ServerNow();
             foreach ((int key, ActorMessageSender value) in self.requestCallback)
             {
                 // 因为是顺序发送的，所以，检测到第一个不超时的就退出
@@ -162,14 +162,15 @@ namespace ET
             }
 
             var tcs = ETTask<IActorResponse>.Create(true);
-            
-            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
+
+            Fiber fiber = self.Fiber();
+            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException, fiber.TimeInfo.ServerFrameTime()));
             
             self.SendInner(actorId, iActorRequest as MessageObject);
 
-            long beginTime = TimeHelper.ServerFrameTime();
+            long beginTime = fiber.TimeInfo.ServerFrameTime();
             IActorResponse response = await tcs;
-            long endTime = TimeHelper.ServerFrameTime();
+            long endTime = fiber.TimeInfo.ServerFrameTime();
 
             long costTime = endTime - beginTime;
             if (costTime > 200)

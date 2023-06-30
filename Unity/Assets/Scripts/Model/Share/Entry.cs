@@ -48,12 +48,13 @@ namespace ET
             World.Instance.AddSingleton<AIDispatcherComponent>();
             World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
             World.Instance.AddSingleton<FiberManager>();
+            World.Instance.AddSingleton<NetServices>();
             FiberManager.MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<FiberManager.MainThreadScheduler>();
-
+            
+            await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
+            
             int fiberId = FiberManager.Instance.Create(ConstFiberId.Main, SceneType.Main);
             mainThreadScheduler.Add(fiberId);
-
-            await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
         }
     }
 }

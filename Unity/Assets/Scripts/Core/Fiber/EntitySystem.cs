@@ -7,7 +7,7 @@ namespace ET
     {
         private readonly Queue<EntityRef<Entity>>[] queues = new Queue<EntityRef<Entity>>[InstanceQueueIndex.Max];
         
-        public void Awake()
+        public EntitySystem()
         {
             for (int i = 0; i < this.queues.Length; i++)
             {
