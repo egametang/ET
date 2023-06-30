@@ -23,21 +23,18 @@ namespace ET.Server
             {
                 case AppType.Server:
                 {
-                    FiberManager.ThreadPoolScheduler threadPoolScheduler = World.Instance.AddSingleton<FiberManager.ThreadPoolScheduler, int>(10);
+                    //ThreadPoolScheduler threadPoolScheduler = World.Instance.AddSingleton<ThreadPoolScheduler, int>(10);
                     
                     // 创建进程通信纤程
                     int fiberId = FiberManager.Instance.Create(ConstFiberId.NetInner, SceneType.NetInner);
-                    threadPoolScheduler.Add(fiberId);
+                    MainThreadScheduler.Instance.Add(fiberId);
                     
                     // 根据配置创建纤程
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
                         fiberId = FiberManager.Instance.Create(startConfig.Id, startConfig.Type);
-                        threadPoolScheduler.Add(fiberId);
-
-                        //await SceneFactory.CreateServerScene(serverSceneManagerComponent, startConfig.Id, startConfig.ActorId.InstanceId, startConfig.Zone, startConfig.Name,
-                        //    startConfig.Type, startConfig);
+                        MainThreadScheduler.Instance.Add(fiberId);
                     }
 
                     break;

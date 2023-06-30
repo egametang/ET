@@ -64,7 +64,7 @@ namespace ET
         
         public virtual void Dispose()
         {
-            NetServices.Instance.Remove(this.Id);
+            NetServices.Instance?.Remove(this.Id);
         }
 
         public abstract void Update();

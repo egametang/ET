@@ -5,58 +5,55 @@ using System.Threading;
 
 namespace ET
 {
-    public partial class FiberManager: Singleton<FiberManager>
+    // 一个Process一个固定的线程
+    public class ThreadScheduler: Singleton<ThreadScheduler>, IScheduler
     {
-        // 一个Process一个固定的线程
-        public class ThreadScheduler: Singleton<ThreadScheduler>, IScheduler
+        private bool isStart;
+
+        private readonly ConcurrentDictionary<Fiber, Thread> dictionary = new();
+
+        public void Awake()
         {
-            private bool isStart;
+            this.isStart = true;
+        }
 
-            private readonly ConcurrentDictionary<Fiber, Thread> dictionary = new();
-
-            public void Awake()
+        private void Loop(int fiberId)
+        {
+            Fiber fiber = FiberManager.Instance.Get(fiberId);
+            if (fiber == null)
             {
-                this.isStart = true;
+                return;
             }
 
-            private void Loop(int fiberId)
+            while (this.isStart)
             {
-                Fiber fiber = FiberManager.Instance.Get(fiberId);
-                if (fiber == null)
+                try
                 {
-                    return;
+                    fiber.Update();
+                    fiber.LateUpdate();
+
+                    Thread.Sleep(1);
                 }
-
-                while (this.isStart)
+                catch (Exception e)
                 {
-                    try
-                    {
-                        fiber.Update();
-                        fiber.LateUpdate();
-
-                        Thread.Sleep(1);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
+                    Log.Error(e);
                 }
             }
+        }
 
-            public override void Destroy()
+        public override void Destroy()
+        {
+            this.isStart = false;
+            foreach (var kv in this.dictionary)
             {
-                this.isStart = false;
-                foreach (var kv in this.dictionary)
-                {
-                    kv.Value.Join();
-                }
+                kv.Value.Join();
             }
+        }
 
-            public void Add(int fiberId)
-            {
-                Thread thread = new(() => this.Loop(fiberId));
-                thread.Start();
-            }
+        public void Add(int fiberId)
+        {
+            Thread thread = new(() => this.Loop(fiberId));
+            thread.Start();
         }
     }
 }

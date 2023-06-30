@@ -9,6 +9,12 @@ namespace ET
 
         private EntityRef(T t)
         {
+            if (t == null)
+            {
+                this.instanceId = 0;
+                this.entity = null;
+                return;
+            }
             this.instanceId = t.InstanceId;
             this.entity = t;
         }

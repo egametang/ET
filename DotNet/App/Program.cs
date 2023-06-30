@@ -17,7 +17,7 @@ namespace ET
             Entry.Init();
             Init.Start();
             
-            FiberManager.MainThreadScheduler mainThreadScheduler = FiberManager.MainThreadScheduler.Instance;
+            MainThreadScheduler mainThreadScheduler = MainThreadScheduler.Instance;
             
             while (true)
             {

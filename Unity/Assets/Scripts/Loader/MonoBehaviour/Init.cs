@@ -29,12 +29,12 @@ namespace ET
 
 		private void Update()
 		{
-			FiberManager.MainThreadScheduler.Instance.Update();
+			MainThreadScheduler.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
-			FiberManager.MainThreadScheduler.Instance.LateUpdate();
+			MainThreadScheduler.Instance.LateUpdate();
 		}
 
 		private void OnApplicationQuit()

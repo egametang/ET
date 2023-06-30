@@ -1,6 +1,4 @@
-﻿using ET.Server;
-
-namespace ET
+﻿namespace ET
 {
     [FriendOf(typeof(ActorRecverComponent))]
     public static partial class ActorRecverComponentSystem

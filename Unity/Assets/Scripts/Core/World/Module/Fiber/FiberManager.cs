@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ET
 {
-    public partial class FiberManager: Singleton<FiberManager>, ISingletonAwake
+    public class FiberManager: Singleton<FiberManager>, ISingletonAwake
     {
         private int idGenerator = 10000000; // 10000000以下为保留的用于StartSceneConfig的fiber id, 1个区配置1000个纤程，可以配置10000个区
         private readonly ConcurrentDictionary<int, Fiber> fibers = new();
@@ -45,7 +45,7 @@ namespace ET
         }
         
         // 不允许外部调用,只能由Schecher执行完成一帧调用，否则容易出现多线程问题
-        private void Remove(int id)
+        internal void Remove(int id)
         {
             if (this.fibers.Remove(id, out Fiber fiber))
             {
@@ -53,8 +53,8 @@ namespace ET
             }
         }
 
-        // 不允许外部调用，容易出现多线程问题
-        private Fiber Get(int id)
+        // 不允许外部调用，容易出现多线程问题, 只能通过消息通信，不允许直接获取其它Fiber引用
+        internal Fiber Get(int id)
         {
             this.fibers.TryGetValue(id, out Fiber fiber);
             return fiber;
