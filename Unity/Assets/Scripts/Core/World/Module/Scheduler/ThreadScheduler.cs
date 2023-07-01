@@ -6,7 +6,7 @@ using System.Threading;
 namespace ET
 {
     // 一个Process一个固定的线程
-    public class ThreadScheduler: Singleton<ThreadScheduler>, IScheduler
+    public class ThreadScheduler: Singleton<ThreadScheduler>, ISingletonAwake, IScheduler
     {
         private readonly ConcurrentDictionary<int, Thread> dictionary = new();
 

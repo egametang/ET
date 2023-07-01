@@ -16,7 +16,7 @@ namespace ET
         
         public string Name;
         
-        public long NavMesh;
+        public IntPtr navMesh;
 
         public float[] StartPos = new float[3];
 

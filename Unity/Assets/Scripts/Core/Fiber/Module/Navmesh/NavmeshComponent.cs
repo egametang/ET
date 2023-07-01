@@ -10,32 +10,31 @@ namespace ET
             public string Name { get; set; }
         }
 
-        private readonly Dictionary<string, long> navmeshs = new();
+        private readonly Dictionary<string, byte[]> navmeshs = new();
         
         public void Awake()
         {
         }
         
-        public long Get(string name)
+        public byte[] Get(string name)
         {
             lock (this)
             {
-                long ptr;
-                if (this.navmeshs.TryGetValue(name, out ptr))
+                if (this.navmeshs.TryGetValue(name, out byte[] bytes))
                 {
-                    return ptr;
+                    return bytes;
                 }
 
-                byte[] buffer = EventSystem.Instance.Invoke<RecastFileLoader, byte[]>(new RecastFileLoader() {Name = name});
+                byte[] buffer =
+                        EventSystem.Instance.Invoke<NavmeshComponent.RecastFileLoader, byte[]>(
+                            new NavmeshComponent.RecastFileLoader() { Name = name });
                 if (buffer.Length == 0)
                 {
                     throw new Exception($"no nav data: {name}");
                 }
 
-                ptr = Recast.RecastLoadLong(name.GetHashCode(), buffer, buffer.Length);
-                this.navmeshs[name] = ptr;
-
-                return ptr;
+                this.navmeshs[name] = buffer;
+                return buffer;
             }
         }
     }

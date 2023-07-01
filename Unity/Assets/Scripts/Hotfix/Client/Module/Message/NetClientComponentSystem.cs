@@ -37,8 +37,6 @@ namespace ET.Client
 
             session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
             
-            Log.Debug(message.ToJson());
-            
             EventSystem.Instance.Publish(self.Scene(), new NetClientComponentOnRead() {Session = session, Message = message});
         }
 

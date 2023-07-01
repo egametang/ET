@@ -131,22 +131,7 @@ public:
 	}
 };
 
-NavMesh* NavMesh::instance = nullptr;
-
-NavMesh::NavMesh()
-{
-}
-
-NavMesh* NavMesh::GetInstace()
-{
-	if (NavMesh::instance == nullptr)
-	{
-		NavMesh::instance = new NavMesh();
-	}
-	return NavMesh::instance;
-}
-
-NavMeshContex* NavMesh::New(int32_t id, const char* buffer, int32_t n)
+NavMeshContex* New(const char* buffer, int32_t n)
 {
 	NavMeshContex* navMeshContex = new NavMeshContex();
 	int32_t ret = navMeshContex->Init(buffer, n);
@@ -157,42 +142,17 @@ NavMeshContex* NavMesh::New(int32_t id, const char* buffer, int32_t n)
 		return nullptr;
 	}
 
-	navMeshContexs[id] = navMeshContex;
 	return navMeshContex;
 }
 
-NavMeshContex* NavMesh::Get(int32_t id)
+NavMeshContex* RecastLoad(const char* buffer, int32_t n)
 {
-	const auto it = navMeshContexs.find(id);
-	if (it != navMeshContexs.end())
-	{
-		return it->second;
-	}
-	return nullptr;
+	return New(buffer, n);
 }
 
-void NavMesh::Clear()
+void RecastClear(NavMeshContex* navMeshContex)
 {
-	for (auto kv : navMeshContexs)
-	{
-		delete kv.second;
-	}
-	navMeshContexs.clear();
-}
-
-NavMeshContex* RecastLoad(int32_t id, const char* buffer, int32_t n)
-{
-	return NavMesh::GetInstace()->New(id, buffer, n);
-}
-
-NavMeshContex* RecastGet(int32_t id)
-{
-	return NavMesh::GetInstace()->Get(id);
-}
-
-void RecastClear()
-{
-	NavMesh::GetInstace()->Clear();
+	delete navMeshContex;
 }
 
 int32_t RecastFind(NavMeshContex* navMeshContex, float* extents, float* startPos, float* endPos, float* straightPath)
