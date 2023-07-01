@@ -8,13 +8,10 @@ namespace ET
     // 一个Process一个固定的线程
     public class ThreadScheduler: Singleton<ThreadScheduler>, IScheduler
     {
-        private bool isStart;
-
         private readonly ConcurrentDictionary<int, Thread> dictionary = new();
 
         public void Awake()
         {
-            this.isStart = true;
         }
 
         private void Loop(int fiberId)
@@ -25,11 +22,11 @@ namespace ET
                 return;
             }
 
-            while (this.isStart)
+            while (true)
             {
                 try
                 {
-                    if (fiber.IsDisposed)
+                    if (this.IsDisposed())
                     {
                         this.dictionary.Remove(fiberId, out _);
                         return;
@@ -49,8 +46,7 @@ namespace ET
 
         protected override void Destroy()
         {
-            this.isStart = false;
-            foreach (var kv in this.dictionary)
+            foreach (var kv in this.dictionary.ToArray())
             {
                 kv.Value.Join();
             }
@@ -58,7 +54,13 @@ namespace ET
 
         public void Add(int fiberId)
         {
+            if (this.IsDisposed())
+            {
+                return;
+            }
+            
             Thread thread = new(() => this.Loop(fiberId));
+            this.dictionary.TryAdd(fiberId, thread);
             thread.Start();
         }
     }

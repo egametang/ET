@@ -16,6 +16,7 @@ namespace ET.Client
             ResourcesComponent resourcesComponent = root.AddComponent<ResourcesComponent>();
             root.AddComponent<ResourcesLoaderComponent>();
             root.AddComponent<PlayerComponent>();
+            root.AddComponent<CurrentScenesComponent>();
             
             await resourcesComponent.LoadBundleAsync("unit.unity3d");
             

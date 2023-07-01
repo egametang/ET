@@ -71,7 +71,6 @@ namespace ET.Server
                 try
                 {
                     int messageLength = self.OuterSocket.ReceiveFrom(self.Cache, ref self.IPEndPoint);
-                    Log.Debug($"11111111111111111111111111111111111: router recv: {messageLength}");
                     self.RecvOuterHandler(messageLength, timeNow);
                 }
                 catch (Exception e)

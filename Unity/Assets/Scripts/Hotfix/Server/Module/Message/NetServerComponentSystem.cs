@@ -56,8 +56,6 @@ namespace ET.Server
         
         private static void OnRead(this NetServerComponent self, long channelId, ActorId actorId, object message)
         {
-            Log.Debug($"111111111111111111111111111111111111111 onread");
-            
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
             {

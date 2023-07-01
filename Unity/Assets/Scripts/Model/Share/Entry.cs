@@ -49,6 +49,7 @@ namespace ET
             World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
             World.Instance.AddSingleton<FiberManager>();
             World.Instance.AddSingleton<NetServices>();
+            World.Instance.AddSingleton<NavmeshComponent>();
             MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<MainThreadScheduler>();
             
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();

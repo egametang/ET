@@ -13,11 +13,9 @@ namespace ET.Server
 			StartSceneConfig config = RealmGateAddressHelper.GetGate(session.Zone(), request.Account);
 			Log.Debug($"gate address: {config}");
 			
-			Log.Debug($"1111111111111111111111111111111111111 R2G_GetLoginKey");
 			// 向gate请求一个key,客户端可以拿着这个key连接gate
 			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await session.Fiber().Root.GetComponent<ActorSenderComponent>().Call(
 				config.ActorId, new R2G_GetLoginKey() {Account = request.Account});
-			Log.Debug($"1111111111111111111111111111111111111 G2R_GetLoginKey: {g2RGetLoginKey}");
 
 			response.Address = config.InnerIPOutPort.ToString();
 			response.Key = g2RGetLoginKey.Key;

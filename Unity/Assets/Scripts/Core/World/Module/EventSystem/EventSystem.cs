@@ -222,6 +222,7 @@ namespace ET
             {
                 throw new Exception($"Invoke error: {typeof(A).Name}");
             }
+            
             if (!invokeHandlers.TryGetValue(type, out var invokeHandler))
             {
                 throw new Exception($"Invoke error: {typeof(A).Name} {type}");
