@@ -25,6 +25,7 @@ namespace ET
 		LockStepServer = 1 << 17,
 		Main = 1 << 18, // 主纤程,一个进程一个, 初始化从这里开始
 		NetInner = 1 << 19,  // 负责进程间消息通信
+		RoomRoot = 1 << 20,
 
 		// 客户端
 		Demo = 1 << 30,

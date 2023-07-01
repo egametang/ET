@@ -11,7 +11,7 @@ namespace ET
     
     public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
     {
-        private bool isDisposed;
+        protected bool isDisposed;
         
         [StaticField]
         private static T instance;
@@ -51,8 +51,6 @@ namespace ET
             }
             
             this.isDisposed = true;
-
-            Instance = null;
             
             this.Destroy();
         }

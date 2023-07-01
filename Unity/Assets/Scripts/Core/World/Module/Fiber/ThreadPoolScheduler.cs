@@ -5,21 +5,21 @@ using System.Threading;
 
 namespace ET
 {
-    public class ThreadPoolScheduler: Singleton<ThreadPoolScheduler>, IScheduler, ISingletonAwake<int>
+    internal class ThreadPoolScheduler: IScheduler
     {
-        private bool isStart;
-
         private readonly HashSet<Thread> threads = new();
 
-        private int ThreadCount { get; set; }
+        private int threadCount { get; set; }
 
         private readonly ConcurrentQueue<int> idQueue = new();
+        
+        private readonly FiberManager fiberManager;
 
-        public void Awake(int count)
+        public ThreadPoolScheduler(FiberManager fiberManager)
         {
-            this.isStart = true;
-            this.ThreadCount = count;
-            for (int i = 0; i < this.ThreadCount; ++i)
+            this.fiberManager = fiberManager;
+            this.threadCount = Environment.ProcessorCount;
+            for (int i = 0; i < this.threadCount; ++i)
             {
                 this.threads.Add(new Thread(this.Loop));
             }
@@ -32,17 +32,22 @@ namespace ET
 
         private void Loop()
         {
-            while (this.isStart)
+            while (true)
             {
                 try
                 {
+                    if (this.fiberManager.IsDisposed())
+                    {
+                        return;
+                    }
+                    
                     if (!this.idQueue.TryDequeue(out int id))
                     {
                         Thread.Sleep(1);
                         continue;
                     }
 
-                    Fiber fiber = FiberManager.Instance.Get(id);
+                    Fiber fiber = this.fiberManager.Get(id);
                     if (fiber == null)
                     {
                         continue;
@@ -71,9 +76,8 @@ namespace ET
             }
         }
 
-        protected override void Destroy()
+        public void Dispose()
         {
-            this.isStart = false;
             foreach (Thread thread in this.threads)
             {
                 thread.Join();

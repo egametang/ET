@@ -3,10 +3,11 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [ActorMessageHandler(SceneType.Room)]
-    public class G2Room_ReconnectHandler: ActorMessageHandler<Room, G2Room_Reconnect, Room2G_Reconnect>
+    public class G2Room_ReconnectHandler: ActorMessageHandler<Scene, G2Room_Reconnect, Room2G_Reconnect>
     {
-        protected override async ETTask Run(Room room, G2Room_Reconnect request, Room2G_Reconnect response)
+        protected override async ETTask Run(Scene root, G2Room_Reconnect request, Room2G_Reconnect response)
         {
+            Room room = root.GetComponent<Room>();
             response.StartTime = room.StartTime;
             response.UnitInfos = new List<LockStepUnitInfo>();
             LSUnitComponent lsUnitComponent = room.LSWorld.GetComponent<LSUnitComponent>();

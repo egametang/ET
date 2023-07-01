@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Room)]
-    public class FrameMessageHandler: ActorMessageHandler<Room, FrameMessage>
+    [ActorMessageHandler(SceneType.RoomRoot)]
+    public class FrameMessageHandler: ActorMessageHandler<Scene, FrameMessage>
     {
-        protected override async ETTask Run(Room room, FrameMessage message)
+        protected override async ETTask Run(Scene root, FrameMessage message)
         {
+            Room room = root.GetComponent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
             if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)

@@ -78,15 +78,6 @@ namespace ET
 
         public void Dispose()
         {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-
-            this.IsDisposed = true;
-            
-            this.IsRuning = false;
-            
             this.Root.Dispose();
         }
     }

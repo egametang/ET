@@ -51,3 +51,17 @@ message Room2G_Reconnect // IActorResponse
 	repeated LockStepUnitInfo UnitInfos = 5;
 	int32 Frame = 6;
 }
+
+//ResponseType Room2RoomManager_Init
+message RoomManager2Room_Init // IActorRequest
+{
+	int32 RpcId = 1;
+	repeated int64 PlayerIds = 2;
+}
+
+message Room2RoomManager_Init // IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

@@ -14,19 +14,14 @@ namespace ET.Server
             {
                 case AppType.Server:
                 {
-                    World.Instance.AddSingleton<ThreadPoolScheduler, int>(Environment.ProcessorCount);
-                    World.Instance.AddSingleton<ThreadScheduler>();
-                    
                     // 创建进程通信纤程
-                    int fiberId = FiberManager.Instance.Create(ConstFiberId.NetInner, 0, SceneType.NetInner, SceneType.NetInner.ToString());
-                    MainThreadScheduler.Instance.Add(fiberId);
-                    
+                    FiberManager.Instance.CreateFiber(SchedulerType.ThreadPool, ConstFiberId.NetInner, 0, SceneType.NetInner, SceneType.NetInner.ToString());
+
                     // 根据配置创建纤程
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        fiberId = FiberManager.Instance.Create(startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
-                        MainThreadScheduler.Instance.Add(fiberId);
+                        FiberManager.Instance.CreateFiber(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
                     }
 
                     break;

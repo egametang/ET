@@ -47,15 +47,14 @@ namespace ET
             World.Instance.AddSingleton<NumericWatcherComponent>();
             World.Instance.AddSingleton<AIDispatcherComponent>();
             World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
-            World.Instance.AddSingleton<FiberManager>();
             World.Instance.AddSingleton<NetServices>();
             World.Instance.AddSingleton<NavmeshComponent>();
-            MainThreadScheduler mainThreadScheduler = World.Instance.AddSingleton<MainThreadScheduler>();
+            
+            World.Instance.AddSingleton<FiberManager>();
             
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
             
-            int fiberId = FiberManager.Instance.Create(ConstFiberId.Main, 0, SceneType.Main, "");
-            mainThreadScheduler.Add(fiberId);
+            FiberManager.Instance.CreateFiber(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
         }
     }
 }

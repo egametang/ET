@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ET.Server
 {
@@ -6,9 +7,9 @@ namespace ET.Server
     public static partial class RoomServerComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this RoomServerComponent self, Match2Map_GetRoom match2MapGetRoom)
+        private static void Awake(this RoomServerComponent self, List<long> playerIds)
         {
-            foreach (long id in match2MapGetRoom.PlayerIds)
+            foreach (long id in playerIds)
             {
                 RoomPlayer roomPlayer = self.AddChildWithId<RoomPlayer>(id);
             }

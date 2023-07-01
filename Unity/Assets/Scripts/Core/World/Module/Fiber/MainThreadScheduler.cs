@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace ET
 {
-    public class MainThreadScheduler: Singleton<MainThreadScheduler>, IScheduler, ISingletonAwake
+    internal class MainThreadScheduler: IScheduler
     {
-        private readonly Queue<int> idQueue = new();
-        private readonly Queue<int> addIds = new();
+        private readonly ConcurrentQueue<int> idQueue = new();
+        private readonly ConcurrentQueue<int> addIds = new();
+        private readonly FiberManager fiberManager;
 
-        public void Awake()
+        public MainThreadScheduler(FiberManager fiberManager)
         {
+            this.fiberManager = fiberManager;
+        }
+
+        public void Dispose()
+        {
+            this.addIds.Clear();
+            this.idQueue.Clear();
         }
 
         public void Update()
@@ -21,7 +30,7 @@ namespace ET
                     continue;
                 }
 
-                Fiber fiber = FiberManager.Instance.Get(id);
+                Fiber fiber = this.fiberManager.Get(id);
                 if (fiber == null)
                 {
                     continue;
@@ -48,7 +57,7 @@ namespace ET
                     continue;
                 }
 
-                Fiber fiber = FiberManager.Instance.Get(id);
+                Fiber fiber = this.fiberManager.Get(id);
                 if (fiber == null)
                 {
                     continue;
@@ -66,9 +75,11 @@ namespace ET
 
             while (this.addIds.Count > 0)
             {
-                this.idQueue.Enqueue(this.addIds.Dequeue());
+                this.addIds.TryDequeue(out int result);
+                this.idQueue.Enqueue(result);
             }
         }
+
 
         public void Add(int fiberId = 0)
         {

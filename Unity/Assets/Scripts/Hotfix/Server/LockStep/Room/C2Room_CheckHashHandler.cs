@@ -1,10 +1,11 @@
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Room)]
-    public class C2Room_CheckHashHandler: ActorMessageHandler<Room, C2Room_CheckHash>
+    [ActorMessageHandler(SceneType.RoomRoot)]
+    public class C2Room_CheckHashHandler: ActorMessageHandler<Scene, C2Room_CheckHash>
     {
-        protected override async ETTask Run(Room room, C2Room_CheckHash message)
+        protected override async ETTask Run(Scene root, C2Room_CheckHash message)
         {
+            Room room = root.GetComponent<Room>();
             long hash = room.FrameBuffer.GetHash(message.Frame);
             if (message.Hash != hash)
             {

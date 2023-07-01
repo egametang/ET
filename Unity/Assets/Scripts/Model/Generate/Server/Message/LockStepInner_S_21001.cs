@@ -125,6 +125,42 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(Room2RoomManager_Init))]
+	[Message(LockStepInner.RoomManager2Room_Init)]
+	[MemoryPackable]
+	public partial class RoomManager2Room_Init: MessageObject, IActorRequest
+	{
+		public static RoomManager2Room_Init Create(bool isFromPool = false) { return !isFromPool? new RoomManager2Room_Init() : ObjectPool.Instance.Fetch(typeof(RoomManager2Room_Init)) as RoomManager2Room_Init; }
+
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
+
+		[MemoryPackOrder(0)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(1)]
+		public List<long> PlayerIds { get; set; }
+
+	}
+
+	[Message(LockStepInner.Room2RoomManager_Init)]
+	[MemoryPackable]
+	public partial class Room2RoomManager_Init: MessageObject, IActorResponse
+	{
+		public static Room2RoomManager_Init Create(bool isFromPool = false) { return !isFromPool? new Room2RoomManager_Init() : ObjectPool.Instance.Fetch(typeof(Room2RoomManager_Init)) as Room2RoomManager_Init; }
+
+		public override void Dispose() { ObjectPool.Instance.Recycle(this); }
+
+		[MemoryPackOrder(0)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(1)]
+		public int Error { get; set; }
+
+		[MemoryPackOrder(2)]
+		public string Message { get; set; }
+
+	}
+
 	public static class LockStepInner
 	{
 		 public const ushort G2Match_Match = 21002;
@@ -133,5 +169,7 @@ namespace ET
 		 public const ushort Map2Match_GetRoom = 21005;
 		 public const ushort G2Room_Reconnect = 21006;
 		 public const ushort Room2G_Reconnect = 21007;
+		 public const ushort RoomManager2Room_Init = 21008;
+		 public const ushort Room2RoomManager_Init = 21009;
 	}
 }
