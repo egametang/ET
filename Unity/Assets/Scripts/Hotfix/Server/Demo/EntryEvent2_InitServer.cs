@@ -19,14 +19,14 @@ namespace ET.Server
                     
                     // 创建进程通信纤程
                     int fiberId = FiberManager.Instance.Create(ConstFiberId.NetInner, 0, SceneType.NetInner, SceneType.NetInner.ToString());
-                    ThreadScheduler.Instance.Add(fiberId);
+                    ThreadPoolScheduler.Instance.Add(fiberId);
                     
                     // 根据配置创建纤程
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
                         fiberId = FiberManager.Instance.Create(startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
-                        ThreadScheduler.Instance.Add(fiberId);
+                        ThreadPoolScheduler.Instance.Add(fiberId);
                     }
 
                     break;
