@@ -86,6 +86,8 @@ namespace ET
             this.IsDisposed = true;
             
             this.IsRuning = false;
+            
+            this.Root.Dispose();
         }
     }
 }

@@ -60,7 +60,7 @@ namespace ET
             channel.Dispose();
         }
 
-        public override bool IsDispose()
+        public override bool IsDisposed()
         {
             return this.ThreadSynchronizationContext == null;
         }

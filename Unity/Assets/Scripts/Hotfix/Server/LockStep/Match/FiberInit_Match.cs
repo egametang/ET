@@ -10,6 +10,8 @@ namespace ET.Server
             Scene root = fiberInit.Fiber.Root;
 
             root.AddComponent<MatchComponent>();
+            root.AddComponent<LocationProxyComponent>();
+            root.AddComponent<ActorLocationSenderComponent>();
         }
     }
 }

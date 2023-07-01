@@ -277,7 +277,7 @@ namespace ET
 			}
 		}
 		
-		public override bool IsDispose()
+		public override bool IsDisposed()
 		{
 			return this.acceptor == null;
 		}

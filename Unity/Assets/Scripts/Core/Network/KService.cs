@@ -143,13 +143,18 @@ namespace ET
         private long minTime;
 #endif
         
-        public override bool IsDispose()
+        public override bool IsDisposed()
         {
             return this.Socket == null;
         }
 
         public override void Dispose()
         {
+            if (this.IsDisposed())
+            {
+                return;
+            }
+            
             base.Dispose();
             
             foreach (long channelId in this.localConnChannels.Keys.ToArray())

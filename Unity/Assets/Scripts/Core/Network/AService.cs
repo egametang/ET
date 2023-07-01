@@ -71,7 +71,7 @@ namespace ET
 
         public abstract void Remove(long id, int error = 0);
         
-        public abstract bool IsDispose();
+        public abstract bool IsDisposed();
 
         public abstract void Create(long id, IPEndPoint address);
 

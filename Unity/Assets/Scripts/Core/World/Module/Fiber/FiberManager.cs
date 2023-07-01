@@ -13,7 +13,15 @@ namespace ET
         public void Awake()
         {
         }
-        
+
+        protected override void Destroy()
+        {
+            foreach (var kv in this.fibers)
+            {
+                kv.Value.Dispose();
+            }
+        }
+
         public int Create(int fiberId, int zone, SceneType sceneType, string name)
         {
             try
