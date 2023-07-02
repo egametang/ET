@@ -5,6 +5,9 @@ namespace ET.Server
     {
         public static void BroadCast(Room room, IActorMessage message)
         {
+            // 广播的消息不能被池回收
+            (message as MessageObject).IsFromPool = false;
+            
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
 
             ActorLocationSenderComponent actorLocationSenderComponent = room.Root().GetComponent<ActorLocationSenderComponent>();

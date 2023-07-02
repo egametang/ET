@@ -42,7 +42,7 @@ namespace ET.Client
                 
                 room.SpeedMultiply = ++i;
 
-                FrameMessage frameMessage = FrameMessage.Create(true);
+                FrameMessage frameMessage = FrameMessage.Create();
                 frameMessage.Frame = room.PredictionFrame;
                 frameMessage.Input = self.Input;
                 root.GetComponent<SessionComponent>().Session.Send(frameMessage);

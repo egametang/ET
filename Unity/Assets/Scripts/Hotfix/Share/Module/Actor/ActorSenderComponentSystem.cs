@@ -116,7 +116,7 @@ namespace ET
             }
 
 
-            A2NetInner_Message netInnerMessage = A2NetInner_Message.Create(true);
+            A2NetInner_Message netInnerMessage = A2NetInner_Message.Create();
             netInnerMessage.FromAddress = fiber.Address;
             netInnerMessage.ActorId = actorId;
             netInnerMessage.MessageObject = message;

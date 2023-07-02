@@ -15,24 +15,22 @@ namespace ET.Server
                 return;
             }
 
-            List<float3> list = new List<float3>();
-            
-            unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, list);
+            M2C_PathfindingResult m2CPathfindingResult = new();
+            unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, m2CPathfindingResult.Points);
 
-            if (list.Count < 2)
+            if (m2CPathfindingResult.Points.Count < 2)
             {
                 unit.SendStop(3);
                 return;
             }
                 
             // 广播寻路路径
-            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult() { Points = list };
             m2CPathfindingResult.Id = unit.Id;
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
 
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
             
-            bool ret = await moveComponent.MoveToAsync(list, speed);
+            bool ret = await moveComponent.MoveToAsync(m2CPathfindingResult.Points, speed);
             if (ret) // 如果返回false，说明被其它移动取消了，这时候不需要通知客户端stop
             {
                 unit.SendStop(0);

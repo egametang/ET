@@ -15,8 +15,7 @@ namespace ET.Server
 			ActorId roomRootActorId = new(fiber.Process, fiberId);
 
 			// 发送消息给房间纤程，初始化
-			RoomManager2Room_Init roomManager2RoomInit = RoomManager2Room_Init.Create(true);
-			roomManager2RoomInit.PlayerIds = new List<long>();
+			RoomManager2Room_Init roomManager2RoomInit = RoomManager2Room_Init.Create();
 			roomManager2RoomInit.PlayerIds.AddRange(request.PlayerIds);
 			await root.GetComponent<ActorSenderComponent>().Call(roomRootActorId, roomManager2RoomInit);
 			

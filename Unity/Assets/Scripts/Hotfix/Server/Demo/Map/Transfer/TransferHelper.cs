@@ -20,7 +20,7 @@ namespace ET.Server
             // location加锁
             long unitId = unit.Id;
             
-            M2M_UnitTransferRequest request = new() {Entitys = new List<byte[]>()};
+            M2M_UnitTransferRequest request = M2M_UnitTransferRequest.Create();
             request.OldActorId = unit.GetActorId();
             request.Unit = unit.ToBson();
             foreach (Entity entity in unit.Components.Values)

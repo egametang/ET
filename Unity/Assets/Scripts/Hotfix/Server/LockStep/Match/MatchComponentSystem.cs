@@ -23,11 +23,12 @@ namespace ET.Server
             
             // 申请一个房间
             StartSceneConfig startSceneConfig = RandomGenerator.RandomArray(StartSceneConfigCategory.Instance.Maps);
-            Match2Map_GetRoom match2MapGetRoom = new() {PlayerIds = new List<long>()};
+            Match2Map_GetRoom match2MapGetRoom = new();
             foreach (long id in self.waitMatchPlayers)
             {
                 match2MapGetRoom.PlayerIds.Add(id);
             }
+            
             self.waitMatchPlayers.Clear();
 
             Scene root = self.Root();
@@ -36,6 +37,7 @@ namespace ET.Server
 
             Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };
             ActorLocationSenderComponent actorLocationSenderComponent = root.GetComponent<ActorLocationSenderComponent>();
+            
             foreach (long id in match2MapGetRoom.PlayerIds) // 这里发送消息线程不会修改PlayerInfo，所以可以直接使用
             {
                 actorLocationSenderComponent.Get(LocationType.Player).Send(id, match2GNotifyMatchSuccess);

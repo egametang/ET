@@ -9,7 +9,7 @@ namespace ET.Server
     {
         public static UnitInfo CreateUnitInfo(Unit unit)
         {
-            UnitInfo unitInfo = new UnitInfo();
+            UnitInfo unitInfo = new();
             NumericComponent nc = unit.GetComponent<NumericComponent>();
             unitInfo.UnitId = unit.Id;
             unitInfo.ConfigId = unit.ConfigId;
@@ -22,7 +22,7 @@ namespace ET.Server
             {
                 if (!moveComponent.IsArrived())
                 {
-                    unitInfo.MoveInfo = new MoveInfo() { Points = new List<float3>() };
+                    unitInfo.MoveInfo = new MoveInfo();
                     unitInfo.MoveInfo.Points.Add(unit.Position);
                     for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
                     {
@@ -31,8 +31,6 @@ namespace ET.Server
                     }
                 }
             }
-
-            unitInfo.KV = new Dictionary<int, long>();
 
             foreach ((int key, long value) in nc.NumericDic)
             {

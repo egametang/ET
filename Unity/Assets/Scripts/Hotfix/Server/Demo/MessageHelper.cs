@@ -9,20 +9,21 @@ namespace ET.Server
     {
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
         {
-            M2C_CreateUnits createUnits = new() { Units = new List<UnitInfo>() };
+            M2C_CreateUnits createUnits = M2C_CreateUnits.Create();
             createUnits.Units.Add(UnitHelper.CreateUnitInfo(sendUnit));
             MessageHelper.SendToClient(unit, createUnits);
         }
         
         public static void NoticeUnitRemove(Unit unit, Unit sendUnit)
         {
-            M2C_RemoveUnits removeUnits = new() {Units = new List<long>()};
+            M2C_RemoveUnits removeUnits = M2C_RemoveUnits.Create();
             removeUnits.Units.Add(sendUnit.Id);
             MessageHelper.SendToClient(unit, removeUnits);
         }
         
         public static void Broadcast(Unit unit, IActorMessage message)
         {
+            (message as MessageObject).IsFromPool = false;
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
             // 网络底层做了优化，同一个消息不会多次序列化
             ActorLocationSenderOneType oneTypeLocationType = unit.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession);

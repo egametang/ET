@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.Extensions.Primitives;
 
 namespace ET
 {
@@ -82,6 +83,7 @@ namespace ET
             
             bool isMsgStart = false;
             string msgName = "";
+            StringBuilder sbDispose = new StringBuilder();
             foreach (string line in s.Split('\n'))
             {
                 string newline = line.Trim();
@@ -108,6 +110,7 @@ namespace ET
                 {
                     string parentClass = "";
                     isMsgStart = true;
+                    
                     msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
                     string[] ss = newline.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -121,6 +124,7 @@ namespace ET
                     sb.Append($"\t[Message({protoName}.{msgName})]\n");
                     sb.Append($"\t[MemoryPackable]\n");
                     sb.Append($"\tpublic partial class {msgName}: MessageObject");
+                    
 
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
@@ -140,18 +144,27 @@ namespace ET
 
                 if (isMsgStart)
                 {
-                    if (newline == "{")
+                    if (newline.StartsWith("{"))
                     {
+                        sbDispose.Clear();
                         sb.Append("\t{\n");
                         
-                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = false) {{ return !isFromPool? new {msgName}() : ObjectPool.Instance.Fetch(typeof({msgName})) as {msgName}; }}\n\n");
-                        sb.Append($"\t\tpublic override void Dispose() {{ ObjectPool.Instance.Recycle(this); }}\n\n");
+                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = true) \n\t\t{{ \n\t\t\treturn !isFromPool? new {msgName}() : ObjectPool.Instance.Fetch(typeof({msgName})) as {msgName}; \n\t\t}}\n\n");
+                        
                         continue;
                     }
 
-                    if (newline == "}")
+                    if (newline.StartsWith("}"))
                     {
                         isMsgStart = false;
+
+                        // 加了no dispose则自己去定义dispose函数，不要自动生成
+                        if (!newline.Contains("// no dispose"))
+                        {
+                            sb.Append(
+                                $"\t\tpublic override void Dispose() \n\t\t{{\n\t\t\tif (!this.IsFromPool) return;\n\t\t\t{sbDispose.ToString()}\n\t\t\tObjectPool.Instance.Recycle(this); \n\t\t}}\n\n");
+                        }
+
                         sb.Append("\t}\n\n");
                         continue;
                     }
@@ -166,15 +179,15 @@ namespace ET
                     {
                         if (newline.StartsWith("map<"))
                         {
-                            Map(sb, ns, newline);
+                            Map(sb, ns, newline, sbDispose);
                         }
                         else if (newline.StartsWith("repeated"))
                         {
-                            Repeated(sb, ns, newline);
+                            Repeated(sb, ns, newline, sbDispose);
                         }
                         else
                         {
-                            Members(sb, newline, true);
+                            Members(sb, newline, true, sbDispose);
                         }
                     }
                 }
@@ -219,7 +232,7 @@ namespace ET
             sw.Write(sb.ToString());
         }
 
-        private static void Map(StringBuilder sb, string ns, string newline)
+        private static void Map(StringBuilder sb, string ns, string newline, StringBuilder sbDispose)
         {
             int start = newline.IndexOf("<") + 1;
             int end = newline.IndexOf(">");
@@ -234,10 +247,12 @@ namespace ET
             
             sb.Append("\t\t[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]\n");
             sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
-            sb.Append($"\t\tpublic Dictionary<{keyType}, {valueType}> {v} {{ get; set; }}\n");
+            sb.Append($"\t\tpublic Dictionary<{keyType}, {valueType}> {v} {{ get; set; }} = new();\n");
+            
+            sbDispose.Append($"this.{v}.Clear();\n\t\t\t");
         }
         
-        private static void Repeated(StringBuilder sb, string ns, string newline)
+        private static void Repeated(StringBuilder sb, string ns, string newline, StringBuilder sbDispose)
         {
             try
             {
@@ -250,7 +265,9 @@ namespace ET
                 int n = int.Parse(ss[4]);
 
                 sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
-                sb.Append($"\t\tpublic List<{type}> {name} {{ get; set; }}\n\n");
+                sb.Append($"\t\tpublic List<{type}> {name} {{ get; set; }} = new();\n\n");
+                
+                sbDispose.Append($"this.{name}.Clear();\n\t\t\t");
             }
             catch (Exception e)
             {
@@ -295,7 +312,7 @@ namespace ET
             return typeCs;
         }
 
-        private static void Members(StringBuilder sb, string newline, bool isRequired)
+        private static void Members(StringBuilder sb, string newline, bool isRequired, StringBuilder sbDispose)
         {
             try
             {
@@ -306,9 +323,20 @@ namespace ET
                 string name = ss[1];
                 int n = int.Parse(ss[3]);
                 string typeCs = ConvertType(type);
-
+                
                 sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
                 sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
+
+                switch (typeCs)
+                {
+                    case "bytes":
+                    {
+                        break;
+                    }
+                    default:
+                        sbDispose.Append($"this.{name} = default;\n\t\t\t");
+                        break;
+                }
             }
             catch (Exception e)
             {
