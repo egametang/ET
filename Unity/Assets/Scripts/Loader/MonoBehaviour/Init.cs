@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using CommandLine;
 using UnityEngine;
 
@@ -6,10 +7,14 @@ namespace ET
 {
 	public class Init: MonoBehaviour
 	{
+		private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
+		
 		private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
 			
+			SynchronizationContext.SetSynchronizationContext(threadSynchronizationContext);
+
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				Log.Error(e.ExceptionObject.ToString());
@@ -29,11 +34,13 @@ namespace ET
 
 		private void Update()
 		{
+			threadSynchronizationContext.Update();
 			FiberManager.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
+			threadSynchronizationContext.Update();
 			FiberManager.Instance.LateUpdate();
 		}
 

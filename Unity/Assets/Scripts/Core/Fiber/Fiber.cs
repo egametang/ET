@@ -54,7 +54,7 @@ namespace ET
         public void Update()
         {
             this.IsRuning = true;
-            
+            //this.FiberTaskScheduler.Update();
             this.TimeInfo.Update();
             this.EntitySystem.Update();
         }

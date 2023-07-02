@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 
 namespace ET.Client
 {
@@ -10,7 +11,7 @@ namespace ET.Client
         {
             try
             {
-                using HttpClient httpClient = new HttpClient();
+                using HttpClient httpClient = new();
                 HttpResponseMessage response =  await httpClient.GetAsync(link);
                 string result = await response.Content.ReadAsStringAsync();
                 return result;

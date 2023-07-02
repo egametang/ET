@@ -1,16 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
 using CommandLine;
-using MemoryPack;
 
 namespace ET
 {
-	public static class Init
+	public class Init
 	{
-		public static void Start()
+		private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
+		
+		public void Start()
 		{
 			try
 			{	
+				SynchronizationContext.SetSynchronizationContext(threadSynchronizationContext);
+				
 				AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 				{
 					Log.Error(e.ExceptionObject.ToString());
@@ -28,6 +31,17 @@ namespace ET
 			{
 				Log.Error(e);
 			}
+		}
+
+		public void Update()
+		{
+			this.threadSynchronizationContext.Update();
+			FiberManager.Instance.Update();
+		}
+
+		public void LateUpdate()
+		{
+			FiberManager.Instance.LateUpdate();
 		}
 	}
 }
