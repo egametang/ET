@@ -15,13 +15,13 @@ namespace ET.Server
                 case AppType.Server:
                 {
                     // 创建进程通信纤程
-                    FiberManager.Instance.CreateFiber(SchedulerType.ThreadPool, ConstFiberId.NetInner, 0, SceneType.NetInner, SceneType.NetInner.ToString());
+                    FiberManager.Instance.Create(SchedulerType.ThreadPool, ConstFiberId.NetInner, 0, SceneType.NetInner, SceneType.NetInner.ToString());
 
                     // 根据配置创建纤程
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        FiberManager.Instance.CreateFiber(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
+                        FiberManager.Instance.Create(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
                     }
 
                     break;

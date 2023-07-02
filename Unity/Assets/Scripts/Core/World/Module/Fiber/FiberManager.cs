@@ -18,10 +18,13 @@ namespace ET
         
         private int idGenerator = 10000000; // 10000000以下为保留的用于StartSceneConfig的fiber id, 1个区配置1000个纤程，可以配置10000个区
         private readonly ConcurrentDictionary<int, Fiber> fibers = new();
+
+        private MainThreadScheduler main;
         
         public void Awake()
         {
-            this.schedulers[(int)SchedulerType.Main] = new MainThreadScheduler(this);
+            this.main = new MainThreadScheduler(this);
+            this.schedulers[(int)SchedulerType.Main] = this.main;
             
             //this.schedulers[(int)SchedulerType.Thread] = this.schedulers[(int)SchedulerType.Main];
             //this.schedulers[(int)SchedulerType.ThreadPool] = this.schedulers[(int)SchedulerType.Main];
@@ -32,12 +35,12 @@ namespace ET
         
         public void Update()
         {
-            ((MainThreadScheduler)this.schedulers[0]).Update();
+            this.main.Update();
         }
 
         public void LateUpdate()
         {
-            ((MainThreadScheduler)this.schedulers[0]).LateUpdate();
+            this.main.LateUpdate();
         }
 
         protected override void Destroy()
@@ -53,7 +56,7 @@ namespace ET
             }
         }
 
-        public int CreateFiber(SchedulerType schedulerType, int fiberId, int zone, SceneType sceneType, string name)
+        public int Create(SchedulerType schedulerType, int fiberId, int zone, SceneType sceneType, string name)
         {
             try
             {
@@ -80,14 +83,13 @@ namespace ET
             }
         }
         
-        public int CreateFiber(SchedulerType schedulerType, int zone, SceneType sceneType, string name)
+        public int Create(SchedulerType schedulerType, int zone, SceneType sceneType, string name)
         {
             int fiberId = Interlocked.Increment(ref this.idGenerator);
-            return this.CreateFiber(schedulerType, fiberId, zone, sceneType, name);
+            return this.Create(schedulerType, fiberId, zone, sceneType, name);
         }
         
-        // 不允许外部调用,只能由Schecher执行完成一帧再调用，否则容易出现多线程问题
-        public void RemoveFiber(int id)
+        public void Remove(int id)
         {
             if (this.fibers.Remove(id, out Fiber fiber))
             {

@@ -54,7 +54,7 @@ namespace ET
             
             await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
             
-            FiberManager.Instance.CreateFiber(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
+            FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
         }
     }
 }
