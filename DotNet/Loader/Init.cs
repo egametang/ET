@@ -6,14 +6,10 @@ namespace ET
 {
 	public class Init
 	{
-		private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
-		
 		public void Start()
 		{
 			try
-			{	
-				SynchronizationContext.SetSynchronizationContext(threadSynchronizationContext);
-				
+			{
 				AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 				{
 					Log.Error(e.ExceptionObject.ToString());
@@ -35,7 +31,6 @@ namespace ET
 
 		public void Update()
 		{
-			this.threadSynchronizationContext.Update();
 			FiberManager.Instance.Update();
 		}
 

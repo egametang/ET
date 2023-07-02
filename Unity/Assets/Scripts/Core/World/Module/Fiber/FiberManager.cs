@@ -19,15 +19,15 @@ namespace ET
         private int idGenerator = 10000000; // 10000000以下为保留的用于StartSceneConfig的fiber id, 1个区配置1000个纤程，可以配置10000个区
         private readonly ConcurrentDictionary<int, Fiber> fibers = new();
 
-        private MainThreadScheduler main;
+        private MainThreadScheduler mainThreadScheduler;
         
         public void Awake()
         {
-            this.main = new MainThreadScheduler(this);
-            this.schedulers[(int)SchedulerType.Main] = this.main;
+            this.mainThreadScheduler = new MainThreadScheduler(this);
+            this.schedulers[(int)SchedulerType.Main] = this.mainThreadScheduler;
             
-            //this.schedulers[(int)SchedulerType.Thread] = this.schedulers[(int)SchedulerType.Main];
-            //this.schedulers[(int)SchedulerType.ThreadPool] = this.schedulers[(int)SchedulerType.Main];
+            //this.schedulers[(int)SchedulerType.Thread] = this.mainThreadScheduler;
+            //this.schedulers[(int)SchedulerType.ThreadPool] = this.mainThreadScheduler;
             
             this.schedulers[(int)SchedulerType.Thread] = new ThreadScheduler(this);
             this.schedulers[(int)SchedulerType.ThreadPool] = new ThreadPoolScheduler(this);
@@ -35,12 +35,12 @@ namespace ET
         
         public void Update()
         {
-            this.main.Update();
+            this.mainThreadScheduler.Update();
         }
 
         public void LateUpdate()
         {
-            this.main.LateUpdate();
+            this.mainThreadScheduler.LateUpdate();
         }
 
         protected override void Destroy()
@@ -61,15 +61,21 @@ namespace ET
             try
             {
                 Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
-            
+
                 fiber.Root.AddComponent<TimerComponent>();
                 fiber.Root.AddComponent<CoroutineLockComponent>();
                 fiber.Root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
                 fiber.Root.AddComponent<ActorSenderComponent>();
                 fiber.Root.AddComponent<ActorRecverComponent>();
             
+                // 这里要换成Fiber的ThreadSynchronizationContext，因为在FiberInit中可能存在调用第三方的Task，需要回调到这个Fiber中来
+                SynchronizationContext old = SynchronizationContext.Current;
+                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
+                
                 // 根据Fiber的SceneType分发Init
                 EventSystem.Instance.Invoke((long)sceneType, new FiberInit() {Fiber = fiber});
+                
+                SynchronizationContext.SetSynchronizationContext(old);
                 
                 this.fibers[fiber.Id] = fiber;
                 

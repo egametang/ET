@@ -51,10 +51,9 @@ namespace ET
             World.Instance.AddSingleton<NavmeshComponent>();
             
             World.Instance.AddSingleton<FiberManager>();
-            
-            await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
-            
             FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
+            
+            await ETTask.CompletedTask;
         }
     }
 }

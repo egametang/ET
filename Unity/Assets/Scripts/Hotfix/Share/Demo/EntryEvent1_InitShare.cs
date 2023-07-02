@@ -6,6 +6,7 @@ namespace ET
         protected override async ETTask Run(Scene scene, EventType.EntryEvent1 args)
         {
             scene.AddComponent<ObjectWait>();
+            await World.Instance.AddSingleton<ConfigComponent>().LoadAsync();
             await ETTask.CompletedTask;
         }
     }

@@ -19,6 +19,9 @@ namespace ET
 
         private void Loop(int fiberId)
         {
+            Fiber fiber = fiberManager.Get(fiberId);
+            SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
+            
             while (true)
             {
                 try
@@ -28,7 +31,7 @@ namespace ET
                         return;
                     }
                     
-                    Fiber fiber = fiberManager.Get(fiberId);
+                    fiber = fiberManager.Get(fiberId);
                     if (fiber == null)
                     {
                         this.dictionary.Remove(fiberId, out _);

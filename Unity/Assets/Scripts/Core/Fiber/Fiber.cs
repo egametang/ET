@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ET
 {
@@ -36,6 +37,9 @@ namespace ET
         public TimeInfo TimeInfo { get; }
         public IdGenerater IdGenerater { get; }
         public Mailboxes Mailboxes { get; }
+        public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
+
+        private readonly Queue<ETTask> frameFinishTasks = new();
 
         public bool IsRuning;
         
@@ -48,36 +52,52 @@ namespace ET
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
             this.Mailboxes = new Mailboxes();
+            this.ThreadSynchronizationContext = new();
             this.Root = new Scene(this, id, 1, sceneType, name);
         }
 
         public void Update()
         {
             this.IsRuning = true;
-            //this.FiberTaskScheduler.Update();
+            SynchronizationContext.SetSynchronizationContext(this.ThreadSynchronizationContext);
+            this.ThreadSynchronizationContext.Update();
             this.TimeInfo.Update();
             this.EntitySystem.Update();
+            SynchronizationContext.SetSynchronizationContext(null);
         }
         
         public void LateUpdate()
         {
+            SynchronizationContext.SetSynchronizationContext(this.ThreadSynchronizationContext);
             this.EntitySystem.LateUpdate();
             FrameFinishUpdate();
-
+            SynchronizationContext.SetSynchronizationContext(null);
             this.IsRuning = false;
         }
 
         public async ETTask WaitFrameFinish()
         {
-            await ETTask.CompletedTask;
+            ETTask task = ETTask.Create(true);
+            this.frameFinishTasks.Enqueue(task);
+            await task;
         }
 
         private void FrameFinishUpdate()
         {
+            while (this.frameFinishTasks.Count > 0)
+            {
+                ETTask task = this.frameFinishTasks.Dequeue();
+                task.SetResult();
+            }
         }
 
         public void Dispose()
         {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            this.IsDisposed = true;
             this.Root.Dispose();
         }
     }

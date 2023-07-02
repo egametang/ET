@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ET
 {
@@ -42,7 +43,7 @@ namespace ET
                 }
 
                 this.idQueue.Enqueue(id);
-
+                
                 fiber.Update();
             }
         }
