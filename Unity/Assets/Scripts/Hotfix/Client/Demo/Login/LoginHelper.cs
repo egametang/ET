@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace ET.Client
 {
@@ -18,7 +19,6 @@ namespace ET.Client
                 {
                     routerAddressComponent = scene.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                     await routerAddressComponent.Init();
-                    
                     scene.AddComponent<NetClientComponent, AddressFamily>(routerAddressComponent.RouterManagerIPAddress.AddressFamily);
                 }
                 IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);

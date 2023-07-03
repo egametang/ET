@@ -59,19 +59,15 @@ namespace ET
         public void Update()
         {
             this.IsRuning = true;
-            SynchronizationContext.SetSynchronizationContext(this.ThreadSynchronizationContext);
             this.ThreadSynchronizationContext.Update();
             this.TimeInfo.Update();
             this.EntitySystem.Update();
-            SynchronizationContext.SetSynchronizationContext(null);
         }
         
         public void LateUpdate()
         {
-            SynchronizationContext.SetSynchronizationContext(this.ThreadSynchronizationContext);
             this.EntitySystem.LateUpdate();
             FrameFinishUpdate();
-            SynchronizationContext.SetSynchronizationContext(null);
             this.IsRuning = false;
         }
 

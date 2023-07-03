@@ -63,8 +63,10 @@ namespace ET
                     // 正在执行的就不执行了
                     if (!fiber.IsRuning)
                     {
+                        SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                         fiber.Update();
                         fiber.LateUpdate();
+                        SynchronizationContext.SetSynchronizationContext(null);
                     }
 
                     Thread.Sleep(1);

@@ -44,6 +44,7 @@ namespace ET
 
                 this.idQueue.Enqueue(id);
                 
+                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
             }
         }
@@ -71,6 +72,7 @@ namespace ET
 
                 this.idQueue.Enqueue(id);
 
+                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.LateUpdate();
             }
 
