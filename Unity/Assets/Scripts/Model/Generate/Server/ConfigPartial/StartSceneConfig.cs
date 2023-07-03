@@ -10,6 +10,8 @@ namespace ET
         
         public MultiMap<int, StartSceneConfig> ProcessScenes = new();
         
+        public Dictionary<int, StartSceneConfig> Nets = new();
+        
         public Dictionary<long, Dictionary<string, StartSceneConfig>> ClientScenesByName = new();
 
         public StartSceneConfig LocationConfig;
@@ -21,8 +23,6 @@ namespace ET
         public List<StartSceneConfig> Robots = new();
         
         public List<StartSceneConfig> Maps = new();
-
-        public StartSceneConfig BenchmarkServer;
 
         public StartSceneConfig Match;
         
@@ -50,6 +50,9 @@ namespace ET
                 
                 switch (startSceneConfig.Type)
                 {
+                    case SceneType.Net:
+                        this.Nets.Add(startSceneConfig.Process, startSceneConfig);
+                        break;
                     case SceneType.Realm:
                         this.Realms.Add(startSceneConfig);
                         break;
@@ -64,9 +67,6 @@ namespace ET
                         break;
                     case SceneType.Router:
                         this.Routers.Add(startSceneConfig);
-                        break;
-                    case SceneType.BenchmarkServer:
-                        this.BenchmarkServer = startSceneConfig;
                         break;
                     case SceneType.Map:
                         this.Maps.Add(startSceneConfig);
@@ -102,18 +102,18 @@ namespace ET
         }
 
         // 内网地址外网端口，通过防火墙映射端口过来
-        private IPEndPoint innerIPOutPort;
+        private IPEndPoint innerIPPort;
 
-        public IPEndPoint InnerIPOutPort
+        public IPEndPoint InnerIPPort
         {
             get
             {
-                if (innerIPOutPort == null)
+                if (this.innerIPPort == null)
                 {
-                    this.innerIPOutPort = NetworkHelper.ToIPEndPoint($"{this.StartProcessConfig.InnerIP}:{this.OuterPort}");
+                    this.innerIPPort = NetworkHelper.ToIPEndPoint($"{this.StartProcessConfig.InnerIP}:{this.Port}");
                 }
 
-                return this.innerIPOutPort;
+                return this.innerIPPort;
             }
         }
 
@@ -126,7 +126,7 @@ namespace ET
             {
                 if (this.outerIPPort == null)
                 {
-                    this.outerIPPort = NetworkHelper.ToIPEndPoint($"{this.StartProcessConfig.OuterIP}:{this.OuterPort}");
+                    this.outerIPPort = NetworkHelper.ToIPEndPoint($"{this.StartProcessConfig.OuterIP}:{this.Port}");
                 }
 
                 return this.outerIPPort;

@@ -15,7 +15,7 @@ namespace ET.Server
             root.AddComponent<ActorLocationSenderComponent>();
 
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)root.Id);
-            root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
+            root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
         }
     }
 }

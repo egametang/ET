@@ -121,7 +121,7 @@ namespace ET.Server
                 return session;
             }
 
-            IPEndPoint ipEndPoint = StartProcessConfigCategory.Instance.Get((int) channelId).InnerIPPort;
+            IPEndPoint ipEndPoint = StartSceneConfigCategory.Instance.Get((int) channelId).InnerIPPort;
             session = self.CreateInner(channelId, ipEndPoint);
             return session;
         }

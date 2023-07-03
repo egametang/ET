@@ -4,22 +4,7 @@ namespace ET
 {
     public partial class StartProcessConfig
     {
-        private IPEndPoint innerIPPort;
-
         public long SceneId;
-
-        public IPEndPoint InnerIPPort
-        {
-            get
-            {
-                if (this.innerIPPort == null)
-                {
-                    this.innerIPPort = NetworkHelper.ToIPEndPoint($"{this.InnerIP}:{this.InnerPort}");
-                }
-
-                return this.innerIPPort;
-            }
-        }
 
         public string InnerIP => this.StartMachineConfig.InnerIP;
 
@@ -29,7 +14,7 @@ namespace ET
 
         public override void EndInit()
         {
-            InstanceIdStruct instanceIdStruct = new InstanceIdStruct(0, (uint)this.Id);
+            InstanceIdStruct instanceIdStruct = new(0, (uint)this.Id);
             this.SceneId = instanceIdStruct.ToLong();
             Log.Info($"StartProcess info: {this.MachineId} {this.Id} {this.SceneId}");
         }

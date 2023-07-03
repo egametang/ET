@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ET
@@ -120,8 +121,9 @@ namespace ET
             netMessage.FromAddress = fiber.Address;
             netMessage.ActorId = actorId;
             netMessage.MessageObject = message;
-            // 扔到NetInner纤程
-            ActorMessageQueue.Instance.Send(new ActorId(actorId.Process, ConstFiberId.Net), netMessage);
+            // 扔到Net纤程
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Nets[fiber.Process];
+            ActorMessageQueue.Instance.Send(startSceneConfig.ActorId, netMessage);
         }
 
 

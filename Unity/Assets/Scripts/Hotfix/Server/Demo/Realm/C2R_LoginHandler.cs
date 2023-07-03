@@ -17,7 +17,7 @@ namespace ET.Server
 			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await session.Fiber().Root.GetComponent<ActorSenderComponent>().Call(
 				config.ActorId, new R2G_GetLoginKey() {Account = request.Account});
 
-			response.Address = config.InnerIPOutPort.ToString();
+			response.Address = config.InnerIPPort.ToString();
 			response.Key = g2RGetLoginKey.Key;
 			response.GateId = g2RGetLoginKey.GateId;
 		}

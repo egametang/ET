@@ -1,9 +1,9 @@
 {"dict": [
-[1, {"_t":"StartProcessConfig","_id":1,"MachineId":1,"InnerPort":20101}],
-[2, {"_t":"StartProcessConfig","_id":2,"MachineId":1,"InnerPort":20102}],
-[3, {"_t":"StartProcessConfig","_id":3,"MachineId":1,"InnerPort":20103}],
-[4, {"_t":"StartProcessConfig","_id":4,"MachineId":1,"InnerPort":20104}],
-[5, {"_t":"StartProcessConfig","_id":5,"MachineId":1,"InnerPort":20105}],
-[6, {"_t":"StartProcessConfig","_id":6,"MachineId":1,"InnerPort":20106}],
-[7, {"_t":"StartProcessConfig","_id":7,"MachineId":1,"InnerPort":20107}],
+[1, {"_t":"StartProcessConfig","_id":1,"MachineId":1}],
+[2, {"_t":"StartProcessConfig","_id":2,"MachineId":1}],
+[3, {"_t":"StartProcessConfig","_id":3,"MachineId":1}],
+[4, {"_t":"StartProcessConfig","_id":4,"MachineId":1}],
+[5, {"_t":"StartProcessConfig","_id":5,"MachineId":1}],
+[6, {"_t":"StartProcessConfig","_id":6,"MachineId":1}],
+[7, {"_t":"StartProcessConfig","_id":7,"MachineId":1}],
 ]}

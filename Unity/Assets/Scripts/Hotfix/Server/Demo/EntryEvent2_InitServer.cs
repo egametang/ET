@@ -14,9 +14,6 @@ namespace ET.Server
             {
                 case AppType.Server:
                 {
-                    // 创建进程通信纤程
-                    FiberManager.Instance.Create(SchedulerType.ThreadPool, ConstFiberId.Net, 0, SceneType.Net, SceneType.Net.ToString());
-
                     // 根据配置创建纤程
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)

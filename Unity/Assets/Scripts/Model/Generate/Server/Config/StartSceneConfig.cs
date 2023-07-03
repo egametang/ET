@@ -66,7 +66,7 @@ namespace ET
 		/// <summary>名字</summary>
 		public string Name { get; set; }
 		/// <summary>外网端口</summary>
-		public int OuterPort { get; set; }
+		public int Port { get; set; }
 
 	}
 }

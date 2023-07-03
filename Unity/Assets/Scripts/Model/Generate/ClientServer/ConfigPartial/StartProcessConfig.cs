@@ -4,21 +4,6 @@ namespace ET
 {
     public partial class StartProcessConfig
     {
-        private IPEndPoint innerIPPort;
-
-        public IPEndPoint InnerIPPort
-        {
-            get
-            {
-                if (this.innerIPPort == null)
-                {
-                    this.innerIPPort = NetworkHelper.ToIPEndPoint($"{this.InnerIP}:{this.InnerPort}");
-                }
-
-                return this.innerIPPort;
-            }
-        }
-
         public string InnerIP => this.StartMachineConfig.InnerIP;
 
         public string OuterIP => this.StartMachineConfig.OuterIP;

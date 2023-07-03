@@ -13,11 +13,11 @@ namespace ET.Server
             HttpGetRouterResponse response = new();
             foreach (StartSceneConfig startSceneConfig in StartSceneConfigCategory.Instance.Realms)
             {
-                response.Realms.Add(startSceneConfig.InnerIPOutPort.ToString());
+                response.Realms.Add(startSceneConfig.InnerIPPort.ToString());
             }
             foreach (StartSceneConfig startSceneConfig in StartSceneConfigCategory.Instance.Routers)
             {
-                response.Routers.Add($"{startSceneConfig.StartProcessConfig.OuterIP}:{startSceneConfig.OuterPort}");
+                response.Routers.Add($"{startSceneConfig.StartProcessConfig.OuterIP}:{startSceneConfig.Port}");
             }
             HttpHelper.Response(context, response);
             await ETTask.CompletedTask;
