@@ -6,8 +6,8 @@ namespace ET
 	public enum SceneType: long
 	{
 		None = 0,
-		Process = 1,
-		Manager = 1 << 2,
+		Main = 1, // 主纤程,一个进程一个, 初始化从这里开始
+		Net = 1 << 2, // 负责进程间消息通信
 		Realm = 1 << 3,
 		Gate = 1 << 4,
 		Http = 1 << 5,
@@ -23,9 +23,7 @@ namespace ET
 		Room = 1 << 15,
 		LockStepClient = 1 << 16,
 		LockStepServer = 1 << 17,
-		Main = 1 << 18, // 主纤程,一个进程一个, 初始化从这里开始
-		NetInner = 1 << 19,  // 负责进程间消息通信
-		RoomRoot = 1 << 20,
+		RoomRoot = 1 << 18,
 
 		// 客户端
 		Demo = 1 << 30,

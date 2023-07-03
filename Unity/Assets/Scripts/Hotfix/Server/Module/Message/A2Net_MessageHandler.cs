@@ -1,9 +1,9 @@
 ﻿namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.NetInner)]
-    public class A2NetInner_MessageHandler: ActorMessageHandler<Scene, A2NetInner_Message>
+    [ActorMessageHandler(SceneType.Net)]
+    public class A2Net_MessageHandler: ActorMessageHandler<Scene, A2Net_Message>
     {
-        protected override async ETTask Run(Scene root, A2NetInner_Message message)
+        protected override async ETTask Run(Scene root, A2Net_Message message)
         {
             int process = message.ActorId.Process;
             Session session = root.GetComponent<NetInnerComponent>().Get(process);

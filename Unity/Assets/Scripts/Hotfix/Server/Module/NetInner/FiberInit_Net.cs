@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.NetInner)]
+    [Invoke((long)SceneType.Net)]
     public class FiberInit_NetInner: AInvokeHandler<FiberInit>
     {
         public override void Handle(FiberInit fiberInit)

@@ -116,12 +116,12 @@ namespace ET
             }
 
 
-            A2NetInner_Message netInnerMessage = A2NetInner_Message.Create();
-            netInnerMessage.FromAddress = fiber.Address;
-            netInnerMessage.ActorId = actorId;
-            netInnerMessage.MessageObject = message;
+            A2Net_Message netMessage = A2Net_Message.Create();
+            netMessage.FromAddress = fiber.Address;
+            netMessage.ActorId = actorId;
+            netMessage.MessageObject = message;
             // 扔到NetInner纤程
-            ActorMessageQueue.Instance.Send(new ActorId(actorId.Process, ConstFiberId.NetInner), netInnerMessage);
+            ActorMessageQueue.Instance.Send(new ActorId(actorId.Process, ConstFiberId.Net), netMessage);
         }
 
 

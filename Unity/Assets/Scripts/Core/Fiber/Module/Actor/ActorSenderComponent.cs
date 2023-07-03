@@ -2,11 +2,11 @@
 
 namespace ET
 {
-    public class A2NetInner_Message: MessageObject, IActorMessage
+    public class A2Net_Message: MessageObject, IActorMessage
     {
-        public static A2NetInner_Message Create()
+        public static A2Net_Message Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Message)) as A2NetInner_Message;
+            return ObjectPool.Instance.Fetch(typeof(A2Net_Message)) as A2Net_Message;
         }
 
         public override void Dispose()
