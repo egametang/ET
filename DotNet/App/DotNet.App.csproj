@@ -28,6 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
     <ProjectReference Include="..\Model\DotNet.Model.csproj" />
   </ItemGroup>
 </Project>
