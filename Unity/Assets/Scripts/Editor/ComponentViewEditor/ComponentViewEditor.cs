@@ -78,7 +78,16 @@ namespace ET
                         {
                             fieldName = fieldName.Substring(1, fieldName.Length - 17);
                         }
-                        value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, null);
+
+                        try
+                        {
+                            value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, null);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError(e);
+                        }
+                        
                         fieldInfo.SetValue(entity, value);
                         break;
                     }

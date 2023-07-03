@@ -28,7 +28,8 @@ namespace ET
     public partial class Entity: DisposeObject
     {
 #if ENABLE_VIEW && UNITY_EDITOR
-        private UnityEngine.GameObject viewGO;
+        [UnityEngine.HideInInspector]
+        public UnityEngine.GameObject ViewGO;
 #endif
 
         [BsonIgnore]
@@ -86,14 +87,14 @@ namespace ET
 #if ENABLE_VIEW && UNITY_EDITOR
                 if (value)
                 {
-                    this.viewGO = new UnityEngine.GameObject(this.ViewName);
-                    this.viewGO.AddComponent<ComponentView>().Component = this;
-                    this.viewGO.transform.SetParent(this.Parent == null? 
-                            UnityEngine.GameObject.Find("Global").transform : this.Parent.viewGO.transform);
+                    this.ViewGO = new UnityEngine.GameObject(this.ViewName);
+                    this.ViewGO.AddComponent<ComponentView>().Component = this;
+                    this.ViewGO.transform.SetParent(this.Parent == null? 
+                            UnityEngine.GameObject.Find("Global").transform : this.Parent.ViewGO.transform);
                 }
                 else
                 {
-                    UnityEngine.Object.Destroy(this.viewGO);
+                    UnityEngine.Object.Destroy(this.ViewGO);
                 }
 #endif
             }
@@ -229,16 +230,16 @@ namespace ET
                 }
 
 #if ENABLE_VIEW && UNITY_EDITOR
-                this.viewGO.GetComponent<ComponentView>().Component = this;
-                this.viewGO.transform.SetParent(this.Parent == null ?
-                        UnityEngine.GameObject.Find("Global").transform : this.Parent.viewGO.transform);
+                this.ViewGO.GetComponent<ComponentView>().Component = this;
+                this.ViewGO.transform.SetParent(this.Parent == null ?
+                        UnityEngine.GameObject.Find("Global").transform : this.Parent.ViewGO.transform);
                 foreach (var child in this.Children.Values)
                 {
-                    child.viewGO.transform.SetParent(this.viewGO.transform);
+                    child.ViewGO.transform.SetParent(this.ViewGO.transform);
                 }
                 foreach (var comp in this.Components.Values)
                 {
-                    comp.viewGO.transform.SetParent(this.viewGO.transform);
+                    comp.ViewGO.transform.SetParent(this.ViewGO.transform);
                 }
 #endif
             }
