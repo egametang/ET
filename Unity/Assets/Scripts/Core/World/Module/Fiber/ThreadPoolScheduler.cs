@@ -7,9 +7,7 @@ namespace ET
 {
     internal class ThreadPoolScheduler: IScheduler
     {
-        private readonly HashSet<Thread> threads = new();
-
-        private int threadCount { get; set; }
+        private readonly List<Thread> threads;
 
         private readonly ConcurrentQueue<int> idQueue = new();
         
@@ -18,14 +16,12 @@ namespace ET
         public ThreadPoolScheduler(FiberManager fiberManager)
         {
             this.fiberManager = fiberManager;
-            this.threadCount = Environment.ProcessorCount;
-            for (int i = 0; i < this.threadCount; ++i)
+            int threadCount = Environment.ProcessorCount;
+            this.threads = new List<Thread>(threadCount);
+            for (int i = 0; i < threadCount; ++i)
             {
-                this.threads.Add(new Thread(this.Loop));
-            }
-
-            foreach (Thread thread in this.threads)
-            {
+                Thread thread = new(this.Loop);
+                this.threads.Add(thread);
                 thread.Start();
             }
         }
