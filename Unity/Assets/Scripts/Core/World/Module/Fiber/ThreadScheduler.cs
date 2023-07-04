@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ET
 {
-    // 一个Process一个固定的线程
+    // 一个Fiber一个固定的线程
     internal class ThreadScheduler: IScheduler
     {
         private readonly ConcurrentDictionary<int, Thread> dictionary = new();
@@ -24,35 +24,28 @@ namespace ET
             
             while (true)
             {
-                try
+                if (this.fiberManager.IsDisposed())
                 {
-                    if (this.fiberManager.IsDisposed())
-                    {
-                        return;
-                    }
-                    
-                    fiber = fiberManager.Get(fiberId);
-                    if (fiber == null)
-                    {
-                        this.dictionary.Remove(fiberId, out _);
-                        return;
-                    }
-                    
-                    if (fiber.IsDisposed)
-                    {
-                        this.dictionary.Remove(fiberId, out _);
-                        return;
-                    }
-                    
-                    fiber.Update();
-                    fiber.LateUpdate();
+                    return;
+                }
+                
+                fiber = fiberManager.Get(fiberId);
+                if (fiber == null)
+                {
+                    this.dictionary.Remove(fiberId, out _);
+                    return;
+                }
+                
+                if (fiber.IsDisposed)
+                {
+                    this.dictionary.Remove(fiberId, out _);
+                    return;
+                }
+                
+                fiber.Update();
+                fiber.LateUpdate();
 
-                    Thread.Sleep(1);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+                Thread.Sleep(1);
             }
         }
 

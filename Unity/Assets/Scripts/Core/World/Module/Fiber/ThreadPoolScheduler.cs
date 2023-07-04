@@ -30,47 +30,36 @@ namespace ET
         {
             while (true)
             {
-                try
+                if (this.fiberManager.IsDisposed())
                 {
-                    if (this.fiberManager.IsDisposed())
-                    {
-                        return;
-                    }
-                    
-                    if (!this.idQueue.TryDequeue(out int id))
-                    {
-                        Thread.Sleep(1);
-                        continue;
-                    }
-
-                    Fiber fiber = this.fiberManager.Get(id);
-                    if (fiber == null)
-                    {
-                        continue;
-                    }
-
-                    if (fiber.IsDisposed)
-                    {
-                        continue;
-                    }
-                    
-                    this.idQueue.Enqueue(id);
-
-                    // 正在执行的就不执行了
-                    if (!fiber.IsRuning)
-                    {
-                        SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
-                        fiber.Update();
-                        fiber.LateUpdate();
-                        SynchronizationContext.SetSynchronizationContext(null);
-                    }
-
+                    return;
+                }
+                
+                if (!this.idQueue.TryDequeue(out int id))
+                {
                     Thread.Sleep(1);
+                    continue;
                 }
-                catch (Exception e)
+
+                Fiber fiber = this.fiberManager.Get(id);
+                if (fiber == null)
                 {
-                    Log.Error(e);
+                    continue;
                 }
+
+                if (fiber.IsDisposed)
+                {
+                    continue;
+                }
+                
+                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
+                fiber.Update();
+                fiber.LateUpdate();
+                SynchronizationContext.SetSynchronizationContext(null);
+
+                this.idQueue.Enqueue(id);
+
+                Thread.Sleep(1);
             }
         }
 

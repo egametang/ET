@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ET
 {
@@ -17,7 +18,7 @@ namespace ET
         private readonly IScheduler[] schedulers = new IScheduler[3];
         
         private int idGenerator = 10000000; // 10000000以下为保留的用于StartSceneConfig的fiber id, 1个区配置1000个纤程，可以配置10000个区
-        private readonly ConcurrentDictionary<int, Fiber> fibers = new();
+        private ConcurrentDictionary<int, Fiber> fibers = new();
 
         private MainThreadScheduler mainThreadScheduler;
         
@@ -56,31 +57,35 @@ namespace ET
             {
                 kv.Value.Dispose();
             }
+
+            this.fibers = null;
         }
 
-        public int Create(SchedulerType schedulerType, int fiberId, int zone, SceneType sceneType, string name)
+        public async Task<int> Create(SchedulerType schedulerType, int fiberId, int zone, SceneType sceneType, string name)
         {
             try
             {
                 Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
-
-                fiber.Root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-                fiber.Root.AddComponent<ActorSenderComponent>();
-                fiber.Root.AddComponent<ActorRecverComponent>();
-            
-                // 这里要换成Fiber的ThreadSynchronizationContext，因为在FiberInit中可能存在调用第三方的Task，需要回调到这个Fiber中来
-                SynchronizationContext old = SynchronizationContext.Current;
-                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
-                
-                // 根据Fiber的SceneType分发Init
-                EventSystem.Instance.Invoke((long)sceneType, new FiberInit() {Fiber = fiber});
-                
-                SynchronizationContext.SetSynchronizationContext(old);
-                
                 this.fibers[fiber.Id] = fiber;
-                
                 this.schedulers[(int) schedulerType].Add(fiberId);
                 
+                TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+                fiber.ThreadSynchronizationContext.Post(async () =>
+                {
+                    try
+                    {
+                        // 根据Fiber的SceneType分发Init,必须在Fiber线程中执行
+                        await EventSystem.Instance.Invoke<FiberInit, ETTask>((long)sceneType, new FiberInit() {Fiber = fiber});
+                        tcs.SetResult(true);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                });
+
+                await tcs.Task;
                 return fiberId;
             }
             catch (Exception e)
@@ -89,10 +94,10 @@ namespace ET
             }
         }
         
-        public int Create(SchedulerType schedulerType, int zone, SceneType sceneType, string name)
+        public async Task<int> Create(SchedulerType schedulerType, int zone, SceneType sceneType, string name)
         {
             int fiberId = Interlocked.Increment(ref this.idGenerator);
-            return this.Create(schedulerType, fiberId, zone, sceneType, name);
+            return await this.Create(schedulerType, fiberId, zone, sceneType, name);
         }
         
         public void Remove(int id)

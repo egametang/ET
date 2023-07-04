@@ -51,9 +51,10 @@ namespace ET
             World.Instance.AddSingleton<NavmeshComponent>();
             
             World.Instance.AddSingleton<FiberManager>();
-            FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
             
-            await ETTask.CompletedTask;
+            // 注意这里创建Main Fiber 服务端没有设置同步上下文，会导致await后面的代码回调到了其它线程，一定不要在这个await后面写代码
+            await FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
+            // 注意下面不能加代码!!!!!!!!
         }
     }
 }

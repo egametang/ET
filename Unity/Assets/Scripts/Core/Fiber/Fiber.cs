@@ -33,17 +33,15 @@ namespace ET
         
         public int Process { get; }
         
-        public EntitySystem EntitySystem { get; }
-        public TimeInfo TimeInfo { get; }
-        public IdGenerater IdGenerater { get; }
-        public Mailboxes Mailboxes { get; }
-        public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
-        public TimerComponent TimerComponent { get; }
-        public CoroutineLockComponent CoroutineLockComponent { get; }
+        public EntitySystem EntitySystem { get; private set; }
+        public TimeInfo TimeInfo { get; private set; }
+        public IdGenerater IdGenerater { get; private set; }
+        public Mailboxes Mailboxes { get; private set; }
+        public ThreadSynchronizationContext ThreadSynchronizationContext { get; private set; }
+        public TimerComponent TimerComponent { get; private set; }
+        public CoroutineLockComponent CoroutineLockComponent { get; private set; }
 
         private readonly Queue<ETTask> frameFinishTasks = new();
-
-        public bool IsRuning;
         
         public Fiber(int id, int process, int zone, SceneType sceneType, string name)
         {
@@ -62,19 +60,31 @@ namespace ET
 
         public void Update()
         {
-            this.IsRuning = true;
-            this.ThreadSynchronizationContext.Update();
-            this.TimeInfo.Update();
-            this.EntitySystem.Update();
-            this.TimerComponent.Update();
-            this.CoroutineLockComponent.Update();
+            try
+            {
+                this.ThreadSynchronizationContext.Update();
+                this.TimeInfo.Update();
+                this.EntitySystem.Update();
+                this.TimerComponent.Update();
+                this.CoroutineLockComponent.Update();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
         
         public void LateUpdate()
         {
-            this.EntitySystem.LateUpdate();
-            FrameFinishUpdate();
-            this.IsRuning = false;
+            try
+            {
+                this.EntitySystem.LateUpdate();
+                FrameFinishUpdate();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         public async ETTask WaitFrameFinish()
@@ -100,8 +110,14 @@ namespace ET
                 return;
             }
             this.IsDisposed = true;
-            this.Id = 0;
+            
             this.Root.Dispose();
+            //this.ThreadSynchronizationContext = null;
+            //this.CoroutineLockComponent = null;
+            //this.TimerComponent = null;
+            //this.IdGenerater = null;
+            //this.TimeInfo = null;
+            //this.EntitySystem = null;
         }
     }
 }

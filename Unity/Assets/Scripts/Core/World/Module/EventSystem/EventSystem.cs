@@ -200,17 +200,17 @@ namespace ET
         {
             if (!this.allInvokes.TryGetValue(typeof(A), out var invokeHandlers))
             {
-                throw new Exception($"Invoke error: {typeof(A).Name}");
+                throw new Exception($"Invoke error1: {type} {typeof(A).FullName}");
             }
             if (!invokeHandlers.TryGetValue(type, out var invokeHandler))
             {
-                throw new Exception($"Invoke error: {typeof(A).Name} {type}");
+                throw new Exception($"Invoke error2: {type} {typeof(A).FullName}");
             }
 
             var aInvokeHandler = invokeHandler as AInvokeHandler<A>;
             if (aInvokeHandler == null)
             {
-                throw new Exception($"Invoke error, not AInvokeHandler: {typeof(A).Name} {type}");
+                throw new Exception($"Invoke error3, not AInvokeHandler: {type} {typeof(A).FullName}");
             }
             
             aInvokeHandler.Handle(args);
@@ -220,18 +220,18 @@ namespace ET
         {
             if (!this.allInvokes.TryGetValue(typeof(A), out var invokeHandlers))
             {
-                throw new Exception($"Invoke error: {typeof(A).Name}");
+                throw new Exception($"Invoke error4: {type} {typeof(A).FullName}");
             }
             
             if (!invokeHandlers.TryGetValue(type, out var invokeHandler))
             {
-                throw new Exception($"Invoke error: {typeof(A).Name} {type}");
+                throw new Exception($"Invoke error5: {type} {typeof(A).FullName}");
             }
 
             var aInvokeHandler = invokeHandler as AInvokeHandler<A, T>;
             if (aInvokeHandler == null)
             {
-                throw new Exception($"Invoke error, not AInvokeHandler: {typeof(T).Name} {type}");
+                throw new Exception($"Invoke error6, not AInvokeHandler: {type} {typeof(A).FullName} {typeof(T).FullName} ");
             }
             
             return aInvokeHandler.Handle(args);

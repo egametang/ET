@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace ET
 {
     public class World: IDisposable
     {
         [StaticField]
-        public static World Instance = new();
+        private static World instance;
+
+        public static World Instance
+        {
+            get
+            {
+                return instance ??= new World();
+            }
+        }
 
         private readonly Stack<Type> stack = new();
         private readonly Dictionary<Type, ISingleton> singletons = new();
@@ -16,6 +25,8 @@ namespace ET
         
         public void Dispose()
         {
+            instance = null;
+            
             lock (this)
             {
                 while (this.stack.Count > 0)

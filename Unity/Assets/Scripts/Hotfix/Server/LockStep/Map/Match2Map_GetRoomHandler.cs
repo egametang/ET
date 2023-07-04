@@ -11,7 +11,7 @@ namespace ET.Server
 			//RoomManagerComponent roomManagerComponent = root.GetComponent<RoomManagerComponent>();
 			
 			Fiber fiber = root.Fiber();
-			int fiberId = FiberManager.Instance.Create(SchedulerType.ThreadPool, fiber.Zone, SceneType.RoomRoot, "RoomRoot");
+			int fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, fiber.Zone, SceneType.RoomRoot, "RoomRoot");
 			ActorId roomRootActorId = new(fiber.Process, fiberId);
 
 			// 发送消息给房间纤程，初始化

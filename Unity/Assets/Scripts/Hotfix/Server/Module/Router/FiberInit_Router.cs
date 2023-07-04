@@ -3,16 +3,20 @@
 namespace ET.Server
 {
     [Invoke((long)SceneType.Router)]
-    public class FiberInit_Router: AInvokeHandler<FiberInit>
+    public class FiberInit_Router: AInvokeHandler<FiberInit, ETTask>
     {
-        public override void Handle(FiberInit fiberInit)
+        public override async ETTask Handle(FiberInit fiberInit)
         {
             Scene root = fiberInit.Fiber.Root;
-
+            root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+            root.AddComponent<ActorSenderComponent>();
+            root.AddComponent<ActorRecverComponent>();
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)root.Id);
             
             // 开发期间使用OuterIPPort，云服务器因为本机没有OuterIP，所以要改成InnerIPPort，然后在云防火墙中端口映射到InnerIPPort
             root.AddComponent<RouterComponent, IPEndPoint, string>(startSceneConfig.OuterIPPort, startSceneConfig.StartProcessConfig.InnerIP);
+
+            await ETTask.CompletedTask;
         }
     }
 }

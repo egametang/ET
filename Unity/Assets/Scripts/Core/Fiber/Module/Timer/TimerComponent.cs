@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -55,6 +56,8 @@ namespace ET
 
     public class TimerComponent
     {
+        private bool IsDisposed;
+        
         public readonly TimeInfo TimeInfo;
         /// <summary>
         /// key: time, value: timer id

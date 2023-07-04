@@ -18,7 +18,7 @@ namespace ET.Server
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(root.Fiber().Process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
-                        FiberManager.Instance.Create(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
+                        await FiberManager.Instance.Create(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
                     }
 
                     break;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockComponent: IDisposable
+    public class CoroutineLockComponent
     {
         public readonly TimerComponent TimerComponent;
         private readonly Dictionary<int, CoroutineLockQueueType> dictionary = new();
@@ -12,11 +12,6 @@ namespace ET
         public CoroutineLockComponent(TimerComponent timerComponent)
         {
             this.TimerComponent = timerComponent;
-        }
-
-        public void Dispose()
-        {
-            this.nextFrameRun.Clear();
         }
 
         public void Update()

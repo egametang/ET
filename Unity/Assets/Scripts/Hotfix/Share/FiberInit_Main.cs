@@ -1,20 +1,17 @@
 ﻿namespace ET
 {
     [Invoke((long)SceneType.Main)]
-    public class FiberInit_Main: AInvokeHandler<FiberInit>
+    public class FiberInit_Main: AInvokeHandler<FiberInit, ETTask>
     {
-        public override void Handle(FiberInit fiberInit)
+        public override async ETTask Handle(FiberInit fiberInit)
         {
-            HandleAsync(fiberInit).Coroutine();
-        }
-
-        private async ETTask HandleAsync(FiberInit fiberInit)
-        {
-            Fiber fiber = fiberInit.Fiber;
-
-            await EventSystem.Instance.PublishAsync(fiber.Root, new EventType.EntryEvent1());
-            await EventSystem.Instance.PublishAsync(fiber.Root, new EventType.EntryEvent2());
-            await EventSystem.Instance.PublishAsync(fiber.Root, new EventType.EntryEvent3());
+            Scene root = fiberInit.Fiber.Root;
+            root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+            root.AddComponent<ActorSenderComponent>();
+            root.AddComponent<ActorRecverComponent>();
+            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent1());
+            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent2());
+            await EventSystem.Instance.PublishAsync(root, new EventType.EntryEvent3());
         }
     }
 }

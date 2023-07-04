@@ -42,10 +42,10 @@ namespace ET
                     continue;
                 }
 
-                this.idQueue.Enqueue(id);
-                
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
+                
+                this.idQueue.Enqueue(id);
             }
         }
 
