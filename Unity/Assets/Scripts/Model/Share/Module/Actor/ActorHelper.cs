@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public static partial class ActorHelper
+    public static class ActorHelper
     {
         public static IActorResponse CreateResponse(IActorRequest iActorRequest, int error)
         {
