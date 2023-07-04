@@ -63,9 +63,10 @@ namespace ET.Client
 
             long lastSendTimer = 0;
 
+            Fiber fiber = root.Fiber;
             while (true)
             {
-                long timeNow = root.Fiber().TimeInfo.ClientFrameTime();
+                long timeNow = fiber.TimeInfo.ClientFrameTime();
                 if (timeNow - lastSendTimer > 300)
                 {
                     if (--count < 0)
@@ -78,7 +79,7 @@ namespace ET.Client
                     socket.SendTo(sendCache, 0, addressBytes.Length + 13, SocketFlags.None, routerAddress);
                 }
                     
-                await root.GetComponent<TimerComponent>().WaitFrameAsync();
+                await fiber.TimerComponent.WaitFrameAsync();
                     
                 // 接收
                 if (socket.Available > 0)

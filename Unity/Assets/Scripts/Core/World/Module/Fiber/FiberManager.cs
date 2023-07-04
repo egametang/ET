@@ -64,8 +64,6 @@ namespace ET
             {
                 Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
 
-                fiber.Root.AddComponent<TimerComponent>();
-                fiber.Root.AddComponent<CoroutineLockComponent>();
                 fiber.Root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
                 fiber.Root.AddComponent<ActorSenderComponent>();
                 fiber.Root.AddComponent<ActorRecverComponent>();

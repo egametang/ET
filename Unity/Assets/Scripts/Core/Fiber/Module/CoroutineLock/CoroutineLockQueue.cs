@@ -3,81 +3,24 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public static partial class CoroutineLockQueueSystem
+    public class CoroutineLockQueue: IDisposable
     {
-        [EntitySystem]
-        private static void Awake(this CoroutineLockQueue self, int type)
-        {
-            self.type = type;
-        }
+        private CoroutineLockComponent coroutineLockComponent;
+        private int type;
+        private long key;
         
-        [EntitySystem]
-        private static void Destroy(this CoroutineLockQueue self)
+        public static CoroutineLockQueue Create(CoroutineLockComponent coroutineLockComponent, int type, long key)
         {
-            self.queue.Clear();
-            self.type = 0;
-            self.CurrentCoroutineLock = null;
+            CoroutineLockQueue coroutineLockQueue = ObjectPool.Instance.Fetch<CoroutineLockQueue>();
+            coroutineLockQueue.coroutineLockComponent = coroutineLockComponent; 
+            coroutineLockQueue.type = type;
+            coroutineLockQueue.key = key;
+            return coroutineLockQueue;
         }
+
+        private CoroutineLock currentCoroutineLock;
         
-        public static async ETTask<CoroutineLock> Wait(this CoroutineLockQueue self, int time)
-        {
-            if (self.CurrentCoroutineLock == null)
-            {
-                self.CurrentCoroutineLock = self.AddChild<CoroutineLock, int, long, int>(self.type, self.Id, 1, true);
-                return self.CurrentCoroutineLock;
-            }
-
-            WaitCoroutineLock waitCoroutineLock = WaitCoroutineLock.Create();
-            self.queue.Enqueue(waitCoroutineLock);
-            if (time > 0)
-            {
-                long tillTime = self.Fiber().TimeInfo.ClientFrameTime() + time;
-                self.Root().GetComponent<TimerComponent>().NewOnceTimer(tillTime, TimerCoreInvokeType.CoroutineTimeout, waitCoroutineLock);
-            }
-            self.CurrentCoroutineLock = await waitCoroutineLock.Wait();
-            return self.CurrentCoroutineLock;
-        }
-
-        public static void Notify(this CoroutineLockQueue self, int level)
-        {
-            // 有可能WaitCoroutineLock已经超时抛出异常，所以要找到一个未处理的WaitCoroutineLock
-            while (self.queue.Count > 0)
-            {
-                WaitCoroutineLock waitCoroutineLock = self.queue.Dequeue();
-
-                if (waitCoroutineLock.IsDisposed())
-                {
-                    continue;
-                }
-
-                CoroutineLock coroutineLock = self.AddChild<CoroutineLock, int, long, int>(self.type, self.Id, level, true);
-
-                waitCoroutineLock.SetResult(coroutineLock);
-                break;
-            }
-        }
-    }
-    
-    [ChildOf(typeof(CoroutineLockQueueType))]
-    public class CoroutineLockQueue: Entity, IAwake<int>, IDestroy
-    {
-        public int type;
-
-        private EntityRef<CoroutineLock> currentCoroutineLock;
-
-        public CoroutineLock CurrentCoroutineLock
-        {
-            get
-            {
-                return this.currentCoroutineLock;
-            }
-            set
-            {
-                this.currentCoroutineLock = value;
-            }
-        }
-        
-        public Queue<WaitCoroutineLock> queue = new();
+        private readonly Queue<WaitCoroutineLock> queue = new Queue<WaitCoroutineLock>();
 
         public int Count
         {
@@ -85,6 +28,68 @@ namespace ET
             {
                 return this.queue.Count;
             }
+        }
+
+        public async ETTask<CoroutineLock> Wait(int time)
+        {
+            if (this.currentCoroutineLock == null || this.currentCoroutineLock.IsDisposed)
+            {
+                this.currentCoroutineLock = CoroutineLock.Create(this.coroutineLockComponent, type, key, 1);
+                return this.currentCoroutineLock;
+            }
+
+            WaitCoroutineLock waitCoroutineLock = WaitCoroutineLock.Create();
+            this.queue.Enqueue(waitCoroutineLock);
+            if (time > 0)
+            {
+                TimerComponent timerComponent = this.coroutineLockComponent.TimerComponent;
+                long tillTime = timerComponent.TimeInfo.ClientFrameTime() + time;
+                timerComponent.NewOnceTimer(tillTime, TimerCoreInvokeType.CoroutineTimeout, waitCoroutineLock);
+            }
+            this.currentCoroutineLock = await waitCoroutineLock.Wait();
+            return this.currentCoroutineLock;
+        }
+
+        public void Notify(int level)
+        {
+            // 有可能WaitCoroutineLock已经超时抛出异常，所以要找到一个未处理的WaitCoroutineLock
+            while (this.queue.Count > 0)
+            {
+                WaitCoroutineLock waitCoroutineLock = queue.Dequeue();
+
+                if (waitCoroutineLock.IsDisposed())
+                {
+                    continue;
+                }
+
+                CoroutineLock coroutineLock = CoroutineLock.Create(this.coroutineLockComponent, type, key, level);
+
+                waitCoroutineLock.SetResult(coroutineLock);
+                break;
+            }
+        }
+        
+        public bool IsDisposed
+        {
+            get
+            {
+                return this.coroutineLockComponent == null;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            
+            this.queue.Clear();
+            this.key = 0;
+            this.type = 0;
+            this.currentCoroutineLock = null;
+            this.coroutineLockComponent = null;
+            ObjectPool.Instance.Recycle(this);
         }
     }
 }

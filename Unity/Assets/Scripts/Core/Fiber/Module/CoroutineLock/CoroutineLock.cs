@@ -2,31 +2,46 @@ using System;
 
 namespace ET
 {
-    public static partial class CoroutineLockSystem
+    public class CoroutineLock: IDisposable
     {
-        [EntitySystem]
-        private static void Awake(this CoroutineLock self, int type, long k, int count)
+        private CoroutineLockComponent coroutineLockComponent;
+        private int type;
+        private long key;
+        private int level;
+        
+        public static CoroutineLock Create(CoroutineLockComponent coroutineLockComponent, int type, long k, int count)
         {
-            self.type = type;
-            self.key = k;
-            self.level = count;
+            CoroutineLock coroutineLock = ObjectPool.Instance.Fetch<CoroutineLock>();
+            coroutineLock.coroutineLockComponent = coroutineLockComponent;
+            coroutineLock.type = type;
+            coroutineLock.key = k;
+            coroutineLock.level = count;
+            return coroutineLock;
+        }
+
+        public bool IsDisposed
+        {
+            get
+            {
+                return this.coroutineLockComponent == null;
+            }
         }
         
-        [EntitySystem]
-        private static void Destroy(this CoroutineLock self)
+        public void Dispose()
         {
-            self.Scene<CoroutineLockComponent>().RunNextCoroutine(self.type, self.key, self.level + 1);
-            self.type = CoroutineLockType.None;
-            self.key = 0;
-            self.level = 0;
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            
+            coroutineLockComponent.RunNextCoroutine(this.type, this.key, this.level + 1);
+            
+            this.type = CoroutineLockType.None;
+            this.key = 0;
+            this.level = 0;
+            this.coroutineLockComponent = null;
+            
+            ObjectPool.Instance.Recycle(this);
         }
-    }
-    
-    [ChildOf(typeof(CoroutineLockQueue))]
-    public class CoroutineLock: Entity, IAwake<int, long, int>, IDestroy
-    {
-        public int type;
-        public long key;
-        public int level;
     }
 }

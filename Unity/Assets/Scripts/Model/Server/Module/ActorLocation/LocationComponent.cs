@@ -18,18 +18,10 @@ namespace ET.Server
     {
         public ActorId LockActorId;
 
-        private EntityRef<CoroutineLock> coroutineLock;
-
         public CoroutineLock CoroutineLock
         {
-            get
-            {
-                return this.coroutineLock;
-            }
-            set
-            {
-                this.coroutineLock = value;
-            }
+            get;
+            set;
         }
     }
 

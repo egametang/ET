@@ -24,18 +24,13 @@ namespace ET
         [EntitySystem]
         private static void Awake(this SessionIdleCheckerComponent self)
         {
-            self.RepeatedTimer = self.Root().GetComponent<TimerComponent>().NewRepeatedTimer(SessionIdleCheckerComponentSystem.CheckInteral, TimerInvokeType.SessionIdleChecker, self);
+            self.RepeatedTimer = self.Fiber().TimerComponent.NewRepeatedTimer(CheckInteral, TimerInvokeType.SessionIdleChecker, self);
         }
         
         [EntitySystem]
         private static void Destroy(this SessionIdleCheckerComponent self)
         {
-            Scene root = self.Root();
-            if (root.IsDisposed)
-            {
-                return;
-            }
-            root.GetComponent<TimerComponent>().Remove(ref self.RepeatedTimer);
+            self.Fiber().TimerComponent.Remove(ref self.RepeatedTimer);
         }
         
         public const int CheckInteral = 2000;

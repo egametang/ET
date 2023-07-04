@@ -26,18 +26,13 @@ namespace ET
         private static void Awake(this AIComponent self, int aiConfigId)
         {
             self.AIConfigId = aiConfigId;
-            self.Timer = self.Root().GetComponent<TimerComponent>().NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
+            self.Timer = self.Fiber().TimerComponent.NewRepeatedTimer(1000, TimerInvokeType.AITimer, self);
         }
 
         [EntitySystem]
         private static void Destroy(this AIComponent self)
         {
-            Scene root = self.Root();
-            if (root.InstanceId == 0)
-            {
-                return;
-            }
-            root.GetComponent<TimerComponent>().Remove(ref self.Timer);
+            self.Fiber().TimerComponent.Remove(ref self.Timer);
             self.CancellationToken?.Cancel();
             self.CancellationToken = null;
             self.Current = 0;
@@ -47,7 +42,7 @@ namespace ET
         {
             if (self.Parent == null)
             {
-                self.Root().GetComponent<TimerComponent>().Remove(ref self.Timer);
+                self.Fiber().TimerComponent.Remove(ref self.Timer);
                 return;
             }
 

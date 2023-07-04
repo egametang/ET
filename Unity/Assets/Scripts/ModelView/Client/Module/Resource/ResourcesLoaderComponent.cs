@@ -10,10 +10,10 @@ namespace ET.Client
         {
             async ETTask UnLoadAsync()
             {
-                Scene root = self.Root();
+                Fiber fiber = self.Fiber();
                 using ListComponent<string> list = ListComponent<string>.Create();
                 
-                TimerComponent timerComponent = root.GetComponent<TimerComponent>();
+                TimerComponent timerComponent = fiber.TimerComponent;
                 list.AddRange(self.LoadedResource);
                 self.LoadedResource = null;
 
@@ -25,18 +25,18 @@ namespace ET.Client
                 // 延迟5秒卸载包，因为包卸载是引用计数，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
                 await timerComponent.WaitAsync(5000);
 
-                CoroutineLockComponent coroutineLockComponent = root.GetComponent<CoroutineLockComponent>();
+                CoroutineLockComponent coroutineLockComponent = fiber.CoroutineLockComponent;
                 foreach (string abName in list)
                 {
                     using CoroutineLock coroutineLock =
                             await coroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0);
                     {
-                        if (root.IsDisposed)
+                        if (fiber.IsDisposed)
                         {
                             return;
                         }
 
-                        await root.GetComponent<ResourcesComponent>().UnloadBundleAsync(abName);
+                        await fiber.Root.GetComponent<ResourcesComponent>().UnloadBundleAsync(abName);
                     }
                 }
             }
@@ -46,7 +46,7 @@ namespace ET.Client
 
         public static async ETTask LoadAsync(this ResourcesLoaderComponent self, string ab)
         {
-            using CoroutineLock coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
+            using CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
 
             if (self.IsDisposed)
             {

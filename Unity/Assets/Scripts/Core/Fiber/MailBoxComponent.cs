@@ -10,7 +10,7 @@
             self.MailBoxType = mailBoxType;
             self.ParentInstanceId = self.Parent.InstanceId;
             fiber.Mailboxes.Add(self);
-            self.CoroutineLockComponent = fiber.Root.GetComponent<CoroutineLockComponent>();
+            self.CoroutineLockComponent = fiber.CoroutineLockComponent;
         }
         
         [EntitySystem]
@@ -44,6 +44,6 @@
         // Mailbox的类型
         public MailBoxType MailBoxType { get; set; }
 
-        public EntityRef<CoroutineLockComponent> CoroutineLockComponent { get; set; }
+        public CoroutineLockComponent CoroutineLockComponent { get; set; }
     }
 }

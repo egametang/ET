@@ -29,7 +29,7 @@ namespace ET.Server
 
 	    public static async ETTask<T> Query<T>(this DBComponent self, long id, string collection = null) where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
 		    {
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(d => d.Id == id);
 
@@ -40,7 +40,7 @@ namespace ET.Server
 	    public static async ETTask<List<T>> Query<T>(this DBComponent self, Expression<Func<T, bool>> filter, string collection = null)
 			    where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filter);
 
@@ -51,7 +51,7 @@ namespace ET.Server
 	    public static async ETTask<List<T>> Query<T>(this DBComponent self, long taskId, Expression<Func<T, bool>> filter, string collection = null)
 			    where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
 		    {
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filter);
 
@@ -66,7 +66,7 @@ namespace ET.Server
 			    return;
 		    }
 
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
 		    {
 			    foreach (string collectionName in collectionNames)
 			    {
@@ -86,7 +86,7 @@ namespace ET.Server
 
 	    public static async ETTask<List<T>> QueryJson<T>(this DBComponent self, string json, string collection = null) where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    FilterDefinition<T> filterDefinition = new JsonFilterDefinition<T>(json);
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filterDefinition);
@@ -96,7 +96,7 @@ namespace ET.Server
 
 	    public static async ETTask<List<T>> QueryJson<T>(this DBComponent self, long taskId, string json, string collection = null) where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    FilterDefinition<T> filterDefinition = new JsonFilterDefinition<T>(json);
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(filterDefinition);
@@ -115,7 +115,7 @@ namespace ET.Server
 			    collection = typeof (T).Name;
 		    }
 		    
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).InsertManyAsync(list);
 		    }
@@ -139,7 +139,7 @@ namespace ET.Server
 			    collection = entity.GetType().FullName;
 		    }
 
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
@@ -159,7 +159,7 @@ namespace ET.Server
 			    collection = entity.GetType().FullName;
 		    }
 
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
@@ -173,7 +173,7 @@ namespace ET.Server
 			    return;
 		    }
 
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
 		    {
 			    foreach (Entity entity in entities)
 			    {
@@ -206,7 +206,7 @@ namespace ET.Server
 	    
 	    public static async ETTask<long> Remove<T>(this DBComponent self, long id, string collection = null) where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
 		    {
 			    DeleteResult result = await self.GetCollection<T>(collection).DeleteOneAsync(d => d.Id == id);
 
@@ -216,7 +216,7 @@ namespace ET.Server
 
 	    public static async ETTask<long> Remove<T>(this DBComponent self, long taskId, long id, string collection = null) where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
 		    {
 			    DeleteResult result = await self.GetCollection<T>(collection).DeleteOneAsync(d => d.Id == id);
 
@@ -226,7 +226,7 @@ namespace ET.Server
 
 	    public static async ETTask<long> Remove<T>(this DBComponent self, Expression<Func<T, bool>> filter, string collection = null) where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
 		    {
 			    DeleteResult result = await self.GetCollection<T>(collection).DeleteManyAsync(filter);
 
@@ -237,7 +237,7 @@ namespace ET.Server
 	    public static async ETTask<long> Remove<T>(this DBComponent self, long taskId, Expression<Func<T, bool>> filter, string collection = null)
 			    where T : Entity
 	    {
-		    using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
+		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
 		    {
 			    DeleteResult result = await self.GetCollection<T>(collection).DeleteManyAsync(filter);
 

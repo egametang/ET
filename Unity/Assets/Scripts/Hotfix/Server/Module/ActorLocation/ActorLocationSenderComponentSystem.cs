@@ -30,18 +30,13 @@ namespace ET.Server
             self.LocationType = locationType;
             // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
             // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
-            self.CheckTimer = self.Root().GetComponent<TimerComponent>().NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
+            self.CheckTimer = self.Fiber().TimerComponent.NewRepeatedTimer(10 * 1000, TimerInvokeType.ActorLocationSenderChecker, self);
         }
         
         [EntitySystem]
         private static void Destroy(this ActorLocationSenderOneType self)
         {
-            Scene root = self.Root();
-            if (root.InstanceId == 0)
-            {
-                return;
-            }
-            root.GetComponent<TimerComponent>().Remove(ref self.CheckTimer);
+            self.Fiber().TimerComponent.Remove(ref self.CheckTimer);
         }
 
         private static void Check(this ActorLocationSenderOneType self)
@@ -117,7 +112,7 @@ namespace ET.Server
             long instanceId = actorLocationSender.InstanceId;
             
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
-            using (await root.GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
+            using (await root.Fiber.CoroutineLockComponent.Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != instanceId)
                 {
@@ -155,7 +150,7 @@ namespace ET.Server
             long instanceId = actorLocationSender.InstanceId;
             
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
-            using (await root.GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
+            using (await root.Fiber.CoroutineLockComponent.Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != instanceId)
                 {
@@ -193,7 +188,7 @@ namespace ET.Server
             
             long actorLocationSenderInstanceId = actorLocationSender.InstanceId;
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
-            using (await root.GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
+            using (await root.Fiber.CoroutineLockComponent.Wait(coroutineLockType, entityId))
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
@@ -268,7 +263,7 @@ namespace ET.Server
                         }
 
                         // 等待0.5s再发送
-                        await root.GetComponent<TimerComponent>().WaitAsync(500);
+                        await root.Fiber.TimerComponent.WaitAsync(500);
                         if (actorLocationSender.InstanceId != instanceId)
                         {
                             throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iActorRequest}");
