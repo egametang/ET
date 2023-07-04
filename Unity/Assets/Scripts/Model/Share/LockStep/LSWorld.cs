@@ -26,7 +26,7 @@ namespace ET
     [EnableMethod]
     [ChildOf]
     [ComponentOf]
-    public class LSWorld: LSEntity, IAwake, IScene
+    public class LSWorld: LSEntity, IAwake, IScene, IRegisterLSEntitySystem
     {
         public LSWorld()
         {
@@ -61,15 +61,15 @@ namespace ET
         
         public int Frame { get; set; }
 
-        public void AddToUpdater(LSEntity lsEntity)
-        {
-            this.updater.Add(lsEntity);
-        }
-
         public void Update()
         {
             this.updater.Update();
             ++this.Frame;
+        }
+
+        public void RegisterSystem(LSEntity entity)
+        {
+            this.updater.Add(entity);
         }
     }
 }
