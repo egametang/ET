@@ -6,7 +6,8 @@ namespace ET.Server
     [FriendOf(typeof(WatcherComponent))]
     public static partial class WatcherComponentSystem
     {
-        public static void Start(this WatcherComponent self, int createScenes = 0)
+        [EntitySystem]
+        public static void Awake(this WatcherComponent self)
         {
             string[] localIP = NetworkHelper.GetAddressIPs();
             var processConfigs = StartProcessConfigCategory.Instance.GetAll();
@@ -16,7 +17,7 @@ namespace ET.Server
                 {
                     continue;
                 }
-                System.Diagnostics.Process process = WatcherHelper.StartProcess(startProcessConfig.Id, createScenes);
+                System.Diagnostics.Process process = WatcherHelper.StartProcess(startProcessConfig.Id);
                 self.Processes.Add(startProcessConfig.Id, process);
             }
         }

@@ -64,7 +64,12 @@ namespace ET
 
         public Type GetType(ushort opcode)
         {
-            return this.typeOpcode.GetKeyByValue(opcode);
+            Type type = this.typeOpcode.GetKeyByValue(opcode);
+            if (type == null)
+            {
+                throw new Exception($"OpcodeType not found type: {opcode}");
+            }
+            return type;
         }
 
         public Type GetResponseType(Type request)

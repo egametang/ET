@@ -14,12 +14,6 @@
             
             using MessageObject messageObject = args.MessageObject;
             
-            CoroutineLockComponent coroutineLockComponent = mailBoxComponent.CoroutineLockComponent;
-            if (coroutineLockComponent == null)
-            {
-                return;
-            }
-
             await ActorMessageDispatcherComponent.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
         }
     }

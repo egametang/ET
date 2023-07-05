@@ -112,7 +112,7 @@ namespace ET
                 return;
             }
             
-            EventSystem.Instance.Invoke((long)self.SceneType, new ActorSenderInvoker());
+            EventSystem.Instance.Invoke((long)self.SceneType, new ActorSenderInvoker() {Fiber = fiber, ActorId = actorId, MessageObject = message});
         }
 
         public static int GetRpcId(this ActorSenderComponent self)

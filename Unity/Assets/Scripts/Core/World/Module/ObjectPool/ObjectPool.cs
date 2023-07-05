@@ -5,10 +5,14 @@ namespace ET
 {
     public class ObjectPool: Singleton<ObjectPool>, ISingletonAwake
     {
-        private readonly Dictionary<Type, Queue<object>> pool = new();
+        private Dictionary<Type, Queue<object>> pool;
         
         public void Awake()
         {
+            lock (this)
+            {
+                this.pool = new Dictionary<Type, Queue<object>>();
+            }
         }
         
         public T Fetch<T>() where T: class

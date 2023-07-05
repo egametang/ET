@@ -82,7 +82,7 @@ namespace ET
                     }
                     catch (Exception e)
                     {
-                        Log.Error(e);
+                        Log.Error($"init fiber fail: {sceneType} {e}");
                     }
                 });
 

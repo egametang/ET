@@ -46,7 +46,6 @@ namespace ET.Server
                     $" --AppType=Server" +  
                     $" --StartConfig={Options.Instance.StartConfig}" +
                     $" --Develop={Options.Instance.Develop}" +
-                    $" --CreateScenes={createScenes}" +
                     $" --LogLevel={Options.Instance.LogLevel}" +
                     $" --Console={Options.Instance.Console}";
             Log.Debug($"{exe} {arguments}");
