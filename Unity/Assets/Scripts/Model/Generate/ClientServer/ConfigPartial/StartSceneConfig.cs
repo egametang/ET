@@ -10,7 +10,7 @@ namespace ET
         
         public MultiMap<int, StartSceneConfig> ProcessScenes = new();
         
-        public Dictionary<int, StartSceneConfig> Nets = new();
+        public Dictionary<int, StartSceneConfig> NetInners = new();
         
         public Dictionary<long, Dictionary<string, StartSceneConfig>> ClientScenesByName = new();
 
@@ -50,8 +50,8 @@ namespace ET
                 
                 switch (startSceneConfig.Type)
                 {
-                    case SceneType.Net:
-                        this.Nets.Add(startSceneConfig.Process, startSceneConfig);
+                    case SceneType.NetInner:
+                        this.NetInners.Add(startSceneConfig.Process, startSceneConfig);
                         break;
                     case SceneType.Realm:
                         this.Realms.Add(startSceneConfig);

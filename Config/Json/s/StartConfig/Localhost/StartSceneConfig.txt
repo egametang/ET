@@ -1,5 +1,5 @@
 {"dict": [
-[1, {"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":1,"SceneType":"Net","Name":"Net","Port":30001}],
+[1, {"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":1,"SceneType":"NetInner","Name":"NetInner","Port":30001}],
 [2, {"_t":"StartSceneConfig","_id":2,"Process":1,"Zone":1,"SceneType":"Realm","Name":"Realm","Port":30002}],
 [3, {"_t":"StartSceneConfig","_id":3,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate1","Port":30003}],
 [4, {"_t":"StartSceneConfig","_id":4,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate2","Port":30004}],

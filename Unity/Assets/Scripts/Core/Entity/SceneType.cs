@@ -7,7 +7,7 @@ namespace ET
 	{
 		None = 0,
 		Main = 1, // 主纤程,一个进程一个, 初始化从这里开始
-		Net = 1 << 2, // 负责进程间消息通信
+		NetInner = 1 << 2, // 负责进程间消息通信
 		Realm = 1 << 3,
 		Gate = 1 << 4,
 		Http = 1 << 5,

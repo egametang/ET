@@ -112,13 +112,13 @@ namespace ET
             }
 
 
-            A2Net_Message netMessage = A2Net_Message.Create();
-            netMessage.FromAddress = fiber.Address;
-            netMessage.ActorId = actorId;
-            netMessage.MessageObject = message;
+            A2NetInner_Message netInnerMessage = A2NetInner_Message.Create();
+            netInnerMessage.FromAddress = fiber.Address;
+            netInnerMessage.ActorId = actorId;
+            netInnerMessage.MessageObject = message;
             // 扔到Net纤程
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Nets[fiber.Process];
-            ActorMessageQueue.Instance.Send(startSceneConfig.ActorId, netMessage);
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[fiber.Process];
+            ActorMessageQueue.Instance.Send(startSceneConfig.ActorId, netInnerMessage);
         }
 
 
