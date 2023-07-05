@@ -24,8 +24,9 @@ namespace ET
         }
     
         [EntitySystem]
-        private static void Awake(this ActorSenderComponent self)
+        private static void Awake(this ActorSenderComponent self, SceneType sceneType)
         {
+            self.SceneType = sceneType;
             self.TimeoutCheckTimer = self.Fiber().TimerComponent.NewRepeatedTimer(1000, TimerInvokeType.ActorMessageSenderChecker, self);
         }
         
@@ -110,18 +111,9 @@ namespace ET
                 ActorMessageQueue.Instance.Send(fiber.Address, actorId, message);
                 return;
             }
-
-
-            A2NetInner_Message netInnerMessage = A2NetInner_Message.Create();
-            netInnerMessage.FromAddress = fiber.Address;
-            netInnerMessage.ActorId = actorId;
-            netInnerMessage.MessageObject = message;
-            // 扔到Net纤程
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[fiber.Process];
-            ActorMessageQueue.Instance.Send(startSceneConfig.ActorId, netInnerMessage);
+            
+            EventSystem.Instance.Invoke((long)self.SceneType, new ActorSenderInvoker());
         }
-
-
 
         public static int GetRpcId(this ActorSenderComponent self)
         {

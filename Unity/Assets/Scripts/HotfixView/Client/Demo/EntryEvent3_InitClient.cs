@@ -9,6 +9,10 @@ namespace ET.Client
         protected override async ETTask Run(Scene root, EventType.EntryEvent3 args)
         {
             World.Instance.AddSingleton<UIEventComponent>();
+            
+            root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+            root.AddComponent<ActorSenderComponent, SceneType>(SceneType.NetClient);
+            root.AddComponent<ActorRecverComponent>();
 
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
             root.AddComponent<UIGlobalComponent>();

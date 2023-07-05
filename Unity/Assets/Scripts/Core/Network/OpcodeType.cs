@@ -30,12 +30,9 @@ namespace ET
                 }
 
                 ushort opcode = messageAttribute.Opcode;
-                
-                this.typeOpcode.Add(type, opcode);
-
-                if (OpcodeHelper.IsOuterMessage(opcode) && typeof (IActorMessage).IsAssignableFrom(type))
+                if (opcode != 0)
                 {
-                    this.outrActorMessage.Add(opcode);
+                    this.typeOpcode.Add(type, opcode);
                 }
 
                 // 检查request response
@@ -68,11 +65,6 @@ namespace ET
         public Type GetType(ushort opcode)
         {
             return this.typeOpcode.GetKeyByValue(opcode);
-        }
-
-        public bool IsOutrActorMessage(ushort opcode)
-        {
-            return this.outrActorMessage.Contains(opcode);
         }
 
         public Type GetResponseType(Type request)

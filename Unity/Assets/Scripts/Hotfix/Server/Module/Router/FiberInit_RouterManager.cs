@@ -9,7 +9,7 @@ namespace ET.Server
         {
             Scene root = fiberInit.Fiber.Root;
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            root.AddComponent<ActorSenderComponent>();
+            root.AddComponent<ActorSenderComponent, SceneType>(SceneType.NetInner);
             root.AddComponent<ActorRecverComponent>();
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)root.Id);
             root.AddComponent<HttpComponent, string>($"http://*:{startSceneConfig.Port}/");

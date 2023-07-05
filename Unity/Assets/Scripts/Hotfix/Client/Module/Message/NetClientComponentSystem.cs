@@ -37,7 +37,26 @@ namespace ET.Client
 
             session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
             
-            EventSystem.Instance.Publish(self.Scene(), new NetClientComponentOnRead() {Session = session, Message = message});
+            switch (message)
+            {
+                case IActorMessage:
+                {
+                    // 扔到Main纤程队列中
+                    ActorMessageQueue.Instance.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), message as MessageObject);
+                    break;
+                }
+                case IResponse response:
+                {
+                    session.OnResponse(response);
+                    break;
+                }
+                default:
+                {
+                    // 普通消息或者是Rpc请求消息
+                    MessageDispatcherComponent.Instance.Handle(session, message);
+                    break;
+                }
+            }
         }
 
         private static void OnError(this NetClientComponent self, long channelId, int error)

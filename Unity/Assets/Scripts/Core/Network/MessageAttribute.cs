@@ -7,7 +7,7 @@
             get;
         }
 
-        public MessageAttribute(ushort opcode)
+        public MessageAttribute(ushort opcode = 0)
         {
             this.Opcode = opcode;
         }

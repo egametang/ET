@@ -7,27 +7,6 @@ namespace ET.Server
     [FriendOf(typeof(NetInnerComponent))]
     public static partial class NetInnerComponentSystem
     {
-        //[EntitySystem]
-        //private static void Awake(this NetInnerComponent self)
-        //{
-        //    switch (self.InnerProtocol)
-        //    {
-        //        case NetworkProtocol.TCP:
-        //        {
-        //            self.AService = new TService(AddressFamily.InterNetwork, ServiceType.Inner);
-        //            break;
-        //        }
-        //        case NetworkProtocol.KCP:
-        //        {
-        //            self.AService = new KService(AddressFamily.InterNetwork, ServiceType.Inner);
-        //            break;
-        //        }
-        //    }
-        //        
-        //    self.AService.ReadCallback = self.OnRead;
-        //    self.AService.ErrorCallback = self.OnError;
-        //}
-
         [EntitySystem]
         private static void Awake(this NetInnerComponent self, IPEndPoint address)
         {

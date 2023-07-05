@@ -113,6 +113,10 @@ namespace ET
             this.InstanceId = instanceId;
         }
         
+        public ActorId(Address address): this(address, 1)
+        {
+        }
+        
         public ActorId(Address address, long instanceId)
         {
             this.Address = address;

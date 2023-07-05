@@ -5,11 +5,11 @@
     {
     }
 
-    public interface IActorRequest: IRequest
+    public interface IActorRequest: IRequest, IActorMessage
     {
     }
 
-    public interface IActorResponse: IResponse
+    public interface IActorResponse: IResponse, IActorMessage
     {
     }
 }

@@ -1,11 +1,11 @@
 ﻿namespace ET.Client
 {
-	[MessageHandler(SceneType.Demo)]
-	public class M2C_CreateUnitsHandler : MessageHandler<M2C_CreateUnits>
+	[ActorMessageHandler(SceneType.Demo)]
+	public class M2C_CreateUnitsHandler: ActorMessageHandler<Scene, M2C_CreateUnits>
 	{
-		protected override async ETTask Run(Session session, M2C_CreateUnits message)
+		protected override async ETTask Run(Scene root, M2C_CreateUnits message)
 		{
-			Scene currentScene = session.Root().CurrentScene();
+			Scene currentScene = root.CurrentScene();
 			UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)

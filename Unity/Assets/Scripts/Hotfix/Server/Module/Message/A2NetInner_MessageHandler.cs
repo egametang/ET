@@ -3,7 +3,7 @@
 namespace ET.Server
 {
     [ActorMessageHandler(SceneType.NetInner)]
-    public class A2Net_MessageHandler: ActorMessageHandler<Scene, A2NetInner_Message>
+    public class A2NetInner_MessageHandler: ActorMessageHandler<Scene, A2NetInner_Message>
     {
         protected override async ETTask Run(Scene root, A2NetInner_Message innerMessage)
         {

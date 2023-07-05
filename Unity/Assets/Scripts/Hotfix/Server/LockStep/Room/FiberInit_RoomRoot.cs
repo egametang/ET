@@ -9,7 +9,7 @@ namespace ET.Server
         {
             Scene root = fiberInit.Fiber.Root;
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            root.AddComponent<ActorSenderComponent>();
+            root.AddComponent<ActorSenderComponent, SceneType>(SceneType.NetInner);
             root.AddComponent<ActorRecverComponent>();
             Room room = root.AddChild<Room>();
             root.AddComponent<LocationProxyComponent>();

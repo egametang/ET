@@ -1,11 +1,10 @@
 namespace ET.Client
 {
-    [MessageHandler(SceneType.LockStep)]
-    public class Room2C_CheckHashFailHandler: MessageHandler<Room2C_CheckHashFail>
+    [ActorMessageHandler(SceneType.LockStep)]
+    public class Room2C_CheckHashFailHandler: ActorMessageHandler<Scene, Room2C_CheckHashFail>
     {
-        protected override async ETTask Run(Session session, Room2C_CheckHashFail message)
+        protected override async ETTask Run(Scene root, Room2C_CheckHashFail message)
         {
-            Scene root = session.Root();
             LSWorld serverWorld = MongoHelper.Deserialize(typeof(LSWorld), message.LSWorldBytes, 0, message.LSWorldBytes.Length) as LSWorld;
             using (root.AddChild(serverWorld))
             {
