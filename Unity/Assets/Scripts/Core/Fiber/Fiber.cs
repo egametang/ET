@@ -33,17 +33,17 @@ namespace ET
         
         public int Process { get; }
         
-        public EntitySystem EntitySystem { get; private set; }
-        public TimeInfo TimeInfo { get; private set; }
+        public EntitySystem EntitySystem { get; }
+        public TimeInfo TimeInfo { get; }
         public IdGenerater IdGenerater { get; private set; }
         public Mailboxes Mailboxes { get; private set; }
-        public ThreadSynchronizationContext ThreadSynchronizationContext { get; private set; }
-        public TimerComponent TimerComponent { get; private set; }
-        public CoroutineLockComponent CoroutineLockComponent { get; private set; }
+        public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
+        public TimerComponent TimerComponent { get; }
+        public CoroutineLockComponent CoroutineLockComponent { get; }
 
         private readonly Queue<ETTask> frameFinishTasks = new();
         
-        public Fiber(int id, int process, int zone, SceneType sceneType, string name)
+        internal Fiber(int id, int process, int zone, SceneType sceneType, string name)
         {
             this.Id = id;
             this.Process = process;
@@ -54,11 +54,11 @@ namespace ET
             this.Mailboxes = new Mailboxes();
             this.TimerComponent = new TimerComponent(this.TimeInfo);
             this.CoroutineLockComponent = new CoroutineLockComponent(this.TimerComponent);
-            this.ThreadSynchronizationContext = new();
+            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             this.Root = new Scene(this, id, 1, sceneType, name);
         }
 
-        public void Update()
+        internal void Update()
         {
             try
             {
@@ -74,7 +74,7 @@ namespace ET
             }
         }
         
-        public void LateUpdate()
+        internal void LateUpdate()
         {
             try
             {
@@ -112,12 +112,6 @@ namespace ET
             this.IsDisposed = true;
             
             this.Root.Dispose();
-            //this.ThreadSynchronizationContext = null;
-            //this.CoroutineLockComponent = null;
-            //this.TimerComponent = null;
-            //this.IdGenerater = null;
-            //this.TimeInfo = null;
-            //this.EntitySystem = null;
         }
     }
 }

@@ -9,9 +9,11 @@ namespace ET
         private readonly ConcurrentQueue<int> idQueue = new();
         private readonly ConcurrentQueue<int> addIds = new();
         private readonly FiberManager fiberManager;
+        private readonly ThreadSynchronizationContext threadSynchronizationContext = new();
 
         public MainThreadScheduler(FiberManager fiberManager)
         {
+            SynchronizationContext.SetSynchronizationContext(this.threadSynchronizationContext);
             this.fiberManager = fiberManager;
         }
 
@@ -23,6 +25,8 @@ namespace ET
 
         public void Update()
         {
+            this.threadSynchronizationContext.Update();
+            
             int count = this.idQueue.Count;
             while (count-- > 0)
             {
@@ -41,8 +45,7 @@ namespace ET
                 {
                     continue;
                 }
-
-                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
+                
                 fiber.Update();
                 
                 this.idQueue.Enqueue(id);
@@ -72,7 +75,6 @@ namespace ET
 
                 this.idQueue.Enqueue(id);
 
-                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.LateUpdate();
             }
 

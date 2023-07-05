@@ -66,6 +66,7 @@ namespace ET
             try
             {
                 Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
+                
                 this.fibers[fiber.Id] = fiber;
                 this.schedulers[(int) schedulerType].Add(fiberId);
                 
