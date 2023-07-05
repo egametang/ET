@@ -7,12 +7,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, A2NetInner_Message innerMessage)
         {
-            int process = innerMessage.ActorId.Process;
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[process];
-            Session session = root.GetComponent<NetInnerComponent>().Get(startSceneConfig.Id);
-            ActorId actorId = innerMessage.ActorId;
-            actorId.Address = innerMessage.FromAddress;
-            session.Send(actorId, innerMessage.MessageObject);
+            root.GetComponent<ActorOuterComponent>().Send(innerMessage.ActorId, innerMessage.MessageObject);
             await ETTask.CompletedTask;
         }
     }

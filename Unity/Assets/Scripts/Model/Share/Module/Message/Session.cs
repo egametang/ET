@@ -100,13 +100,31 @@ namespace ET
             return ret;
         }
 
-        public static async ETTask<IResponse> Call(this Session self, IRequest request)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request, int time = 0)
         {
             int rpcId = ++Session.RpcId;
             RpcInfo rpcInfo = new(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
             self.Send(request);
+
+            if (time > 0)
+            {
+                async ETTask Timeout()
+                {
+                    await self.Fiber().TimerComponent.WaitAsync(time);
+                    if (!self.requestCallbacks.TryGetValue(rpcId, out RpcInfo action))
+                    {
+                        return;
+                    }
+
+                    self.requestCallbacks.Remove(rpcId);
+                    action.Tcs.SetException(new Exception($"session call timeout: {request} {time}"));
+                }
+                
+                Timeout().Coroutine();
+            }
+
             return await rpcInfo.Tcs;
         }
 

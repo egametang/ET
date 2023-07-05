@@ -20,27 +20,58 @@ namespace ET
         
         public Address FromAddress;
         public ActorId ActorId;
-        public MessageObject MessageObject;
+        public IActorMessage MessageObject;
     }
     
-    [Message(1)]
-    public class A2NetInner_Request: MessageObject, IActorMessage
+    [Message(2)]
+    public class A2NetInner_Request: MessageObject, IActorRequest
     {
-        public static A2NetInner_Message Create()
+        public static A2NetInner_Request Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Message)) as A2NetInner_Message;
+            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Request)) as A2NetInner_Request;
         }
 
         public override void Dispose()
         {
+            this.RpcId = default;
             this.FromAddress = default;
             this.ActorId = default;
+            this.MessageObject = default;
             
             ObjectPool.Instance.Recycle(this);
         }
         
+        public int RpcId { get; set; }
         public Address FromAddress;
         public ActorId ActorId;
-        public MessageObject MessageObject;
+        public IActorRequest MessageObject;
+    }
+    
+    [Message(1)]
+    public class A2NetInner_Response: MessageObject, IActorResponse
+    {
+        public static A2NetInner_Response Create()
+        {
+            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Response)) as A2NetInner_Response;
+        }
+
+        public override void Dispose()
+        {
+            this.ActorId = default;
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+            
+            ObjectPool.Instance.Recycle(this);
+        }
+        
+        public int Error { get; set; }
+        public string Message { get; set; }
+        public int RpcId { get; set; }
+        
+        public ActorId ActorId;
+        public IActorResponse MessageObject;
+
     }
 }

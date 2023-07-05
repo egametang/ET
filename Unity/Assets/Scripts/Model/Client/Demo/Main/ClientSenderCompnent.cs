@@ -7,17 +7,17 @@
 
         public ActorId netClientActorId;
 
-        private EntityRef<ActorSenderComponent> actorSender;
+        private EntityRef<ActorInnerComponent> actorInner;
 
-        public ActorSenderComponent ActorSender
+        public ActorInnerComponent ActorInner
         {
             get
             {
-                return this.actorSender;
+                return this.actorInner;
             }
             set
             {
-                this.actorSender = value;
+                this.actorInner = value;
             }
         }
     }

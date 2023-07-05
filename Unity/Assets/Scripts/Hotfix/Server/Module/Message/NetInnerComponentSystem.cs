@@ -51,7 +51,7 @@ namespace ET.Server
             
             session.LastRecvTime = self.Fiber().TimeInfo.ClientFrameTime();
 
-            self.HandleMessage(actorId, message);
+            EventSystem.Instance.Publish(self.Scene(), new NetInnerComponentOnRead() {ActorId = actorId, Message = message});
         }
 
         private static void HandleMessage(this NetInnerComponent self, ActorId actorId, object message)

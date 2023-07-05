@@ -22,7 +22,7 @@ namespace ET.Server
             }
             
             ActorResponse response = new() {RpcId = message.RpcId};
-            entity.Root().GetComponent<ActorSenderComponent>().Reply(fromAddress, response);
+            entity.Root().GetComponent<ActorInnerComponent>().Reply(fromAddress, response);
 
             await this.Run(e, message);
         }
@@ -75,7 +75,7 @@ namespace ET.Server
                     response.Message = exception.ToString();
                 }
                 response.RpcId = rpcId;
-                entity.Root().GetComponent<ActorSenderComponent>().Reply(fromAddress, response);
+                entity.Root().GetComponent<ActorInnerComponent>().Reply(fromAddress, response);
             }
             catch (Exception e)
             {

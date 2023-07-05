@@ -6,7 +6,7 @@
         [EntitySystem]
         private static void Awake(this ClientSenderCompnent self)
         {
-            self.ActorSender = self.Root().GetComponent<ActorSenderComponent>();
+            self.ActorInner = self.Root().GetComponent<ActorInnerComponent>();
         }
         
         [EntitySystem]
@@ -23,7 +23,7 @@
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
             self.netClientActorId = new ActorId(self.Fiber().Process, self.fiberId);
             
-            NetClient2Main_Login response =await self.ActorSender.Call(self.netClientActorId, new Main2NetClient_Login() {Account = account, Password = password}) as NetClient2Main_Login;
+            NetClient2Main_Login response =await self.ActorInner.Call(self.netClientActorId, new Main2NetClient_Login() {Account = account, Password = password}) as NetClient2Main_Login;
             return response.PlayerId;
         }
         
@@ -31,14 +31,14 @@
         {
             A2NetClient_Message a2NetClientMessage = A2NetClient_Message.Create();
             a2NetClientMessage.MessageObject = message;
-            self.ActorSender.Send(self.netClientActorId, a2NetClientMessage);
+            self.ActorInner.Send(self.netClientActorId, a2NetClientMessage);
         }
         
         public static async ETTask<IResponse> Call(this ClientSenderCompnent self, IRequest request, bool needException = true)
         {
             A2NetClient_Request a2NetClientRequest = A2NetClient_Request.Create();
             a2NetClientRequest.MessageObject = request;
-            A2NetClient_Response response = await self.ActorSender.Call(self.netClientActorId, a2NetClientRequest, needException) as A2NetClient_Response;
+            A2NetClient_Response response = await self.ActorInner.Call(self.netClientActorId, a2NetClientRequest, needException: needException) as A2NetClient_Response;
             return response.MessageObject;
         }
     }

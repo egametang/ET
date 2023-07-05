@@ -22,12 +22,12 @@
             Fiber fiber = self.Fiber();
             ActorMessageQueue.Instance.Fetch(fiber.Id, 1000, self.list);
 
-            ActorSenderComponent actorSenderComponent = fiber.Root.GetComponent<ActorSenderComponent>();
+            ActorInnerComponent actorInnerComponent = fiber.Root.GetComponent<ActorInnerComponent>();
             foreach (ActorMessageInfo actorMessageInfo in self.list)
             {
                 if (actorMessageInfo.MessageObject is IActorResponse response)
                 {
-                    actorSenderComponent.HandleIActorResponse(response);
+                    actorInnerComponent.HandleIActorResponse(response);
                     continue;
                 }
 
@@ -41,7 +41,7 @@
                     if (message is IActorRequest request)
                     {
                         IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
-                        actorSenderComponent.Reply(actorId.Address, resp);
+                        actorInnerComponent.Reply(actorId.Address, resp);
                     }
                     return;
                 }

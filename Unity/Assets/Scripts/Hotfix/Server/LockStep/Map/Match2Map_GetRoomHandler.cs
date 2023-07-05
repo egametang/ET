@@ -17,7 +17,7 @@ namespace ET.Server
 			// 发送消息给房间纤程，初始化
 			RoomManager2Room_Init roomManager2RoomInit = RoomManager2Room_Init.Create();
 			roomManager2RoomInit.PlayerIds.AddRange(request.PlayerIds);
-			await root.GetComponent<ActorSenderComponent>().Call(roomRootActorId, roomManager2RoomInit);
+			await root.GetComponent<ActorInnerComponent>().Call(roomRootActorId, roomManager2RoomInit);
 			
 			response.ActorId = roomRootActorId;
 			await ETTask.CompletedTask;

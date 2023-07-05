@@ -29,7 +29,7 @@
                     if (messageObject is IActorRequest request)
                     {
                         IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
-                        mailBoxComponent.Root().GetComponent<ActorSenderComponent>().Reply(args.FromAddress, resp);
+                        mailBoxComponent.Root().GetComponent<ActorInnerComponent>().Reply(args.FromAddress, resp);
                     }
                     return;
                 }

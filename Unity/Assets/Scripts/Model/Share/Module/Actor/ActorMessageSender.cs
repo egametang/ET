@@ -6,9 +6,6 @@ namespace ET
     public readonly struct ActorMessageSender
     {
         public ActorId ActorId { get; }
-
-        // 最近接收或者发送消息的时间
-        public long CreateTime { get; }
         
         public IActorRequest Request { get; }
 
@@ -16,11 +13,10 @@ namespace ET
 
         public ETTask<IActorResponse> Tcs { get; }
 
-        public ActorMessageSender(ActorId actorId, IActorRequest iActorRequest, ETTask<IActorResponse> tcs, bool needException, long createTime)
+        public ActorMessageSender(ActorId actorId, IActorRequest iActorRequest, ETTask<IActorResponse> tcs, bool needException)
         {
             this.ActorId = actorId;
             this.Request = iActorRequest;
-            this.CreateTime = createTime;
             this.Tcs = tcs;
             this.NeedException = needException;
         }

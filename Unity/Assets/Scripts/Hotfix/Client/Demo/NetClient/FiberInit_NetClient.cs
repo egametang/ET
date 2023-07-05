@@ -7,7 +7,7 @@
         {
             Scene root = fiberInit.Fiber.Root;
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            root.AddComponent<ActorSenderComponent, SceneType>(SceneType.NetClient);
+            root.AddComponent<ActorInnerComponent>();
             root.AddComponent<ActorRecverComponent>();
             await ETTask.CompletedTask;
         }

@@ -59,7 +59,7 @@ namespace ET.Server
             Fiber fiber = player.Fiber();
             await fiber.WaitFrameFinish();
             
-            using Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<ActorSenderComponent>().Call(
+            using Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<ActorInnerComponent>().Call(
                 player.GetComponent<PlayerRoomComponent>().RoomActorId,
                 new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
             G2C_Reconnect g2CReconnect = new() { StartTime = room2GateReconnect.StartTime, Frame = room2GateReconnect.Frame };

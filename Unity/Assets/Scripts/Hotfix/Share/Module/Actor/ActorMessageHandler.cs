@@ -78,7 +78,7 @@ namespace ET
                 }
                 
                 response.RpcId = rpcId;
-                entity.Root().GetComponent<ActorSenderComponent>().Reply(fromAddress, response);
+                entity.Root().GetComponent<ActorInnerComponent>().Reply(fromAddress, response);
             }
             catch (Exception e)
             {
