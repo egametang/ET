@@ -7,6 +7,8 @@
         {
             Scene root = fiberInit.Fiber.Root;
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+            root.AddComponent<TimerComponent>();
+            root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ActorInnerComponent>();
             root.AddComponent<ActorRecverComponent>();
             await ETTask.CompletedTask;

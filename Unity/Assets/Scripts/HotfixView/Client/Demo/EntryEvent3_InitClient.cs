@@ -10,6 +10,9 @@ namespace ET.Client
         {
             World.Instance.AddSingleton<UIEventComponent>();
             
+            root.AddComponent<TimerComponent>();
+            root.AddComponent<CoroutineLockComponent>();
+            
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
             root.AddComponent<UIGlobalComponent>();
             root.AddComponent<UIComponent>();

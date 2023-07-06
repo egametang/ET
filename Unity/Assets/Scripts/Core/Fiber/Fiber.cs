@@ -38,8 +38,32 @@ namespace ET
         public IdGenerater IdGenerater { get; private set; }
         public Mailboxes Mailboxes { get; private set; }
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
-        public TimerComponent TimerComponent { get; }
-        public CoroutineLockComponent CoroutineLockComponent { get; }
+        
+        private EntityRef<TimerComponent> timerCompnent;
+        public TimerComponent TimerComponent
+        {
+            get
+            {
+                return this.timerCompnent;
+            }
+            set
+            {
+                this.timerCompnent = value;
+            }
+        }
+        
+        private EntityRef<CoroutineLockComponent> coroutineLockComponent;
+        public CoroutineLockComponent CoroutineLockComponent
+        {
+            get
+            {
+                return this.coroutineLockComponent;
+            }
+            set
+            {
+                this.coroutineLockComponent = value;
+            }
+        }
 
         private readonly Queue<ETTask> frameFinishTasks = new();
         
@@ -52,8 +76,6 @@ namespace ET
             this.TimeInfo = new TimeInfo();
             this.IdGenerater = new IdGenerater(process, this.TimeInfo);
             this.Mailboxes = new Mailboxes();
-            this.TimerComponent = new TimerComponent(this.TimeInfo);
-            this.CoroutineLockComponent = new CoroutineLockComponent(this.TimerComponent);
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             this.Root = new Scene(this, id, 1, sceneType, name);
         }
@@ -65,8 +87,6 @@ namespace ET
                 this.ThreadSynchronizationContext.Update();
                 this.TimeInfo.Update();
                 this.EntitySystem.Update();
-                this.TimerComponent.Update();
-                this.CoroutineLockComponent.Update();
             }
             catch (Exception e)
             {
