@@ -6,8 +6,6 @@
         protected override async ETTask Run(Scene root, A2NetClient_Request request, A2NetClient_Response response)
         {
             response.MessageObject = await root.GetComponent<SessionComponent>().Session.Call(request.MessageObject);
-            
-            await ETTask.CompletedTask;
         }
     }
 }

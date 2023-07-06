@@ -9,14 +9,10 @@ namespace ET
     {
         public static void HandleIActorResponse(this ActorInnerComponent self, IActorResponse response)
         {
-            ActorMessageSender actorMessageSender;
-            if (!self.requestCallback.TryGetValue(response.RpcId, out actorMessageSender))
+            if (!self.requestCallback.Remove(response.RpcId, out ActorMessageSender actorMessageSender))
             {
                 return;
             }
-
-            self.requestCallback.Remove(response.RpcId);
-            
             Run(actorMessageSender, response);
         }
         
@@ -109,13 +105,21 @@ namespace ET
             async ETTask Timeout()
             {
                 await fiber.TimerComponent.WaitAsync(ActorInnerComponent.TIMEOUT_TIME);
-                if (!self.requestCallback.TryGetValue(rpcId, out ActorMessageSender action))
+
+                if (!self.requestCallback.Remove(rpcId, out ActorMessageSender action))
                 {
                     return;
                 }
-
-                self.requestCallback.Remove(rpcId);
-                action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
+                
+                if (needException)
+                {
+                    action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
+                }
+                else
+                {
+                    IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_Timeout);
+                    action.Tcs.SetResult(response);
+                }
             }
             
             Timeout().Coroutine();

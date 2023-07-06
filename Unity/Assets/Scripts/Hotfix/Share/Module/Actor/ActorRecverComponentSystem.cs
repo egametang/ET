@@ -37,7 +37,7 @@
                 MailBoxComponent mailBoxComponent = self.Fiber().Mailboxes.Get(actorId.InstanceId);
                 if (mailBoxComponent == null)
                 {
-                    Log.Warning($"actor not found mailbox: {actorId} {message}");
+                    Log.Warning($"actor not found mailbox, from: {actorId} current: {fiber.Address} {message}");
                     if (message is IActorRequest request)
                     {
                         IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);

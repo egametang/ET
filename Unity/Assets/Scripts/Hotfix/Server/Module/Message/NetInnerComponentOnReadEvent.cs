@@ -12,6 +12,13 @@
 
             switch (message)
             {
+                case IActorLocationRequest iActorRequest:
+                {
+                    IActorResponse response = await root.GetComponent<ActorInnerComponent>().Call(actorId, iActorRequest, false);
+                    actorId.Process = fromProcess;
+                    root.GetComponent<ActorOuterComponent>().Send(actorId, response);
+                    break;
+                }
                 case IActorResponse iActorResponse:
                     root.GetComponent<ActorOuterComponent>().HandleIActorResponse(iActorResponse);
                     return;

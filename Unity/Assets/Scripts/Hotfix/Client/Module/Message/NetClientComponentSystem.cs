@@ -39,15 +39,15 @@ namespace ET.Client
             
             switch (message)
             {
+                case IResponse response:
+                {
+                    session.OnResponse(response);
+                    break;
+                }
                 case IActorMessage:
                 {
                     // 扔到Main纤程队列中
                     ActorMessageQueue.Instance.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), message as MessageObject);
-                    break;
-                }
-                case IResponse response:
-                {
-                    session.OnResponse(response);
                     break;
                 }
                 default:

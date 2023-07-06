@@ -11,7 +11,7 @@ namespace ET.Server
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
             
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(fiberInit.Fiber.Id);
-            root.AddComponent<NetInnerComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
+            root.AddComponent<NetProcessComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
             root.AddComponent<ActorOuterComponent>();
             root.AddComponent<ActorInnerComponent>();
             //root.AddComponent<ActorSenderComponent>();

@@ -32,7 +32,7 @@ namespace ET
 
         public async ETTask<CoroutineLock> Wait(int time)
         {
-            if (this.currentCoroutineLock == null || this.currentCoroutineLock.IsDisposed)
+            if (this.currentCoroutineLock == null)
             {
                 this.currentCoroutineLock = CoroutineLock.Create(this.coroutineLockComponent, type, key, 1);
                 return this.currentCoroutineLock;

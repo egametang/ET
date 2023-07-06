@@ -8,19 +8,15 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this ActorOuterComponent self)
         {
-            self.NetInnerComponent = self.Root().GetComponent<NetInnerComponent>();
+            self.NetProcessComponent = self.Root().GetComponent<NetProcessComponent>();
         }
 
         public static void HandleIActorResponse(this ActorOuterComponent self, IActorResponse response)
         {
-            ActorMessageSender actorMessageSender;
-            if (!self.requestCallback.TryGetValue(response.RpcId, out actorMessageSender))
+            if (!self.requestCallback.Remove(response.RpcId, out ActorMessageSender actorMessageSender))
             {
                 return;
             }
-
-            self.requestCallback.Remove(response.RpcId);
-
             Run(actorMessageSender, response);
         }
 
@@ -61,7 +57,7 @@ namespace ET.Server
             }
 
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[actorId.Process];
-            Session session = self.NetInnerComponent.Get(startSceneConfig.Id);
+            Session session = self.NetProcessComponent.Get(startSceneConfig.Id);
             actorId.Process = fiber.Process;
             session.Send(actorId, message);
         }
@@ -90,13 +86,20 @@ namespace ET.Server
             async ETTask Timeout()
             {
                 await fiber.TimerComponent.WaitAsync(ActorOuterComponent.TIMEOUT_TIME);
-                if (!self.requestCallback.TryGetValue(rpcId, out ActorMessageSender action))
+                if (!self.requestCallback.Remove(rpcId, out ActorMessageSender action))
                 {
                     return;
                 }
-
-                self.requestCallback.Remove(rpcId);
-                action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
+                
+                if (needException)
+                {
+                    action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
+                }
+                else
+                {
+                    IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_Timeout);
+                    action.Tcs.SetResult(response);
+                }
             }
 
             Timeout().Coroutine();

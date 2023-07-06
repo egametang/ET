@@ -58,8 +58,6 @@ namespace ET
 
         public override void Dispose()
         {
-            this.ActorId = default;
-
             this.RpcId = default;
             this.Error = default;
             this.Message = default;
@@ -71,7 +69,6 @@ namespace ET
         public string Message { get; set; }
         public int RpcId { get; set; }
         
-        public ActorId ActorId;
         public IActorResponse MessageObject;
 
     }

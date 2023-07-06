@@ -182,7 +182,6 @@ namespace ET.Server
 
             Scene root = self.Root();
             
-            // 先序列化好
             int rpcId = root.GetComponent<ActorSenderComponent>().GetRpcId();
             iActorRequest.RpcId = rpcId;
             
@@ -243,11 +242,12 @@ namespace ET.Server
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
                 IActorResponse response = await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, rpcId, iActorRequest, needException: false);
+                
                 if (actorLocationSender.InstanceId != instanceId)
                 {
                     throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iActorRequest}");
                 }
-
+                
                 switch (response.Error)
                 {
                     case ErrorCore.ERR_NotFoundActor:

@@ -11,17 +11,17 @@ namespace ET.Server
 
         public readonly Dictionary<int, ActorMessageSender> requestCallback = new();
 
-        private EntityRef<NetInnerComponent> netInnerComponent;
+        private EntityRef<NetProcessComponent> netProcessComponent;
 
-        public NetInnerComponent NetInnerComponent
+        public NetProcessComponent NetProcessComponent
         {
             get
             {
-                return this.netInnerComponent;
+                return this.netProcessComponent;
             }
             set
             {
-                this.netInnerComponent = value;
+                this.netProcessComponent = value;
             }
         }
     }

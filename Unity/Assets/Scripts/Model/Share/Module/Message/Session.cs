@@ -50,12 +50,11 @@ namespace ET
         
         public static void OnResponse(this Session self, IResponse response)
         {
-            if (!self.requestCallbacks.TryGetValue(response.RpcId, out var action))
+            if (!self.requestCallbacks.Remove(response.RpcId, out var action))
             {
                 return;
             }
 
-            self.requestCallbacks.Remove(response.RpcId);
             if (ErrorCore.IsRpcNeedThrowException(response.Error))
             {
                 action.Tcs.SetException(new Exception($"Rpc error, request: {action.Request} response: {response}"));
@@ -118,7 +117,11 @@ namespace ET
                         return;
                     }
 
-                    self.requestCallbacks.Remove(rpcId);
+                    if (!self.requestCallbacks.Remove(rpcId))
+                    {
+                        return;
+                    }
+                    
                     action.Tcs.SetException(new Exception($"session call timeout: {request} {time}"));
                 }
                 

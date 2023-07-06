@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Net;
-using System.Net.Sockets;
 
 namespace ET.Server
 {
-    [FriendOf(typeof(NetInnerComponent))]
-    public static partial class NetInnerComponentSystem
+    [FriendOf(typeof(NetProcessComponent))]
+    public static partial class NetProcessComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this NetInnerComponent self, IPEndPoint address)
+        private static void Awake(this NetProcessComponent self, IPEndPoint address)
         {
             switch (self.InnerProtocol)
             {
@@ -30,18 +29,18 @@ namespace ET.Server
         }
         
         [EntitySystem]
-        private static void Update(this NetInnerComponent self)
+        private static void Update(this NetProcessComponent self)
         {
             self.AService.Update();
         }
 
         [EntitySystem]
-        private static void Destroy(this NetInnerComponent self)
+        private static void Destroy(this NetProcessComponent self)
         {
             self.AService.Dispose();
         }
 
-        private static void OnRead(this NetInnerComponent self, long channelId, ActorId actorId, object message)
+        private static void OnRead(this NetProcessComponent self, long channelId, ActorId actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -54,13 +53,7 @@ namespace ET.Server
             EventSystem.Instance.Publish(self.Scene(), new NetInnerComponentOnRead() {ActorId = actorId, Message = message});
         }
 
-        private static void HandleMessage(this NetInnerComponent self, ActorId actorId, object message)
-        {
-            // 扔到队列中
-            ActorMessageQueue.Instance.Send(actorId, message as MessageObject);
-        }
-
-        private static void OnError(this NetInnerComponent self, long channelId, int error)
+        private static void OnError(this NetProcessComponent self, long channelId, int error)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -73,14 +66,14 @@ namespace ET.Server
         }
 
         // 这个channelId是由CreateAcceptChannelId生成的
-        private static void OnAccept(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
+        private static void OnAccept(this NetProcessComponent self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
 
-        private static Session CreateInner(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
+        private static Session CreateInner(this NetProcessComponent self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
@@ -93,7 +86,7 @@ namespace ET.Server
         }
 
         // 内网actor session，channelId是进程号
-        public static Session Get(this NetInnerComponent self, long channelId)
+        public static Session Get(this NetProcessComponent self, long channelId)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session != null)

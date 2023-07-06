@@ -71,7 +71,7 @@ namespace ET
             A2NetInner_Request a2NetInner_Request = A2NetInner_Request.Create();
             a2NetInner_Request.ActorId = actorId;
             a2NetInner_Request.MessageObject = iActorRequest;
-
+            a2NetInner_Request.NeedException = needException;
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[fiber.Process];
             A2NetInner_Response response = await fiber.Root.GetComponent<ActorSenderComponent>().Call(
                 startSceneConfig.ActorId, a2NetInner_Request, needException: a2NetInner_Request.NeedException) as A2NetInner_Response;
