@@ -24,6 +24,7 @@ namespace ET
     }
     
     [Message(2)]
+    [ResponseType(nameof(A2NetInner_Response))]
     public class A2NetInner_Request: MessageObject, IActorRequest
     {
         public static A2NetInner_Request Create()
@@ -34,20 +35,20 @@ namespace ET
         public override void Dispose()
         {
             this.RpcId = default;
-            this.FromAddress = default;
             this.ActorId = default;
             this.MessageObject = default;
+            this.NeedException = default;
             
             ObjectPool.Instance.Recycle(this);
         }
         
         public int RpcId { get; set; }
-        public Address FromAddress;
         public ActorId ActorId;
+        public bool NeedException;
         public IActorRequest MessageObject;
     }
     
-    [Message(1)]
+    [Message(3)]
     public class A2NetInner_Response: MessageObject, IActorResponse
     {
         public static A2NetInner_Response Create()

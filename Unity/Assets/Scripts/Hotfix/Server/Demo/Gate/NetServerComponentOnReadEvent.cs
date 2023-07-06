@@ -23,7 +23,7 @@
                     Player player = session.GetComponent<SessionPlayerComponent>().Player;
                     ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
                     frameMessage.PlayerId = player.Id;
-                    root.GetComponent<ActorInnerComponent>().Send(roomActorId, frameMessage);
+                    root.GetComponent<ActorSenderComponent>().Send(roomActorId, frameMessage);
                     break;
                 }
                 case IActorRoom actorRoom:
@@ -31,7 +31,7 @@
                     Player player = session.GetComponent<SessionPlayerComponent>().Player;
                     ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
                     actorRoom.PlayerId = player.Id;
-                    root.GetComponent<ActorInnerComponent>().Send(roomActorId, actorRoom);
+                    root.GetComponent<ActorSenderComponent>().Send(roomActorId, actorRoom);
                     break;
                 }
                 case IActorLocationMessage actorLocationMessage:

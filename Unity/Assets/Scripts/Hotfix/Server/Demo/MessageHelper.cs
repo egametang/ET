@@ -43,7 +43,7 @@ namespace ET.Server
         /// </summary>
         public static void SendActor(Scene root, ActorId actorId, IActorMessage message)
         {
-            root.GetComponent<ActorInnerComponent>().Send(actorId, message);
+            root.GetComponent<ActorSenderComponent>().Send(actorId, message);
         }
     }
 }

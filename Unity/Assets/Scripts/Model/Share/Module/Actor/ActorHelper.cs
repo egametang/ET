@@ -7,7 +7,7 @@ namespace ET
         public static IActorResponse CreateResponse(IActorRequest iActorRequest, int error)
         {
             Type responseType = OpcodeType.Instance.GetResponseType(iActorRequest.GetType());
-            IActorResponse response = (IActorResponse)Activator.CreateInstance(responseType);
+            IActorResponse response = (IActorResponse)ObjectPool.Instance.Fetch(responseType);
             response.Error = error;
             response.RpcId = iActorRequest.RpcId;
             return response;

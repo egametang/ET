@@ -10,7 +10,7 @@ namespace ET.Server
             Scene root = fiberInit.Fiber.Root;
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
             root.AddComponent<ActorInnerComponent>();
-            root.AddComponent<ServerSenderComponent>();
+            root.AddComponent<ActorSenderComponent>();
             root.AddComponent<ActorRecverComponent>();
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(root.Fiber.Id);
             root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPPort);

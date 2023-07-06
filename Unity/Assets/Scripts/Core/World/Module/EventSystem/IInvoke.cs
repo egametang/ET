@@ -17,7 +17,7 @@ namespace ET
             }
         }
 
-        public abstract void Handle(A a);
+        public abstract void Handle(A args);
     }
     
     public abstract class AInvokeHandler<A, T>: IInvoke where A: struct
@@ -30,6 +30,6 @@ namespace ET
             }
         }
 
-        public abstract T Handle(A a);
+        public abstract T Handle(A args);
     }
 }

@@ -6,15 +6,28 @@
         protected override async ETTask Run(Scene root, NetInnerComponentOnRead args)
         {
             ActorId actorId = args.ActorId;
+            int fromProcess = actorId.Process;
+            actorId.Process = root.Fiber.Process;
             object message = args.Message;
 
-            if (message is IActorResponse iActorResponse)
+            switch (message)
             {
-                root.GetComponent<ActorOuterComponent>().HandleIActorResponse(iActorResponse);
-                return;
+                case IActorResponse iActorResponse:
+                    root.GetComponent<ActorOuterComponent>().HandleIActorResponse(iActorResponse);
+                    return;
+                case IActorRequest iActorRequest:
+                {
+                    IActorResponse response = await root.GetComponent<ActorInnerComponent>().Call(actorId, iActorRequest);
+                    actorId.Process = fromProcess;
+                    root.GetComponent<ActorOuterComponent>().Send(actorId, response);
+                    break;
+                }
+                default:
+                {
+                    ActorMessageQueue.Instance.Send(actorId, (MessageObject)message);
+                    break;
+                }
             }
-            
-            ActorMessageQueue.Instance.Send(actorId, (MessageObject)message);
 
             await ETTask.CompletedTask;
         }

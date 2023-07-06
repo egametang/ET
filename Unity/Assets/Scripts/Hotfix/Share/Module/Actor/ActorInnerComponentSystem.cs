@@ -39,28 +39,23 @@ namespace ET
         
         public static void Reply(this ActorInnerComponent self, Address fromAddress, IActorResponse message)
         {
-            self.SendInner(new ActorId(fromAddress, 0), message as MessageObject);
+            self.Send(new ActorId(fromAddress, 0), message);
         }
 
         public static void Send(this ActorInnerComponent self, ActorId actorId, IActorMessage message)
         {
-            self.SendInner(actorId, message as MessageObject);
-        }
-
-        private static void SendInner(this ActorInnerComponent self, ActorId actorId, MessageObject message)
-        {
-            if (actorId == default)
-            {
-                throw new Exception($"actor id is 0: {message}");
-            }
-
             Fiber fiber = self.Fiber();
             // 如果发向同一个进程，则扔到消息队列中
             if (actorId.Process != fiber.Process)
             {
-                throw new Exception($"actor is not the same process: {fiber.Process} {actorId.Process}");
+                throw new Exception($"actor inner process diff: {actorId.Process} {fiber.Process}");
             }
-            
+            ActorMessageQueue.Instance.Send(fiber.Address, actorId, (MessageObject)message);
+        }
+
+        private static void SendInner(this ActorInnerComponent self, ActorId actorId, MessageObject message)
+        {
+            Fiber fiber = self.Fiber();
             ActorMessageQueue.Instance.Send(fiber.Address, actorId, message);
         }
 
@@ -98,10 +93,14 @@ namespace ET
             {
                 throw new Exception($"actor id is 0: {iActorRequest}");
             }
-
+            Fiber fiber = self.Fiber();
+            if (fiber.Process != actorId.Process)
+            {
+                throw new Exception($"actor inner process diff: {actorId.Process} {fiber.Process}");
+            }
+            
             var tcs = ETTask<IActorResponse>.Create(true);
 
-            Fiber fiber = self.Fiber();
             self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
             
             self.SendInner(actorId, iActorRequest as MessageObject);

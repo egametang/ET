@@ -2,14 +2,15 @@
 
 namespace ET.Server
 {
-    public static class ActorOuterComponentSystem
+    [FriendOf(typeof(ActorOuterComponent))]
+    public static partial class ActorOuterComponentSystem
     {
         [EntitySystem]
         private static void Awake(this ActorOuterComponent self)
         {
             self.NetInnerComponent = self.Root().GetComponent<NetInnerComponent>();
         }
-        
+
         public static void HandleIActorResponse(this ActorOuterComponent self, IActorResponse response)
         {
             ActorMessageSender actorMessageSender;
@@ -19,10 +20,10 @@ namespace ET.Server
             }
 
             self.requestCallback.Remove(response.RpcId);
-            
+
             Run(actorMessageSender, response);
         }
-        
+
         private static void Run(ActorMessageSender self, IActorResponse response)
         {
             if (response.Error == ErrorCore.ERR_ActorTimeout)
@@ -38,11 +39,6 @@ namespace ET.Server
             }
 
             self.Tcs.SetResult(response);
-        }
-        
-        public static void Reply(this ActorOuterComponent self, Address fromAddress, IActorResponse message)
-        {
-            self.SendInner(new ActorId(fromAddress, 0), message as MessageObject);
         }
 
         public static void Send(this ActorOuterComponent self, ActorId actorId, IActorMessage message)
@@ -63,9 +59,9 @@ namespace ET.Server
             {
                 throw new Exception($"actor is the same process: {fiber.Process} {actorId.Process}");
             }
-            
+
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[actorId.Process];
-            Session session = self.NetInnerComponent.GetComponent<NetInnerComponent>().Get(startSceneConfig.Process);
+            Session session = self.NetInnerComponent.Get(startSceneConfig.Id);
             actorId.Process = fiber.Process;
             session.Send(actorId, message);
         }
@@ -81,16 +77,16 @@ namespace ET.Server
             {
                 throw new Exception($"actor id is 0: {iActorRequest}");
             }
-
-            int rpcId = self.GetRpcId();
+            Fiber fiber = self.Fiber();
             
+            int rpcId = self.GetRpcId();
+
             var tcs = ETTask<IActorResponse>.Create(true);
 
-            Fiber fiber = self.Fiber();
             self.requestCallback.Add(self.RpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
-            
+
             self.SendInner(actorId, iActorRequest as MessageObject);
-            
+
             async ETTask Timeout()
             {
                 await fiber.TimerComponent.WaitAsync(ActorOuterComponent.TIMEOUT_TIME);
@@ -102,13 +98,13 @@ namespace ET.Server
                 self.requestCallback.Remove(rpcId);
                 action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
             }
-            
+
             Timeout().Coroutine();
-            
+
             long beginTime = fiber.TimeInfo.ServerFrameTime();
 
             IActorResponse response = await tcs;
-            
+
             long endTime = fiber.TimeInfo.ServerFrameTime();
 
             long costTime = endTime - beginTime;
@@ -116,7 +112,7 @@ namespace ET.Server
             {
                 Log.Warning($"actor rpc time > 200: {costTime} {iActorRequest}");
             }
-            
+
             return response;
         }
     }

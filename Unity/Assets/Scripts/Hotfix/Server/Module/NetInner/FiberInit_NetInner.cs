@@ -14,6 +14,7 @@ namespace ET.Server
             root.AddComponent<NetInnerComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
             root.AddComponent<ActorOuterComponent>();
             root.AddComponent<ActorInnerComponent>();
+            //root.AddComponent<ActorSenderComponent>();
             root.AddComponent<ActorRecverComponent>();
 
             await ETTask.CompletedTask;

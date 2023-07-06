@@ -105,7 +105,7 @@ namespace ET.Server
             if (actorLocationSender.ActorId != default)
             {
                 actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
-                root.GetComponent<ActorInnerComponent>().Send(actorLocationSender.ActorId, message);
+                root.GetComponent<ActorSenderComponent>().Send(actorLocationSender.ActorId, message);
                 return;
             }
             
@@ -129,7 +129,7 @@ namespace ET.Server
                 }
                 
                 actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
-                root.GetComponent<ActorInnerComponent>().Send(actorLocationSender.ActorId, message);
+                root.GetComponent<ActorSenderComponent>().Send(actorLocationSender.ActorId, message);
             }
         }
 
@@ -144,7 +144,7 @@ namespace ET.Server
             if (actorLocationSender.ActorId != default)
             {
                 actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
-                return await root.GetComponent<ActorInnerComponent>().Call(actorLocationSender.ActorId, request);
+                return await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, request);
             }
             
             long instanceId = actorLocationSender.InstanceId;
@@ -168,7 +168,7 @@ namespace ET.Server
             }
 
             actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
-            return await root.GetComponent<ActorInnerComponent>().Call(actorLocationSender.ActorId, request);
+            return await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, request);
         }
 
         public static void Send(this ActorLocationSenderOneType self, long entityId, IActorLocationMessage message)
@@ -183,7 +183,7 @@ namespace ET.Server
             Scene root = self.Root();
             
             // 先序列化好
-            int rpcId = root.GetComponent<ActorInnerComponent>().GetRpcId();
+            int rpcId = root.GetComponent<ActorSenderComponent>().GetRpcId();
             iActorRequest.RpcId = rpcId;
             
             long actorLocationSenderInstanceId = actorLocationSender.InstanceId;
@@ -242,7 +242,7 @@ namespace ET.Server
                     actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
-                IActorResponse response = await root.GetComponent<ActorInnerComponent>().Call(actorLocationSender.ActorId, rpcId, iActorRequest, needException: false);
+                IActorResponse response = await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, rpcId, iActorRequest, needException: false);
                 if (actorLocationSender.InstanceId != instanceId)
                 {
                     throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iActorRequest}");
