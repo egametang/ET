@@ -27,7 +27,6 @@ namespace ET
 
         public object DrawAndGetNewValue(Type memberType, string memberName, object value, object target)
         {
-
             FieldInfo fieldInfo = memberType.GetField("entity", BindingFlags.NonPublic | BindingFlags.Instance);
             Entity entity = (Entity)fieldInfo.GetValue(value);
             GameObject go = entity?.ViewGO;
