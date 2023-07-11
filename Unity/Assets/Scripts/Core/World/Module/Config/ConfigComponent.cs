@@ -28,7 +28,7 @@ namespace ET
 		public void Reload(Type configType)
 		{
 			byte[] oneConfigBytes =
-					EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.FullName });
+					EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.Name });
 
 			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;

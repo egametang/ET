@@ -41,7 +41,7 @@ namespace ET
     {
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {
-            byte[] configBytes = File.ReadAllBytes($"../Config/{args.ConfigName}.bytes");
+            byte[] configBytes = File.ReadAllBytes($"../Config/Excel/s/{args.ConfigName}.bytes");
             return configBytes;
         }
     }
