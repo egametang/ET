@@ -1,0 +1,18 @@
+﻿namespace ET.Client
+{
+    public static partial class ClientSessionErrorComponentSystem
+    {
+        [EntitySystem]
+        private static void Destroy(this ClientSessionErrorComponent self)
+        {
+            Fiber fiber = self.Fiber();
+            if (fiber.IsDisposed)
+            {
+                return;
+            }
+            NetClient2Main_SessionDispose message = NetClient2Main_SessionDispose.Create();
+            message.Error = self.GetParent<Session>().Error;
+            fiber.ActorInnerComponent.Send(new ActorId(fiber.Process, ConstFiberId.Main), message);
+        }
+    }
+}

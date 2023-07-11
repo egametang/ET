@@ -29,13 +29,11 @@
         public override void Dispose()
         {
             this.RpcId = default;
-            this.FromAddress = default;
             this.MessageObject = default;
             ObjectPool.Instance.Recycle(this);
         }
      
         public int RpcId { get; set; }
-        public Address FromAddress;
         public IRequest MessageObject;
     }
     
@@ -61,5 +59,21 @@
         public string Message { get; set; }
         
         public IResponse MessageObject;
+    }
+    
+    [Message]
+    public class NetClient2Main_SessionDispose: MessageObject, IActorMessage
+    {
+        public static NetClient2Main_SessionDispose Create()
+        {
+            return ObjectPool.Instance.Fetch(typeof(NetClient2Main_SessionDispose)) as NetClient2Main_SessionDispose;
+        }
+
+        public override void Dispose()
+        {
+            ObjectPool.Instance.Recycle(this);
+        }
+        
+        public int Error { get; set; }
     }
 }

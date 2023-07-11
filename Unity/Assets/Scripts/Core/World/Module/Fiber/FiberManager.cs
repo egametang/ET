@@ -67,7 +67,7 @@ namespace ET
             {
                 Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
                 
-                this.fibers[fiber.Id] = fiber;
+                this.fibers.TryAdd(fiberId, fiber);
                 this.schedulers[(int) schedulerType].Add(fiberId);
                 
                 TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
