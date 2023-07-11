@@ -40,6 +40,11 @@ namespace ET
             }
         }
         
+        public override void Load()
+        {
+            World.Instance.AddSingleton<ActorMessageDispatcherComponent>(true);
+        }
+        
         private void Register(Type type)
         {
             object obj = Activator.CreateInstance(type);

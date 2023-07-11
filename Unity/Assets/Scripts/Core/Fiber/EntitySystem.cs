@@ -101,25 +101,33 @@ namespace ET
                     continue;
                 }
 
-                List<object> iUpdateSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
-                if (iUpdateSystems == null)
+                try
                 {
-                    continue;
+                    List<object> iUpdateSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
+                    if (iUpdateSystems == null)
+                    {
+                        continue;
+                    }
+
+                    queue.Enqueue(component);
+
+                    foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
+                    {
+                        try
+                        {
+                            iUpdateSystem.Run(component);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"entity system update fail: {component.GetType().FullName}", e);
                 }
 
-                queue.Enqueue(component);
-
-                foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
-                {
-                    try
-                    {
-                        iUpdateSystem.Run(component);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
-                }
             }
         }
 

@@ -2,6 +2,6 @@
 {
     public interface ISingletonLoad
     {
-        ISingleton Load();
+        void Load();
     }
 }

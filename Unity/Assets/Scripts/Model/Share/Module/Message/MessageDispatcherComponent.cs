@@ -53,6 +53,11 @@ namespace ET
             }
         }
         
+        public override void Load()
+        {
+            World.Instance.AddSingleton<MessageDispatcherComponent>(true);
+        }
+        
         private void RegisterHandler(ushort opcode, MessageDispatcherInfo handler)
         {
             if (!this.handlers.ContainsKey(opcode))

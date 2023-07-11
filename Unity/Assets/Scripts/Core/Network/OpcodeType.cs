@@ -57,6 +57,11 @@ namespace ET
             }
         }
         
+        public override void Load()
+        {
+            World.Instance.AddSingleton<OpcodeType>(true);
+        }
+        
         public ushort GetOpcode(Type type)
         {
             return this.typeOpcode.GetValueByKey(type);

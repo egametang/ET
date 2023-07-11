@@ -27,5 +27,10 @@ namespace ET
             this.aiHandlers.TryGetValue(key, out var aaiHandler);
             return aaiHandler;
         }
+
+        public override void Load()
+        {
+            World.Instance.AddSingleton<AIDispatcherComponent>(true);
+        }
     }
 }

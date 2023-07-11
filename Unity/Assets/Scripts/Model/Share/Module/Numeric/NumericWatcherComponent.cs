@@ -43,6 +43,11 @@ namespace ET
             }
         }
         
+        public override void Load()
+        {
+            World.Instance.AddSingleton<NumericWatcherComponent>(true);
+        }
+        
         public void Run(Unit unit, EventType.NumbericChange args)
         {
             List<NumericWatcherInfo> list;

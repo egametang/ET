@@ -113,9 +113,6 @@ namespace ET
             this.Destroy();
         }
 
-        public virtual ISingleton Load()
-        {
-            return new T();
-        }
+        public abstract void Load();
     }
 }

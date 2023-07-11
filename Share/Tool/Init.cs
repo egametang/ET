@@ -19,7 +19,7 @@ namespace ET.Server
                 // 命令行参数
                 Parser.Default.ParseArguments<Options>(args)
                     .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-                    .WithParsed(World.Instance.AddSingleton);
+                    .WithParsed((o)=>World.Instance.AddSingleton(o));
                 World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
                 
                 //Process process = Game.Instance.Create();

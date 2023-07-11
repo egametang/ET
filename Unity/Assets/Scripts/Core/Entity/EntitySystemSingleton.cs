@@ -28,6 +28,11 @@ namespace ET
             }
         }
         
+        public override void Load()
+        {
+            World.Instance.AddSingleton<EntitySystemSingleton>(true);
+        }
+        
         public void Serialize(Entity component)
         {
             if (component is not ISerialize)

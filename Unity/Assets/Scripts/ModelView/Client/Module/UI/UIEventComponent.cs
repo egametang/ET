@@ -27,5 +27,10 @@ namespace ET.Client
                 this.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
             }
         }
+        
+        public override void Load()
+        {
+	        World.Instance.AddSingleton<UIEventComponent>(true);
+        }
 	}
 }

@@ -37,49 +37,52 @@ namespace ET
             }
         }
 
-        public T AddSingleton<T>() where T : class, ISingleton, ISingletonAwake, new()
+        public T AddSingleton<T>(bool replace = false) where T : class, ISingleton, ISingletonAwake, new()
         {
             T singleton = new();
             singleton.Awake();
 
-            AddSingleton(singleton);
+            AddSingleton(singleton, replace);
             return singleton;
         }
         
-        public T AddSingleton<T, A>(A a) where T : class, ISingleton, ISingletonAwake<A>, new()
+        public T AddSingleton<T, A>(A a, bool replace = false) where T : class, ISingleton, ISingletonAwake<A>, new()
         {
             T singleton = new();
             singleton.Awake(a);
 
-            AddSingleton(singleton);
+            AddSingleton(singleton, replace);
             return singleton;
         }
         
-        public T AddSingleton<T, A, B>(A a, B b) where T : class, ISingleton, ISingletonAwake<A, B>, new()
+        public T AddSingleton<T, A, B>(A a, B b, bool replace = false) where T : class, ISingleton, ISingletonAwake<A, B>, new()
         {
             T singleton = new();
             singleton.Awake(a, b);
 
-            AddSingleton(singleton);
+            AddSingleton(singleton, replace);
             return singleton;
         }
         
-        public T AddSingleton<T, A, B, C>(A a, B b, C c) where T : class, ISingleton, ISingletonAwake<A, B, C>, new()
+        public T AddSingleton<T, A, B, C>(A a, B b, C c, bool replace = false) where T : class, ISingleton, ISingletonAwake<A, B, C>, new()
         {
             T singleton = new();
             singleton.Awake(a, b, c);
 
-            AddSingleton(singleton);
+            AddSingleton(singleton, replace);
             return singleton;
         }
 
-        public void AddSingleton(ISingleton singleton)
+        public void AddSingleton(ISingleton singleton, bool replace = false)
         {
             lock (this)
             {
                 Type type = singleton.GetType();
-                this.stack.Push(type);
-                singletons.Add(type, singleton);
+                if (!replace)
+                {
+                    this.stack.Push(type);    
+                }
+                singletons[type] = singleton;
             }
 
             singleton.Register();
@@ -98,9 +101,7 @@ namespace ET
                         continue;
                     }
                     
-                    singleton = iSingletonLoad.Load();
-                    this.singletons[type] = singleton;
-                    singleton.Register();
+                    iSingletonLoad.Load();
                 }
             }
         }

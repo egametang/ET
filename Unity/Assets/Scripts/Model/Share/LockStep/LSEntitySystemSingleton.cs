@@ -37,6 +37,11 @@ namespace ET
             }
         }
         
+        public override void Load()
+        {
+            World.Instance.AddSingleton<LSEntitySystemSingleton>(true);
+        }
+        
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)
         {
             return this.TypeSystems.GetOneTypeSystems(type);
