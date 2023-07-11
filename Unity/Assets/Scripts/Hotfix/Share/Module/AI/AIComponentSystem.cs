@@ -32,7 +32,7 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this AIComponent self)
         {
-            self.Fiber().TimerComponent.Remove(ref self.Timer);
+            self.Fiber().TimerComponent?.Remove(ref self.Timer);
             self.CancellationToken?.Cancel();
             self.CancellationToken = null;
             self.Current = 0;

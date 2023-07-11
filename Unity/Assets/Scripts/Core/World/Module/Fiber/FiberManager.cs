@@ -103,10 +103,17 @@ namespace ET
         
         public void Remove(int id)
         {
-            if (this.fibers.Remove(id, out Fiber fiber))
-            {
-                fiber.Dispose();
-            }
+            Fiber fiber = this.Get(id);
+            fiber.ThreadSynchronizationContext.Post(()=>{fiber.Dispose();});
+            // 这里不能dispose，因为有可能fiber还在运行，会出现线程竞争
+            //fiber.Dispose();
+        }
+        
+        internal void RemoveReal(int id)
+        {
+            this.fibers.Remove(id, out _);
+            // 这里不能dispose，因为有可能fiber还在运行，会出现线程竞争
+            //fiber.Dispose();
         }
 
         // 不允许外部调用，容易出现多线程问题, 只能通过消息通信，不允许直接获取其它Fiber引用

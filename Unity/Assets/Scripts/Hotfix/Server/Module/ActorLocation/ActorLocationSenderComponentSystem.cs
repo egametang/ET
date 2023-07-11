@@ -36,7 +36,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Destroy(this ActorLocationSenderOneType self)
         {
-            self.Fiber().TimerComponent.Remove(ref self.CheckTimer);
+            self.Fiber().TimerComponent?.Remove(ref self.CheckTimer);
         }
 
         private static void Check(this ActorLocationSenderOneType self)

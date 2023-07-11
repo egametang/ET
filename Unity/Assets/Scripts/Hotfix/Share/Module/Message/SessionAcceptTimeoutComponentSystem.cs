@@ -30,7 +30,7 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this SessionAcceptTimeoutComponent self)
         {
-            self.Fiber().TimerComponent.Remove(ref self.Timer);
+            self.Fiber().TimerComponent?.Remove(ref self.Timer);
         }
         
     }

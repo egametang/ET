@@ -280,7 +280,7 @@ namespace ET
             self.N = 0;
             self.TurnTime = 0;
             self.IsTurnHorizontal = false;
-            self.Fiber().TimerComponent.Remove(ref self.MoveTimer);
+            self.Fiber().TimerComponent?.Remove(ref self.MoveTimer);
 
             if (self.tcs != null)
             {

@@ -25,6 +25,7 @@ namespace ET
 
         public void Update()
         {
+            SynchronizationContext.SetSynchronizationContext(this.threadSynchronizationContext);
             this.threadSynchronizationContext.Update();
             
             int count = this.idQueue.Count;
@@ -46,6 +47,7 @@ namespace ET
                     continue;
                 }
                 
+                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
                 
                 this.idQueue.Enqueue(id);
@@ -75,6 +77,7 @@ namespace ET
 
                 this.idQueue.Enqueue(id);
 
+                SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.LateUpdate();
             }
 
