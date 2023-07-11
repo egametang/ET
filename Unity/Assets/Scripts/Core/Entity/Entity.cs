@@ -90,7 +90,7 @@ namespace ET
                     this.ViewGO = new UnityEngine.GameObject(this.ViewName);
                     this.ViewGO.AddComponent<ComponentView>().Component = this;
                     this.ViewGO.transform.SetParent(this.Parent == null? 
-                            UnityEngine.GameObject.Find("Global").transform : this.Parent.ViewGO.transform);
+                            UnityEngine.GameObject.Find("Global/Scenes").transform : this.Parent.ViewGO.transform);
                 }
                 else
                 {
