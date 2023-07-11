@@ -21,7 +21,6 @@ namespace ET.Client
             Session routerSession = root.GetComponent<NetClientComponent>().Create(routerAddress, address, recvLocalConn);
             routerSession.AddComponent<PingComponent>();
             routerSession.AddComponent<RouterCheckComponent>();
-            routerSession.AddComponent<ClientSessionErrorComponent>();
             
             return routerSession;
         }

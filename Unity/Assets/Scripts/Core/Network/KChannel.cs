@@ -55,19 +55,17 @@ namespace ET
 
 		private void InitKcp()
 		{
-			this.Service.KcpPtrChannels.Add(this.kcp.Id, this);
-			
 			switch (this.Service.ServiceType)
 			{
 				case ServiceType.Inner:
-					this.kcp.Nodelay(1, 10, 2, 1);
-					this.kcp.SetWndSize(1024, 1024);
+					this.kcp.SetNoDelay(1, 10, 2, true);
+					this.kcp.SetWindowSize(1024, 1024);
 					this.kcp.SetMtu(1400); // 默认1400
 					this.kcp.SetMinrto(30);
 					break;
 				case ServiceType.Outer:
-					this.kcp.Nodelay(1, 10, 2, 1);
-					this.kcp.SetWndSize(256, 256);
+					this.kcp.SetNoDelay(1, 10, 2, true);
+					this.kcp.SetWindowSize(256, 256);
 					this.kcp.SetMtu(470);
 					this.kcp.SetMinrto(30);
 					break;
@@ -102,7 +100,7 @@ namespace ET
 			this.LocalConn = localConn;
 			this.RemoteConn = remoteConn;
 			this.RemoteAddress = remoteEndPoint;
-			this.kcp = new Kcp(this.RemoteConn, new IntPtr(this.Service.Id));
+			this.kcp = new Kcp(this.RemoteConn, this.Output);
 			this.InitKcp();
 			
 			this.CreateTime = kService.TimeNow;
@@ -136,12 +134,7 @@ namespace ET
 				Log.Error(e);
 			}
 
-			if (this.kcp != null)
-			{
-				this.Service.KcpPtrChannels.Remove(this.kcp.Id);
-				this.kcp.Release();
-				this.kcp = null;
-			}
+			this.kcp = null;
 		}
 
 		public void HandleConnnect()
@@ -152,7 +145,7 @@ namespace ET
 				return;
 			}
 
-			this.kcp = new Kcp(this.RemoteConn, new IntPtr(this.Service.Id));
+			this.kcp = new Kcp(this.RemoteConn, this.Output);
 			this.InitKcp();
 
 			Log.Info($"channel connected: {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
@@ -259,7 +252,7 @@ namespace ET
 				return;
 			}
 
-			this.kcp.Input(date, offset, length);
+			this.kcp.Input(date.AsSpan(offset, length));
 			this.Service.AddToUpdate(0, this.Id);
 			while (true)
 			{
@@ -267,7 +260,7 @@ namespace ET
 				{
 					break;
 				}
-				int n = this.kcp.Peeksize();
+				int n = this.kcp.PeekSize();
 				if (n < 0)
 				{
 					break;
@@ -281,7 +274,7 @@ namespace ET
 				if (this.needReadSplitCount > 0) // 说明消息分片了
 				{
 					byte[] buffer = readMemory.GetBuffer();
-					int count = this.kcp.Recv(buffer, (int)this.readMemory.Length - this.needReadSplitCount, n);
+					int count = this.kcp.Receive(buffer.AsSpan((int)(this.readMemory.Length - this.needReadSplitCount), n));
 					this.needReadSplitCount -= count;
 					if (n != count)
 					{
@@ -311,7 +304,7 @@ namespace ET
 					
 					byte[] buffer = readMemory.GetBuffer();
 					
-					int count = this.kcp.Recv(buffer, 0, n);
+					int count = this.kcp.Receive(buffer.AsSpan(0, n));
 					if (n != count)
 					{
 						break;
@@ -354,7 +347,7 @@ namespace ET
 			}
 		}
 
-		public void Output(IntPtr bytes, int count)
+		public void Output(byte[] bytes, int count)
 		{
 			if (this.IsDisposed)
 			{
@@ -374,12 +367,10 @@ namespace ET
 					return;
 				}
 
-				byte[] buffer = this.sendCache;
-				buffer.WriteTo(0, KcpProtocalType.MSG);
+				bytes.WriteTo(0, KcpProtocalType.MSG);
 				// 每个消息头部写下该channel的id;
-				buffer.WriteTo(1, this.LocalConn);
-				Marshal.Copy(bytes, buffer, 5, count);
-				this.Service.Socket.SendTo(buffer, 0, count + 5, SocketFlags.None, this.RemoteAddress);
+				bytes.WriteTo(1, this.LocalConn);
+				this.Service.Socket.SendTo(bytes, 0, count + 5, SocketFlags.None, this.RemoteAddress);
 			}
 			catch (Exception e)
 			{
@@ -414,14 +405,14 @@ namespace ET
 			// 超出maxPacketSize需要分片
 			if (count <= AService.MaxCacheBufferSize)
 			{
-				this.kcp.Send(memoryStream.GetBuffer(), (int)memoryStream.Position, count);
+				this.kcp.Send(memoryStream.GetBuffer().AsSpan((int)memoryStream.Position, count));
 			}
 			else
 			{
 				// 先发分片信息
 				this.sendCache.WriteTo(0, 0);
 				this.sendCache.WriteTo(4, count);
-				this.kcp.Send(this.sendCache, 0, 8);
+				this.kcp.Send(this.sendCache.AsSpan(0, 8));
 
 				// 分片发送
 				int alreadySendCount = 0;
@@ -431,7 +422,7 @@ namespace ET
 					
 					int sendCount = leftCount < AService.MaxCacheBufferSize? leftCount: AService.MaxCacheBufferSize;
 					
-					this.kcp.Send(memoryStream.GetBuffer(), (int)memoryStream.Position + alreadySendCount, sendCount);
+					this.kcp.Send(memoryStream.GetBuffer().AsSpan((int)memoryStream.Position + alreadySendCount, sendCount));
 					
 					alreadySendCount += sendCount;
 				}
@@ -459,7 +450,7 @@ namespace ET
 			}
 			
 			// 检查等待发送的消息，如果超出最大等待大小，应该断开连接
-			int n = this.kcp.Waitsnd();
+			int n = this.kcp.WaitSnd;
 			int maxWaitSize = 0;
 			switch (this.Service.ServiceType)
 			{

@@ -31,6 +31,7 @@ namespace ET.Client
 
             // 创建一个gate Session,并且保存到SessionComponent中
             Session gateSession = await RouterHelper.CreateRouterSession(root, NetworkHelper.ToIPEndPoint(r2CLogin.Address));
+            gateSession.AddComponent<ClientSessionErrorComponent>();
             root.AddComponent<SessionComponent>().Session = gateSession;
             G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId });
 

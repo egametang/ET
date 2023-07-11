@@ -30,8 +30,6 @@ namespace ET
     {
         public const int ConnectTimeoutTime = 20 * 1000;
 
-        public readonly Dictionary<long, KChannel> KcpPtrChannels = new();
-        
         private DateTime dt1970;
         // KService创建的时间
         private readonly long startTime;
@@ -46,47 +44,6 @@ namespace ET
         }
 
         public Socket Socket;
-
-
-#region 回调方法
-
-        static KService()
-        {
-            //Kcp.KcpSetLog(KcpLog);
-            Kcp.SetOutput(KcpOutput);
-        }
-        
-#if ENABLE_IL2CPP
-		[AOT.MonoPInvokeCallback(typeof(KcpOutput))]
-#endif
-        private static int KcpOutput(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
-        {
-            try
-            {
-                if (kcp == IntPtr.Zero)
-                {
-                    return 0;
-                }
-                
-                KService kService = NetServices.Instance.Get(user.ToInt64()) as KService;
-                
-                if (!kService.KcpPtrChannels.TryGetValue(kcp.ToInt64(), out KChannel kChannel))
-                {
-                    return 0;
-                }
-                
-                kChannel.Output(bytes, len);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                return len;
-            }
-
-            return len;
-        }
-
-#endregion
 
         public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
         {

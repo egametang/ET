@@ -144,6 +144,8 @@ namespace ET
             }
             this.IsDisposed = true;
             
+            Log.Debug($"111111111111111111111111111111111111: {this.Root.SceneType}");
+            
             FiberManager.Instance.RemoveReal(this.Id);
             
             this.Root.Dispose();
