@@ -12,11 +12,9 @@ namespace ET.Server
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(fiberInit.Fiber.Id);
-            root.AddComponent<NetProcessComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
-            root.AddComponent<ActorOuterComponent>();
+            root.AddComponent<ActorOuterComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
             root.AddComponent<ActorInnerComponent>();
             //root.AddComponent<ActorSenderComponent>();
-            root.AddComponent<ActorRecverComponent>();
 
             await ETTask.CompletedTask;
         }

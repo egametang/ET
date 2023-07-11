@@ -13,7 +13,6 @@ namespace ET.Server
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ActorInnerComponent>();
             root.AddComponent<ActorSenderComponent>();
-            root.AddComponent<ActorRecverComponent>();
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(root.Fiber.Id);
             root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
 

@@ -7,6 +7,56 @@ namespace ET
     [FriendOf(typeof(ActorInnerComponent))]
     public static partial class ActorInnerComponentSystem
     {
+        [EntitySystem]
+        private static void Destroy(this ActorInnerComponent self)
+        {
+            Fiber fiber = self.Fiber();
+            ActorMessageQueue.Instance.RemoveQueue(fiber.Id);
+        }
+
+        [EntitySystem]
+        private static void Awake(this ActorInnerComponent self)
+        {
+            Fiber fiber = self.Fiber();
+            ActorMessageQueue.Instance.AddQueue(fiber.Id);
+            fiber.ActorInnerComponent = self;
+        }
+
+        [EntitySystem]
+        private static void Update(this ActorInnerComponent self)
+        {
+            self.list.Clear();
+            Fiber fiber = self.Fiber();
+            ActorMessageQueue.Instance.Fetch(fiber.Id, 1000, self.list);
+
+            ActorInnerComponent actorInnerComponent = fiber.Root.GetComponent<ActorInnerComponent>();
+            foreach (ActorMessageInfo actorMessageInfo in self.list)
+            {
+                if (actorMessageInfo.MessageObject is IActorResponse response)
+                {
+                    actorInnerComponent.HandleIActorResponse(response);
+                    continue;
+                }
+
+                ActorId actorId = actorMessageInfo.ActorId;
+                MessageObject message = actorMessageInfo.MessageObject;
+
+                MailBoxComponent mailBoxComponent = self.Fiber().Mailboxes.Get(actorId.InstanceId);
+                if (mailBoxComponent == null)
+                {
+                    Log.Warning($"actor not found mailbox, from: {actorId} current: {fiber.Address} {message}");
+                    if (message is IActorRequest request)
+                    {
+                        IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                        actorInnerComponent.Reply(actorId.Address, resp);
+                    }
+                    return;
+                }
+                mailBoxComponent.Add(actorId.Address, message);
+            }
+        }
+        
+        
         public static void HandleIActorResponse(this ActorInnerComponent self, IActorResponse response)
         {
             if (!self.requestCallback.Remove(response.RpcId, out ActorMessageSender actorMessageSender))

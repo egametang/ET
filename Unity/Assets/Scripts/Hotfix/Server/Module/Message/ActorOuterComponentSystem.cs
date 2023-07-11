@@ -1,14 +1,137 @@
 ﻿using System;
+using System.Net;
 
 namespace ET.Server
 {
     [FriendOf(typeof(ActorOuterComponent))]
     public static partial class ActorOuterComponentSystem
     {
-        [EntitySystem]
-        private static void Awake(this ActorOuterComponent self)
+[EntitySystem]
+        private static void Awake(this ActorOuterComponent self, IPEndPoint address)
         {
-            self.NetProcessComponent = self.Root().GetComponent<NetProcessComponent>();
+            switch (self.InnerProtocol)
+            {
+                case NetworkProtocol.TCP:
+                {
+                    self.AService = new TService(address, ServiceType.Inner);
+                    break;
+                }
+                case NetworkProtocol.KCP:
+                {
+                    self.AService = new KService(address, ServiceType.Inner);
+                    break;
+                }
+            }
+                
+            self.AService.AcceptCallback = self.OnAccept;
+            self.AService.ReadCallback = self.OnRead;
+            self.AService.ErrorCallback = self.OnError;
+        }
+        
+        [EntitySystem]
+        private static void Update(this ActorOuterComponent self)
+        {
+            self.AService.Update();
+        }
+
+        [EntitySystem]
+        private static void Destroy(this ActorOuterComponent self)
+        {
+            self.AService.Dispose();
+        }
+
+        private static void OnRead(this ActorOuterComponent self, long channelId, ActorId actorId, object message)
+        {
+            Session session = self.GetChild<Session>(channelId);
+            if (session == null)
+            {
+                return;
+            }
+            
+            session.LastRecvTime = self.Fiber().TimeInfo.ClientFrameTime();
+
+            self.HandleMessage(actorId, message).Coroutine();
+        }
+
+        private static async ETTask HandleMessage(this ActorOuterComponent self, ActorId actorId, object message)
+        {
+            Fiber fiber = self.Fiber();
+            int fromProcess = actorId.Process;
+            actorId.Process = fiber.Process;
+
+            switch (message)
+            {
+                case IActorResponse iActorResponse:
+                {
+                    self.HandleIActorResponse(iActorResponse);
+                    return;
+                }
+                case IActorLocationRequest iActorRequest:
+                {
+                    IActorResponse response = await fiber.ActorInnerComponent.Call(actorId, iActorRequest, false);
+                    actorId.Process = fromProcess;
+                    self.Send(actorId, response);
+                    break;
+                }
+                case IActorRequest iActorRequest:
+                {
+                    IActorResponse response = await fiber.ActorInnerComponent.Call(actorId, iActorRequest);
+                    actorId.Process = fromProcess;
+                    self.Send(actorId, response);
+                    break;
+                }
+                default:
+                {
+                    ActorMessageQueue.Instance.Send(actorId, (MessageObject)message);
+                    break;
+                }
+            }
+        }
+
+        private static void OnError(this ActorOuterComponent self, long channelId, int error)
+        {
+            Session session = self.GetChild<Session>(channelId);
+            if (session == null)
+            {
+                return;
+            }
+
+            session.Error = error;
+            session.Dispose();
+        }
+
+        // 这个channelId是由CreateAcceptChannelId生成的
+        private static void OnAccept(this ActorOuterComponent self, long channelId, IPEndPoint ipEndPoint)
+        {
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
+            session.RemoteAddress = ipEndPoint;
+            //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
+        }
+
+        private static Session CreateInner(this ActorOuterComponent self, long channelId, IPEndPoint ipEndPoint)
+        {
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
+            session.RemoteAddress = ipEndPoint;
+            self.AService.Create(channelId, ipEndPoint);
+
+            //session.AddComponent<InnerPingComponent>();
+            //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
+
+            return session;
+        }
+
+        // 内网actor session，channelId是进程号
+        private static Session Get(this ActorOuterComponent self, long channelId)
+        {
+            Session session = self.GetChild<Session>(channelId);
+            if (session != null)
+            {
+                return session;
+            }
+
+            IPEndPoint ipEndPoint = StartSceneConfigCategory.Instance.Get((int) channelId).InnerIPPort;
+            session = self.CreateInner(channelId, ipEndPoint);
+            return session;
         }
 
         public static void HandleIActorResponse(this ActorOuterComponent self, IActorResponse response)
@@ -57,7 +180,7 @@ namespace ET.Server
             }
 
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[actorId.Process];
-            Session session = self.NetProcessComponent.Get(startSceneConfig.Id);
+            Session session = self.Get(startSceneConfig.Id);
             actorId.Process = fiber.Process;
             session.Send(actorId, message);
         }

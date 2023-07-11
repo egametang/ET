@@ -13,7 +13,6 @@ namespace ET.Server
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ActorInnerComponent>();
             root.AddComponent<ActorSenderComponent>();
-            root.AddComponent<ActorRecverComponent>();
             root.AddComponent<UnitComponent>();
             root.AddComponent<AOIManagerComponent>();
             root.AddComponent<RoomManagerComponent>();

@@ -64,6 +64,19 @@ namespace ET
                 this.coroutineLockComponent = value;
             }
         }
+        
+        private EntityRef<ActorInnerComponent> actorInnerComponent;
+        public ActorInnerComponent ActorInnerComponent
+        {
+            get
+            {
+                return this.actorInnerComponent;
+            }
+            set
+            {
+                this.actorInnerComponent = value;
+            }
+        }
 
         private readonly Queue<ETTask> frameFinishTasks = new();
         

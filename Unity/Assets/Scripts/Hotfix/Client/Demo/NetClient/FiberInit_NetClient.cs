@@ -10,7 +10,6 @@
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ActorInnerComponent>();
-            root.AddComponent<ActorRecverComponent>();
             await ETTask.CompletedTask;
         }
     }
