@@ -2,6 +2,60 @@
 
 # __讨论QQ群 : 474643097__  
 
+# ET8 预览版! 17岁亦菲  
+1. 多线程多进程架构,架构更加灵活强大  
+2. 抽象出纤程(Fiber)的概念，类似erlang的进程，非常轻松的创建多个纤程，利用多核  
+3. 纤程调度: 主线程，线程池，每个纤程一个线程，3种调度方式  
+4. Fiber间通信的Actor消息机制  
+5. Entity方面，domain改成IScene，只要实现IScene接口，Entity就是domain，这样定义domain更加自由  
+6. 预测回滚的帧同步实现  想详细了解可以看帧同步课程  
+7. protobuf换成了memorypack，实现无gc的网络  
+8. 纯C#版的kcp库，性能非常强，由sj提交  
+9. 热更dll改成用ide编译，更加方便  
+10. sj利用source generater实现了代码自动模板功能，目前可以自动生成System类，开发者只需要定义Awake Update静态方法即可，特别方便  
+11. sj开发了分析器，实现了EntitySystemOf，根据entity接口一键生成对应的system方法  
+12. 客户端利用fiber实现网络独立线程（demo已实现），甚至可以把逻辑跟表现使用独立的纤程，更好的利用多核  
+13. 帧同步demo直接利用纤程创建房间，更加方便  
+
+# ET8课程临时大纲，后面会有细节调整, 需要课程请联系熊猫 QQ:80081771  
+1.跟ET7的区别，运行指南，切换demo  
+2.多进程单线程  多进程多线程 优劣比较，帧同步 内存 性能 开发难度  
+3.框架的设计，整体大致介绍  
+4.World详解，几种Singleton,线程安全的思考(热重载代码，热重载配置)，找到临界区  
+5.纤程的概念,为什么要有纤程，纤程调度  
+6.Fiber Entity IScene 几种设计的方案 Instance？  
+7.Fiber间通信: Actor消息 ActorMessageQueue ActorId ActorInner  
+8.多线程安全（Fiber创建删除）以及同步上下文的处理,unity回调的处理  
+9.客户端网络设计  
+10.服务端ActorInner ActorOuter ActorSender  
+11.服务端Actor流程  
+12.如何利用纤程设计游戏架构  
+
+# 双端预测回滚帧同步框架课程有需要请加QQ:80081771    
+# [帧同步预告视频](https://www.bilibili.com/video/BV1tX4y1C7pM/?share_source=copy_web&vd_source=001b901865c99550d1b2a8cd663695d4)  
+### 1. 网络多线程0GC实现，优美的实现，性能提升  
+### 2. ET框架调整：  
+    a. EntityRef Entity弱引用机制  
+    b. Entity不再统一注册到Root中，只有Actor对象挂载了MailboxComponent的注册到  ActorMessageDispatcherComponent中  
+    c. TypeSystem EntitySystemSingleton，可扩展的Entity System机制，自定义System极其轻松  
+    d. Domain IScene, 更完善，Scene的代码都简化了  
+    e. Entity中Components改成SortedDictionary，保证有序  
+    f. Mongo序列化BeginInit, 增加了一个SerializeSystem  
+    g. 配置文件改成了Bson，直接支持Dictionary以及更复杂的配置  
+### 3. 实现了一个极其优美的预测回滚的帧同步框架，包含客户端跟服务端。注意，并不是只能做帧同步，帧同步框架只是ET框架一小部分  
+    a. 帧同步专用的LSEntity，LSWorld帧同步定点数domain  
+    b. LSUpdateSystem 处理帧的Update逻辑  
+    c. LSRollbackSystem 处理表现层和解   
+    d. 客户端可膨胀收缩的FixedUpdate  
+    ......
+### 4. 逻辑层表现层分离，前后端共享逻辑层实现, 服务端会同时跑战斗，杜绝结果作弊  
+### 5. 帧同步预测回滚实现  
+### 6. 客户端时间动态膨胀收缩  
+### 7. 录像文件随时保存，播放可以随意跳转播放，加速播放  
+### 8. 断线重连，瞬间重连  
+### 9. ET状态帧实现方式，学会ET帧同步，状态帧非常简单。
+### 10.还有更多同步方式......  
+
 # 熊猫的课程：《网络游戏架构设计》已经完结，有需要请加QQ:80081771 课程详细介绍了ET框架的设计思路跟细节，以下是课程目录:
 01. 代码结构
 02. All In one-01
@@ -174,13 +228,6 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
-[linux部署，mongo安装，资源服搭建](http://www.tinkingli.com/?p=25)  
-[ET框架心跳包组件开发](http://www.tinkingli.com/?p=111)  
-[ET框架Actor使用与心得](http://www.tinkingli.com/?p=117)  
-[基于ET框架和UGUI的简单UI框架实现（渐渐写）](http://www.tinkingli.com/?p=124)  
-[ET框架笔记 (笑览世界写)](http://www.tinkingli.com/?p=76)  
-[ET框架如何用MAC开发](http://www.tinkingli.com/?p=147)  
-[ET的动态添加事件和触发组件](http://www.tinkingli.com/?p=145)  
 
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
@@ -190,12 +237,14 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 5. 天天躲猫猫2（ios2019春节下载排行19）  
 6. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
 7. [五星麻将](https://github.com/wufanjoin/fivestar)  
+8. [神选誓约](https://www.taptap.cn/app/248095)  
+9. [代号肉鸽：无限](https://www.taptap.cn/app/247225)  
 
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
 2. [背包系统](https://gitee.com/ECPS_admin/planc)  
 3. [移动端渲染技术demo](https://github.com/Acgmart/Sekia_TechDemo)  
-
+4. [球球大作战(ET7.2)](https://github.com/FlameskyDexive/Legends-Of-Heroes)
 
 
 视频教程：  
