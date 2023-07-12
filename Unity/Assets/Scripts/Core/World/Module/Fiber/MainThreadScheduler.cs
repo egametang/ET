@@ -75,10 +75,10 @@ namespace ET
                     continue;
                 }
 
-                this.idQueue.Enqueue(id);
-
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.LateUpdate();
+                
+                this.idQueue.Enqueue(id);
             }
 
             while (this.addIds.Count > 0)

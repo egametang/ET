@@ -97,7 +97,6 @@ namespace ET
         {
             try
             {
-                this.ThreadSynchronizationContext.Update();
                 this.TimeInfo.Update();
                 this.EntitySystem.Update();
             }
@@ -113,6 +112,8 @@ namespace ET
             {
                 this.EntitySystem.LateUpdate();
                 FrameFinishUpdate();
+                
+                this.ThreadSynchronizationContext.Update();
             }
             catch (Exception e)
             {
