@@ -1,7 +1,14 @@
 ﻿namespace ET.Client
 {
+    [EntitySystemOf(typeof(ClientSessionErrorComponent))]
     public static partial class ClientSessionErrorComponentSystem
     {
+        [EntitySystem]
+        private static void Awake(this ClientSessionErrorComponent self)
+        {
+
+        }
+        
         [EntitySystem]
         private static void Destroy(this ClientSessionErrorComponent self)
         {

@@ -2,9 +2,16 @@ using System;
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(LSReplayUpdater))]
     [FriendOf(typeof(LSReplayUpdater))]
     public static partial class LSReplayUpdaterSystem
     {
+        [EntitySystem]
+        private static void Awake(this LSReplayUpdater self)
+        {
+
+        }
+        
         [EntitySystem]
         private static void Update(this LSReplayUpdater self)
         {
@@ -19,7 +26,7 @@ namespace ET.Client
                 {
                     break;
                 }
-                
+
                 if (timeNow < room.FixedTimeCounter.FrameTime(room.AuthorityFrame + 1))
                 {
                     break;
@@ -28,10 +35,10 @@ namespace ET.Client
                 ++room.AuthorityFrame;
 
                 OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
-            
+
                 room.Update(oneFrameInputs);
                 room.SpeedMultiply = ++i;
-                
+
                 long timeNow2 = fiber.TimeInfo.ServerNow();
                 if (timeNow2 - timeNow > 5)
                 {
@@ -52,7 +59,7 @@ namespace ET.Client
             {
                 lsReplayUpdater.ReplaySpeed *= 2;
             }
-            
+
             int updateInterval = LSConstValue.UpdateInterval / lsReplayUpdater.ReplaySpeed;
             room.FixedTimeCounter.ChangeInterval(updateInterval, room.AuthorityFrame);
         }

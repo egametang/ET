@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(ABInfo))]
     [FriendOf(typeof (ABInfo))]
     public static partial class ABInfoSystem
     {
@@ -103,6 +104,7 @@ namespace ET.Client
         }
     }
 
+    [EntitySystemOf(typeof(ResourcesComponent))]
     [FriendOf(typeof (ABInfo))]
     [FriendOf(typeof (ResourcesComponent))]
     public static partial class ResourcesComponentSystem

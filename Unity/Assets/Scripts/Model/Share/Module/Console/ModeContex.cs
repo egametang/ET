@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+    [EntitySystemOf(typeof(ModeContex))]
     [FriendOf(typeof(ModeContex))]
     public static partial class ModeContexSystem
     {

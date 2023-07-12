@@ -2,6 +2,7 @@ using System;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(SessionIdleCheckerComponent))]
     [FriendOf(typeof(SessionIdleCheckerComponent))]
     public static partial class SessionIdleCheckerComponentSystem
     {

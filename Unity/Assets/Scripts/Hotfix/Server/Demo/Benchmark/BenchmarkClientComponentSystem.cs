@@ -4,6 +4,7 @@ using ET.Client;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(BenchmarkClientComponent))]
     public static partial class BenchmarkClientComponentSystem
     {
         [EntitySystem]

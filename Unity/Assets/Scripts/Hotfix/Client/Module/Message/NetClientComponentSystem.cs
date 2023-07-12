@@ -4,6 +4,7 @@ using MongoDB.Bson;
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(NetClientComponent))]
     [FriendOf(typeof(NetClientComponent))]
     public static partial class NetClientComponentSystem
     {

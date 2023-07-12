@@ -53,6 +53,7 @@ namespace ET
         public object Args;
     }
 
+    [EntitySystemOf(typeof(TimerComponent))]
     public static partial class TimerComponentSystem
     {
         [EntitySystem]

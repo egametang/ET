@@ -3,9 +3,16 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [FriendOf(typeof (LSClientUpdater))]
+    [EntitySystemOf(typeof(LSOperaComponent))]
+    [FriendOf(typeof(LSClientUpdater))]
     public static partial class LSOperaComponentSystem
     {
+        [EntitySystem]
+        private static void Awake(this ET.LSOperaComponent self)
+        {
+
+        }
+        
         [EntitySystem]
         private static void Update(this LSOperaComponent self)
         {
@@ -33,5 +40,6 @@ namespace ET.Client
             LSClientUpdater lsClientUpdater = self.GetParent<Room>().GetComponent<LSClientUpdater>();
             lsClientUpdater.Input.V = v.normalized;
         }
+
     }
 }

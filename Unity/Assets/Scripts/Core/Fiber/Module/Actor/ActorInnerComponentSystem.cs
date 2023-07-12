@@ -4,6 +4,7 @@ using System.IO;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(ActorInnerComponent))]
     [FriendOf(typeof(ActorInnerComponent))]
     public static partial class ActorInnerComponentSystem
     {

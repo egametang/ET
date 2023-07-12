@@ -1,5 +1,6 @@
 ﻿namespace ET.Server
 {
+    [EntitySystemOf(typeof(Player))]
     [FriendOf(typeof(Player))]
     public static partial class PlayerSystem
     {

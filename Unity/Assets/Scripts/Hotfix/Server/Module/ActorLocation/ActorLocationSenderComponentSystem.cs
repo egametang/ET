@@ -4,6 +4,7 @@ using MongoDB.Bson;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(ActorLocationSenderOneType))]
     [FriendOf(typeof(ActorLocationSenderOneType))]
     [FriendOf(typeof(ActorLocationSender))]
     public static partial class ActorLocationSenderComponentSystem
@@ -288,6 +289,7 @@ namespace ET.Server
         }
     }
 
+    [EntitySystemOf(typeof(ActorLocationSenderComponent))]
     [FriendOf(typeof (ActorLocationSenderComponent))]
     public static partial class ActorLocationSenderManagerComponentSystem
     {

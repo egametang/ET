@@ -141,13 +141,22 @@ namespace ET.Analyzer
         {
             foreach (INamedTypeSymbol? iInterface in namedTypeSymbol.AllInterfaces)
             {
-                if (iInterface.ToString() == InterfaceName)
+                if (iInterface.IsInterface(InterfaceName))
                 {
                     return true;
                 }
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 某个接口symbol 是否是指定的接口
+        /// </summary>
+
+        public static bool IsInterface(this INamedTypeSymbol namedTypeSymbol, string InterfaceName)
+        {
+            return $"{namedTypeSymbol.GetNameSpace()}.{namedTypeSymbol.Name}" == InterfaceName;
         }
 
         /// <summary>
@@ -407,6 +416,69 @@ namespace ET.Analyzer
             foreach (var filePath in filePaths)
             {
                 if (semanticModel.SyntaxTree.FilePath.Contains(filePath))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 类型symbol是否有指定名字 指定参数的方法
+        /// </summary>
+        public static bool HasMethodWithParams(this INamedTypeSymbol namedTypeSymbol, string methodName, params ITypeSymbol[] typeSymbols)
+        {
+            foreach (var member in namedTypeSymbol.GetMembers())
+            {
+                if (member is not IMethodSymbol methodSymbol)
+                {
+                    continue;
+                }
+
+                if (methodSymbol.Name!=methodName)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length!=methodSymbol.Parameters.Length)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length==0)
+                {
+                    return true;
+                }
+
+                bool isEqual = true;
+                
+                for (int i = 0; i < typeSymbols.Length; i++)
+                {
+                    if (typeSymbols[i].ToString()!=methodSymbol.Parameters[i].Type.ToString())
+                    {
+                        isEqual = false;
+                        break;
+                    }
+                }
+
+                if (isEqual)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// 方法symbol 是否有指定的attribute
+        /// </summary>
+        public static bool HasAttribute(this IMethodSymbol methodSymbol, string AttributeName)
+        {
+            foreach (AttributeData? attributeData in methodSymbol.GetAttributes())
+            {
+                if (attributeData?.AttributeClass?.ToString()==AttributeName)
                 {
                     return true;
                 }

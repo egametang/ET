@@ -3,9 +3,16 @@ using System.Text;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(Cell))]
     [FriendOf(typeof(Cell))]
     public static partial class CellSystem
     {
+        [EntitySystem]
+        private static void Awake(this ET.Server.Cell self)
+        {
+
+        }
+        
         [EntitySystem]
         private static void Destroy(this Cell self)
         {
@@ -15,21 +22,21 @@ namespace ET.Server
 
             self.SubsLeaveEntities.Clear();
         }
-        
+
         public static void Add(this Cell self, AOIEntity aoiEntity)
         {
             self.AOIUnits.Add(aoiEntity.Id, aoiEntity);
         }
-        
+
         public static void Remove(this Cell self, AOIEntity aoiEntity)
         {
             self.AOIUnits.Remove(aoiEntity.Id);
         }
-        
+
         public static string CellIdToString(this long cellId)
         {
-            int y = (int) (cellId & 0xffffffff);
-            int x = (int) ((ulong) cellId >> 32);
+            int y = (int)(cellId & 0xffffffff);
+            int x = (int)((ulong)cellId >> 32);
             return $"{x}:{y}";
         }
 
@@ -44,5 +51,6 @@ namespace ET.Server
 
             return sb.ToString();
         }
+
     }
 }

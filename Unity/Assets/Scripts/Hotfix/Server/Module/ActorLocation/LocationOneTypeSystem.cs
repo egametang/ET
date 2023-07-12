@@ -2,6 +2,7 @@
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(LockInfo))]
     [FriendOf(typeof(LockInfo))]
     public static partial class LockInfoSystem
     {
@@ -21,7 +22,7 @@ namespace ET.Server
     }
     
 
-    
+    [EntitySystemOf(typeof(LocationOneType))]
     [FriendOf(typeof(LocationOneType))]
     [FriendOf(typeof(LockInfo))]
     public static partial class LocationOneTypeSystem
@@ -115,7 +116,7 @@ namespace ET.Server
         }
     }
 
-
+    [EntitySystemOf(typeof(LocationManagerComoponent))]
     [FriendOf(typeof (LocationManagerComoponent))]
     public static partial class LocationComoponentSystem
     {

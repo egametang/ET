@@ -3,16 +3,23 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(LSServerUpdater))]
     [FriendOf(typeof(LSServerUpdater))]
     public static partial class LSServerUpdaterSystem
     {
+        [EntitySystem]
+        private static void Awake(this LSServerUpdater self)
+        {
+
+        }
+        
         [EntitySystem]
         private static void Update(this LSServerUpdater self)
         {
             Room room = self.GetParent<Room>();
             long timeNow = room.Fiber().TimeInfo.ServerFrameTime();
-            
-            
+
+
             int frame = room.AuthorityFrame + 1;
             if (timeNow < room.FixedTimeCounter.FrameTime(frame))
             {
@@ -26,7 +33,7 @@ namespace ET.Server
             oneFrameInputs.CopyTo(sendInput);
 
             RoomMessageHelper.BroadCast(room, sendInput);
-            
+
             room.Update(oneFrameInputs);
         }
 
@@ -36,7 +43,7 @@ namespace ET.Server
             FrameBuffer frameBuffer = room.FrameBuffer;
             OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(frame);
             frameBuffer.MoveForward(frame);
-            
+
             if (oneFrameInputs.Inputs.Count == LSConstValue.MatchCount)
             {
                 return oneFrameInputs;
@@ -45,7 +52,7 @@ namespace ET.Server
             OneFrameInputs preFrameInputs = null;
             if (frameBuffer.CheckFrame(frame - 1))
             {
-                preFrameInputs = frameBuffer.FrameInputs(frame - 1);    
+                preFrameInputs = frameBuffer.FrameInputs(frame - 1);
             }
 
             // 有人输入的消息没过来，给他使用上一帧的操作

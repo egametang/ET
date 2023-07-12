@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(CoroutineLockQueue))]
     public static partial class CoroutineLockQueueSystem
     {
         [EntitySystem]

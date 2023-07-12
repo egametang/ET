@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(ConsoleComponent))]
     [FriendOf(typeof(ConsoleComponent))]
     [FriendOf(typeof(ModeContex))]
     public static partial class ConsoleComponentSystem

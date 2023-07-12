@@ -8,6 +8,7 @@
             return await scene.GetComponent<UIComponent>().Create(uiType, uiLayer);
         }
         
+        [EnableAccessEntiyChild]
         public static async ETTask Remove(Entity scene, string uiType)
         {
             scene.GetComponent<UIComponent>().Remove(uiType);

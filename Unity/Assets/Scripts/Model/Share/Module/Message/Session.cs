@@ -17,6 +17,7 @@ namespace ET
         }
     }
     
+    [EntitySystemOf(typeof(Session))]
     [FriendOf(typeof(Session))]
     public static partial class SessionSystem
     {

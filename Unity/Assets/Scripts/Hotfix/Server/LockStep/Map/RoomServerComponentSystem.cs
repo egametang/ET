@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(RoomServerComponent))]
     [FriendOf(typeof(RoomServerComponent))]
     public static partial class RoomServerComponentSystem
     {

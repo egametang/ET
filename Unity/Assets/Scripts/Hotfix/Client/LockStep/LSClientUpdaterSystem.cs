@@ -3,6 +3,7 @@ using System.IO;
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(LSClientUpdater))]
     [FriendOf(typeof (LSClientUpdater))]
     public static partial class LSClientUpdaterSystem
     {

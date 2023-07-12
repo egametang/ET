@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(WatcherComponent))]
     [FriendOf(typeof(WatcherComponent))]
     public static partial class WatcherComponentSystem
     {

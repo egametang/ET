@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(UILSLoginComponent))]
     [FriendOf(typeof(UILoginComponent))]
     [FriendOfAttribute(typeof(ET.Client.UILSLoginComponent))]
     public static partial class UILSLoginComponentSystem

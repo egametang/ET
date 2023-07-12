@@ -1,5 +1,6 @@
 namespace ET
 {
+    [EntitySystemOf(typeof(Unit))]
     public static partial class UnitSystem
     {
         [EntitySystem]

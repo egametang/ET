@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(RouterComponent))]
     [FriendOf(typeof (RouterComponent))]
     [FriendOf(typeof (RouterNode))]
     public static partial class RouterComponentSystem

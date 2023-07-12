@@ -3,10 +3,11 @@ using System.Net;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(ActorOuterComponent))]
     [FriendOf(typeof(ActorOuterComponent))]
     public static partial class ActorOuterComponentSystem
     {
-[EntitySystem]
+        [EntitySystem]
         private static void Awake(this ActorOuterComponent self, IPEndPoint address)
         {
             switch (self.InnerProtocol)

@@ -2,6 +2,7 @@ using System;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(CoroutineLock))]
     public static partial class CoroutineLockSystem
     {
         [EntitySystem]

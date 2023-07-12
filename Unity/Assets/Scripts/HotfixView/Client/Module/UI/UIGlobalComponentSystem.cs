@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace ET.Client
 {
-
+    [EntitySystemOf(typeof(UIGlobalComponent))]
+    [FriendOf(typeof(UIGlobalComponent))]
     public static partial class UIGlobalComponentSystem
     {
         [EntitySystem]
@@ -17,7 +18,7 @@ namespace ET.Client
             self.UILayers.Add((int)UILayer.Mid, referenceCollector.Get<GameObject>(UILayer.Mid.ToString()).transform);
             self.UILayers.Add((int)UILayer.High, referenceCollector.Get<GameObject>(UILayer.High.ToString()).transform);
         }
-        
+
         public static async ETTask<UI> OnCreate(this UIGlobalComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)
         {
             try

@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace ET.Client
 {
-    [FriendOf(typeof (ResourcesLoaderComponent))]
+    [EntitySystemOf(typeof(ResourcesLoaderComponent))]
+    [FriendOf(typeof(ResourcesLoaderComponent))]
     public static partial class ResourcesLoaderComponentSystem
     {
         [EntitySystem]
@@ -12,7 +13,7 @@ namespace ET.Client
             {
                 Fiber fiber = self.Fiber();
                 using ListComponent<string> list = ListComponent<string>.Create();
-                
+
                 TimerComponent timerComponent = fiber.TimerComponent;
                 list.AddRange(self.LoadedResource);
                 self.LoadedResource = null;
@@ -61,6 +62,12 @@ namespace ET.Client
 
             self.LoadedResource.Add(ab);
             await self.Root().GetComponent<ResourcesComponent>().LoadBundleAsync(ab);
+        }
+        
+        [EntitySystem]
+        private static void Awake(this ResourcesLoaderComponent self)
+        {
+
         }
     }
 

@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace ET.Client
 {
-    [FriendOfAttribute(typeof(ET.LSUnitView))]
+    [EntitySystemOf(typeof(LSUnitView))]
+    [LSEntitySystemOf(typeof(LSUnitView))]
+    [FriendOf(typeof(LSUnitView))]
     public static partial class LSUnitViewSystem
     {
         [EntitySystem]

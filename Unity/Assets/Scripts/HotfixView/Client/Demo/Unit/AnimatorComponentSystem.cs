@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ET.Client
 {
+	[EntitySystemOf(typeof(AnimatorComponent))]
 	[FriendOf(typeof(AnimatorComponent))]
 	public static partial class AnimatorComponentSystem
 	{

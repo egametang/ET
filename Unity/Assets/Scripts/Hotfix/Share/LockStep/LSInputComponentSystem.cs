@@ -4,10 +4,18 @@ using TrueSync;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(LSInputComponent))]
+    [LSEntitySystemOf(typeof(LSInputComponent))]
     public static partial class LSInputComponentSystem
     {
+        [EntitySystem]
+        private static void Awake(this LSInputComponent self)
+        {
+
+        }
+        
         [LSEntitySystem]
-        public static void LSUpdate(this LSInputComponent self)
+        private static void LSUpdate(this LSInputComponent self)
         {
             LSUnit unit = self.GetParent<LSUnit>();
 

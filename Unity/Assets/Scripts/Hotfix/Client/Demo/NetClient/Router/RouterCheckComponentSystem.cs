@@ -3,6 +3,7 @@ using System.Net;
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(RouterCheckComponent))]
     public static partial class RouterCheckComponentSystem
     {
         [EntitySystem]

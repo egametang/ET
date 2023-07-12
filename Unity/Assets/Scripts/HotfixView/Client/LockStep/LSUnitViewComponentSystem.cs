@@ -2,6 +2,7 @@
 
 namespace ET.Client
 {
+    [EntitySystemOf(typeof(LSUnitViewComponent))]
     public static partial class LSUnitViewComponentSystem
     {
         [EntitySystem]
@@ -24,6 +25,12 @@ namespace ET.Client
                 LSUnitView lsUnitView = self.AddChildWithId<LSUnitView, GameObject>(lsUnit.Id, unitGo);
                 lsUnitView.AddComponent<LSAnimatorComponent>();
             }
+        }
+        
+        [EntitySystem]
+        private static void Destroy(this LSUnitViewComponent self)
+        {
+
         }
     }
 }

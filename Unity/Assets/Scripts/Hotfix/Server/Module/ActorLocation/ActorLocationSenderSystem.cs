@@ -2,6 +2,7 @@ using System;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(ActorLocationSender))]
     [FriendOf(typeof(ActorLocationSender))]
     public static partial class ActorLocationSenderSystem
     {

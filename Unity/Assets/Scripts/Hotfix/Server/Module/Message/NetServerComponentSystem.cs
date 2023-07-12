@@ -3,6 +3,7 @@ using MongoDB.Bson;
 
 namespace ET.Server
 {
+    [EntitySystemOf(typeof(NetServerComponent))]
     [FriendOf(typeof(NetServerComponent))]
     public static partial class NetServerComponentSystem
     {
