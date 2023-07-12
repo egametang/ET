@@ -15,9 +15,9 @@ namespace ET
     }
 
     [ComponentOf(typeof(Scene))]
-    public class ConsoleComponent: Entity, IAwake, ILoad
+    public class ConsoleComponent: Entity, IAwake
     {
         public CancellationTokenSource CancellationTokenSource;
-        public Dictionary<string, IConsoleHandler> Handlers = new Dictionary<string, IConsoleHandler>();
+
     }
 }

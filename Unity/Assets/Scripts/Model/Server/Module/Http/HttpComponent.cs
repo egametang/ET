@@ -7,9 +7,8 @@ namespace ET.Server
     /// http请求分发器
     /// </summary>
     [ComponentOf(typeof(Scene))]
-    public class HttpComponent: Entity, IAwake<string>, IDestroy, ILoad
+    public class HttpComponent: Entity, IAwake<string>, IDestroy
     {
         public HttpListener Listener;
-        public Dictionary<string, IHttpHandler> dispatcher;
     }
 }

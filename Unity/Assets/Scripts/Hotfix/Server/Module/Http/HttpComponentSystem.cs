@@ -13,8 +13,6 @@ namespace ET.Server
         {
             try
             {
-                self.Load();
-                
                 self.Listener = new HttpListener();
 
                 foreach (string s in address.Split(';'))
@@ -42,43 +40,8 @@ namespace ET.Server
             self.Listener.Stop();
             self.Listener.Close();
         }
-        
-        [EntitySystem]
-        private static void Load(this HttpComponent self)
-        {
-            self.dispatcher = new Dictionary<string, IHttpHandler>();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
-
-            SceneType sceneType = (self.Parent as IScene).SceneType;
-
-            foreach (Type type in types)
-            {
-                object[] attrs = type.GetCustomAttributes(typeof(HttpHandlerAttribute), false);
-                if (attrs.Length == 0)
-                {
-                    continue;
-                }
-
-                HttpHandlerAttribute httpHandlerAttribute = (HttpHandlerAttribute)attrs[0];
-
-                if (httpHandlerAttribute.SceneType != sceneType)
-                {
-                    continue;
-                }
-
-                object obj = Activator.CreateInstance(type);
-
-                IHttpHandler ihttpHandler = obj as IHttpHandler;
-                if (ihttpHandler == null)
-                {
-                    throw new Exception($"HttpHandler handler not inherit IHttpHandler class: {obj.GetType().FullName}");
-                }
-                self.dispatcher.Add(httpHandlerAttribute.Path, ihttpHandler);
-            }
-        }
-        
-        public static async ETTask Accept(this HttpComponent self)
+        private static async ETTask Accept(this HttpComponent self)
         {
             long instanceId = self.InstanceId;
             while (self.InstanceId == instanceId)
@@ -98,15 +61,12 @@ namespace ET.Server
             }
         }
 
-        public static async ETTask Handle(this HttpComponent self, HttpListenerContext context)
+        private static async ETTask Handle(this HttpComponent self, HttpListenerContext context)
         {
             try
             {
-                IHttpHandler handler;
-                if (self.dispatcher.TryGetValue(context.Request.Url.AbsolutePath, out handler))
-                {
-                    await handler.Handle(self.Scene(), context);
-                }
+                IHttpHandler handler = HttpDispatcher.Instance.Get(self.IScene.SceneType, context.Request.Url.AbsolutePath);
+                await handler.Handle(self.Scene(), context);
             }
             catch (Exception e)
             {

@@ -13,52 +13,8 @@ namespace ET
             {
                 this.queues[i] = new Queue<EntityRef<Entity>>();
             }
-            this.Load();
         }
         
-        public void Load()
-        {
-            Queue<EntityRef<Entity>> queue = this.queues[InstanceQueueIndex.Load];
-            int count = queue.Count;
-            while (count-- > 0)
-            {
-                Entity component = queue.Dequeue();
-                if (component == null)
-                {
-                    continue;
-                }
-
-                if (component.IsDisposed)
-                {
-                    continue;
-                }
-
-                if (component is not ILoad)
-                {
-                    continue;
-                }
-
-                List<object> iLoadSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (ILoadSystem));
-                if (iLoadSystems == null)
-                {
-                    continue;
-                }
-
-                queue.Enqueue(component);
-
-                foreach (ILoadSystem iLoadSystem in iLoadSystems)
-                {
-                    try
-                    {
-                        iLoadSystem.Run(component);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
-                }
-            }
-        }
         
         public virtual void RegisterSystem(Entity component)
         {

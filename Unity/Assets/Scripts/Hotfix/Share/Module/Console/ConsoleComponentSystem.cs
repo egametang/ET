@@ -13,40 +13,10 @@ namespace ET
         [EntitySystem]
         private static void Awake(this ConsoleComponent self)
         {
-            self.Load();
-        
             self.Start().Coroutine();
         }
 
         
-        [EntitySystem]
-        private static void Load(this ConsoleComponent self)
-        {
-            self.Handlers.Clear();
-
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
-
-            foreach (Type type in types)
-            {
-                object[] attrs = type.GetCustomAttributes(typeof(ConsoleHandlerAttribute), false);
-                if (attrs.Length == 0)
-                {
-                    continue;
-                }
-
-                ConsoleHandlerAttribute consoleHandlerAttribute = (ConsoleHandlerAttribute)attrs[0];
-
-                object obj = Activator.CreateInstance(type);
-
-                IConsoleHandler iConsoleHandler = obj as IConsoleHandler;
-                if (iConsoleHandler == null)
-                {
-                    throw new Exception($"ConsoleHandler handler not inherit IConsoleHandler class: {obj.GetType().FullName}");
-                }
-                self.Handlers.Add(consoleHandlerAttribute.Mode, iConsoleHandler);
-            }
-        }
-
         private static async ETTask Start(this ConsoleComponent self)
         {
             self.CancellationTokenSource = new CancellationTokenSource();
@@ -76,12 +46,7 @@ namespace ET
                             string[] lines = line.Split(" ");
                             string mode = modeContex == null? lines[0] : modeContex.Mode;
 
-                            if (!self.Handlers.TryGetValue(mode, out IConsoleHandler iConsoleHandler))
-                            {
-                                Log.Console($"not found command: {line}");
-                                break;
-                            }
-
+                            IConsoleHandler iConsoleHandler = ConsoleDispatcher.Instance.Get(mode);
                             if (modeContex == null)
                             {
                                 modeContex = self.AddComponent<ModeContex>();
