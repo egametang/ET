@@ -1,3 +1,5 @@
+#if ENABLE_VIEW
+
 using System;
 using System.Reflection;
 using UnityEditor;
@@ -21,3 +23,4 @@ namespace ET
         }
     }
 }
+#endif
