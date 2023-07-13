@@ -76,6 +76,13 @@
         "com.unity.shadergraph": "12.1.10"
       }
     },
+    "com.unity.scriptablebuildpipeline": {
+      "version": "1.20.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.searcher": {
       "version": "4.9.1",
       "depth": 2,
