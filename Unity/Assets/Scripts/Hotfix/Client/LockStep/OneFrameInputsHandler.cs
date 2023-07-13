@@ -2,14 +2,14 @@ using System;
 
 namespace ET.Client
 {
-    [MessageHandler(SceneType.LockStep)]
-    public class OneFrameInputsHandler: MessageHandler<OneFrameInputs>
+    [ActorMessageHandler(SceneType.LockStep)]
+    public class OneFrameInputsHandler: ActorMessageHandler<Scene, OneFrameInputs>
     {
-        protected override async ETTask Run(Session session, OneFrameInputs input)
+        protected override async ETTask Run(Scene root, OneFrameInputs input)
         {
             using var _ = input ; // 方法结束时回收消息
             
-            Room room = session.Scene().GetComponent<Room>();
+            Room room = root.GetComponent<Room>();
             
             Log.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
                         
