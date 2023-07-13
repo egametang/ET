@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar name="Toolbar" style="display: flex; flex-direction: row-reverse;">
+        <ui:Button text="Save" display-tooltip-when-elided="true" name="SaveButton" style="background-color: rgb(56, 147, 58);" />
+    </uie:Toolbar>
+    <ui:VisualElement name="BuildContainer">
+        <ui:TextField picking-mode="Ignore" label="Build Output" name="BuildOutput" />
+        <uie:EnumField label="Build Pipeline" name="BuildPipeline" />
+        <uie:EnumField label="Build Mode" name="BuildMode" />
+        <ui:TextField picking-mode="Ignore" label="Build Version" name="BuildVersion" style="width: 350px;" />
+        <ui:VisualElement name="BuildPackageContainer" style="height: 24px;" />
+        <ui:VisualElement name="EncryptionContainer" style="height: 24px;" />
+        <uie:EnumField label="Compression" value="Center" name="Compression" />
+        <uie:EnumField label="Output Name Style" value="Center" name="OutputNameStyle" />
+        <uie:EnumField label="Copy Buildin File Option" value="Center" name="CopyBuildinFileOption" />
+        <ui:TextField picking-mode="Ignore" label="Copy Buildin File Tags" name="CopyBuildinFileTags" />
+        <ui:Button text="构建" display-tooltip-when-elided="true" name="Build" style="height: 50px; background-color: rgb(40, 106, 42); margin-top: 10px;" />
+    </ui:VisualElement>
+</ui:UXML>
