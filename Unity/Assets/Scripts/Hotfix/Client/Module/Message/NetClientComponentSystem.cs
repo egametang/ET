@@ -77,7 +77,7 @@ namespace ET.Client
             long channelId = NetServices.Instance.CreateConnectChannelId();
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = realIPEndPoint;
-            if (self.IScene.SceneType != SceneType.Benchmark)
+            if (self.IScene.SceneType != SceneType.BenchmarkClient)
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
@@ -91,7 +91,7 @@ namespace ET.Client
             long channelId = localConn;
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = realIPEndPoint;
-            if (self.IScene.SceneType != SceneType.Benchmark)
+            if (self.IScene.SceneType != SceneType.BenchmarkClient)
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }

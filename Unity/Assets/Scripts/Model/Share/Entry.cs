@@ -49,6 +49,7 @@ namespace ET
             World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
             World.Instance.AddSingleton<NetServices>();
             World.Instance.AddSingleton<NavmeshComponent>();
+            World.Instance.AddSingleton<LogMsg>();
             
             World.Instance.AddSingleton<FiberManager>();
             

@@ -140,7 +140,7 @@ namespace ET
         public static void Send(this Session self, ActorId actorId, IMessage message)
         {
             self.LastSendTime = self.Fiber().TimeInfo.ClientNow();
-            Log.Debug(message.ToString());
+            LogMsg.Instance.Debug(message);
             self.AService.Send(self.Id, actorId, message as MessageObject);
         }
     }

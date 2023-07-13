@@ -64,7 +64,7 @@ namespace ET.Server
             }
             session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
             
-            Log.Debug(message.ToJson());
+            LogMsg.Instance.Debug(message);
 			
             EventSystem.Instance.Publish(self.Scene(), new NetServerComponentOnRead() {Session = session, Message = message});
         }

@@ -39,14 +39,5 @@
       <ProjectReference Include="..\..\Share\Share.SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="..\..\Unity\Assets\Scripts\Core\Fiber\Module\Console\">
-        <Link>Core\Fiber\Module\Console</Link>
-      </Folder>
-      <Folder Include="..\..\Unity\Assets\Scripts\Core\World\Module\Console\">
-        <Link>Core\World\Module\Console</Link>
-      </Folder>
-    </ItemGroup>
 
 </Project>
