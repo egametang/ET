@@ -48,7 +48,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\Unity\Assets\Plugins\MacOS\x86_64\libkcp.dylib">
+      <Content Include="..\..\Unity\Assets\Plugins\MacOS\arm64\libkcp.dylib">
         <Link>runtimes\osx\native\libkcp.dylib</Link>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
