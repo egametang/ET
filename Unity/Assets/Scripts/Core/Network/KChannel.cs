@@ -62,12 +62,14 @@ namespace ET
 					this.kcp.SetWindowSize(1024, 1024);
 					this.kcp.SetMtu(1400); // 默认1400
 					this.kcp.SetMinrto(30);
+					this.kcp.InitArrayPool(1600, 10000);
 					break;
 				case ServiceType.Outer:
 					this.kcp.SetNoDelay(1, 10, 2, true);
 					this.kcp.SetWindowSize(256, 256);
 					this.kcp.SetMtu(470);
 					this.kcp.SetMinrto(30);
+					this.kcp.InitArrayPool(600, 10000);
 					break;
 			}
 
