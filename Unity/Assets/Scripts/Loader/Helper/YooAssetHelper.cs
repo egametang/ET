@@ -22,5 +22,12 @@ namespace ET
             await task;
         }
         
+        public static async ETTask GetAwaiter(this InitializationOperation asyncOperation)
+        {
+            ETTask task = ETTask.Create(true);
+            asyncOperation.Completed += _ => { task.SetResult(); };
+            await task;
+        }
+        
     }
 }
