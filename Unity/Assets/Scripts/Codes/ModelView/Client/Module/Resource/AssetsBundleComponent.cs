@@ -39,12 +39,10 @@ public static class AssetsBundleComponentSystem
         YooAssets.Initialize();
     }
 
-    public static async Task<ETTaskCompleted> InitAsync(this AssetsBundleComponent self,string packageName = "DefaultPackage")
+    public static async ETTask TaskInitAsync(this AssetsBundleComponent self,string packageName = "DefaultPackage")
     {
         self._defaultPackage = YooAssets.CreatePackage(packageName);
         YooAssets.SetDefaultPackage(self._defaultPackage);
         await self._defaultPackage.InitializeAsync(self._createParameters);
-
-        return ETTask.CompletedTask;
     }
 }
