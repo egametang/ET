@@ -31,7 +31,7 @@ namespace ET.Server
 
 	    public static async ETTask<T> Query<T>(this DBComponent self, long id, string collection = null) where T : Entity
 	    {
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, (id >> 34) % DBComponent.TaskCount))
 		    {
 			    IAsyncCursor<T> cursor = await self.GetCollection<T>(collection).FindAsync(d => d.Id == id);
 
@@ -68,7 +68,7 @@ namespace ET.Server
 			    return;
 		    }
 
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, (id >> 34) % DBComponent.TaskCount))
 		    {
 			    foreach (string collectionName in collectionNames)
 			    {
@@ -141,7 +141,7 @@ namespace ET.Server
 			    collection = entity.GetType().Name;
 		    }
 
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, (entity.Id >> 34) % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
@@ -175,7 +175,7 @@ namespace ET.Server
 			    return;
 		    }
 
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, (id >> 34) % DBComponent.TaskCount))
 		    {
 			    foreach (Entity entity in entities)
 			    {
@@ -208,7 +208,7 @@ namespace ET.Server
 	    
 	    public static async ETTask<long> Remove<T>(this DBComponent self, long id, string collection = null) where T : Entity
 	    {
-		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, id % DBComponent.TaskCount))
+		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, (id >> 34) % DBComponent.TaskCount))
 		    {
 			    DeleteResult result = await self.GetCollection<T>(collection).DeleteOneAsync(d => d.Id == id);
 
