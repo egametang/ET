@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class OpcodeType: SingletonLock<OpcodeType>, ISingletonAwake
+    public class OpcodeType: Singleton<OpcodeType>, ISingletonAwake
     {
         // 初始化后不变，所以主线程，网络线程都可以读
         private readonly DoubleMap<Type, ushort> typeOpcode = new();
         
-        private readonly HashSet<ushort> outrActorMessage = new HashSet<ushort>();
-
-        private readonly Dictionary<Type, Type> requestResponse = new Dictionary<Type, Type>();
+        private readonly Dictionary<Type, Type> requestResponse = new();
         
         public void Awake()
         {
@@ -55,11 +53,6 @@ namespace ET
                     this.requestResponse.Add(type, EventSystem.Instance.GetType($"ET.{responseTypeAttribute.Type}"));
                 }
             }
-        }
-        
-        public override void Load()
-        {
-            World.Instance.AddSingleton<OpcodeType>(true);
         }
         
         public ushort GetOpcode(Type type)
