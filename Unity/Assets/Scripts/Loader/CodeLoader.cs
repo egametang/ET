@@ -64,14 +64,20 @@ namespace ET
 			
 				this.assembly = Assembly.Load(assBytes, pdbBytes);
 			}
-			
-			this.LoadHotfix();
-			
-			IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
-			start.Run();
+
+			{
+				Assembly hotfixAssembly = this.LoadHotfix();
+
+				Dictionary<string, Type> types =
+						AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof (Init).Assembly, this.assembly, hotfixAssembly);
+				World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+
+				IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
+				start.Run();
+			}
 		}
 
-		public void LoadHotfix()
+		private Assembly LoadHotfix()
 		{
 			byte[] assBytes;
 			byte[] pdbBytes;
@@ -92,9 +98,20 @@ namespace ET
 			}
 			
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
+
+			return hotfixAssembly;
+		}
+
+		public void Reload()
+		{
+			Assembly hotfixAssembly = this.LoadHotfix();
 			
 			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
-			World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+			World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types, true);
+			
+			World.Instance.Load();
+			
+			Log.Debug($"reload dll finish!");
 		}
 	}
 }

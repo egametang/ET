@@ -9,7 +9,7 @@ namespace ET.Server
         
         public override void Load()
         {
-            World.Instance.AddSingleton<HttpDispatcher>();
+            World.Instance.AddSingleton<HttpDispatcher>(true);
         }
 
         public void Awake()

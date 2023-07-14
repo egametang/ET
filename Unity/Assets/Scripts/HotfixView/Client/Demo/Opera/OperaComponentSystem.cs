@@ -30,7 +30,7 @@ namespace ET.Client
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                CodeLoader.Instance.LoadHotfix();
+                CodeLoader.Instance.Reload();
                 return;
             }
         

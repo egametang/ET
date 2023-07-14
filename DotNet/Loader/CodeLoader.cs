@@ -11,7 +11,7 @@ namespace ET
     {
         private AssemblyLoadContext assemblyLoadContext;
 
-        private Assembly model;
+        private Assembly assembly;
 
         public void Awake()
         {
@@ -20,17 +20,20 @@ namespace ET
             {
                 if (assembly.GetName().Name == "Model")
                 {
-                    this.model = assembly;
+                    this.assembly = assembly;
                     break;
                 }
             }
-            this.LoadHotfix();
+            Assembly hotfixAssembly = this.LoadHotfix();
             
-            IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
+            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+            
+            IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
             start.Run();
         }
 
-        public void LoadHotfix()
+        private Assembly LoadHotfix()
         {
             assemblyLoadContext?.Unload();
             GC.Collect();
@@ -38,12 +41,19 @@ namespace ET
             byte[] dllBytes = File.ReadAllBytes("./Hotfix.dll");
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
-
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (Fiber).Assembly, this.model, hotfixAssembly);
-
-            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
-            
+            return hotfixAssembly;
+        }
+        
+        public void Reload()
+        {
+            Assembly hotfixAssembly = this.LoadHotfix();
+			
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
+            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types, true);
+			
             World.Instance.Load();
+			
+            Log.Debug($"reload dll finish!");
         }
     }
 }
