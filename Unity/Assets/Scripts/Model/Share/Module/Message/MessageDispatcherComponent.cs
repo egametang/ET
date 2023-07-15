@@ -15,7 +15,7 @@ namespace ET
         }
     }
     
-    public class MessageDispatcherComponent: SingletonLock<MessageDispatcherComponent>, ISingletonAwake
+    public class MessageDispatcherComponent: SingletonReload<MessageDispatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<ushort, List<MessageDispatcherInfo>> handlers = new();
         

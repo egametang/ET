@@ -19,7 +19,7 @@ namespace ET
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
-    public class ActorMessageDispatcherComponent: SingletonLock<ActorMessageDispatcherComponent>, ISingletonAwake
+    public class ActorMessageDispatcherComponent: SingletonReload<ActorMessageDispatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<Type, List<ActorMessageDispatcherInfo>> ActorMessageHandlers = new();
 

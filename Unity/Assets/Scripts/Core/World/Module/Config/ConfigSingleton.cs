@@ -10,24 +10,15 @@ namespace ET
         [StaticField]
         private static T instance;
         
-        [StaticField]
-        private static object lockObj = new();
-
         public static T Instance
         {
             get
             {
-                lock (lockObj)
-                {
-                    return instance;
-                }
+                return instance;
             }
             private set
             {
-                lock (lockObj)
-                {
-                    instance = value;
-                }
+                instance = value;
             }
         }
 

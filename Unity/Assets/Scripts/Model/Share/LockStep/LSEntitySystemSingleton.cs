@@ -11,7 +11,7 @@ namespace ET
         public const int Max = 1;
     }
     
-    public class LSEntitySystemSingleton: SingletonLock<LSEntitySystemSingleton>, ISingletonAwake
+    public class LSEntitySystemSingleton: SingletonReload<LSEntitySystemSingleton>, ISingletonAwake
     {
         public TypeSystems TypeSystems { get; private set; }
         

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    public class HttpDispatcher: SingletonLock<HttpDispatcher>, ISingletonAwake
+    public class HttpDispatcher: SingletonReload<HttpDispatcher>, ISingletonAwake
     {
         private readonly Dictionary<string, Dictionary<int, IHttpHandler>> dispatcher = new();
         

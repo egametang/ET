@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ConsoleDispatcher: SingletonLock<ConsoleDispatcher>, ISingletonAwake
+    public class ConsoleDispatcher: SingletonReload<ConsoleDispatcher>, ISingletonAwake
     {
         private readonly Dictionary<string, IConsoleHandler> handlers = new();
         

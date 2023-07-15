@@ -18,7 +18,7 @@ namespace ET
     /// <summary>
     /// 监视数值变化组件,分发监听
     /// </summary>
-    public class NumericWatcherComponent : SingletonLock<NumericWatcherComponent>, ISingletonAwake
+    public class NumericWatcherComponent : SingletonReload<NumericWatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<int, List<NumericWatcherInfo>> allWatchers = new();
         

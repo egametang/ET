@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EntitySystemSingleton: SingletonLock<EntitySystemSingleton>, ISingletonAwake
+    public class EntitySystemSingleton: SingletonReload<EntitySystemSingleton>, ISingletonAwake
     {
         public TypeSystems TypeSystems { get; private set; }
         

@@ -56,31 +56,22 @@ namespace ET
         }
     }
     
-    public abstract class SingletonLock<T>: ISingleton, ISingletonLoad where T: SingletonLock<T>, new()
+    public abstract class SingletonReload<T>: ISingleton, ISingletonLoad where T: SingletonReload<T>, new()
     {
         private bool isDisposed;
         
         [StaticField]
         private static T instance;
         
-        [StaticField]
-        private static object lockObj = new();
-
         public static T Instance
         {
             get
             {
-                lock (lockObj)
-                {
-                    return instance;
-                }
+                return instance;
             }
             private set
             {
-                lock (lockObj)
-                {
-                    instance = value;
-                }
+                instance = value;
             }
         }
 
