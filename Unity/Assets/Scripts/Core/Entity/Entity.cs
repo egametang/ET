@@ -15,16 +15,6 @@ namespace ET
         IsNew = 1 << 4,
     }
 
-    public interface IEntitySystem
-    {
-        EntitySystem EntitySystem { get; }
-    }
-    
-    public interface IIdGenerater
-    {
-        IdGenerater IdGenerater { get; }
-    }
-
     public partial class Entity: DisposeObject
     {
 #if ENABLE_VIEW && UNITY_EDITOR
