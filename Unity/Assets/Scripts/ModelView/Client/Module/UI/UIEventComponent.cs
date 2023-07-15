@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ET.Client
 {
 	/// <summary>
 	/// 管理所有UI GameObject
 	/// </summary>
-	public class UIEventComponent: SingletonReload<UIEventComponent>, ISingletonAwake
+	public class UIEventComponent: Singleton<UIEventComponent>, ISingletonLoad, ISingletonAwake
 	{
 		public Dictionary<string, AUIEvent> UIEvents { get; } = new();
 		
@@ -28,7 +27,7 @@ namespace ET.Client
             }
         }
         
-        public override void Load()
+        public void Load()
         {
 	        World.Instance.AddSingleton<UIEventComponent>(true);
         }

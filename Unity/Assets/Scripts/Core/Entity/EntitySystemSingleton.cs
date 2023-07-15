@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EntitySystemSingleton: SingletonReload<EntitySystemSingleton>, ISingletonAwake
+    public class EntitySystemSingleton: Singleton<EntitySystemSingleton>, ISingletonAwake, ISingletonLoad
     {
         public TypeSystems TypeSystems { get; private set; }
         
@@ -28,7 +28,7 @@ namespace ET
             }
         }
         
-        public override void Load()
+        public void Load()
         {
             World.Instance.AddSingleton<EntitySystemSingleton>(true);
         }

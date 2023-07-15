@@ -15,7 +15,7 @@ namespace ET
         }
     }
     
-    public class MessageDispatcherComponent: SingletonReload<MessageDispatcherComponent>, ISingletonAwake
+    public class MessageDispatcherComponent: Singleton<MessageDispatcherComponent>, ISingletonAwake, ISingletonLoad
     {
         private readonly Dictionary<ushort, List<MessageDispatcherInfo>> handlers = new();
         
@@ -53,7 +53,7 @@ namespace ET
             }
         }
         
-        public override void Load()
+        public void Load()
         {
             World.Instance.AddSingleton<MessageDispatcherComponent>(true);
         }

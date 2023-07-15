@@ -132,14 +132,7 @@ namespace ET
 			
 			if (GUILayout.Button("ExcelExporter"))
 			{
-				//Directory.Delete("Assets/Bundles/Config", true);
 				ToolsEditor.ExcelExporter();
-				
-				// 设置ab包
-				AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
-				assetImporter.assetBundleName = "Config.unity3d";
-				AssetDatabase.SaveAssets();
-				AssetDatabase.Refresh();
 			}
 			
 			if (GUILayout.Button("Proto2CS"))

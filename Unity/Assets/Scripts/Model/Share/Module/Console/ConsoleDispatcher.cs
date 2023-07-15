@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ConsoleDispatcher: SingletonReload<ConsoleDispatcher>, ISingletonAwake
+    public class ConsoleDispatcher: Singleton<ConsoleDispatcher>, ISingletonAwake, ISingletonLoad
     {
         private readonly Dictionary<string, IConsoleHandler> handlers = new();
         
-        public override void Load()
+        public void Load()
         {
             World.Instance.AddSingleton<ConsoleDispatcher>(true);
         }

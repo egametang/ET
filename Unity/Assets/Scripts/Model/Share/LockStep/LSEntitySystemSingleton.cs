@@ -11,7 +11,7 @@ namespace ET
         public const int Max = 1;
     }
     
-    public class LSEntitySystemSingleton: SingletonReload<LSEntitySystemSingleton>, ISingletonAwake
+    public class LSEntitySystemSingleton: Singleton<LSEntitySystemSingleton>, ISingletonAwake, ISingletonLoad
     {
         public TypeSystems TypeSystems { get; private set; }
         
@@ -37,7 +37,7 @@ namespace ET
             }
         }
         
-        public override void Load()
+        public void Load()
         {
             World.Instance.AddSingleton<LSEntitySystemSingleton>(true);
         }

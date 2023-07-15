@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    public class HttpDispatcher: SingletonReload<HttpDispatcher>, ISingletonAwake
+    public class HttpDispatcher: Singleton<HttpDispatcher>, ISingletonAwake, ISingletonLoad
     {
         private readonly Dictionary<string, Dictionary<int, IHttpHandler>> dispatcher = new();
         
-        public override void Load()
+        public void Load()
         {
             World.Instance.AddSingleton<HttpDispatcher>(true);
         }

@@ -37,7 +37,7 @@ namespace ET
         {
             return this.ClientScenesByName[zone][name];
         }
-        
+
         public override void EndInit()
         {
             foreach (StartSceneConfig startSceneConfig in this.GetAll().Values)

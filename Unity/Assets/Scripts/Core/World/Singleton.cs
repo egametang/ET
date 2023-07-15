@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.ComponentModel;
 
 namespace ET
 {
@@ -9,54 +9,7 @@ namespace ET
         
     }
     
-    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
-    {
-        protected bool isDisposed;
-        
-        [StaticField]
-        private static T instance;
-        
-        public static T Instance
-        {
-            get
-            {
-                return instance;
-            }
-            private set
-            {
-                instance = value;
-            }
-        }
-
-        public virtual void Register()
-        {
-            Instance = (T)this;
-        }
-
-        public bool IsDisposed()
-        {
-            return this.isDisposed;
-        }
-
-        protected virtual void Destroy()
-        {
-            
-        }
-
-        void IDisposable.Dispose()
-        {
-            if (this.isDisposed)
-            {
-                return;
-            }
-            
-            this.isDisposed = true;
-            
-            this.Destroy();
-        }
-    }
-    
-    public abstract class SingletonReload<T>: ISingleton, ISingletonLoad where T: SingletonReload<T>, new()
+    public abstract class Singleton<T>: ISingleton, ISupportInitialize where T: Singleton<T>, new()
     {
         private bool isDisposed;
         
@@ -98,12 +51,16 @@ namespace ET
             }
             
             this.isDisposed = true;
-
-            Instance = null;
             
             this.Destroy();
         }
 
-        public abstract void Load();
+        public virtual void BeginInit()
+        {
+        }
+
+        public virtual void EndInit()
+        {
+        }
     }
 }

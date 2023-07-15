@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
+using System.ComponentModel;
 
 namespace ET
 {
     [Config]
-    public partial class StartProcessConfigCategory : ConfigSingleton<StartProcessConfigCategory>, IMerge
+    public partial class StartProcessConfigCategory : Singleton<StartProcessConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, StartProcessConfig> dict = new Dictionary<int, StartProcessConfig>();
+        private Dictionary<int, StartProcessConfig> dict = new();
 		
         public void Merge(object o)
         {

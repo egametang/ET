@@ -18,7 +18,7 @@ namespace ET
     /// <summary>
     /// 监视数值变化组件,分发监听
     /// </summary>
-    public class NumericWatcherComponent : SingletonReload<NumericWatcherComponent>, ISingletonAwake
+    public class NumericWatcherComponent : Singleton<NumericWatcherComponent>, ISingletonAwake, ISingletonLoad
     {
         private readonly Dictionary<int, List<NumericWatcherInfo>> allWatchers = new();
         
@@ -43,7 +43,7 @@ namespace ET
             }
         }
         
-        public override void Load()
+        public void Load()
         {
             World.Instance.AddSingleton<NumericWatcherComponent>(true);
         }
