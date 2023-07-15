@@ -17,7 +17,7 @@ namespace ET
         }
 
         private readonly Stack<Type> stack = new();
-        private readonly Dictionary<Type, ISingleton> singletons = new();
+        private readonly Dictionary<Type, ASingleton> singletons = new();
         
         private World()
         {
@@ -37,7 +37,7 @@ namespace ET
             }
         }
 
-        public T AddSingleton<T>(bool replace = false) where T : class, ISingleton, ISingletonAwake, new()
+        public T AddSingleton<T>(bool replace = false) where T : ASingleton, ISingletonAwake, new()
         {
             T singleton = new();
             singleton.Awake();
@@ -46,7 +46,7 @@ namespace ET
             return singleton;
         }
         
-        public T AddSingleton<T, A>(A a, bool replace = false) where T : class, ISingleton, ISingletonAwake<A>, new()
+        public T AddSingleton<T, A>(A a, bool replace = false) where T : ASingleton, ISingletonAwake<A>, new()
         {
             T singleton = new();
             singleton.Awake(a);
@@ -55,7 +55,7 @@ namespace ET
             return singleton;
         }
         
-        public T AddSingleton<T, A, B>(A a, B b, bool replace = false) where T : class, ISingleton, ISingletonAwake<A, B>, new()
+        public T AddSingleton<T, A, B>(A a, B b, bool replace = false) where T : ASingleton, ISingletonAwake<A, B>, new()
         {
             T singleton = new();
             singleton.Awake(a, b);
@@ -64,7 +64,7 @@ namespace ET
             return singleton;
         }
         
-        public T AddSingleton<T, A, B, C>(A a, B b, C c, bool replace = false) where T : class, ISingleton, ISingletonAwake<A, B, C>, new()
+        public T AddSingleton<T, A, B, C>(A a, B b, C c, bool replace = false) where T : ASingleton, ISingletonAwake<A, B, C>, new()
         {
             T singleton = new();
             singleton.Awake(a, b, c);
@@ -73,7 +73,7 @@ namespace ET
             return singleton;
         }
 
-        public void AddSingleton(ISingleton singleton, bool replace = false)
+        public void AddSingleton(ASingleton singleton, bool replace = false)
         {
             lock (this)
             {
@@ -94,7 +94,7 @@ namespace ET
             {
                 foreach (Type type in this.stack)
                 {
-                    ISingleton singleton = this.singletons[type];
+                    ASingleton singleton = this.singletons[type];
 
                     if (singleton is not ISingletonLoad iSingletonLoad)
                     {

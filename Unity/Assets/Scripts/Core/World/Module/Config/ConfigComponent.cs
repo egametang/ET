@@ -19,7 +19,7 @@ namespace ET
             public string ConfigName;
         }
 		
-        private readonly ConcurrentDictionary<Type, ISingleton> allConfig = new();
+        private readonly ConcurrentDictionary<Type, ASingleton> allConfig = new();
         
         public void Awake()
         {
@@ -31,7 +31,7 @@ namespace ET
 					EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.Name });
 
 			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
-			ISingleton singleton = category as ISingleton;
+			ASingleton singleton = category as ASingleton;
 			this.allConfig[configType] = singleton;
 			
 			singleton.Register();
@@ -72,7 +72,7 @@ namespace ET
 			
 			lock (this)
 			{
-				ISingleton singleton = category as ISingleton;
+				ASingleton singleton = category as ASingleton;
 				this.allConfig[configType] = singleton;
 				
 				singleton.Register();

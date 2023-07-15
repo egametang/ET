@@ -1,15 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace ET
+﻿namespace ET
 {
-    public interface ISingleton: IDisposable
+    public abstract class ASingleton: DisposeObject
     {
-        void Register();
-        
+        public abstract void Register();
     }
     
-    public abstract class Singleton<T>: ISingleton, ISupportInitialize where T: Singleton<T>, new()
+    public abstract class Singleton<T>: ASingleton where T: Singleton<T>, new()
     {
         private bool isDisposed;
         
@@ -28,7 +24,7 @@ namespace ET
             }
         }
 
-        public virtual void Register()
+        public override void Register()
         {
             Instance = (T)this;
         }
@@ -43,7 +39,7 @@ namespace ET
             
         }
 
-        void IDisposable.Dispose()
+        public override void Dispose()
         {
             if (this.isDisposed)
             {
@@ -53,14 +49,6 @@ namespace ET
             this.isDisposed = true;
             
             this.Destroy();
-        }
-
-        public virtual void BeginInit()
-        {
-        }
-
-        public virtual void EndInit()
-        {
         }
     }
 }

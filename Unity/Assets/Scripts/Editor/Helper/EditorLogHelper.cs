@@ -44,8 +44,8 @@ namespace ET
                 return;
             }
 
-            var log = new Logger();
-            ((ISingleton)log).Register();
+            Logger log = new();
+            log.Register();
             log.ILog = new UnityLogger();
         }
 
@@ -56,7 +56,7 @@ namespace ET
                 return;
             }
 
-            ((ISingleton)Logger.Instance).Dispose();
+            Logger.Instance.Dispose();
         }
     }
 }
