@@ -36,7 +36,7 @@ namespace ET
 					}
 				}
 				
-				World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies);
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies, true);
 			}
 			else
 			{
