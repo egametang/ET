@@ -19,7 +19,8 @@ namespace ET
     /// <summary>
     /// Actor消息分发组件
     /// </summary>
-    public class ActorMessageDispatcherComponent: Singleton<ActorMessageDispatcherComponent>, ISingletonAwake, ISingletonLoad
+    [Code]
+    public class ActorMessageDispatcherComponent: Singleton<ActorMessageDispatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<Type, List<ActorMessageDispatcherInfo>> ActorMessageHandlers = new();
 
@@ -38,11 +39,6 @@ namespace ET
             {
                 this.Register(type);
             }
-        }
-        
-        public void Load()
-        {
-            World.Instance.AddSingleton<ActorMessageDispatcherComponent>(true);
         }
         
         private void Register(Type type)

@@ -37,48 +37,48 @@ namespace ET
             }
         }
 
-        public T AddSingleton<T>(bool replace = false) where T : ASingleton, ISingletonAwake, new()
+        public T AddSingleton<T>(bool noStack = false) where T : ASingleton, ISingletonAwake, new()
         {
             T singleton = new();
             singleton.Awake();
 
-            AddSingleton(singleton, replace);
+            AddSingleton(singleton, noStack);
             return singleton;
         }
         
-        public T AddSingleton<T, A>(A a, bool replace = false) where T : ASingleton, ISingletonAwake<A>, new()
+        public T AddSingleton<T, A>(A a, bool noStack = false) where T : ASingleton, ISingletonAwake<A>, new()
         {
             T singleton = new();
             singleton.Awake(a);
 
-            AddSingleton(singleton, replace);
+            AddSingleton(singleton, noStack);
             return singleton;
         }
         
-        public T AddSingleton<T, A, B>(A a, B b, bool replace = false) where T : ASingleton, ISingletonAwake<A, B>, new()
+        public T AddSingleton<T, A, B>(A a, B b, bool noStack = false) where T : ASingleton, ISingletonAwake<A, B>, new()
         {
             T singleton = new();
             singleton.Awake(a, b);
 
-            AddSingleton(singleton, replace);
+            AddSingleton(singleton, noStack);
             return singleton;
         }
         
-        public T AddSingleton<T, A, B, C>(A a, B b, C c, bool replace = false) where T : ASingleton, ISingletonAwake<A, B, C>, new()
+        public T AddSingleton<T, A, B, C>(A a, B b, C c, bool noStack = false) where T : ASingleton, ISingletonAwake<A, B, C>, new()
         {
             T singleton = new();
             singleton.Awake(a, b, c);
 
-            AddSingleton(singleton, replace);
+            AddSingleton(singleton, noStack);
             return singleton;
         }
 
-        public void AddSingleton(ASingleton singleton, bool replace = false)
+        public void AddSingleton(ASingleton singleton, bool noStack = false)
         {
             lock (this)
             {
                 Type type = singleton.GetType();
-                if (!replace)
+                if (!noStack)
                 {
                     this.stack.Push(type);    
                 }
@@ -86,24 +86,6 @@ namespace ET
             }
 
             singleton.Register();
-        }
-        
-        public void Load()
-        {
-            lock (this)
-            {
-                foreach (Type type in this.stack)
-                {
-                    ASingleton singleton = this.singletons[type];
-
-                    if (singleton is not ISingletonLoad iSingletonLoad)
-                    {
-                        continue;
-                    }
-                    
-                    iSingletonLoad.Load();
-                }
-            }
         }
     }
 }

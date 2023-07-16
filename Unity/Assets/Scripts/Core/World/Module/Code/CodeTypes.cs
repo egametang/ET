@@ -50,5 +50,16 @@ namespace ET
         {
             return this.allTypes[typeName];
         }
+        
+        public void CreateCodeSingleton()
+        {
+            var hashSet = this.GetTypes(typeof (CodeAttribute));
+            foreach (Type type in hashSet)
+            {
+                object obj = Activator.CreateInstance(type);
+                ((ISingletonAwake)obj).Awake();
+                World.Instance.AddSingleton((ASingleton)obj, true);
+            }
+        }
     }
 }

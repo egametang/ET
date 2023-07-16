@@ -6,7 +6,8 @@ namespace ET.Client
 	/// <summary>
 	/// 管理所有UI GameObject
 	/// </summary>
-	public class UIEventComponent: Singleton<UIEventComponent>, ISingletonLoad, ISingletonAwake
+	[Code]
+	public class UIEventComponent: Singleton<UIEventComponent>, ISingletonAwake
 	{
 		public Dictionary<string, AUIEvent> UIEvents { get; } = new();
 		
@@ -25,11 +26,6 @@ namespace ET.Client
                 AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
                 this.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
             }
-        }
-        
-        public void Load()
-        {
-	        World.Instance.AddSingleton<UIEventComponent>(true);
         }
 	}
 }

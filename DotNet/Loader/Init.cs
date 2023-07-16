@@ -21,6 +21,7 @@ namespace ET
 						.WithParsed((o)=>World.Instance.AddSingleton(o));
 				World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				ETTask.ExceptionHandler += Log.Error;
+
 				World.Instance.AddSingleton<CodeLoader>();
 			}
 			catch (Exception e)

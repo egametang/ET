@@ -25,6 +25,7 @@ namespace ET
 			
 			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
+			
 			World.Instance.AddSingleton<CodeLoader>().Start();
 		}
 

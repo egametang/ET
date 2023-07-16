@@ -23,10 +23,11 @@ namespace ET
                     break;
                 }
             }
-            Assembly hotfixAssembly = this.LoadHotfix();
 
-            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
+            Assembly hotfixAssembly = this.LoadHotfix();
             
+            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly }, true);
+
             IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
             start.Run();
         }
@@ -46,10 +47,9 @@ namespace ET
         {
             Assembly hotfixAssembly = this.LoadHotfix();
 			
-            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly }, true);
-			
-            World.Instance.Load();
-			
+            CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly }, true);
+
+            codeTypes.CreateCodeSingleton();
             Log.Debug($"reload dll finish!");
         }
     }

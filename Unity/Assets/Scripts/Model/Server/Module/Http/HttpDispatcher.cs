@@ -3,15 +3,11 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    public class HttpDispatcher: Singleton<HttpDispatcher>, ISingletonAwake, ISingletonLoad
+    [Code]
+    public class HttpDispatcher: Singleton<HttpDispatcher>, ISingletonAwake
     {
         private readonly Dictionary<string, Dictionary<int, IHttpHandler>> dispatcher = new();
         
-        public void Load()
-        {
-            World.Instance.AddSingleton<HttpDispatcher>(true);
-        }
-
         public void Awake()
         {
             HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof (HttpHandlerAttribute));

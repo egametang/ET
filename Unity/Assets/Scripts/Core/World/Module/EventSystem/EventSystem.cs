@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EventSystem: Singleton<EventSystem>, ISingletonAwake, ISingletonLoad
+    [Code]
+    public class EventSystem: Singleton<EventSystem>, ISingletonAwake
     {
         private class EventInfo
         {
@@ -82,11 +83,6 @@ namespace ET
             }
         }
         
-        public void Load()
-        {
-            World.Instance.AddSingleton<EventSystem>(true);
-        }
-
         public async ETTask PublishAsync<S, T>(S scene, T a) where S: class, IScene where T : struct
         {
             List<EventInfo> iEvents;

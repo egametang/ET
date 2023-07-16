@@ -8,9 +8,6 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, ET.EventType.EntryEvent2 args)
         {
-            World.Instance.AddSingleton<HttpDispatcher>();
-            World.Instance.AddSingleton<ConsoleDispatcher>();
-            
             switch (Options.Instance.AppType)
             {
                 case AppType.Server:

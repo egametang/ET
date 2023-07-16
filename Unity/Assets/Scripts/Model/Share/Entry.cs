@@ -36,24 +36,19 @@ namespace ET
             
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
-
-            World.Instance.AddSingleton<EventSystem>();
+            
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<IdValueGenerater>();
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<ActorMessageQueue>();
-            World.Instance.AddSingleton<EntitySystemSingleton>();
-            World.Instance.AddSingleton<LSEntitySystemSingleton>();
-            World.Instance.AddSingleton<MessageDispatcherComponent>();
-            World.Instance.AddSingleton<NumericWatcherComponent>();
-            World.Instance.AddSingleton<AIDispatcherComponent>();
-            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
             World.Instance.AddSingleton<NetServices>();
             World.Instance.AddSingleton<NavmeshComponent>();
+            World.Instance.AddSingleton<FiberManager>();
             World.Instance.AddSingleton<LogMsg>();
             
-            World.Instance.AddSingleton<FiberManager>();
-            
+            // 创建需要reload的code singleton
+            CodeTypes.Instance.CreateCodeSingleton();
+
             await FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
         }
     }

@@ -2,7 +2,7 @@
 {
     public abstract class ASingleton: DisposeObject
     {
-        public abstract void Register();
+        internal abstract void Register();
     }
     
     public abstract class Singleton<T>: ASingleton where T: Singleton<T>, new()
@@ -24,7 +24,7 @@
             }
         }
 
-        public override void Register()
+        internal override void Register()
         {
             Instance = (T)this;
         }

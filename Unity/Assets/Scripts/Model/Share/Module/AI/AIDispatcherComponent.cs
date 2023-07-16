@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class AIDispatcherComponent: Singleton<AIDispatcherComponent>, ISingletonAwake, ISingletonLoad
+    [Code]
+    public class AIDispatcherComponent: Singleton<AIDispatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<string, AAIHandler> aiHandlers = new();
         
@@ -26,11 +27,6 @@ namespace ET
         {
             this.aiHandlers.TryGetValue(key, out var aaiHandler);
             return aaiHandler;
-        }
-
-        public void Load()
-        {
-            World.Instance.AddSingleton<AIDispatcherComponent>(true);
         }
     }
 }

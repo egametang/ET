@@ -3,15 +3,11 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ConsoleDispatcher: Singleton<ConsoleDispatcher>, ISingletonAwake, ISingletonLoad
+    [Code]
+    public class ConsoleDispatcher: Singleton<ConsoleDispatcher>, ISingletonAwake
     {
         private readonly Dictionary<string, IConsoleHandler> handlers = new();
         
-        public void Load()
-        {
-            World.Instance.AddSingleton<ConsoleDispatcher>(true);
-        }
-
         public void Awake()
         {
             HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof (ConsoleHandlerAttribute));

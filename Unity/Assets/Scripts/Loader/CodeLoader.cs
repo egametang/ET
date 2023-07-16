@@ -27,8 +27,6 @@ namespace ET
 				
 				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 				
-				World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies);
-				
 				foreach (Assembly ass in assemblies)
 				{
 					string name = ass.GetName().Name;
@@ -37,6 +35,8 @@ namespace ET
 						this.assembly = ass;
 					}
 				}
+				
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies);
 			}
 			else
 			{
@@ -64,16 +64,13 @@ namespace ET
 				}
 			
 				this.assembly = Assembly.Load(assBytes, pdbBytes);
-			}
 
-			{
 				Assembly hotfixAssembly = this.LoadHotfix();
-
-				World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
-
-				IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
-				start.Run();
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly}, true);
 			}
+			
+			IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
+			start.Run();
 		}
 
 		private Assembly LoadHotfix()
@@ -105,11 +102,13 @@ namespace ET
 		{
 			Assembly hotfixAssembly = this.LoadHotfix();
 
-			World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly}, true);
-			
-			World.Instance.Load();
-			
+			CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly}, true);
+
+			codeTypes.CreateCodeSingleton();
+
 			Log.Debug($"reload dll finish!");
 		}
+
+
 	}
 }
