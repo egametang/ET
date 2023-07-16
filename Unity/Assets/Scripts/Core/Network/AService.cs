@@ -57,14 +57,9 @@ namespace ET
             this.pool.Enqueue(memoryBuffer);
         }
         
-        public AService()
-        {
-            NetServices.Instance.Add(this);
-        }
         
         public virtual void Dispose()
         {
-            NetServices.Instance?.Remove(this.Id);
         }
 
         public abstract void Update();
