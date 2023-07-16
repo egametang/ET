@@ -145,8 +145,6 @@ namespace ET
             }
             this.IsDisposed = true;
             
-            FiberManager.Instance.RemoveReal(this.Id);
-            
             this.Root.Dispose();
         }
     }
