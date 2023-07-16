@@ -47,8 +47,10 @@
             }
             
             this.isDisposed = true;
-            
+
             this.Destroy();
+            
+            Instance = null;
         }
     }
 }
