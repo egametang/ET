@@ -13,7 +13,7 @@ namespace ET
         ThreadPool,
     }
     
-    public class FiberManager: Singleton<FiberManager>, ISingletonAwake
+    public class FiberManager: Singleton<FiberManager>, ISingletonAwake, ISingletonReverseDispose
     {
         private readonly IScheduler[] schedulers = new IScheduler[3];
         

@@ -8,7 +8,7 @@ namespace ET
     {
         private readonly Dictionary<string, Type> allTypes = new();
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
-        
+
         public void Awake(Assembly[] assemblies)
         {
             Dictionary<string, Type> addTypes = AssemblyHelper.GetAssemblyTypes(assemblies);
@@ -58,7 +58,7 @@ namespace ET
             {
                 object obj = Activator.CreateInstance(type);
                 ((ISingletonAwake)obj).Awake();
-                World.Instance.AddSingleton((ASingleton)obj, true);
+                World.Instance.AddSingleton((ASingleton)obj);
             }
         }
     }

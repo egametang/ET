@@ -32,55 +32,64 @@ namespace ET
                 while (this.stack.Count > 0)
                 {
                     Type type = this.stack.Pop();
-                    this.singletons[type].Dispose();
+                    if (this.singletons.Remove(type, out ASingleton singleton))
+                    {
+                        singleton.Dispose();
+                    }
+                }
+
+                // dispose剩下的singleton，主要为了把instance置空
+                foreach (var kv in this.singletons)
+                {
+                    kv.Value.Dispose();
                 }
             }
         }
 
-        public T AddSingleton<T>(bool noStack = false) where T : ASingleton, ISingletonAwake, new()
+        public T AddSingleton<T>() where T : ASingleton, ISingletonAwake, new()
         {
             T singleton = new();
             singleton.Awake();
 
-            AddSingleton(singleton, noStack);
+            AddSingleton(singleton);
             return singleton;
         }
         
-        public T AddSingleton<T, A>(A a, bool noStack = false) where T : ASingleton, ISingletonAwake<A>, new()
+        public T AddSingleton<T, A>(A a) where T : ASingleton, ISingletonAwake<A>, new()
         {
             T singleton = new();
             singleton.Awake(a);
 
-            AddSingleton(singleton, noStack);
+            AddSingleton(singleton);
             return singleton;
         }
         
-        public T AddSingleton<T, A, B>(A a, B b, bool noStack = false) where T : ASingleton, ISingletonAwake<A, B>, new()
+        public T AddSingleton<T, A, B>(A a, B b) where T : ASingleton, ISingletonAwake<A, B>, new()
         {
             T singleton = new();
             singleton.Awake(a, b);
 
-            AddSingleton(singleton, noStack);
+            AddSingleton(singleton);
             return singleton;
         }
         
-        public T AddSingleton<T, A, B, C>(A a, B b, C c, bool noStack = false) where T : ASingleton, ISingletonAwake<A, B, C>, new()
+        public T AddSingleton<T, A, B, C>(A a, B b, C c) where T : ASingleton, ISingletonAwake<A, B, C>, new()
         {
             T singleton = new();
             singleton.Awake(a, b, c);
 
-            AddSingleton(singleton, noStack);
+            AddSingleton(singleton);
             return singleton;
         }
 
-        public void AddSingleton(ASingleton singleton, bool noStack = false)
+        public void AddSingleton(ASingleton singleton)
         {
             lock (this)
             {
                 Type type = singleton.GetType();
-                if (!noStack)
+                if (singleton is ISingletonReverseDispose)
                 {
-                    this.stack.Push(type);    
+                    this.stack.Push(type);
                 }
                 singletons[type] = singleton;
             }

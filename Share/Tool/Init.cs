@@ -23,14 +23,6 @@ namespace ET.Server
                     .WithParsed((o)=>World.Instance.AddSingleton(o));
                 World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
                 
-                //Process process = Game.Instance.Create();
-                // 异步方法全部会回掉到主线程
-                //process.AddSingleton<MainThreadSynchronizationContext>();
-                //process.AddSingleton<TimeInfo>();
-                //process.AddSingleton<ObjectPool>();
-                //process.AddSingleton<IdGenerater>();
-                
-                
                 World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (Init).Assembly });
                 World.Instance.AddSingleton<EventSystem>();
                 
@@ -38,14 +30,6 @@ namespace ET.Server
                 
                 ETTask.ExceptionHandler += Log.Error;
                 
-
-//
-                //process.AddSingleton<EntitySystemSingleton>();
-                //
-                //process.AddSingleton<Root>();
-
-                //MongoHelper.Register();
-				
                 Log.Info($"server start........................ ");
 				
                 switch (Options.Instance.AppType)

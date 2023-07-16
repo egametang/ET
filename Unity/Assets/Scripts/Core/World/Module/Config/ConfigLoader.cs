@@ -34,7 +34,7 @@ namespace ET
 			ASingleton singleton = category as ASingleton;
 			this.allConfig[configType] = singleton;
 			
-			World.Instance.AddSingleton(singleton, true);
+			World.Instance.AddSingleton(singleton);
 		}
 		
 		public void Load()
@@ -75,7 +75,7 @@ namespace ET
 				ASingleton singleton = category as ASingleton;
 				this.allConfig[configType] = singleton;
 				
-				World.Instance.AddSingleton(singleton, true);
+				World.Instance.AddSingleton(singleton);
 			}
 		}
     }
