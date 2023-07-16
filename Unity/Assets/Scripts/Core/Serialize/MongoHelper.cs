@@ -100,7 +100,7 @@ namespace ET
             RegisterStruct<TSVector4>();
             RegisterStruct<TSQuaternion>();
 
-            Dictionary<string, Type> types = EventSystem.Instance.GetTypes();
+            Dictionary<string, Type> types = CodeTypes.Instance.GetTypes();
             foreach (Type type in types.Values)
             {
                 if (!type.IsSubclassOf(typeof (Object)))

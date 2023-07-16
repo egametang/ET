@@ -18,7 +18,7 @@ namespace ET
         public void Awake()
         {
             this.TypeSystems = new(LSQueneUpdateIndex.Max);
-            foreach (Type type in EventSystem.Instance.GetTypes(typeof (LSEntitySystemAttribute)))
+            foreach (Type type in CodeTypes.Instance.GetTypes(typeof (LSEntitySystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
 

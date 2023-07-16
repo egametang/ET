@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EventSystem: Singleton<EventSystem>, ISingletonAwake<Dictionary<string, Type>>
+    public class EventSystem: Singleton<EventSystem>, ISingletonAwake, ISingletonLoad
     {
         private class EventInfo
         {
@@ -18,39 +18,14 @@ namespace ET
             }
         }
         
-        private readonly Dictionary<string, Type> allTypes = new();
-
-        private readonly UnOrderMultiMapSet<Type, Type> types = new();
-
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
         
         private Dictionary<Type, Dictionary<long, object>> allInvokes = new(); 
         
-        public void Awake(Dictionary<string, Type> addTypes)
+        public void Awake()
         {
-            this.allTypes.Clear();
-            this.types.Clear();
-            
-            foreach ((string fullName, Type type) in addTypes)
-            {
-                this.allTypes[fullName] = type;
-                
-                if (type.IsAbstract)
-                {
-                    continue;
-                }
-                
-                // 记录所有的有BaseAttribute标记的的类型
-                object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
-
-                foreach (object o in objects)
-                {
-                    this.types.Add(o.GetType(), type);
-                }
-            }
-
-            this.allEvents.Clear();
-            foreach (Type type in types[typeof (EventAttribute)])
+            CodeTypes codeTypes = CodeTypes.Instance;
+            foreach (Type type in codeTypes.GetTypes(typeof (EventAttribute)))
             {
                 IEvent obj = Activator.CreateInstance(type) as IEvent;
                 if (obj == null)
@@ -75,8 +50,7 @@ namespace ET
                 }
             }
 
-            this.allInvokes = new Dictionary<Type, Dictionary<long, object>>();
-            foreach (Type type in types[typeof (InvokeAttribute)])
+            foreach (Type type in codeTypes.GetTypes(typeof (InvokeAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
                 IInvoke iInvoke = obj as IInvoke;
@@ -107,25 +81,10 @@ namespace ET
                 }
             }
         }
-
-        public HashSet<Type> GetTypes(Type systemAttributeType)
+        
+        public void Load()
         {
-            if (!this.types.ContainsKey(systemAttributeType))
-            {
-                return new HashSet<Type>();
-            }
-
-            return this.types[systemAttributeType];
-        }
-
-        public Dictionary<string, Type> GetTypes()
-        {
-            return allTypes;
-        }
-
-        public Type GetType(string typeName)
-        {
-            return this.allTypes[typeName];
+            World.Instance.AddSingleton<EventSystem>(true);
         }
 
         public async ETTask PublishAsync<S, T>(S scene, T a) where S: class, IScene where T : struct

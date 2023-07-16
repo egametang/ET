@@ -17,7 +17,7 @@ namespace ET
                 "StartSceneConfigCategory", 
                 "StartZoneConfigCategory",
             };
-            HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
+            HashSet<Type> configTypes = CodeTypes.Instance.GetTypes(typeof (ConfigAttribute));
             foreach (Type configType in configTypes)
             {
                 string configFilePath;

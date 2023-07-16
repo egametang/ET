@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using CommandLine;
 
@@ -30,8 +31,8 @@ namespace ET.Server
                 //process.AddSingleton<IdGenerater>();
                 
                 
-                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Init).Assembly);
-                World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+                World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (Init).Assembly });
+                World.Instance.AddSingleton<EventSystem>();
                 
                 MongoHelper.Register();
                 

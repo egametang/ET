@@ -12,7 +12,7 @@ namespace ET.Client
 		
         public void Awake()
         {
-            var uiEvents = EventSystem.Instance.GetTypes(typeof (UIEventAttribute));
+            var uiEvents = CodeTypes.Instance.GetTypes(typeof (UIEventAttribute));
             foreach (Type type in uiEvents)
             {
                 object[] attrs = type.GetCustomAttributes(typeof (UIEventAttribute), false);

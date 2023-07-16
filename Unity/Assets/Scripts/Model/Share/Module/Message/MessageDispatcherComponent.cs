@@ -21,7 +21,7 @@ namespace ET
         
         public void Awake()
         {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageHandlerAttribute));
+            HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof (MessageHandlerAttribute));
 
             foreach (Type type in types)
             {

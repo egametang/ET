@@ -14,7 +14,7 @@ namespace ET
 
         public void Awake()
         {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
+            HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
 
             foreach (Type type in types)
             {

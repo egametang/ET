@@ -36,7 +36,8 @@ namespace ET
             
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
-            
+
+            World.Instance.AddSingleton<EventSystem>();
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<IdValueGenerater>();
             World.Instance.AddSingleton<ObjectPool>();

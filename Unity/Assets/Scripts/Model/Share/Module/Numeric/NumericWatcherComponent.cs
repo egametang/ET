@@ -24,7 +24,7 @@ namespace ET
         
         public void Awake()
         {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(NumericWatcherAttribute));
+            HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof(NumericWatcherAttribute));
             foreach (Type type in types)
             {
                 object[] attrs = type.GetCustomAttributes(typeof(NumericWatcherAttribute), false);

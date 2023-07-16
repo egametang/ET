@@ -6,7 +6,6 @@ using System.Runtime.Loader;
 
 namespace ET
 {
-   
     public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
         private AssemblyLoadContext assemblyLoadContext;
@@ -16,18 +15,17 @@ namespace ET
         public void Awake()
         {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies)
+            foreach (Assembly ass in assemblies)
             {
-                if (assembly.GetName().Name == "Model")
+                if (ass.GetName().Name == "Model")
                 {
-                    this.assembly = assembly;
+                    this.assembly = ass;
                     break;
                 }
             }
             Assembly hotfixAssembly = this.LoadHotfix();
-            
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
-            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+
+            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
             
             IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
             start.Run();
@@ -48,8 +46,7 @@ namespace ET
         {
             Assembly hotfixAssembly = this.LoadHotfix();
 			
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
-            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types, true);
+            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly }, true);
 			
             World.Instance.Load();
 			

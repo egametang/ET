@@ -14,7 +14,7 @@ namespace ET.Server
 
         public void Awake()
         {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
+            HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof (HttpHandlerAttribute));
 
             foreach (Type type in types)
             {

@@ -11,7 +11,7 @@ namespace ET
         {
             this.TypeSystems = new TypeSystems(InstanceQueueIndex.Max);
 
-            foreach (Type type in EventSystem.Instance.GetTypes(typeof (EntitySystemAttribute)))
+            foreach (Type type in CodeTypes.Instance.GetTypes(typeof (EntitySystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
 

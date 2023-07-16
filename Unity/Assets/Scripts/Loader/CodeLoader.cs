@@ -26,8 +26,9 @@ namespace ET
 				}
 				
 				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-				Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
-				World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+				
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies);
+				
 				foreach (Assembly ass in assemblies)
 				{
 					string name = ass.GetName().Name;
@@ -68,9 +69,7 @@ namespace ET
 			{
 				Assembly hotfixAssembly = this.LoadHotfix();
 
-				Dictionary<string, Type> types =
-						AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof (Init).Assembly, this.assembly, hotfixAssembly);
-				World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
 
 				IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
 				start.Run();
@@ -105,9 +104,8 @@ namespace ET
 		public void Reload()
 		{
 			Assembly hotfixAssembly = this.LoadHotfix();
-			
-			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
-			World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types, true);
+
+			World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly}, true);
 			
 			World.Instance.Load();
 			
