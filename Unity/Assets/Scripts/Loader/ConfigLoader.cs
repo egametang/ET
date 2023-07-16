@@ -6,9 +6,9 @@ using UnityEngine;
 namespace ET
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
+    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, Dictionary<Type, byte[]>>
     {
-        public override Dictionary<Type, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
+        public override Dictionary<Type, byte[]> Handle(ConfigLoader.GetAllConfigBytes args)
         {
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
@@ -68,9 +68,9 @@ namespace ET
     }
     
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigComponent.GetOneConfigBytes, byte[]>
+    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, byte[]>
     {
-        public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
+        public override byte[] Handle(ConfigLoader.GetOneConfigBytes args)
         {
             string ct = "cs";
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
