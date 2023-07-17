@@ -44,13 +44,13 @@ namespace ET
 				byte[] pdbBytes;
 				if (!Define.IsEditor)
 				{
-					//Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					//assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
-					//pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
+					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
 					
 					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
-					assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
-					pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
+					//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
+					//pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
 
 					if (Define.EnableIL2CPP)
 					{
@@ -80,13 +80,13 @@ namespace ET
 			byte[] pdbBytes;
 			if (!Define.IsEditor)
 			{
-				//Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-				//assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
-				//pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+				Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+				assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
+				pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
 					
 				// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
-				assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
-				pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
+				//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
+				//pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
 			}
 			else
 			{
