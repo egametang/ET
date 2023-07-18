@@ -14,15 +14,15 @@
             
             // 对象池回收
             using MessageObject messageObject = args.MessageObject;
-            
-            CoroutineLockComponent coroutineLockComponent = mailBoxComponent.CoroutineLockComponent;
-            if (coroutineLockComponent == null)
+
+            Fiber fiber = mailBoxComponent.Fiber();
+            if (fiber.IsDisposed)
             {
                 return;
             }
 
             long instanceId = mailBoxComponent.InstanceId;
-            using (await coroutineLockComponent.Wait(CoroutineLockType.Mailbox, mailBoxComponent.ParentInstanceId))
+            using (await fiber.CoroutineLockComponent.Wait(CoroutineLockType.Mailbox, mailBoxComponent.ParentInstanceId))
             {
                 if (mailBoxComponent.InstanceId != instanceId)
                 {
