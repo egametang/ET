@@ -17,6 +17,7 @@
         [StaticField]
         private static T instance;
         
+        [StaticField]
         public static T Instance
         {
             get

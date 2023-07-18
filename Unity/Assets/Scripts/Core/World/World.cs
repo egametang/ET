@@ -8,6 +8,7 @@ namespace ET
         [StaticField]
         private static World instance;
 
+        [StaticField]
         public static World Instance
         {
             get

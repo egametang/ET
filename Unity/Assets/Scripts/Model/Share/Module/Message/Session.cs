@@ -66,7 +66,7 @@ namespace ET
         
         public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
         {
-            int rpcId = ++Session.RpcId;
+            int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new RpcInfo(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
@@ -102,7 +102,7 @@ namespace ET
 
         public static async ETTask<IResponse> Call(this Session self, IRequest request, int time = 0)
         {
-            int rpcId = ++Session.RpcId;
+            int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
@@ -150,7 +150,7 @@ namespace ET
     {
         public AService AService { get; set; }
         
-        public static int RpcId
+        public int RpcId
         {
             get;
             set;
