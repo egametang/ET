@@ -48,13 +48,13 @@ namespace ET.Client
                 }
                 case ISessionMessage:
                 {
-                    MessageDispatcherComponent.Instance.Handle(session, message);
+                    MessageSessionDispatcher.Instance.Handle(session, message);
                     break;
                 }
                 case IMessage iActorMessage:
                 {
                     // 扔到Main纤程队列中
-                    self.Fiber().ActorInnerComponent.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), iActorMessage);
+                    self.Fiber().MessageInnerSender.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), iActorMessage);
                     break;
                 }
                 default:

@@ -28,20 +28,6 @@ message M2C_TestResponse // IResponse
 	string response = 4;
 }
 
-//ResponseType Actor_TransferResponse
-message Actor_TransferRequest // ILocationRequest
-{
-	int32 RpcId = 1;
-	int32 MapIndex = 2;
-}
-
-message Actor_TransferResponse // ILocationResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-}
-
 //ResponseType G2C_EnterMap
 message C2G_EnterMap // ISessionRequest
 {

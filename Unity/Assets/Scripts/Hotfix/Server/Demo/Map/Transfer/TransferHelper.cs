@@ -33,7 +33,7 @@ namespace ET.Server
             unit.Dispose();
             
             await root.GetComponent<LocationProxyComponent>().Lock(LocationType.Unit, unitId, request.OldActorId);
-            await root.GetComponent<ActorSenderComponent>().Call(sceneInstanceId, request);
+            await root.GetComponent<MessageSender>().Call(sceneInstanceId, request);
         }
     }
 }

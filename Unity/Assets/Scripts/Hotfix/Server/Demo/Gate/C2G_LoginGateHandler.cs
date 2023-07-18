@@ -3,8 +3,8 @@
 
 namespace ET.Server
 {
-    [MessageHandler(SceneType.Gate)]
-    public class C2G_LoginGateHandler : MessageHandler<C2G_LoginGate, G2C_LoginGate>
+    [MessageSessionHandler(SceneType.Gate)]
+    public class C2G_LoginGateHandler : MessageSessionHandler<C2G_LoginGate, G2C_LoginGate>
     {
         protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response)
         {
@@ -59,7 +59,7 @@ namespace ET.Server
             Fiber fiber = player.Fiber();
             await fiber.WaitFrameFinish();
             
-            using Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<ActorSenderComponent>().Call(
+            using Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<MessageSender>().Call(
                 player.GetComponent<PlayerRoomComponent>().RoomActorId,
                 new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
             G2C_Reconnect g2CReconnect = new() { StartTime = room2GateReconnect.StartTime, Frame = room2GateReconnect.Frame };

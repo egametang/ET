@@ -10,7 +10,7 @@ namespace ET.Server
             
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
 
-            ActorLocationSenderComponent actorLocationSenderComponent = room.Root().GetComponent<ActorLocationSenderComponent>();
+            MessageLocationSenderComponent messageLocationSenderComponent = room.Root().GetComponent<MessageLocationSenderComponent>();
             foreach (var kv in roomServerComponent.Children)
             {
                 RoomPlayer roomPlayer = kv.Value as RoomPlayer;
@@ -20,7 +20,7 @@ namespace ET.Server
                     continue;
                 }
                 
-                actorLocationSenderComponent.Get(LocationType.GateSession).Send(roomPlayer.Id, message);
+                messageLocationSenderComponent.Get(LocationType.GateSession).Send(roomPlayer.Id, message);
             }
         }
     }

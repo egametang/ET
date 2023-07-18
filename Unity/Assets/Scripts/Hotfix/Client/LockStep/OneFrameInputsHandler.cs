@@ -2,8 +2,8 @@ using System;
 
 namespace ET.Client
 {
-    [ActorMessageHandler(SceneType.LockStep)]
-    public class OneFrameInputsHandler: ActorMessageHandler<Scene, OneFrameInputs>
+    [MessageHandler(SceneType.LockStep)]
+    public class OneFrameInputsHandler: MessageHandler<Scene, OneFrameInputs>
     {
         protected override async ETTask Run(Scene root, OneFrameInputs input)
         {

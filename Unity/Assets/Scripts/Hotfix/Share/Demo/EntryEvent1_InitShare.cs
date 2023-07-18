@@ -9,7 +9,7 @@ namespace ET
             
             root.AddComponent<ObjectWait>();
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            root.AddComponent<ActorInnerComponent>();
+            root.AddComponent<MessageInnerSender>();
             
             await ETTask.CompletedTask;
         }

@@ -26,7 +26,7 @@
         public const int ERR_KcpSplitError = 100231;
         public const int ERR_KcpSplitCountError = 100232;
 
-        public const int ERR_ActorLocationSenderTimeout = 110004;
+        public const int ERR_MessageLocationSenderTimeout = 110004;
         public const int ERR_PacketParserError = 110005;
         public const int ERR_KcpChannelAcceptTimeout = 110206;
         public const int ERR_KcpRemoteDisconnect = 110207;
@@ -38,7 +38,7 @@
         public const int ERR_SessionSendOrRecvTimeout = 110311;
         public const int ERR_OuterSessionRecvInnerMessage = 110312;
         public const int ERR_NotFoundActor = 110313;
-        public const int ERR_ActorTimeout = 110315;
+        public const int ERR_MessageTimeout = 110315;
         public const int ERR_UnverifiedSessionSendMessage = 110316;
         public const int ERR_ActorLocationSenderTimeout2 = 110317;
         public const int ERR_ActorLocationSenderTimeout3 = 110318;

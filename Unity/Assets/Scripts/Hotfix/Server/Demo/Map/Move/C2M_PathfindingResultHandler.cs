@@ -1,8 +1,8 @@
 ﻿
 namespace ET.Server
 {
-	[ActorMessageLocationHandler(SceneType.Map)]
-	public class C2M_PathfindingResultHandler : ActorMessageLocationHandler<Unit, C2M_PathfindingResult>
+	[MessageLocationHandler(SceneType.Map)]
+	public class C2M_PathfindingResultHandler : MessageLocationHandler<Unit, C2M_PathfindingResult>
 	{
 		protected override async ETTask Run(Unit unit, C2M_PathfindingResult message)
 		{

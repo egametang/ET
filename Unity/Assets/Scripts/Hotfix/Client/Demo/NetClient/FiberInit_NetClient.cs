@@ -9,7 +9,7 @@
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
-            root.AddComponent<ActorInnerComponent>();
+            root.AddComponent<MessageInnerSender>();
             await ETTask.CompletedTask;
         }
     }

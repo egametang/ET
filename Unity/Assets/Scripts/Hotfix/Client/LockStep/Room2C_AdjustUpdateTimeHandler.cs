@@ -1,7 +1,7 @@
 namespace ET.Client
 {
-    [ActorMessageHandler(SceneType.LockStep)]
-    public class Room2C_AdjustUpdateTimeHandler: ActorMessageHandler<Scene, Room2C_AdjustUpdateTime>
+    [MessageHandler(SceneType.LockStep)]
+    public class Room2C_AdjustUpdateTimeHandler: MessageHandler<Scene, Room2C_AdjustUpdateTime>
     {
         protected override async ETTask Run(Scene root, Room2C_AdjustUpdateTime message)
         {

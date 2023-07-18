@@ -38,7 +38,7 @@
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<ObjectPool>();
-            World.Instance.AddSingleton<ActorMessageQueue>();
+            World.Instance.AddSingleton<MessageQueue>();
             World.Instance.AddSingleton<NetServices>();
             World.Instance.AddSingleton<NavmeshComponent>();
             World.Instance.AddSingleton<FiberManager>();

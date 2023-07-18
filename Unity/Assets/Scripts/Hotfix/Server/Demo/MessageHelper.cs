@@ -26,24 +26,24 @@ namespace ET.Server
             (message as MessageObject).IsFromPool = false;
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
             // 网络底层做了优化，同一个消息不会多次序列化
-            ActorLocationSenderOneType oneTypeLocationType = unit.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession);
+            MessageLocationSenderOneType oneTypeMessageLocationType = unit.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession);
             foreach (AOIEntity u in dict.Values)
             {
-                oneTypeLocationType.Send(u.Unit.Id, message);
+                oneTypeMessageLocationType.Send(u.Unit.Id, message);
             }
         }
         
         public static void SendToClient(Unit unit, IMessage message)
         {
-            unit.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession).Send(unit.Id, message);
+            unit.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession).Send(unit.Id, message);
         }
         
         /// <summary>
         /// 发送协议给Actor
         /// </summary>
-        public static void SendActor(Scene root, ActorId actorId, IMessage message)
+        public static void Send(Scene root, ActorId actorId, IMessage message)
         {
-            root.GetComponent<ActorSenderComponent>().Send(actorId, message);
+            root.GetComponent<MessageSender>().Send(actorId, message);
         }
     }
 }

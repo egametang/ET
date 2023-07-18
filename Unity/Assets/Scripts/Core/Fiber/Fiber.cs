@@ -69,16 +69,16 @@ namespace ET
             }
         }
         
-        private EntityRef<ActorInnerComponent> actorInnerComponent;
-        public ActorInnerComponent ActorInnerComponent
+        private EntityRef<MessageInnerSender> messageInnerSender;
+        public MessageInnerSender MessageInnerSender
         {
             get
             {
-                return this.actorInnerComponent;
+                return this.messageInnerSender;
             }
             set
             {
-                this.actorInnerComponent = value;
+                this.messageInnerSender = value;
             }
         }
 

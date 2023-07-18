@@ -11,11 +11,11 @@ namespace ET.Server
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
-            root.AddComponent<ActorInnerComponent>();
-            root.AddComponent<ActorSenderComponent>();
+            root.AddComponent<MessageInnerSender>();
+            root.AddComponent<MessageSender>();
             Room room = root.AddChild<Room>();
             root.AddComponent<LocationProxyComponent>();
-            root.AddComponent<ActorLocationSenderComponent>();
+            root.AddComponent<MessageLocationSenderComponent>();
             
             room.Name = "Server";
 

@@ -116,63 +116,6 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(Actor_TransferResponse))]
-	[Message(OuterMessage.Actor_TransferRequest)]
-	[MemoryPackable]
-	public partial class Actor_TransferRequest: MessageObject, ILocationRequest
-	{
-		public static Actor_TransferRequest Create(bool isFromPool = true) 
-		{ 
-			return !isFromPool? new Actor_TransferRequest() : ObjectPool.Instance.Fetch(typeof(Actor_TransferRequest)) as Actor_TransferRequest; 
-		}
-
-		[MemoryPackOrder(0)]
-		public int RpcId { get; set; }
-
-		[MemoryPackOrder(1)]
-		public int MapIndex { get; set; }
-
-		public override void Dispose() 
-		{
-			if (!this.IsFromPool) return;
-			this.RpcId = default;
-			this.MapIndex = default;
-			
-			ObjectPool.Instance.Recycle(this); 
-		}
-
-	}
-
-	[Message(OuterMessage.Actor_TransferResponse)]
-	[MemoryPackable]
-	public partial class Actor_TransferResponse: MessageObject, ILocationResponse
-	{
-		public static Actor_TransferResponse Create(bool isFromPool = true) 
-		{ 
-			return !isFromPool? new Actor_TransferResponse() : ObjectPool.Instance.Fetch(typeof(Actor_TransferResponse)) as Actor_TransferResponse; 
-		}
-
-		[MemoryPackOrder(0)]
-		public int RpcId { get; set; }
-
-		[MemoryPackOrder(1)]
-		public int Error { get; set; }
-
-		[MemoryPackOrder(2)]
-		public string Message { get; set; }
-
-		public override void Dispose() 
-		{
-			if (!this.IsFromPool) return;
-			this.RpcId = default;
-			this.Error = default;
-			this.Message = default;
-			
-			ObjectPool.Instance.Recycle(this); 
-		}
-
-	}
-
 	[ResponseType(nameof(G2C_EnterMap))]
 	[Message(OuterMessage.C2G_EnterMap)]
 	[MemoryPackable]
@@ -1032,37 +975,35 @@ namespace ET
 		 public const ushort RouterSync = 10003;
 		 public const ushort C2M_TestRequest = 10004;
 		 public const ushort M2C_TestResponse = 10005;
-		 public const ushort Actor_TransferRequest = 10006;
-		 public const ushort Actor_TransferResponse = 10007;
-		 public const ushort C2G_EnterMap = 10008;
-		 public const ushort G2C_EnterMap = 10009;
-		 public const ushort MoveInfo = 10010;
-		 public const ushort UnitInfo = 10011;
-		 public const ushort M2C_CreateUnits = 10012;
-		 public const ushort M2C_CreateMyUnit = 10013;
-		 public const ushort M2C_StartSceneChange = 10014;
-		 public const ushort M2C_RemoveUnits = 10015;
-		 public const ushort C2M_PathfindingResult = 10016;
-		 public const ushort C2M_Stop = 10017;
-		 public const ushort M2C_PathfindingResult = 10018;
-		 public const ushort M2C_Stop = 10019;
-		 public const ushort C2G_Ping = 10020;
-		 public const ushort G2C_Ping = 10021;
-		 public const ushort G2C_Test = 10022;
-		 public const ushort C2M_Reload = 10023;
-		 public const ushort M2C_Reload = 10024;
-		 public const ushort C2R_Login = 10025;
-		 public const ushort R2C_Login = 10026;
-		 public const ushort C2G_LoginGate = 10027;
-		 public const ushort G2C_LoginGate = 10028;
-		 public const ushort G2C_TestHotfixMessage = 10029;
-		 public const ushort C2M_TestRobotCase = 10030;
-		 public const ushort M2C_TestRobotCase = 10031;
-		 public const ushort C2M_TestRobotCase2 = 10032;
-		 public const ushort M2C_TestRobotCase2 = 10033;
-		 public const ushort C2M_TransferMap = 10034;
-		 public const ushort M2C_TransferMap = 10035;
-		 public const ushort C2G_Benchmark = 10036;
-		 public const ushort G2C_Benchmark = 10037;
+		 public const ushort C2G_EnterMap = 10006;
+		 public const ushort G2C_EnterMap = 10007;
+		 public const ushort MoveInfo = 10008;
+		 public const ushort UnitInfo = 10009;
+		 public const ushort M2C_CreateUnits = 10010;
+		 public const ushort M2C_CreateMyUnit = 10011;
+		 public const ushort M2C_StartSceneChange = 10012;
+		 public const ushort M2C_RemoveUnits = 10013;
+		 public const ushort C2M_PathfindingResult = 10014;
+		 public const ushort C2M_Stop = 10015;
+		 public const ushort M2C_PathfindingResult = 10016;
+		 public const ushort M2C_Stop = 10017;
+		 public const ushort C2G_Ping = 10018;
+		 public const ushort G2C_Ping = 10019;
+		 public const ushort G2C_Test = 10020;
+		 public const ushort C2M_Reload = 10021;
+		 public const ushort M2C_Reload = 10022;
+		 public const ushort C2R_Login = 10023;
+		 public const ushort R2C_Login = 10024;
+		 public const ushort C2G_LoginGate = 10025;
+		 public const ushort G2C_LoginGate = 10026;
+		 public const ushort G2C_TestHotfixMessage = 10027;
+		 public const ushort C2M_TestRobotCase = 10028;
+		 public const ushort M2C_TestRobotCase = 10029;
+		 public const ushort C2M_TestRobotCase2 = 10030;
+		 public const ushort M2C_TestRobotCase2 = 10031;
+		 public const ushort C2M_TransferMap = 10032;
+		 public const ushort M2C_TransferMap = 10033;
+		 public const ushort C2G_Benchmark = 10034;
+		 public const ushort G2C_Benchmark = 10035;
 	}
 }

@@ -28,12 +28,12 @@
                 {
                     if (messageObject is IRequest request)
                     {
-                        IResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
-                        mailBoxComponent.Root().GetComponent<ActorInnerComponent>().Reply(args.FromAddress, resp);
+                        IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                        mailBoxComponent.Root().GetComponent<MessageInnerSender>().Reply(args.FromAddress, resp);
                     }
                     return;
                 }
-                await ActorMessageDispatcherComponent.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
+                await MessageDispatcher.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
             }
         }
     }

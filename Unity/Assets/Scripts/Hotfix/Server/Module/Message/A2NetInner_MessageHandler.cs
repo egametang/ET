@@ -2,12 +2,12 @@
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.NetInner)]
-    public class A2NetInner_MessageHandler: ActorMessageHandler<Scene, A2NetInner_Message>
+    [MessageHandler(SceneType.NetInner)]
+    public class A2NetInner_MessageHandler: MessageHandler<Scene, A2NetInner_Message>
     {
         protected override async ETTask Run(Scene root, A2NetInner_Message innerMessage)
         {
-            root.GetComponent<ActorOuterComponent>().Send(innerMessage.ActorId, innerMessage.MessageObject);
+            root.GetComponent<MessageOuterSender>().Send(innerMessage.ActorId, innerMessage.MessageObject);
             await ETTask.CompletedTask;
         }
     }

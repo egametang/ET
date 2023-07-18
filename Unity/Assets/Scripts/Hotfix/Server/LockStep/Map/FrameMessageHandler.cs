@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.RoomRoot)]
-    public class FrameMessageHandler: ActorMessageHandler<Scene, FrameMessage>
+    [MessageHandler(SceneType.RoomRoot)]
+    public class FrameMessageHandler: MessageHandler<Scene, FrameMessage>
     {
         protected override async ETTask Run(Scene root, FrameMessage message)
         {
@@ -16,7 +16,7 @@ namespace ET.Server
                 long nowFrameTime = room.FixedTimeCounter.FrameTime(message.Frame);
                 int diffTime = (int)(nowFrameTime - TimeInfo.Instance.ServerFrameTime());
 
-                room.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession).Send(message.PlayerId, new Room2C_AdjustUpdateTime() {DiffTime = diffTime});
+                room.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession).Send(message.PlayerId, new Room2C_AdjustUpdateTime() {DiffTime = diffTime});
             }
 
             if (message.Frame < room.AuthorityFrame)  // 小于AuthorityFrame，丢弃

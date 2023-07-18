@@ -3,8 +3,8 @@
 
 namespace ET.Server
 {
-	[ActorMessageHandler(SceneType.Gate)]
-	public class Match2G_NotifyMatchSuccessHandler : ActorMessageHandler<Player, Match2G_NotifyMatchSuccess>
+	[MessageHandler(SceneType.Gate)]
+	public class Match2G_NotifyMatchSuccessHandler : MessageHandler<Player, Match2G_NotifyMatchSuccess>
 	{
 		protected override async ETTask Run(Player player, Match2G_NotifyMatchSuccess message)
 		{

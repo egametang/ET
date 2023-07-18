@@ -3,9 +3,9 @@ using TrueSync;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.RoomRoot)]
+    [MessageHandler(SceneType.RoomRoot)]
     [FriendOf(typeof (RoomServerComponent))]
-    public class C2Room_ChangeSceneFinishHandler: ActorMessageHandler<Scene, C2Room_ChangeSceneFinish>
+    public class C2Room_ChangeSceneFinishHandler: MessageHandler<Scene, C2Room_ChangeSceneFinish>
     {
         protected override async ETTask Run(Scene root, C2Room_ChangeSceneFinish message)
         {

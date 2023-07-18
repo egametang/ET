@@ -2,8 +2,8 @@
 
 namespace ET.Server
 {
-    [MessageHandler(SceneType.BenchmarkServer)]
-    public class C2G_BenchmarkHandler: MessageHandler<C2G_Benchmark, G2C_Benchmark>
+    [MessageSessionHandler(SceneType.BenchmarkServer)]
+    public class C2G_BenchmarkHandler: MessageSessionHandler<C2G_Benchmark, G2C_Benchmark>
     {
         protected override async ETTask Run(Session session, C2G_Benchmark request, G2C_Benchmark response)
         {

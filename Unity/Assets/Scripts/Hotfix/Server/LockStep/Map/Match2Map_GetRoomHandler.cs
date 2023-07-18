@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
-	[ActorMessageHandler(SceneType.Map)]
-	public class Match2Map_GetRoomHandler : ActorMessageHandler<Scene, Match2Map_GetRoom, Map2Match_GetRoom>
+	[MessageHandler(SceneType.Map)]
+	public class Match2Map_GetRoomHandler : MessageHandler<Scene, Match2Map_GetRoom, Map2Match_GetRoom>
 	{
 		protected override async ETTask Run(Scene root, Match2Map_GetRoom request, Map2Match_GetRoom response)
 		{
@@ -17,7 +17,7 @@ namespace ET.Server
 			// 发送消息给房间纤程，初始化
 			RoomManager2Room_Init roomManager2RoomInit = RoomManager2Room_Init.Create();
 			roomManager2RoomInit.PlayerIds.AddRange(request.PlayerIds);
-			await root.GetComponent<ActorSenderComponent>().Call(roomRootActorId, roomManager2RoomInit);
+			await root.GetComponent<MessageSender>().Call(roomRootActorId, roomManager2RoomInit);
 			
 			response.ActorId = roomRootActorId;
 			await ETTask.CompletedTask;

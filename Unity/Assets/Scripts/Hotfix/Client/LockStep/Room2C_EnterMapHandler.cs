@@ -1,7 +1,7 @@
 namespace ET.Client
 {
-    [ActorMessageHandler(SceneType.LockStep)]
-    public class Room2C_EnterMapHandler: ActorMessageHandler<Scene, Room2C_Start>
+    [MessageHandler(SceneType.LockStep)]
+    public class Room2C_EnterMapHandler: MessageHandler<Scene, Room2C_Start>
     {
         protected override async ETTask Run(Scene root, Room2C_Start message)
         {

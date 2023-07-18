@@ -1,7 +1,7 @@
 namespace ET.Client
 {
-    [ActorMessageHandler(SceneType.LockStep)]
-    public class Room2C_CheckHashFailHandler: ActorMessageHandler<Scene, Room2C_CheckHashFail>
+    [MessageHandler(SceneType.LockStep)]
+    public class Room2C_CheckHashFailHandler: MessageHandler<Scene, Room2C_CheckHashFail>
     {
         protected override async ETTask Run(Scene root, Room2C_CheckHashFail message)
         {

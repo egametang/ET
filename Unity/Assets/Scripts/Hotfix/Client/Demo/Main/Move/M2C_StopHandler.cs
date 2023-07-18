@@ -2,8 +2,8 @@
 
 namespace ET.Client
 {
-	[ActorMessageHandler(SceneType.Demo)]
-	public class M2C_StopHandler : ActorMessageHandler<Scene, M2C_Stop>
+	[MessageHandler(SceneType.Demo)]
+	public class M2C_StopHandler : MessageHandler<Scene, M2C_Stop>
 	{
 		protected override async ETTask Run(Scene root, M2C_Stop message)
 		{

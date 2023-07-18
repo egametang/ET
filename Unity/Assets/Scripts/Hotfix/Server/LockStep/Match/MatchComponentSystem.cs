@@ -32,15 +32,15 @@ namespace ET.Server
             self.waitMatchPlayers.Clear();
 
             Scene root = self.Root();
-            Map2Match_GetRoom map2MatchGetRoom = await root.GetComponent<ActorSenderComponent>().Call(
+            Map2Match_GetRoom map2MatchGetRoom = await root.GetComponent<MessageSender>().Call(
                 startSceneConfig.ActorId, match2MapGetRoom) as Map2Match_GetRoom;
 
             Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };
-            ActorLocationSenderComponent actorLocationSenderComponent = root.GetComponent<ActorLocationSenderComponent>();
+            MessageLocationSenderComponent messageLocationSenderComponent = root.GetComponent<MessageLocationSenderComponent>();
             
             foreach (long id in match2MapGetRoom.PlayerIds) // 这里发送消息线程不会修改PlayerInfo，所以可以直接使用
             {
-                actorLocationSenderComponent.Get(LocationType.Player).Send(id, match2GNotifyMatchSuccess);
+                messageLocationSenderComponent.Get(LocationType.Player).Send(id, match2GNotifyMatchSuccess);
                 // 等待进入房间的确认消息，如果超时要通知所有玩家退出房间，重新匹配
             }
         }

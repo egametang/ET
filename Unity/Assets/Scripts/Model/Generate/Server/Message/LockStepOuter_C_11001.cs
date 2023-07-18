@@ -87,7 +87,7 @@ namespace ET
 // 客户端通知房间切换场景完成
 	[Message(LockStepOuter.C2Room_ChangeSceneFinish)]
 	[MemoryPackable]
-	public partial class C2Room_ChangeSceneFinish: MessageObject, IRoom
+	public partial class C2Room_ChangeSceneFinish: MessageObject, IRoomMessage
 	{
 		public static C2Room_ChangeSceneFinish Create(bool isFromPool = true) 
 		{ 
@@ -240,7 +240,7 @@ namespace ET
 
 	[Message(LockStepOuter.C2Room_CheckHash)]
 	[MemoryPackable]
-	public partial class C2Room_CheckHash: MessageObject, IRoom
+	public partial class C2Room_CheckHash: MessageObject, IRoomMessage
 	{
 		public static C2Room_CheckHash Create(bool isFromPool = true) 
 		{ 

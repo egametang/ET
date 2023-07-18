@@ -2,8 +2,8 @@
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Location)]
-    public class ObjectLockRequestHandler: ActorMessageHandler<Scene, ObjectLockRequest, ObjectLockResponse>
+    [MessageHandler(SceneType.Location)]
+    public class ObjectLockRequestHandler: MessageHandler<Scene, ObjectLockRequest, ObjectLockResponse>
     {
         protected override async ETTask Run(Scene scene, ObjectLockRequest request, ObjectLockResponse response)
         {

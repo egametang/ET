@@ -20,7 +20,7 @@ namespace ET.Server
             {
                 case ISessionMessage:
                 {
-                    MessageDispatcherComponent.Instance.Handle(session, message);
+                    MessageSessionDispatcher.Instance.Handle(session, message);
                     break;
                 }
                 case FrameMessage frameMessage:
@@ -28,21 +28,21 @@ namespace ET.Server
                     Player player = session.GetComponent<SessionPlayerComponent>().Player;
                     ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
                     frameMessage.PlayerId = player.Id;
-                    root.GetComponent<ActorSenderComponent>().Send(roomActorId, frameMessage);
+                    root.GetComponent<MessageSender>().Send(roomActorId, frameMessage);
                     break;
                 }
-                case IRoom actorRoom:
+                case IRoomMessage actorRoom:
                 {
                     Player player = session.GetComponent<SessionPlayerComponent>().Player;
                     ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
                     actorRoom.PlayerId = player.Id;
-                    root.GetComponent<ActorSenderComponent>().Send(roomActorId, actorRoom);
+                    root.GetComponent<MessageSender>().Send(roomActorId, actorRoom);
                     break;
                 }
                 case ILocationMessage actorLocationMessage:
                 {
                     long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;
-                    root.GetComponent<ActorLocationSenderComponent>().Get(LocationType.Unit).Send(unitId, actorLocationMessage);
+                    root.GetComponent<MessageLocationSenderComponent>().Get(LocationType.Unit).Send(unitId, actorLocationMessage);
                     break;
                 }
                 case ILocationRequest actorLocationRequest: // gate session收到actor rpc消息，先向actor 发送rpc请求，再将请求结果返回客户端
@@ -50,7 +50,7 @@ namespace ET.Server
                     long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;
                     int rpcId = actorLocationRequest.RpcId; // 这里要保存客户端的rpcId
                     long instanceId = session.InstanceId;
-                    IResponse iResponse = await root.GetComponent<ActorLocationSenderComponent>().Get(LocationType.Unit).Call(unitId, actorLocationRequest);
+                    IResponse iResponse = await root.GetComponent<MessageLocationSenderComponent>().Get(LocationType.Unit).Call(unitId, actorLocationRequest);
                     iResponse.RpcId = rpcId;
                     // session可能已经断开了，所以这里需要判断
                     if (session.InstanceId == instanceId)

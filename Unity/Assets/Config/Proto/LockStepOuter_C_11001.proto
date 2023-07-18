@@ -23,7 +23,7 @@ message Match2G_NotifyMatchSuccess // IMessage
 }
 
 // 客户端通知房间切换场景完成
-message C2Room_ChangeSceneFinish // IRoom
+message C2Room_ChangeSceneFinish // IRoomMessage
 {
 	int64 PlayerId = 1;
 }
@@ -59,7 +59,7 @@ message Room2C_AdjustUpdateTime // IMessage
 	int32 DiffTime = 1;
 }
 
-message C2Room_CheckHash // IRoom
+message C2Room_CheckHash // IRoomMessage
 {
 	int64 PlayerId = 1;
 	int32 Frame = 2;
