@@ -13,7 +13,7 @@ namespace ET
             // 如果发向同一个进程，则扔到消息队列中
             if (actorId.Process == fiber.Process)
             {
-                ActorMessageQueue.Instance.Send(fiber.Address, actorId, (MessageObject)message);
+                fiber.ActorInnerComponent.Send(actorId, message);
                 return;
             }
             

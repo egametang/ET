@@ -13,7 +13,7 @@
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
             // 对象池回收
-            using MessageObject messageObject = args.MessageObject;
+            using MessageObject messageObject = (MessageObject)args.MessageObject;
 
             Fiber fiber = mailBoxComponent.Fiber();
             if (fiber.IsDisposed)

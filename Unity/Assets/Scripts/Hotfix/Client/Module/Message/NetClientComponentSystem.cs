@@ -45,10 +45,10 @@ namespace ET.Client
                     session.OnResponse(response);
                     break;
                 }
-                case IActorMessage:
+                case IActorMessage iActorMessage:
                 {
                     // 扔到Main纤程队列中
-                    ActorMessageQueue.Instance.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), message as MessageObject);
+                    self.Fiber().ActorInnerComponent.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), iActorMessage);
                     break;
                 }
                 default:

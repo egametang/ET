@@ -7,13 +7,19 @@ using System.Runtime.InteropServices;
 
 namespace ET
 {
+	public struct KcpMessageInfo
+	{
+		public ActorId ActorId;
+		public MessageObject MessageObject;
+	}
+	
 	public class KChannel : AChannel
 	{
 		private readonly KService Service;
 
 		private Kcp kcp { get; set; }
 
-		private readonly Queue<ActorMessageInfo> waitSendMessages = new Queue<ActorMessageInfo>();
+		private readonly Queue<KcpMessageInfo> waitSendMessages = new();
 		
 		public readonly uint CreateTime;
 
@@ -160,7 +166,7 @@ namespace ET
 					break;
 				}
 				
-				ActorMessageInfo buffer = this.waitSendMessages.Dequeue();
+				KcpMessageInfo buffer = this.waitSendMessages.Dequeue();
 				this.Send(buffer.ActorId, buffer.MessageObject);
 			}
 		}
@@ -437,7 +443,7 @@ namespace ET
 		{
 			if (!this.IsConnected)
 			{
-				ActorMessageInfo actorMessageInfo = new() { ActorId = actorId, MessageObject = message };
+				KcpMessageInfo actorMessageInfo = new() { ActorId = actorId, MessageObject = message };
 				this.waitSendMessages.Enqueue(actorMessageInfo);
 				return;
 			}

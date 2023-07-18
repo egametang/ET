@@ -6,7 +6,7 @@ namespace ET
     public struct ActorMessageInfo
     {
         public ActorId ActorId;
-        public MessageObject MessageObject;
+        public IActorMessage MessageObject;
     }
     
     public class ActorMessageQueue: Singleton<ActorMessageQueue>, ISingletonAwake
@@ -17,17 +17,17 @@ namespace ET
         {
         }
 
-        public void Send(ActorId actorId, MessageObject messageObject)
+        public void Send(ActorId actorId, IActorMessage messageObject)
         {
             this.Send(actorId.Address, actorId, messageObject);
         }
         
-        public void Reply(ActorId actorId, MessageObject messageObject)
+        public void Reply(ActorId actorId, IActorMessage messageObject)
         {
             this.Send(actorId.Address, actorId, messageObject);
         }
         
-        public void Send(Address fromAddress, ActorId actorId, MessageObject messageObject)
+        public void Send(Address fromAddress, ActorId actorId, IActorMessage messageObject)
         {
             if (!this.messages.TryGetValue(actorId.Address.Fiber, out var queue))
             {

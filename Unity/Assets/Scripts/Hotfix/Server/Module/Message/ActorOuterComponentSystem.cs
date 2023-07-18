@@ -83,7 +83,7 @@ namespace ET.Server
                 }
                 default:
                 {
-                    ActorMessageQueue.Instance.Send(actorId, (MessageObject)message);
+                    fiber.ActorInnerComponent.Send(actorId, (IActorMessage)message);
                     break;
                 }
             }
