@@ -34,7 +34,6 @@ namespace ET
         public int Process { get; }
         
         public EntitySystem EntitySystem { get; }
-        public TimeInfo TimeInfo { get; }
         public IdGenerater IdGenerater { get; private set; }
         public Mailboxes Mailboxes { get; private set; }
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
@@ -86,8 +85,7 @@ namespace ET
             this.Process = process;
             this.Zone = zone;
             this.EntitySystem = new EntitySystem();
-            this.TimeInfo = new TimeInfo();
-            this.IdGenerater = new IdGenerater(process, this.TimeInfo);
+            this.IdGenerater = new IdGenerater(process);
             this.Mailboxes = new Mailboxes();
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             this.Root = new Scene(this, id, 1, sceneType, name);
@@ -97,7 +95,6 @@ namespace ET
         {
             try
             {
-                this.TimeInfo.Update();
                 this.EntitySystem.Update();
             }
             catch (Exception e)

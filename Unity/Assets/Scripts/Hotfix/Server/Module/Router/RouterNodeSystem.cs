@@ -7,7 +7,7 @@
         [EntitySystem]
         private static void Awake(this RouterNode self)
         {
-            long timeNow = self.Fiber().TimeInfo.ServerNow();
+            long timeNow = TimeInfo.Instance.ServerNow();
             self.LastRecvInnerTime = timeNow;
             self.LastRecvOuterTime = timeNow;
             self.OuterIpEndPoint = null;

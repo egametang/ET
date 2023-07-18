@@ -118,7 +118,7 @@ namespace ET.Client
                 RunLSRollbackSystem(room);
             }
             
-            room.FixedTimeCounter.Reset(room.Fiber.TimeInfo.ServerFrameTime() - frame * LSConstValue.UpdateInterval, 0);
+            room.FixedTimeCounter.Reset(TimeInfo.Instance.ServerFrameTime() - frame * LSConstValue.UpdateInterval, 0);
 
             Log.Debug($"jump replay finish {frame}");
         }

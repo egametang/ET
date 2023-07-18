@@ -91,15 +91,13 @@ namespace ET
         private uint value;
         private uint lastIdTime;
 
-        private readonly TimeInfo timeInfo;
         private readonly int process;
         
         private uint instanceIdValue;
         
-        public IdGenerater(int process, TimeInfo timeInfo)
+        public IdGenerater(int process)
         {
             this.process = process;
-            this.timeInfo = timeInfo;
             
             long epoch1970tick = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
             this.epoch2022 = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000 - epoch1970tick;
@@ -113,7 +111,7 @@ namespace ET
 
         private uint TimeSince2022()
         {
-            uint a = (uint)((this.timeInfo.FrameTime - this.epoch2022) / 1000);
+            uint a = (uint)((TimeInfo.Instance.FrameTime - this.epoch2022) / 1000);
             return a;
         }
         

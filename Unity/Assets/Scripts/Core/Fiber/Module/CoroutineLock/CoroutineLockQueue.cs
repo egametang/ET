@@ -32,7 +32,7 @@ namespace ET
             self.queue.Enqueue(waitCoroutineLock);
             if (time > 0)
             {
-                long tillTime = self.Fiber().TimeInfo.ClientFrameTime() + time;
+                long tillTime = TimeInfo.Instance.ClientFrameTime() + time;
                 self.Root().GetComponent<TimerComponent>().NewOnceTimer(tillTime, TimerCoreInvokeType.CoroutineTimeout, waitCoroutineLock);
             }
             self.CurrentCoroutineLock = await waitCoroutineLock.Wait();

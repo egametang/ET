@@ -175,11 +175,11 @@ namespace ET
             
             Timeout().Coroutine();
             
-            long beginTime = fiber.TimeInfo.ServerFrameTime();
+            long beginTime = TimeInfo.Instance.ServerFrameTime();
 
             IActorResponse response = await tcs;
             
-            long endTime = fiber.TimeInfo.ServerFrameTime();
+            long endTime = TimeInfo.Instance.ServerFrameTime();
 
             long costTime = endTime - beginTime;
             if (costTime > 200)

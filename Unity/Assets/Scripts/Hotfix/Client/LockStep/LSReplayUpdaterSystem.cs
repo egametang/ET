@@ -17,7 +17,7 @@ namespace ET.Client
         {
             Room room = self.GetParent<Room>();
             Fiber fiber = self.Fiber();
-            long timeNow = fiber.TimeInfo.ServerNow();
+            long timeNow = TimeInfo.Instance.ServerNow();
 
             int i = 0;
             while (true)
@@ -39,7 +39,7 @@ namespace ET.Client
                 room.Update(oneFrameInputs);
                 room.SpeedMultiply = ++i;
 
-                long timeNow2 = fiber.TimeInfo.ServerNow();
+                long timeNow2 = TimeInfo.Instance.ServerNow();
                 if (timeNow2 - timeNow > 5)
                 {
                     break;

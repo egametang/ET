@@ -51,6 +51,7 @@ namespace ET
                 {
                     continue;
                 }
+                
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
                 fiber.LateUpdate();

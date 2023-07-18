@@ -130,7 +130,7 @@ namespace ET
 
         private static long GetNow(this TimerComponent self)
         {
-            return self.Fiber().TimeInfo.ClientFrameTime();
+            return TimeInfo.Instance.ClientFrameTime();
         }
 
         private static void Run(this TimerComponent self, TimerAction timerAction)

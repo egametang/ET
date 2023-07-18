@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class TimeInfo
+    public class TimeInfo: Singleton<TimeInfo>, ISingletonAwake
     {
         private int timeZone;
         
@@ -25,8 +25,8 @@ namespace ET
         public long ServerMinusClientTime { private get; set; }
 
         public long FrameTime;
-
-        public TimeInfo()
+        
+        public void Awake()
         {
             this.dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             this.dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -35,6 +35,7 @@ namespace ET
 
         public void Update()
         {
+            // 赋值long型是原子操作，线程安全
             this.FrameTime = this.ClientNow();
         }
         

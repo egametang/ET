@@ -36,7 +36,7 @@ namespace ET.Client
                 return;
             }
 
-            session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
+            session.LastRecvTime = TimeInfo.Instance.ClientNow();
             
             switch (message)
             {

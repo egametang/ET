@@ -44,7 +44,7 @@ namespace ET.Server
         {
             using (ListComponent<long> list = ListComponent<long>.Create())
             {
-                long timeNow = self.Fiber().TimeInfo.ServerNow();
+                long timeNow = TimeInfo.Instance.ServerNow();
                 foreach ((long key, Entity value) in self.Children)
                 {
                     ActorLocationSender actorLocationMessageSender = (ActorLocationSender) value;
@@ -105,7 +105,7 @@ namespace ET.Server
             
             if (actorLocationSender.ActorId != default)
             {
-                actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
+                actorLocationSender.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
                 root.GetComponent<ActorSenderComponent>().Send(actorLocationSender.ActorId, message);
                 return;
             }
@@ -129,7 +129,7 @@ namespace ET.Server
                     }
                 }
                 
-                actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
+                actorLocationSender.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
                 root.GetComponent<ActorSenderComponent>().Send(actorLocationSender.ActorId, message);
             }
         }
@@ -144,7 +144,7 @@ namespace ET.Server
             
             if (actorLocationSender.ActorId != default)
             {
-                actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
+                actorLocationSender.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
                 return await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, request);
             }
             
@@ -168,7 +168,7 @@ namespace ET.Server
                 }
             }
 
-            actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
+            actorLocationSender.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
             return await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, request);
         }
 
@@ -222,7 +222,7 @@ namespace ET.Server
         {
             int failTimes = 0;
             long instanceId = actorLocationSender.InstanceId;
-            actorLocationSender.LastSendOrRecvTime = self.Fiber().TimeInfo.ServerNow();
+            actorLocationSender.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
             
             Scene root = self.Root();
             

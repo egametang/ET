@@ -49,7 +49,7 @@ namespace ET.Server
                 return;
             }
             
-            session.LastRecvTime = self.Fiber().TimeInfo.ClientFrameTime();
+            session.LastRecvTime = TimeInfo.Instance.ClientFrameTime();
 
             self.HandleMessage(actorId, message).Coroutine();
         }
@@ -228,11 +228,11 @@ namespace ET.Server
 
             Timeout().Coroutine();
 
-            long beginTime = fiber.TimeInfo.ServerFrameTime();
+            long beginTime = TimeInfo.Instance.ServerFrameTime();
 
             IActorResponse response = await tcs;
 
-            long endTime = fiber.TimeInfo.ServerFrameTime();
+            long endTime = TimeInfo.Instance.ServerFrameTime();
 
             long costTime = endTime - beginTime;
             if (costTime > 200)

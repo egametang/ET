@@ -66,7 +66,7 @@ namespace ET.Client
             Fiber fiber = root.Fiber;
             while (true)
             {
-                long timeNow = fiber.TimeInfo.ClientFrameTime();
+                long timeNow = TimeInfo.Instance.ClientFrameTime();
                 if (timeNow - lastSendTimer > 300)
                 {
                     if (--count < 0)

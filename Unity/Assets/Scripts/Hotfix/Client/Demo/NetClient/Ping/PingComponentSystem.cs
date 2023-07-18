@@ -30,7 +30,7 @@ namespace ET.Client
                     return;
                 }
 
-                long time1 = self.Fiber().TimeInfo.ClientNow();
+                long time1 = TimeInfo.Instance.ClientNow();
                 try
                 {
                     C2G_Ping c2GPing = C2G_Ping.Create(true);
@@ -41,10 +41,10 @@ namespace ET.Client
                         return;
                     }
 
-                    long time2 = self.Fiber().TimeInfo.ClientNow();
+                    long time2 = TimeInfo.Instance.ClientNow();
                     self.Ping = time2 - time1;
                     
-                    fiber.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+                    TimeInfo.Instance.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
                     
                     await fiber.TimerComponent.WaitAsync(2000);
                 }
