@@ -2,11 +2,6 @@ using System;
 
 namespace ET
 {
-    public interface IRegisterLSEntitySystem
-    {
-        void RegisterSystem(LSEntity entity);
-    }
-    
     [EnableMethod]
     public class LSEntity: Entity
     {
@@ -56,7 +51,7 @@ namespace ET
 
         protected override void RegisterSystem()
         {
-            IRegisterLSEntitySystem iRegisterLsEntitySystem = (IRegisterLSEntitySystem)this.IScene;
+            LSWorld lsWorld = (LSWorld)this.IScene;
             TypeSystems.OneTypeSystems oneTypeSystems = LSEntitySystemSingleton.Instance.GetOneTypeSystems(this.GetType());
             if (oneTypeSystems == null)
             {
@@ -65,7 +60,7 @@ namespace ET
 
             if (oneTypeSystems.QueueFlag[LSQueneUpdateIndex.LSUpdate])
             {
-                iRegisterLsEntitySystem.RegisterSystem(this);
+                lsWorld.RegisterSystem(this);
             }
         }
     }
