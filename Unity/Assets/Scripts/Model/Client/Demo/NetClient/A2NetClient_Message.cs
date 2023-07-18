@@ -14,7 +14,7 @@
             ObjectPool.Instance.Recycle(this);
         }
         
-        public IMessage MessageObject;
+        public IActorMessage MessageObject;
     }
     
     [Message]
@@ -34,7 +34,7 @@
         }
      
         public int RpcId { get; set; }
-        public IRequest MessageObject;
+        public IActorRequest MessageObject;
     }
     
     [Message]
@@ -58,7 +58,7 @@
         public int Error { get; set; }
         public string Message { get; set; }
         
-        public IResponse MessageObject;
+        public IActorResponse MessageObject;
     }
     
     [Message]

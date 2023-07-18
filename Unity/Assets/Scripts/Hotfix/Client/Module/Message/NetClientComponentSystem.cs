@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using MongoDB.Bson;
 
@@ -40,9 +41,14 @@ namespace ET.Client
             
             switch (message)
             {
-                case IResponse response:
+                case IActorResponse response:
                 {
                     session.OnResponse(response);
+                    break;
+                }
+                case ISessionMessage:
+                {
+                    MessageDispatcherComponent.Instance.Handle(session, message);
                     break;
                 }
                 case IActorMessage iActorMessage:
@@ -53,9 +59,7 @@ namespace ET.Client
                 }
                 default:
                 {
-                    // 普通消息或者是Rpc请求消息
-                    MessageDispatcherComponent.Instance.Handle(session, message);
-                    break;
+                    throw new Exception($"not found handler: {message}");
                 }
             }
         }

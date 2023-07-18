@@ -2,12 +2,12 @@ syntax = "proto3";
 package ET;
 
 //ResponseType G2C_Match
-message C2G_Match // IRequest
+message C2G_Match // ISessionRequest
 {
 	int32 RpcId = 1;
 }
 
-message G2C_Match // IResponse
+message G2C_Match // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;

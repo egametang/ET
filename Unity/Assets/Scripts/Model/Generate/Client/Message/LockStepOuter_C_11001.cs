@@ -6,7 +6,7 @@ namespace ET
 	[ResponseType(nameof(G2C_Match))]
 	[Message(LockStepOuter.C2G_Match)]
 	[MemoryPackable]
-	public partial class C2G_Match: MessageObject, IRequest
+	public partial class C2G_Match: MessageObject, ISessionRequest
 	{
 		public static C2G_Match Create(bool isFromPool = true) 
 		{ 
@@ -28,7 +28,7 @@ namespace ET
 
 	[Message(LockStepOuter.G2C_Match)]
 	[MemoryPackable]
-	public partial class G2C_Match: MessageObject, IResponse
+	public partial class G2C_Match: MessageObject, ISessionResponse
 	{
 		public static G2C_Match Create(bool isFromPool = true) 
 		{ 

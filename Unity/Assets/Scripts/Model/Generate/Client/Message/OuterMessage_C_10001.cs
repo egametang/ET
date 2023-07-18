@@ -176,7 +176,7 @@ namespace ET
 	[ResponseType(nameof(G2C_EnterMap))]
 	[Message(OuterMessage.C2G_EnterMap)]
 	[MemoryPackable]
-	public partial class C2G_EnterMap: MessageObject, IRequest
+	public partial class C2G_EnterMap: MessageObject, ISessionRequest
 	{
 		public static C2G_EnterMap Create(bool isFromPool = true) 
 		{ 
@@ -198,7 +198,7 @@ namespace ET
 
 	[Message(OuterMessage.G2C_EnterMap)]
 	[MemoryPackable]
-	public partial class G2C_EnterMap: MessageObject, IResponse
+	public partial class G2C_EnterMap: MessageObject, ISessionResponse
 	{
 		public static G2C_EnterMap Create(bool isFromPool = true) 
 		{ 
@@ -514,7 +514,7 @@ namespace ET
 	[ResponseType(nameof(G2C_Ping))]
 	[Message(OuterMessage.C2G_Ping)]
 	[MemoryPackable]
-	public partial class C2G_Ping: MessageObject, IRequest
+	public partial class C2G_Ping: MessageObject, ISessionRequest
 	{
 		public static C2G_Ping Create(bool isFromPool = true) 
 		{ 
@@ -536,7 +536,7 @@ namespace ET
 
 	[Message(OuterMessage.G2C_Ping)]
 	[MemoryPackable]
-	public partial class G2C_Ping: MessageObject, IResponse
+	public partial class G2C_Ping: MessageObject, ISessionResponse
 	{
 		public static G2C_Ping Create(bool isFromPool = true) 
 		{ 
@@ -570,7 +570,7 @@ namespace ET
 
 	[Message(OuterMessage.G2C_Test)]
 	[MemoryPackable]
-	public partial class G2C_Test: MessageObject, IMessage
+	public partial class G2C_Test: MessageObject, ISessionMessage
 	{
 		public static G2C_Test Create(bool isFromPool = true) 
 		{ 
@@ -589,7 +589,7 @@ namespace ET
 	[ResponseType(nameof(M2C_Reload))]
 	[Message(OuterMessage.C2M_Reload)]
 	[MemoryPackable]
-	public partial class C2M_Reload: MessageObject, IRequest
+	public partial class C2M_Reload: MessageObject, ISessionRequest
 	{
 		public static C2M_Reload Create(bool isFromPool = true) 
 		{ 
@@ -619,7 +619,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_Reload)]
 	[MemoryPackable]
-	public partial class M2C_Reload: MessageObject, IResponse
+	public partial class M2C_Reload: MessageObject, ISessionResponse
 	{
 		public static M2C_Reload Create(bool isFromPool = true) 
 		{ 
@@ -650,7 +650,7 @@ namespace ET
 	[ResponseType(nameof(R2C_Login))]
 	[Message(OuterMessage.C2R_Login)]
 	[MemoryPackable]
-	public partial class C2R_Login: MessageObject, IRequest
+	public partial class C2R_Login: MessageObject, ISessionRequest
 	{
 		public static C2R_Login Create(bool isFromPool = true) 
 		{ 
@@ -680,7 +680,7 @@ namespace ET
 
 	[Message(OuterMessage.R2C_Login)]
 	[MemoryPackable]
-	public partial class R2C_Login: MessageObject, IResponse
+	public partial class R2C_Login: MessageObject, ISessionResponse
 	{
 		public static R2C_Login Create(bool isFromPool = true) 
 		{ 
@@ -723,7 +723,7 @@ namespace ET
 	[ResponseType(nameof(G2C_LoginGate))]
 	[Message(OuterMessage.C2G_LoginGate)]
 	[MemoryPackable]
-	public partial class C2G_LoginGate: MessageObject, IRequest
+	public partial class C2G_LoginGate: MessageObject, ISessionRequest
 	{
 		public static C2G_LoginGate Create(bool isFromPool = true) 
 		{ 
@@ -753,7 +753,7 @@ namespace ET
 
 	[Message(OuterMessage.G2C_LoginGate)]
 	[MemoryPackable]
-	public partial class G2C_LoginGate: MessageObject, IResponse
+	public partial class G2C_LoginGate: MessageObject, ISessionResponse
 	{
 		public static G2C_LoginGate Create(bool isFromPool = true) 
 		{ 
@@ -787,7 +787,7 @@ namespace ET
 
 	[Message(OuterMessage.G2C_TestHotfixMessage)]
 	[MemoryPackable]
-	public partial class G2C_TestHotfixMessage: MessageObject, IMessage
+	public partial class G2C_TestHotfixMessage: MessageObject, ISessionMessage
 	{
 		public static G2C_TestHotfixMessage Create(bool isFromPool = true) 
 		{ 
@@ -976,7 +976,7 @@ namespace ET
 	[ResponseType(nameof(G2C_Benchmark))]
 	[Message(OuterMessage.C2G_Benchmark)]
 	[MemoryPackable]
-	public partial class C2G_Benchmark: MessageObject, IRequest
+	public partial class C2G_Benchmark: MessageObject, ISessionRequest
 	{
 		public static C2G_Benchmark Create(bool isFromPool = true) 
 		{ 
@@ -998,7 +998,7 @@ namespace ET
 
 	[Message(OuterMessage.G2C_Benchmark)]
 	[MemoryPackable]
-	public partial class G2C_Benchmark: MessageObject, IResponse
+	public partial class G2C_Benchmark: MessageObject, ISessionResponse
 	{
 		public static G2C_Benchmark Create(bool isFromPool = true) 
 		{ 

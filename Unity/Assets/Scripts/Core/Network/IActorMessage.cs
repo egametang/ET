@@ -1,15 +1,37 @@
 ﻿namespace ET
 {
     // 不需要返回消息
-    public interface IActorMessage: IMessage
+    public interface IActorMessage
     {
     }
 
-    public interface IActorRequest: IRequest, IActorMessage
+    public interface IActorRequest: IActorMessage
     {
+        int RpcId
+        {
+            get;
+            set;
+        }
     }
 
-    public interface IActorResponse: IResponse, IActorMessage
+    public interface IActorResponse: IActorMessage
     {
+        int Error
+        {
+            get;
+            set;
+        }
+
+        string Message
+        {
+            get;
+            set;
+        }
+
+        int RpcId
+        {
+            get;
+            set;
+        }
     }
 }

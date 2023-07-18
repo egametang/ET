@@ -34,7 +34,7 @@ namespace ET
                 }
 
                 // 检查request response
-                if (typeof (IRequest).IsAssignableFrom(type))
+                if (typeof (IActorRequest).IsAssignableFrom(type))
                 {
                     if (typeof (IActorLocationMessage).IsAssignableFrom(type))
                     {

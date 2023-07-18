@@ -21,6 +21,7 @@
 
         public static async ETTask<long> LoginAsync(this ClientSenderCompnent self, string account, string password)
         {
+            
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
             self.netClientActorId = new ActorId(self.Fiber().Process, self.fiberId);
 
@@ -28,14 +29,14 @@
             return response.PlayerId;
         }
 
-        public static void Send(this ClientSenderCompnent self, IMessage message)
+        public static void Send(this ClientSenderCompnent self, IActorMessage message)
         {
             A2NetClient_Message a2NetClientMessage = A2NetClient_Message.Create();
             a2NetClientMessage.MessageObject = message;
             self.Fiber().ActorInnerComponent.Send(self.netClientActorId, a2NetClientMessage);
         }
 
-        public static async ETTask<IResponse> Call(this ClientSenderCompnent self, IRequest request, bool needException = true)
+        public static async ETTask<IActorResponse> Call(this ClientSenderCompnent self, IActorRequest request, bool needException = true)
         {
             A2NetClient_Request a2NetClientRequest = A2NetClient_Request.Create();
             a2NetClientRequest.MessageObject = request;
