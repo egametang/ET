@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ET
 {
@@ -79,7 +80,7 @@ namespace ET
         }
     }
 
-    public class IdGenerater
+    public class IdGenerater: Singleton<IdGenerater>, ISingletonAwake
     {
         public const int MaxZone = 1024;
         
@@ -87,26 +88,15 @@ namespace ET
         public const int Mask30bit = 0x3fffffff;
         public const int Mask20bit = 0xfffff;
         
-        private readonly long epoch2022;
-        private uint value;
-        private uint lastIdTime;
-
-        private readonly int process;
+        private long epoch2022;
         
-        private uint instanceIdValue;
+        private int value;
+        private int instanceIdValue;
         
-        public IdGenerater(int process)
+        public void Awake()
         {
-            this.process = process;
-            
             long epoch1970tick = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
             this.epoch2022 = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000 - epoch1970tick;
-            this.lastIdTime = TimeSince2022();
-            if (this.lastIdTime <= 0)
-            {
-                Log.Warning($"lastIdTime less than 0: {this.lastIdTime}");
-                this.lastIdTime = 1;
-            }
         }
 
         private uint TimeSince2022()
@@ -118,35 +108,25 @@ namespace ET
         public long GenerateId()
         {
             uint time = TimeSince2022();
-
-            // 时间不会倒退
-            if (time > this.lastIdTime)
+            int v = 0;
+            // 这里必须加锁
+            lock (this)
             {
-                this.lastIdTime = time;
+                if (++this.value > Mask20bit - 1)
+                {
+                    this.value = 0;
+                }
+                v = this.value;
             }
-            this.value = IdValueGenerater.Instance.Value;
-
-            IdStruct idStruct = new(this.lastIdTime, (short)this.process, value);
+            IdStruct idStruct = new(time, (short)Options.Instance.Process, (uint)v);
             return idStruct.ToLong();
         }
         
         public long GenerateInstanceId()
         {
             uint time = this.TimeSince2022();
-
-            // 时间不会倒退
-            if (time > this.lastIdTime)
-            {
-                this.lastIdTime = time;
-            }
-            ++this.instanceIdValue;
-                
-            if (this.instanceIdValue >= int.MaxValue)
-            {
-                this.instanceIdValue = 0;
-            }
-
-            InstanceIdStruct instanceIdStruct = new(this.lastIdTime, this.instanceIdValue);
+            uint v = (uint)Interlocked.Add(ref this.instanceIdValue, 1);
+            InstanceIdStruct instanceIdStruct = new(time, v);
             return instanceIdStruct.ToLong();
         }
     }

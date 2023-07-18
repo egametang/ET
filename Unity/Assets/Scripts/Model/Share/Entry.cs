@@ -1,7 +1,4 @@
-﻿using System.IO;
-using MemoryPack;
-
-namespace ET
+﻿namespace ET
 {
     namespace EventType
     {
@@ -38,8 +35,8 @@ namespace ET
             MongoHelper.Register();
 
             World.Instance.AddSingleton<TimeInfo>();
+            World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
-            World.Instance.AddSingleton<IdValueGenerater>();
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<ActorMessageQueue>();
             World.Instance.AddSingleton<NetServices>();

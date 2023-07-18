@@ -90,19 +90,9 @@ namespace ET
             }
         }
 
-        private EntitySystem GetEntitySystem()
-        {
-            return this.iScene.Fiber.EntitySystem;
-        }
-        
-        private IdGenerater GetIdGenerater()
-        {
-            return this.iScene.Fiber.IdGenerater;
-        }
-
         protected virtual void RegisterSystem()
         {
-            this.GetEntitySystem().RegisterSystem(this);
+            this.iScene.Fiber.EntitySystem.RegisterSystem(this);
         }
 
         protected virtual string ViewName
@@ -325,7 +315,7 @@ namespace ET
                 {
                     if (this.InstanceId == 0)
                     {
-                        this.InstanceId = this.GetIdGenerater().GenerateInstanceId();
+                        this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
                     }
 
                     this.IsRegister = true;
@@ -874,7 +864,7 @@ namespace ET
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
-            component.Id = this.GetIdGenerater().GenerateId();
+            component.Id = IdGenerater.Instance.GenerateId();
             component.Parent = this;
 
             EntitySystemSingleton.Instance.Awake(component);
@@ -885,7 +875,7 @@ namespace ET
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
-            component.Id = this.GetIdGenerater().GenerateId();
+            component.Id = IdGenerater.Instance.GenerateId();
             component.Parent = this;
 
             EntitySystemSingleton.Instance.Awake(component, a);
@@ -896,7 +886,7 @@ namespace ET
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
-            component.Id = this.GetIdGenerater().GenerateId();
+            component.Id = IdGenerater.Instance.GenerateId();
             component.Parent = this;
 
             EntitySystemSingleton.Instance.Awake(component, a, b);
@@ -907,7 +897,7 @@ namespace ET
         {
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
-            component.Id = this.GetIdGenerater().GenerateId();
+            component.Id = IdGenerater.Instance.GenerateId();
             component.Parent = this;
 
             EntitySystemSingleton.Instance.Awake(component, a, b, c);

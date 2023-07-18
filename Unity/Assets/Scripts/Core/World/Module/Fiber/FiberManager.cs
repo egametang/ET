@@ -65,7 +65,7 @@ namespace ET
         {
             try
             {
-                Fiber fiber = new(fiberId, Options.Instance.Process, zone, sceneType, name);
+                Fiber fiber = new(fiberId, zone, sceneType, name);
                 
                 this.fibers.TryAdd(fiberId, fiber);
                 this.schedulers[(int) schedulerType].Add(fiberId);

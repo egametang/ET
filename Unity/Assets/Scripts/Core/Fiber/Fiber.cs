@@ -30,11 +30,16 @@ namespace ET
                 return new Address(this.Process, this.Id);
             }
         }
-        
-        public int Process { get; }
-        
+
+        public int Process
+        {
+            get
+            {
+                return Options.Instance.Process;
+            }
+        }
+
         public EntitySystem EntitySystem { get; }
-        public IdGenerater IdGenerater { get; private set; }
         public Mailboxes Mailboxes { get; private set; }
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
         
@@ -79,13 +84,11 @@ namespace ET
 
         private readonly Queue<ETTask> frameFinishTasks = new();
         
-        internal Fiber(int id, int process, int zone, SceneType sceneType, string name)
+        internal Fiber(int id, int zone, SceneType sceneType, string name)
         {
             this.Id = id;
-            this.Process = process;
             this.Zone = zone;
             this.EntitySystem = new EntitySystem();
-            this.IdGenerater = new IdGenerater(process);
             this.Mailboxes = new Mailboxes();
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             this.Root = new Scene(this, id, 1, sceneType, name);
