@@ -92,12 +92,12 @@ namespace ET.Server
         
         // 发给不会改变位置的actorlocation用这个，这种actor消息不会阻塞发送队列，性能更高
         // 发送过去找不到actor不会重试,用此方法，你得保证actor提前注册好了location
-        public static void Send(this ActorLocationSenderOneType self, long entityId, IActorMessage message)
+        public static void Send(this ActorLocationSenderOneType self, long entityId, IMessage message)
         {
             self.SendInner(entityId, message).Coroutine();
         }
         
-        private static async ETTask SendInner(this ActorLocationSenderOneType self, long entityId, IActorMessage message)
+        private static async ETTask SendInner(this ActorLocationSenderOneType self, long entityId, IMessage message)
         {
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
@@ -136,7 +136,7 @@ namespace ET.Server
 
         // 发给不会改变位置的actorlocation用这个，这种actor消息不会阻塞发送队列，性能更高，发送过去找不到actor不会重试
         // 发送过去找不到actor不会重试,用此方法，你得保证actor提前注册好了location
-        public static async ETTask<IActorResponse> Call(this ActorLocationSenderOneType self, long entityId, IActorRequest request)
+        public static async ETTask<IResponse> Call(this ActorLocationSenderOneType self, long entityId, IRequest request)
         {
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
@@ -172,19 +172,19 @@ namespace ET.Server
             return await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, request);
         }
 
-        public static void Send(this ActorLocationSenderOneType self, long entityId, IActorLocationMessage message)
+        public static void Send(this ActorLocationSenderOneType self, long entityId, ILocationMessage message)
         {
             self.Call(entityId, message).Coroutine();
         }
 
-        public static async ETTask<IActorResponse> Call(this ActorLocationSenderOneType self, long entityId, IActorLocationRequest iActorRequest)
+        public static async ETTask<IResponse> Call(this ActorLocationSenderOneType self, long entityId, ILocationRequest iRequest)
         {
             ActorLocationSender actorLocationSender = self.GetOrCreate(entityId);
 
             Scene root = self.Root();
             
             int rpcId = root.GetComponent<ActorSenderComponent>().GetRpcId();
-            iActorRequest.RpcId = rpcId;
+            iRequest.RpcId = rpcId;
             
             long actorLocationSenderInstanceId = actorLocationSender.InstanceId;
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.ActorLocationSender;
@@ -192,18 +192,18 @@ namespace ET.Server
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
-                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{iActorRequest}");
+                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{iRequest}");
                 }
 
                 // 队列中没处理的消息返回跟上个消息一样的报错
                 if (actorLocationSender.Error == ErrorCore.ERR_NotFoundActor)
                 {
-                    return ActorHelper.CreateResponse(iActorRequest, actorLocationSender.Error);
+                    return ActorHelper.CreateResponse(iRequest, actorLocationSender.Error);
                 }
                 
                 try
                 {
-                    return await self.CallInner(actorLocationSender, rpcId, iActorRequest);
+                    return await self.CallInner(actorLocationSender, rpcId, iRequest);
                 }
                 catch (RpcException)
                 {
@@ -213,12 +213,12 @@ namespace ET.Server
                 catch (Exception e)
                 {
                     self.Remove(actorLocationSender.Id);
-                    throw new Exception($"{iActorRequest}", e);
+                    throw new Exception($"{iRequest}", e);
                 }
             }
         }
 
-        private static async ETTask<IActorResponse> CallInner(this ActorLocationSenderOneType self, ActorLocationSender actorLocationSender, int rpcId, IActorRequest iActorRequest)
+        private static async ETTask<IResponse> CallInner(this ActorLocationSenderOneType self, ActorLocationSender actorLocationSender, int rpcId, IRequest iRequest)
         {
             int failTimes = 0;
             long instanceId = actorLocationSender.InstanceId;
@@ -233,20 +233,20 @@ namespace ET.Server
                     actorLocationSender.ActorId = await root.GetComponent<LocationProxyComponent>().Get(self.LocationType, actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
                     {
-                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{iActorRequest}");
+                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{iRequest}");
                     }
                 }
 
                 if (actorLocationSender.ActorId == default)
                 {
                     actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
-                    return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                    return ActorHelper.CreateResponse(iRequest, ErrorCore.ERR_NotFoundActor);
                 }
-                IActorResponse response = await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, rpcId, iActorRequest, needException: false);
+                IResponse response = await root.GetComponent<ActorSenderComponent>().Call(actorLocationSender.ActorId, rpcId, iRequest, needException: false);
                 
                 if (actorLocationSender.InstanceId != instanceId)
                 {
-                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iActorRequest}");
+                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iRequest}");
                 }
                 
                 switch (response.Error)
@@ -257,7 +257,7 @@ namespace ET.Server
                         ++failTimes;
                         if (failTimes > 20)
                         {
-                            Log.Debug($"actor send message fail, actorid: {actorLocationSender.Id} {iActorRequest}");
+                            Log.Debug($"actor send message fail, actorid: {actorLocationSender.Id} {iRequest}");
                             actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                             // 这里不能删除actor，要让后面等待发送的消息也返回ERR_NotFoundActor，直到超时删除
                             return response;
@@ -267,7 +267,7 @@ namespace ET.Server
                         await root.Fiber.TimerComponent.WaitAsync(500);
                         if (actorLocationSender.InstanceId != instanceId)
                         {
-                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iActorRequest}");
+                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iRequest}");
                         }
 
                         actorLocationSender.ActorId = default;
@@ -275,13 +275,13 @@ namespace ET.Server
                     }
                     case ErrorCore.ERR_ActorTimeout:
                     {
-                        throw new RpcException(response.Error, $"{iActorRequest}");
+                        throw new RpcException(response.Error, $"{iRequest}");
                     }
                 }
 
                 if (ErrorCore.IsRpcNeedThrowException(response.Error))
                 {
-                    throw new RpcException(response.Error, $"Message: {response.Message} Request: {iActorRequest}");
+                    throw new RpcException(response.Error, $"Message: {response.Message} Request: {iRequest}");
                 }
 
                 return response;

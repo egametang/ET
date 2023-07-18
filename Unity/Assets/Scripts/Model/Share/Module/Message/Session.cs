@@ -7,13 +7,13 @@ namespace ET
 {
     public readonly struct RpcInfo
     {
-        public readonly IActorRequest Request;
-        public readonly ETTask<IActorResponse> Tcs;
+        public readonly IRequest Request;
+        public readonly ETTask<IResponse> Tcs;
 
-        public RpcInfo(IActorRequest request)
+        public RpcInfo(IRequest request)
         {
             this.Request = request;
-            this.Tcs = ETTask<IActorResponse>.Create(true);
+            this.Tcs = ETTask<IResponse>.Create(true);
         }
     }
     
@@ -49,7 +49,7 @@ namespace ET
             self.requestCallbacks.Clear();
         }
         
-        public static void OnResponse(this Session self, IActorResponse response)
+        public static void OnResponse(this Session self, IResponse response)
         {
             if (!self.requestCallbacks.Remove(response.RpcId, out var action))
             {
@@ -64,7 +64,7 @@ namespace ET
             action.Tcs.SetResult(response);
         }
         
-        public static async ETTask<IActorResponse> Call(this Session self, IActorRequest request, ETCancellationToken cancellationToken)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
         {
             int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new RpcInfo(request);
@@ -82,12 +82,12 @@ namespace ET
 
                 self.requestCallbacks.Remove(rpcId);
                 Type responseType = OpcodeType.Instance.GetResponseType(action.Request.GetType());
-                IActorResponse response = (IActorResponse) Activator.CreateInstance(responseType);
+                IResponse response = (IResponse) Activator.CreateInstance(responseType);
                 response.Error = ErrorCore.ERR_Cancel;
                 action.Tcs.SetResult(response);
             }
 
-            IActorResponse ret;
+            IResponse ret;
             try
             {
                 cancellationToken?.Add(CancelAction);
@@ -100,7 +100,7 @@ namespace ET
             return ret;
         }
 
-        public static async ETTask<IActorResponse> Call(this Session self, IActorRequest request, int time = 0)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request, int time = 0)
         {
             int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new(request);
@@ -132,12 +132,12 @@ namespace ET
             return await rpcInfo.Tcs;
         }
 
-        public static void Send(this Session self, IActorMessage message)
+        public static void Send(this Session self, IMessage message)
         {
             self.Send(default, message);
         }
         
-        public static void Send(this Session self, ActorId actorId, IActorMessage message)
+        public static void Send(this Session self, ActorId actorId, IMessage message)
         {
             self.LastSendTime = TimeInfo.Instance.ClientNow();
             LogMsg.Instance.Debug(message);

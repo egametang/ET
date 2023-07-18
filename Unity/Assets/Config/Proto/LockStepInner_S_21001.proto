@@ -3,14 +3,14 @@ package ET;
 
 // 请求匹配
 //ResponseType Match2G_Match
-message G2Match_Match // IActorRequest
+message G2Match_Match // IRequest
 {
 	int32 RpcId = 1;
 	
 	int64 Id = 2;
 }
 
-message Match2G_Match // IActorResponse
+message Match2G_Match // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -18,13 +18,13 @@ message Match2G_Match // IActorResponse
 }
 
 //ResponseType Map2Match_GetRoom
-message Match2Map_GetRoom // IActorRequest
+message Match2Map_GetRoom // IRequest
 {
 	int32 RpcId = 1;
 	repeated int64 PlayerIds = 2;
 }
 
-message Map2Match_GetRoom // IActorResponse
+message Map2Match_GetRoom // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -35,13 +35,13 @@ message Map2Match_GetRoom // IActorResponse
 }
 
 //ResponseType Room2G_Reconnect
-message G2Room_Reconnect // IActorRequest
+message G2Room_Reconnect // IRequest
 {
 	int32 RpcId = 1;
 	int64 PlayerId = 2;
 }
 
-message Room2G_Reconnect // IActorResponse
+message Room2G_Reconnect // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -53,13 +53,13 @@ message Room2G_Reconnect // IActorResponse
 }
 
 //ResponseType Room2RoomManager_Init
-message RoomManager2Room_Init // IActorRequest
+message RoomManager2Room_Init // IRequest
 {
 	int32 RpcId = 1;
 	repeated int64 PlayerIds = 2;
 }
 
-message Room2RoomManager_Init // IActorResponse
+message Room2RoomManager_Init // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;

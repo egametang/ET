@@ -38,22 +38,22 @@ namespace ET
 
         private static void HandleMessage(this ActorInnerComponent self, Fiber fiber, in ActorMessageInfo actorMessageInfo)
         {
-            if (actorMessageInfo.MessageObject is IActorResponse response)
+            if (actorMessageInfo.MessageObject is IResponse response)
             {
                 self.HandleIActorResponse(response);
                 return;
             }
 
             ActorId actorId = actorMessageInfo.ActorId;
-            IActorMessage message = actorMessageInfo.MessageObject;
+            IMessage message = actorMessageInfo.MessageObject;
 
             MailBoxComponent mailBoxComponent = self.Fiber().Mailboxes.Get(actorId.InstanceId);
             if (mailBoxComponent == null)
             {
                 Log.Warning($"actor not found mailbox, from: {actorId} current: {fiber.Address} {message}");
-                if (message is IActorRequest request)
+                if (message is IRequest request)
                 {
-                    IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                    IResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
                     self.Reply(actorId.Address, resp);
                 }
                 return;
@@ -61,7 +61,7 @@ namespace ET
             mailBoxComponent.Add(actorId.Address, message);
         }
 
-        private static void HandleIActorResponse(this ActorInnerComponent self, IActorResponse response)
+        private static void HandleIActorResponse(this ActorInnerComponent self, IResponse response)
         {
             if (!self.requestCallback.Remove(response.RpcId, out ActorMessageSender actorMessageSender))
             {
@@ -70,7 +70,7 @@ namespace ET
             Run(actorMessageSender, response);
         }
         
-        private static void Run(ActorMessageSender self, IActorResponse response)
+        private static void Run(ActorMessageSender self, IResponse response)
         {
             if (response.Error == ErrorCore.ERR_ActorTimeout)
             {
@@ -87,17 +87,17 @@ namespace ET
             self.Tcs.SetResult(response);
         }
         
-        public static void Reply(this ActorInnerComponent self, Address fromAddress, IActorResponse message)
+        public static void Reply(this ActorInnerComponent self, Address fromAddress, IResponse message)
         {
             self.SendInner(new ActorId(fromAddress, 0), message);
         }
 
-        public static void Send(this ActorInnerComponent self, ActorId actorId, IActorMessage message)
+        public static void Send(this ActorInnerComponent self, ActorId actorId, IMessage message)
         {
             self.SendInner(actorId, message);
         }
 
-        private static void SendInner(this ActorInnerComponent self, ActorId actorId, IActorMessage message)
+        private static void SendInner(this ActorInnerComponent self, ActorId actorId, IMessage message)
         {
             Fiber fiber = self.Fiber();
             
@@ -121,10 +121,10 @@ namespace ET
             return ++self.RpcId;
         }
 
-        public static async ETTask<IActorResponse> Call(
+        public static async ETTask<IResponse> Call(
                 this ActorInnerComponent self,
                 ActorId actorId,
-                IActorRequest request,
+                IRequest request,
                 bool needException = true
         )
         {
@@ -138,17 +138,17 @@ namespace ET
             return await self.Call(actorId, request.RpcId, request, needException);
         }
         
-        public static async ETTask<IActorResponse> Call(
+        public static async ETTask<IResponse> Call(
                 this ActorInnerComponent self,
                 ActorId actorId,
                 int rpcId,
-                IActorRequest iActorRequest,
+                IRequest iRequest,
                 bool needException = true
         )
         {
             if (actorId == default)
             {
-                throw new Exception($"actor id is 0: {iActorRequest}");
+                throw new Exception($"actor id is 0: {iRequest}");
             }
             Fiber fiber = self.Fiber();
             if (fiber.Process != actorId.Process)
@@ -156,11 +156,11 @@ namespace ET
                 throw new Exception($"actor inner process diff: {actorId.Process} {fiber.Process}");
             }
             
-            var tcs = ETTask<IActorResponse>.Create(true);
+            var tcs = ETTask<IResponse>.Create(true);
 
-            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
+            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, iRequest, tcs, needException));
             
-            self.SendInner(actorId, iActorRequest);
+            self.SendInner(actorId, iRequest);
 
             
             async ETTask Timeout()
@@ -174,11 +174,11 @@ namespace ET
                 
                 if (needException)
                 {
-                    action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
+                    action.Tcs.SetException(new Exception($"actor sender timeout: {iRequest}"));
                 }
                 else
                 {
-                    IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_Timeout);
+                    IResponse response = ActorHelper.CreateResponse(iRequest, ErrorCore.ERR_Timeout);
                     action.Tcs.SetResult(response);
                 }
             }
@@ -187,14 +187,14 @@ namespace ET
             
             long beginTime = TimeInfo.Instance.ServerFrameTime();
 
-            IActorResponse response = await tcs;
+            IResponse response = await tcs;
             
             long endTime = TimeInfo.Instance.ServerFrameTime();
 
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                Log.Warning($"actor rpc time > 200: {costTime} {iActorRequest}");
+                Log.Warning($"actor rpc time > 200: {costTime} {iRequest}");
             }
             
             return response;

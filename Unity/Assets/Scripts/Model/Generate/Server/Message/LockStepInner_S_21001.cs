@@ -7,7 +7,7 @@ namespace ET
 	[ResponseType(nameof(Match2G_Match))]
 	[Message(LockStepInner.G2Match_Match)]
 	[MemoryPackable]
-	public partial class G2Match_Match: MessageObject, IActorRequest
+	public partial class G2Match_Match: MessageObject, IRequest
 	{
 		public static G2Match_Match Create(bool isFromPool = true) 
 		{ 
@@ -33,7 +33,7 @@ namespace ET
 
 	[Message(LockStepInner.Match2G_Match)]
 	[MemoryPackable]
-	public partial class Match2G_Match: MessageObject, IActorResponse
+	public partial class Match2G_Match: MessageObject, IResponse
 	{
 		public static Match2G_Match Create(bool isFromPool = true) 
 		{ 
@@ -64,7 +64,7 @@ namespace ET
 	[ResponseType(nameof(Map2Match_GetRoom))]
 	[Message(LockStepInner.Match2Map_GetRoom)]
 	[MemoryPackable]
-	public partial class Match2Map_GetRoom: MessageObject, IActorRequest
+	public partial class Match2Map_GetRoom: MessageObject, IRequest
 	{
 		public static Match2Map_GetRoom Create(bool isFromPool = true) 
 		{ 
@@ -90,7 +90,7 @@ namespace ET
 
 	[Message(LockStepInner.Map2Match_GetRoom)]
 	[MemoryPackable]
-	public partial class Map2Match_GetRoom: MessageObject, IActorResponse
+	public partial class Map2Match_GetRoom: MessageObject, IResponse
 	{
 		public static Map2Match_GetRoom Create(bool isFromPool = true) 
 		{ 
@@ -126,7 +126,7 @@ namespace ET
 	[ResponseType(nameof(Room2G_Reconnect))]
 	[Message(LockStepInner.G2Room_Reconnect)]
 	[MemoryPackable]
-	public partial class G2Room_Reconnect: MessageObject, IActorRequest
+	public partial class G2Room_Reconnect: MessageObject, IRequest
 	{
 		public static G2Room_Reconnect Create(bool isFromPool = true) 
 		{ 
@@ -152,7 +152,7 @@ namespace ET
 
 	[Message(LockStepInner.Room2G_Reconnect)]
 	[MemoryPackable]
-	public partial class Room2G_Reconnect: MessageObject, IActorResponse
+	public partial class Room2G_Reconnect: MessageObject, IResponse
 	{
 		public static Room2G_Reconnect Create(bool isFromPool = true) 
 		{ 
@@ -195,7 +195,7 @@ namespace ET
 	[ResponseType(nameof(Room2RoomManager_Init))]
 	[Message(LockStepInner.RoomManager2Room_Init)]
 	[MemoryPackable]
-	public partial class RoomManager2Room_Init: MessageObject, IActorRequest
+	public partial class RoomManager2Room_Init: MessageObject, IRequest
 	{
 		public static RoomManager2Room_Init Create(bool isFromPool = true) 
 		{ 
@@ -221,7 +221,7 @@ namespace ET
 
 	[Message(LockStepInner.Room2RoomManager_Init)]
 	[MemoryPackable]
-	public partial class Room2RoomManager_Init: MessageObject, IActorResponse
+	public partial class Room2RoomManager_Init: MessageObject, IResponse
 	{
 		public static Room2RoomManager_Init Create(bool isFromPool = true) 
 		{ 

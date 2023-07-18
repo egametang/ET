@@ -20,7 +20,7 @@
         }
 
         // 加到mailbox
-        public static void Add(this MailBoxComponent self, Address fromAddress, IActorMessage messageObject)
+        public static void Add(this MailBoxComponent self, Address fromAddress, IMessage messageObject)
         {
             // 根据mailboxType进行分发处理
             EventSystem.Instance.Invoke((long)self.MailBoxType, new MailBoxInvoker() {MailBoxComponent = self, MessageObject = messageObject, FromAddress = fromAddress});
@@ -30,7 +30,7 @@
     public struct MailBoxInvoker
     {
         public Address FromAddress;
-        public IActorMessage MessageObject;
+        public IMessage MessageObject;
         public MailBoxComponent MailBoxComponent;
     }
     

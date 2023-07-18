@@ -1,6 +1,6 @@
 namespace ET
 {
-    public interface IActorRoom: IActorMessage
+    public interface IRoom: IMessage
     {
         long PlayerId { get; set; }
     }

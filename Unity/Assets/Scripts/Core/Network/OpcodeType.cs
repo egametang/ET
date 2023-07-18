@@ -34,11 +34,11 @@ namespace ET
                 }
 
                 // 检查request response
-                if (typeof (IActorRequest).IsAssignableFrom(type))
+                if (typeof (IRequest).IsAssignableFrom(type))
                 {
-                    if (typeof (IActorLocationMessage).IsAssignableFrom(type))
+                    if (typeof (ILocationMessage).IsAssignableFrom(type))
                     {
-                        this.requestResponse.Add(type, typeof (ActorResponse));
+                        this.requestResponse.Add(type, typeof (MessageResponse));
                         continue;
                     }
 

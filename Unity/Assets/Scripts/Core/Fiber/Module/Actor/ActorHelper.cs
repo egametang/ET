@@ -4,12 +4,12 @@ namespace ET
 {
     public static class ActorHelper
     {
-        public static IActorResponse CreateResponse(IActorRequest iActorRequest, int error)
+        public static IResponse CreateResponse(IRequest iRequest, int error)
         {
-            Type responseType = OpcodeType.Instance.GetResponseType(iActorRequest.GetType());
-            IActorResponse response = (IActorResponse)ObjectPool.Instance.Fetch(responseType);
+            Type responseType = OpcodeType.Instance.GetResponseType(iRequest.GetType());
+            IResponse response = (IResponse)ObjectPool.Instance.Fetch(responseType);
             response.Error = error;
-            response.RpcId = iActorRequest.RpcId;
+            response.RpcId = iRequest.RpcId;
             return response;
         }
     }

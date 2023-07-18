@@ -62,28 +62,28 @@ namespace ET.Server
 
             switch (message)
             {
-                case IActorResponse iActorResponse:
+                case IResponse iActorResponse:
                 {
                     self.HandleIActorResponse(iActorResponse);
                     return;
                 }
-                case IActorLocationRequest iActorRequest:
+                case ILocationRequest iActorRequest:
                 {
-                    IActorResponse response = await fiber.ActorInnerComponent.Call(actorId, iActorRequest, false);
+                    IResponse response = await fiber.ActorInnerComponent.Call(actorId, iActorRequest, false);
                     actorId.Process = fromProcess;
                     self.Send(actorId, response);
                     break;
                 }
-                case IActorRequest iActorRequest:
+                case IRequest iActorRequest:
                 {
-                    IActorResponse response = await fiber.ActorInnerComponent.Call(actorId, iActorRequest);
+                    IResponse response = await fiber.ActorInnerComponent.Call(actorId, iActorRequest);
                     actorId.Process = fromProcess;
                     self.Send(actorId, response);
                     break;
                 }
                 default:
                 {
-                    fiber.ActorInnerComponent.Send(actorId, (IActorMessage)message);
+                    fiber.ActorInnerComponent.Send(actorId, (IMessage)message);
                     break;
                 }
             }
@@ -135,7 +135,7 @@ namespace ET.Server
             return session;
         }
 
-        public static void HandleIActorResponse(this ActorOuterComponent self, IActorResponse response)
+        public static void HandleIActorResponse(this ActorOuterComponent self, IResponse response)
         {
             if (!self.requestCallback.Remove(response.RpcId, out ActorMessageSender actorMessageSender))
             {
@@ -144,7 +144,7 @@ namespace ET.Server
             Run(actorMessageSender, response);
         }
 
-        private static void Run(ActorMessageSender self, IActorResponse response)
+        private static void Run(ActorMessageSender self, IResponse response)
         {
             if (response.Error == ErrorCore.ERR_ActorTimeout)
             {
@@ -161,7 +161,7 @@ namespace ET.Server
             self.Tcs.SetResult(response);
         }
 
-        public static void Send(this ActorOuterComponent self, ActorId actorId, IActorMessage message)
+        public static void Send(this ActorOuterComponent self, ActorId actorId, IMessage message)
         {
             self.SendInner(actorId, message as MessageObject);
         }
@@ -191,21 +191,21 @@ namespace ET.Server
             return ++self.RpcId;
         }
 
-        public static async ETTask<IActorResponse> Call(this ActorOuterComponent self, ActorId actorId, IActorRequest iActorRequest, bool needException = true)
+        public static async ETTask<IResponse> Call(this ActorOuterComponent self, ActorId actorId, IRequest iRequest, bool needException = true)
         {
             if (actorId == default)
             {
-                throw new Exception($"actor id is 0: {iActorRequest}");
+                throw new Exception($"actor id is 0: {iRequest}");
             }
             Fiber fiber = self.Fiber();
             
             int rpcId = self.GetRpcId();
 
-            var tcs = ETTask<IActorResponse>.Create(true);
+            var tcs = ETTask<IResponse>.Create(true);
 
-            self.requestCallback.Add(self.RpcId, new ActorMessageSender(actorId, iActorRequest, tcs, needException));
+            self.requestCallback.Add(self.RpcId, new ActorMessageSender(actorId, iRequest, tcs, needException));
 
-            self.SendInner(actorId, iActorRequest as MessageObject);
+            self.SendInner(actorId, iRequest as MessageObject);
 
             async ETTask Timeout()
             {
@@ -217,11 +217,11 @@ namespace ET.Server
                 
                 if (needException)
                 {
-                    action.Tcs.SetException(new Exception($"actor sender timeout: {iActorRequest}"));
+                    action.Tcs.SetException(new Exception($"actor sender timeout: {iRequest}"));
                 }
                 else
                 {
-                    IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_Timeout);
+                    IResponse response = ActorHelper.CreateResponse(iRequest, ErrorCore.ERR_Timeout);
                     action.Tcs.SetResult(response);
                 }
             }
@@ -230,14 +230,14 @@ namespace ET.Server
 
             long beginTime = TimeInfo.Instance.ServerFrameTime();
 
-            IActorResponse response = await tcs;
+            IResponse response = await tcs;
 
             long endTime = TimeInfo.Instance.ServerFrameTime();
 
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                Log.Warning($"actor rpc time > 200: {costTime} {iActorRequest}");
+                Log.Warning($"actor rpc time > 200: {costTime} {iRequest}");
             }
 
             return response;

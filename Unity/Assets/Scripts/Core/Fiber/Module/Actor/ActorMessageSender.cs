@@ -7,16 +7,16 @@ namespace ET
     {
         public ActorId ActorId { get; }
         
-        public IActorRequest Request { get; }
+        public IRequest Request { get; }
 
         public bool NeedException { get; }
 
-        public ETTask<IActorResponse> Tcs { get; }
+        public ETTask<IResponse> Tcs { get; }
 
-        public ActorMessageSender(ActorId actorId, IActorRequest iActorRequest, ETTask<IActorResponse> tcs, bool needException)
+        public ActorMessageSender(ActorId actorId, IRequest iRequest, ETTask<IResponse> tcs, bool needException)
         {
             this.ActorId = actorId;
-            this.Request = iActorRequest;
+            this.Request = iRequest;
             this.Tcs = tcs;
             this.NeedException = needException;
         }

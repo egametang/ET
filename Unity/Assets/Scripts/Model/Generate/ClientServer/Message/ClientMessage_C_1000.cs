@@ -7,7 +7,7 @@ namespace ET
 	[ResponseType(nameof(NetClient2Main_Login))]
 	[Message(ClientMessage.Main2NetClient_Login)]
 	[MemoryPackable]
-	public partial class Main2NetClient_Login: MessageObject, IActorRequest
+	public partial class Main2NetClient_Login: MessageObject, IRequest
 	{
 		public static Main2NetClient_Login Create(bool isFromPool = true) 
 		{ 
@@ -37,7 +37,7 @@ namespace ET
 
 	[Message(ClientMessage.NetClient2Main_Login)]
 	[MemoryPackable]
-	public partial class NetClient2Main_Login: MessageObject, IActorResponse
+	public partial class NetClient2Main_Login: MessageObject, IResponse
 	{
 		public static NetClient2Main_Login Create(bool isFromPool = true) 
 		{ 

@@ -41,7 +41,7 @@ namespace ET.Client
             
             switch (message)
             {
-                case IActorResponse response:
+                case IResponse response:
                 {
                     session.OnResponse(response);
                     break;
@@ -51,7 +51,7 @@ namespace ET.Client
                     MessageDispatcherComponent.Instance.Handle(session, message);
                     break;
                 }
-                case IActorMessage iActorMessage:
+                case IMessage iActorMessage:
                 {
                     // 扔到Main纤程队列中
                     self.Fiber().ActorInnerComponent.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), iActorMessage);

@@ -3,7 +3,7 @@
 namespace ET
 {
     [EnableClass]
-    public abstract class ActorMessageHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorMessage
+    public abstract class ActorMessageHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IMessage
     {
         protected abstract ETTask Run(E entity, Message message);
 
@@ -27,7 +27,7 @@ namespace ET
 
         public Type GetRequestType()
         {
-            if (typeof (IActorLocationMessage).IsAssignableFrom(typeof (Message)))
+            if (typeof (ILocationMessage).IsAssignableFrom(typeof (Message)))
             {
                 Log.Error($"message is IActorLocationMessage but handler is AMActorHandler: {typeof (Message)}");
             }
@@ -44,7 +44,7 @@ namespace ET
     
     
     [EnableClass]
-    public abstract class ActorMessageHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : MessageObject, IActorRequest where Response : MessageObject, IActorResponse
+    public abstract class ActorMessageHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : MessageObject, IRequest where Response : MessageObject, IResponse
     {
         protected abstract ETTask Run(E unit, Request request, Response response);
 
@@ -91,7 +91,7 @@ namespace ET
 
         public Type GetRequestType()
         {
-            if (typeof (IActorLocationRequest).IsAssignableFrom(typeof (Request)))
+            if (typeof (ILocationRequest).IsAssignableFrom(typeof (Request)))
             {
                 Log.Error($"message is IActorLocationMessage but handler is AMActorRpcHandler: {typeof (Request)}");
             }

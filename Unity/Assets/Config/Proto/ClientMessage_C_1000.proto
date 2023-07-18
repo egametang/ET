@@ -4,14 +4,14 @@ syntax = "proto3";
 package ET;
 
 //ResponseType NetClient2Main_Login
-message Main2NetClient_Login // IActorRequest
+message Main2NetClient_Login // IRequest
 {
 	int32 RpcId = 1;
 	string Account = 2;
 	string Password = 3;
 }
 
-message NetClient2Main_Login // IActorResponse
+message NetClient2Main_Login // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;

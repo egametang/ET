@@ -2,7 +2,7 @@ using System;
 
 namespace ET.Server
 {
-    public abstract class MessageHandler<Request, Response>: IMHandler where Request : MessageObject, IActorRequest where Response : MessageObject, IActorResponse
+    public abstract class MessageHandler<Request, Response>: IMHandler where Request : MessageObject, IRequest where Response : MessageObject, IResponse
     {
         protected abstract ETTask Run(Session session, Request request, Response response);
 

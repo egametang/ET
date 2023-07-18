@@ -1,15 +1,15 @@
 ﻿namespace ET
 {
 
-    public interface ISessionMessage: IActorMessage
+    public interface ISessionMessage: IMessage
     {
     }
     
-    public interface ISessionRequest: ISessionMessage, IActorRequest
+    public interface ISessionRequest: ISessionMessage, IRequest
     {
     }
     
-    public interface ISessionResponse: ISessionMessage, IActorResponse
+    public interface ISessionResponse: ISessionMessage, IResponse
     {
 
     }

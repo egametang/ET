@@ -21,7 +21,7 @@ namespace ET.Server
             MessageHelper.SendToClient(unit, removeUnits);
         }
         
-        public static void Broadcast(Unit unit, IActorMessage message)
+        public static void Broadcast(Unit unit, IMessage message)
         {
             (message as MessageObject).IsFromPool = false;
             Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
@@ -33,7 +33,7 @@ namespace ET.Server
             }
         }
         
-        public static void SendToClient(Unit unit, IActorMessage message)
+        public static void SendToClient(Unit unit, IMessage message)
         {
             unit.Root().GetComponent<ActorLocationSenderComponent>().Get(LocationType.GateSession).Send(unit.Id, message);
         }
@@ -41,7 +41,7 @@ namespace ET.Server
         /// <summary>
         /// 发送协议给Actor
         /// </summary>
-        public static void SendActor(Scene root, ActorId actorId, IActorMessage message)
+        public static void SendActor(Scene root, ActorId actorId, IMessage message)
         {
             root.GetComponent<ActorSenderComponent>().Send(actorId, message);
         }

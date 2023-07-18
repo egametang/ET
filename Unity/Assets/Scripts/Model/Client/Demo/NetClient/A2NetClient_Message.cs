@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
     [Message]
-    public class A2NetClient_Message: MessageObject, IActorMessage
+    public class A2NetClient_Message: MessageObject, IMessage
     {
         public static A2NetClient_Message Create()
         {
@@ -14,12 +14,12 @@
             ObjectPool.Instance.Recycle(this);
         }
         
-        public IActorMessage MessageObject;
+        public IMessage MessageObject;
     }
     
     [Message]
     [ResponseType(nameof(A2NetClient_Response))]
-    public class A2NetClient_Request: MessageObject, IActorRequest
+    public class A2NetClient_Request: MessageObject, IRequest
     {
         public static A2NetClient_Request Create()
         {
@@ -34,11 +34,11 @@
         }
      
         public int RpcId { get; set; }
-        public IActorRequest MessageObject;
+        public IRequest MessageObject;
     }
     
     [Message]
-    public class A2NetClient_Response: MessageObject, IActorResponse
+    public class A2NetClient_Response: MessageObject, IResponse
     {
         public static A2NetClient_Response Create()
         {
@@ -58,11 +58,11 @@
         public int Error { get; set; }
         public string Message { get; set; }
         
-        public IActorResponse MessageObject;
+        public IResponse MessageObject;
     }
     
     [Message]
-    public class NetClient2Main_SessionDispose: MessageObject, IActorMessage
+    public class NetClient2Main_SessionDispose: MessageObject, IMessage
     {
         public static NetClient2Main_SessionDispose Create()
         {

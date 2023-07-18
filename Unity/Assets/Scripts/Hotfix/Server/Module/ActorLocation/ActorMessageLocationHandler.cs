@@ -3,7 +3,7 @@
 namespace ET.Server
 {
     [EnableClass]
-    public abstract class ActorMessageLocationHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorLocationMessage
+    public abstract class ActorMessageLocationHandler<E, Message>: IMActorHandler where E : Entity where Message : class, ILocationMessage
     {
         protected abstract ETTask Run(E entity, Message message);
 
@@ -22,7 +22,7 @@ namespace ET.Server
                 return;
             }
             
-            ActorResponse response = new() {RpcId = message.RpcId};
+            MessageResponse response = new() {RpcId = message.RpcId};
             entity.Root().GetComponent<ActorInnerComponent>().Reply(fromAddress, response);
 
             await this.Run(e, message);
@@ -35,14 +35,14 @@ namespace ET.Server
 
         public Type GetResponseType()
         {
-            return typeof (ActorResponse);
+            return typeof (MessageResponse);
         }
     }
     
     
     
     [EnableClass]
-    public abstract class ActorMessageLocationHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : MessageObject, IActorLocationRequest where Response : MessageObject, IActorLocationResponse
+    public abstract class ActorMessageLocationHandler<E, Request, Response>: IMActorHandler where E : Entity where Request : MessageObject, ILocationRequest where Response : MessageObject, ILocationResponse
     {
         protected abstract ETTask Run(E unit, Request request, Response response);
 

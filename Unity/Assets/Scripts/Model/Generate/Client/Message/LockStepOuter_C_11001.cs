@@ -59,7 +59,7 @@ namespace ET
 // 匹配成功，通知客户端切换场景
 	[Message(LockStepOuter.Match2G_NotifyMatchSuccess)]
 	[MemoryPackable]
-	public partial class Match2G_NotifyMatchSuccess: MessageObject, IActorMessage
+	public partial class Match2G_NotifyMatchSuccess: MessageObject, IMessage
 	{
 		public static Match2G_NotifyMatchSuccess Create(bool isFromPool = true) 
 		{ 
@@ -87,7 +87,7 @@ namespace ET
 // 客户端通知房间切换场景完成
 	[Message(LockStepOuter.C2Room_ChangeSceneFinish)]
 	[MemoryPackable]
-	public partial class C2Room_ChangeSceneFinish: MessageObject, IActorRoom
+	public partial class C2Room_ChangeSceneFinish: MessageObject, IRoom
 	{
 		public static C2Room_ChangeSceneFinish Create(bool isFromPool = true) 
 		{ 
@@ -140,7 +140,7 @@ namespace ET
 // 房间通知客户端进入战斗
 	[Message(LockStepOuter.Room2C_Start)]
 	[MemoryPackable]
-	public partial class Room2C_Start: MessageObject, IActorMessage
+	public partial class Room2C_Start: MessageObject, IMessage
 	{
 		public static Room2C_Start Create(bool isFromPool = true) 
 		{ 
@@ -166,7 +166,7 @@ namespace ET
 
 	[Message(LockStepOuter.FrameMessage)]
 	[MemoryPackable]
-	public partial class FrameMessage: MessageObject, IActorMessage
+	public partial class FrameMessage: MessageObject, IMessage
 	{
 		public static FrameMessage Create(bool isFromPool = true) 
 		{ 
@@ -196,7 +196,7 @@ namespace ET
 
 	[Message(LockStepOuter.OneFrameInputs)]
 	[MemoryPackable]
-	public partial class OneFrameInputs: MessageObject, IActorMessage
+	public partial class OneFrameInputs: MessageObject, IMessage
 	{
 		public static OneFrameInputs Create(bool isFromPool = true) 
 		{ 
@@ -218,7 +218,7 @@ namespace ET
 
 	[Message(LockStepOuter.Room2C_AdjustUpdateTime)]
 	[MemoryPackable]
-	public partial class Room2C_AdjustUpdateTime: MessageObject, IActorMessage
+	public partial class Room2C_AdjustUpdateTime: MessageObject, IMessage
 	{
 		public static Room2C_AdjustUpdateTime Create(bool isFromPool = true) 
 		{ 
@@ -240,7 +240,7 @@ namespace ET
 
 	[Message(LockStepOuter.C2Room_CheckHash)]
 	[MemoryPackable]
-	public partial class C2Room_CheckHash: MessageObject, IActorRoom
+	public partial class C2Room_CheckHash: MessageObject, IRoom
 	{
 		public static C2Room_CheckHash Create(bool isFromPool = true) 
 		{ 
@@ -270,7 +270,7 @@ namespace ET
 
 	[Message(LockStepOuter.Room2C_CheckHashFail)]
 	[MemoryPackable]
-	public partial class Room2C_CheckHashFail: MessageObject, IActorMessage
+	public partial class Room2C_CheckHashFail: MessageObject, IMessage
 	{
 		public static Room2C_CheckHashFail Create(bool isFromPool = true) 
 		{ 
@@ -296,7 +296,7 @@ namespace ET
 
 	[Message(LockStepOuter.G2C_Reconnect)]
 	[MemoryPackable]
-	public partial class G2C_Reconnect: MessageObject, IActorMessage
+	public partial class G2C_Reconnect: MessageObject, IMessage
 	{
 		public static G2C_Reconnect Create(bool isFromPool = true) 
 		{ 

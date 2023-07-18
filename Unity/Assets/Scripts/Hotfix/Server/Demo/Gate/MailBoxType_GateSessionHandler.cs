@@ -8,7 +8,7 @@
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
             // 这里messageObject要发送出去，不能回收
-            IActorMessage messageObject = args.MessageObject;
+            IMessage messageObject = args.MessageObject;
             
             if (mailBoxComponent.Parent is PlayerSessionComponent playerSessionComponent)
             {

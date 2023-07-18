@@ -4,7 +4,7 @@ namespace ET
 {
     [Message(ushort.MaxValue)]
     [MemoryPackable]
-    public partial class ActorResponse: MessageObject, IActorResponse
+    public partial class MessageResponse: MessageObject, IResponse
     {
         [MemoryPackOrder(1)]
         public int RpcId { get; set; }

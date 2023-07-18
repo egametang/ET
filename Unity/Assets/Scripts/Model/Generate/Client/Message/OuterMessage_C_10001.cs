@@ -58,7 +58,7 @@ namespace ET
 	[ResponseType(nameof(M2C_TestResponse))]
 	[Message(OuterMessage.C2M_TestRequest)]
 	[MemoryPackable]
-	public partial class C2M_TestRequest: MessageObject, IActorLocationRequest
+	public partial class C2M_TestRequest: MessageObject, ILocationRequest
 	{
 		public static C2M_TestRequest Create(bool isFromPool = true) 
 		{ 
@@ -84,7 +84,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_TestResponse)]
 	[MemoryPackable]
-	public partial class M2C_TestResponse: MessageObject, IActorResponse
+	public partial class M2C_TestResponse: MessageObject, IResponse
 	{
 		public static M2C_TestResponse Create(bool isFromPool = true) 
 		{ 
@@ -119,7 +119,7 @@ namespace ET
 	[ResponseType(nameof(Actor_TransferResponse))]
 	[Message(OuterMessage.Actor_TransferRequest)]
 	[MemoryPackable]
-	public partial class Actor_TransferRequest: MessageObject, IActorLocationRequest
+	public partial class Actor_TransferRequest: MessageObject, ILocationRequest
 	{
 		public static Actor_TransferRequest Create(bool isFromPool = true) 
 		{ 
@@ -145,7 +145,7 @@ namespace ET
 
 	[Message(OuterMessage.Actor_TransferResponse)]
 	[MemoryPackable]
-	public partial class Actor_TransferResponse: MessageObject, IActorLocationResponse
+	public partial class Actor_TransferResponse: MessageObject, ILocationResponse
 	{
 		public static Actor_TransferResponse Create(bool isFromPool = true) 
 		{ 
@@ -309,7 +309,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_CreateUnits)]
 	[MemoryPackable]
-	public partial class M2C_CreateUnits: MessageObject, IActorMessage
+	public partial class M2C_CreateUnits: MessageObject, IMessage
 	{
 		public static M2C_CreateUnits Create(bool isFromPool = true) 
 		{ 
@@ -331,7 +331,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_CreateMyUnit)]
 	[MemoryPackable]
-	public partial class M2C_CreateMyUnit: MessageObject, IActorMessage
+	public partial class M2C_CreateMyUnit: MessageObject, IMessage
 	{
 		public static M2C_CreateMyUnit Create(bool isFromPool = true) 
 		{ 
@@ -353,7 +353,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_StartSceneChange)]
 	[MemoryPackable]
-	public partial class M2C_StartSceneChange: MessageObject, IActorMessage
+	public partial class M2C_StartSceneChange: MessageObject, IMessage
 	{
 		public static M2C_StartSceneChange Create(bool isFromPool = true) 
 		{ 
@@ -379,7 +379,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_RemoveUnits)]
 	[MemoryPackable]
-	public partial class M2C_RemoveUnits: MessageObject, IActorMessage
+	public partial class M2C_RemoveUnits: MessageObject, IMessage
 	{
 		public static M2C_RemoveUnits Create(bool isFromPool = true) 
 		{ 
@@ -401,7 +401,7 @@ namespace ET
 
 	[Message(OuterMessage.C2M_PathfindingResult)]
 	[MemoryPackable]
-	public partial class C2M_PathfindingResult: MessageObject, IActorLocationMessage
+	public partial class C2M_PathfindingResult: MessageObject, ILocationMessage
 	{
 		public static C2M_PathfindingResult Create(bool isFromPool = true) 
 		{ 
@@ -427,7 +427,7 @@ namespace ET
 
 	[Message(OuterMessage.C2M_Stop)]
 	[MemoryPackable]
-	public partial class C2M_Stop: MessageObject, IActorLocationMessage
+	public partial class C2M_Stop: MessageObject, ILocationMessage
 	{
 		public static C2M_Stop Create(bool isFromPool = true) 
 		{ 
@@ -449,7 +449,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_PathfindingResult)]
 	[MemoryPackable]
-	public partial class M2C_PathfindingResult: MessageObject, IActorMessage
+	public partial class M2C_PathfindingResult: MessageObject, IMessage
 	{
 		public static M2C_PathfindingResult Create(bool isFromPool = true) 
 		{ 
@@ -479,7 +479,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_Stop)]
 	[MemoryPackable]
-	public partial class M2C_Stop: MessageObject, IActorMessage
+	public partial class M2C_Stop: MessageObject, IMessage
 	{
 		public static M2C_Stop Create(bool isFromPool = true) 
 		{ 
@@ -810,7 +810,7 @@ namespace ET
 	[ResponseType(nameof(M2C_TestRobotCase))]
 	[Message(OuterMessage.C2M_TestRobotCase)]
 	[MemoryPackable]
-	public partial class C2M_TestRobotCase: MessageObject, IActorLocationRequest
+	public partial class C2M_TestRobotCase: MessageObject, ILocationRequest
 	{
 		public static C2M_TestRobotCase Create(bool isFromPool = true) 
 		{ 
@@ -836,7 +836,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_TestRobotCase)]
 	[MemoryPackable]
-	public partial class M2C_TestRobotCase: MessageObject, IActorLocationResponse
+	public partial class M2C_TestRobotCase: MessageObject, ILocationResponse
 	{
 		public static M2C_TestRobotCase Create(bool isFromPool = true) 
 		{ 
@@ -870,7 +870,7 @@ namespace ET
 
 	[Message(OuterMessage.C2M_TestRobotCase2)]
 	[MemoryPackable]
-	public partial class C2M_TestRobotCase2: MessageObject, IActorLocationMessage
+	public partial class C2M_TestRobotCase2: MessageObject, ILocationMessage
 	{
 		public static C2M_TestRobotCase2 Create(bool isFromPool = true) 
 		{ 
@@ -896,7 +896,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_TestRobotCase2)]
 	[MemoryPackable]
-	public partial class M2C_TestRobotCase2: MessageObject, IActorLocationMessage
+	public partial class M2C_TestRobotCase2: MessageObject, ILocationMessage
 	{
 		public static M2C_TestRobotCase2 Create(bool isFromPool = true) 
 		{ 
@@ -923,7 +923,7 @@ namespace ET
 	[ResponseType(nameof(M2C_TransferMap))]
 	[Message(OuterMessage.C2M_TransferMap)]
 	[MemoryPackable]
-	public partial class C2M_TransferMap: MessageObject, IActorLocationRequest
+	public partial class C2M_TransferMap: MessageObject, ILocationRequest
 	{
 		public static C2M_TransferMap Create(bool isFromPool = true) 
 		{ 
@@ -945,7 +945,7 @@ namespace ET
 
 	[Message(OuterMessage.M2C_TransferMap)]
 	[MemoryPackable]
-	public partial class M2C_TransferMap: MessageObject, IActorLocationResponse
+	public partial class M2C_TransferMap: MessageObject, ILocationResponse
 	{
 		public static M2C_TransferMap Create(bool isFromPool = true) 
 		{ 

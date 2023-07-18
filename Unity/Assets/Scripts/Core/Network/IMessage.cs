@@ -1,11 +1,11 @@
 ﻿namespace ET
 {
     // 不需要返回消息
-    public interface IActorMessage
+    public interface IMessage
     {
     }
 
-    public interface IActorRequest: IActorMessage
+    public interface IRequest: IMessage
     {
         int RpcId
         {
@@ -14,7 +14,7 @@
         }
     }
 
-    public interface IActorResponse: IActorMessage
+    public interface IResponse: IMessage
     {
         int Error
         {

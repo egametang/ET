@@ -26,9 +26,9 @@
             {
                 if (mailBoxComponent.InstanceId != instanceId)
                 {
-                    if (messageObject is IActorRequest request)
+                    if (messageObject is IRequest request)
                     {
-                        IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                        IResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
                         mailBoxComponent.Root().GetComponent<ActorInnerComponent>().Reply(args.FromAddress, resp);
                     }
                     return;

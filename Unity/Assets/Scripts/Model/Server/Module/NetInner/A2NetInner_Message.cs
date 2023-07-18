@@ -3,7 +3,7 @@
 namespace ET
 {
     [Message(1)]
-    public class A2NetInner_Message: MessageObject, IActorMessage
+    public class A2NetInner_Message: MessageObject, IMessage
     {
         public static A2NetInner_Message Create()
         {
@@ -20,12 +20,12 @@ namespace ET
         
         public Address FromAddress;
         public ActorId ActorId;
-        public IActorMessage MessageObject;
+        public IMessage MessageObject;
     }
     
     [Message(2)]
     [ResponseType(nameof(A2NetInner_Response))]
-    public class A2NetInner_Request: MessageObject, IActorRequest
+    public class A2NetInner_Request: MessageObject, IRequest
     {
         public static A2NetInner_Request Create()
         {
@@ -45,11 +45,11 @@ namespace ET
         public int RpcId { get; set; }
         public ActorId ActorId;
         public bool NeedException;
-        public IActorRequest MessageObject;
+        public IRequest MessageObject;
     }
     
     [Message(3)]
-    public class A2NetInner_Response: MessageObject, IActorResponse
+    public class A2NetInner_Response: MessageObject, IResponse
     {
         public static A2NetInner_Response Create()
         {
@@ -69,7 +69,7 @@ namespace ET
         public string Message { get; set; }
         public int RpcId { get; set; }
         
-        public IActorResponse MessageObject;
+        public IResponse MessageObject;
 
     }
 }
