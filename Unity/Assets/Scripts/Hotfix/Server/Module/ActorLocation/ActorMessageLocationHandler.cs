@@ -65,7 +65,7 @@ namespace ET.Server
 
                 int rpcId = request.RpcId;
                 Response response = ObjectPool.Instance.Fetch<Response>();
-                
+                Fiber fiber = entity.Fiber();
                 try
                 {
                     await this.Run(ee, request, response);
@@ -77,7 +77,7 @@ namespace ET.Server
                     response.Message = exception.ToString();
                 }
                 response.RpcId = rpcId;
-                entity.Root().GetComponent<ActorInnerComponent>().Reply(fromAddress, response);
+                fiber.ActorInnerComponent.Reply(fromAddress, response);
             }
             catch (Exception e)
             {
