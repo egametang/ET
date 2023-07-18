@@ -2,10 +2,10 @@ using System;
 
 namespace ET
 {
-    public readonly struct EntityRef<T> where T: Entity
+    public struct EntityRef<T> where T: Entity
     {
         private readonly long instanceId;
-        private readonly T entity;
+        private T entity;
 
         private EntityRef(T t)
         {
@@ -29,7 +29,8 @@ namespace ET
                 }
                 if (this.entity.InstanceId != this.instanceId)
                 {
-                    return null;
+                    // 这里instanceId变化了，设置为null，解除引用，好让runtime去gc
+                    this.entity = null;
                 }
                 return this.entity;
             }
