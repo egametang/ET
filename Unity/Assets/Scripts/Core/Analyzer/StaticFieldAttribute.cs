@@ -7,7 +7,7 @@ namespace ET
     /// valueToAssign: 初始化时的字段值
     /// assignNewTypeInstance: 从默认构造函数初始化
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class StaticFieldAttribute: Attribute
     {
         public readonly object valueToAssign;
