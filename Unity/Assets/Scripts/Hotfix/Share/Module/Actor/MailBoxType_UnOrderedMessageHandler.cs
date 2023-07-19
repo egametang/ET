@@ -12,7 +12,7 @@
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
-            using MessageObject messageObject = (MessageObject)args.MessageObject;
+            MessageObject messageObject = (MessageObject)args.MessageObject;
             
             await MessageDispatcher.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
         }

@@ -12,12 +12,12 @@
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
-            // 对象池回收
-            using MessageObject messageObject = (MessageObject)args.MessageObject;
+            MessageObject messageObject = (MessageObject)args.MessageObject;
 
             Fiber fiber = mailBoxComponent.Fiber();
             if (fiber.IsDisposed)
             {
+				messageObject.Dispose();
                 return;
             }
 
@@ -31,6 +31,7 @@
                         IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
                         mailBoxComponent.Root().GetComponent<MessageInnerSender>().Reply(args.FromAddress, resp);
                     }
+                    messageObject.Dispose();
                     return;
                 }
                 await MessageDispatcher.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);

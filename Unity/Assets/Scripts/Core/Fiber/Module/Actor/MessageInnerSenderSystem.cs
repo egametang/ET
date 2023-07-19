@@ -45,7 +45,7 @@ namespace ET
             }
 
             ActorId actorId = messageInfo.ActorId;
-            IMessage message = messageInfo.MessageObject;
+            MessageObject message = messageInfo.MessageObject;
 
             MailBoxComponent mailBoxComponent = self.Fiber().Mailboxes.Get(actorId.InstanceId);
             if (mailBoxComponent == null)
@@ -56,6 +56,7 @@ namespace ET
                     IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
                     self.Reply(actorId.Address, resp);
                 }
+                message.Dispose();
                 return;
             }
             mailBoxComponent.Add(actorId.Address, message);
@@ -85,6 +86,7 @@ namespace ET
             }
 
             self.Tcs.SetResult(response);
+            ((MessageObject)response).Dispose();
         }
         
         public static void Reply(this MessageInnerSender self, Address fromAddress, IResponse message)

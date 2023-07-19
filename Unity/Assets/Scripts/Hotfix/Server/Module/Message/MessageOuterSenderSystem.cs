@@ -159,6 +159,7 @@ namespace ET.Server
             }
 
             self.Tcs.SetResult(response);
+            ((MessageObject)response).Dispose();
         }
 
         public static void Send(this MessageOuterSender self, ActorId actorId, IMessage message)
