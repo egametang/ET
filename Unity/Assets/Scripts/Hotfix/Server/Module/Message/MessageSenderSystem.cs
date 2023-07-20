@@ -53,29 +53,40 @@ namespace ET
                 this MessageSender self,
                 ActorId actorId,
                 int rpcId,
-                IRequest iRequest,
+                IRequest request,
                 bool needException = true
         )
         {
             if (actorId == default)
             {
-                throw new Exception($"actor id is 0: {iRequest}");
+                throw new Exception($"actor id is 0: {request}");
             }
             Fiber fiber = self.Fiber();
+            
             if (fiber.Process == actorId.Process)
             {
-                return await fiber.Root.GetComponent<MessageInnerSender>().Call(actorId, rpcId, iRequest, needException);
+                return await fiber.MessageInnerSender.Call(actorId, rpcId, request);
             }
-            
+
             // 发给NetInner纤程
             A2NetInner_Request a2NetInner_Request = A2NetInner_Request.Create();
             a2NetInner_Request.ActorId = actorId;
-            a2NetInner_Request.MessageObject = iRequest;
-            a2NetInner_Request.NeedException = needException;
+            a2NetInner_Request.MessageObject = request;
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[fiber.Process];
-            A2NetInner_Response response = await fiber.Root.GetComponent<MessageSender>().Call(
-                startSceneConfig.ActorId, a2NetInner_Request, needException: a2NetInner_Request.NeedException) as A2NetInner_Response;
-            return response.MessageObject;
+            A2NetInner_Response a2NetInnerResponse = await fiber.MessageInnerSender.Call(
+                startSceneConfig.ActorId, a2NetInner_Request) as A2NetInner_Response;
+            IResponse response = a2NetInnerResponse.MessageObject;
+            
+            if (response.Error == ErrorCore.ERR_MessageTimeout)
+            {
+                throw new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {actorId} {request}, response: {response}");
+            }
+
+            if (needException && ErrorCore.IsRpcNeedThrowException(response.Error))
+            {
+                throw new RpcException(response.Error, $"Rpc error: actorId: {actorId} {request}, response: {response}");
+            }
+            return response;
         }
     }
 }

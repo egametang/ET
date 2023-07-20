@@ -37,14 +37,12 @@ namespace ET
             this.RpcId = default;
             this.ActorId = default;
             this.MessageObject = default;
-            this.NeedException = default;
             
             ObjectPool.Instance.Recycle(this);
         }
         
         public int RpcId { get; set; }
         public ActorId ActorId;
-        public bool NeedException;
         public IRequest MessageObject;
     }
     

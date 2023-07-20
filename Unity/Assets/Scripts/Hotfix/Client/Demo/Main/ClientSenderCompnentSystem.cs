@@ -40,8 +40,19 @@
         {
             A2NetClient_Request a2NetClientRequest = A2NetClient_Request.Create();
             a2NetClientRequest.MessageObject = request;
-            A2NetClient_Response response = await self.Fiber().MessageInnerSender.Call(self.netClientActorId, a2NetClientRequest, needException: needException) as A2NetClient_Response;
-            return response.MessageObject;
+            A2NetClient_Response a2NetClientResponse = await self.Fiber().MessageInnerSender.Call(self.netClientActorId, a2NetClientRequest) as A2NetClient_Response;
+            IResponse response = a2NetClientResponse.MessageObject;
+                        
+            if (response.Error == ErrorCore.ERR_MessageTimeout)
+            {
+                throw new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: {request}, response: {response}");
+            }
+
+            if (needException && ErrorCore.IsRpcNeedThrowException(response.Error))
+            {
+                throw new RpcException(response.Error, $"Rpc error: {request}, response: {response}");
+            }
+            return response;
         }
 
     }

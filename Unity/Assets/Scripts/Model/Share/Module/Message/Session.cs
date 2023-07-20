@@ -55,12 +55,6 @@ namespace ET
             {
                 return;
             }
-
-            if (ErrorCore.IsRpcNeedThrowException(response.Error))
-            {
-                action.Tcs.SetException(new Exception($"Rpc error, request: {action.Request} response: {response}"));
-                return;
-            }
             action.Tcs.SetResult(response);
         }
         

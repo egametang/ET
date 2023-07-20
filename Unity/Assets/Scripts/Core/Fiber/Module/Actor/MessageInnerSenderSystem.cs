@@ -75,13 +75,13 @@ namespace ET
         {
             if (response.Error == ErrorCore.ERR_MessageTimeout)
             {
-                self.Tcs.SetException(new Exception($"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
+                self.Tcs.SetException(new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
                 return;
             }
 
             if (self.NeedException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
-                self.Tcs.SetException(new Exception($"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
+                self.Tcs.SetException(new RpcException(response.Error, $"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
                 return;
             }
 

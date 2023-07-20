@@ -12,14 +12,14 @@ namespace ET
             get;
         }
 
-        public RpcException(int error, string message): base($"Error: {error} Message: {message}")
+        public RpcException(int error, string message): base(message)
         {
             this.Error = error;
         }
 
-        public RpcException(int error, string message, Exception e): base($"Error: {error} Message: {message}", e)
+        public override string ToString()
         {
-            this.Error = error;
+            return $"Error: {this.Error}\n{base.ToString()}";
         }
     }
 }

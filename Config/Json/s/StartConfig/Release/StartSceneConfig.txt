@@ -7,6 +7,7 @@
 [12, {"_t":"StartSceneConfig","_id":12,"Process":2,"Zone":1,"SceneType":"Location","Name":"Location","Port":0}],
 [13, {"_t":"StartSceneConfig","_id":13,"Process":2,"Zone":1,"SceneType":"Map","Name":"Map1","Port":0}],
 [14, {"_t":"StartSceneConfig","_id":14,"Process":2,"Zone":1,"SceneType":"Map","Name":"Map2","Port":0}],
+[15, {"_t":"StartSceneConfig","_id":15,"Process":2,"Zone":1,"SceneType":"Match","Name":"Match","Port":0}],
 [30, {"_t":"StartSceneConfig","_id":30,"Process":3,"Zone":3,"SceneType":"RouterManager","Name":"RouterManager","Port":30300}],
 [31, {"_t":"StartSceneConfig","_id":31,"Process":3,"Zone":3,"SceneType":"Router","Name":"Router01","Port":30301}],
 [32, {"_t":"StartSceneConfig","_id":32,"Process":3,"Zone":3,"SceneType":"Router","Name":"Router02","Port":30302}],

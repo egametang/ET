@@ -73,9 +73,13 @@ namespace ET
                 {
                     await this.Run(ee, request, response);
                 }
+                catch (RpcException exception)
+                {
+                    response.Error = exception.Error;
+                    response.Message = exception.ToString();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception);
                     response.Error = ErrorCore.ERR_RpcFail;
                     response.Message = exception.ToString();
                 }

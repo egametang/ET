@@ -67,16 +67,12 @@ namespace ET.Server
                     self.HandleIActorResponse(iActorResponse);
                     return;
                 }
-                case ILocationRequest iActorRequest:
+                case ILocationRequest:
+                case IRequest:
                 {
-                    IResponse response = await fiber.MessageInnerSender.Call(actorId, iActorRequest, false);
-                    actorId.Process = fromProcess;
-                    self.Send(actorId, response);
-                    break;
-                }
-                case IRequest iActorRequest:
-                {
-                    IResponse response = await fiber.MessageInnerSender.Call(actorId, iActorRequest);
+                    IRequest request = (IRequest)message;
+                    // 注意这里都不能抛异常，因为这里只是中转消息
+                    IResponse response = await fiber.MessageInnerSender.Call(actorId, request, false);
                     actorId.Process = fromProcess;
                     self.Send(actorId, response);
                     break;
@@ -148,13 +144,13 @@ namespace ET.Server
         {
             if (response.Error == ErrorCore.ERR_MessageTimeout)
             {
-                self.Tcs.SetException(new Exception($"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
+                self.Tcs.SetException(new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
                 return;
             }
 
             if (self.NeedException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
-                self.Tcs.SetException(new Exception($"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
+                self.Tcs.SetException(new RpcException(response.Error, $"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
                 return;
             }
 
