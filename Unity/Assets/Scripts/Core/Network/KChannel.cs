@@ -9,6 +9,8 @@ namespace ET
 {
 	public class KChannel : AChannel
 	{
+		private const int MaxKcpMessageSize = 10000;
+		
 		private readonly KService Service;
 
 		private Kcp kcp { get; set; }
@@ -319,7 +321,7 @@ namespace ET
 						if (headInt == 0)
 						{
 							this.needReadSplitCount = BitConverter.ToInt32(readMemory.GetBuffer(), 4);
-							if (this.needReadSplitCount <= AService.MaxCacheBufferSize)
+							if (this.needReadSplitCount <= MaxKcpMessageSize)
 							{
 								Log.Error($"kchannel read error3: {this.needReadSplitCount} {this.LocalConn} {this.RemoteConn}");
 								this.OnError(ErrorCore.ERR_KcpSplitCountError);
@@ -349,7 +351,7 @@ namespace ET
 			}
 		}
 
-		public void Output(byte[] bytes, int count)
+		private void Output(byte[] bytes, int count)
 		{
 			if (this.IsDisposed)
 			{
@@ -405,7 +407,8 @@ namespace ET
 			int count = (int) (memoryStream.Length - memoryStream.Position);
 
 			// 超出maxPacketSize需要分片
-			if (count <= AService.MaxCacheBufferSize)
+			
+			if (count <= MaxKcpMessageSize)
 			{
 				this.kcp.Send(memoryStream.GetBuffer().AsSpan((int)memoryStream.Position, count));
 			}
@@ -422,7 +425,7 @@ namespace ET
 				{
 					int leftCount = count - alreadySendCount;
 					
-					int sendCount = leftCount < AService.MaxCacheBufferSize? leftCount: AService.MaxCacheBufferSize;
+					int sendCount = leftCount < MaxKcpMessageSize? leftCount: MaxKcpMessageSize;
 					
 					this.kcp.Send(memoryStream.GetBuffer().AsSpan((int)memoryStream.Position + alreadySendCount, sendCount));
 					

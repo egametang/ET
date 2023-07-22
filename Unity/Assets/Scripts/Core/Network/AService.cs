@@ -14,21 +14,21 @@ namespace ET
         public long Id { get; set; }
         
         public ServiceType ServiceType { get; protected set; }
-        
-        public const int MaxCacheBufferSize = 1024;
+
+        private const int MaxMemoryBufferSize = 1024;
 		
         private readonly Queue<MemoryBuffer> pool = new();
 
         public MemoryBuffer Fetch(int size = 0)
         {
-            if (size > MaxCacheBufferSize)
+            if (size > MaxMemoryBufferSize)
             {
                 return new MemoryBuffer(size);
             }
             
-            if (size < MaxCacheBufferSize)
+            if (size < MaxMemoryBufferSize)
             {
-                size = MaxCacheBufferSize;
+                size = MaxMemoryBufferSize;
             }
             
             if (this.pool.Count == 0)
