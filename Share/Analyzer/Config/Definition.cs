@@ -73,7 +73,7 @@
         public const string LateUpdateMethod = "LateUpdate";
 
         public const string ISerializeInterface = "ET.ISerialize";
-        public const string SerializeMethod = "SerializeMethod";
+        public const string SerializeMethod = "Serialize";
 
         public const string LSEntitySystemAttribute = "LSEntitySystem";
         public const string LSEntitySystemAttributeMetaName = "ET.LSEntitySystemAttribute";
