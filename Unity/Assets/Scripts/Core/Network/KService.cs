@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,6 +56,7 @@ namespace ET
                 this.Socket.SendBufferSize = Kcp.OneM * 64;
                 this.Socket.ReceiveBufferSize = Kcp.OneM * 64;
             }
+            
 
             try
             {
@@ -98,6 +100,10 @@ namespace ET
         private readonly List<long> timeOutTime = new List<long>();
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
+        
+        public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,3000);
+#else
+        public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,200);
 #endif
         
         public override bool IsDisposed()
