@@ -81,7 +81,7 @@ namespace ET
         internal readonly List<SegmentStruct> rcv_buf = new List<SegmentStruct>(16);   // receive buffer
         internal readonly List<AckItem> acklist = new List<AckItem>(16);
 
-        private ArrayPool<byte> kcpSegmentArrayPool = ArrayPool<byte>.Create();
+        private ArrayPool<byte> kcpSegmentArrayPool;
 
         // memory buffer
         // size depends on MTU.
@@ -1224,9 +1224,9 @@ namespace ET
             this.rx_minrto = minrto;
         }
 
-        public void InitArrayPool(int maxArrayLength, int maxArraysPerBucket)
+        public void SetArrayPool(ArrayPool<byte> arrayPool)
         {
-            this.kcpSegmentArrayPool = ArrayPool<byte>.Create(maxArrayLength,maxArraysPerBucket);
+            this.kcpSegmentArrayPool = arrayPool;
         }
 
         [DoesNotReturn]

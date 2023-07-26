@@ -122,6 +122,13 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
             return;
         }
 
+        bool ignoreAwake = false;
+        if (attr.ConstructorArguments.Length>=2 && attr.ConstructorArguments[1].Value is bool ignore)
+        {
+            ignoreAwake = ignore;
+        }
+        
+
         // 排除非Entity子类
         if (entityTypeSymbol.BaseType?.ToString() != etSystemData.EntityTypeName)
         {
@@ -130,6 +137,10 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
 
         foreach (INamedTypeSymbol? interfacetypeSymbol in entityTypeSymbol.AllInterfaces)
         {
+            if (ignoreAwake && interfacetypeSymbol.IsInterface(Definition.IAwakeInterface))
+            {
+                continue;
+            }
             foreach (SystemMethodData systemMethodData in etSystemData.SystemMethods)
             {
                 if (interfacetypeSymbol.IsInterface(systemMethodData.InterfaceName))
