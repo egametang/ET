@@ -193,7 +193,7 @@ namespace ET
                 
                 ref byte source = ref MemoryMarshal.GetReference(seg.WrittenBuffer);
                 Unsafe.CopyBlockUnaligned(ref dest,ref source,(uint)seg.WrittenCount);
-                dest = ref Unsafe.Add(ref dest, (uint) seg.WrittenCount);
+                dest = ref Unsafe.Add(ref dest, seg.WrittenCount);
 
                 len += seg.WrittenCount;
                 uint fragment = seg.SegHead.frg;
