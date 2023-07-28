@@ -1,17 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace ET
 {
     public class ObjectPool: Singleton<ObjectPool>, ISingletonAwake
     {
-        private Dictionary<Type, Queue<object>> pool;
-        
+        //private Dictionary<Type, Queue<object>> pool;
+
+        private ConcurrentDictionary<Type, Pool> objPool;
+
         public void Awake()
         {
             lock (this)
             {
-                this.pool = new Dictionary<Type, Queue<object>>();
+                //this.pool = new Dictionary<Type, Queue<object>>();
+                objPool = new ConcurrentDictionary<Type, Pool>();
             }
         }
         
@@ -22,29 +27,8 @@ namespace ET
 
         public object Fetch(Type type)
         {
-            lock (this)
-            {
-                Queue<object> queue = null;
-                object o;
-                if (!pool.TryGetValue(type, out queue))
-                {
-                    o = Activator.CreateInstance(type);
-                }
-                else if (queue.Count == 0)
-                {
-                    o = Activator.CreateInstance(type);
-                }
-                else
-                {
-                    o = queue.Dequeue();    
-                }
-                
-                if (o is IPool iPool)
-                {
-                    iPool.IsFromPool = true;
-                }
-                return o;
-            }
+            var pool = GetPool(type);
+            return pool.Get();
         }
 
         public void Recycle(object obj)
@@ -60,29 +44,64 @@ namespace ET
             }
             
             Type type = obj.GetType();
-
-            RecycleInner(type, obj);
+            var pool = GetPool(type);
+            pool.Return(obj);
         }
 
-        private void RecycleInner(Type type, object obj)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Pool GetPool(Type type)
         {
-            lock (this)
+            return  this.objPool.GetOrAdd(type, addType => { return new Pool(type,1000);});
+        }
+
+        /// <summary>
+        /// 线程安全的无锁对象池
+        /// </summary>
+        private class Pool
+        {
+            private readonly Type ObjectType;
+            private readonly int MaxCapacity;
+            private int NumItems;
+            private readonly ConcurrentQueue<object> _items = new();
+            private object FastItem;
+            
+            public Pool(Type objectType,int maxCapacity)
             {
-                Queue<object> queue = null;
-                if (!pool.TryGetValue(type, out queue))
+                ObjectType = objectType;
+                MaxCapacity = maxCapacity;
+            }
+            
+            public object Get()
+            {
+                var item = FastItem;
+                if (item == null || Interlocked.CompareExchange(ref FastItem, null, item) != item)
                 {
-                    queue = new Queue<object>();
-                    pool.Add(type, queue);
+                    if (_items.TryDequeue(out item))
+                    {
+                        Interlocked.Decrement(ref NumItems);
+                        return item;
+                    }
+                    return Activator.CreateInstance(this.ObjectType);
                 }
-
-                // 一种对象最大为1000个
-                if (queue.Count > 1000)
+                return item;
+            }
+            
+            public void Return(object obj)
+            {
+                if (FastItem != null || Interlocked.CompareExchange(ref FastItem, obj, null) != null)
                 {
-                    return;
+                    if (Interlocked.Increment(ref NumItems) <= MaxCapacity)
+                    {
+                        _items.Enqueue(obj);
+                        return ;
+                    }
+                    Interlocked.Decrement(ref NumItems);
                 }
-
-                queue.Enqueue(obj);
             }
         }
     }
+    
+    
+    
+    
 }
