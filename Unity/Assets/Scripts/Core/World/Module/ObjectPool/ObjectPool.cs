@@ -7,27 +7,26 @@ namespace ET
 {
     public class ObjectPool: Singleton<ObjectPool>, ISingletonAwake
     {
-        //private Dictionary<Type, Queue<object>> pool;
-
         private ConcurrentDictionary<Type, Pool> objPool;
+
+        private readonly Func<Type, Pool> AddPoolFunc = type => new Pool(type, 1000);
 
         public void Awake()
         {
             lock (this)
             {
-                //this.pool = new Dictionary<Type, Queue<object>>();
                 objPool = new ConcurrentDictionary<Type, Pool>();
             }
         }
-        
-        public T Fetch<T>() where T: class
+
+        public T Fetch<T>() where T : class
         {
             return this.Fetch(typeof (T)) as T;
         }
 
         public object Fetch(Type type)
         {
-            var pool = GetPool(type);
+            Pool pool = GetPool(type);
             return pool.Get();
         }
 
@@ -39,19 +38,20 @@ namespace ET
                 {
                     return;
                 }
+
                 // 防止多次入池
                 p.IsFromPool = false;
             }
-            
+
             Type type = obj.GetType();
-            var pool = GetPool(type);
+            Pool pool = GetPool(type);
             pool.Return(obj);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Pool GetPool(Type type)
         {
-            return  this.objPool.GetOrAdd(type, addType => { return new Pool(type,1000);});
+            return this.objPool.GetOrAdd(type, AddPoolFunc);
         }
 
         /// <summary>
@@ -64,16 +64,16 @@ namespace ET
             private int NumItems;
             private readonly ConcurrentQueue<object> _items = new();
             private object FastItem;
-            
-            public Pool(Type objectType,int maxCapacity)
+
+            public Pool(Type objectType, int maxCapacity)
             {
                 ObjectType = objectType;
                 MaxCapacity = maxCapacity;
             }
-            
+
             public object Get()
             {
-                var item = FastItem;
+                object item = FastItem;
                 if (item == null || Interlocked.CompareExchange(ref FastItem, null, item) != item)
                 {
                     if (_items.TryDequeue(out item))
@@ -81,11 +81,13 @@ namespace ET
                         Interlocked.Decrement(ref NumItems);
                         return item;
                     }
+
                     return Activator.CreateInstance(this.ObjectType);
                 }
+
                 return item;
             }
-            
+
             public void Return(object obj)
             {
                 if (FastItem != null || Interlocked.CompareExchange(ref FastItem, obj, null) != null)
@@ -93,15 +95,12 @@ namespace ET
                     if (Interlocked.Increment(ref NumItems) <= MaxCapacity)
                     {
                         _items.Enqueue(obj);
-                        return ;
+                        return;
                     }
+
                     Interlocked.Decrement(ref NumItems);
                 }
             }
         }
     }
-    
-    
-    
-    
 }

@@ -108,16 +108,12 @@ namespace ET
         public long GenerateId()
         {
             uint time = TimeSince2022();
-            int v = 0;
-            // 这里必须加锁
-            lock (this)
-            {
-                if (++this.value > Mask20bit - 1)
-                {
-                    this.value = 0;
-                }
-                v = this.value;
-            }
+            int v;
+            do {
+                v = value;
+                Interlocked.CompareExchange(ref value, 0, Mask20bit-1);
+            } while(Interlocked.CompareExchange(ref value, v + 1, v) != v);
+            
             IdStruct idStruct = new(time, (short)Options.Instance.Process, (uint)v);
             return idStruct.ToLong();
         }
