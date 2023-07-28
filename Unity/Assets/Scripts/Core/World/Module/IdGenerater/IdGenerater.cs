@@ -118,6 +118,7 @@ namespace ET
                 }
                 v = this.value;
             }
+            
             IdStruct idStruct = new(time, (short)Options.Instance.Process, (uint)v);
             return idStruct.ToLong();
         }
