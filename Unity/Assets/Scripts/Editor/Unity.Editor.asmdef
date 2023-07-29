@@ -6,7 +6,9 @@
         "Unity.Core",
         "Unity.Loader",
         "HybridCLR.Runtime",
-        "HybridCLR.Editor"
+        "HybridCLR.Editor",
+        "Unity.Model",
+        "Unity.Hotfix"
     ],
     "includePlatforms": [
         "Editor"

@@ -44,9 +44,7 @@ namespace ET
                 return;
             }
 
-            var log = new Logger();
-            ((ISingleton)log).Register();
-            log.ILog = new UnityLogger();
+            World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
         }
 
         private static void DestroyLog()
@@ -56,7 +54,7 @@ namespace ET
                 return;
             }
 
-            ((ISingleton)Logger.Instance).Destroy();
+            Logger.Instance.Dispose();
         }
     }
 }

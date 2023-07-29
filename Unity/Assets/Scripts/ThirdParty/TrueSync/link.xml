@@ -1,0 +1,5 @@
+<linker>
+   <assembly fullname="TrueSync">
+	   <type fullname="TrueSync.*" preserve="all"/>
+   </assembly>
+</linker>

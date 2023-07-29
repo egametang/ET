@@ -3,6 +3,8 @@
     public static class Definition
     {
         public const string EntityType = "ET.Entity";
+
+        public const string LSEntityType = "ET.LSEntity";
         
         public const string ETTask = "ETTask";
 
@@ -16,7 +18,7 @@
         
         public const string BaseAttribute = "ET.BaseAttribute";
         
-        public const string ObjectSystemAttribute = "ET.ObjectSystemAttribute";
+        public const string ObjectSystemAttribute = "ET.SystemAttribute";
 
         public const string EnableMethodAttribute = "ET.EnableMethodAttribute";
         
@@ -35,6 +37,53 @@
         public const string ETCancellationToken = "ET.ETCancellationToken";
 
         public const string ETTaskCompleteTask = "ETTask.CompletedTask";
+
+        public const string ETClientNameSpace = "ET.Client";
+
+        public const string ClientDirInServer = @"Unity\Assets\Scripts\Codes\Hotfix\Client\";
+
+        public const string EntitySystemAttribute = "EntitySystem";
+        public const string EntitySystemAttributeMetaName = "ET.EntitySystemAttribute";
+
+        public const string EntitySystemOfAttribute = "ET.EntitySystemOfAttribute";
+        public const string EntitySystemInterfaceSequence = "EntitySystemInterfaceSequence";
+
+        public const string IAwakeInterface = "ET.IAwake";
+        public const string AwakeMethod = "Awake";
+
+        public const string IUpdateInterface = "ET.IUpdate";
+        public const string UpdateMethod = "Update";
+
+        public const string IDestroyInterface = "ET.IDestroy";
+        public const string DestroyMethod = "Destroy";
+
+        public const string IAddComponentInterface = "ET.IAddComponent";
+        public const string AddComponentMethod = "AddComponent";
+
+        public const string IDeserializeInterface = "ET.IDeserialize";
+        public const string DeserializeMethod = "Deserialize";
+
+        public const string IGetComponentInterface = "ET.IGetComponent";
+        public const string GetComponentMethod = "ET.GetComponent";
+
+        public const string ILoadInterface = "ET.ILoad";
+        public const string LoadMethod = "Load";
+
+        public const string ILateUpdateInterface = "ET.ILateUpdate";
+        public const string LateUpdateMethod = "LateUpdate";
+
+        public const string ISerializeInterface = "ET.ISerialize";
+        public const string SerializeMethod = "Serialize";
+
+        public const string LSEntitySystemAttribute = "LSEntitySystem";
+        public const string LSEntitySystemAttributeMetaName = "ET.LSEntitySystemAttribute";
+        public const string LSEntitySystemOfAttribute = "ET.LSEntitySystemOfAttribute";
+
+        public const string ILSRollbackInterface = "ET.ILSRollback";
+        public const string LSRollbackMethod = "LSRollback";
+
+        public const string ILSUpdateInterface = "ET.ILSUpdate";
+        public const string LSUpdateMethod = "LSUpdate";
     }
 }
 

@@ -1,0 +1,22 @@
+{
+    "name": "Unity.ModelView",
+    "rootNamespace": "ET",
+    "references": [
+        "Unity.ThirdParty",
+        "Unity.Core",
+        "Unity.Mathematics",
+        "Unity.Loader",
+        "Unity.Model"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "!ENABLE_DLL"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

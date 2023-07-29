@@ -89,3 +89,6 @@ Publish/
 /Unity/Assets/Bundles/AotDlls.meta
 /Unity/HybridCLRData
 /Unity/Assembly-CSharp-firstpass.csproj
+
+/Unity/*.csproj
+/Unity/*.vsconfig

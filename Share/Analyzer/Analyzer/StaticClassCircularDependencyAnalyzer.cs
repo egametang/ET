@@ -26,6 +26,8 @@ namespace ET.Analyzer
             DiagnosticSeverity.Error, true, Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        
+        private object lockObj = new object();
 
         public override void Initialize(AnalysisContext context)
         {
@@ -41,24 +43,21 @@ namespace ET.Analyzer
 
         private void CompilationStartAnalysis(CompilationStartAnalysisContext context)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllHotfix))
-            {
-                return;
-            }
-
-            if (context.Compilation.AssemblyName == null)
-            {
-                return;
-            }
-
             var dependencyMap = new ConcurrentDictionary<string, HashSet<string>>();
             var staticClassSet = new HashSet<string>();
-
-            context.RegisterSyntaxNodeAction(
-                analysisContext => { this.StaticClassDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); },
-                SyntaxKind.InvocationExpression);
-
-            context.RegisterCompilationEndAction(analysisContext => { this.CircularDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); });
+            
+            if (context.Compilation.AssemblyName == AnalyzeAssembly.UnityCodes)
+            {
+                context.RegisterSyntaxNodeAction(analysisContext => { this.StaticClassDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); }, SyntaxKind.InvocationExpression);
+                context.RegisterCompilationEndAction(analysisContext => { this.CircularDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); });
+                return;
+            }
+            
+            if (AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllHotfix))
+            {
+                context.RegisterSyntaxNodeAction(analysisContext => { this.StaticClassDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); }, SyntaxKind.InvocationExpression);
+                context.RegisterCompilationEndAction(analysisContext => { this.CircularDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); });
+            }
         }
 
         
@@ -97,9 +96,12 @@ namespace ET.Analyzer
 
             string methodClassTypeName = methodSymbol.ContainingType.ToString();
 
-            if (!staticClassSet.Contains(selfClassTypeName))
+            lock (this.lockObj)
             {
-                staticClassSet.Add(selfClassTypeName);
+                if (!staticClassSet.Contains(selfClassTypeName))
+                {
+                    staticClassSet.Add(selfClassTypeName);
+                }
             }
 
             // 筛选出对其他静态类的函数调用
@@ -118,10 +120,15 @@ namespace ET.Analyzer
                 dependencyMap[methodClassTypeName] = new HashSet<string>();
             }
 
-            if (!dependencyMap[methodClassTypeName].Contains(selfClassTypeName))
+            var set = dependencyMap[methodClassTypeName];
+            lock (set)
             {
-                dependencyMap[methodClassTypeName].Add(selfClassTypeName);
+                if (!set.Contains(selfClassTypeName))
+                {
+                    set.Add(selfClassTypeName);
+                }
             }
+            
         }
 
         /// <summary>

@@ -3,34 +3,40 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+#pragma warning disable CS0162
 
 namespace ET
 {
-	public class CodeLoader: Singleton<CodeLoader>
+	public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
 	{
-		private Assembly model;
+		private Assembly assembly;
+		
+		public void Awake()
+		{
+		}
 
 		public void Start()
 		{
-			if (Define.EnableCodes)
+			if (!Define.EnableDll)
 			{
 				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
 				if (globalConfig.CodeMode != CodeMode.ClientServer)
 				{
-					throw new Exception("ENABLE_CODES mode must use ClientServer code mode!");
+					throw new Exception("!ENABLE_CODES mode must use ClientServer code mode!");
 				}
 				
 				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-				Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
-				EventSystem.Instance.Add(types);
+				
 				foreach (Assembly ass in assemblies)
 				{
 					string name = ass.GetName().Name;
-					if (name == "Unity.Model.Codes")
+					if (name == "Unity.Model")
 					{
-						this.model = ass;
+						this.assembly = ass;
 					}
 				}
+				
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies);
 			}
 			else
 			{
@@ -41,6 +47,10 @@ namespace ET
 					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
 					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					
+					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
+					//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
+					//pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
 
 					if (Define.EnableIL2CPP)
 					{
@@ -53,16 +63,18 @@ namespace ET
 					pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
 				}
 			
-				this.model = Assembly.Load(assBytes, pdbBytes);
-				this.LoadHotfix();
+				this.assembly = Assembly.Load(assBytes, pdbBytes);
+
+				Assembly hotfixAssembly = this.LoadHotfix();
+				
+				World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
 			}
 			
-			IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
+			IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
 			start.Run();
 		}
 
-		// 热重载调用该方法
-		public void LoadHotfix()
+		private Assembly LoadHotfix()
 		{
 			byte[] assBytes;
 			byte[] pdbBytes;
@@ -71,25 +83,30 @@ namespace ET
 				Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
 				assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
 				pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+					
+				// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
+				//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
+				//pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
 			}
 			else
 			{
-				// 傻屌Unity在这里搞了个傻逼优化，认为同一个路径的dll，返回的程序集就一样。所以这里每次编译都要随机名字
-				string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Hotfix_*.dll");
-				if (logicFiles.Length != 1)
-				{
-					throw new Exception("Logic dll count != 1");
-				}
-				string logicName = Path.GetFileNameWithoutExtension(logicFiles[0]);
-				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.dll"));
-				pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicName}.pdb"));
+				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"));
+				pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"));
 			}
-
+			
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
-			
-			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Game).Assembly, typeof(Init).Assembly, this.model, hotfixAssembly);
-			
-			EventSystem.Instance.Add(types);
+
+			return hotfixAssembly;
+		}
+
+		public void Reload()
+		{
+			Assembly hotfixAssembly = this.LoadHotfix();
+
+			CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
+			codeTypes.CreateCodeSingleton();
+
+			Log.Debug($"reload dll finish!");
 		}
 	}
 }

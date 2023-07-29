@@ -78,6 +78,7 @@ namespace ET.Analyzer
             
             void ReportDiagnostic(IFieldSymbol fieldSymbol, int idValue, DiagnosticDescriptor rule)
             {
+                ET.Analyzer.ClientClassInServerAnalyzer analyzer = new ClientClassInServerAnalyzer();
                 foreach (var syntaxReference in fieldSymbol.DeclaringSyntaxReferences)
                 {
                     var syntax = syntaxReference.GetSyntax();

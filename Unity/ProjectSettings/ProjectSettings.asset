@@ -839,11 +839,11 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: NETSTANDARD2_0;UNITY
-    Server: NETSTANDARD2_0;UNITY
-    Standalone: NETSTANDARD2_0;UNITY
-    WebGL: NETSTANDARD2_0;UNITY
-    iPhone: NETSTANDARD2_0;UNITY
+    Android: UNITY;ENABLE_DLL
+    Server: UNITY;ENABLE_DLL;ENABLE_VIEW
+    Standalone: UNITY;ENABLE_DLL;ENABLE_VIEW
+    WebGL: UNITY;ENABLE_DLL;ENABLE_VIEW
+    iPhone: UNITY;ENABLE_DLL;ENABLE_VIEW
   additionalCompilerArguments: {}
   platformArchitecture:
     iPhone: 1
@@ -863,7 +863,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 0
-  assemblyVersionValidation: 1
+  assemblyVersionValidation: 0
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform:
     Android: 3

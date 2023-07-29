@@ -6,30 +6,33 @@ using System.Runtime.Loader;
 
 namespace ET
 {
-    public class CodeLoader: Singleton<CodeLoader>
+    public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
         private AssemblyLoadContext assemblyLoadContext;
 
-        private Assembly model;
+        private Assembly assembly;
 
-        public void Start()
+        public void Awake()
         {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies)
+            foreach (Assembly ass in assemblies)
             {
-                if (assembly.GetName().Name == "Model")
+                if (ass.GetName().Name == "Model")
                 {
-                    this.model = assembly;
+                    this.assembly = ass;
                     break;
                 }
             }
-            this.LoadHotfix();
-            
-            IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
+
+            Assembly hotfixAssembly = this.LoadHotfix();
+
+            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
+
+            IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
             start.Run();
         }
 
-        public void LoadHotfix()
+        private Assembly LoadHotfix()
         {
             assemblyLoadContext?.Unload();
             GC.Collect();
@@ -37,10 +40,17 @@ namespace ET
             byte[] dllBytes = File.ReadAllBytes("./Hotfix.dll");
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
-
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (Game).Assembly, this.model, hotfixAssembly);
+            return hotfixAssembly;
+        }
+        
+        public void Reload()
+        {
+            Assembly hotfixAssembly = this.LoadHotfix();
 			
-            EventSystem.Instance.Add(types);
+            CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
+
+            codeTypes.CreateCodeSingleton();
+            Log.Debug($"reload dll finish!");
         }
     }
 }

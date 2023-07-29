@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework> 
+        <TargetFramework>net7.0</TargetFramework> 
         <RootNamespace>ET</RootNamespace>
-        <LangVersion>10</LangVersion>
+        <LangVersion>11</LangVersion>
         <AssemblyName>Hotfix</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
@@ -23,22 +23,26 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Client\**\*.cs"> 
+        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Client\**\*.cs"> 
             <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile> 
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Server\**\*.cs">
             <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Share\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Share\**\*.cs">
             <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link> 
         </Compile> 
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Share\Share.SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
         <ProjectReference Include="..\Model\DotNet.Model.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Client\LockStep\" />
     </ItemGroup>
 
 </Project>

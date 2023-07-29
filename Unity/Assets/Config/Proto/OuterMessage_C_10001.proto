@@ -14,13 +14,13 @@ message RouterSync
 }
 
 //ResponseType M2C_TestResponse
-message C2M_TestRequest // IActorLocationRequest
+message C2M_TestRequest // ILocationRequest
 {
 	int32 RpcId = 1;
 	string request = 2;
 }
 
-message M2C_TestResponse // IActorLocationResponse
+message M2C_TestResponse // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -28,27 +28,13 @@ message M2C_TestResponse // IActorLocationResponse
 	string response = 4;
 }
 
-//ResponseType Actor_TransferResponse
-message Actor_TransferRequest // IActorLocationRequest
-{
-	int32 RpcId = 1;
-	int32 MapIndex = 2;
-}
-
-message Actor_TransferResponse // IActorLocationResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-}
-
 //ResponseType G2C_EnterMap
-message C2G_EnterMap // IRequest
+message C2G_EnterMap // ISessionRequest
 {
 	int32 RpcId = 1;
 }
 
-message G2C_EnterMap // IResponse
+message G2C_EnterMap // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -75,46 +61,46 @@ message UnitInfo
 	MoveInfo MoveInfo = 7;
 }
 
-message M2C_CreateUnits // IActorMessage
+message M2C_CreateUnits // IMessage
 {
 	repeated UnitInfo Units = 1;
 }
 
-message M2C_CreateMyUnit // IActorMessage
+message M2C_CreateMyUnit // IMessage
 {
 	UnitInfo Unit = 1;
 }
 
-message M2C_StartSceneChange // IActorMessage
+message M2C_StartSceneChange // IMessage
 {
 	int64 SceneInstanceId = 1;
 	string SceneName = 2;	
 }
 
-message M2C_RemoveUnits // IActorMessage
+message M2C_RemoveUnits // IMessage
 {
-	repeated int64 Units = 2;
+	repeated int64 Units = 1;
 }
 
-message C2M_PathfindingResult // IActorLocationMessage
+message C2M_PathfindingResult // ILocationMessage
 {
 	int32 RpcId = 1;
 	Unity.Mathematics.float3 Position = 2;
 }
 
-message C2M_Stop // IActorLocationMessage
+message C2M_Stop // ILocationMessage
 {
 	int32 RpcId = 1;
 }
 
-message M2C_PathfindingResult // IActorMessage
+message M2C_PathfindingResult // IMessage
 {
 	int64 Id = 1;
 	Unity.Mathematics.float3 Position = 2;
 	repeated Unity.Mathematics.float3 Points = 3;
 }
 
-message M2C_Stop // IActorMessage
+message M2C_Stop // IMessage
 {
 	int32 Error = 1;
 	int64 Id = 2;
@@ -123,12 +109,12 @@ message M2C_Stop // IActorMessage
 }
 
 //ResponseType G2C_Ping
-message C2G_Ping // IRequest
+message C2G_Ping // ISessionRequest
 {
 	int32 RpcId = 1;
 }
 
-message G2C_Ping // IResponse
+message G2C_Ping // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -137,19 +123,19 @@ message G2C_Ping // IResponse
 }
 
 
-message G2C_Test // IMessage
+message G2C_Test // ISessionMessage
 {
 }
 
 //ResponseType M2C_Reload
-message C2M_Reload // IRequest
+message C2M_Reload // ISessionRequest
 {
 	int32 RpcId = 1;
 	string Account = 2;
 	string Password = 3;
 }
 
-message M2C_Reload // IResponse
+message M2C_Reload // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -157,14 +143,14 @@ message M2C_Reload // IResponse
 }
 
 //ResponseType R2C_Login
-message C2R_Login // IRequest
+message C2R_Login // ISessionRequest
 {
 	int32 RpcId = 1;
 	string  Account = 2;  // 帐号
 	string  Password = 3;  // 密码
 }
 
-message R2C_Login // IResponse
+message R2C_Login // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -175,14 +161,14 @@ message R2C_Login // IResponse
 }
 
 //ResponseType G2C_LoginGate
-message C2G_LoginGate // IRequest
+message C2G_LoginGate // ISessionRequest
 {
 	int32 RpcId = 1;
 	int64 Key = 2;  // 帐号
 	int64 GateId = 3;
 }
 
-message G2C_LoginGate // IResponse
+message G2C_LoginGate // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -190,19 +176,19 @@ message G2C_LoginGate // IResponse
 	int64 PlayerId = 4;
 }
 
-message G2C_TestHotfixMessage // IMessage
+message G2C_TestHotfixMessage // ISessionMessage
 {
 	string Info = 1;
 }
 
 //ResponseType M2C_TestRobotCase
-message C2M_TestRobotCase // IActorLocationRequest
+message C2M_TestRobotCase // ILocationRequest
 {
 	int32 RpcId = 1;
 	int32 N = 2;
 }
 
-message M2C_TestRobotCase // IActorLocationResponse
+message M2C_TestRobotCase // ILocationResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -210,25 +196,25 @@ message M2C_TestRobotCase // IActorLocationResponse
 	int32 N = 4;
 }
 
-message C2M_TestRobotCase2 // IActorLocationMessage
+message C2M_TestRobotCase2 // ILocationMessage
 {
 	int32 RpcId = 1;
 	int32 N = 2;
 }
 
-message M2C_TestRobotCase2 // IActorMessage
+message M2C_TestRobotCase2 // ILocationMessage
 {
 	int32 RpcId = 1;
 	int32 N = 2;
 }
 
 //ResponseType M2C_TransferMap
-message C2M_TransferMap // IActorLocationRequest
+message C2M_TransferMap // ILocationRequest
 {
 	int32 RpcId = 1;
 }
 
-message M2C_TransferMap // IActorLocationResponse
+message M2C_TransferMap // ILocationResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -236,12 +222,12 @@ message M2C_TransferMap // IActorLocationResponse
 }
 
 //ResponseType G2C_Benchmark
-message C2G_Benchmark // IRequest
+message C2G_Benchmark // ISessionRequest
 {
 	int32 RpcId = 1;
 }
 
-message G2C_Benchmark // IResponse
+message G2C_Benchmark // ISessionResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;

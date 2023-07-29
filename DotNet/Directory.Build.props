@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <NoWarn>0169,0649,3021,8981</NoWarn>
+  </PropertyGroup>
+</Project>

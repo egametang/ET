@@ -1,4 +1,4 @@
-{"list":[
-{"_t":"StartZoneConfig","_id":1,"DBConnection":"mongodb://127.0.0.1","DBName":"ET1"},
-{"_t":"StartZoneConfig","_id":2,"DBConnection":"mongodb://127.0.0.1","DBName":"ET2"},
+{"dict": [
+[1, {"_t":"StartZoneConfig","_id":1,"DBConnection":"mongodb://127.0.0.1","DBName":"ET1"}],
+[2, {"_t":"StartZoneConfig","_id":2,"DBConnection":"mongodb://127.0.0.1","DBName":"ET2"}],
 ]}

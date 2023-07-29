@@ -4,7 +4,17 @@
     {
         public override string ToString()
         {
-            return JsonHelper.ToJson(this);
+            return MongoHelper.ToJson(this);
+        }
+        
+        public string ToJson()
+        {
+            return MongoHelper.ToJson(this);
+        }
+        
+        public byte[] ToBson()
+        {
+            return MongoHelper.Serialize(this);
         }
     }
 }
