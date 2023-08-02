@@ -18,6 +18,7 @@ namespace ET
     public partial class Entity: DisposeObject
     {
 #if ENABLE_VIEW && UNITY_EDITOR
+        [BsonIgnore]
         [UnityEngine.HideInInspector]
         public UnityEngine.GameObject ViewGO;
 #endif
