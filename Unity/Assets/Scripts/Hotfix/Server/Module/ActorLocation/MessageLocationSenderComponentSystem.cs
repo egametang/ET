@@ -198,7 +198,7 @@ namespace ET.Server
                 // 队列中没处理的消息返回跟上个消息一样的报错
                 if (messageLocationSender.Error == ErrorCore.ERR_NotFoundActor)
                 {
-                    return ET.MessageHelper.CreateResponse(iRequest, messageLocationSender.Error);
+                    return MessageHelper.CreateResponse(iRequest, messageLocationSender.Error);
                 }
                 
                 try

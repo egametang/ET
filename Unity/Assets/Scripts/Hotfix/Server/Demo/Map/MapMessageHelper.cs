@@ -5,20 +5,20 @@ using System.IO;
 
 namespace ET.Server
 {
-    public static partial class MessageHelper
+    public static partial class MapMessageHelper
     {
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
         {
             M2C_CreateUnits createUnits = M2C_CreateUnits.Create();
             createUnits.Units.Add(UnitHelper.CreateUnitInfo(sendUnit));
-            MessageHelper.SendToClient(unit, createUnits);
+            MapMessageHelper.SendToClient(unit, createUnits);
         }
         
         public static void NoticeUnitRemove(Unit unit, Unit sendUnit)
         {
             M2C_RemoveUnits removeUnits = M2C_RemoveUnits.Create();
             removeUnits.Units.Add(sendUnit.Id);
-            MessageHelper.SendToClient(unit, removeUnits);
+            MapMessageHelper.SendToClient(unit, removeUnits);
         }
         
         public static void Broadcast(Unit unit, IMessage message)
