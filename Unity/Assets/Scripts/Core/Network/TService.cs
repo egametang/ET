@@ -80,6 +80,7 @@ namespace ET
 			if (socketError != SocketError.Success)
 			{
 				Log.Error($"accept error {socketError}");
+				this.AcceptAsync();
 				return;
 			}
 
