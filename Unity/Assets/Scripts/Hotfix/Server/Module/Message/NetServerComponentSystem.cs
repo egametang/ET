@@ -64,7 +64,7 @@ namespace ET.Server
             }
             session.LastRecvTime = TimeInfo.Instance.ClientNow();
             
-            LogMsg.Instance.Debug(message);
+            LogMsg.Instance.Debug(self.Fiber(), message);
 			
             EventSystem.Instance.Publish(self.Scene(), new NetServerComponentOnRead() {Session = session, Message = message});
         }

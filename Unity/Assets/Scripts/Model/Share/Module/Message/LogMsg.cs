@@ -16,14 +16,14 @@ namespace ET
         {
         }
 
-        public void Debug(object msg)
+        public void Debug(Fiber fiber, object msg)
         {
             ushort opcode = OpcodeType.Instance.GetOpcode(msg.GetType());
             if (this.ignore.Contains(opcode))
             {
                 return;
             }
-            Logger.Instance.Log.Debug(msg.ToString());
+            fiber.Log.Debug(msg.ToString());
         }
     }
 }
