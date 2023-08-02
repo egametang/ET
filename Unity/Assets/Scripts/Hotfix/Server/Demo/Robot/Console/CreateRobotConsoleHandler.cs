@@ -12,7 +12,7 @@ namespace ET.Server
             switch (content)
             {
                 case ConsoleMode.CreateRobot:
-                    Log.Console("CreateRobot args error!");
+                    fiber.Console("CreateRobot args error!");
                     break;
                 default:
                     CreateRobotArgs options = null;

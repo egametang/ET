@@ -24,7 +24,7 @@ namespace ET.Client
                 return;
             }
             
-            Log.Debug("开始巡逻");
+            root.Fiber().Debug("开始巡逻");
 
             while (true)
             {

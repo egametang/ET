@@ -16,7 +16,7 @@ namespace ET
 
         public ThreadSynchronizationContext ThreadSynchronizationContext;
 
-        public WService(IEnumerable<string> prefixs)
+        public WService(IEnumerable<string> prefixs, ILog log): base(log)
         {
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             
@@ -25,7 +25,7 @@ namespace ET
             StartAccept(prefixs).Coroutine();
         }
         
-        public WService()
+        public WService(ILog log): base(log)
         {
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
         }

@@ -478,7 +478,7 @@ namespace ET.Client
                     }
                     else
                     {
-                        Log.Error("Bundle not exist! BundleName: " + assetBundleName);
+                        self.Fiber().Error("Bundle not exist! BundleName: " + assetBundleName);
                     }
 
                     // 编辑器模式也不能同步加载
@@ -494,7 +494,7 @@ namespace ET.Client
                 p = Path.Combine(PathHelper.AppResPath, assetBundleName);
             }
 
-            Log.Debug("Async load bundle BundleName : " + p);
+            self.Fiber().Debug("Async load bundle BundleName : " + p);
 
             // if (!File.Exists(p))
             // {

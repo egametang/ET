@@ -34,7 +34,7 @@ namespace ET
         {
             if (self.navMesh == IntPtr.Zero)
             {
-                Log.Debug("寻路| Find 失败 pathfinding ptr is zero");
+                self.Fiber().Debug("寻路| Find 失败 pathfinding ptr is zero");
                 throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 

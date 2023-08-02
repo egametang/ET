@@ -23,7 +23,7 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Debug(msg.ToString());
+            Logger.Instance.Log.Debug(msg.ToString());
         }
     }
 }

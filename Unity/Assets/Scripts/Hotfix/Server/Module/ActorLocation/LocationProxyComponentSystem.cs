@@ -11,29 +11,33 @@ namespace ET.Server
 
         public static async ETTask Add(this LocationProxyComponent self, int type, long key, ActorId actorId)
         {
-            Log.Info($"location proxy add {key}, {actorId} {TimeInfo.Instance.ServerNow()}");
-            await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key),
+            Fiber fiber = self.Fiber();
+            fiber.Info($"location proxy add {key}, {actorId} {TimeInfo.Instance.ServerNow()}");
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
                 new ObjectAddRequest() { Type = type, Key = key, ActorId = actorId });
         }
 
         public static async ETTask Lock(this LocationProxyComponent self, int type, long key, ActorId actorId, int time = 60000)
         {
-            Log.Info($"location proxy lock {key}, {actorId} {TimeInfo.Instance.ServerNow()}");
-            await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key),
+            Fiber fiber = self.Fiber();
+            fiber.Info($"location proxy lock {key}, {actorId} {TimeInfo.Instance.ServerNow()}");
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
                 new ObjectLockRequest() { Type = type, Key = key, ActorId = actorId, Time = time });
         }
 
         public static async ETTask UnLock(this LocationProxyComponent self, int type, long key, ActorId oldActorId, ActorId newActorId)
         {
-            Log.Info($"location proxy unlock {key}, {newActorId} {TimeInfo.Instance.ServerNow()}");
-            await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key),
+            Fiber fiber = self.Fiber();
+            fiber.Info($"location proxy unlock {key}, {newActorId} {TimeInfo.Instance.ServerNow()}");
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
                 new ObjectUnLockRequest() { Type = type, Key = key, OldActorId = oldActorId, NewActorId = newActorId });
         }
 
         public static async ETTask Remove(this LocationProxyComponent self, int type, long key)
         {
-            Log.Info($"location proxy add {key}, {TimeInfo.Instance.ServerNow()}");
-            await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key),
+            Fiber fiber = self.Fiber();
+            fiber.Info($"location proxy add {key}, {TimeInfo.Instance.ServerNow()}");
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
                 new ObjectRemoveRequest() { Type = type, Key = key });
         }
 

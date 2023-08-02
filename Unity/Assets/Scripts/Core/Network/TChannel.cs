@@ -27,6 +27,14 @@ namespace ET
 		public IPEndPoint RemoteAddress { get; set; }
 
 		private readonly byte[] sendCache = new byte[Packet.OpcodeLength + Packet.ActorIdLength];
+		
+		private ILog Log
+		{
+			get
+			{
+				return this.Service.Log;
+			}
+		}
 
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
 		{
@@ -35,9 +43,9 @@ namespace ET
 		
 		public TChannel(long id, IPEndPoint ipEndPoint, TService service)
 		{
+			this.Service = service;
 			this.ChannelType = ChannelType.Connect;
 			this.Id = id;
-			this.Service = service;
 			this.socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			this.socket.NoDelay = true;
 			this.parser = new PacketParser(this.recvBuffer, this.Service);
@@ -53,9 +61,9 @@ namespace ET
 		
 		public TChannel(long id, Socket socket, TService service)
 		{
+			this.Service = service;
 			this.ChannelType = ChannelType.Accept;
 			this.Id = id;
-			this.Service = service;
 			this.socket = socket;
 			this.socket.NoDelay = true;
 			this.parser = new PacketParser(this.recvBuffer, this.Service);

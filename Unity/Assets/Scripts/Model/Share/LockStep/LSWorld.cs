@@ -38,7 +38,7 @@ namespace ET
 
             this.SceneType = sceneType;
             
-            Log.Info($"LSScene create: {this.Id} {this.InstanceId}");
+            this.Fiber().Info($"LSScene create: {this.Id} {this.InstanceId}");
         }
 
         private readonly LSUpdater updater = new();

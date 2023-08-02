@@ -20,13 +20,13 @@ namespace ET.Server
 
                     try
                     {
-                        RobotLog.Debug($"run case start: {caseType}");
+                        fiber.Debug($"run case start: {caseType}");
                         await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Fiber = fiber, Content = content });
-                        RobotLog.Debug($"run case finish: {caseType}");
+                        fiber.Debug($"run case finish: {caseType}");
                     }
                     catch (Exception e)
                     {
-                        RobotLog.Debug($"run case error: {caseType}\n{e}");
+                        fiber.Debug($"run case error: {caseType}\n{e}");
                     }
                     break;
                 }
@@ -38,18 +38,18 @@ namespace ET.Server
                         int caseType = (int)fieldInfo.GetValue(null);
                         if (caseType > RobotCaseType.MaxCaseType)
                         {
-                            RobotLog.Debug($"case > {RobotCaseType.MaxCaseType}: {caseType}");
+                            fiber.Debug($"case > {RobotCaseType.MaxCaseType}: {caseType}");
                             break;
                         }
                         try
                         {
-                            RobotLog.Debug($"run case start: {caseType}");
+                            fiber.Debug($"run case start: {caseType}");
                             await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Fiber = fiber, Content = content});
-                            RobotLog.Debug($"---------run case finish: {caseType}");
+                            fiber.Debug($"---------run case finish: {caseType}");
                         }
                         catch (Exception e)
                         {
-                            RobotLog.Debug($"run case error: {caseType}\n{e}");
+                            fiber.Debug($"run case error: {caseType}\n{e}");
                             break;
                         }
                     }

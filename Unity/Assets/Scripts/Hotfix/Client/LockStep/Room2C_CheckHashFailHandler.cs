@@ -5,17 +5,18 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene root, Room2C_CheckHashFail message)
         {
+            Fiber fiber = root.Fiber();
             LSWorld serverWorld = MongoHelper.Deserialize(typeof(LSWorld), message.LSWorldBytes, 0, message.LSWorldBytes.Length) as LSWorld;
             using (root.AddChild(serverWorld))
             {
-                Log.Debug($"check hash fail, server: {message.Frame} {serverWorld.ToJson()}");
+                fiber.Debug($"check hash fail, server: {message.Frame} {serverWorld.ToJson()}");
             }
 
             Room room = root.GetComponent<Room>();
             LSWorld clientWorld = room.GetLSWorld(SceneType.LockStepClient, message.Frame);
             using (root.AddChild(clientWorld))
             {
-                Log.Debug($"check hash fail, client: {message.Frame} {clientWorld.ToJson()}");
+                fiber.Debug($"check hash fail, client: {message.Frame} {clientWorld.ToJson()}");
             }
             
             message.Dispose();

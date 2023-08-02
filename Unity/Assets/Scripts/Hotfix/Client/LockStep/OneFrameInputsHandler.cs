@@ -8,10 +8,10 @@ namespace ET.Client
         protected override async ETTask Run(Scene root, OneFrameInputs input)
         {
             using var _ = input ; // 方法结束时回收消息
-            
+            Fiber fiber = root.Fiber();
             Room room = root.GetComponent<Room>();
             
-            Log.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
+            fiber.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
                         
             FrameBuffer frameBuffer = room.FrameBuffer;
 
@@ -32,12 +32,12 @@ namespace ET.Client
                 // 回滚重新预测的时候，自己的输入不用变化
                 if (input != predictionInput)
                 {
-                    Log.Debug($"frame diff: {predictionInput} {input}");
+                    fiber.Debug($"frame diff: {predictionInput} {input}");
                     input.CopyTo(predictionInput);
                     // 回滚到frameBuffer.AuthorityFrame
-                    Log.Debug($"roll back start {room.AuthorityFrame}");
+                    fiber.Debug($"roll back start {room.AuthorityFrame}");
                     LSClientHelper.Rollback(room, room.AuthorityFrame);
-                    Log.Debug($"roll back finish {room.AuthorityFrame}");
+                    fiber.Debug($"roll back finish {room.AuthorityFrame}");
                 }
                 else // 对比成功
                 {

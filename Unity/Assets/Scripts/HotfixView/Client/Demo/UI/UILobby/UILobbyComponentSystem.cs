@@ -18,8 +18,9 @@ namespace ET.Client
         
         public static async ETTask EnterMap(this UILobbyComponent self)
         {
-            await EnterMapHelper.EnterMapAsync(self.Root());
-            await UIHelper.Remove(self.Root(), UIType.UILobby);
+            Scene root = self.Root();
+            await EnterMapHelper.EnterMapAsync(root);
+            await UIHelper.Remove(root, UIType.UILobby);
         }
     }
 }

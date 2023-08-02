@@ -14,12 +14,12 @@ namespace ET.Server
             {
                 case NetworkProtocol.TCP:
                 {
-                    self.AService = new TService(address, ServiceType.Inner);
+                    self.AService = new TService(address, ServiceType.Inner, self.Fiber().Log);
                     break;
                 }
                 case NetworkProtocol.KCP:
                 {
-                    self.AService = new KService(address, ServiceType.Inner);
+                    self.AService = new KService(address, ServiceType.Inner, self.Fiber().Log);
                     break;
                 }
             }

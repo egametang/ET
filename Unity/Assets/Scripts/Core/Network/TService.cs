@@ -32,12 +32,12 @@ namespace ET
 
 		public ConcurrentQueue<TArgs> Queue = new();
 
-		public TService(AddressFamily addressFamily, ServiceType serviceType)
+		public TService(AddressFamily addressFamily, ServiceType serviceType, ILog log): base(log)
 		{
 			this.ServiceType = serviceType;
 		}
 
-		public TService(IPEndPoint ipEndPoint, ServiceType serviceType)
+		public TService(IPEndPoint ipEndPoint, ServiceType serviceType, ILog log): base(log)
 		{
 			this.ServiceType = serviceType;
 			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -92,9 +92,9 @@ namespace ET
 				
 				this.AcceptCallback(channelId, channel.RemoteAddress);
 			}
-			catch (Exception exception)
+			catch (Exception e)
 			{
-				Log.Error(exception);
+				Log.Error(e);
 			}		
 			
 			// 开始新的accept

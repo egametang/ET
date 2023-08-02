@@ -7,12 +7,12 @@ namespace ET
     {
         private readonly NLog.Logger logger;
 
-        public NLogger(string name, int process, string configPath)
+        public NLogger(string name, int process, int fiber, string configPath)
         {
             LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(configPath);
-            LogManager.Configuration.Variables["appIdFormat"] = $"{process:000000}";
             LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
-            this.logger = LogManager.GetLogger(name);
+            LogManager.Configuration.Variables["fiberName"] = name;
+            this.logger = LogManager.GetLogger($"{(uint)process:000000}.{(uint)fiber:0000000000}");
         }
 
         public void Trace(string message)
@@ -40,39 +40,36 @@ namespace ET
             this.logger.Error(message);
         }
 
-        public void Fatal(string message)
+        public void Error(Exception e)
         {
-            this.logger.Fatal(message);
+            this.logger.Error(e.ToString());
         }
 
-        public void Trace(string message, params object[] args)
+#if DOTNET
+        public void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
-            this.logger.Trace(message, args);
+            this.logger.Trace(message.ToStringAndClear());
         }
 
-        public void Warning(string message, params object[] args)
+        public void Warning(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
-            this.logger.Warn(message, args);
+            this.logger.Warn(message.ToStringAndClear());
         }
 
-        public void Info(string message, params object[] args)
+        public void Info(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
-            this.logger.Info(message, args);
+            this.logger.Info(message.ToStringAndClear());
         }
 
-        public void Debug(string message, params object[] args)
+        public void Debug(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
-            this.logger.Debug(message, args);
+            this.logger.Debug(message.ToStringAndClear());
         }
 
-        public void Error(string message, params object[] args)
+        public void Error(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
-            this.logger.Error(message, args);
+            this.logger.Error(message.ToStringAndClear());
         }
-
-        public void Fatal(string message, params object[] args)
-        {
-            this.logger.Fatal(message, args);
-        }
+#endif
     }
 }

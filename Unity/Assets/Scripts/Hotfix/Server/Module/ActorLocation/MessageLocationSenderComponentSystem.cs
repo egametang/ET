@@ -257,7 +257,7 @@ namespace ET.Server
                         ++failTimes;
                         if (failTimes > 20)
                         {
-                            Log.Debug($"actor send message fail, actorid: {messageLocationSender.Id} {iRequest}");
+                            root.Fiber().Debug($"actor send message fail, actorid: {messageLocationSender.Id} {iRequest}");
                             messageLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                             // 这里不能删除actor，要让后面等待发送的消息也返回ERR_NotFoundActor，直到超时删除
                             return response;

@@ -23,7 +23,7 @@ namespace ET
 				.WithParsed((o)=>World.Instance.AddSingleton(o));
 			Options.Instance.StartConfig = $"StartConfig/Localhost";
 			
-			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
+			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
 			
 			World.Instance.AddSingleton<CodeLoader>().Start();

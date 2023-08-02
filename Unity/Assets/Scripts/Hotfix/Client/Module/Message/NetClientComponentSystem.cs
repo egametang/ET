@@ -12,7 +12,7 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this NetClientComponent self, AddressFamily addressFamily)
         {
-            self.AService = new KService(addressFamily, ServiceType.Outer);
+            self.AService = new KService(addressFamily, ServiceType.Outer, self.Fiber().Log);
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }

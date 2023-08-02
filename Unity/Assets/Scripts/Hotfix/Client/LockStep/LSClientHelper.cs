@@ -88,7 +88,8 @@ namespace ET.Client
             {
                 return;
             }
-            Log.Debug($"save replay: {path} frame: {room.Replay.FrameInputs.Count}");
+            
+            room.Fiber().Debug($"save replay: {path} frame: {room.Replay.FrameInputs.Count}");
             byte[] bytes = MemoryPackHelper.Serialize(room.Replay);
             File.WriteAllBytes(path, bytes);
         }
@@ -106,7 +107,7 @@ namespace ET.Client
             }
             
             int snapshotIndex = frame / LSConstValue.SaveLSWorldFrameCount;
-            Log.Debug($"jump replay start {room.AuthorityFrame} {frame} {snapshotIndex}");
+            room.Fiber().Debug($"jump replay start {room.AuthorityFrame} {frame} {snapshotIndex}");
             if (snapshotIndex != room.AuthorityFrame / LSConstValue.SaveLSWorldFrameCount || frame < room.AuthorityFrame)
             {
                 room.LSWorld.Dispose();
@@ -120,7 +121,7 @@ namespace ET.Client
             
             room.FixedTimeCounter.Reset(TimeInfo.Instance.ServerFrameTime() - frame * LSConstValue.UpdateInterval, 0);
 
-            Log.Debug($"jump replay finish {frame}");
+            room.Fiber().Debug($"jump replay finish {frame}");
         }
     }
 }
