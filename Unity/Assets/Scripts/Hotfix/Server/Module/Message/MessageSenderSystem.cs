@@ -65,7 +65,7 @@ namespace ET
             
             if (fiber.Process == actorId.Process)
             {
-                return await fiber.MessageInnerSender.Call(actorId, rpcId, request);
+                return await fiber.MessageInnerSender.Call(actorId, rpcId, request, needException: needException);
             }
 
             // 发给NetInner纤程
@@ -81,7 +81,6 @@ namespace ET
             {
                 throw new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {actorId} {request}, response: {response}");
             }
-
             if (needException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
                 throw new RpcException(response.Error, $"Rpc error: actorId: {actorId} {request}, response: {response}");

@@ -240,7 +240,7 @@ namespace ET.Server
                 if (messageLocationSender.ActorId == default)
                 {
                     messageLocationSender.Error = ErrorCore.ERR_NotFoundActor;
-                    return ET.MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_NotFoundActor);
+                    return MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_NotFoundActor);
                 }
                 IResponse response = await root.GetComponent<MessageSender>().Call(messageLocationSender.ActorId, rpcId, iRequest, needException: false);
                 
