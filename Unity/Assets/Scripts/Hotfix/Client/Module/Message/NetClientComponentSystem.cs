@@ -10,19 +10,20 @@ namespace ET.Client
     public static partial class NetClientComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this NetClientComponent self, AddressFamily addressFamily)
+        private static void Awake(this NetClientComponent self, AddressFamily addressFamily, int ownerFiberId)
         {
             self.AService = new KService(addressFamily, ServiceType.Outer, self.Fiber().Log);
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
+            self.OwnerFiberId = ownerFiberId;
         }
-        
+
         [EntitySystem]
         private static void Destroy(this NetClientComponent self)
         {
             self.AService.Dispose();
         }
-        
+
         [EntitySystem]
         private static void Update(this NetClientComponent self)
         {
@@ -38,29 +39,29 @@ namespace ET.Client
             }
 
             session.LastRecvTime = TimeInfo.Instance.ClientNow();
-            
+
             switch (message)
             {
                 case IResponse response:
-                {
-                    session.OnResponse(response);
-                    break;
-                }
+                    {
+                        session.OnResponse(response);
+                        break;
+                    }
                 case ISessionMessage:
-                {
-                    MessageSessionDispatcher.Instance.Handle(session, message);
-                    break;
-                }
+                    {
+                        MessageSessionDispatcher.Instance.Handle(session, message);
+                        break;
+                    }
                 case IMessage iActorMessage:
-                {
-                    // 扔到Main纤程队列中
-                    self.Fiber().MessageInnerSender.Send(new ActorId(self.Fiber().Process, ConstFiberId.Main), iActorMessage);
-                    break;
-                }
+                    {
+                        // 扔到Main纤程队列中
+                        self.Fiber().MessageInnerSender.Send(new ActorId(self.Fiber().Process, self.OwnerFiberId), iActorMessage);
+                        break;
+                    }
                 default:
-                {
-                    throw new Exception($"not found handler: {message}");
-                }
+                    {
+                        throw new Exception($"not found handler: {message}");
+                    }
             }
         }
 
@@ -89,7 +90,7 @@ namespace ET.Client
 
             return session;
         }
-        
+
         public static Session Create(this NetClientComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
         {
             long channelId = localConn;

@@ -19,7 +19,7 @@ namespace ET.Client
                 routerAddressComponent =
                         root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                 await routerAddressComponent.Init();
-                root.AddComponent<NetClientComponent, AddressFamily>(routerAddressComponent.RouterManagerIPAddress.AddressFamily);
+                root.AddComponent<NetClientComponent, AddressFamily, int>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, request.OwnerFiberId);
             }
             IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);
 

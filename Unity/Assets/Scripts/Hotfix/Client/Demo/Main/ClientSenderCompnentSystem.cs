@@ -1,4 +1,6 @@
-﻿namespace ET.Client
+﻿using System.Threading.Tasks;
+
+namespace ET.Client
 {
     [EntitySystemOf(typeof(ClientSenderCompnent))]
     [FriendOf(typeof(ClientSenderCompnent))]
@@ -13,19 +15,30 @@
         [EntitySystem]
         private static void Destroy(this ClientSenderCompnent self)
         {
-            if (self.fiberId != 0)
+            self.RemoveFiberAsync().Coroutine();
+        }
+
+        private static async ETTask RemoveFiberAsync(this ClientSenderCompnent self)
+        {
+            if (self.fiberId == 0)
             {
-                FiberManager.Instance.Remove(self.fiberId);
+                return;
             }
+
+            int fiberId = self.fiberId;
+            self.fiberId = 0;
+            await FiberManager.Instance.Remove(fiberId);
         }
 
         public static async ETTask<long> LoginAsync(this ClientSenderCompnent self, string account, string password)
         {
-            
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
             self.netClientActorId = new ActorId(self.Fiber().Process, self.fiberId);
 
-            NetClient2Main_Login response = await self.Fiber().MessageInnerSender.Call(self.netClientActorId, new Main2NetClient_Login() { Account = account, Password = password }) as NetClient2Main_Login;
+            NetClient2Main_Login response = await self.Fiber().MessageInnerSender.Call(self.netClientActorId, new Main2NetClient_Login()
+            {
+                OwnerFiberId = self.Fiber().Id, Account = account, Password = password
+            }) as NetClient2Main_Login;
             return response.PlayerId;
         }
 

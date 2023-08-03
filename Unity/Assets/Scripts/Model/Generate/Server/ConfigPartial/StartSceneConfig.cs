@@ -20,8 +20,6 @@ namespace ET
         
         public List<StartSceneConfig> Routers = new();
         
-        public List<StartSceneConfig> Robots = new();
-        
         public List<StartSceneConfig> Maps = new();
 
         public StartSceneConfig Match;
@@ -63,9 +61,6 @@ namespace ET
                         break;
                     case SceneType.Location:
                         this.LocationConfig = startSceneConfig;
-                        break;
-                    case SceneType.Robot:
-                        this.Robots.Add(startSceneConfig);
                         break;
                     case SceneType.Router:
                         this.Routers.Add(startSceneConfig);

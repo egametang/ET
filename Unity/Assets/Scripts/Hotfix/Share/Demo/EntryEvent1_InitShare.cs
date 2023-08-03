@@ -6,7 +6,8 @@ namespace ET
         protected override async ETTask Run(Scene root, EventType.EntryEvent1 args)
         {
             await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
-            
+            root.AddComponent<TimerComponent>();
+            root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ObjectWait>();
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
             root.AddComponent<MessageInnerSender>();

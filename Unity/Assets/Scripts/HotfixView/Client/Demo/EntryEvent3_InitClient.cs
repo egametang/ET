@@ -8,9 +8,6 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene root, EventType.EntryEvent3 args)
         {
-            root.AddComponent<TimerComponent>();
-            root.AddComponent<CoroutineLockComponent>();
-            
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
             root.AddComponent<UIGlobalComponent>();
             root.AddComponent<UIComponent>();
