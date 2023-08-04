@@ -272,7 +272,7 @@ namespace ET
             long timeNow = self.GetNow();
             if (tillTime < timeNow)
             {
-                Log.Error($"new once time too small: {tillTime}");
+                self.Fiber().Error($"new once time too small: {tillTime}");
             }
 
             TimerAction timer = TimerAction.Create(self.GetId(), TimerClass.OnceTimer, timeNow, tillTime - timeNow, type, args);
@@ -313,7 +313,7 @@ namespace ET
         {
             if (time < 100)
             {
-                Log.Error($"time too small: {time}");
+                self.Fiber().Error($"time too small: {time}");
                 return 0;
             }
 

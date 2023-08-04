@@ -353,7 +353,7 @@ namespace ET.Client
                     }
                     else
                     {
-                        Log.Error($"assets bundle not found: {assetBundleName}");
+                        self.Fiber().Error($"assets bundle not found: {assetBundleName}");
                     }
                 }
 
@@ -375,7 +375,7 @@ namespace ET.Client
             if (assetBundle == null)
             {
                 // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
-                Log.Warning($"assets bundle not found: {assetBundleName}");
+                self.Fiber().Warning($"assets bundle not found: {assetBundleName}");
                 return;
             }
 
@@ -507,7 +507,7 @@ namespace ET.Client
             if (assetBundle == null)
             {
                 // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
-                Log.Warning($"assets bundle not found: {assetBundleName}");
+                self.Fiber().Warning($"assets bundle not found: {assetBundleName}");
                 return null;
             }
 

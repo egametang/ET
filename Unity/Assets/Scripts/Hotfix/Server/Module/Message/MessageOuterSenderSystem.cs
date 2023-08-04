@@ -234,7 +234,7 @@ namespace ET.Server
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                Log.Warning($"actor rpc time > 200: {costTime} {iRequest}");
+                fiber.Warning($"actor rpc time > 200: {costTime} {iRequest}");
             }
 
             return response;

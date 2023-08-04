@@ -47,11 +47,12 @@ namespace ET.Client
 
         public static async ETTask LoadAsync(this ResourcesLoaderComponent self, string ab)
         {
-            using CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
-
+            Fiber fiber = self.Fiber();
+            using CoroutineLock coroutineLock = await fiber.CoroutineLockComponent.Wait(CoroutineLockType.ResourcesLoader, ab.GetHashCode(), 0);
+            
             if (self.IsDisposed)
             {
-                Log.Error($"resourceload already disposed {ab}");
+                fiber.Error($"resourceload already disposed {ab}");
                 return;
             }
 
@@ -61,7 +62,7 @@ namespace ET.Client
             }
 
             self.LoadedResource.Add(ab);
-            await self.Root().GetComponent<ResourcesComponent>().LoadBundleAsync(ab);
+            await fiber.Root.GetComponent<ResourcesComponent>().LoadBundleAsync(ab);
         }
         
         [EntitySystem]
