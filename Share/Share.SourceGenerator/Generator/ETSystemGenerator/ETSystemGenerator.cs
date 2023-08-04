@@ -163,6 +163,8 @@ namespace {{namespaceName}}
                 string argsVarsWithout0 = string.Join(", ", argsVarsWithout0List);
                 string argsTypesVarsWithout0 = string.Join(", ", argsTypeVarsWithout0List);
 
+                SpeicalProcessForArgs();
+                
                 code = code.Replace("$attribute$", attributeString);
                 code = code.Replace("$attributeType$", attributeType);
                 code = code.Replace("$methodName$", methodName);
@@ -185,9 +187,20 @@ namespace {{namespaceName}}
                 string fileName = $"{namespaceName}.{className}.{methodName}.{argsTypesUnderLine}.g.cs";
                 
                 context.AddSource(fileName, code);
+                
+                void SpeicalProcessForArgs()
+                {
+                    if ((attributeType=="EntitySystem" || attributeType=="LSEntitySystem")&&methodName==Definition.GetComponentMethod)
+                    {
+                        argsTypes = argsTypes.Split(',')[0];
+                    }
+                }
             }
         }
     }
+
+
+    
 
     class SyntaxContextReceiver: ISyntaxContextReceiver
     {
