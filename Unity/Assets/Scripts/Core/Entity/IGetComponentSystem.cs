@@ -12,15 +12,15 @@ namespace ET
 	
 	public interface IGetComponentSystem: ISystemType
 	{
-		void Run(Entity o, Entity component);
+		void Run(Entity o, Type type);
 	}
 
 	[EntitySystem]
 	public abstract class GetComponentSystem<T> : IGetComponentSystem where T: Entity, IGetComponent
 	{
-		void IGetComponentSystem.Run(Entity o, Entity component)
+		void IGetComponentSystem.Run(Entity o, Type type)
 		{
-			this.GetComponent((T)o, component);
+			this.GetComponent((T)o, type);
 		}
 
 		Type ISystemType.SystemType()
@@ -38,6 +38,6 @@ namespace ET
 			return typeof(T);
 		}
 
-		protected abstract void GetComponent(T self, Entity component);
+		protected abstract void GetComponent(T self, Type type);
 	}
 }

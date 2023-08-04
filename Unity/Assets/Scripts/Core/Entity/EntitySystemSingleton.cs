@@ -92,7 +92,7 @@ namespace ET
         }
         
         // GetComponentSystem
-        public void GetComponent(Entity entity, Entity component)
+        public void GetComponent(Entity entity, Type type)
         {
             List<object> iGetSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
             if (iGetSystem == null)
@@ -109,7 +109,7 @@ namespace ET
 
                 try
                 {
-                    getSystem.Run(entity, component);
+                    getSystem.Run(entity, type);
                 }
                 catch (Exception e)
                 {
