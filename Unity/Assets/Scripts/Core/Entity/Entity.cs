@@ -719,11 +719,6 @@ namespace ET
 
             component.ComponentParent = this;
 
-            if (this is IAddComponent)
-            {
-                EntitySystemSingleton.Instance.AddComponent(this, component);
-            }
-
             return component;
         }
 
@@ -739,11 +734,6 @@ namespace ET
             component.ComponentParent = this;
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component);
-
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
 
             return component;
         }
@@ -762,11 +752,6 @@ namespace ET
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component);
 
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
-
             return component as K;
         }
 
@@ -783,11 +768,6 @@ namespace ET
             component.ComponentParent = this;
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component, p1);
-
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
 
             return component as K;
         }
@@ -806,11 +786,6 @@ namespace ET
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component, p1, p2);
 
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
-
             return component as K;
         }
 
@@ -827,11 +802,6 @@ namespace ET
             component.ComponentParent = this;
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component, p1, p2, p3);
-
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
 
             return component as K;
         }
