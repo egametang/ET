@@ -1,18 +1,15 @@
 ﻿namespace ET
 {
-    namespace EventType
+    public struct EntryEvent1
     {
-        public struct EntryEvent1
-        {
-        }   
-        
-        public struct EntryEvent2
-        {
-        } 
-        
-        public struct EntryEvent3
-        {
-        } 
+    }   
+    
+    public struct EntryEvent2
+    {
+    } 
+    
+    public struct EntryEvent3
+    {
     }
     
     public static class Entry

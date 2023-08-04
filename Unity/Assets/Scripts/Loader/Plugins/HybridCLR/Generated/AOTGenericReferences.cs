@@ -21,20 +21,20 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// }} 
 
 	// {{ AOT generic types
-	// ET.AEvent<object,ET.EventType.AfterCreateClientScene>
-	// ET.AEvent<object,ET.EventType.AfterCreateCurrentScene>
-	// ET.AEvent<object,ET.EventType.AfterUnitCreate>
-	// ET.AEvent<object,ET.EventType.AppStartInitFinish>
-	// ET.AEvent<object,ET.EventType.ChangePosition>
-	// ET.AEvent<object,ET.EventType.ChangeRotation>
-	// ET.AEvent<object,ET.EventType.EntryEvent1>
-	// ET.AEvent<object,ET.EventType.EntryEvent3>
-	// ET.AEvent<object,ET.EventType.LSSceneChangeStart>
-	// ET.AEvent<object,ET.EventType.LSSceneInitFinish>
-	// ET.AEvent<object,ET.EventType.LoginFinish>
-	// ET.AEvent<object,ET.EventType.NumbericChange>
-	// ET.AEvent<object,ET.EventType.SceneChangeFinish>
-	// ET.AEvent<object,ET.EventType.SceneChangeStart>
+	// ET.AEvent<object,AfterCreateClientScene>
+	// ET.AEvent<object,AfterCreateCurrentScene>
+	// ET.AEvent<object,AfterUnitCreate>
+	// ET.AEvent<object,AppStartInitFinish>
+	// ET.AEvent<object,ChangePosition>
+	// ET.AEvent<object,ChangeRotation>
+	// ET.AEvent<object,EntryEvent1>
+	// ET.AEvent<object,EntryEvent3>
+	// ET.AEvent<object,LSSceneChangeStart>
+	// ET.AEvent<object,LSSceneInitFinish>
+	// ET.AEvent<object,LoginFinish>
+	// ET.AEvent<object,NumbericChange>
+	// ET.AEvent<object,SceneChangeFinish>
+	// ET.AEvent<object,SceneChangeStart>
 	// ET.AInvokeHandler<ET.FiberInit,object>
 	// ET.AInvokeHandler<ET.MailBoxInvoker>
 	// ET.ATimer<object>
@@ -184,23 +184,23 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// object ET.Entity.GetParent<object>()
 		// System.Void ET.Entity.RemoveComponent<object>()
 		// ET.SceneType ET.EnumHelper.FromString<ET.SceneType>(string)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.AfterCreateCurrentScene>(object,ET.EventType.AfterCreateCurrentScene)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.AfterUnitCreate>(object,ET.EventType.AfterUnitCreate)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.ChangePosition>(object,ET.EventType.ChangePosition)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.ChangeRotation>(object,ET.EventType.ChangeRotation)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.EnterMapFinish>(object,ET.EventType.EnterMapFinish)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.LSSceneInitFinish>(object,ET.EventType.LSSceneInitFinish)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.MoveStart>(object,ET.EventType.MoveStart)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.MoveStop>(object,ET.EventType.MoveStop)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.NumbericChange>(object,ET.EventType.NumbericChange)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.SceneChangeFinish>(object,ET.EventType.SceneChangeFinish)
-		// System.Void ET.EventSystem.Publish<object,ET.EventType.SceneChangeStart>(object,ET.EventType.SceneChangeStart)
-		// ET.ETTask ET.EventSystem.PublishAsync<object,ET.EventType.AppStartInitFinish>(object,ET.EventType.AppStartInitFinish)
-		// ET.ETTask ET.EventSystem.PublishAsync<object,ET.EventType.EntryEvent1>(object,ET.EventType.EntryEvent1)
-		// ET.ETTask ET.EventSystem.PublishAsync<object,ET.EventType.EntryEvent2>(object,ET.EventType.EntryEvent2)
-		// ET.ETTask ET.EventSystem.PublishAsync<object,ET.EventType.EntryEvent3>(object,ET.EventType.EntryEvent3)
-		// ET.ETTask ET.EventSystem.PublishAsync<object,ET.EventType.LSSceneChangeStart>(object,ET.EventType.LSSceneChangeStart)
-		// ET.ETTask ET.EventSystem.PublishAsync<object,ET.EventType.LoginFinish>(object,ET.EventType.LoginFinish)
+		// System.Void ET.EventSystem.Publish<object,AfterCreateCurrentScene>(object,AfterCreateCurrentScene)
+		// System.Void ET.EventSystem.Publish<object,AfterUnitCreate>(object,AfterUnitCreate)
+		// System.Void ET.EventSystem.Publish<object,ChangePosition>(object,ChangePosition)
+		// System.Void ET.EventSystem.Publish<object,ChangeRotation>(object,ChangeRotation)
+		// System.Void ET.EventSystem.Publish<object,EnterMapFinish>(object,EnterMapFinish)
+		// System.Void ET.EventSystem.Publish<object,LSSceneInitFinish>(object,LSSceneInitFinish)
+		// System.Void ET.EventSystem.Publish<object,MoveStart>(object,MoveStart)
+		// System.Void ET.EventSystem.Publish<object,MoveStop>(object,MoveStop)
+		// System.Void ET.EventSystem.Publish<object,NumbericChange>(object,NumbericChange)
+		// System.Void ET.EventSystem.Publish<object,SceneChangeFinish>(object,SceneChangeFinish)
+		// System.Void ET.EventSystem.Publish<object,SceneChangeStart>(object,SceneChangeStart)
+		// ET.ETTask ET.EventSystem.PublishAsync<object,AppStartInitFinish>(object,AppStartInitFinish)
+		// ET.ETTask ET.EventSystem.PublishAsync<object,EntryEvent1>(object,EntryEvent1)
+		// ET.ETTask ET.EventSystem.PublishAsync<object,EntryEvent2>(object,EntryEvent2)
+		// ET.ETTask ET.EventSystem.PublishAsync<object,EntryEvent3>(object,EntryEvent3)
+		// ET.ETTask ET.EventSystem.PublishAsync<object,LSSceneChangeStart>(object,LSSceneChangeStart)
+		// ET.ETTask ET.EventSystem.PublishAsync<object,LoginFinish>(object,LoginFinish)
 		// object ET.MongoHelper.FromJson<object>(string)
 		// System.Void ET.MongoHelper.RegisterStruct<ET.LSInput>()
 		// System.Void ET.ObjectHelper.Swap<object>(object&,object&)

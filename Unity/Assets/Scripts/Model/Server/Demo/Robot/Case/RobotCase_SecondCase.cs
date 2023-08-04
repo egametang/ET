@@ -1,4 +1,4 @@
-namespace ET
+namespace ET.Server
 {
     public struct RobotCase_SecondCaseWait: IWaitType
     {

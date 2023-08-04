@@ -11,7 +11,7 @@ namespace ET.Client
 
             root.GetComponent<PlayerComponent>().MyId = playerId;
             
-            await EventSystem.Instance.PublishAsync(root, new EventType.LoginFinish());
+            await EventSystem.Instance.PublishAsync(root, new LoginFinish());
         }
     }
 }

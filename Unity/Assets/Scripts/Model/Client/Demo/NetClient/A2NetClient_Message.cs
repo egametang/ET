@@ -1,4 +1,4 @@
-﻿namespace ET
+﻿namespace ET.Client
 {
     [Message]
     public class A2NetClient_Message: MessageObject, IMessage

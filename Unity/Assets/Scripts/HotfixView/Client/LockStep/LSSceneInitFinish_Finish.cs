@@ -1,9 +1,9 @@
 namespace ET.Client
 {
     [Event(SceneType.LockStep)]
-    public class LSSceneInitFinish_Finish: AEvent<Scene, EventType.LSSceneInitFinish>
+    public class LSSceneInitFinish_Finish: AEvent<Scene, LSSceneInitFinish>
     {
-        protected override async ETTask Run(Scene clientScene, EventType.LSSceneInitFinish args)
+        protected override async ETTask Run(Scene clientScene, LSSceneInitFinish args)
         {
             Room room = clientScene.GetComponent<Room>();
             

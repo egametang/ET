@@ -4,9 +4,9 @@ using System.IO;
 namespace ET.Client
 {
     [Event(SceneType.Main)]
-    public class EntryEvent3_InitClient: AEvent<Scene, EventType.EntryEvent3>
+    public class EntryEvent3_InitClient: AEvent<Scene, EntryEvent3>
     {
-        protected override async ETTask Run(Scene root, EventType.EntryEvent3 args)
+        protected override async ETTask Run(Scene root, EntryEvent3 args)
         {
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
             root.AddComponent<UIGlobalComponent>();
@@ -22,7 +22,7 @@ namespace ET.Client
             SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
             root.SceneType = sceneType;
             
-            await EventSystem.Instance.PublishAsync(root, new EventType.AppStartInitFinish());
+            await EventSystem.Instance.PublishAsync(root, new AppStartInitFinish());
         }
     }
 }

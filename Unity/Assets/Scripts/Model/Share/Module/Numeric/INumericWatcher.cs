@@ -2,6 +2,6 @@
 {
 	public interface INumericWatcher
 	{
-		void Run(Unit unit, EventType.NumbericChange args);
+		void Run(Unit unit, NumbericChange args);
 	}
 }

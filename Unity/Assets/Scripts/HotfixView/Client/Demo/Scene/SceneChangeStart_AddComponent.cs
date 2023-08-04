@@ -4,9 +4,9 @@ using UnityEngine.SceneManagement;
 namespace ET.Client
 {
     [Event(SceneType.Demo)]
-    public class SceneChangeStart_AddComponent: AEvent<Scene, EventType.SceneChangeStart>
+    public class SceneChangeStart_AddComponent: AEvent<Scene, SceneChangeStart>
     {
-        protected override async ETTask Run(Scene root, EventType.SceneChangeStart args)
+        protected override async ETTask Run(Scene root, SceneChangeStart args)
         {
             try
             {
