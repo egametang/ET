@@ -20,7 +20,7 @@ namespace ET
 	{
 		void IGetComponentSystem.Run(Entity o, Type type)
 		{
-			this.GetComponent((T)o, type);
+			this.GetComponentSys((T)o, type);
 		}
 
 		Type ISystemType.SystemType()
@@ -38,6 +38,6 @@ namespace ET
 			return typeof(T);
 		}
 
-		protected abstract void GetComponent(T self, Type type);
+		protected abstract void GetComponentSys(T self, Type type);
 	}
 }
