@@ -591,8 +591,9 @@ namespace ET
             }
 
             Type type = typeof (K);
-            Entity c = this.GetComponent(type);
-            if (c == null)
+            
+            Entity c;
+            if (!this.components.TryGetValue(type.FullName, out c))
             {
                 return;
             }
@@ -613,8 +614,8 @@ namespace ET
                 return;
             }
 
-            Entity c = this.GetComponent(component.GetType());
-            if (c == null)
+            Entity c;
+            if (!this.components.TryGetValue(component.GetType().FullName, out c))
             {
                 return;
             }
@@ -635,8 +636,8 @@ namespace ET
                 return;
             }
 
-            Entity c = this.GetComponent(type);
-            if (c == null)
+            Entity c;
+            if (!this.components.TryGetValue(type.FullName, out c))
             {
                 return;
             }
