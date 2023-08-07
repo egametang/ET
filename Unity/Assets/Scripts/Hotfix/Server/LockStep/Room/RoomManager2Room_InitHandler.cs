@@ -11,7 +11,7 @@ namespace ET.Server
             
             room.AddComponent<RoomServerComponent, List<long>>(request.PlayerIds);
 
-            room.LSWorld = new LSWorld(SceneType.LockStepServer);
+            room.LSWorld = room.AddChild<LSWorld, SceneType>(SceneType.LockStepServer);
             await ETTask.CompletedTask;
         }
     }

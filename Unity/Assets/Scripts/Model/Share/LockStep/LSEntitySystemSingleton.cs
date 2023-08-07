@@ -16,6 +16,8 @@ namespace ET
     {
         public TypeSystems TypeSystems { get; private set; }
         
+        private readonly DoubleMap<Type, long> lsEntityTypeLongHashCode = new();
+        
         public void Awake()
         {
             this.TypeSystems = new(LSQueneUpdateIndex.Max);
@@ -36,6 +38,20 @@ namespace ET
                     oneTypeSystems.QueueFlag[index] = true;
                 }
             }
+            
+            foreach (var kv in CodeTypes.Instance.GetTypes())
+            {
+                Type type = kv.Value;
+                if (typeof(LSEntity).IsAssignableFrom(type))
+                {
+                    this.lsEntityTypeLongHashCode.Add(type, type.FullName.GetLongHashCode());
+                }
+            }
+        }
+        
+        public long GetLongHashCode(Type type)
+        {
+            return this.lsEntityTypeLongHashCode.GetValueByKey(type);
         }
         
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)

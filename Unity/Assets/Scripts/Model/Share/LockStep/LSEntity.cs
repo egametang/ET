@@ -51,7 +51,7 @@ namespace ET
 
         protected override long GetLongHashCode(Type type)
         {
-            return CodeTypes.Instance.GetHashByType(type);
+            return LSEntitySystemSingleton.Instance.GetLongHashCode(type);
         }
 
         protected override void RegisterSystem()

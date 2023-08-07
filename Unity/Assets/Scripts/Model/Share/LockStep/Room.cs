@@ -41,7 +41,6 @@ namespace ET
             }
             set
             {
-                this.AddChild(value);
                 this.lsWorld = value;
             }
         }
