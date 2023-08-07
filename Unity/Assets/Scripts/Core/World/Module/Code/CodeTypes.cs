@@ -4,16 +4,6 @@ using System;
 
 namespace ET
 {
-    public static class CodeTypesHelper
-    {
-        public static long GetLongHashCode(this Type type)
-        {
-            // 帧同步项目需要type的确定性hash，如果不是帧同步项目，这里可以直接返回type.GetHashCode()
-            //return type.GetHashCode(); // 这样速度再快1/3
-            return CodeTypes.Instance.GetHashByType(type);
-        }
-    }
-    
     public class CodeTypes: Singleton<CodeTypes>, ISingletonAwake<Assembly[]>
     {
         private readonly Dictionary<string, Type> allTypes = new();
