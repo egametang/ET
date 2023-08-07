@@ -18,7 +18,7 @@ namespace ET.Client
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                root.Fiber.Error(e);
             }	
         }
         

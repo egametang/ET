@@ -76,7 +76,7 @@ namespace ET.Server
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    self.Fiber().Error(e);
                 }
             }
         }
@@ -134,7 +134,7 @@ namespace ET.Server
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    self.Fiber().Error(e);
                 }
             }
         }

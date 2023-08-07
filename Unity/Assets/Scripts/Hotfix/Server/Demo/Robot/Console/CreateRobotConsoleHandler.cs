@@ -31,7 +31,7 @@ namespace ET.Server
                     for (int i = 0; i < options.Num; ++i)
                     {
                         await robotManagerComponent.NewRobot($"Robot_{i}");
-                        Log.Console($"create robot {i}");
+                        fiber.Console($"create robot {i}");
                         await timerComponent.WaitAsync(2000);
                     }
                     break;
