@@ -653,7 +653,7 @@ namespace ET
             }
 
             // 如果有IGetComponent接口，则触发GetComponentSystem
-            if (this is IGetComponent)
+            if (this is IGetComponentSys)
             {
                 EntitySystemSingleton.Instance.GetComponentSys(this, typeof(K));
             }
@@ -676,7 +676,7 @@ namespace ET
 
             // 如果有IGetComponent接口，则触发GetComponentSystem
             // 这个要在tryget之前调用，因为有可能components没有，但是执行GetComponentSystem后又有了
-            if (this is IGetComponent)
+            if (this is IGetComponentSys)
             {
                 EntitySystemSingleton.Instance.GetComponentSys(this, type);
             }

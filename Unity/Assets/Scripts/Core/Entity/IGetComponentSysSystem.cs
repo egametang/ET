@@ -6,26 +6,26 @@ namespace ET
 	// 是否变化可以通过判断该组件是否GetComponent，Get了就记录该组件
 	// 这样可以只保存Unit变化过的组件
 	// 再比如传送也可以做此类优化
-	public interface IGetComponent
+	public interface IGetComponentSys
 	{
 	}
 	
-	public interface IGetComponentSystem: ISystemType
+	public interface IGetComponentSysSystem: ISystemType
 	{
 		void Run(Entity o, Type type);
 	}
 
 	[EntitySystem]
-	public abstract class GetComponentSystem<T> : IGetComponentSystem where T: Entity, IGetComponent
+	public abstract class GetComponentSysSystem<T> : IGetComponentSysSystem where T: Entity, IGetComponentSys
 	{
-		void IGetComponentSystem.Run(Entity o, Type type)
+		void IGetComponentSysSystem.Run(Entity o, Type type)
 		{
 			this.GetComponentSys((T)o, type);
 		}
 
 		Type ISystemType.SystemType()
 		{
-			return typeof(IGetComponentSystem);
+			return typeof(IGetComponentSysSystem);
 		}
 
 		int ISystemType.GetInstanceQueueIndex()
