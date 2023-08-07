@@ -359,4 +359,22 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+
+    public static class FiberLogAnalyzerRule
+    {
+        private const string Title = "实体类内部或含有实体类参数的函数内部必须使用Fiber输出日志";
+
+        private const string MessageFormat = "实体类内部或含有实体类参数的函数内部必须使用Fiber输出日志";
+
+        private const string Description = "实体类内部或含有实体类参数的函数内部必须使用Fiber输出日志.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.FiberLogAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

@@ -63,8 +63,8 @@
         public const string IDeserializeInterface = "ET.IDeserialize";
         public const string DeserializeMethod = "Deserialize";
 
-        public const string IGetComponentInterface = "ET.IGetComponent";
-        public const string GetComponentMethod = "ET.GetComponent";
+        public const string IGetComponentInterface = "ET.IGetComponentSys";
+        public const string GetComponentMethod = "GetComponentSys";
 
         public const string ILoadInterface = "ET.ILoad";
         public const string LoadMethod = "Load";
@@ -84,6 +84,8 @@
 
         public const string ILSUpdateInterface = "ET.ILSUpdate";
         public const string LSUpdateMethod = "LSUpdate";
+
+        public const string ETLog = "ET.Log";
     }
 }
 
