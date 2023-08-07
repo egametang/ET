@@ -285,7 +285,7 @@ namespace ET
         [BsonDefaultValue(0L)]
         [BsonElement]
         [BsonId]
-        public long Id { get; set; }
+        public long Id { get; protected set; }
 
         [BsonIgnore]
         protected IScene iScene;

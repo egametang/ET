@@ -14,9 +14,9 @@ namespace ET
     [Code]
     public class LSEntitySystemSingleton: Singleton<LSEntitySystemSingleton>, ISingletonAwake
     {
-        public TypeSystems TypeSystems { get; private set; }
+        private TypeSystems TypeSystems { get; set; }
         
-        private readonly DoubleMap<Type, long> lsEntityTypeLongHashCode = new();
+        private readonly Dictionary<Type, long> lsEntityTypeLongHashCode = new();
         
         public void Awake()
         {
@@ -51,7 +51,7 @@ namespace ET
         
         public long GetLongHashCode(Type type)
         {
-            return this.lsEntityTypeLongHashCode.GetValueByKey(type);
+            return this.lsEntityTypeLongHashCode[type];
         }
         
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)

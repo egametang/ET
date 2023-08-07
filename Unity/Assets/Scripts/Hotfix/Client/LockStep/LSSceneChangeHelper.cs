@@ -19,7 +19,7 @@ namespace ET.Client
             // 等待Room2C_EnterMap消息
             WaitType.Wait_Room2C_Start waitRoom2CStart = await root.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_Start>();
 
-            room.LSWorld = room.AddChild<LSWorld, SceneType>(SceneType.LockStepClient);
+            room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(waitRoom2CStart.Message.UnitInfo, waitRoom2CStart.Message.StartTime);
             
             room.AddComponent<LSClientUpdater>();
@@ -37,7 +37,7 @@ namespace ET.Client
             room.Name = "Map1";
             room.IsReplay = true;
             room.Replay = replay;
-            room.LSWorld = room.AddChild<LSWorld, SceneType>(SceneType.LockStepClient);
+            room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(replay.UnitInfos, TimeInfo.Instance.ServerFrameTime());
             
             // 等待表现层订阅的事件完成
@@ -57,7 +57,7 @@ namespace ET.Client
             Room room = root.AddComponent<Room>();
             room.Name = "Map1";
             
-            room.LSWorld = room.AddChild<LSWorld, SceneType>(SceneType.LockStepClient);
+            room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(message.UnitInfos, message.StartTime, message.Frame);
             
             // 等待表现层订阅的事件完成

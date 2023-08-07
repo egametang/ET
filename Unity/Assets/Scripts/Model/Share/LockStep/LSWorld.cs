@@ -5,19 +5,8 @@ using TrueSync;
 
 namespace ET
 {
-    [EntitySystemOf(typeof(LSWorld))]
-    public static partial class LSWorldSystem
+    public static class LSWorldSystem
     {
-        [EntitySystem]
-        private static void Awake(this LSWorld self, SceneType sceneType)
-        {
-            self.Id = self.GetId();
-
-            self.SceneType = sceneType;
-            
-            self.Fiber().Info($"LSScene create: {self.Id} {self.InstanceId}");
-        }
-        
         public static LSWorld LSWorld(this LSEntity entity)
         {
             return entity.IScene as LSWorld;
@@ -27,19 +16,29 @@ namespace ET
         {
             return entity.LSWorld().GetId();
         }
-
+        
         public static TSRandom GetRandom(this LSEntity entity)
         {
             return entity.LSWorld().Random;
         }
-
     }
 
     [EnableMethod]
     [ChildOf]
     [ComponentOf]
-    public class LSWorld: Entity, IAwake<SceneType>, IScene
+    public class LSWorld: Entity, IAwake, IScene
     {
+        public LSWorld()
+        {
+        }
+        
+        public LSWorld(SceneType sceneType)
+        {
+            this.Id = this.GetId();
+
+            this.SceneType = sceneType;
+        }
+
         private readonly LSUpdater updater = new();
         
         [BsonIgnore]
