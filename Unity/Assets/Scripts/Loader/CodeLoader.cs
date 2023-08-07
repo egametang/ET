@@ -104,7 +104,7 @@ namespace ET
 			Assembly hotfixAssembly = this.LoadHotfix();
 
 			CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
-			codeTypes.CreateCodeSingleton();
+			codeTypes.CreateCode();
 
 			Log.Debug($"reload dll finish!");
 		}
