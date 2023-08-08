@@ -16,7 +16,7 @@ namespace ET
     {
         private TypeSystems TypeSystems { get; set; }
         
-        private readonly Dictionary<Type, long> lsEntityTypeLongHashCode = new();
+        private readonly DoubleMap<Type, long> lsEntityTypeLongHashCode = new();
         
         public void Awake()
         {
@@ -44,14 +44,23 @@ namespace ET
                 Type type = kv.Value;
                 if (typeof(LSEntity).IsAssignableFrom(type))
                 {
-                    this.lsEntityTypeLongHashCode.Add(type, type.FullName.GetLongHashCode());
+                    long hash = type.FullName.GetLongHashCode();
+                    try
+                    {
+                        this.lsEntityTypeLongHashCode.Add(type, type.FullName.GetLongHashCode());
+                    }
+                    catch (Exception e)
+                    {
+                        Type sameHashType = this.lsEntityTypeLongHashCode.GetKeyByValue(hash);
+                        throw new Exception($"long hash add fail: {type.FullName} {sameHashType.FullName}", e);
+                    }
                 }
             }
         }
         
         public long GetLongHashCode(Type type)
         {
-            return this.lsEntityTypeLongHashCode[type];
+            return this.lsEntityTypeLongHashCode.GetValueByKey(type);
         }
         
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)
