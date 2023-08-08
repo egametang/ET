@@ -922,7 +922,7 @@ namespace ET
 
         protected virtual long GetLongHashCode(Type type)
         {
-            return type.GetHashCode();
+            return type.TypeHandle.Value.ToInt64();
         }
 
         public override void BeginInit()
