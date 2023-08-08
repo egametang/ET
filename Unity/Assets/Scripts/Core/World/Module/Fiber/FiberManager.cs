@@ -66,8 +66,11 @@ namespace ET
             try
             {
                 Fiber fiber = new(fiberId, zone, sceneType, name);
-                
-                this.fibers.TryAdd(fiberId, fiber);
+
+                if (!this.fibers.TryAdd(fiberId, fiber))
+                {
+                    throw new Exception($"same fiber already existed, if you remove, please await Remove then Create fiber! {fiberId}");
+                }
                 this.schedulers[(int) schedulerType].Add(fiberId);
                 
                 TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
