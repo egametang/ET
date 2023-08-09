@@ -61,7 +61,7 @@ namespace ET
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
         {
             this.iStateMachineWrap ??= StateMachineWrap<TStateMachine>.Fetch(ref stateMachine);
-            awaiter.OnCompleted(this.iStateMachineWrap.MoveNext);
+            awaiter.UnsafeOnCompleted(this.iStateMachineWrap.MoveNext);
         }
 
         // 7. Start
