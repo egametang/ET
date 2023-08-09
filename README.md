@@ -17,7 +17,13 @@
 12. 强大的ai开发机制，比行为树更加容易  
 13. 强大的单元测试开发机制，每个单元测试都是整个游戏环境，不用搞mock隔离，开发起来非常轻松  
 14. 优美的程序结构，数据跟方法完全分离  
-15. all in one的开发体验，开发时只需要启动unity，发布的时候又可以单独发布服务端，并且可以跨windows跟linux平台
+15. all in one的开发体验，开发时只需要启动unity，发布的时候又可以单独发布服务端，并且可以跨windows跟linux平台  
+
+
+# 熊猫的三门课程,需要请加QQ 80081771：  
+1. [网络游戏架构设计](https://www.bilibili.com/video/BV1h84y1G7aH/?spm_id_from=333.999.0.0&vd_source=e55f8234b8f8039504cbf131082c93dd)  基于ET7.2，共27集，讲解ET7.2的框架设计细节  
+2. [帧同步设计](https://www.bilibili.com/video/BV1tX4y1C7pM/?share_source=copy_web&vd_source=001b901865c99550d1b2a8cd663695d4)  基于ET8，共12集，讲解预测回滚帧同步设计  
+3. [多线程架构设计](https://www.bilibili.com/video/BV1Ah4y1f7QT/?spm_id_from=333.999.0.0&vd_source=e55f8234b8f8039504cbf131082c93dd)  基于ET8，共11集，讲解ET8的多线程设计  
 
 # ET8 预览版! 17岁亦菲  
 1. 多线程多进程架构,架构更加灵活强大  
@@ -33,74 +39,6 @@
 11. sj开发了分析器，实现了EntitySystemOf，根据entity接口一键生成对应的system方法  
 12. 客户端利用fiber实现网络独立线程（demo已实现），甚至可以把逻辑跟表现使用独立的纤程，更好的利用多核  
 13. 帧同步demo直接利用纤程创建房间，更加方便  
-
-# ET8课程临时大纲，后面会有细节调整, 需要课程请联系熊猫 QQ:80081771  
-1.跟ET7的区别，运行指南，切换demo  
-2.多进程单线程  多进程多线程 优劣比较，帧同步 内存 性能 开发难度  
-3.框架的设计，整体大致介绍  
-4.World详解，几种Singleton,线程安全的思考(热重载代码，热重载配置)，找到临界区  
-5.纤程的概念,为什么要有纤程，纤程调度  
-6.Fiber Entity IScene 几种设计的方案 Instance？  
-7.Fiber间通信: Actor消息 ActorMessageQueue ActorId ActorInner  
-8.多线程安全（Fiber创建删除）以及同步上下文的处理,unity回调的处理  
-9.客户端网络设计  
-10.服务端ActorInner ActorOuter ActorSender  
-11.服务端Actor流程  
-12.如何利用纤程设计游戏架构  
-
-# 双端预测回滚帧同步框架课程有需要请加QQ:80081771    
-# [帧同步预告视频](https://www.bilibili.com/video/BV1tX4y1C7pM/?share_source=copy_web&vd_source=001b901865c99550d1b2a8cd663695d4)  
-### 1. 网络多线程0GC实现，优美的实现，性能提升  
-### 2. ET框架调整：  
-    a. EntityRef Entity弱引用机制  
-    b. Entity不再统一注册到Root中，只有Actor对象挂载了MailboxComponent的注册到  ActorMessageDispatcherComponent中  
-    c. TypeSystem EntitySystemSingleton，可扩展的Entity System机制，自定义System极其轻松  
-    d. Domain IScene, 更完善，Scene的代码都简化了  
-    e. Entity中Components改成SortedDictionary，保证有序  
-    f. Mongo序列化BeginInit, 增加了一个SerializeSystem  
-    g. 配置文件改成了Bson，直接支持Dictionary以及更复杂的配置  
-### 3. 实现了一个极其优美的预测回滚的帧同步框架，包含客户端跟服务端。注意，并不是只能做帧同步，帧同步框架只是ET框架一小部分  
-    a. 帧同步专用的LSEntity，LSWorld帧同步定点数domain  
-    b. LSUpdateSystem 处理帧的Update逻辑  
-    c. LSRollbackSystem 处理表现层和解   
-    d. 客户端可膨胀收缩的FixedUpdate  
-    ......
-### 4. 逻辑层表现层分离，前后端共享逻辑层实现, 服务端会同时跑战斗，杜绝结果作弊  
-### 5. 帧同步预测回滚实现  
-### 6. 客户端时间动态膨胀收缩  
-### 7. 录像文件随时保存，播放可以随意跳转播放，加速播放  
-### 8. 断线重连，瞬间重连  
-### 9. ET状态帧实现方式，学会ET帧同步，状态帧非常简单。
-### 10.还有更多同步方式......  
-
-# 熊猫的课程：《网络游戏架构设计》已经完结，有需要请加QQ:80081771 课程详细介绍了ET框架的设计思路跟细节，以下是课程目录:
-01. 代码结构
-02. All In one-01
-03. All In one-02
-04. 单间管理器
-05. 多线程单线程跟task await async的关系
-06. ETTask-01
-07. ETTask-02
-08. 计时器
-09. 协程锁
-10. 协程同步
-11. Id-Time-ObjectPool
-12. 日志 Options ConfigComponent
-13. why not 继承，多态，组合?
-14. 实体组件系统
-15. EventSystem
-16. 序列化反序列化
-17. Network
-18. TCP
-19. KCP
-20. NetComponent跟Session
-21. 软路由
-22. Actor
-23. ActorLocation
-24. 机器人框架测试用例框架
-25. AI框架
-26. 架构设计细节
-27. 分析器
 
 # [ET论坛](https://et-framework.cn)  
 
