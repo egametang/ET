@@ -77,20 +77,16 @@ namespace ET
                 return;
             }
 
-            using (var enumerator = self.timeId.GetEnumerator())
+            foreach (var kv in self.timeId)
             {
-                while (enumerator.MoveNext())
+                long k = kv.Key;
+                if (k > timeNow)
                 {
-                    var kv = enumerator.Current;
-                    long k = kv.Key;
-                    if (k > timeNow)
-                    {
-                        self.minTime = k;
-                        break;
-                    }
-
-                    self.timeOutTime.Enqueue(k);
+                    self.minTime = k;
+                    break;
                 }
+
+                self.timeOutTime.Enqueue(k);
             }
 
             while (self.timeOutTime.Count > 0)
