@@ -61,7 +61,7 @@ namespace ET
             this.fibers = null;
         }
 
-        public async Task<int> Create(SchedulerType schedulerType, int fiberId, int zone, SceneType sceneType, string name)
+        public async ETTask<int> Create(SchedulerType schedulerType, int fiberId, int zone, SceneType sceneType, string name)
         {
             try
             {
@@ -98,13 +98,13 @@ namespace ET
             }
         }
         
-        public async Task<int> Create(SchedulerType schedulerType, int zone, SceneType sceneType, string name)
+        public async ETTask<int> Create(SchedulerType schedulerType, int zone, SceneType sceneType, string name)
         {
             int fiberId = Interlocked.Increment(ref this.idGenerator);
             return await this.Create(schedulerType, fiberId, zone, sceneType, name);
         }
         
-        public async Task Remove(int id)
+        public async ETTask Remove(int id)
         {
             Fiber fiber = this.Get(id);
             TaskCompletionSource<bool> tcs = new();
