@@ -27,31 +27,8 @@ namespace ET.Server
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
-            self.InvokerType = ProcessOuterSenderInvokerType.Mailbox;
         }
         
-        [EntitySystem]
-        private static void Awake(this ProcessOuterSender self, IPEndPoint address, int invokerType)
-        {
-            switch (self.InnerProtocol)
-            {
-                case NetworkProtocol.TCP:
-                {
-                    self.AService = new TService(address, ServiceType.Inner, self.Fiber().Log);
-                    break;
-                }
-                case NetworkProtocol.KCP:
-                {
-                    self.AService = new KService(address, ServiceType.Inner, self.Fiber().Log);
-                    break;
-                }
-            }
-                
-            self.AService.AcceptCallback = self.OnAccept;
-            self.AService.ReadCallback = self.OnRead;
-            self.AService.ErrorCallback = self.OnError;
-            self.InvokerType = invokerType;
-        }
         
         [EntitySystem]
         private static void Update(this ProcessOuterSender self)
@@ -81,10 +58,32 @@ namespace ET.Server
                 return;
             }
 
-            EventSystem.Instance.Invoke(self.InvokerType, new ProcessOuterSenderOnRead()
+            Fiber fiber = self.Fiber();
+            int fromProcess = actorId.Process;
+            actorId.Process = fiber.Process;
+
+            switch (message)
             {
-                ProcessOuterSender = self, ActorId = actorId, Message = message
-            });
+                case ILocationRequest:
+                case IRequest:
+                {
+                    async ETTask Call()
+                    {
+                        IRequest request = (IRequest)message;
+                        // 注意这里都不能抛异常，因为这里只是中转消息
+                        IResponse response = await fiber.ProcessInnerSender.Call(actorId, request, false);
+                        actorId.Process = fromProcess;
+                        self.Send(actorId, response);
+                    }
+                    Call().Coroutine();
+                    break;
+                }
+                default:
+                {
+                    fiber.ProcessInnerSender.Send(actorId, (IMessage)message);
+                    break;
+                }
+            }
         }
 
         private static void OnError(this ProcessOuterSender self, long channelId, int error)
