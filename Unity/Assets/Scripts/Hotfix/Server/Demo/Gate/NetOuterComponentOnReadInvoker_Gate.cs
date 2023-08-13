@@ -2,19 +2,20 @@
 
 namespace ET.Server
 {
-    [Event(SceneType.Realm | SceneType.Gate | SceneType.BenchmarkServer)]
-    public class NetServerComponentOnReadEvent: AEvent<Scene, NetServerComponentOnRead>
+    [Invoke((long)SceneType.Gate)]
+    //[Invoke((long)SceneType.Realm)]
+    public class NetOuterComponentOnReadInvoker_Gate: AInvokeHandler<NetOuterComponentOnRead>
     {
-        protected override async ETTask Run(Scene scene, NetServerComponentOnRead args)
+        public override void Handle(NetOuterComponentOnRead args)
+        {
+            HandleAsync(args).Coroutine();
+        }
+
+        private async ETTask HandleAsync(NetOuterComponentOnRead args)
         {
             Session session = args.Session;
             object message = args.Message;
-            Scene root = scene.Root();
-            if (message is IResponse response)
-            {
-                session.OnResponse(response);
-                return;
-            }
+            Scene root = args.Session.Root();
             // 根据消息接口判断是不是Actor消息，不同的接口做不同的处理,比如需要转发给Chat Scene，可以做一个IChatMessage接口
             switch (message)
             {

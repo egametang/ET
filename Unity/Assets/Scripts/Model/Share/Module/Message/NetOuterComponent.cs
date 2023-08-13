@@ -1,0 +1,17 @@
+﻿using System.Net;
+using System.Net.Sockets;
+
+namespace ET
+{
+    public struct NetOuterComponentOnRead
+    {
+        public Session Session;
+        public object Message;
+    }
+    
+    [ComponentOf(typeof(Scene))]
+    public class NetOuterComponent: Entity, IAwake<IPEndPoint>, IAwake<AddressFamily>, IDestroy, IUpdate
+    {
+        public AService AService;
+    }
+}

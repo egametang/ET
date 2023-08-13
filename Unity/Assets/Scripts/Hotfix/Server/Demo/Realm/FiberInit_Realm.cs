@@ -14,7 +14,7 @@ namespace ET.Server
             root.AddComponent<MessageInnerSender>();
             root.AddComponent<MessageSender>();
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(root.Fiber.Id);
-            root.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
+            root.AddComponent<NetOuterComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
 
             await ETTask.CompletedTask;
         }
