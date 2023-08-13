@@ -18,7 +18,7 @@ namespace ET.Client
             
             root.Fiber().Info($"get router: {recvLocalConn} {routerAddress}");
 
-            Session routerSession = root.GetComponent<NetOuterComponent>().Create(routerAddress, address, recvLocalConn);
+            Session routerSession = root.GetComponent<NetComponent>().Create(routerAddress, address, recvLocalConn);
             routerSession.AddComponent<PingComponent>();
             routerSession.AddComponent<RouterCheckComponent>();
             

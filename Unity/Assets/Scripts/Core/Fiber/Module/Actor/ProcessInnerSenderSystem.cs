@@ -4,27 +4,27 @@ using System.IO;
 
 namespace ET
 {
-    [EntitySystemOf(typeof(MessageInnerSender))]
-    [FriendOf(typeof(MessageInnerSender))]
-    public static partial class MessageInnerSenderSystem
+    [EntitySystemOf(typeof(ProcessInnerSender))]
+    [FriendOf(typeof(ProcessInnerSender))]
+    public static partial class ProcessInnerSenderSystem
     {
         [EntitySystem]
-        private static void Destroy(this MessageInnerSender self)
+        private static void Destroy(this ProcessInnerSender self)
         {
             Fiber fiber = self.Fiber();
             MessageQueue.Instance.RemoveQueue(fiber.Id);
         }
 
         [EntitySystem]
-        private static void Awake(this MessageInnerSender self)
+        private static void Awake(this ProcessInnerSender self)
         {
             Fiber fiber = self.Fiber();
             MessageQueue.Instance.AddQueue(fiber.Id);
-            fiber.MessageInnerSender = self;
+            fiber.ProcessInnerSender = self;
         }
 
         [EntitySystem]
-        private static void Update(this MessageInnerSender self)
+        private static void Update(this ProcessInnerSender self)
         {
             self.list.Clear();
             Fiber fiber = self.Fiber();
@@ -36,7 +36,7 @@ namespace ET
             }
         }
 
-        private static void HandleMessage(this MessageInnerSender self, Fiber fiber, in MessageInfo messageInfo)
+        private static void HandleMessage(this ProcessInnerSender self, Fiber fiber, in MessageInfo messageInfo)
         {
             if (messageInfo.MessageObject is IResponse response)
             {
@@ -62,7 +62,7 @@ namespace ET
             mailBoxComponent.Add(actorId.Address, message);
         }
 
-        private static void HandleIActorResponse(this MessageInnerSender self, IResponse response)
+        private static void HandleIActorResponse(this ProcessInnerSender self, IResponse response)
         {
             if (!self.requestCallback.Remove(response.RpcId, out MessageSenderStruct actorMessageSender))
             {
@@ -89,17 +89,17 @@ namespace ET
             ((MessageObject)response).Dispose();
         }
         
-        public static void Reply(this MessageInnerSender self, Address fromAddress, IResponse message)
+        public static void Reply(this ProcessInnerSender self, Address fromAddress, IResponse message)
         {
             self.SendInner(new ActorId(fromAddress, 0), (MessageObject)message);
         }
 
-        public static void Send(this MessageInnerSender self, ActorId actorId, IMessage message)
+        public static void Send(this ProcessInnerSender self, ActorId actorId, IMessage message)
         {
             self.SendInner(actorId, (MessageObject)message);
         }
 
-        private static void SendInner(this MessageInnerSender self, ActorId actorId, MessageObject message)
+        private static void SendInner(this ProcessInnerSender self, ActorId actorId, MessageObject message)
         {
             Fiber fiber = self.Fiber();
             
@@ -118,13 +118,13 @@ namespace ET
             MessageQueue.Instance.Send(fiber.Address, actorId, message);
         }
 
-        public static int GetRpcId(this MessageInnerSender self)
+        public static int GetRpcId(this ProcessInnerSender self)
         {
             return ++self.RpcId;
         }
 
         public static async ETTask<IResponse> Call(
-                this MessageInnerSender self,
+                this ProcessInnerSender self,
                 ActorId actorId,
                 IRequest request,
                 bool needException = true
@@ -141,7 +141,7 @@ namespace ET
         }
         
         public static async ETTask<IResponse> Call(
-                this MessageInnerSender self,
+                this ProcessInnerSender self,
                 ActorId actorId,
                 int rpcId,
                 IRequest iRequest,
@@ -167,7 +167,7 @@ namespace ET
             
             async ETTask Timeout()
             {
-                await fiber.TimerComponent.WaitAsync(MessageInnerSender.TIMEOUT_TIME);
+                await fiber.TimerComponent.WaitAsync(ProcessInnerSender.TIMEOUT_TIME);
 
                 if (!self.requestCallback.Remove(rpcId, out MessageSenderStruct action))
                 {

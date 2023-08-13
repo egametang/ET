@@ -3,7 +3,7 @@
 namespace ET.Client
 {
     [Invoke((long)SceneType.NetClient)]
-    public class NetOuterComponentOnReadInvoker_NetClient: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_NetClient: AInvokeHandler<NetOuterComponentOnRead>
     {
         public override void Handle(NetOuterComponentOnRead args)
         {
@@ -27,7 +27,7 @@ namespace ET.Client
                 {
                     // 扔到Main纤程队列中
                     int parentFiberId = fiber.Root.GetComponent<FiberParentComponent>().ParentFiberId;
-                    fiber.MessageInnerSender.Send(new ActorId(fiber.Process, parentFiberId), iActorMessage);
+                    fiber.ProcessInnerSender.Send(new ActorId(fiber.Process, parentFiberId), iActorMessage);
                     break;
                 }
                 default:

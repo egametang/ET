@@ -3,8 +3,7 @@
 namespace ET.Server
 {
     [Invoke((long)SceneType.Gate)]
-    //[Invoke((long)SceneType.Realm)]
-    public class NetOuterComponentOnReadInvoker_Gate: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_Gate: AInvokeHandler<NetOuterComponentOnRead>
     {
         public override void Handle(NetOuterComponentOnRead args)
         {

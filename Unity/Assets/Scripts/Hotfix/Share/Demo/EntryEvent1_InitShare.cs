@@ -10,7 +10,7 @@ namespace ET
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ObjectWait>();
             root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
-            root.AddComponent<MessageInnerSender>();
+            root.AddComponent<ProcessInnerSender>();
             
             await ETTask.CompletedTask;
         }

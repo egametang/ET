@@ -3,7 +3,7 @@
 namespace ET.Server
 {
     [Invoke((long)SceneType.BenchmarkServer)]
-    public class NetOuterComponentOnReadInvoker_BenchmarkServer: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_BenchmarkServer: AInvokeHandler<NetOuterComponentOnRead>
     {
         public override void Handle(NetOuterComponentOnRead args)
         {

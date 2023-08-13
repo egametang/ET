@@ -10,7 +10,7 @@ namespace ET
     }
     
     [ComponentOf(typeof(Scene))]
-    public class NetOuterComponent: Entity, IAwake<IPEndPoint>, IAwake<AddressFamily>, IDestroy, IUpdate
+    public class NetComponent: Entity, IAwake<IPEndPoint>, IAwake<AddressFamily>, IDestroy, IUpdate
     {
         public AService AService;
     }

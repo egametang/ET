@@ -70,16 +70,16 @@ namespace ET
             }
         }
         
-        private EntityRef<MessageInnerSender> messageInnerSender;
-        public MessageInnerSender MessageInnerSender
+        private EntityRef<ProcessInnerSender> processInnerSender;
+        public ProcessInnerSender ProcessInnerSender
         {
             get
             {
-                return this.messageInnerSender;
+                return this.processInnerSender;
             }
             set
             {
-                this.messageInnerSender = value;
+                this.processInnerSender = value;
             }
         }
 

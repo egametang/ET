@@ -3,7 +3,7 @@
 namespace ET
 {
     [ComponentOf(typeof(Scene))]
-    public class MessageInnerSender: Entity, IAwake, IDestroy, IUpdate
+    public class ProcessInnerSender: Entity, IAwake, IDestroy, IUpdate
     {
         public const long TIMEOUT_TIME = 40 * 1000;
         

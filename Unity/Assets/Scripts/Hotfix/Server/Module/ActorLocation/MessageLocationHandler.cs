@@ -24,7 +24,7 @@ namespace ET.Server
             }
             
             MessageResponse response = new() {RpcId = message.RpcId};
-            fiber.Root.GetComponent<MessageInnerSender>().Reply(fromAddress, response);
+            fiber.Root.GetComponent<ProcessInnerSender>().Reply(fromAddress, response);
 
             await this.Run(e, message);
         }
@@ -82,7 +82,7 @@ namespace ET.Server
                     response.Message = exception.ToString();
                 }
                 response.RpcId = rpcId;
-                fiber.MessageInnerSender.Reply(fromAddress, response);
+                fiber.ProcessInnerSender.Reply(fromAddress, response);
             }
             catch (Exception e)
             {

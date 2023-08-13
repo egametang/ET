@@ -3,12 +3,12 @@ using System.Net.Sockets;
 
 namespace ET
 {
-    [EntitySystemOf(typeof(NetOuterComponent))]
-    [FriendOf(typeof(NetOuterComponent))]
+    [EntitySystemOf(typeof(NetComponent))]
+    [FriendOf(typeof(NetComponent))]
     public static partial class NetOuterComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this NetOuterComponent self, IPEndPoint address)
+        private static void Awake(this NetComponent self, IPEndPoint address)
         {
             self.AService = new KService(address, ServiceType.Outer, self.Fiber().Log);
             self.AService.AcceptCallback = self.OnAccept;
@@ -17,7 +17,7 @@ namespace ET
         }
         
         [EntitySystem]
-        private static void Awake(this NetOuterComponent self, AddressFamily addressFamily)
+        private static void Awake(this NetComponent self, AddressFamily addressFamily)
         {
             self.AService = new KService(addressFamily, ServiceType.Outer, self.Fiber().Log);
             self.AService.ReadCallback = self.OnRead;
@@ -25,18 +25,18 @@ namespace ET
         }
         
         [EntitySystem]
-        private static void Update(this NetOuterComponent self)
+        private static void Update(this NetComponent self)
         {
             self.AService.Update();
         }
 
         [EntitySystem]
-        private static void Destroy(this NetOuterComponent self)
+        private static void Destroy(this NetComponent self)
         {
             self.AService.Dispose();
         }
 
-        private static void OnError(this NetOuterComponent self, long channelId, int error)
+        private static void OnError(this NetComponent self, long channelId, int error)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -49,7 +49,7 @@ namespace ET
         }
 
         // 这个channelId是由CreateAcceptChannelId生成的
-        private static void OnAccept(this NetOuterComponent self, long channelId, IPEndPoint ipEndPoint)
+        private static void OnAccept(this NetComponent self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
@@ -63,7 +63,7 @@ namespace ET
             }
         }
         
-        private static void OnRead(this NetOuterComponent self, long channelId, ActorId actorId, object message)
+        private static void OnRead(this NetComponent self, long channelId, ActorId actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -77,7 +77,7 @@ namespace ET
             EventSystem.Instance.Invoke((long)self.IScene.SceneType, new NetOuterComponentOnRead() {Session = session, Message = message});
         }
         
-        public static Session Create(this NetOuterComponent self, IPEndPoint realIPEndPoint)
+        public static Session Create(this NetComponent self, IPEndPoint realIPEndPoint)
         {
             long channelId = NetServices.Instance.CreateConnectChannelId();
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
@@ -91,7 +91,7 @@ namespace ET
             return session;
         }
 
-        public static Session Create(this NetOuterComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
+        public static Session Create(this NetComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
         {
             long channelId = localConn;
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);

@@ -19,7 +19,7 @@ namespace ET.Server
             //root.AddComponent<GateSessionKeyComponent>();
             //root.AddComponent<LocationProxyComponent>();
             //root.AddComponent<ActorLocationSenderComponent>();
-            root.AddComponent<NetOuterComponent, AddressFamily>(AddressFamily.InterNetwork);
+            root.AddComponent<NetComponent, AddressFamily>(AddressFamily.InterNetwork);
             root.AddComponent<BenchmarkClientComponent>();
             await ETTask.CompletedTask;
         }

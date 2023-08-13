@@ -3,12 +3,12 @@ using System.Net;
 
 namespace ET.Server
 {
-    [EntitySystemOf(typeof(MessageOuterSender))]
-    [FriendOf(typeof(MessageOuterSender))]
-    public static partial class MessageOuterSenderSystem
+    [EntitySystemOf(typeof(ProcessOuterSender))]
+    [FriendOf(typeof(ProcessOuterSender))]
+    public static partial class ProcessOuterSenderSystem
     {
         [EntitySystem]
-        private static void Awake(this MessageOuterSender self, IPEndPoint address)
+        private static void Awake(this ProcessOuterSender self, IPEndPoint address)
         {
             switch (self.InnerProtocol)
             {
@@ -27,21 +27,45 @@ namespace ET.Server
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
+            self.InvokerType = ProcessOuterSenderInvokerType.Mailbox;
         }
         
         [EntitySystem]
-        private static void Update(this MessageOuterSender self)
+        private static void Awake(this ProcessOuterSender self, IPEndPoint address, int invokerType)
+        {
+            switch (self.InnerProtocol)
+            {
+                case NetworkProtocol.TCP:
+                {
+                    self.AService = new TService(address, ServiceType.Inner, self.Fiber().Log);
+                    break;
+                }
+                case NetworkProtocol.KCP:
+                {
+                    self.AService = new KService(address, ServiceType.Inner, self.Fiber().Log);
+                    break;
+                }
+            }
+                
+            self.AService.AcceptCallback = self.OnAccept;
+            self.AService.ReadCallback = self.OnRead;
+            self.AService.ErrorCallback = self.OnError;
+            self.InvokerType = invokerType;
+        }
+        
+        [EntitySystem]
+        private static void Update(this ProcessOuterSender self)
         {
             self.AService.Update();
         }
 
         [EntitySystem]
-        private static void Destroy(this MessageOuterSender self)
+        private static void Destroy(this ProcessOuterSender self)
         {
             self.AService.Dispose();
         }
 
-        private static void OnRead(this MessageOuterSender self, long channelId, ActorId actorId, object message)
+        private static void OnRead(this ProcessOuterSender self, long channelId, ActorId actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -50,42 +74,20 @@ namespace ET.Server
             }
             
             session.LastRecvTime = TimeInfo.Instance.ClientFrameTime();
-
-            self.HandleMessage(actorId, message).Coroutine();
-        }
-
-        private static async ETTask HandleMessage(this MessageOuterSender self, ActorId actorId, object message)
-        {
-            Fiber fiber = self.Fiber();
-            int fromProcess = actorId.Process;
-            actorId.Process = fiber.Process;
-
-            switch (message)
+            
+            if (message is IResponse response)
             {
-                case IResponse iActorResponse:
-                {
-                    self.HandleIActorResponse(iActorResponse);
-                    return;
-                }
-                case ILocationRequest:
-                case IRequest:
-                {
-                    IRequest request = (IRequest)message;
-                    // 注意这里都不能抛异常，因为这里只是中转消息
-                    IResponse response = await fiber.MessageInnerSender.Call(actorId, request, false);
-                    actorId.Process = fromProcess;
-                    self.Send(actorId, response);
-                    break;
-                }
-                default:
-                {
-                    fiber.MessageInnerSender.Send(actorId, (IMessage)message);
-                    break;
-                }
+                self.HandleIActorResponse(response);
+                return;
             }
+
+            EventSystem.Instance.Invoke(self.InvokerType, new ProcessOuterSenderOnRead()
+            {
+                ProcessOuterSender = self, ActorId = actorId, Message = message
+            });
         }
 
-        private static void OnError(this MessageOuterSender self, long channelId, int error)
+        private static void OnError(this ProcessOuterSender self, long channelId, int error)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -98,14 +100,14 @@ namespace ET.Server
         }
 
         // 这个channelId是由CreateAcceptChannelId生成的
-        private static void OnAccept(this MessageOuterSender self, long channelId, IPEndPoint ipEndPoint)
+        private static void OnAccept(this ProcessOuterSender self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
 
-        private static Session CreateInner(this MessageOuterSender self, long channelId, IPEndPoint ipEndPoint)
+        private static Session CreateInner(this ProcessOuterSender self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
             session.RemoteAddress = ipEndPoint;
@@ -118,7 +120,7 @@ namespace ET.Server
         }
 
         // 内网actor session，channelId是进程号
-        private static Session Get(this MessageOuterSender self, long channelId)
+        private static Session Get(this ProcessOuterSender self, long channelId)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session != null)
@@ -131,7 +133,7 @@ namespace ET.Server
             return session;
         }
 
-        public static void HandleIActorResponse(this MessageOuterSender self, IResponse response)
+        private static void HandleIActorResponse(this ProcessOuterSender self, IResponse response)
         {
             if (!self.requestCallback.Remove(response.RpcId, out MessageSenderStruct actorMessageSender))
             {
@@ -158,12 +160,12 @@ namespace ET.Server
             ((MessageObject)response).Dispose();
         }
 
-        public static void Send(this MessageOuterSender self, ActorId actorId, IMessage message)
+        public static void Send(this ProcessOuterSender self, ActorId actorId, IMessage message)
         {
             self.SendInner(actorId, message as MessageObject);
         }
 
-        private static void SendInner(this MessageOuterSender self, ActorId actorId, MessageObject message)
+        private static void SendInner(this ProcessOuterSender self, ActorId actorId, MessageObject message)
         {
             if (actorId == default)
             {
@@ -183,12 +185,12 @@ namespace ET.Server
             session.Send(actorId, message);
         }
 
-        private static int GetRpcId(this MessageOuterSender self)
+        private static int GetRpcId(this ProcessOuterSender self)
         {
             return ++self.RpcId;
         }
 
-        public static async ETTask<IResponse> Call(this MessageOuterSender self, ActorId actorId, IRequest iRequest, bool needException = true)
+        public static async ETTask<IResponse> Call(this ProcessOuterSender self, ActorId actorId, IRequest iRequest, bool needException = true)
         {
             if (actorId == default)
             {
@@ -206,7 +208,7 @@ namespace ET.Server
 
             async ETTask Timeout()
             {
-                await fiber.TimerComponent.WaitAsync(MessageOuterSender.TIMEOUT_TIME);
+                await fiber.TimerComponent.WaitAsync(ProcessOuterSender.TIMEOUT_TIME);
                 if (!self.requestCallback.Remove(rpcId, out MessageSenderStruct action))
                 {
                     return;
