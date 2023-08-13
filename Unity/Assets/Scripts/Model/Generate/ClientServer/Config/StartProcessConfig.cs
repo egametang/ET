@@ -60,6 +60,8 @@ namespace ET
 		public int Id { get; set; }
 		/// <summary>所属机器</summary>
 		public int MachineId { get; set; }
+		/// <summary>外网端口</summary>
+		public int Port { get; set; }
 
 	}
 }
