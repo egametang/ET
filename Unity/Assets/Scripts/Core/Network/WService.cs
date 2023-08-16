@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
 
@@ -16,18 +16,18 @@ namespace ET
 
         public ThreadSynchronizationContext ThreadSynchronizationContext;
 
-        public WService(IEnumerable<string> prefixs, ILog log): base(log)
+        public WService(ThreadSynchronizationContext threadSynchronizationContext, IEnumerable<string> prefixs, ILog log): base(log)
         {
-            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
+            this.ThreadSynchronizationContext = threadSynchronizationContext;
             
             this.httpListener = new HttpListener();
 
             StartAccept(prefixs).Coroutine();
         }
         
-        public WService(ILog log): base(log)
+        public WService(ThreadSynchronizationContext threadSynchronizationContext, ILog log): base(log)
         {
-            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
+            this.ThreadSynchronizationContext = threadSynchronizationContext;
         }
         
         private long GetId
@@ -43,6 +43,10 @@ namespace ET
 			ClientWebSocket webSocket = new();
             WChannel channel = new(id, webSocket, address, this);
             this.channels[channel.Id] = channel;
+        }
+
+        public override void Update()
+        {
         }
 
         public override void Remove(long id, int error = 0)
@@ -116,7 +120,7 @@ namespace ET
             {
                 if (e.ErrorCode == 5)
                 {
-                    throw new Exception($"CMD管理员中输入: netsh http add urlacl url=http://*:8080/ user=Everyone", e);
+                    throw new Exception($"CMD管理员中输入: netsh http add urlacl url=http://*:8080/ user=Everyone   {prefixs.ToList().ListToString()}", e);
                 }
 
                 Log.Error(e);
@@ -135,11 +139,6 @@ namespace ET
                 return;
             }
             channel.Send(message);
-        }
-
-        public override void Update()
-        {
-            this.ThreadSynchronizationContext.Update();
         }
     }
 }
