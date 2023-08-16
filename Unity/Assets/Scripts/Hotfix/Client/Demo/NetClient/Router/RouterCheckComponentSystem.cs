@@ -18,6 +18,8 @@ namespace ET.Client
             long instanceId = self.InstanceId;
             Fiber fiber = self.Fiber();
             Scene root = fiber.Root;
+            
+            IPEndPoint realAddress = NetworkHelper.ToIPEndPoint(self.GetParent<Session>().RemoteAddress);
             while (true)
             {
                 if (self.InstanceId != instanceId)
@@ -45,7 +47,7 @@ namespace ET.Client
 
                     (uint localConn, uint remoteConn) = session.AService.GetChannelConn(sessionId);
                     
-                    IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
+                    
                     fiber.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
 
                     (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(root, realAddress, localConn, remoteConn);
@@ -56,6 +58,9 @@ namespace ET.Client
                     }
                     
                     fiber.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+
+                    realAddress = routerAddress;
+                    session.RemoteAddress = realAddress.ToString();
                     
                     session.LastRecvTime = TimeInfo.Instance.ClientNow();
                     

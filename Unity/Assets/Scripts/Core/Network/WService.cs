@@ -38,12 +38,11 @@ namespace ET
             }
         }
         
-        public WChannel Create(string address, long id)
+        public override void Create(long id, string address)
         {
-			ClientWebSocket webSocket = new ClientWebSocket();
-            WChannel channel = new WChannel(id, webSocket, address, this);
+			ClientWebSocket webSocket = new();
+            WChannel channel = new(id, webSocket, address, this);
             this.channels[channel.Id] = channel;
-            return channel;
         }
 
         public override void Remove(long id, int error = 0)
@@ -69,7 +68,7 @@ namespace ET
         {
             if (!this.channels.TryGetValue(id, out _))
             {
-                this.Create(address, id);
+                this.Create(id, address);
             }
         }
 
@@ -126,11 +125,6 @@ namespace ET
             {
                 Log.Error(e);
             }
-        }
-        
-        public override void Create(long id, IPEndPoint address)
-        {
-            throw new NotImplementedException();
         }
 
         public override void Send(long channelId, ActorId actorId, MessageObject message)

@@ -76,7 +76,7 @@ namespace ET
             this.webSocket.Dispose();
         }
 
-        public async ETTask ConnectAsync(string url)
+        private async ETTask ConnectAsync(string url)
         {
             try
             {

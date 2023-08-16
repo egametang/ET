@@ -102,15 +102,15 @@ namespace ET.Server
         private static void OnAccept(this ProcessOuterSender self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
-            session.RemoteAddress = ipEndPoint;
+            session.RemoteAddress = ipEndPoint.ToString();
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
 
         private static Session CreateInner(this ProcessOuterSender self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
-            session.RemoteAddress = ipEndPoint;
-            self.AService.Create(channelId, ipEndPoint);
+            session.RemoteAddress = ipEndPoint.ToString();
+            self.AService.Create(channelId, session.RemoteAddress);
 
             //session.AddComponent<InnerPingComponent>();
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);

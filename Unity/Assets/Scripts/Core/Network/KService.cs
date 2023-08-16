@@ -398,7 +398,7 @@ namespace ET
             return channel;
         }
 
-        public override void Create(long id, IPEndPoint address)
+        public override void Create(long id, string address)
         {
             if (this.localConnChannels.TryGetValue(id, out KChannel kChannel))
             {
@@ -409,7 +409,8 @@ namespace ET
             {
                 // 低32bit是localConn
                 uint localConn = (uint)id;
-                kChannel = new KChannel(localConn, address, this);
+                IPEndPoint endPoint = NetworkHelper.ToIPEndPoint(address);
+                kChannel = new KChannel(localConn, endPoint, this);
                 this.localConnChannels.Add(kChannel.LocalConn, kChannel);
             }
             catch (Exception e)

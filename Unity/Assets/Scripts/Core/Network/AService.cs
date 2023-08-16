@@ -74,7 +74,7 @@ namespace ET
         
         public abstract bool IsDisposed();
 
-        public abstract void Create(long id, IPEndPoint address);
+        public abstract void Create(long id, string address);
 
         public abstract void Send(long channelId, ActorId actorId, MessageObject message);
 

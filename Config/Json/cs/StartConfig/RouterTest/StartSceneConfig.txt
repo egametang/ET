@@ -5,7 +5,6 @@
 [4, {"_t":"StartSceneConfig","_id":4,"Process":1,"Zone":1,"SceneType":"Location","Name":"Location","Port":0}],
 [5, {"_t":"StartSceneConfig","_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map1","Port":0}],
 [6, {"_t":"StartSceneConfig","_id":6,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map2","Port":0}],
-[200, {"_t":"StartSceneConfig","_id":200,"Process":2,"Zone":2,"SceneType":"Robot","Name":"Robot01","Port":0}],
 [400, {"_t":"StartSceneConfig","_id":400,"Process":3,"Zone":3,"SceneType":"RouterManager","Name":"RouterManager","Port":30300}],
 [401, {"_t":"StartSceneConfig","_id":401,"Process":4,"Zone":3,"SceneType":"Router","Name":"Router01","Port":30301}],
 [402, {"_t":"StartSceneConfig","_id":402,"Process":5,"Zone":3,"SceneType":"Router","Name":"Router02","Port":30302}],

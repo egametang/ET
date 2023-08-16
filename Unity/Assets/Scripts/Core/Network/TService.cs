@@ -112,20 +112,16 @@ namespace ET
 			OnAcceptComplete(this.innArgs.SocketError, this.innArgs.AcceptSocket);
 		}
 
-		private TChannel Create(IPEndPoint ipEndPoint, long id)
-		{
-			TChannel channel = new TChannel(id, ipEndPoint, this);
-			this.idChannels.Add(channel.Id, channel);
-			return channel;
-		}
-
-		public override void Create(long id, IPEndPoint address)
+		public override void Create(long id, string address)
 		{
 			if (this.idChannels.TryGetValue(id, out TChannel _))
 			{
 				return;
 			}
-			this.Create(address, id);
+
+			IPEndPoint endPoint = NetworkHelper.ToIPEndPoint(address);
+			TChannel channel = new(id, endPoint, this);
+			this.idChannels.Add(channel.Id, channel);
 		}
 		
 		private TChannel Get(long id)
