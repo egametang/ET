@@ -77,7 +77,7 @@ namespace ET
             {
                 long time = self.timeOutTime.Dequeue();
                 var list = self.timeId[time];
-                for (int i = 0; i < list.Count; ++i)
+                for (int i = 0; i < list.Length; ++i)
                 {
                     long timerId = list[i];
                     self.timeOutTimerIds.Enqueue(timerId);
@@ -305,7 +305,7 @@ namespace ET
         /// <summary>
         /// key: time, value: timer id
         /// </summary>
-        public readonly MultiMap<long, long> timeId = new(1000);
+        public readonly NativeCollection.MultiMap<long, long> timeId = new(1000);
 
         public readonly Queue<long> timeOutTime = new();
 

@@ -96,7 +96,7 @@ namespace ET
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
         // 下次时间更新的channel
-        private readonly MultiMap<long, long> timeId = new();
+        private readonly NativeCollection.MultiMap<long, long> timeId = new();
         private readonly List<long> timeOutTime = new List<long>();
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
@@ -578,7 +578,7 @@ namespace ET
 
             this.timeOutTime.Clear();
 
-            foreach (KeyValuePair<long, List<long>> kv in this.timeId)
+            foreach (var kv in this.timeId)
             {
                 long k = kv.Key;
                 if (k > timeNow)

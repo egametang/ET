@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class MultiMap<T, K>: SortedCollection<T, List<K>>
+    public class MultiMap<T, K>: SortedDictionary<T, List<K>>
     {
         private readonly List<K> Empty = new();
         private readonly int maxPoolCount;
