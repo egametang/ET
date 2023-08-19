@@ -1,9 +1,4 @@
-﻿/**
- * 多重映射结构
- *
- */
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ET
 {
