@@ -33,14 +33,12 @@ namespace ET
             MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
 
-            World.Instance.AddSingleton<TimeInfo>();
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<MessageQueue>();
             World.Instance.AddSingleton<NetServices>();
             World.Instance.AddSingleton<NavmeshComponent>();
-            World.Instance.AddSingleton<FiberManager>();
             World.Instance.AddSingleton<LogMsg>();
             
             // 创建需要reload的code singleton

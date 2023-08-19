@@ -7,7 +7,7 @@ namespace ET.Client
         {
             Room room = clientScene.GetComponent<Room>();
             
-            room.AddComponent<LSUnitViewComponent>();
+            await room.AddComponent<LSUnitViewComponent>().InitAsync();
             
             room.AddComponent<LSCameraComponent>();
 

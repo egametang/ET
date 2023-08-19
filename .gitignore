@@ -78,3 +78,5 @@ Publish/
 /Unity/*.csproj
 /Unity/*.vsconfig
 WebGL
+Unity/Assets/AddressableAssetsData/Windows
+Unity/Assets/AddressableAssetsData/Windows.meta

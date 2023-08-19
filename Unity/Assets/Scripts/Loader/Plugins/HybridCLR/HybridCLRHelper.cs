@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using ET.Client;
 using HybridCLR;
 using UnityEngine;
 
@@ -8,11 +8,11 @@ namespace ET
     {
         public static void Load()
         {
-            Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("aotdlls.unity3d");
-            foreach (var kv in dictionary)
+            foreach (string s in AOTGenericReferences.PatchedAOTAssemblyList)
             {
-                byte[] bytes = (kv.Value as TextAsset).bytes;
-                RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.SuperSet);
+                UnityEngine.Object o = ResourcesComponent.Instance.GetAssets($"Assets/Bundles/AotDlls/{s}.bytes");
+                TextAsset textAsset = o as TextAsset;
+                RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
             }
         }
     }

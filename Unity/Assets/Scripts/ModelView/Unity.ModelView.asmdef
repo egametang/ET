@@ -6,7 +6,9 @@
         "Unity.Core",
         "Unity.Mathematics",
         "Unity.Loader",
-        "Unity.Model"
+        "Unity.Model",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

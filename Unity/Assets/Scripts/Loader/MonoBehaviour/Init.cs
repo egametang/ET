@@ -1,13 +1,20 @@
 ﻿using System;
-using System.Threading;
 using CommandLine;
+using ET.Client;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.AddressableAssets.ResourceLocators;
 
 namespace ET
 {
 	public class Init: MonoBehaviour
 	{
 		private void Start()
+		{
+			this.StartAsync().Coroutine();
+		}
+		
+		private async ETTask StartAsync()
 		{
 			DontDestroyOnLoad(gameObject);
 			
@@ -25,6 +32,14 @@ namespace ET
 			
 			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
+			
+			World.Instance.AddSingleton<TimeInfo>();
+			World.Instance.AddSingleton<FiberManager>();
+
+			World.Instance.AddSingleton<ResourcesComponent>();
+			await AssetsBundleHelper.InitializeAsync();
+			await AssetsBundleHelper.LoadCodeAsync();
+			await AssetsBundleHelper.LoadAotDllAsync();
 			
 			World.Instance.AddSingleton<CodeLoader>().Start();
 		}

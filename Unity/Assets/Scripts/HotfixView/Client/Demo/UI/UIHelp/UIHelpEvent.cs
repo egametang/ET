@@ -11,9 +11,8 @@ namespace ET.Client
 	        Fiber fiber = uiComponent.Fiber();
 	        try
 	        {
-		        ResourcesComponent resourcesComponent = fiber.Root.GetComponent<ResourcesComponent>();
-		        await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAsync(resourcesComponent.StringToAB(UIType.UIHelp));
-		        GameObject bundleGameObject = (GameObject) resourcesComponent.GetAsset(resourcesComponent.StringToAB(UIType.UIHelp), UIType.UIHelp);
+		        const string assetsName = $"Assets/Bundles/UI/Demo/{UIType.UIHelp}.prefab";
+		        GameObject bundleGameObject = await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAssetsAsync(assetsName) as GameObject;
 		        GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));
 		        UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UIHelp, gameObject);
 

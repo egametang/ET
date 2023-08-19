@@ -1,57 +1,53 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using UnityEngine.AddressableAssets;
+using UnityEngine.AddressableAssets.ResourceLocators;
 
-namespace ET
+namespace ET.Client
 {
     public static class AssetsBundleHelper
     {
-        public static Dictionary<string, UnityEngine.Object> LoadBundle(string assetBundleName)
+        public static async ETTask InitializeAsync()
         {
-            assetBundleName = assetBundleName.ToLower();
-
-            Dictionary<string, UnityEngine.Object> objects = new Dictionary<string, UnityEngine.Object>();
-            if (!Define.IsAsync)
+            IResourceLocator resourceLocator = await Addressables.InitializeAsync().Task;
+            long downloadSize = await Addressables.GetDownloadSizeAsync(resourceLocator.Keys).Task;
+            Log.Info($"download size: {downloadSize}");
+        }
+        
+        public static async ETTask LoadCodeAsync()
+        {
+            List<string> codes = new List<string>()
             {
-                if (Define.IsEditor)
+                "Model.dll",
+                "Model.pdb",
+                "Hotfix.dll",
+                "Hotfix.pdb",
+            };
+            
+            List<ETTask> tasks = new List<ETTask>(codes.Count);
+            foreach (string s in codes)
+            {
+                tasks.Add(LoadOneDll($"Assets/Bundles/Code/{s}.bytes"));
+            }
+            await ETTaskHelper.WaitAll(tasks);
+        }
+        
+        public static async ETTask LoadAotDllAsync()
+        {
+            if (Define.EnableIL2CPP)
+            {
+                List<ETTask> tasks = new List<ETTask>(AOTGenericReferences.PatchedAOTAssemblyList.Count);
+                foreach (string s in AOTGenericReferences.PatchedAOTAssemblyList)
                 {
-                    string[] realPath = null;
-                    realPath = Define.GetAssetPathsFromAssetBundle(assetBundleName);
-                    foreach (string s in realPath)
-                    {
-                        //string assetName = Path.GetFileNameWithoutExtension(s);
-                        UnityEngine.Object resource = Define.LoadAssetAtPath(s);
-                        objects.Add(resource.name, resource);
-                    }
+                    tasks.Add(LoadOneDll($"Assets/Bundles/AotDlls/{s}.bytes"));
                 }
-                return objects;
-            }
 
-            string p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
-            UnityEngine.AssetBundle assetBundle = null;
-            if (File.Exists(p))
-            {
-                assetBundle = UnityEngine.AssetBundle.LoadFromFile(p);
+                await ETTaskHelper.WaitAll(tasks);
             }
-            else
-            {
-                p = Path.Combine(PathHelper.AppResPath, assetBundleName);
-                assetBundle = UnityEngine.AssetBundle.LoadFromFile(p);
-            }
-
-            if (assetBundle == null)
-            {
-                // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
-                UnityEngine.Debug.LogWarning($"assets bundle not found: {assetBundleName}");
-                return objects;
-            }
-
-            UnityEngine.Object[] assets = assetBundle.LoadAllAssets();
-            foreach (UnityEngine.Object asset in assets)
-            {
-                objects.Add(asset.name, asset);
-            }
-            assetBundle.Unload(false);
-            return objects;
+        }
+        
+        private static async ETTask LoadOneDll(string s)
+        {
+            await ResourcesComponent.Instance.LoadAssetAsync(s);
         }
     }
 }

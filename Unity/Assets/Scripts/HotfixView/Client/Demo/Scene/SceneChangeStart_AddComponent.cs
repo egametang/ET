@@ -12,14 +12,13 @@ namespace ET.Client
             {
                 Scene currentScene = root.CurrentScene();
 
-                ResourcesComponent resourcesComponent = root.GetComponent<ResourcesComponent>();
+                SceneLoaderComponent sceneLoaderComponent = currentScene.AddComponent<SceneLoaderComponent>();
             
                 // 加载场景资源
-                await resourcesComponent.LoadBundleAsync($"{currentScene.Name}.unity3d");
+                await sceneLoaderComponent.LoadSceneAsync($"Assets/Scenes/{currentScene.Name}.unity");
                 // 切换到map场景
 
-                await SceneManager.LoadSceneAsync(currentScene.Name);
-			
+                //await SceneManager.LoadSceneAsync(currentScene.Name);
 
                 currentScene.AddComponent<OperaComponent>();
             }

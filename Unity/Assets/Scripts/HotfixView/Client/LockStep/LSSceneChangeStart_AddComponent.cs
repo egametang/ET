@@ -18,11 +18,8 @@ namespace ET.Client
             await UIHelper.Create(args.Room, UIType.UILSRoom, UILayer.Low);
             
             // 加载场景资源
-            ResourcesComponent resourcesComponent = clientScene.Root().GetComponent<ResourcesComponent>();
-            await resourcesComponent.LoadBundleAsync($"{room.Name}.unity3d");
-            // 切换到map场景
-
-            await SceneManager.LoadSceneAsync(room.Name);
+            SceneLoaderComponent sceneLoaderComponent = room.AddComponent<SceneLoaderComponent>();
+            await sceneLoaderComponent.LoadSceneAsync($"Assets/Scenes/{room.Name}.unity");
         }
     }
 }

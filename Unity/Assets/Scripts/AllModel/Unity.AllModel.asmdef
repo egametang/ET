@@ -6,7 +6,9 @@
         "Unity.Core",
         "Unity.Mathematics",
         "Unity.Loader",
-        "MemoryPack"
+        "MemoryPack",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

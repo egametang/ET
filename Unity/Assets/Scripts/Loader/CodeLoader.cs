@@ -44,9 +44,8 @@ namespace ET
 				byte[] pdbBytes;
 				if (!Define.IsEditor)
 				{
-					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
-					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					assBytes = (ResourcesComponent.Instance.GetAssets($"Assets/Bundles/Config/Model.dll.bytes") as TextAsset).bytes;
+					pdbBytes = (ResourcesComponent.Instance.GetAssets($"Assets/Bundles/Config/Model.pdb.bytes") as TextAsset).bytes;
 					
 					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
 					//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
@@ -80,9 +79,8 @@ namespace ET
 			byte[] pdbBytes;
 			if (!Define.IsEditor)
 			{
-				Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-				assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
-				pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+				assBytes = (ResourcesComponent.Instance.GetAssets($"Assets/Bundles/Config/Hotfix.dll.bytes") as TextAsset).bytes;
+				pdbBytes = (ResourcesComponent.Instance.GetAssets($"Assets/Bundles/Config/Hotfix.pdb.bytes") as TextAsset).bytes;
 					
 				// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
 				//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));

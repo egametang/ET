@@ -12,12 +12,9 @@ namespace ET.Client
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
             root.AddComponent<UIGlobalComponent>();
             root.AddComponent<UIComponent>();
-            ResourcesComponent resourcesComponent = root.AddComponent<ResourcesComponent>();
             root.AddComponent<ResourcesLoaderComponent>();
             root.AddComponent<PlayerComponent>();
             root.AddComponent<CurrentScenesComponent>();
-            
-            await resourcesComponent.LoadBundleAsync("unit.unity3d");
             
             // 根据配置修改掉Main Fiber的SceneType
             SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());

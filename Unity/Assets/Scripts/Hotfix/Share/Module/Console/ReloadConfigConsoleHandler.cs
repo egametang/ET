@@ -23,7 +23,7 @@ namespace ET
                         fiber.Console($"reload config but not find {category}");
                         return;
                     }
-                    ConfigLoader.Instance.Reload(type);
+                    await ConfigLoader.Instance.Reload(type);
                     fiber.Console($"reload config {configName} finish!");
                     break;
             }
