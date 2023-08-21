@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
@@ -24,5 +25,7 @@ namespace ET
         public BuildType BuildType;
 
         public AppType AppType;
+
+        public EPlayMode EPlayMode;
     }
 }

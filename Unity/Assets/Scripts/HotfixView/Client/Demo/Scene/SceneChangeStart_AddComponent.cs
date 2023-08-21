@@ -12,10 +12,10 @@ namespace ET.Client
             {
                 Scene currentScene = root.CurrentScene();
 
-                SceneLoaderComponent sceneLoaderComponent = currentScene.AddComponent<SceneLoaderComponent>();
+                ResourcesLoaderComponent resourcesLoaderComponent = currentScene.GetComponent<ResourcesLoaderComponent>();
             
                 // 加载场景资源
-                await sceneLoaderComponent.LoadSceneAsync($"Assets/Scenes/{currentScene.Name}.unity");
+                await resourcesLoaderComponent.LoadSceneAsync($"Assets/Bundles/Scenes/{currentScene.Name}.unity", LoadSceneMode.Single);
                 // 切换到map场景
 
                 //await SceneManager.LoadSceneAsync(currentScene.Name);

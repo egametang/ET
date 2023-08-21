@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
+using YooAsset;
 using Debug = UnityEngine.Debug;
 #pragma warning disable CS0162
 
@@ -117,10 +118,18 @@ namespace ET
 			GUILayout.Label("");
 			GUILayout.Label("Code Compile：");
 			
-			var codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+			CodeMode codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
 			if (codeMode != this.globalConfig.CodeMode)
 			{
 				this.globalConfig.CodeMode = codeMode;
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssets();
+			}
+			
+			EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode: ", this.globalConfig.EPlayMode);
+			if (ePlayMode != this.globalConfig.EPlayMode)
+			{
+				this.globalConfig.EPlayMode = ePlayMode;
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
 			}

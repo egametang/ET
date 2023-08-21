@@ -1,9 +1,6 @@
 ﻿using System;
 using CommandLine;
-using ET.Client;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.AddressableAssets.ResourceLocators;
 
 namespace ET
 {
@@ -36,12 +33,12 @@ namespace ET
 			World.Instance.AddSingleton<TimeInfo>();
 			World.Instance.AddSingleton<FiberManager>();
 
-			World.Instance.AddSingleton<ResourcesComponent>();
-			await AssetsBundleHelper.InitializeAsync();
-			await AssetsBundleHelper.LoadCodeAsync();
-			await AssetsBundleHelper.LoadAotDllAsync();
+			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
 			
-			World.Instance.AddSingleton<CodeLoader>().Start();
+			CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();
+			await codeLoader.DownloadAsync();
+			
+			codeLoader.Start();
 		}
 
 		private void Update()

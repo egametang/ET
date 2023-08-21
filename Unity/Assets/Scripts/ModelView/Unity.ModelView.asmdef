@@ -7,8 +7,7 @@
         "Unity.Mathematics",
         "Unity.Loader",
         "Unity.Model",
-        "Unity.Addressables",
-        "Unity.ResourceManager"
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

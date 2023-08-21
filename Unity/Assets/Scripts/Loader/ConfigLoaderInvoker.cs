@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ET.Client;
 using UnityEngine;
 
 namespace ET
@@ -58,7 +57,7 @@ namespace ET
             {
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync($"Assets/Bundles/Config/{type.Name}.bytes") as TextAsset;
+                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Assets/Bundles/Config/{type.Name}.bytes");
                     output[type] = v.bytes;
                 }
             }

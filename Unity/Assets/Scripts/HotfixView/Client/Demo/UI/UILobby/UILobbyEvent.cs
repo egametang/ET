@@ -9,7 +9,7 @@ namespace ET.Client
         {
             await ETTask.CompletedTask;
             const string assetsName = $"Assets/Bundles/UI/Demo/{UIType.UILobby}.prefab";
-            GameObject bundleGameObject = await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAssetsAsync(assetsName) as GameObject;
+            GameObject bundleGameObject = await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(assetsName);
             GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));
             UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILobby, gameObject);
 

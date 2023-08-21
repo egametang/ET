@@ -1,0 +1,39 @@
+{
+    "name": "com.tuyoogame.yooasset",
+    "displayName": "YooAsset",
+    "version": "1.5.1",
+    "unity": "2019.4",
+    "description": "unity3d resources management system.",
+    "author": {
+        "name": "TuYoo Games",
+        "url": "https://github.com/tuyoogame/YooAsset"
+    },
+    "samples": [
+        {
+            "displayName": "Space Shooter",
+            "description": "YooAsset runtime sample, Include resource update, resource download, resource loading and other functions.",
+            "path": "Samples~/Space Shooter"
+        },
+        {
+            "displayName": "Extension Sample",
+            "description": "YooAsset editor extension sample, Include patcher combine, patcher compare, patcher importer and other functions.",
+            "path": "Samples~/Extension Sample"
+        },
+        {
+            "displayName": "UniTask Sample",
+            "description": "UniTask extension sample, Include extension scprits, Please Read the README documentation in the extension sample .",
+            "path": "Samples~/UniTask Sample"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tuyoogame/YooAsset.git"
+    },
+    "relatedPackages": {},
+    "dependencies": {
+        "com.unity.scriptablebuildpipeline": "1.20.2",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+    }
+}

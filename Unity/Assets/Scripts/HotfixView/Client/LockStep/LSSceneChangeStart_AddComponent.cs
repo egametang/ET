@@ -8,7 +8,7 @@ namespace ET.Client
         protected override async ETTask Run(Scene clientScene, LSSceneChangeStart args)
         {
             Room room = clientScene.GetComponent<Room>();
-            room.AddComponent<ResourcesLoaderComponent>();
+            ResourcesLoaderComponent resourcesLoaderComponent = room.AddComponent<ResourcesLoaderComponent>();
             room.AddComponent<UIComponent>();
             
             // 创建loading界面
@@ -18,8 +18,7 @@ namespace ET.Client
             await UIHelper.Create(args.Room, UIType.UILSRoom, UILayer.Low);
             
             // 加载场景资源
-            SceneLoaderComponent sceneLoaderComponent = room.AddComponent<SceneLoaderComponent>();
-            await sceneLoaderComponent.LoadSceneAsync($"Assets/Scenes/{room.Name}.unity");
+            await resourcesLoaderComponent.LoadSceneAsync($"Assets/Bundles/Scenes/{room.Name}.unity", LoadSceneMode.Single);
         }
     }
 }
