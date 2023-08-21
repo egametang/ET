@@ -133,7 +133,7 @@ namespace NativeCollection.UnsafeType
         }
 
         NativeMemoryHelper.Free(_array);
-        GC.RemoveMemoryPressure(length * Unsafe.SizeOf<T>());
+        NativeMemoryHelper.RemoveNativeMemoryByte(length * Unsafe.SizeOf<T>());
         _array = destinationArray;
         _head = 0;
         _tail = Count == capacity ? 0 : Count;
@@ -155,7 +155,7 @@ namespace NativeCollection.UnsafeType
         if (_array!=null)
         {
             NativeMemoryHelper.Free(_array);
-            GC.RemoveMemoryPressure(length * Unsafe.SizeOf<T>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(length * Unsafe.SizeOf<T>());
         }
     }
 }

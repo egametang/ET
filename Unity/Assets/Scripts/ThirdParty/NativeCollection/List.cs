@@ -9,9 +9,11 @@ namespace NativeCollection
 {
     private UnsafeType.List<T>* _list;
     private const int _defaultCapacity = 10;
+    private int _capacity;
     public List(int capacity = _defaultCapacity)
     {
-        _list = UnsafeType.List<T>.Create(capacity);
+        _capacity = capacity;
+        _list = UnsafeType.List<T>.Create(_capacity);
         IsDisposed = false;
     }
     
@@ -94,7 +96,7 @@ namespace NativeCollection
         {
             _list->Dispose();
             NativeMemoryHelper.Free(_list);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.List<T>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.List<T>>());
             IsDisposed = true;
         }
     }
@@ -103,7 +105,7 @@ namespace NativeCollection
     {
         if (IsDisposed)
         {
-            _list = UnsafeType.List<T>.Create(_defaultCapacity);
+            _list = UnsafeType.List<T>.Create(_capacity);
             IsDisposed = false;
         }
     }

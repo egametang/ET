@@ -71,7 +71,7 @@ namespace NativeCollection
         {
             _hashSet->Dispose();
             NativeMemoryHelper.Free(_hashSet);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.HashSet<T>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.HashSet<T>>());
             IsDisposed = true;
         }
     }

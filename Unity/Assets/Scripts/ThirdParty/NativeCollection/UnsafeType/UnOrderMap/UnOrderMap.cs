@@ -6,7 +6,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NativeCollection.UnsafeType
-{public unsafe struct HashSet<T> : ICollection<T>, IDisposable where T : unmanaged, IEquatable<T>
+{
+public unsafe struct UnOrderMap<T,K> : IEnumerable<MapPair<T, K>>
+    where T : unmanaged, IEquatable<T>, IComparable<T> where K : unmanaged, IEquatable<K>
 {
     /// <summary>Cutoff point for stackallocs. This corresponds to the number of ints.</summary>
     private const int StackAllocThreshold = 100;
@@ -22,7 +24,7 @@ namespace NativeCollection.UnsafeType
 
     private const int StartOfFreeList = -3;
 
-    private HashSet<T>* _self;
+    private UnOrderMap<T,K>* _self;
     private int* _buckets;
     private int _bucketLength;
     private Entry* _entries;
@@ -35,23 +37,41 @@ namespace NativeCollection.UnsafeType
     private int _freeCount;
     private int _version;
 
-    public static HashSet<T>* Create(int capacity = 0)
+    public static UnOrderMap<T,K>* Create(int capacity = 0)
     {
-        HashSet<T>* hashSet = (HashSet<T>*)NativeMemoryHelper.Alloc((UIntPtr)Unsafe.SizeOf<HashSet<T>>());
-        hashSet->_buckets = null;
-        hashSet->_entries = null;
-        hashSet->_self = hashSet;
-        hashSet->Initialize(capacity);
-        return hashSet;
+        UnOrderMap<T,K>* unOrderMap = (UnOrderMap<T,K>*)NativeMemoryHelper.Alloc((UIntPtr)Unsafe.SizeOf<UnOrderMap<T,K>>());
+        unOrderMap->_buckets = null;
+        unOrderMap->_entries = null;
+        unOrderMap->_self = unOrderMap;
+        unOrderMap->Initialize(capacity);
+        return unOrderMap;
+    }
+    
+    public K this[T key]
+    {
+        get
+        {
+            bool contains = TryGetValue(key, out var value);
+            if (contains)
+            {
+                return value;
+            }
+            return default;
+        }
+        set
+        {
+            bool modified = TryInsert(key, value, InsertionBehavior.OverwriteExisting);
+            Debug.Assert(modified);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Add(T item) => AddIfNotPresent(item, out _);
+    public bool Add(T key,K value) => AddRef(key,value);
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool AddRef(in T item) => AddIfNotPresent(item, out _);
+    public bool AddRef(in T key, in K value) => TryInsert(key,value, InsertionBehavior.ThrowOnExisting);
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    IEnumerator<MapPair<T, K>> IEnumerable<MapPair<T, K>>.GetEnumerator()
     {
         return GetEnumerator();
     }
@@ -65,11 +85,6 @@ namespace NativeCollection.UnsafeType
     public Enumerator GetEnumerator() => new Enumerator(_self);
 
     #region ICollection<T> methods
-
-    void ICollection<T>.Add(T item)
-    {
-        AddIfNotPresent(item, out _);
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Clear()
@@ -88,15 +103,15 @@ namespace NativeCollection.UnsafeType
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(T item)
+    public bool ContainsKey(T key)
     {
-        return FindItemIndex(item) >= 0;
+        return FindItemIndex(key) >= 0;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsRef(in T item)
+    public bool ContainsKeyRef(in T key)
     {
-        return FindItemIndex(item) >= 0;
+        return FindItemIndex(key) >= 0;
     }
 
     #endregion
@@ -107,7 +122,7 @@ namespace NativeCollection.UnsafeType
         throw new NotImplementedException();
     }
     
-    public bool RemoveRef(in T item)
+    public bool RemoveRef(in T key)
     {
         //if (_buckets == null) return false;
         var entries = _entries;
@@ -115,7 +130,7 @@ namespace NativeCollection.UnsafeType
 
         uint collisionCount = 0;
         int last = -1;
-        int hashCode = item.GetHashCode();
+        int hashCode = key.GetHashCode();
 
         ref int bucket = ref GetBucketRef(hashCode);
         int i = bucket - 1; // Value in buckets is 1-based
@@ -124,7 +139,7 @@ namespace NativeCollection.UnsafeType
         {
             ref Entry entry = ref entries[i];
 
-            if (entry.HashCode == hashCode && (item.Equals(entry.Value)))
+            if (entry.HashCode == hashCode && (key.Equals(entry.Key)))
             {
                 if (last < 0)
                 {
@@ -164,9 +179,9 @@ namespace NativeCollection.UnsafeType
         return RemoveRef(item);
     }
 
-    public bool TryGetValue(in T equalValue, out T actualValue)
+    public bool TryGetValue(in T key, out K actualValue)
     {
-        int index = FindItemIndex(equalValue);
+        int index = FindItemIndex(key);
         if (index>=0)
         {
             actualValue = _entries[index].Value;
@@ -176,18 +191,7 @@ namespace NativeCollection.UnsafeType
         return false;
     }
 
-    internal T* GetValuePointer(in T key)
-    {
-        int index = FindItemIndex(key);
-        if (index>=0)
-        {
-            return &(_entries + index)->Value;
-        }
-        return null;
-    }
-
     public int Count => _count - _freeCount;
-    bool ICollection<T>.IsReadOnly => false;
 
     public void Dispose()
     {
@@ -223,12 +227,13 @@ namespace NativeCollection.UnsafeType
         return size;
     }
     
+    
     /// <summary>Adds the specified element to the set if it's not already contained.</summary>
     /// <param name="value">The element to add to the set.</param>
     /// <param name="location">The index into <see cref="_entries" /> of the element.</param>
     /// <returns>true if the element is added to the <see cref="HashSet{T}" /> object; false if the element is already present.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private bool AddIfNotPresent(in T value, out int location)
+    private bool TryInsert(in T key,in K value,InsertionBehavior insertionBehavior)
     {
         //Console.WriteLine($"AddIfNotPresent:{value}");
         //if (_buckets == null) Initialize(0);
@@ -243,7 +248,7 @@ namespace NativeCollection.UnsafeType
         uint collisionCount = 0;
         ref var bucket = ref Unsafe.NullRef<int>();
         
-        hashCode =  value.GetHashCode();
+        hashCode =  key.GetHashCode();
         bucket = ref GetBucketRef(hashCode);
         
         var i = bucket - 1; // Value in _buckets is 1-based
@@ -253,9 +258,18 @@ namespace NativeCollection.UnsafeType
             // Console.WriteLine($"i:{i}");
             ref Entry entry = ref _entries[i];
             // Console.WriteLine($"entry.HashCode:{entry.HashCode} hashCode:{hashCode} Equals:{comparer.Equals(entry.Value, value)}");
-            if (entry.HashCode == hashCode && entry.Value.Equals(value))
+            if (entry.HashCode == hashCode && entry.Key.Equals(key))
             {
-                location = i;
+                if (insertionBehavior== InsertionBehavior.OverwriteExisting)
+                {
+                    entries[i].Value = value;
+                    return true;
+                }
+                if (insertionBehavior == InsertionBehavior.ThrowOnExisting)
+                {
+                    ThrowHelper.ThrowAddingDuplicateWithKeyArgumentException();
+                }
+
                 return false;
             }
 
@@ -295,10 +309,10 @@ namespace NativeCollection.UnsafeType
             ref Entry entry = ref _entries[index];
             entry.HashCode = hashCode;
             entry.Next = bucket - 1; // Value in _buckets is 1-based
+            entry.Key = key;
             entry.Value = value;
             bucket = index + 1;
             _version++;
-            location = index;
         }
         
         return true;
@@ -390,7 +404,7 @@ namespace NativeCollection.UnsafeType
         
         /// <summary>Gets the index of the item in <see cref="_entries"/>, or -1 if it's not in the set.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int FindItemIndex(in T item)
+        private int FindItemIndex(in T key)
         {
             //if (_buckets == null) return -1;
             var entries = _entries;
@@ -399,12 +413,12 @@ namespace NativeCollection.UnsafeType
             uint collisionCount = 0;
             //IEqualityComparer<T>? comparer = _comparer;
             
-            int hashCode = item.GetHashCode();
+            int hashCode = key.GetHashCode();
             int i = GetBucketRef(hashCode) - 1; // Value in _buckets is 1-based
             while (i >= 0)
             {
                 ref Entry entry = ref entries[i];
-                if (entry.HashCode == hashCode && item.Equals(entry.Value))
+                if (entry.HashCode == hashCode && key.Equals(entry.Key))
                 {
                     return i;
                 }
@@ -432,11 +446,11 @@ namespace NativeCollection.UnsafeType
         /// so -2 means end of free list, -3 means index 0 but on free list, -4 means index 1 but on free list, etc.
         /// </summary>
         public int Next;
-        
-        public T Value;
+        public T Key;
+        public K Value;
         public bool Equals(Entry other)
         {
-            return HashCode == other.HashCode && Next == other.Next && Value.Equals(other.Value);
+            return HashCode == other.HashCode && Next == other.Next && Key.Equals(other.Key);
         }
     }
 
@@ -451,45 +465,52 @@ namespace NativeCollection.UnsafeType
         sb.Append("\n");
         return sb.ToString();
     }
-
-    public struct Enumerator : IEnumerator<T>
+    
+    internal enum InsertionBehavior : byte
     {
-        private readonly HashSet<T>* _hashSet;
+        None,
+        OverwriteExisting,
+        ThrowOnExisting,
+    }
+
+    public struct Enumerator : IEnumerator<MapPair<T, K>>
+    {
+        private readonly UnOrderMap<T,K>* _unOrderMap;
         private readonly int _version;
         private int _index;
-        private T _current;
+        private MapPair<T, K> _current;
 
-        internal Enumerator(HashSet<T>* hashSet)
+        internal Enumerator(UnOrderMap<T,K>* unOrderMap)
         {
-            _hashSet = hashSet;
-            _version = hashSet->_version;
+            _unOrderMap = unOrderMap;
+            _version = unOrderMap->_version;
             _index = 0;
             _current = default!;
         }
 
         public bool MoveNext()
         {
-            if (_version != _hashSet->_version)
+            if (_version != _unOrderMap->_version)
                 ThrowHelper.HashSetEnumFailedVersion();
             
             // Use unsigned comparison since we set index to dictionary.count+1 when the enumeration ends.
             // dictionary.count+1 could be negative if dictionary.count is int.MaxValue
-            while ((uint)_index < (uint)_hashSet->_count)
+            while ((uint)_index < (uint)_unOrderMap->_count)
             {
-                ref Entry entry = ref _hashSet->_entries[_index++];
+                ref Entry entry = ref _unOrderMap->_entries[_index++];
                 if (entry.Next >= -1)
                 {
-                    _current = entry.Value;
+                    _current = new MapPair<T, K>(entry.Key,entry.Value);
                     return true;
                 }
             }
 
-            _index = _hashSet->_count + 1;
+            _index = _unOrderMap->_count + 1;
             _current = default!;
             return false;
         }
 
-        public T Current => _current;
+        public MapPair<T, K> Current => _current;
 
         public void Dispose()
         {
@@ -499,7 +520,7 @@ namespace NativeCollection.UnsafeType
         
         public void Reset()
         {
-            if (_version != _hashSet->_version)
+            if (_version != _unOrderMap->_version)
                 ThrowHelper.HashSetEnumFailedVersion();
 
             _index = 0;

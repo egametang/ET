@@ -8,10 +8,11 @@ namespace NativeCollection
     {
         private UnsafeType.NativePool<T>* _nativePool;
         private const int _defaultPoolSize = 200;
-    
+        private int _poolSize;
         public NativePool(int maxPoolSize = _defaultPoolSize)
         {
-            _nativePool = UnsafeType.NativePool<T>.Create(maxPoolSize);
+            _poolSize = maxPoolSize;
+            _nativePool = UnsafeType.NativePool<T>.Create(_poolSize);
             IsDisposed = false;
         }
         
@@ -37,7 +38,7 @@ namespace NativeCollection
             {
                 _nativePool->Dispose();
                 NativeMemoryHelper.Free(_nativePool);
-                GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.NativePool<T>>());
+                NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.NativePool<T>>());
                 IsDisposed = true;
             }
         }
@@ -46,7 +47,7 @@ namespace NativeCollection
         {
             if (IsDisposed)
             {
-                _nativePool = UnsafeType.NativePool<T>.Create(_defaultPoolSize);
+                _nativePool = UnsafeType.NativePool<T>.Create(_poolSize);
                 IsDisposed = false;
             }
         }

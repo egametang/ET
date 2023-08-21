@@ -9,9 +9,11 @@ namespace NativeCollection
 {
     private UnsafeType.SortedSet<T>* _sortedSet;
     private const int _defaultNodePoolSize = 200;
+    private int _poolSize;
     public SortedSet(int nodePoolSize = _defaultNodePoolSize)
     {
-        _sortedSet = UnsafeType.SortedSet<T>.Create(nodePoolSize);
+        _poolSize = nodePoolSize;
+        _sortedSet = UnsafeType.SortedSet<T>.Create(_poolSize);
         IsDisposed = false;
     }
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -81,7 +83,7 @@ namespace NativeCollection
         {
             _sortedSet->Dispose();
             NativeMemoryHelper.Free(_sortedSet);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.SortedSet<T>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.SortedSet<T>>());
             IsDisposed = true;
         }
     }
@@ -90,7 +92,7 @@ namespace NativeCollection
     {
         if (IsDisposed)
         {
-            _sortedSet = UnsafeType.SortedSet<T>.Create(_defaultNodePoolSize);
+            _sortedSet = UnsafeType.SortedSet<T>.Create(_poolSize);
             IsDisposed = false;
         }
     }
