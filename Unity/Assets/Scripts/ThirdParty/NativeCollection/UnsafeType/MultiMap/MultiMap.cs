@@ -34,7 +34,7 @@ namespace NativeCollection.UnsafeType
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Add(T key, K value)
+    public void Add(in T key,in K value)
     {
         var list = new MultiMapPair<T, K>(key);
         var node = _sortedSet->FindNode(list);
@@ -45,35 +45,37 @@ namespace NativeCollection.UnsafeType
         else
         {
             list = MultiMapPair<T, K>.Create(key,_listPool);
-            _sortedSet->Add(list);
+            _sortedSet->AddRef(list);
         }
-        list.Value.Add(value);
+        list.Value.AddRef(value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Remove(T key, K value)
+    public bool Remove(in T key,in K value)
     {
         var list = new MultiMapPair<T, K>(key);
         var node = _sortedSet->FindNode(list);
 
         if (node == null) return false;
         list = node->Item;
-        if (!list.Value.Remove(value)) return false;
+        if (!list.Value.RemoveRef(value)) return false;
 
         if (list.Value.Count == 0) Remove(key);
 
         return true;
     }
+    
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Remove(T key)
+    public bool Remove(in T key)
     {
         var list = new MultiMapPair<T, K>(key);
         SortedSet<MultiMapPair<T, K>>.Node* node = _sortedSet->FindNode(list);
 
         if (node == null) return false;
         list = node->Item;
-        var sortedSetRemove = _sortedSet->Remove(list);
+        var sortedSetRemove = _sortedSet->RemoveRef(list);
         list.Dispose(_listPool);
         return sortedSetRemove;
     }
@@ -110,14 +112,14 @@ namespace NativeCollection.UnsafeType
         {
             _sortedSet->Dispose();
             NativeMemoryHelper.Free(_sortedSet);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.SortedSet<MultiMapPair<T, K>>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.SortedSet<MultiMapPair<T, K>>>());
         }
 
         if (_listPool!=null)
         {
             _listPool->Dispose();
             NativeMemoryHelper.Free(_listPool);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<NativePool<List<K>>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<NativePool<List<K>>>());
         }
     }
 }

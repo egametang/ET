@@ -40,7 +40,7 @@ namespace NativeCollection.UnsafeType
             {
                 ptr->Dispose();
                 NativeMemoryHelper.Free(ptr);
-                GC.RemoveMemoryPressure(Unsafe.SizeOf<T>());
+                NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<T>());
                 return;
             }
             ptr->OnReturnToPool();
@@ -54,7 +54,7 @@ namespace NativeCollection.UnsafeType
                 T* item = (T*)ptr;
                 item->Dispose();
                 NativeMemoryHelper.Free(item);
-                GC.RemoveMemoryPressure(Unsafe.SizeOf<T>());
+                NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<T>());
             }
         }
     
@@ -63,7 +63,7 @@ namespace NativeCollection.UnsafeType
             Clear();
             _stack->Dispose();
             NativeMemoryHelper.Free(_stack);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<Stack<T>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<Stack<T>>());
         }
     }
 }

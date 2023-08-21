@@ -15,13 +15,11 @@ namespace NativeCollection.UnsafeType
         if (initialCapacity < 0) ThrowHelper.StackInitialCapacityException();
 
         var stack = (Stack<T>*)NativeMemoryHelper.Alloc((UIntPtr)System.Runtime.CompilerServices.Unsafe.SizeOf<Stack<T>>());
-        GC.AddMemoryPressure(System.Runtime.CompilerServices.Unsafe.SizeOf<Stack<T>>());
-
+        
         if (initialCapacity < _defaultCapacity)
             initialCapacity = _defaultCapacity; // Simplify doubling logic in Push.
 
         stack->_array = (T*)NativeMemoryHelper.Alloc((UIntPtr)initialCapacity, (UIntPtr)System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
-        GC.AddMemoryPressure(initialCapacity * System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
         stack->ArrayLength = initialCapacity;
         stack->Count = 0;
         stack->_version = 0;
@@ -91,7 +89,7 @@ namespace NativeCollection.UnsafeType
             var newArray = (T*)NativeMemoryHelper.Alloc((UIntPtr)(ArrayLength * 2), (UIntPtr)System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
             System.Runtime.CompilerServices.Unsafe.CopyBlockUnaligned(newArray, _array, (uint)(Count * System.Runtime.CompilerServices.Unsafe.SizeOf<T>()));
             NativeMemoryHelper.Free(_array);
-            GC.RemoveMemoryPressure(ArrayLength * System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(ArrayLength * System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
             _array = newArray;
             ArrayLength = ArrayLength * 2;
         }
@@ -103,7 +101,7 @@ namespace NativeCollection.UnsafeType
     public void Dispose()
     {
         NativeMemoryHelper.Free(_array);
-        GC.RemoveMemoryPressure(ArrayLength * System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
+        NativeMemoryHelper.RemoveNativeMemoryByte(ArrayLength * System.Runtime.CompilerServices.Unsafe.SizeOf<T>());
     }
 
     public void OnReturnToPool()

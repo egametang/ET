@@ -79,6 +79,12 @@ namespace NativeCollection
         {
             throw new InvalidOperationException("_version != _tree.version");
         }
+
+        [DoesNotReturn]
+        public static void ThrowAddingDuplicateWithKeyArgumentException()
+        {
+            throw new ArgumentException("AddingDuplicateWithKey");
+        }
     }
 }
 

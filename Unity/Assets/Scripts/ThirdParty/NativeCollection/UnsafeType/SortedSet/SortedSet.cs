@@ -16,7 +16,7 @@ namespace NativeCollection.UnsafeType
     private NativePool<Node>* _nodePool;
     private NativePool<Stack<IntPtr>>* _stackPool;
     private int _version;
-    private const int _defaultNodePoolSize = 200;
+    private const int _defaultNodePoolSize = 50;
     public static SortedSet<T>* Create(int nodePoolSize = _defaultNodePoolSize)
     {
         var sortedSet = (SortedSet<T>*)NativeMemoryHelper.Alloc((UIntPtr)Unsafe.SizeOf<SortedSet<T>>());
@@ -84,6 +84,12 @@ namespace NativeCollection.UnsafeType
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool RemoveRef(in T item)
+    {
+        return DoRemove(item);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void ICollection<T>.Add(T item)
     {
         Add(item);
@@ -98,12 +104,12 @@ namespace NativeCollection.UnsafeType
             if (enumerator.CurrentPointer != null)
             {
                 NativeMemoryHelper.Free(enumerator.CurrentPointer);
-                GC.RemoveMemoryPressure(Unsafe.SizeOf<Node>());
+                NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<Node>());
                 nodeCount++;
             }
         } while (enumerator.MoveNext());
 
-        if (nodeCount != 0) GC.RemoveMemoryPressure(nodeCount * Unsafe.SizeOf<Node>());
+        if (nodeCount != 0) NativeMemoryHelper.RemoveNativeMemoryByte(nodeCount * Unsafe.SizeOf<Node>());
 
         _root = null;
         _count = 0;
@@ -115,6 +121,12 @@ namespace NativeCollection.UnsafeType
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Contains(T item)
+    {
+        return FindNode(item) != null;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsRef(in T item)
     {
         return FindNode(item) != null;
     }
@@ -136,13 +148,13 @@ namespace NativeCollection.UnsafeType
         {
             _nodePool->Dispose();
             NativeMemoryHelper.Free(_nodePool);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<NativePool<Node>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<NativePool<Node>>());
         }
         if (_stackPool!=null)
         {
             _stackPool->Dispose();
             NativeMemoryHelper.Free(_stackPool);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<NativePool<Stack<IntPtr>>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<NativePool<Stack<IntPtr>>>());
         }
         _version = 0;
     }
@@ -214,7 +226,7 @@ namespace NativeCollection.UnsafeType
         }
         stack->Dispose();
         NativeMemoryHelper.Free(stack);
-        GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.Stack<IntPtr>>());
+        NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.Stack<IntPtr>>());
         return true;
     }
 
@@ -230,7 +242,7 @@ namespace NativeCollection.UnsafeType
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool IsWithinRange(T item)
+    internal bool IsWithinRange(in T item)
     {
         return true;
     }
@@ -238,6 +250,12 @@ namespace NativeCollection.UnsafeType
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Add(T item)
+    {
+        return AddIfNotPresent(item);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool AddRef(in T item)
     {
         return AddIfNotPresent(item);
     }
@@ -308,7 +326,7 @@ namespace NativeCollection.UnsafeType
         return true;
     }
 
-    internal bool DoRemove(T item)
+    internal bool DoRemove(in T item)
     {
         if (_root == null) return false;
 
@@ -504,7 +522,7 @@ namespace NativeCollection.UnsafeType
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal Node* FindNode(T item)
+    internal Node* FindNode(in T item)
     {
         var current = _root;
         while (current != null)

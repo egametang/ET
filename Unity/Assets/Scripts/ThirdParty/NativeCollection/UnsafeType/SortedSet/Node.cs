@@ -154,7 +154,7 @@ namespace NativeCollection.UnsafeType
 
             pendingNodes->Dispose();
             NativeMemoryHelper.Free(pendingNodes);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<UnsafeType.Stack<NodeSourceTarget>>());
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.Stack<NodeSourceTarget>>());
             return newRoot;
         }
 

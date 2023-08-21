@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -9,7 +10,7 @@ namespace NativeCollection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void* Alloc(UIntPtr byteCount)
         {
-            GC.AddMemoryPressure((long)byteCount);
+            AddNativeMemoryByte((long)byteCount);
 #if NET6_0_OR_GREATER
             return NativeMemory.Alloc(byteCount);
 #else
@@ -20,7 +21,7 @@ namespace NativeCollection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void* Alloc(UIntPtr elementCount, UIntPtr elementSize)
         {
-            GC.AddMemoryPressure((long)((long)elementCount * (long)elementSize));
+            AddNativeMemoryByte((long)((long)elementCount * (long)elementSize));
 #if NET6_0_OR_GREATER
             return NativeMemory.Alloc(elementCount, elementSize);
 #else
@@ -31,7 +32,7 @@ namespace NativeCollection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void* AllocZeroed(UIntPtr byteCount)
         {
-            GC.AddMemoryPressure((long)byteCount);
+            AddNativeMemoryByte((long)byteCount);
 #if NET6_0_OR_GREATER
             return NativeMemory.AllocZeroed(byteCount);
 #else
@@ -44,8 +45,7 @@ namespace NativeCollection
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void* AllocZeroed(UIntPtr elementCount, UIntPtr elementSize)
         {
-            GC.AddMemoryPressure((long)((long)elementCount * (long)elementSize));
-        
+            AddNativeMemoryByte((long)((long)elementCount * (long)elementSize));
 #if NET6_0_OR_GREATER
             return NativeMemory.AllocZeroed(elementCount, elementSize);
 #else
@@ -63,6 +63,35 @@ namespace NativeCollection
             NativeMemory.Free(ptr);
 #else
         Marshal.FreeHGlobal(new IntPtr(ptr));
+#endif
+        }
+        
+#if MEMORY_PROFILE
+        public static long NativeMemoryBytes;
+#endif
+        
+        public static void AddNativeMemoryByte(long size)
+        {
+            GC.AddMemoryPressure((long)size);
+#if MEMORY_PROFILE
+            NativeMemoryBytes += size;
+#endif
+        }
+        
+        public static void RemoveNativeMemoryByte(long size)
+        {
+            GC.RemoveMemoryPressure(size);
+#if MEMORY_PROFILE
+            NativeMemoryBytes -= size;
+#endif
+        }
+
+        public static long GetNativeMemoryBytes()
+        {
+#if MEMORY_PROFILE
+            return NativeMemoryBytes;
+#else
+            return 0;
 #endif
         }
     }    

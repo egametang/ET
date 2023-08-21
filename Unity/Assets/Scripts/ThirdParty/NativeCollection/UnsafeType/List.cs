@@ -61,7 +61,7 @@ namespace NativeCollection.UnsafeType
                     if (Count > 0)
                         Unsafe.CopyBlockUnaligned(newArray, _items, (uint)(_arrayLength * Unsafe.SizeOf<T>()));
                     NativeMemoryHelper.Free(_items);
-                    GC.RemoveMemoryPressure(Unsafe.SizeOf<T>() * _arrayLength);
+                    NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<T>() * _arrayLength);
                     _items = newArray;
                     _arrayLength = value;
                 }
@@ -76,6 +76,12 @@ namespace NativeCollection.UnsafeType
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add(T value)
+    {
+        AddRef(value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void AddRef(T value)
     {
         var array = _items;
         var size = Count;
@@ -98,6 +104,12 @@ namespace NativeCollection.UnsafeType
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Remove(T item)
+    {
+        return RemoveRef(item);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool RemoveRef(in T item)
     {
         var index = IndexOf(item);
         //Console.WriteLine($"index: {index}");
@@ -277,7 +289,7 @@ namespace NativeCollection.UnsafeType
     public void Dispose()
     {
         NativeMemoryHelper.Free(_items);
-        GC.RemoveMemoryPressure(_arrayLength * Unsafe.SizeOf<T>());
+        NativeMemoryHelper.RemoveNativeMemoryByte(_arrayLength * Unsafe.SizeOf<T>());
     }
 
 
