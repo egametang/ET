@@ -92,7 +92,7 @@ namespace ET
             game?.ShowNotification(new GUIContent($"{tips}"));
         }
 
-        public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB, bool clearFolder)
+        public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool clearFolder)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
             string programName = "ET";
@@ -132,32 +132,13 @@ namespace ET
 
             UnityEngine.Debug.Log("finish build assetbundle");
 
-            if (isContainAB)
-            {
-                FileHelper.CleanDirectory("Assets/StreamingAssets/");
-                FileHelper.CopyDirectory(fold, "Assets/StreamingAssets/");
-            }
-
-            if (isBuildExe)
-            {
-                AssetDatabase.Refresh();
-                string[] levels = {
-                    "Assets/Scenes/Init.unity",
-                };
-                UnityEngine.Debug.Log("start build exe");
-                BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
-                UnityEngine.Debug.Log("finish build exe");
-            }
-            else
-            {
-                if (isContainAB && type == PlatformType.Windows)
-                {
-                    string targetPath = Path.Combine(relativeDirPrefix, $"{programName}_Data/StreamingAssets/");
-                    FileHelper.CleanDirectory(targetPath);
-                    Debug.Log($"src dir: {fold}    target: {targetPath}");
-                    FileHelper.CopyDirectory(fold, targetPath);
-                }
-            }
+            AssetDatabase.Refresh();
+            string[] levels = {
+                "Assets/Scenes/Init.unity",
+            };
+            UnityEngine.Debug.Log("start build exe");
+            BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
+            UnityEngine.Debug.Log("finish build exe");
         }
     }
 }

@@ -27,8 +27,6 @@ namespace ET
 		private PlatformType activePlatform;
 		private PlatformType platformType;
 		private bool clearFolder;
-		private bool isBuildExe;
-		private bool isContainAB;
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
@@ -64,8 +62,6 @@ namespace ET
 		{
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
 			this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
-			this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
-			this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
 			BuildType codeOptimization = (BuildType)EditorGUILayout.EnumPopup("BuildType ", this.globalConfig.BuildType);
 			
 			if (codeOptimization != this.globalConfig.BuildType)
@@ -112,7 +108,7 @@ namespace ET
 							break;
 					}
 				}
-				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB, this.clearFolder);
+				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.clearFolder);
 			}
 			
 			GUILayout.Label("");
