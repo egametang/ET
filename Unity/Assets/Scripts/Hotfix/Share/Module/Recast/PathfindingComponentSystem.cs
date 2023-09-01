@@ -159,7 +159,7 @@ namespace ET
             int ret = Recast.RecastFindNearestPoint(self.navMesh, self.extents, self.StartPos, self.EndPos);
             if (ret == 0)
             {
-                throw new Exception($"RecastFindNearestPoint fail, 可能是位置配置有问题: sceneName:{self.Scene().Name} {pos} {self.Name} {self.GetParent<Unit>().Id} {self.GetParent<Unit>().Config.Id} {self.EndPos.ArrayToString()}");
+                throw new Exception($"RecastFindNearestPoint fail, 可能是位置配置有问题: sceneName:{self.Scene().Name} {pos} {self.Name} {self.GetParent<Unit>().Id} {self.GetParent<Unit>().ConfigId} {self.EndPos.ArrayToString()}");
             }
             
             return new float3(-self.EndPos[0], self.EndPos[1], self.EndPos[2]);
