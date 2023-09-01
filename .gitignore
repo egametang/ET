@@ -70,8 +70,7 @@ Publish/
 /Unity/Unity.GenerateClient.csproj
 /Unity/Unity.GenerateServer.csproj
 
-/Unity/Assets/Bundles/AotDlls
-/Unity/Assets/Bundles/AotDlls.meta
+/Unity/Assets/Bundles/AotDlls/*
 /Unity/HybridCLRData
 /Unity/Assembly-CSharp-firstpass.csproj
 
