@@ -1,6 +1,6 @@
 # English: please use your browser to translate to english 999999
 
-# __讨论QQ群 : 474643097__  
+# __讨论QQ群 : 4746430978 
 
 # 用ET的15个理由（熊猫从不吹牛！）  
 1. 多进程多线程Actor架构，客户端跟服务端都可以轻松创建纤程(fiber)利用多核，比如客户端网络一个纤程，寻路一个纤程，帧同步逻辑层一个纤程，表现层一个纤程  
