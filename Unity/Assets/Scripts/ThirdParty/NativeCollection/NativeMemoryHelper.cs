@@ -73,6 +73,7 @@ namespace NativeCollection
         public static void AddNativeMemoryByte(long size)
         {
             GC.AddMemoryPressure((long)size);
+            //Console.WriteLine($"AddNativeMemoryByte {size}");
 #if MEMORY_PROFILE
             NativeMemoryBytes += size;
 #endif
@@ -81,6 +82,7 @@ namespace NativeCollection
         public static void RemoveNativeMemoryByte(long size)
         {
             GC.RemoveMemoryPressure(size);
+            //Console.WriteLine($"RemoveMemoryPressure {size}");
 #if MEMORY_PROFILE
             NativeMemoryBytes -= size;
 #endif

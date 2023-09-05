@@ -6,13 +6,13 @@ namespace NativeCollection
 {
     public unsafe class NativePool<T> : INativeCollectionClass where T: unmanaged,IEquatable<T>,IPool
     {
-        private UnsafeType.NativePool<T>* _nativePool;
+        private UnsafeType.NativeStackPool<T>* _nativePool;
         private const int _defaultPoolSize = 200;
         private int _poolSize;
         public NativePool(int maxPoolSize = _defaultPoolSize)
         {
             _poolSize = maxPoolSize;
-            _nativePool = UnsafeType.NativePool<T>.Create(_poolSize);
+            _nativePool = UnsafeType.NativeStackPool<T>.Create(_poolSize);
             IsDisposed = false;
         }
         
@@ -38,7 +38,7 @@ namespace NativeCollection
             {
                 _nativePool->Dispose();
                 NativeMemoryHelper.Free(_nativePool);
-                NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.NativePool<T>>());
+                NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.NativeStackPool<T>>());
                 IsDisposed = true;
             }
         }
@@ -47,7 +47,7 @@ namespace NativeCollection
         {
             if (IsDisposed)
             {
-                _nativePool = UnsafeType.NativePool<T>.Create(_poolSize);
+                _nativePool = UnsafeType.NativeStackPool<T>.Create(_poolSize);
                 IsDisposed = false;
             }
         }

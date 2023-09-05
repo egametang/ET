@@ -9,14 +9,14 @@ namespace NativeCollection
     public unsafe class Map<T, K> : IEnumerable<MapPair<T, K>>, INativeCollectionClass
         where T : unmanaged, IEquatable<T>, IComparable<T> where K : unmanaged, IEquatable<K>
     {
-        private const int _defaultPoolSize = 50;
-        private int _poolSize;
+        private const int _defaultPoolBlockSize = 64;
+        private int _poolBlockSize;
         private UnsafeType.Map<T, K>* _map;
     
-        public Map(int maxPoolSize = _defaultPoolSize)
+        public Map(int poolBlockSize = _defaultPoolBlockSize)
         {
-            _poolSize = maxPoolSize;
-            _map = UnsafeType.Map<T, K>.Create(_poolSize);
+            _poolBlockSize = poolBlockSize;
+            _map = UnsafeType.Map<T, K>.Create(_poolBlockSize);
             IsDisposed = false;
         }
     
@@ -54,7 +54,7 @@ namespace NativeCollection
         {
             if (IsDisposed)
             {
-                _map = UnsafeType.Map<T, K>.Create(_poolSize);
+                _map = UnsafeType.Map<T, K>.Create(_poolBlockSize);
                 IsDisposed = false;
             }
         }
