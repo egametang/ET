@@ -1,6 +1,0 @@
-﻿namespace ET
-{
-    public class #CLASS_NAME#
-    {
-    }
-}

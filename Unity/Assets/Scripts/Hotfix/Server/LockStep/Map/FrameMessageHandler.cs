@@ -10,7 +10,7 @@ namespace ET.Server
         {
             Room room = root.GetComponent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
-            
+            Fiber fiber = root.Fiber;
             if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)
             {
                 long nowFrameTime = room.FixedTimeCounter.FrameTime(message.Frame);
@@ -21,20 +21,20 @@ namespace ET.Server
 
             if (message.Frame < room.AuthorityFrame)  // 小于AuthorityFrame，丢弃
             {
-                Log.Warning($"FrameMessage < AuthorityFrame discard: {message}");
+                fiber.Warning($"FrameMessage < AuthorityFrame discard: {message}");
                 return;
             }
 
             if (message.Frame > room.AuthorityFrame + 10)  // 大于AuthorityFrame + 10，丢弃
             {
-                Log.Warning($"FrameMessage > AuthorityFrame + 10 discard: {message}");
+                fiber.Warning($"FrameMessage > AuthorityFrame + 10 discard: {message}");
                 return;
             }
             
             OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(message.Frame);
             if (oneFrameInputs == null)
             {
-                Log.Error($"FrameMessageHandler get frame is null: {message.Frame}, max frame: {frameBuffer.MaxFrame}");
+                fiber.Error($"FrameMessageHandler get frame is null: {message.Frame}, max frame: {frameBuffer.MaxFrame}");
                 return;
             }
             oneFrameInputs.Inputs[message.PlayerId] = message.Input;

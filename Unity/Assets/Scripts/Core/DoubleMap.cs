@@ -5,8 +5,8 @@ namespace ET
 {
 	public class DoubleMap<K, V>
 	{
-		private readonly Dictionary<K, V> kv = new Dictionary<K, V>();
-		private readonly Dictionary<V, K> vk = new Dictionary<V, K>();
+		private readonly Dictionary<K, V> kv = new();
+		private readonly Dictionary<V, K> vk = new();
 
 		public DoubleMap()
 		{

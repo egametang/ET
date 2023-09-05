@@ -7,7 +7,7 @@ namespace ET.Client
             Scene currentScene = EntitySceneFactory.CreateScene(currentScenesComponent, id, IdGenerater.Instance.GenerateInstanceId(), SceneType.Current, name);
             currentScenesComponent.Scene = currentScene;
             
-            EventSystem.Instance.Publish(currentScene, new EventType.AfterCreateCurrentScene());
+            EventSystem.Instance.Publish(currentScene, new AfterCreateCurrentScene());
             return currentScene;
         }
     }

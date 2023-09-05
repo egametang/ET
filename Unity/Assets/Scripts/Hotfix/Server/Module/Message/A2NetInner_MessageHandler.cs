@@ -7,7 +7,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, A2NetInner_Message innerMessage)
         {
-            root.GetComponent<MessageOuterSender>().Send(innerMessage.ActorId, innerMessage.MessageObject);
+            root.GetComponent<ProcessOuterSender>().Send(innerMessage.ActorId, innerMessage.MessageObject);
             await ETTask.CompletedTask;
         }
     }

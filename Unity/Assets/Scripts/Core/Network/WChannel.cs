@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.WebSockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ET
 {
@@ -24,11 +25,19 @@ namespace ET
         public IPEndPoint RemoteAddress { get; set; }
 
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        
+        private ILog Log
+        {
+            get
+            {
+                return this.Service.Log;
+            }
+        }
 
         public WChannel(long id, HttpListenerWebSocketContext webSocketContext, WService service)
         {
-            this.Id = id;
             this.Service = service;
+            this.Id = id;
             this.ChannelType = ChannelType.Accept;
             this.WebSocketContext = webSocketContext;
             this.webSocket = webSocketContext.WebSocket;
@@ -44,8 +53,8 @@ namespace ET
 
         public WChannel(long id, WebSocket webSocket, string connectUrl, WService service)
         {
-            this.Id = id;
             this.Service = service;
+            this.Id = id;
             this.ChannelType = ChannelType.Connect;
             this.webSocket = webSocket;
 
@@ -68,7 +77,7 @@ namespace ET
             this.webSocket.Dispose();
         }
 
-        public async ETTask ConnectAsync(string url)
+        private async ETTask ConnectAsync(string url)
         {
             try
             {
@@ -145,6 +154,10 @@ namespace ET
                         {
                             return;
                         }
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        Log.Warning(e.ToString());
                     }
                     catch (Exception e)
                     {

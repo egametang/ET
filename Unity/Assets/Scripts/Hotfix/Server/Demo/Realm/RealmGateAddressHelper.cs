@@ -7,11 +7,11 @@ namespace ET.Server
 	{
 		public static StartSceneConfig GetGate(int zone, string account)
 		{
-			long hash = account.GetLongHashCode();
+			ulong hash = (ulong)account.GetLongHashCode();
 			
 			List<StartSceneConfig> zoneGates = StartSceneConfigCategory.Instance.Gates[zone];
 			
-			return zoneGates[(int)(hash % zoneGates.Count)];
+			return zoneGates[(int)(hash % (ulong)zoneGates.Count)];
 		}
 	}
 }

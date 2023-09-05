@@ -10,11 +10,6 @@ namespace ET
     {
         public int ConfigId { get; set; } //配置表id
 
-        [BsonIgnore]
-        public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
-
-        public UnitType Type => (UnitType)UnitConfigCategory.Instance.Get(this.ConfigId).Type;
-
         [BsonElement]
         private float3 position; //坐标
 
@@ -26,7 +21,7 @@ namespace ET
             {
                 float3 oldPos = this.position;
                 this.position = value;
-                EventSystem.Instance.Publish(this.Scene(), new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
+                EventSystem.Instance.Publish(this.Scene(), new ChangePosition() { Unit = this, OldPos = oldPos });
             }
         }
 
@@ -47,7 +42,7 @@ namespace ET
             set
             {
                 this.rotation = value;
-                EventSystem.Instance.Publish(this.Scene(), new EventType.ChangeRotation() { Unit = this });
+                EventSystem.Instance.Publish(this.Scene(), new ChangeRotation() { Unit = this });
             }
         }
 

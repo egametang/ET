@@ -6,7 +6,7 @@
 	[NumericWatcher(SceneType.Current, NumericType.Hp)]
 	public class NumericWatcher_Hp_ShowUI : INumericWatcher
 	{
-		public void Run(Unit unit, EventType.NumbericChange args)
+		public void Run(Unit unit, NumbericChange args)
 		{
 		}
 	}

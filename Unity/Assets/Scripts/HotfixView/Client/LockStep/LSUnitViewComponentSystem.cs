@@ -8,14 +8,25 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this LSUnitViewComponent self)
         {
+
+        }
+        
+        [EntitySystem]
+        private static void Destroy(this LSUnitViewComponent self)
+        {
+
+        }
+
+        public static async ETTask InitAsync(this LSUnitViewComponent self)
+        {
             Room room = self.Room();
             LSUnitComponent lsUnitComponent = room.LSWorld.GetComponent<LSUnitComponent>();
             Scene root = self.Root();
             foreach (long playerId in room.PlayerIds)
             {
                 LSUnit lsUnit = lsUnitComponent.GetChild<LSUnit>(playerId);
-                ResourcesComponent resourcesComponent = root.GetComponent<ResourcesComponent>();
-                GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset("Unit.unity3d", "Unit");
+                string assetsName = $"Assets/Bundles/Unit/Unit.prefab";
+                GameObject bundleGameObject = await room.GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(assetsName);
                 GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 
                 GlobalComponent globalComponent = root.GetComponent<GlobalComponent>();
@@ -25,12 +36,6 @@ namespace ET.Client
                 LSUnitView lsUnitView = self.AddChildWithId<LSUnitView, GameObject>(lsUnit.Id, unitGo);
                 lsUnitView.AddComponent<LSAnimatorComponent>();
             }
-        }
-        
-        [EntitySystem]
-        private static void Destroy(this LSUnitViewComponent self)
-        {
-
         }
     }
 }

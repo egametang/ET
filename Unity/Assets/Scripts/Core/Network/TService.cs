@@ -32,12 +32,12 @@ namespace ET
 
 		public ConcurrentQueue<TArgs> Queue = new();
 
-		public TService(AddressFamily addressFamily, ServiceType serviceType)
+		public TService(AddressFamily addressFamily, ServiceType serviceType, ILog log): base(log)
 		{
 			this.ServiceType = serviceType;
 		}
 
-		public TService(IPEndPoint ipEndPoint, ServiceType serviceType)
+		public TService(IPEndPoint ipEndPoint, ServiceType serviceType, ILog log): base(log)
 		{
 			this.ServiceType = serviceType;
 			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -80,6 +80,7 @@ namespace ET
 			if (socketError != SocketError.Success)
 			{
 				Log.Error($"accept error {socketError}");
+				this.AcceptAsync();
 				return;
 			}
 
@@ -92,9 +93,9 @@ namespace ET
 				
 				this.AcceptCallback(channelId, channel.RemoteAddress);
 			}
-			catch (Exception exception)
+			catch (Exception e)
 			{
-				Log.Error(exception);
+				Log.Error(e);
 			}		
 			
 			// 开始新的accept
@@ -111,20 +112,16 @@ namespace ET
 			OnAcceptComplete(this.innArgs.SocketError, this.innArgs.AcceptSocket);
 		}
 
-		private TChannel Create(IPEndPoint ipEndPoint, long id)
-		{
-			TChannel channel = new TChannel(id, ipEndPoint, this);
-			this.idChannels.Add(channel.Id, channel);
-			return channel;
-		}
-
-		public override void Create(long id, IPEndPoint address)
+		public override void Create(long id, string address)
 		{
 			if (this.idChannels.TryGetValue(id, out TChannel _))
 			{
 				return;
 			}
-			this.Create(address, id);
+
+			IPEndPoint endPoint = NetworkHelper.ToIPEndPoint(address);
+			TChannel channel = new(id, endPoint, this);
+			this.idChannels.Add(channel.Id, channel);
 		}
 		
 		private TChannel Get(long id)

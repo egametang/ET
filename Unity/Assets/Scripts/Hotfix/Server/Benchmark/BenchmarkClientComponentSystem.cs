@@ -18,7 +18,7 @@ namespace ET.Server
 
         private static async ETTask Start(this BenchmarkClientComponent self)
         {
-            NetClientComponent netClientComponent = self.Root().GetComponent<NetClientComponent>();
+            NetComponent netClientComponent = self.Root().GetComponent<NetComponent>();
             using Session session = netClientComponent.Create(StartSceneConfigCategory.Instance.Benchmark.OuterIPPort);
             List<ETTask> list = new List<ETTask>(100000);
 

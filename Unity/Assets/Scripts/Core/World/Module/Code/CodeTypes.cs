@@ -8,7 +8,7 @@ namespace ET
     {
         private readonly Dictionary<string, Type> allTypes = new();
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
-
+        
         public void Awake(Assembly[] assemblies)
         {
             Dictionary<string, Type> addTypes = AssemblyHelper.GetAssemblyTypes(assemblies);
@@ -51,7 +51,7 @@ namespace ET
             return this.allTypes[typeName];
         }
         
-        public void CreateCodeSingleton()
+        public void CreateCode()
         {
             var hashSet = this.GetTypes(typeof (CodeAttribute));
             foreach (Type type in hashSet)

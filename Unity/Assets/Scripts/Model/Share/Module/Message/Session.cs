@@ -31,7 +31,7 @@ namespace ET
 
             self.requestCallbacks.Clear();
             
-            Log.Info($"session create: zone: {self.Zone()} id: {self.Id} {timeNow} ");
+            self.Fiber().Info($"session create: zone: {self.Zone()} id: {self.Id} {timeNow} ");
         }
         
         [EntitySystem]
@@ -44,7 +44,7 @@ namespace ET
                 responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
             }
 
-            Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeInfo.Instance.ClientNow()}");
+            self.Fiber().Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeInfo.Instance.ClientNow()}");
             
             self.requestCallbacks.Clear();
         }
@@ -134,7 +134,7 @@ namespace ET
         public static void Send(this Session self, ActorId actorId, IMessage message)
         {
             self.LastSendTime = TimeInfo.Instance.ClientNow();
-            LogMsg.Instance.Debug(message);
+            LogMsg.Instance.Debug(self.Fiber(), message);
             self.AService.Send(self.Id, actorId, message as MessageObject);
         }
     }
@@ -170,7 +170,7 @@ namespace ET
             set;
         }
 
-        public IPEndPoint RemoteAddress
+        public string RemoteAddress
         {
             get;
             set;

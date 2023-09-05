@@ -25,10 +25,10 @@ namespace ET
         {
         }
 
-		public void Reload(Type configType)
+		public async ETTask Reload(Type configType)
 		{
 			byte[] oneConfigBytes =
-					EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() { ConfigName = configType.Name });
+					await EventSystem.Instance.Invoke<GetOneConfigBytes, ETTask<byte[]>>(new GetOneConfigBytes() { ConfigName = configType.Name });
 
 			object category = MongoHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ASingleton singleton = category as ASingleton;
@@ -37,22 +37,10 @@ namespace ET
 			World.Instance.AddSingleton(singleton);
 		}
 		
-		public void Load()
-		{
-			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
-
-			foreach (Type type in configBytes.Keys)
-			{
-				byte[] oneConfigBytes = configBytes[type];
-				this.LoadOneInThread(type, oneConfigBytes);
-			}
-		}
-		
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = await EventSystem.Instance.Invoke<GetAllConfigBytes, ETTask<Dictionary<Type, byte[]>>>(new GetAllConfigBytes());
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			

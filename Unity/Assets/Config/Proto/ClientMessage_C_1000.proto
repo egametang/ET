@@ -7,8 +7,9 @@ package ET;
 message Main2NetClient_Login // IRequest
 {
 	int32 RpcId = 1;
-	string Account = 2;
-	string Password = 3;
+	int32 OwnerFiberId = 2;
+	string Account = 3;
+	string Password = 4;
 }
 
 message NetClient2Main_Login // IResponse

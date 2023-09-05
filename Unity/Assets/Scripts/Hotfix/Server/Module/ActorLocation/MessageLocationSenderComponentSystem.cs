@@ -20,7 +20,7 @@ namespace ET.Server
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"move timer error: {self.Id}\n{e}");
+                    self.Fiber().Error($"move timer error: {self.Id}\n{e}");
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace ET.Server
                 // 队列中没处理的消息返回跟上个消息一样的报错
                 if (messageLocationSender.Error == ErrorCore.ERR_NotFoundActor)
                 {
-                    return ET.MessageHelper.CreateResponse(iRequest, messageLocationSender.Error);
+                    return MessageHelper.CreateResponse(iRequest, messageLocationSender.Error);
                 }
                 
                 try
@@ -240,7 +240,7 @@ namespace ET.Server
                 if (messageLocationSender.ActorId == default)
                 {
                     messageLocationSender.Error = ErrorCore.ERR_NotFoundActor;
-                    return ET.MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_NotFoundActor);
+                    return MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_NotFoundActor);
                 }
                 IResponse response = await root.GetComponent<MessageSender>().Call(messageLocationSender.ActorId, rpcId, iRequest, needException: false);
                 
@@ -257,7 +257,7 @@ namespace ET.Server
                         ++failTimes;
                         if (failTimes > 20)
                         {
-                            Log.Debug($"actor send message fail, actorid: {messageLocationSender.Id} {iRequest}");
+                            root.Fiber().Debug($"actor send message fail, actorid: {messageLocationSender.Id} {iRequest}");
                             messageLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                             // 这里不能删除actor，要让后面等待发送的消息也返回ERR_NotFoundActor，直到超时删除
                             return response;

@@ -103,9 +103,9 @@ namespace ET.Server
                 return;
             }
 
-            if (self.Unit.Type == UnitType.Player)
+            if (self.Unit.Type() == UnitType.Player)
             {
-                if (enter.Unit.Type == UnitType.Player)
+                if (enter.Unit.Type() == UnitType.Player)
                 {
                     self.SeeUnits.Add(enter.Id, enter);
                     enter.BeSeeUnits.Add(self.Id, self);
@@ -122,7 +122,7 @@ namespace ET.Server
             }
             else
             {
-                if (enter.Unit.Type == UnitType.Player)
+                if (enter.Unit.Type() == UnitType.Player)
                 {
                     self.SeeUnits.Add(enter.Id, enter);
                     enter.BeSeeUnits.Add(self.Id, self);
@@ -134,7 +134,7 @@ namespace ET.Server
                     enter.BeSeeUnits.Add(self.Id, self);
                 }
             }
-            EventSystem.Instance.Publish(self.Scene(), new EventType.UnitEnterSightRange() { A = self, B = enter });
+            EventSystem.Instance.Publish(self.Scene(), new UnitEnterSightRange() { A = self, B = enter });
         }
 
         // leave离开self视野
@@ -151,18 +151,18 @@ namespace ET.Server
             }
 
             self.SeeUnits.Remove(leave.Id);
-            if (leave.Unit.Type == UnitType.Player)
+            if (leave.Unit.Type() == UnitType.Player)
             {
                 self.SeePlayers.Remove(leave.Id);
             }
 
             leave.BeSeeUnits.Remove(self.Id);
-            if (self.Unit.Type == UnitType.Player)
+            if (self.Unit.Type() == UnitType.Player)
             {
                 leave.BeSeePlayers.Remove(self.Id);
             }
 
-            EventSystem.Instance.Publish(self.Scene(), new EventType.UnitLeaveSightRange { A = self, B = leave });
+            EventSystem.Instance.Publish(self.Scene(), new UnitLeaveSightRange { A = self, B = leave });
         }
 
         /// <summary>

@@ -42,6 +42,10 @@
       <Link>Kcp/%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\NativeCollection\**\*.cs">
+        <Link>NativeCollection/%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Recast\Recast.cs">
       <Link>Recast\Recast.cs</Link>
     </Compile>

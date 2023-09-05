@@ -7,7 +7,8 @@
         "Unity.Mathematics",
         "Unity.Loader",
         "MemoryPack",
-        "Unity.AllModel"
+        "Unity.AllModel",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

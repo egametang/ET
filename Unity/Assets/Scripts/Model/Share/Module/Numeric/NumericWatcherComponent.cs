@@ -44,7 +44,7 @@ namespace ET
             }
         }
         
-        public void Run(Unit unit, EventType.NumbericChange args)
+        public void Run(Unit unit, NumbericChange args)
         {
             List<NumericWatcherInfo> list;
             if (!this.allWatchers.TryGetValue(args.NumericType, out list))

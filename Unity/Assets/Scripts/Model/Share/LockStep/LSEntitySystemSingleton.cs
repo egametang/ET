@@ -14,7 +14,9 @@ namespace ET
     [Code]
     public class LSEntitySystemSingleton: Singleton<LSEntitySystemSingleton>, ISingletonAwake
     {
-        public TypeSystems TypeSystems { get; private set; }
+        private TypeSystems TypeSystems { get; set; }
+        
+        private readonly DoubleMap<Type, long> lsEntityTypeLongHashCode = new();
         
         public void Awake()
         {
@@ -36,6 +38,29 @@ namespace ET
                     oneTypeSystems.QueueFlag[index] = true;
                 }
             }
+            
+            foreach (var kv in CodeTypes.Instance.GetTypes())
+            {
+                Type type = kv.Value;
+                if (typeof(LSEntity).IsAssignableFrom(type))
+                {
+                    long hash = type.FullName.GetLongHashCode();
+                    try
+                    {
+                        this.lsEntityTypeLongHashCode.Add(type, type.FullName.GetLongHashCode());
+                    }
+                    catch (Exception e)
+                    {
+                        Type sameHashType = this.lsEntityTypeLongHashCode.GetKeyByValue(hash);
+                        throw new Exception($"long hash add fail: {type.FullName} {sameHashType.FullName}", e);
+                    }
+                }
+            }
+        }
+        
+        public long GetLongHashCode(Type type)
+        {
+            return this.lsEntityTypeLongHashCode.GetValueByKey(type);
         }
         
         public TypeSystems.OneTypeSystems GetOneTypeSystems(Type type)
@@ -69,7 +94,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    entity.Fiber().Error(e);
                 }
             }
         }
@@ -95,7 +120,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    entity.Fiber().Error(e);
                 }
             }
         }

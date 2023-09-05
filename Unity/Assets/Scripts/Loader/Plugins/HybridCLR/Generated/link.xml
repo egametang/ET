@@ -57,13 +57,7 @@
     <type fullname="ET.AInvokeHandler`2" preserve="all" />
     <type fullname="ET.AService" preserve="all" />
     <type fullname="ET.ATimer`1" preserve="all" />
-    <type fullname="ET.ActorHelper" preserve="all" />
     <type fullname="ET.ActorId" preserve="all" />
-    <type fullname="ET.ActorInnerComponent" preserve="all" />
-    <type fullname="ET.ActorInnerComponentSystem" preserve="all" />
-    <type fullname="ET.ActorMessageDispatcherComponent" preserve="all" />
-    <type fullname="ET.ActorMessageHandlerAttribute" preserve="all" />
-    <type fullname="ET.ActorMessageQueue" preserve="all" />
     <type fullname="ET.Address" preserve="all" />
     <type fullname="ET.AppType" preserve="all" />
     <type fullname="ET.AwakeSystem`1" preserve="all" />
@@ -82,6 +76,7 @@
     <type fullname="ET.CoroutineLockComponentSystem" preserve="all" />
     <type fullname="ET.DestroySystem`1" preserve="all" />
     <type fullname="ET.DisposeObject" preserve="all" />
+    <type fullname="ET.DoubleMap`2" preserve="all" />
     <type fullname="ET.EnableAccessEntiyChildAttribute" preserve="all" />
     <type fullname="ET.EnableClassAttribute" preserve="all" />
     <type fullname="ET.EnableMethodAttribute" preserve="all" />
@@ -97,14 +92,9 @@
     <type fullname="ET.EventSystem" preserve="all" />
     <type fullname="ET.Fiber" preserve="all" />
     <type fullname="ET.FiberInit" preserve="all" />
+    <type fullname="ET.FiberLog" preserve="all" />
     <type fullname="ET.FiberManager" preserve="all" />
     <type fullname="ET.FriendOfAttribute" preserve="all" />
-    <type fullname="ET.IActorLocationMessage" preserve="all" />
-    <type fullname="ET.IActorLocationRequest" preserve="all" />
-    <type fullname="ET.IActorLocationResponse" preserve="all" />
-    <type fullname="ET.IActorMessage" preserve="all" />
-    <type fullname="ET.IActorRequest" preserve="all" />
-    <type fullname="ET.IActorResponse" preserve="all" />
     <type fullname="ET.IAwake" preserve="all" />
     <type fullname="ET.IAwake`1" preserve="all" />
     <type fullname="ET.IAwake`2" preserve="all" />
@@ -112,7 +102,11 @@
     <type fullname="ET.IConfig" preserve="all" />
     <type fullname="ET.IDestroy" preserve="all" />
     <type fullname="ET.ILateUpdate" preserve="all" />
-    <type fullname="ET.IMActorHandler" preserve="all" />
+    <type fullname="ET.ILocationMessage" preserve="all" />
+    <type fullname="ET.ILocationRequest" preserve="all" />
+    <type fullname="ET.ILocationResponse" preserve="all" />
+    <type fullname="ET.ILog" preserve="all" />
+    <type fullname="ET.IMHandler" preserve="all" />
     <type fullname="ET.IMerge" preserve="all" />
     <type fullname="ET.IMessage" preserve="all" />
     <type fullname="ET.IRequest" preserve="all" />
@@ -124,21 +118,23 @@
     <type fullname="ET.ITransfer" preserve="all" />
     <type fullname="ET.IUpdate" preserve="all" />
     <type fullname="ET.IdGenerater" preserve="all" />
-    <type fullname="ET.IdValueGenerater" preserve="all" />
     <type fullname="ET.InvokeAttribute" preserve="all" />
     <type fullname="ET.KService" preserve="all" />
     <type fullname="ET.LSEntitySystemOfAttribute" preserve="all" />
     <type fullname="ET.LateUpdateSystem`1" preserve="all" />
     <type fullname="ET.ListComponent`1" preserve="all" />
     <type fullname="ET.Log" preserve="all" />
-    <type fullname="ET.Logger" preserve="all" />
     <type fullname="ET.MailBoxComponent" preserve="all" />
     <type fullname="ET.MailBoxInvoker" preserve="all" />
     <type fullname="ET.MailBoxType" preserve="all" />
     <type fullname="ET.MemoryBuffer" preserve="all" />
     <type fullname="ET.MemoryPackHelper" preserve="all" />
     <type fullname="ET.MessageAttribute" preserve="all" />
+    <type fullname="ET.MessageDispatcher" preserve="all" />
+    <type fullname="ET.MessageHandlerAttribute" preserve="all" />
+    <type fullname="ET.MessageHelper" preserve="all" />
     <type fullname="ET.MessageObject" preserve="all" />
+    <type fullname="ET.MessageQueue" preserve="all" />
     <type fullname="ET.MongoHelper" preserve="all" />
     <type fullname="ET.NavmeshComponent" preserve="all" />
     <type fullname="ET.NetServices" preserve="all" />
@@ -147,6 +143,8 @@
     <type fullname="ET.ObjectHelper" preserve="all" />
     <type fullname="ET.ObjectPool" preserve="all" />
     <type fullname="ET.OpcodeType" preserve="all" />
+    <type fullname="ET.ProcessInnerSender" preserve="all" />
+    <type fullname="ET.ProcessInnerSenderSystem" preserve="all" />
     <type fullname="ET.ProtoObject" preserve="all" />
     <type fullname="ET.RandomGenerator" preserve="all" />
     <type fullname="ET.ResponseTypeAttribute" preserve="all" />

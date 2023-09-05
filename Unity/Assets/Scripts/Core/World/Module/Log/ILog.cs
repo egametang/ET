@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     public interface ILog
     {
@@ -7,10 +9,14 @@
         void Info(string message);
         void Debug(string message);
         void Error(string message);
-        void Trace(string message, params object[] args);
-        void Warning(string message, params object[] args);
-        void Info(string message, params object[] args);
-        void Debug(string message, params object[] args);
-        void Error(string message, params object[] args);
+        void Error(Exception e);
+
+#if DOTNET
+        public void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message);
+        public void Warning(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message);
+        public void Info(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message);
+        public void Debug(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message);
+        public void Error(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message);
+#endif
     }
 }

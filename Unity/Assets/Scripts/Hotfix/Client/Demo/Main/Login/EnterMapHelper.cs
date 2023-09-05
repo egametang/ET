@@ -14,11 +14,11 @@ namespace ET.Client
                 // 等待场景切换完成
                 await root.GetComponent<ObjectWait>().Wait<Wait_SceneChangeFinish>();
                 
-                EventSystem.Instance.Publish(root, new EventType.EnterMapFinish());
+                EventSystem.Instance.Publish(root, new EnterMapFinish());
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                root.Fiber.Error(e);
             }	
         }
         

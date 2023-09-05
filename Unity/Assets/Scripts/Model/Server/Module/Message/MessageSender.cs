@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ET
+namespace ET.Server
 {
     [ComponentOf(typeof(Scene))]
     public class MessageSender: Entity, IAwake, IDestroy

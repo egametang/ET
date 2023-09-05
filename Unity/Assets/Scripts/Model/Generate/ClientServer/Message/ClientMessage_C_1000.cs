@@ -18,15 +18,19 @@ namespace ET
 		public int RpcId { get; set; }
 
 		[MemoryPackOrder(1)]
-		public string Account { get; set; }
+		public int OwnerFiberId { get; set; }
 
 		[MemoryPackOrder(2)]
+		public string Account { get; set; }
+
+		[MemoryPackOrder(3)]
 		public string Password { get; set; }
 
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
 			this.RpcId = default;
+			this.OwnerFiberId = default;
 			this.Account = default;
 			this.Password = default;
 			

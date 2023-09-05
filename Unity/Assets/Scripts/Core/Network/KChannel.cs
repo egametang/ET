@@ -30,6 +30,15 @@ namespace ET
 				this.Id = value;
 			}
 		}
+
+		private ILog Log
+		{
+			get
+			{
+				return this.Service.Log;
+			}
+		}
+		
 		public uint RemoteConn { get; set; }
 
 		private readonly byte[] sendCache = new byte[2 * 1024];
@@ -80,12 +89,13 @@ namespace ET
 		// connect
 		public KChannel(uint localConn, IPEndPoint remoteEndPoint, KService kService)
 		{
+			this.Service = kService;
 			this.LocalConn = localConn;
 			this.ChannelType = ChannelType.Connect;
 			
 			Log.Info($"channel create: {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
 			
-			this.Service = kService;
+			
 			this.RemoteAddress = remoteEndPoint;
 			this.CreateTime = kService.TimeNow;
 
@@ -96,11 +106,10 @@ namespace ET
 		// accept
 		public KChannel(uint localConn, uint remoteConn, IPEndPoint remoteEndPoint, KService kService)
 		{
+			this.Service = kService;
 			this.ChannelType = ChannelType.Accept;
 			
 			Log.Info($"channel create: {localConn} {remoteConn} {remoteEndPoint} {this.ChannelType}");
-
-			this.Service = kService;
 			this.LocalConn = localConn;
 			this.RemoteConn = remoteConn;
 			this.RemoteAddress = remoteEndPoint;

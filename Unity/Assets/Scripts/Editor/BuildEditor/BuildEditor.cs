@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
+using YooAsset;
 using Debug = UnityEngine.Debug;
 #pragma warning disable CS0162
 
@@ -26,8 +27,6 @@ namespace ET
 		private PlatformType activePlatform;
 		private PlatformType platformType;
 		private bool clearFolder;
-		private bool isBuildExe;
-		private bool isContainAB;
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
@@ -63,8 +62,6 @@ namespace ET
 		{
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
 			this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
-			this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
-			this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
 			BuildType codeOptimization = (BuildType)EditorGUILayout.EnumPopup("BuildType ", this.globalConfig.BuildType);
 			
 			if (codeOptimization != this.globalConfig.BuildType)
@@ -111,16 +108,24 @@ namespace ET
 							break;
 					}
 				}
-				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB, this.clearFolder);
+				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.clearFolder);
 			}
 			
 			GUILayout.Label("");
 			GUILayout.Label("Code Compile：");
 			
-			var codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+			CodeMode codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
 			if (codeMode != this.globalConfig.CodeMode)
 			{
 				this.globalConfig.CodeMode = codeMode;
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssets();
+			}
+			
+			EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode: ", this.globalConfig.EPlayMode);
+			if (ePlayMode != this.globalConfig.EPlayMode)
+			{
+				this.globalConfig.EPlayMode = ePlayMode;
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
 			}

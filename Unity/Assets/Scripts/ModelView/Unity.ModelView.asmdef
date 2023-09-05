@@ -6,7 +6,8 @@
         "Unity.Core",
         "Unity.Mathematics",
         "Unity.Loader",
-        "Unity.Model"
+        "Unity.Model",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

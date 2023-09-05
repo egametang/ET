@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using HybridCLR;
 using UnityEngine;
 #pragma warning disable CS0162
 
@@ -10,9 +11,21 @@ namespace ET
 	public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
 	{
 		private Assembly assembly;
+
+		private Dictionary<string, TextAsset> dlls;
+		private Dictionary<string, TextAsset> aotDlls; 
 		
 		public void Awake()
 		{
+		}
+
+		public async ETTask DownloadAsync()
+		{
+			if (!Define.IsEditor)
+			{
+				this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Model.dll.bytes");
+				this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
+			}
 		}
 
 		public void Start()
@@ -44,9 +57,8 @@ namespace ET
 				byte[] pdbBytes;
 				if (!Define.IsEditor)
 				{
-					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
-					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					assBytes = this.dlls["Model.dll"].bytes;
+					pdbBytes = this.dlls["Model.pdb"].bytes;
 					
 					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
 					//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
@@ -54,7 +66,11 @@ namespace ET
 
 					if (Define.EnableIL2CPP)
 					{
-						HybridCLRHelper.Load();
+						foreach (var kv in this.aotDlls)
+						{
+							TextAsset textAsset = kv.Value;
+							RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
+						}
 					}
 				}
 				else
@@ -80,9 +96,8 @@ namespace ET
 			byte[] pdbBytes;
 			if (!Define.IsEditor)
 			{
-				Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-				assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
-				pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+				assBytes = this.dlls["Hotfix.dll"].bytes;
+				pdbBytes = this.dlls["Hotfix.pdb"].bytes;
 					
 				// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
 				//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
@@ -104,7 +119,7 @@ namespace ET
 			Assembly hotfixAssembly = this.LoadHotfix();
 
 			CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
-			codeTypes.CreateCodeSingleton();
+			codeTypes.CreateCode();
 
 			Log.Debug($"reload dll finish!");
 		}

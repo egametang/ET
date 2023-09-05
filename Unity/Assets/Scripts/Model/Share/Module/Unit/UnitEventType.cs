@@ -2,17 +2,14 @@
 
 namespace ET
 {
-    namespace EventType
+    public struct ChangePosition
     {
-        public struct ChangePosition
-        {
-            public Unit Unit;
-            public float3 OldPos;
-        }
+        public Unit Unit;
+        public float3 OldPos;
+    }
 
-        public struct ChangeRotation
-        {
-            public Unit Unit;
-        }
+    public struct ChangeRotation
+    {
+        public Unit Unit;
     }
 }

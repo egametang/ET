@@ -11,7 +11,7 @@ namespace ET
         [DebuggerHidden]
         public static AsyncETTaskCompletedMethodBuilder Create()
         {
-            AsyncETTaskCompletedMethodBuilder builder = new AsyncETTaskCompletedMethodBuilder();
+            AsyncETTaskCompletedMethodBuilder builder = new();
             return builder;
         }
 
@@ -36,7 +36,7 @@ namespace ET
         [DebuggerHidden]
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            awaiter.OnCompleted(stateMachine.MoveNext);
+            //awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
         // 6. AwaitUnsafeOnCompleted
@@ -44,14 +44,14 @@ namespace ET
         [SecuritySafeCritical]
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            awaiter.UnsafeOnCompleted(stateMachine.MoveNext);
+            //awaiter.UnsafeOnCompleted(stateMachine.MoveNext);
         }
 
         // 7. Start
         [DebuggerHidden]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
-            stateMachine.MoveNext();
+            //stateMachine.MoveNext();
         }
 
         // 8. SetStateMachine

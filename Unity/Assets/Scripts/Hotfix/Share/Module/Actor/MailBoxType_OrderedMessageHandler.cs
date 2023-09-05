@@ -29,7 +29,7 @@
                     if (messageObject is IRequest request)
                     {
                         IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
-                        mailBoxComponent.Root().GetComponent<MessageInnerSender>().Reply(args.FromAddress, resp);
+                        mailBoxComponent.Root().GetComponent<ProcessInnerSender>().Reply(args.FromAddress, resp);
                     }
                     messageObject.Dispose();
                     return;

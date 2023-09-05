@@ -9,15 +9,15 @@ namespace ET.Server
         public override async ETTask Handle(RobotInvokeArgs a)
         {
             using RobotCase robotCase = await a.Fiber.Root.GetComponent<RobotCaseComponent>().New();
-            
+            Fiber fiber = robotCase.Fiber();
             try
             {
                 await this.Run(robotCase);
             }
             catch (System.Exception e)
             {
-                Log.Error($"{robotCase.Zone()} {e}");
-                RobotLog.Console($"RobotCase Error {this.GetType().FullName}:\n\t{e}");
+                fiber.Error($"{robotCase.Zone()} {e}");
+                fiber.Console($"RobotCase Error {this.GetType().FullName}:\n\t{e}");
             }
         }
     }

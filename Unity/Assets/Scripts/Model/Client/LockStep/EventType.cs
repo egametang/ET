@@ -1,14 +1,11 @@
-﻿namespace ET
+﻿namespace ET.Client
 {
-    namespace EventType
+    public struct LSSceneChangeStart
     {
-        public struct LSSceneChangeStart
-        {
-            public Room Room;
-        }
-        
-        public struct LSSceneInitFinish
-        {
-        }
+        public Room Room;
+    }
+    
+    public struct LSSceneInitFinish
+    {
     }
 }

@@ -428,6 +428,7 @@ namespace ET.Analyzer
         /// </summary>
         public static bool HasMethodWithParams(this INamedTypeSymbol namedTypeSymbol, string methodName, params ITypeSymbol[] typeSymbols)
         {
+            
             foreach (var member in namedTypeSymbol.GetMembers())
             {
                 if (member is not IMethodSymbol methodSymbol)
@@ -469,6 +470,56 @@ namespace ET.Analyzer
 
             return false;
         }
+        
+        /// <summary>
+        /// 类型symbol是否有指定名字 指定参数的方法
+        /// </summary>
+        public static bool HasMethodWithParams(this INamedTypeSymbol namedTypeSymbol, string methodName, params string[] typeSymbols)
+        {
+            
+            foreach (var member in namedTypeSymbol.GetMembers())
+            {
+                if (member is not IMethodSymbol methodSymbol)
+                {
+                    continue;
+                }
+
+                if (methodSymbol.Name!=methodName)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length!=methodSymbol.Parameters.Length)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length==0)
+                {
+                    return true;
+                }
+
+                bool isEqual = true;
+                
+                for (int i = 0; i < typeSymbols.Length; i++)
+                {
+                    if (typeSymbols[i]!=methodSymbol.Parameters[i].Type.ToString())
+                    {
+                        isEqual = false;
+                        break;
+                    }
+                }
+
+                if (isEqual)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        
 
 
         /// <summary>

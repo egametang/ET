@@ -10,20 +10,21 @@ namespace ET.Server
         public async ETTask Handle(Entity entity, Address fromAddress, MessageObject actorMessage)
         {
             using MessageObject _ = actorMessage;
+            Fiber fiber = entity.Fiber();
             if (actorMessage is not Message message)
             {
-                Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
+                fiber.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
                 return;
             }
 
             if (entity is not E e)
             {
-                Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Message).FullName}");
+                fiber.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Message).FullName}");
                 return;
             }
             
             MessageResponse response = new() {RpcId = message.RpcId};
-            entity.Root().GetComponent<MessageInnerSender>().Reply(fromAddress, response);
+            fiber.Root.GetComponent<ProcessInnerSender>().Reply(fromAddress, response);
 
             await this.Run(e, message);
         }
@@ -51,21 +52,21 @@ namespace ET.Server
             try
             {
                 using MessageObject _ = actorMessage;
+                Fiber fiber = entity.Fiber();
                 if (actorMessage is not Request request)
                 {
-                    Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
+                    fiber.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
                     return;
                 }
 
                 if (entity is not E ee)
                 {
-                    Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Request).FullName}");
+                    fiber.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Request).FullName}");
                     return;
                 }
 
                 int rpcId = request.RpcId;
                 Response response = ObjectPool.Instance.Fetch<Response>();
-                Fiber fiber = entity.Fiber();
                 try
                 {
                     await this.Run(ee, request, response);
@@ -81,7 +82,7 @@ namespace ET.Server
                     response.Message = exception.ToString();
                 }
                 response.RpcId = rpcId;
-                fiber.MessageInnerSender.Reply(fromAddress, response);
+                fiber.ProcessInnerSender.Reply(fromAddress, response);
             }
             catch (Exception e)
             {

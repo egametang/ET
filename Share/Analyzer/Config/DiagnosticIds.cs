@@ -52,5 +52,7 @@
 
         public const string EntitySystemMethodNeedSystemOfAttrAnalyzerRuleId = "ET0025";
 
+        public const string FiberLogAnalyzerRuleId = "ET0026";
+
     }
 }

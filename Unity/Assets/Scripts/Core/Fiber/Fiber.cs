@@ -42,6 +42,7 @@ namespace ET
         public EntitySystem EntitySystem { get; }
         public Mailboxes Mailboxes { get; private set; }
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
+        public ILog Log { get; }
         
         private EntityRef<TimerComponent> timerCompnent;
         public TimerComponent TimerComponent
@@ -69,16 +70,16 @@ namespace ET
             }
         }
         
-        private EntityRef<MessageInnerSender> messageInnerSender;
-        public MessageInnerSender MessageInnerSender
+        private EntityRef<ProcessInnerSender> processInnerSender;
+        public ProcessInnerSender ProcessInnerSender
         {
             get
             {
-                return this.messageInnerSender;
+                return this.processInnerSender;
             }
             set
             {
-                this.messageInnerSender = value;
+                this.processInnerSender = value;
             }
         }
 
@@ -91,6 +92,11 @@ namespace ET
             this.EntitySystem = new EntitySystem();
             this.Mailboxes = new Mailboxes();
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
+#if UNITY
+            this.Log = Logger.Instance.Log;
+#else
+            this.Log = new NLogger(sceneType.ToString(), this.Process, this.Id, "../Config/NLog/NLog.config");
+#endif
             this.Root = new Scene(this, id, 1, sceneType, name);
         }
 
@@ -102,7 +108,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                this.Log.Error(e);
             }
         }
         

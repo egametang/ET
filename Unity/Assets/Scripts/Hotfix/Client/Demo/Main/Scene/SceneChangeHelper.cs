@@ -13,7 +13,7 @@
             UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
          
             // 可以订阅这个事件中创建Loading界面
-            EventSystem.Instance.Publish(root, new EventType.SceneChangeStart());
+            EventSystem.Instance.Publish(root, new SceneChangeStart());
             // 等待CreateMyUnit的消息
             Wait_CreateMyUnit waitCreateMyUnit = await root.GetComponent<ObjectWait>().Wait<Wait_CreateMyUnit>();
             M2C_CreateMyUnit m2CCreateMyUnit = waitCreateMyUnit.Message;
@@ -21,7 +21,7 @@
             unitComponent.Add(unit);
             root.RemoveComponent<AIComponent>();
             
-            EventSystem.Instance.Publish(currentScene, new EventType.SceneChangeFinish());
+            EventSystem.Instance.Publish(currentScene, new SceneChangeFinish());
             // 通知等待场景切换的协程
             root.GetComponent<ObjectWait>().Notify(new Wait_SceneChangeFinish());
         }

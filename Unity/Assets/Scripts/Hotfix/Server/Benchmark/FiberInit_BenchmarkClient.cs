@@ -14,12 +14,11 @@ namespace ET.Server
             //root.AddComponent<TimerComponent>();
             //root.AddComponent<CoroutineLockComponent>();
             //root.AddComponent<ActorInnerComponent>();
-            //root.AddComponent<ActorSenderComponent>();
             //root.AddComponent<PlayerComponent>();
             //root.AddComponent<GateSessionKeyComponent>();
             //root.AddComponent<LocationProxyComponent>();
             //root.AddComponent<ActorLocationSenderComponent>();
-            root.AddComponent<NetClientComponent, AddressFamily>(AddressFamily.InterNetwork);
+            root.AddComponent<NetComponent, AddressFamily>(AddressFamily.InterNetwork);
             root.AddComponent<BenchmarkClientComponent>();
             await ETTask.CompletedTask;
         }

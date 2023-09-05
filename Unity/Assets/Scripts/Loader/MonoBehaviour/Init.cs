@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using CommandLine;
 using UnityEngine;
 
@@ -8,6 +7,11 @@ namespace ET
 	public class Init: MonoBehaviour
 	{
 		private void Start()
+		{
+			this.StartAsync().Coroutine();
+		}
+		
+		private async ETTask StartAsync()
 		{
 			DontDestroyOnLoad(gameObject);
 			
@@ -23,10 +27,18 @@ namespace ET
 				.WithParsed((o)=>World.Instance.AddSingleton(o));
 			Options.Instance.StartConfig = $"StartConfig/Localhost";
 			
-			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
+			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
 			
-			World.Instance.AddSingleton<CodeLoader>().Start();
+			World.Instance.AddSingleton<TimeInfo>();
+			World.Instance.AddSingleton<FiberManager>();
+
+			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
+			
+			CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();
+			await codeLoader.DownloadAsync();
+			
+			codeLoader.Start();
 		}
 
 		private void Update()

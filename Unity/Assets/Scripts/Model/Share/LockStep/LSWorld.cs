@@ -37,8 +37,6 @@ namespace ET
             this.Id = this.GetId();
 
             this.SceneType = sceneType;
-            
-            Log.Info($"LSScene create: {this.Id} {this.InstanceId}");
         }
 
         private readonly LSUpdater updater = new();
@@ -110,6 +108,11 @@ namespace ET
         public new T AddChild<T, A, B, C>(A a, B b, C c, bool isFromPool = false) where T : LSEntity, IAwake<A, B, C>
         {
             return this.AddChildWithId<T, A, B, C>(this.GetId(), a, b, c, isFromPool);
+        }
+        
+        protected override long GetLongHashCode(Type type)
+        {
+            return LSEntitySystemSingleton.Instance.GetLongHashCode(type);
         }
     }
 }

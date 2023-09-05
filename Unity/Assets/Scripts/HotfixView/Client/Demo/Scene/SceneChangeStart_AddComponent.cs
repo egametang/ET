@@ -4,28 +4,27 @@ using UnityEngine.SceneManagement;
 namespace ET.Client
 {
     [Event(SceneType.Demo)]
-    public class SceneChangeStart_AddComponent: AEvent<Scene, EventType.SceneChangeStart>
+    public class SceneChangeStart_AddComponent: AEvent<Scene, SceneChangeStart>
     {
-        protected override async ETTask Run(Scene root, EventType.SceneChangeStart args)
+        protected override async ETTask Run(Scene root, SceneChangeStart args)
         {
             try
             {
                 Scene currentScene = root.CurrentScene();
 
-                ResourcesComponent resourcesComponent = root.GetComponent<ResourcesComponent>();
+                ResourcesLoaderComponent resourcesLoaderComponent = currentScene.GetComponent<ResourcesLoaderComponent>();
             
                 // 加载场景资源
-                await resourcesComponent.LoadBundleAsync($"{currentScene.Name}.unity3d");
+                await resourcesLoaderComponent.LoadSceneAsync($"Assets/Bundles/Scenes/{currentScene.Name}.unity", LoadSceneMode.Single);
                 // 切换到map场景
 
-                await SceneManager.LoadSceneAsync(currentScene.Name);
-			
+                //await SceneManager.LoadSceneAsync(currentScene.Name);
 
                 currentScene.AddComponent<OperaComponent>();
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                root.Fiber.Error(e);
             }
 
         }

@@ -6,9 +6,9 @@ using UnityEngine;
 namespace ET
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, Dictionary<Type, byte[]>>
+    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, ETTask<Dictionary<Type, byte[]>>>
     {
-        public override Dictionary<Type, byte[]> Handle(ConfigLoader.GetAllConfigBytes args)
+        public override async ETTask<Dictionary<Type, byte[]>> Handle(ConfigLoader.GetAllConfigBytes args)
         {
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             HashSet<Type> configTypes = CodeTypes.Instance.GetTypes(typeof (ConfigAttribute));
@@ -55,10 +55,9 @@ namespace ET
             }
             else
             {
-                Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("config.unity3d");
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = dictionary[type.Name] as TextAsset;
+                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Assets/Bundles/Config/{type.Name}.bytes");
                     output[type] = v.bytes;
                 }
             }
@@ -68,9 +67,9 @@ namespace ET
     }
     
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, byte[]>
+    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, ETTask<byte[]>>
     {
-        public override byte[] Handle(ConfigLoader.GetOneConfigBytes args)
+        public override async ETTask<byte[]> Handle(ConfigLoader.GetOneConfigBytes args)
         {
             string ct = "cs";
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
@@ -108,7 +107,8 @@ namespace ET
             {
                 configFilePath = $"../Config/Excel/{ct}/{configName}.bytes";
             }
-                
+
+            await ETTask.CompletedTask;
             return File.ReadAllBytes(configFilePath);
         }
     }

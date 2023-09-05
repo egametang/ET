@@ -9,7 +9,8 @@
         "MemoryPack",
         "Unity.Model",
         "Unity.Hotfix",
-        "Unity.ModelView"
+        "Unity.ModelView",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -19,7 +19,7 @@
             }
             NetClient2Main_SessionDispose message = NetClient2Main_SessionDispose.Create();
             message.Error = self.GetParent<Session>().Error;
-            fiber.MessageInnerSender.Send(new ActorId(fiber.Process, ConstFiberId.Main), message);
+            fiber.ProcessInnerSender.Send(new ActorId(fiber.Process, ConstFiberId.Main), message);
         }
     }
 }

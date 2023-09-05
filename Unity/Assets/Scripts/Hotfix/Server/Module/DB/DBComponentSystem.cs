@@ -18,7 +18,7 @@ namespace ET.Server
 
 	    private static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
 	    {
-		    return self.database.GetCollection<T>(collection ?? typeof (T).Name);
+		    return self.database.GetCollection<T>(collection ?? typeof (T).FullName);
 	    }
 
 	    private static IMongoCollection<Entity> GetCollection(this DBComponent self, string name)
@@ -113,7 +113,7 @@ namespace ET.Server
 	    {
 		    if (collection == null)
 		    {
-			    collection = typeof (T).Name;
+			    collection = typeof (T).FullName;
 		    }
 		    
 		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, RandomGenerator.RandInt64() % DBComponent.TaskCount))
@@ -128,9 +128,10 @@ namespace ET.Server
 
 	    public static async ETTask Save<T>(this DBComponent self, T entity, string collection = null) where T : Entity
 	    {
+		    Fiber fiber = self.Fiber();
 		    if (entity == null)
 		    {
-			    Log.Error($"save entity is null: {typeof (T).Name}");
+			    fiber.Error($"save entity is null: {typeof (T).FullName}");
 
 			    return;
 		    }
@@ -140,7 +141,7 @@ namespace ET.Server
 			    collection = entity.GetType().FullName;
 		    }
 
-		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
+		    using (await fiber.CoroutineLockComponent.Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
@@ -148,9 +149,10 @@ namespace ET.Server
 
 	    public static async ETTask Save<T>(this DBComponent self, long taskId, T entity, string collection = null) where T : Entity
 	    {
+		    Fiber fiber = self.Fiber();
 		    if (entity == null)
 		    {
-			    Log.Error($"save entity is null: {typeof (T).Name}");
+			    fiber.Error($"save entity is null: {typeof (T).FullName}");
 
 			    return;
 		    }
@@ -160,7 +162,7 @@ namespace ET.Server
 			    collection = entity.GetType().FullName;
 		    }
 
-		    using (await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
+		    using (await fiber.CoroutineLockComponent.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
 		    {
 			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
@@ -168,9 +170,10 @@ namespace ET.Server
 
 	    public static async ETTask Save(this DBComponent self, long id, List<Entity> entities)
 	    {
+		    Fiber fiber = self.Fiber();
 		    if (entities == null)
 		    {
-			    Log.Error($"save entity is null");
+			    fiber.Error($"save entity is null");
 			    return;
 		    }
 

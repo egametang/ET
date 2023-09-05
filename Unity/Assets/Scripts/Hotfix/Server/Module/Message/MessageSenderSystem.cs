@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 
-namespace ET
+namespace ET.Server
 {
     [FriendOf(typeof(MessageSender))]
     public static partial class MessageSenderSystem
@@ -13,7 +14,7 @@ namespace ET
             // 如果发向同一个进程，则扔到消息队列中
             if (actorId.Process == fiber.Process)
             {
-                fiber.MessageInnerSender.Send(actorId, message);
+                fiber.ProcessInnerSender.Send(actorId, message);
                 return;
             }
             
@@ -23,8 +24,7 @@ namespace ET
             a2NetInnerMessage.ActorId = actorId;
             a2NetInnerMessage.MessageObject = message;
 
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[fiber.Process];
-            MessageQueue.Instance.Send(startSceneConfig.ActorId, a2NetInnerMessage);
+            MessageQueue.Instance.Send(new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInnerMessage);
         }
 
         public static int GetRpcId(this MessageSender self)
@@ -65,23 +65,22 @@ namespace ET
             
             if (fiber.Process == actorId.Process)
             {
-                return await fiber.MessageInnerSender.Call(actorId, rpcId, request);
+                return await fiber.ProcessInnerSender.Call(actorId, rpcId, request, needException: needException);
             }
 
             // 发给NetInner纤程
             A2NetInner_Request a2NetInner_Request = A2NetInner_Request.Create();
             a2NetInner_Request.ActorId = actorId;
             a2NetInner_Request.MessageObject = request;
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.NetInners[fiber.Process];
-            A2NetInner_Response a2NetInnerResponse = await fiber.MessageInnerSender.Call(
-                startSceneConfig.ActorId, a2NetInner_Request) as A2NetInner_Response;
+            
+            A2NetInner_Response a2NetInnerResponse = await fiber.ProcessInnerSender.Call(
+                new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInner_Request) as A2NetInner_Response;
             IResponse response = a2NetInnerResponse.MessageObject;
             
             if (response.Error == ErrorCore.ERR_MessageTimeout)
             {
                 throw new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {actorId} {request}, response: {response}");
             }
-
             if (needException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
                 throw new RpcException(response.Error, $"Rpc error: actorId: {actorId} {request}, response: {response}");

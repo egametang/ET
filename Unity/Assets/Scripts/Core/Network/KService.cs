@@ -46,7 +46,7 @@ namespace ET
 
         public Socket Socket;
 
-        public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
+        public KService(IPEndPoint ipEndPoint, ServiceType serviceType, ILog log): base(log)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
@@ -70,7 +70,7 @@ namespace ET
             NetworkHelper.SetSioUdpConnReset(this.Socket);
         }
 
-        public KService(AddressFamily addressFamily, ServiceType serviceType)
+        public KService(AddressFamily addressFamily, ServiceType serviceType, ILog log): base(log)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
@@ -92,15 +92,16 @@ namespace ET
 
         private readonly List<long> cacheIds = new List<long>();
         
-#if !UNITY
+
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new HashSet<long>();
         // 下次时间更新的channel
-        private readonly MultiMap<long, long> timeId = new();
+        private readonly NativeCollection.MultiMap<long, long> timeId = new();
         private readonly List<long> timeOutTime = new List<long>();
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
-        
+
+#if !UNITY
         public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,3000);
 #else
         public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,200);
@@ -397,7 +398,7 @@ namespace ET
             return channel;
         }
 
-        public override void Create(long id, IPEndPoint address)
+        public override void Create(long id, string address)
         {
             if (this.localConnChannels.TryGetValue(id, out KChannel kChannel))
             {
@@ -408,7 +409,8 @@ namespace ET
             {
                 // 低32bit是localConn
                 uint localConn = (uint)id;
-                kChannel = new KChannel(localConn, address, this);
+                IPEndPoint endPoint = NetworkHelper.ToIPEndPoint(address);
+                kChannel = new KChannel(localConn, endPoint, this);
                 this.localConnChannels.Add(kChannel.LocalConn, kChannel);
             }
             catch (Exception e)
@@ -526,34 +528,6 @@ namespace ET
 
         private void UpdateChannel(uint timeNow)
         {
-#if UNITY
-            // Unity中，每帧更新Channel
-            this.cacheIds.Clear();
-            foreach (var kv in this.waitAcceptChannels)
-            {
-                this.cacheIds.Add(kv.Key);
-            }
-            foreach (var kv in this.localConnChannels)
-            {
-                this.cacheIds.Add(kv.Key);
-            }
-
-            foreach (long id in this.cacheIds)
-            {
-                KChannel kChannel = this.Get(id);
-                if (kChannel == null)
-                {
-                    continue;
-                }
-
-                if (kChannel.Id == 0)
-                {
-                    continue;
-                }
-                kChannel.Update(timeNow);
-            }
-            
-#else
             foreach (long id in this.updateIds)
             {
                 KChannel kChannel = this.Get(id);
@@ -570,13 +544,11 @@ namespace ET
                 kChannel.Update(timeNow);
             }
             this.updateIds.Clear();
-#endif
         }
         
         // 服务端需要看channel的update时间是否已到
         public void AddToUpdate(long time, long id)
         {
-#if !UNITY
             if (time == 0)
             {
                 this.updateIds.Add(id);
@@ -587,14 +559,12 @@ namespace ET
                 this.minTime = time;
             }
             this.timeId.Add(time, id);
-#endif
         }
         
 
         // 计算到期需要update的channel
         private void TimerOut(uint timeNow)
         {
-#if !UNITY
             if (this.timeId.Count == 0)
             {
                 return;
@@ -608,7 +578,7 @@ namespace ET
 
             this.timeOutTime.Clear();
 
-            foreach (KeyValuePair<long, List<long>> kv in this.timeId)
+            foreach (var kv in this.timeId)
             {
                 long k = kv.Key;
                 if (k > timeNow)
@@ -628,7 +598,6 @@ namespace ET
                 }
                 this.timeId.Remove(k);
             }
-#endif
         }
     }
 }

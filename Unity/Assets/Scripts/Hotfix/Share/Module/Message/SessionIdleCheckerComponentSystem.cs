@@ -17,7 +17,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"session idle checker timer error: {self.Id}\n{e}");
+                    self.Fiber().Error($"session idle checker timer error: {self.Id}\n{e}");
                 }
             }
         }
@@ -33,8 +33,8 @@ namespace ET
         {
             self.Fiber().TimerComponent?.Remove(ref self.RepeatedTimer);
         }
-        
-        public const int CheckInteral = 2000;
+
+        private const int CheckInteral = 2000;
 
         private static void Check(this SessionIdleCheckerComponent self)
         {
@@ -46,7 +46,7 @@ namespace ET
                 return;
             }
 
-            Log.Info($"session timeout: {session.Id} {timeNow} {session.LastRecvTime} {session.LastSendTime} {timeNow - session.LastRecvTime} {timeNow - session.LastSendTime}");
+            self.Fiber().Info($"session timeout: {session.Id} {timeNow} {session.LastRecvTime} {session.LastSendTime} {timeNow - session.LastRecvTime} {timeNow - session.LastSendTime}");
             session.Error = ErrorCore.ERR_SessionSendOrRecvTimeout;
 
             session.Dispose();
