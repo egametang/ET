@@ -11,14 +11,19 @@ namespace NativeCollection
 {
     private UnsafeType.MultiMap<T, K>* _multiMap;
 
-    private const int _defaultPoolSize = 200;
+    private const int _defaultPoolBlockSize = 64;
 
-    private int _poolSize;
+    private const int _defaultListPoolSize = 200;
+
+    private int _poolBlockSize;
+
+    private int _listPoolSize;
     
-    public MultiMap(int maxPoolSize = _defaultPoolSize)
+    public MultiMap(int listPoolSize = _defaultListPoolSize,int nodePoolBlockSize = _defaultPoolBlockSize)
     {
-        _poolSize = maxPoolSize;
-        _multiMap = UnsafeType.MultiMap<T, K>.Create(_poolSize);
+        _poolBlockSize = nodePoolBlockSize;
+        _listPoolSize = listPoolSize;
+        _multiMap = UnsafeType.MultiMap<T, K>.Create(_poolBlockSize,_listPoolSize);
         IsDisposed = false;
     }
     
@@ -72,8 +77,10 @@ namespace NativeCollection
         {
             return;
         }
+        
         if (_multiMap!=null)
         {
+            
             _multiMap->Dispose();
             NativeMemoryHelper.Free(_multiMap);
             NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<UnsafeType.MultiMap<T,K>>());
@@ -85,7 +92,7 @@ namespace NativeCollection
     {
         if (IsDisposed)
         {
-            _multiMap = UnsafeType.MultiMap<T, K>.Create(_poolSize);
+            _multiMap = UnsafeType.MultiMap<T, K>.Create(_poolBlockSize,_listPoolSize);
             IsDisposed = false;
         }
     }

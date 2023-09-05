@@ -33,6 +33,22 @@ namespace NativeCollection.UnsafeType
         return list;
     }
 
+    public static List<T>* AllocFromMemoryPool(FixedSizeMemoryPool* memoryPool,int initialCapacity = _defaultCapacity)
+    {
+        if (initialCapacity < 0) ThrowHelper.ListInitialCapacityException();
+
+        var list = (List<T>*)memoryPool->Alloc();
+
+        if (initialCapacity < _defaultCapacity)
+            initialCapacity = _defaultCapacity; // Simplify doubling logic in Push.
+
+        list->_items = (T*)NativeMemoryHelper.Alloc((UIntPtr)initialCapacity, (UIntPtr)Unsafe.SizeOf<T>());
+        list->_arrayLength = initialCapacity;
+        list->Count = 0;
+        list->self = list;
+        return list;
+    }
+
     
     public ref T this[int index]
     {

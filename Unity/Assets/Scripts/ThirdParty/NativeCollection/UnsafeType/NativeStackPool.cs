@@ -9,13 +9,13 @@ namespace NativeCollection.UnsafeType
         public void OnGetFromPool();
     }
     
-    public unsafe struct NativePool<T> : IDisposable where T: unmanaged,IPool
+    public unsafe struct NativeStackPool<T> : IDisposable where T: unmanaged,IPool
     {
         public int MaxSize { get; private set; }
         private Stack<IntPtr>* _stack;
-        public static NativePool<T>* Create(int maxPoolSize)
+        public static NativeStackPool<T>* Create(int maxPoolSize)
         {
-            NativePool<T>* pool = (NativePool<T>*)NativeMemoryHelper.Alloc((UIntPtr)Unsafe.SizeOf<NativePool<T>>());
+            NativeStackPool<T>* pool = (NativeStackPool<T>*)NativeMemoryHelper.Alloc((UIntPtr)Unsafe.SizeOf<NativeStackPool<T>>());
             pool->_stack = Stack<IntPtr>.Create();
             pool->MaxSize = maxPoolSize;
             return pool;
@@ -45,6 +45,12 @@ namespace NativeCollection.UnsafeType
             }
             ptr->OnReturnToPool();
             _stack->Push(new IntPtr(ptr));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsPoolMax()
+        {
+            return _stack->Count >= MaxSize;
         }
     
         public void Clear()

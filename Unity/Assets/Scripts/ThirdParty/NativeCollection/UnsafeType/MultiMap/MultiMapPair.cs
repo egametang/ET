@@ -10,8 +10,12 @@ namespace NativeCollection.UnsafeType
         
         public T Key { get; private set; }
     
-        public ref UnsafeType.List<K> Value => ref Unsafe.AsRef<UnsafeType.List<K>>(_value);
-    
+        public ref UnsafeType.List<K> Value
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get { return ref Unsafe.AsRef<UnsafeType.List<K>>(_value); }
+        }
+
         public MultiMapPair(T key)
         {
             Key = key;
@@ -19,13 +23,13 @@ namespace NativeCollection.UnsafeType
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultiMapPair<T, K> Create(in T key, NativePool<List<K>>* pool)
+        public static MultiMapPair<T, K> Create(in T key, FixedSizeMemoryPool* pool, NativeStackPool<List<K>>* stackPool)
         {
             var pair = new MultiMapPair<T, K>(key);
-            var list = pool->Alloc();
+            List<K>* list = stackPool->Alloc();
             if (list==null)
             {
-                list = List<K>.Create();
+                list = List<K>.AllocFromMemoryPool(pool);
             }
             pair._value = list;
             return pair;
@@ -50,11 +54,20 @@ namespace NativeCollection.UnsafeType
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Dispose(NativePool<List<K>>* pool)
+        public void Dispose(FixedSizeMemoryPool* pool,NativeStackPool<List<K>>* stackPool)
         {
             if (_value!=null)
             {
-                pool->Return(_value);
+                if (!stackPool->IsPoolMax())
+                {
+                    stackPool->Return(_value);
+                    _value = null;
+                }
+                else
+                {
+                    _value->Dispose();
+                    pool->Free(_value);
+                }
             }
         }
     }

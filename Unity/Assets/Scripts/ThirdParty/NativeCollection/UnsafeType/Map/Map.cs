@@ -10,10 +10,10 @@ namespace NativeCollection.UnsafeType
 {
     private UnsafeType.SortedSet<MapPair<T, K>>* _sortedSet;
     
-    public static Map<T, K>* Create(int maxPoolSize)
+    public static Map<T, K>* Create(int poolBlockSize)
     {
         Map<T, K>* map = (Map<T, K>*)NativeMemoryHelper.Alloc((UIntPtr)Unsafe.SizeOf<Map<T, K>>());
-        map->_sortedSet = UnsafeType.SortedSet<MapPair<T, K>>.Create(maxPoolSize);
+        map->_sortedSet = UnsafeType.SortedSet<MapPair<T, K>>.Create(poolBlockSize);
         return map;
     }
     
