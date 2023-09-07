@@ -10,19 +10,11 @@ namespace ET
         private const int InfoLevel = 3;
         private const int WarningLevel = 4;
         
-        private static bool CheckLogLevel(int level)
-        {
-            if (Options.Instance == null)
-            {
-                return true;
-            }
-            return Options.Instance.LogLevel <= level;
-        }
         
         [Conditional("DEBUG")]
         public static void Debug(string msg)
         {
-            if (!CheckLogLevel(DebugLevel))
+            if (Options.Instance.LogLevel > DebugLevel)
             {
                 return;
             }
@@ -32,7 +24,7 @@ namespace ET
         [Conditional("DEBUG")]
         public static void Trace(string msg)
         {
-            if (!CheckLogLevel(TraceLevel))
+            if (Options.Instance.LogLevel > TraceLevel)
             {
                 return;
             }
@@ -42,7 +34,7 @@ namespace ET
 
         public static void Info(string msg)
         {
-            if (!CheckLogLevel(InfoLevel))
+            if (Options.Instance.LogLevel > InfoLevel)
             {
                 return;
             }
@@ -51,7 +43,7 @@ namespace ET
 
         public static void TraceInfo(string msg)
         {
-            if (!CheckLogLevel(InfoLevel))
+            if (Options.Instance.LogLevel > InfoLevel)
             {
                 return;
             }
@@ -61,11 +53,10 @@ namespace ET
 
         public static void Warning(string msg)
         {
-            if (!CheckLogLevel(WarningLevel))
+            if (Options.Instance.LogLevel > WarningLevel)
             {
                 return;
             }
-
             Logger.Instance.Log.Warning(msg);
         }
 
@@ -93,21 +84,37 @@ namespace ET
         [Conditional("DEBUG")]
         public static void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > TraceLevel)
+            {
+                return;
+            }
             Logger.Instance.Log.Trace(ref message);
         }
         [Conditional("DEBUG")]
         public static void Warning(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > WarningLevel)
+            {
+                return;
+            }
             Logger.Instance.Log.Warning(ref message);
         }
 
         public static void Info(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > InfoLevel)
+            {
+                return;
+            }
             Logger.Instance.Log.Info(ref message);
         }
         [Conditional("DEBUG")]
         public static void Debug(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > DebugLevel)
+            {
+                return;
+            }
             Logger.Instance.Log.Debug(ref message);
         }
 

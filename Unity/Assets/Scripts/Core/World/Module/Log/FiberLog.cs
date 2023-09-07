@@ -10,19 +10,11 @@ namespace ET
         private const int InfoLevel = 3;
         private const int WarningLevel = 4;
         
-        private static bool CheckLogLevel(int level)
-        {
-            if (Options.Instance == null)
-            {
-                return true;
-            }
-            return Options.Instance.LogLevel <= level;
-        }
         
         [Conditional("DEBUG")]
         public static void Debug(this Fiber self, string msg)
         {
-            if (!CheckLogLevel(DebugLevel))
+            if (Options.Instance.LogLevel > DebugLevel)
             {
                 return;
             }
@@ -32,7 +24,7 @@ namespace ET
         [Conditional("DEBUG")]
         public static void Trace(this Fiber self, string msg)
         {
-            if (!CheckLogLevel(TraceLevel))
+            if (Options.Instance.LogLevel > TraceLevel)
             {
                 return;
             }
@@ -42,7 +34,7 @@ namespace ET
 
         public static void Info(this Fiber self, string msg)
         {
-            if (!CheckLogLevel(InfoLevel))
+            if (Options.Instance.LogLevel > InfoLevel)
             {
                 return;
             }
@@ -51,7 +43,7 @@ namespace ET
 
         public static void TraceInfo(this Fiber self, string msg)
         {
-            if (!CheckLogLevel(InfoLevel))
+            if (Options.Instance.LogLevel > InfoLevel)
             {
                 return;
             }
@@ -60,7 +52,7 @@ namespace ET
 
         public static void Warning(this Fiber self, string msg)
         {
-            if (!CheckLogLevel(WarningLevel))
+            if (Options.Instance.LogLevel > WarningLevel)
             {
                 return;
             }
@@ -91,21 +83,38 @@ namespace ET
         [Conditional("DEBUG")]
         public static void Trace(this Fiber self, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > TraceLevel)
+            {
+                return;
+            }
             self.Log.Trace(ref message);
         }
         [Conditional("DEBUG")]
         public static void Warning(this Fiber self, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > WarningLevel)
+            {
+                return;
+            }
             self.Log.Warning(ref message);
         }
 
         public static void Info(this Fiber self, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > InfoLevel)
+            {
+                return;
+            }
             self.Log.Info(ref message);
         }
+        
         [Conditional("DEBUG")]
         public static void Debug(this Fiber self, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
+            if (Options.Instance.LogLevel > DebugLevel)
+            {
+                return;
+            }
             self.Log.Debug(ref message);
         }
 
