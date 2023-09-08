@@ -39,22 +39,20 @@ namespace ET
 
         private static void CreateLog()
         {
-            if (Logger.Instance != null)
+            if (Logger.Instance == null)
             {
-                return;
+                World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
             }
 
-            World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
+            if (Options.Instance == null)
+            {
+                World.Instance.AddSingleton(new Options());
+            }
         }
 
         private static void DestroyLog()
         {
-            if (Logger.Instance == null)
-            {
-                return;
-            }
-
-            Logger.Instance.Dispose();
+            World.Instance.Dispose();
         }
     }
 }
