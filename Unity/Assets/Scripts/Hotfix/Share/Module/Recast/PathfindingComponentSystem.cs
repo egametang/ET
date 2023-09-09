@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using DotRecast.Core;
+using DotRecast.Detour;
+using DotRecast.Detour.Io;
 using Unity.Mathematics;
 
 namespace ET
@@ -13,156 +17,72 @@ namespace ET
         {
             self.Name = name;
             byte[] buffer = NavmeshComponent.Instance.Get(name);
-            self.navMesh = Recast.RecastLoad(buffer, buffer.Length);
-            if (self.navMesh == IntPtr.Zero)
+            
+            DtMeshSetReader reader = new();
+            using MemoryStream ms = new(buffer);
+            using BinaryReader br = new(ms);
+            self.navMesh = reader.Read32Bit(br, 6); // cpp recast导出来的要用Read32Bit读取，DotRecast导出来的还没试过
+            
+            if (self.navMesh == null)
             {
                 throw new Exception($"nav load fail: {name}");
             }
+            
+            self.filter = new DtQueryDefaultFilter();
+            self.query = new DtNavMeshQuery(self.navMesh);
         }
 
         [EntitySystem]
         private static void Destroy(this PathfindingComponent self)
         {
             self.Name = string.Empty;
-            
-            Recast.RecastClear(self.navMesh);
-            
-            self.navMesh = IntPtr.Zero;
+            self.navMesh = null;
         }
         
         public static void Find(this PathfindingComponent self, float3 start, float3 target, List<float3> result)
         {
-            if (self.navMesh == IntPtr.Zero)
+            if (self.navMesh == null)
             {
                 self.Fiber().Debug("寻路| Find 失败 pathfinding ptr is zero");
                 throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
             }
 
-            self.StartPos[0] = -start.x;
-            self.StartPos[1] = start.y;
-            self.StartPos[2] = start.z;
+            RcVec3f startPos = new(-start.x, start.y, start.z);
+            RcVec3f endPos = new(-target.x, target.y, target.z);
 
-            self.EndPos[0] = -target.x;
-            self.EndPos[1] = target.y;
-            self.EndPos[2] = target.z;
-            //Log.Debug($"start find path: {self.GetParent<Unit>().Id}");
-            int n = Recast.RecastFind(self.navMesh, self.extents, self.StartPos, self.EndPos, self.Result);
-            if (n < 0)
+            long startRef;
+            long endRef;
+            RcVec3f startPt;
+            RcVec3f endPt;
+            
+            self.query.FindNearestPoly(startPos, self.extents, self.filter, out startRef, out startPt, out _);
+            self.query.FindNearestPoly(endPos, self.extents, self.filter, out endRef, out endPt, out _);
+            
+            self.query.FindPath(startRef, endRef, startPt, endPt, self.filter, ref self.polys, new DtFindPathOption(0, float.MaxValue));
+
+            if (0 >= self.polys.Count)
             {
-                throw new Exception($"find path error: {n}");
+                return;
             }
             
-            for (int i = 0; i < n; ++i)
+            // In case of partial path, make sure the end point is clamped to the last polygon.
+            RcVec3f epos = RcVec3f.Of(endPt.x, endPt.y, endPt.z);
+            if (self.polys[^1] != endRef)
             {
-                int index = i * 3;
-                result.Add(new float3(-self.Result[index], self.Result[index + 1], self.Result[index + 2]));
-            }
-            //Log.Debug($"finish find path: {self.GetParent<Unit>().Id} {result.ListToString()}");
-        }
-
-        public static void FindWithAdjust(this PathfindingComponent self, float3 start, float3 target, List<float3> result,float adjustRaduis)
-        {
-            self.Find(start, target, result);
-            for (int i = 0; i < result.Count; i++)
-            {
-                float3 adjust = self.FindRandomPointWithRaduis(result[i], adjustRaduis);
-                result[i] = adjust;
-            }
-        }
-        
-        public static float3 FindRandomPointWithRaduis(this PathfindingComponent self, float3 pos, float raduis)
-        {
-            if (self.navMesh == IntPtr.Zero)
-            {
-                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
+                DtStatus dtStatus = self.query.ClosestPointOnPoly(self.polys[^1], endPt, out RcVec3f closest, out bool _);
+                if (dtStatus.Succeeded())
+                {
+                    epos = closest;
+                }
             }
 
-            if (raduis > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f)
+            self.query.FindStraightPath(startPt, epos, self.polys, ref self.straightPath, PathfindingComponent.MAX_POLYS, DtNavMeshQuery.DT_STRAIGHTPATH_ALL_CROSSINGS);
+
+            for (int i = 0; i < self.straightPath.Count; ++i)
             {
-                throw new Exception($"pathfinding raduis is too large，cur: {raduis}, max: {PathfindingComponent.FindRandomNavPosMaxRadius}");
+                RcVec3f pos = self.straightPath[i].pos;
+                result.Add(new float3(-pos.x, pos.y, pos.z));
             }
-            
-            int degrees = RandomGenerator.RandomNumber(0, 360);
-            float r = RandomGenerator.RandomNumber(0, (int) (raduis * 1000)) / 1000f;
-
-            float x = r * math.cos(math.radians(degrees)); 
-            float z = r * math.sin(math.radians(degrees));
-
-            float3 findpos = new float3(pos.x + x, pos.y, pos.z + z);
-
-            return self.RecastFindNearestPoint(findpos);
-        }
-        
-        /// <summary>
-        /// 以pos为中心各自在宽和高的左右 前后两个方向延伸
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="pos"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static float3 FindRandomPointWithRectangle(this PathfindingComponent self, float3 pos, int width, int height)
-        {
-            if (self.navMesh == IntPtr.Zero)
-            {
-                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
-            }
-
-            if (width > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f || height > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f)
-            {
-                throw new Exception($"pathfinding rectangle is too large，width: {width} height: {height}, max: {PathfindingComponent.FindRandomNavPosMaxRadius}");
-            }
-            
-            float x = RandomGenerator.RandomNumber(-width, width);
-            float z = RandomGenerator.RandomNumber(-height, height);
-
-            float3 findpos = new float3(pos.x + x, pos.y, pos.z + z);
-
-            return self.RecastFindNearestPoint(findpos);
-        }
-        
-        public static float3 FindRandomPointWithRaduis(this PathfindingComponent self, float3 pos, float minRadius, float maxRadius)
-        {
-            if (self.navMesh == IntPtr.Zero)
-            {
-                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
-            }
-
-            if (maxRadius > PathfindingComponent.FindRandomNavPosMaxRadius * 0.001f)
-            {
-                throw new Exception($"pathfinding raduis is too large，cur: {maxRadius}, max: {PathfindingComponent.FindRandomNavPosMaxRadius}");
-            }
-            
-            int degrees = RandomGenerator.RandomNumber(0, 360);
-            float r = RandomGenerator.RandomNumber((int) (minRadius * 1000), (int) (maxRadius * 1000)) / 1000f;
-
-            float x = r * math.cos(math.radians(degrees));
-            float z = r * math.sin(math.radians(degrees));
-
-            float3 findpos = new float3(pos.x + x, pos.y, pos.z + z);
-
-            return self.RecastFindNearestPoint(findpos);
-        }
-
-        public static float3 RecastFindNearestPoint(this PathfindingComponent self, float3 pos)
-        {
-            if (self.navMesh == IntPtr.Zero)
-            {
-                throw new Exception($"pathfinding ptr is zero: {self.Scene().Name}");
-            }
-
-            self.StartPos[0] = -pos.x;
-            self.StartPos[1] = pos.y;
-            self.StartPos[2] = pos.z;
-
-            int ret = Recast.RecastFindNearestPoint(self.navMesh, self.extents, self.StartPos, self.EndPos);
-            if (ret == 0)
-            {
-                throw new Exception($"RecastFindNearestPoint fail, 可能是位置配置有问题: sceneName:{self.Scene().Name} {pos} {self.Name} {self.GetParent<Unit>().Id} {self.GetParent<Unit>().ConfigId} {self.EndPos.ArrayToString()}");
-            }
-            
-            return new float3(-self.EndPos[0], self.EndPos[1], self.EndPos[2]);
         }
     }
 }

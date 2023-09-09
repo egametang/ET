@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using DotRecast.Core;
+using DotRecast.Detour;
 
 namespace ET
 {
@@ -8,18 +11,22 @@ namespace ET
     [ComponentOf(typeof(Unit))]
     public class PathfindingComponent: Entity, IAwake<string>, IDestroy
     {
+        public const int MAX_POLYS = 256;
+        
         public const int FindRandomNavPosMaxRadius = 15000;  // 随机找寻路点的最大半径
         
-        public float[] extents = {15, 10, 15};
+        public RcVec3f extents = new(15, 10, 15);
         
         public string Name;
         
-        public IntPtr navMesh;
+        public DtNavMesh navMesh;
+        
+        public List<long> polys = new(MAX_POLYS);
 
-        public float[] StartPos = new float[3];
+        public IDtQueryFilter filter;
+        
+        public List<StraightPathItem> straightPath = new();
 
-        public float[] EndPos = new float[3];
-
-        public float[] Result = new float[Recast.MAX_POLYS * 3];
+        public DtNavMeshQuery query;
     }
 }
