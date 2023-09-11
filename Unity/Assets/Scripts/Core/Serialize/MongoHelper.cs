@@ -9,13 +9,16 @@ namespace ET
 {
     public static class MongoHelper
     {
+        [StaticField]
+        private static readonly JsonWriterSettings defaultSettings = new() { OutputMode = JsonOutputMode.RelaxedExtendedJson };
+        
         public static string ToJson(object obj)
         {
             if (obj is ISupportInitialize supportInitialize)
             {
                 supportInitialize.BeginInit();
             }
-            return obj.ToJson(MongoSingleton.Instance.DefaultSettings);
+            return obj.ToJson(defaultSettings);
         }
 
         public static string ToJson(object obj, JsonWriterSettings settings)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using TrueSync;
@@ -14,8 +15,15 @@ namespace ET
             BsonSerializer.RegisterSerializer(typeof (T), new StructBsonSerialize<T>());
         }
         
-        public static void Register()
+        public static void Init()
         {
+            // 清理老的数据
+            MethodInfo createSerializerRegistry = typeof (BsonSerializer).GetMethod("CreateSerializerRegistry", BindingFlags.Static | BindingFlags.NonPublic);
+            createSerializerRegistry.Invoke(null, Array.Empty<object>());
+            MethodInfo registerIdGenerators = typeof (BsonSerializer).GetMethod("RegisterIdGenerators", BindingFlags.Static | BindingFlags.NonPublic);
+            registerIdGenerators.Invoke(null, Array.Empty<object>());
+            
+            
             // 自动注册IgnoreExtraElements
             ConventionPack conventionPack = new() { new IgnoreExtraElementsConvention(true) };
 

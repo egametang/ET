@@ -30,9 +30,8 @@ namespace ET
         {
             WinPeriod.Init();
 
-            World.Instance.AddSingleton<MongoSingleton>();
-            // 注册Mongo type，mongo驱动是放在static字段中，假如需要清理，可以在MongoSingleton Destroy中清理
-            MongoRegister.Register();
+            // 注册Mongo type
+            MongoRegister.Init();
 
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
