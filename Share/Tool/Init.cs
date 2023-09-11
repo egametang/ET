@@ -25,8 +25,7 @@ namespace ET.Server
                 
                 World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (Init).Assembly });
                 World.Instance.AddSingleton<EventSystem>();
-                
-                MongoHelper.Register();
+                World.Instance.AddSingleton<MongoSingleton>();
                 
                 ETTask.ExceptionHandler += Log.Error;
                 
