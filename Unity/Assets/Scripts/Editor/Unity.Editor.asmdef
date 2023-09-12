@@ -9,7 +9,8 @@
         "HybridCLR.Editor",
         "Unity.Model",
         "Unity.Hotfix",
-        "YooAsset"
+        "YooAsset",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [
         "Editor"
