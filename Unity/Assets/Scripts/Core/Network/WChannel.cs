@@ -24,16 +24,8 @@ namespace ET
         
         public IPEndPoint RemoteAddress { get; set; }
 
-        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancellationTokenSource = new();
         
-        private ILog Log
-        {
-            get
-            {
-                return this.Service.Log;
-            }
-        }
-
         public WChannel(long id, HttpListenerWebSocketContext webSocketContext, WService service)
         {
             this.Service = service;

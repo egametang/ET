@@ -30,14 +30,6 @@ namespace ET
 				this.Id = value;
 			}
 		}
-
-		private ILog Log
-		{
-			get
-			{
-				return this.Service.Log;
-			}
-		}
 		
 		public uint RemoteConn { get; set; }
 

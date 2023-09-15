@@ -11,7 +11,7 @@ namespace ET
             {
                 case ConsoleMode.ReloadConfig:
                     contex.Parent.RemoveComponent<ModeContex>();
-                    fiber.Console("C must have config name, like: C UnitConfig");
+                    Log.Console("C must have config name, like: C UnitConfig");
                     break;
                 default:
                     string[] ss = content.Split(" ");
@@ -20,11 +20,11 @@ namespace ET
                     Type type = CodeTypes.Instance.GetType($"ET.{category}");
                     if (type == null)
                     {
-                        fiber.Console($"reload config but not find {category}");
+                        Log.Console($"reload config but not find {category}");
                         return;
                     }
                     await ConfigLoader.Instance.Reload(type);
-                    fiber.Console($"reload config {configName} finish!");
+                    Log.Console($"reload config {configName} finish!");
                     break;
             }
             

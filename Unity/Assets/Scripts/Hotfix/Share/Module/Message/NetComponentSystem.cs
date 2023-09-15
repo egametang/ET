@@ -10,7 +10,7 @@ namespace ET
         [EntitySystem]
         private static void Awake(this NetComponent self, IPEndPoint address)
         {
-            self.AService = new TService(address, ServiceType.Outer, self.Fiber().Log);
+            self.AService = new KService(address, ServiceType.Outer);
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
@@ -19,7 +19,7 @@ namespace ET
         [EntitySystem]
         private static void Awake(this NetComponent self, AddressFamily addressFamily)
         {
-            self.AService = new TService(addressFamily, ServiceType.Outer, self.Fiber().Log);
+            self.AService = new KService(addressFamily, ServiceType.Outer);
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }

@@ -46,7 +46,7 @@ namespace ET
 
         public Socket Socket;
 
-        public KService(IPEndPoint ipEndPoint, ServiceType serviceType, ILog log): base(log)
+        public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
@@ -70,7 +70,7 @@ namespace ET
             NetworkHelper.SetSioUdpConnReset(this.Socket);
         }
 
-        public KService(AddressFamily addressFamily, ServiceType serviceType, ILog log): base(log)
+        public KService(AddressFamily addressFamily, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;

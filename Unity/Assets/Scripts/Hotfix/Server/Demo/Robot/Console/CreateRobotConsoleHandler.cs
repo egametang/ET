@@ -13,7 +13,7 @@ namespace ET.Server
             {
                 case ConsoleMode.CreateRobot:
                 {
-                    fiber.Console("CreateRobot args error!");
+                    Log.Console("CreateRobot args error!");
                     break;
                 }
                 default:
@@ -31,7 +31,7 @@ namespace ET.Server
                     for (int i = 0; i < options.Num; ++i)
                     {
                         await robotManagerComponent.NewRobot($"Robot_{i}");
-                        fiber.Console($"create robot {i}");
+                        Log.Console($"create robot {i}");
                         await timerComponent.WaitAsync(2000);
                     }
                     break;

@@ -9,7 +9,11 @@ namespace ET
         private const int DebugLevel = 2;
         private const int InfoLevel = 3;
         private const int WarningLevel = 4;
-        
+
+        private static ILog GetLog()
+        {
+            return Fiber.Instance != null? Fiber.Instance.Log : Logger.Instance.Log;
+        }
         
         [Conditional("DEBUG")]
         public static void Debug(string msg)
@@ -18,7 +22,8 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Debug(msg);
+
+            GetLog().Debug(msg);
         }
         
         [Conditional("DEBUG")]
@@ -29,7 +34,7 @@ namespace ET
                 return;
             }
             StackTrace st = new(1, true);
-            Logger.Instance.Log.Trace($"{msg}\n{st}");
+            GetLog().Trace($"{msg}\n{st}");
         }
 
         public static void Info(string msg)
@@ -38,7 +43,7 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Info(msg);
+            GetLog().Info(msg);
         }
 
         public static void TraceInfo(string msg)
@@ -48,7 +53,7 @@ namespace ET
                 return;
             }
             StackTrace st = new(1, true);
-            Logger.Instance.Log.Trace($"{msg}\n{st}");
+            GetLog().Trace($"{msg}\n{st}");
         }
 
         public static void Warning(string msg)
@@ -57,18 +62,18 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Warning(msg);
+            GetLog().Warning(msg);
         }
 
         public static void Error(string msg)
         {
             StackTrace st = new(1, true);
-            Logger.Instance.Log.Error($"{msg}\n{st}");
+            GetLog().Error($"{msg}\n{st}");
         }
 
         public static void Error(Exception e)
         {
-            Logger.Instance.Log.Error(e.ToString());
+            GetLog().Error(e.ToString());
         }
         
         public static void Console(string msg)
@@ -77,7 +82,7 @@ namespace ET
             {
                 System.Console.WriteLine(msg);
             }
-            Logger.Instance.Log.Debug(msg);
+            GetLog().Debug(msg);
         }
 
 #if DOTNET
@@ -88,7 +93,7 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Trace(ref message);
+            GetLog().Trace(ref message);
         }
         [Conditional("DEBUG")]
         public static void Warning(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
@@ -97,7 +102,7 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Warning(ref message);
+            GetLog().Warning(ref message);
         }
 
         public static void Info(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
@@ -106,7 +111,7 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Info(ref message);
+            GetLog().Info(ref message);
         }
         [Conditional("DEBUG")]
         public static void Debug(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
@@ -115,12 +120,12 @@ namespace ET
             {
                 return;
             }
-            Logger.Instance.Log.Debug(ref message);
+            GetLog().Debug(ref message);
         }
 
         public static void Error(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {
-            Logger.Instance.Log.Error(ref message);
+            GetLog().Error(ref message);
         }
 #endif
     }

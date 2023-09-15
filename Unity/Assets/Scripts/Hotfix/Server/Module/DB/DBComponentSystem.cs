@@ -131,7 +131,7 @@ namespace ET.Server
 		    Fiber fiber = self.Fiber();
 		    if (entity == null)
 		    {
-			    fiber.Error($"save entity is null: {typeof (T).FullName}");
+			    Log.Error($"save entity is null: {typeof (T).FullName}");
 
 			    return;
 		    }
@@ -152,7 +152,7 @@ namespace ET.Server
 		    Fiber fiber = self.Fiber();
 		    if (entity == null)
 		    {
-			    fiber.Error($"save entity is null: {typeof (T).FullName}");
+			    Log.Error($"save entity is null: {typeof (T).FullName}");
 
 			    return;
 		    }
@@ -173,7 +173,7 @@ namespace ET.Server
 		    Fiber fiber = self.Fiber();
 		    if (entities == null)
 		    {
-			    fiber.Error($"save entity is null");
+			    Log.Error($"save entity is null");
 			    return;
 		    }
 

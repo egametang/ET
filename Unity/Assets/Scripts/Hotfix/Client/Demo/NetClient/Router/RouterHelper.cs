@@ -16,7 +16,7 @@ namespace ET.Client
                 throw new Exception($"get router fail: {root.Id} {address}");
             }
             
-            root.Fiber().Info($"get router: {recvLocalConn} {routerAddress}");
+            Log.Info($"get router: {recvLocalConn} {routerAddress}");
 
             Session routerSession = root.GetComponent<NetComponent>().Create(routerAddress, address, recvLocalConn);
             routerSession.AddComponent<PingComponent>();
@@ -27,14 +27,14 @@ namespace ET.Client
         
         public static async ETTask<(uint, IPEndPoint)> GetRouterAddress(Scene root, IPEndPoint address, uint localConn, uint remoteConn)
         {
-            root.Fiber().Info($"start get router address: {root.Id} {address} {localConn} {remoteConn}");
+            Log.Info($"start get router address: {root.Id} {address} {localConn} {remoteConn}");
             //return (RandomHelper.RandUInt32(), address);
             RouterAddressComponent routerAddressComponent = root.GetComponent<RouterAddressComponent>();
             IPEndPoint routerInfo = routerAddressComponent.GetAddress();
             
             uint recvLocalConn = await Connect(root, routerInfo, address, localConn, remoteConn);
             
-            root.Fiber().Info($"finish get router address: {root.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
+            Log.Info($"finish get router address: {root.Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
             return (recvLocalConn, routerInfo);
         }
 
@@ -57,7 +57,7 @@ namespace ET.Client
             byte[] addressBytes = realAddress.ToString().ToByteArray();
             Array.Copy(addressBytes, 0, sendCache, 13, addressBytes.Length);
             Fiber fiber = root.Fiber;
-            fiber.Info($"router connect: {connectId} {localConn} {remoteConn} {routerAddress} {realAddress}");
+            Log.Info($"router connect: {connectId} {localConn} {remoteConn} {routerAddress} {realAddress}");
                 
             EndPoint recvIPEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
@@ -70,7 +70,7 @@ namespace ET.Client
                 {
                     if (--count < 0)
                     {
-                        fiber.Error($"router connect timeout fail! {localConn} {remoteConn} {routerAddress} {realAddress}");
+                        Log.Error($"router connect timeout fail! {localConn} {remoteConn} {routerAddress} {realAddress}");
                         return 0;
                     }
                     lastSendTimer = timeNow;
@@ -86,20 +86,20 @@ namespace ET.Client
                     int messageLength = socket.ReceiveFrom(recvCache, ref recvIPEndPoint);
                     if (messageLength != 9)
                     {
-                        fiber.Error($"router connect error1: {connectId} {messageLength} {localConn} {remoteConn} {routerAddress} {realAddress}");
+                        Log.Error($"router connect error1: {connectId} {messageLength} {localConn} {remoteConn} {routerAddress} {realAddress}");
                         continue;
                     }
 
                     byte flag = recvCache[0];
                     if (flag != KcpProtocalType.RouterReconnectACK && flag != KcpProtocalType.RouterACK)
                     {
-                        fiber.Error($"router connect error2: {connectId} {synFlag} {flag} {localConn} {remoteConn} {routerAddress} {realAddress}");
+                        Log.Error($"router connect error2: {connectId} {synFlag} {flag} {localConn} {remoteConn} {routerAddress} {realAddress}");
                         continue;
                     }
 
                     uint recvRemoteConn = BitConverter.ToUInt32(recvCache, 1);
                     uint recvLocalConn = BitConverter.ToUInt32(recvCache, 5);
-                    fiber.Info($"router connect finish: {connectId} {recvRemoteConn} {recvLocalConn} {localConn} {remoteConn} {routerAddress} {realAddress}");
+                    Log.Info($"router connect finish: {connectId} {recvRemoteConn} {recvLocalConn} {localConn} {remoteConn} {routerAddress} {realAddress}");
                     return recvLocalConn;
                 }
             }

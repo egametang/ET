@@ -17,7 +17,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Destroy(this MessageLocationSender self)
         {
-            self.Fiber().Debug($"actor location remove: {self.Id}");
+            Log.Debug($"actor location remove: {self.Id}");
             self.LastSendOrRecvTime = 0;
             self.ActorId = default;
             self.Error = 0;

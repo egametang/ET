@@ -28,7 +28,7 @@ namespace ET
             // 一个协程队列一帧处理超过100个,说明比较多了,打个warning,检查一下是否够正常
             if (level == 100)
             {
-                self.Fiber().Warning($"too much coroutine level: {coroutineLockType} {key}");
+                Log.Warning($"too much coroutine level: {coroutineLockType} {key}");
             }
 
             self.nextFrameRun.Enqueue((coroutineLockType, key, level));

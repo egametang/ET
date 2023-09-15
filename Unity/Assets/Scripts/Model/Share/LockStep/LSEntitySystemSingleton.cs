@@ -94,7 +94,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    entity.Fiber().Error(e);
+                    Log.Error(e);
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    entity.Fiber().Error(e);
+                    Log.Error(e);
                 }
             }
         }

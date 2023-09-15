@@ -66,12 +66,11 @@ namespace ET
 
         public void Handle(Session session, object message)
         {
-            Fiber fiber = session.Fiber();
             List<MessageSessionDispatcherInfo> actions;
             ushort opcode = OpcodeType.Instance.GetOpcode(message.GetType());
             if (!this.handlers.TryGetValue(opcode, out actions))
             {
-                fiber.Error($"消息没有处理: {opcode} {message}");
+                Log.Error($"消息没有处理: {opcode} {message}");
                 return;
             }
 
@@ -89,7 +88,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    fiber.Error(e);
+                    Log.Error(e);
                 }
             }
         }

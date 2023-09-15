@@ -51,11 +51,13 @@ namespace ET
                 {
                     continue;
                 }
-                
+
+                Fiber.Instance = fiber;
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
                 fiber.LateUpdate();
                 SynchronizationContext.SetSynchronizationContext(null);
+                Fiber.Instance = null;
 
                 this.idQueue.Enqueue(id);
 

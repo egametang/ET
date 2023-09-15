@@ -28,14 +28,6 @@ namespace ET
 
 		private readonly byte[] sendCache = new byte[Packet.OpcodeLength + Packet.ActorIdLength];
 		
-		private ILog Log
-		{
-			get
-			{
-				return this.Service.Log;
-			}
-		}
-
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
 		{
 			this.Service.Queue.Enqueue(new TArgs() {ChannelId = this.Id, SocketAsyncEventArgs = e});

@@ -24,14 +24,13 @@ namespace ET.Client
 
         private static async ETTask GetAllRouter(this RouterAddressComponent self)
         {
-            Fiber fiber = self.Fiber();
             string url = $"http://{self.RouterManagerHost}:{self.RouterManagerPort}/get_router?v={RandomGenerator.RandUInt32()}";
-            fiber.Debug($"start get router info: {url}");
+            Log.Debug($"start get router info: {url}");
             string routerInfo = await HttpClientHelper.Get(url);
-            fiber.Debug($"recv router info: {routerInfo}");
+            Log.Debug($"recv router info: {routerInfo}");
             HttpGetRouterResponse httpGetRouterResponse = MongoHelper.FromJson<HttpGetRouterResponse>(routerInfo);
             self.Info = httpGetRouterResponse;
-            fiber.Debug($"start get router info finish: {MongoHelper.ToJson(httpGetRouterResponse)}");
+            Log.Debug($"start get router info finish: {MongoHelper.ToJson(httpGetRouterResponse)}");
             
             // 打乱顺序
             RandomGenerator.BreakRank(self.Info.Routers);

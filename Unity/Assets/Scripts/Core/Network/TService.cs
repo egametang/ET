@@ -32,12 +32,12 @@ namespace ET
 
 		public ConcurrentQueue<TArgs> Queue = new();
 
-		public TService(AddressFamily addressFamily, ServiceType serviceType, ILog log): base(log)
+		public TService(AddressFamily addressFamily, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
 		}
 
-		public TService(IPEndPoint ipEndPoint, ServiceType serviceType, ILog log): base(log)
+		public TService(IPEndPoint ipEndPoint, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
 			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
