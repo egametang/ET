@@ -2,8 +2,8 @@
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.BenchmarkServer)]
-    public class NetComponentOnReadInvoker_BenchmarkServer: AInvokeHandler<NetComponentOnRead>
+    [Invoke((long)SceneType.BenchmarkClient)]
+    public class NetComponentOnReadInvoker_BenchmarkClient: AInvokeHandler<NetComponentOnRead>
     {
         public override void Handle(NetComponentOnRead args)
         {
@@ -12,14 +12,10 @@ namespace ET.Server
             // 根据消息接口判断是不是Actor消息，不同的接口做不同的处理,比如需要转发给Chat Scene，可以做一个IChatMessage接口
             switch (message)
             {
-                case ISessionMessage:
+                case IResponse response:
                 {
-                    MessageSessionDispatcher.Instance.Handle(session, message);
+                    session.OnResponse(response);
                     break;
-                }
-                default:
-                {
-                    throw new Exception($"not found handler: {message}");
                 }
             }
         }

@@ -3,14 +3,14 @@
 namespace ET.Server
 {
     [Invoke((long)SceneType.Gate)]
-    public class NetComponentOnReadInvoker_Gate: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_Gate: AInvokeHandler<NetComponentOnRead>
     {
-        public override void Handle(NetOuterComponentOnRead args)
+        public override void Handle(NetComponentOnRead args)
         {
             HandleAsync(args).Coroutine();
         }
 
-        private async ETTask HandleAsync(NetOuterComponentOnRead args)
+        private async ETTask HandleAsync(NetComponentOnRead args)
         {
             Session session = args.Session;
             object message = args.Message;

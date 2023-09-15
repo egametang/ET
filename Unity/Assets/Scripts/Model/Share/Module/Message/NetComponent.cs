@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace ET
 {
-    public struct NetOuterComponentOnRead
+    public struct NetComponentOnRead
     {
         public Session Session;
         public object Message;

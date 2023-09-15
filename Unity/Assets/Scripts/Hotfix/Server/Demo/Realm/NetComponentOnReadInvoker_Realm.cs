@@ -3,9 +3,9 @@
 namespace ET.Server
 {
     [Invoke((long)SceneType.Realm)]
-    public class NetComponentOnReadInvoker_Realm: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_Realm: AInvokeHandler<NetComponentOnRead>
     {
-        public override void Handle(NetOuterComponentOnRead args)
+        public override void Handle(NetComponentOnRead args)
         {
             Session session = args.Session;
             object message = args.Message;

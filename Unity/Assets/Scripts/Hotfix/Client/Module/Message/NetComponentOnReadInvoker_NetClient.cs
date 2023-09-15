@@ -3,9 +3,9 @@
 namespace ET.Client
 {
     [Invoke((long)SceneType.NetClient)]
-    public class NetComponentOnReadInvoker_NetClient: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_NetClient: AInvokeHandler<NetComponentOnRead>
     {
-        public override void Handle(NetOuterComponentOnRead args)
+        public override void Handle(NetComponentOnRead args)
         {
             Session session = args.Session;
             object message = args.Message;
