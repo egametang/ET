@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -135,7 +136,10 @@ namespace ET
         {
             self.LastSendTime = TimeInfo.Instance.ClientNow();
             LogMsg.Instance.Debug(self.Fiber(), message);
-            self.AService.Send(self.Id, actorId, message as MessageObject);
+
+            (ushort opcode, MemoryBuffer memoryBuffer) = MessageSerializeHelper.ToMemoryBuffer(self.AService, actorId, message);
+            
+            self.AService.Send(self.Id, memoryBuffer);
         }
     }
 

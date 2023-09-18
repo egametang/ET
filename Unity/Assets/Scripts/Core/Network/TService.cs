@@ -157,7 +157,7 @@ namespace ET
 			this.idChannels.Remove(id);
 		}
 
-		public override void Send(long channelId, ActorId actorId, MessageObject message)
+		public override void Send(long channelId, MemoryBuffer memoryBuffer)
 		{
 			try
 			{
@@ -168,7 +168,7 @@ namespace ET
 					return;
 				}
 				
-				aChannel.Send(actorId, message);
+				aChannel.Send(memoryBuffer);
 			}
 			catch (Exception e)
 			{

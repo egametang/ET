@@ -39,5 +39,9 @@
       <ProjectReference Include="..\..\Share\Share.SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Core\Serialize\" />
+    </ItemGroup>
 
 </Project>

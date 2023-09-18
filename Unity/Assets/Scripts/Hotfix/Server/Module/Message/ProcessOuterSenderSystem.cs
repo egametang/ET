@@ -42,7 +42,7 @@ namespace ET.Server
             self.AService.Dispose();
         }
 
-        private static void OnRead(this ProcessOuterSender self, long channelId, ActorId actorId, object message)
+        private static void OnRead(this ProcessOuterSender self, long channelId, MemoryBuffer memoryBuffer)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -51,6 +51,8 @@ namespace ET.Server
             }
             
             session.LastRecvTime = TimeInfo.Instance.ClientFrameTime();
+
+            (ActorId actorId, object message) = MessageSerializeHelper.ToMessage(self.AService, memoryBuffer);
             
             if (message is IResponse response)
             {

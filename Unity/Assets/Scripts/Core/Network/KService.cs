@@ -468,7 +468,7 @@ namespace ET
             Log.Info($"channel send fin: {localConn} {remoteConn} {address} {error}");
         }
         
-        public override void Send(long channelId, ActorId actorId, MessageObject message)
+        public override void Send(long channelId, MemoryBuffer memoryBuffer)
         {
             KChannel channel = this.Get(channelId);
             if (channel == null)
@@ -476,7 +476,7 @@ namespace ET
                 return;
             }
             
-            channel.Send(actorId, message);
+            channel.Send(memoryBuffer);
         }
 
         public override void Update()

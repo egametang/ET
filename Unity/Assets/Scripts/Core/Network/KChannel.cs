@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 
 namespace ET
 {
@@ -15,7 +14,7 @@ namespace ET
 
 		private Kcp kcp { get; set; }
 
-		private readonly Queue<MessageInfo> waitSendMessages = new();
+		private readonly Queue<MemoryBuffer> waitSendMessages = new();
 		
 		public readonly uint CreateTime;
 
@@ -163,8 +162,8 @@ namespace ET
 					break;
 				}
 				
-				MessageInfo buffer = this.waitSendMessages.Dequeue();
-				this.Send(buffer.ActorId, buffer.MessageObject);
+				MemoryBuffer buffer = this.waitSendMessages.Dequeue();
+				this.Send(buffer);
 			}
 		}
 
@@ -250,7 +249,7 @@ namespace ET
 			this.Service.AddToUpdate(nextUpdateTime, this.Id);
 		}
 
-		public unsafe void HandleRecv(byte[] date, int offset, int length)
+		public void HandleRecv(byte[] date, int offset, int length)
 		{
 			if (this.IsDisposed)
 			{
@@ -384,27 +383,13 @@ namespace ET
 			}
 		}
 
-        private void KcpSend(ActorId actorId, MemoryBuffer memoryStream)
+        private void KcpSend(MemoryBuffer memoryStream)
 		{
 			if (this.IsDisposed)
 			{
 				return;
 			}
 			
-			switch (this.Service.ServiceType)
-			{
-				case ServiceType.Inner:
-				{
-					memoryStream.GetBuffer().WriteTo(0, actorId);
-					break;
-				}
-				case ServiceType.Outer:
-				{
-					// 外网不需要发送actorId，跳过
-					memoryStream.Seek(Packet.ActorIdLength, SeekOrigin.Begin);
-					break;
-				}
-			}
 			int count = (int) (memoryStream.Length - memoryStream.Position);
 
 			// 超出maxPacketSize需要分片
@@ -437,18 +422,13 @@ namespace ET
 			this.Service.AddToUpdate(0, this.Id);
 		}
 		
-		public void Send(ActorId actorId, MessageObject message)
+		public void Send(MemoryBuffer memoryBuffer)
 		{
 			if (!this.IsConnected)
 			{
-				MessageInfo messageInfo = new() { ActorId = actorId, MessageObject = message };
-				this.waitSendMessages.Enqueue(messageInfo);
+				this.waitSendMessages.Enqueue(memoryBuffer);
 				return;
 			}
-
-			MemoryBuffer stream = this.Service.Fetch();
-			MessageSerializeHelper.MessageToStream(stream, message);
-			message.Dispose();
 
 			if (this.kcp == null)
 			{
@@ -477,40 +457,16 @@ namespace ET
 				return;
 			}
 
-			this.KcpSend(actorId, stream);
+			this.KcpSend(memoryBuffer);
 			
-			this.Service.Recycle(stream);
+			this.Service.Recycle(memoryBuffer);
 		}
 		
 		private void OnRead(MemoryBuffer memoryStream)
 		{
 			try
 			{
-				long channelId = this.Id;
-				object message = null;
-				ActorId actorId = default;
-				switch (this.Service.ServiceType)
-				{
-					case ServiceType.Outer:
-					{
-						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
-						Type type = OpcodeType.Instance.GetType(opcode);
-						message = MessageSerializeHelper.Deserialize(type, memoryStream);
-						break;
-					}
-					case ServiceType.Inner:
-					{
-						byte[] buffer = memoryStream.GetBuffer();
-						actorId.Process = BitConverter.ToInt32(buffer, Packet.ActorIdIndex);
-						actorId.Fiber = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 4);
-						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 8);
-						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
-						Type type = OpcodeType.Instance.GetType(opcode);
-						message = MessageSerializeHelper.Deserialize(type, memoryStream);
-						break;
-					}
-				}
-				this.Service.ReadCallback(channelId, actorId, message);
+				this.Service.ReadCallback(this.Id, memoryStream);
 			}
 			catch (Exception e)
 			{

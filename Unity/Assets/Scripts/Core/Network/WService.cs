@@ -131,14 +131,14 @@ namespace ET
             }
         }
 
-        public override void Send(long channelId, ActorId actorId, MessageObject message)
+        public override void Send(long channelId, MemoryBuffer memoryBuffer)
         {
             this.channels.TryGetValue(channelId, out WChannel channel);
             if (channel == null)
             {
                 return;
             }
-            channel.Send(message);
+            channel.Send(memoryBuffer);
         }
     }
 }

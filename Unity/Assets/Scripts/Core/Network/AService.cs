@@ -8,7 +8,7 @@ namespace ET
     public abstract class AService: IDisposable
     {
         public Action<long, IPEndPoint> AcceptCallback;
-        public Action<long, ActorId, object> ReadCallback;
+        public Action<long, MemoryBuffer> ReadCallback;
         public Action<long, int> ErrorCallback;
         
         public long Id { get; set; }
@@ -70,7 +70,7 @@ namespace ET
 
         public abstract void Create(long id, string address);
 
-        public abstract void Send(long channelId, ActorId actorId, MessageObject message);
+        public abstract void Send(long channelId, MemoryBuffer memoryBuffer);
 
         public virtual (uint, uint) GetChannelConn(long channelId)
         {

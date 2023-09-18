@@ -63,7 +63,7 @@ namespace ET
             }
         }
         
-        private static void OnRead(this NetComponent self, long channelId, ActorId actorId, object message)
+        private static void OnRead(this NetComponent self, long channelId, MemoryBuffer memoryBuffer)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -71,6 +71,8 @@ namespace ET
                 return;
             }
             session.LastRecvTime = TimeInfo.Instance.ClientNow();
+            
+            (ActorId _, object message) = MessageSerializeHelper.ToMessage(self.AService, memoryBuffer);
             
             LogMsg.Instance.Debug(self.Fiber(), message);
             
