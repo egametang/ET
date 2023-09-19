@@ -124,7 +124,7 @@ namespace ET
 			this.idChannels.Add(channel.Id, channel);
 		}
 		
-		private TChannel Get(long id)
+		public TChannel Get(long id)
 		{
 			TChannel channel = null;
 			this.idChannels.TryGetValue(id, out channel);

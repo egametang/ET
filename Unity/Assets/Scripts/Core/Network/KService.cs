@@ -44,44 +44,25 @@ namespace ET
             }
         }
 
-        public Socket Socket;
+        public IKcpTransport Socket;
 
         public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
-            this.Socket = new Socket(ipEndPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                this.Socket.SendBufferSize = Kcp.OneM * 64;
-                this.Socket.ReceiveBufferSize = Kcp.OneM * 64;
-            }
-            
-
-            try
-            {
-                this.Socket.Bind(ipEndPoint);
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"bind error: {ipEndPoint}", e);
-            }
-
-            NetworkHelper.SetSioUdpConnReset(this.Socket);
+            this.Socket = new UdpTransport(ipEndPoint);
         }
 
         public KService(AddressFamily addressFamily, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
-            this.Socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
-
-            NetworkHelper.SetSioUdpConnReset(this.Socket);
+            this.Socket = new UdpTransport(addressFamily);
         }
 
         // 保存所有的channel
-        private readonly Dictionary<long, KChannel> localConnChannels = new Dictionary<long, KChannel>();
-        private readonly Dictionary<long, KChannel> waitAcceptChannels = new Dictionary<long, KChannel>();
+        private readonly Dictionary<long, KChannel> localConnChannels = new();
+        private readonly Dictionary<long, KChannel> waitAcceptChannels = new();
 
         private readonly byte[] cache = new byte[2048];
         
@@ -90,14 +71,14 @@ namespace ET
 
         
 
-        private readonly List<long> cacheIds = new List<long>();
+        private readonly List<long> cacheIds = new();
         
 
         // 下帧要更新的channel
-        private readonly HashSet<long> updateIds = new HashSet<long>();
+        private readonly HashSet<long> updateIds = new();
         // 下次时间更新的channel
         private readonly NativeCollection.MultiMap<long, long> timeId = new();
-        private readonly List<long> timeOutTime = new List<long>();
+        private readonly List<long> timeOutTime = new();
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;
 
@@ -126,7 +107,7 @@ namespace ET
                 this.Remove(channelId);
             }
 
-            this.Socket.Close();
+            this.Socket.Dispose();
             this.Socket = null;
         }
 
@@ -157,9 +138,9 @@ namespace ET
                 return;
             }
 
-            while (this.Socket != null && this.Socket.Available > 0)
+            while (this.Socket != null && this.Socket.Available() > 0)
             {
-                int messageLength = this.Socket.ReceiveFrom_NonAlloc(this.cache, ref this.ipEndPoint);
+                int messageLength = this.Socket.Recv(this.cache, ref this.ipEndPoint);
 
                 // 长度小于1，不是正常的消息
                 if (messageLength < 1)
@@ -225,7 +206,7 @@ namespace ET
                                 buffer.WriteTo(1, kChannel.LocalConn);
                                 buffer.WriteTo(5, kChannel.RemoteConn);
                                 buffer.WriteTo(9, connectId);
-                                this.Socket.SendTo(buffer, 0, 13, SocketFlags.None, this.ipEndPoint);
+                                this.Socket.Send(buffer, 0, 13, this.ipEndPoint);
                             }
                             catch (Exception e)
                             {
@@ -293,7 +274,7 @@ namespace ET
                                 buffer.WriteTo(5, kChannel.RemoteConn);
                                 Log.Info($"kservice syn: {kChannel.Id} {remoteConn} {localConn}");
                                 
-                                this.Socket.SendTo(buffer, 0, 9, SocketFlags.None, kChannel.RemoteAddress);
+                                this.Socket.Send(buffer, 0, 9, kChannel.RemoteAddress);
                             }
                             catch (Exception e)
                             {
@@ -457,7 +438,7 @@ namespace ET
                 buffer.WriteTo(9, (uint) error);
                 for (int i = 0; i < times; ++i)
                 {
-                    this.Socket.SendTo(buffer, 0, 13, SocketFlags.None, address);
+                    this.Socket.Send(buffer, 0, 13, address);
                 }
             }
             catch (Exception e)
