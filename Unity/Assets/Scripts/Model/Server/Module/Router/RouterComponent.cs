@@ -9,7 +9,8 @@ namespace ET.Server
     [ComponentOf(typeof(Scene))]
     public class RouterComponent: Entity, IAwake<IPEndPoint, string>, IDestroy, IUpdate
     {
-        public IKcpTransport OuterSocket;
+        public IKcpTransport OuterUdp;
+        public IKcpTransport OuterTcp;
         public IKcpTransport InnerSocket;
         public EndPoint IPEndPoint = new IPEndPoint(IPAddress.Any, 0);
 

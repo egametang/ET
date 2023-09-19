@@ -50,14 +50,14 @@ namespace ET
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
-            this.Socket = new UdpTransport(ipEndPoint);
+            this.Socket = new TcpTransport(ipEndPoint);
         }
 
         public KService(AddressFamily addressFamily, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = DateTime.UtcNow.Ticks;
-            this.Socket = new UdpTransport(addressFamily);
+            this.Socket = new TcpTransport(addressFamily);
         }
 
         // 保存所有的channel
@@ -141,7 +141,6 @@ namespace ET
             while (this.Socket != null && this.Socket.Available() > 0)
             {
                 int messageLength = this.Socket.RecvNonAlloc(this.cache, ref this.ipEndPoint);
-
                 // 长度小于1，不是正常的消息
                 if (messageLength < 1)
                 {
@@ -471,6 +470,8 @@ namespace ET
             this.Recv();
 
             this.UpdateChannel(timeNow);
+            
+            this.Socket.Update();
         }
 
         private void CheckWaitAcceptChannel(uint timeNow)

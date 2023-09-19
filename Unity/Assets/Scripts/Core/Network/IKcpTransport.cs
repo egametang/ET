@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ET
@@ -87,14 +88,16 @@ namespace ET
         public TcpTransport(AddressFamily addressFamily)
         {
             this.tService = new TService(addressFamily, ServiceType.Outer);
+            this.tService.ErrorCallback = this.OnError;
+            this.tService.ReadCallback = this.OnRead;
         }
         
         public TcpTransport(IPEndPoint ipEndPoint)
         {
             this.tService = new TService(ipEndPoint, ServiceType.Outer);
-            this.tService.AcceptCallback += this.OnAccept;
-            this.tService.ErrorCallback += this.OnError;
-            this.tService.ReadCallback += this.OnRead;
+            this.tService.AcceptCallback = this.OnAccept;
+            this.tService.ErrorCallback = this.OnError;
+            this.tService.ReadCallback = this.OnRead;
         }
 
         private void OnAccept(long id, IPEndPoint ipEndPoint)
@@ -105,6 +108,7 @@ namespace ET
 
         private void OnError(long id, int error)
         {
+            Log.Error($"IKcpTransport error: {error}");
             this.idEndpoints.RemoveByKey(id);
         }
         
@@ -116,7 +120,16 @@ namespace ET
         public void Send(byte[] bytes, int index, int length, EndPoint endPoint)
         {
             long channelId = this.idEndpoints.GetKeyByValue(endPoint);
-            this.tService.Send(channelId, new MemoryBuffer(bytes, index, length));
+            if (channelId == 0)
+            {
+                channelId = IdGenerater.Instance.GenerateInstanceId();
+                this.tService.Create(channelId, endPoint.ToString());
+                this.idEndpoints.Add(channelId, endPoint);
+            }
+            MemoryBuffer memoryBuffer = this.tService.Fetch();
+            memoryBuffer.Write(bytes, index, length);
+            memoryBuffer.Seek(0, SeekOrigin.Begin);
+            this.tService.Send(channelId, memoryBuffer);
         }
 
         public int Recv(byte[] buffer, ref EndPoint endPoint)
@@ -132,9 +145,10 @@ namespace ET
             {
                 return 0;
             }
+            
             endPoint = channel.RemoteAddress;
             int count = memoryBuffer.Read(buffer);
-            memoryBuffer.Dispose();
+            this.tService.Recycle(memoryBuffer);
             return count;
         }
 

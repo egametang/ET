@@ -84,11 +84,11 @@ namespace ET
 
 						if (this.service.ServiceType == ServiceType.Inner)
 						{
-							memoryBuffer.Seek(Packet.MessageIndex, SeekOrigin.Begin);
+							memoryBuffer.Seek(Packet.ActorIdLength, SeekOrigin.Begin);
 						}
 						else
 						{
-							memoryBuffer.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
+							memoryBuffer.Seek(0, SeekOrigin.Begin);
 						}
 
 						this.state = ParserState.PacketSize;

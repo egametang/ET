@@ -347,7 +347,6 @@ namespace ET
 				MemoryBuffer memoryBuffer = this.readMemory;
 				this.readMemory = null;
 				this.OnRead(memoryBuffer);
-				this.Service.Recycle(memoryBuffer);
 			}
 		}
 

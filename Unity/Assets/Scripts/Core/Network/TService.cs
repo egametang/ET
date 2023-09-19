@@ -186,7 +186,6 @@ namespace ET
 				}
 				
 				SocketAsyncEventArgs e = result.SocketAsyncEventArgs;
-
 				if (e == null)
 				{
 					switch (result.Op)
