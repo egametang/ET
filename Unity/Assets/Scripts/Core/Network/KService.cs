@@ -140,7 +140,7 @@ namespace ET
 
             while (this.Socket != null && this.Socket.Available() > 0)
             {
-                int messageLength = this.Socket.Recv(this.cache, ref this.ipEndPoint);
+                int messageLength = this.Socket.RecvNonAlloc(this.cache, ref this.ipEndPoint);
 
                 // 长度小于1，不是正常的消息
                 if (messageLength < 1)

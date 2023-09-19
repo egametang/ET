@@ -10,6 +10,7 @@ namespace ET
     {
         void Send(byte[] bytes, int index, int length, EndPoint endPoint);
         int Recv(byte[] buffer, ref EndPoint endPoint);
+        int RecvNonAlloc(byte[] buffer, ref EndPoint endPoint);
         int Available();
         void Update();
     }
@@ -49,8 +50,13 @@ namespace ET
         {
             this.socket.SendTo(bytes, index, length, SocketFlags.None, endPoint);
         }
-
+        
         public int Recv(byte[] buffer, ref EndPoint endPoint)
+        {
+            return this.socket.ReceiveFrom(buffer, ref endPoint);
+        }
+
+        public int RecvNonAlloc(byte[] buffer, ref EndPoint endPoint)
         {
             return this.socket.ReceiveFrom_NonAlloc(buffer, ref endPoint);
         }
@@ -114,6 +120,11 @@ namespace ET
         }
 
         public int Recv(byte[] buffer, ref EndPoint endPoint)
+        {
+            return RecvNonAlloc(buffer, ref endPoint);
+        }
+
+        public int RecvNonAlloc(byte[] buffer, ref EndPoint endPoint)
         {
             (long channelId, MemoryBuffer memoryBuffer) = this.channelRecvDatas.Dequeue();
             TChannel channel = this.tService.Get(channelId);
