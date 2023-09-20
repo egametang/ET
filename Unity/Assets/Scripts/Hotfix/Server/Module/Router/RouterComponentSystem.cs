@@ -22,6 +22,7 @@ namespace ET.Server
         private static void Destroy(this RouterComponent self)
         {
             self.OuterUdp.Dispose();
+            self.OuterTcp.Dispose();
             self.InnerSocket.Dispose();
             self.OuterNodes.Clear();
             self.IPEndPoint = null;
