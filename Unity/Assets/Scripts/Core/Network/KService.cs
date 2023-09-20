@@ -66,7 +66,7 @@ namespace ET
 
         private readonly byte[] cache = new byte[2048];
         
-        private EndPoint ipEndPoint = new IPEndPointNonAlloc(IPAddress.Any, 0);
+        private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
 
         
@@ -170,7 +170,6 @@ namespace ET
                             string realAddress = null;
                             remoteConn = BitConverter.ToUInt32(this.cache, 1);
                             localConn = BitConverter.ToUInt32(this.cache, 5);
-                            uint connectId = BitConverter.ToUInt32(this.cache, 9);
 
                             this.localConnChannels.TryGetValue(localConn, out kChannel);
                             if (kChannel == null)
@@ -204,8 +203,7 @@ namespace ET
                                 buffer.WriteTo(0, KcpProtocalType.RouterReconnectACK);
                                 buffer.WriteTo(1, kChannel.LocalConn);
                                 buffer.WriteTo(5, kChannel.RemoteConn);
-                                buffer.WriteTo(9, connectId);
-                                this.Socket.Send(buffer, 0, 13, this.ipEndPoint);
+                                this.Socket.Send(buffer, 0, 9, this.ipEndPoint);
                             }
                             catch (Exception e)
                             {

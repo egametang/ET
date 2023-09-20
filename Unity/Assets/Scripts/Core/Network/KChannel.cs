@@ -51,7 +51,7 @@ namespace ET
 			}
 			set
 			{
-				this.remoteAddress = new IPEndPointNonAlloc(value.Address, value.Port);
+				this.remoteAddress = value;
 			}
 		}
 

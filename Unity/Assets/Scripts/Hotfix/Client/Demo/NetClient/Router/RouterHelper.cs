@@ -49,13 +49,21 @@ namespace ET.Client
             byte[] sendCache = new byte[512];
             byte[] recvCache = new byte[512];
 
-            uint synFlag = localConn == 0? KcpProtocalType.RouterSYN : KcpProtocalType.RouterReconnectSYN;
+            uint synFlag;
+            if (localConn == 0)
+            {
+                synFlag = KcpProtocalType.RouterSYN;
+                localConn = RandomGenerator.RandUInt32();
+            }
+            else
+            {
+                synFlag = KcpProtocalType.RouterReconnectSYN;
+            }
             sendCache.WriteTo(0, synFlag);
             sendCache.WriteTo(1, localConn);
             sendCache.WriteTo(5, remoteConn);
-            sendCache.WriteTo(9, connectId);
             byte[] addressBytes = realAddress.ToString().ToByteArray();
-            Array.Copy(addressBytes, 0, sendCache, 13, addressBytes.Length);
+            Array.Copy(addressBytes, 0, sendCache, 9, addressBytes.Length);
             Fiber fiber = root.Fiber;
             Log.Info($"router connect: {connectId} {localConn} {remoteConn} {routerAddress} {realAddress}");
                 
@@ -75,7 +83,7 @@ namespace ET.Client
                     }
                     lastSendTimer = timeNow;
                     // 发送
-                    socket.SendTo(sendCache, 0, addressBytes.Length + 13, SocketFlags.None, routerAddress);
+                    socket.SendTo(sendCache, 0, addressBytes.Length + 9, SocketFlags.None, routerAddress);
                 }
                     
                 await fiber.TimerComponent.WaitFrameAsync();

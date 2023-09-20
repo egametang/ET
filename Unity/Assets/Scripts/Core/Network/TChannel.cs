@@ -24,7 +24,19 @@ namespace ET
 
 		private readonly PacketParser parser;
 		
-		public IPEndPoint RemoteAddress { get; set; }
+		private IPEndPoint remoteAddress;
+
+		public IPEndPoint RemoteAddress
+		{
+			get
+			{
+				return this.remoteAddress;
+			}
+			set
+			{
+				this.remoteAddress = value;
+			}
+		}
 
 		private readonly byte[] sendCache = new byte[Packet.OpcodeLength + Packet.ActorIdLength];
 		
