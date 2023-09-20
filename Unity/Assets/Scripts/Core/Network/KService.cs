@@ -40,24 +40,49 @@ namespace ET
         {
             get
             {
-                return (uint)((DateTime.UtcNow.Ticks - this.startTime) / 10000);
+                return (uint)(TimeInfo.Instance.ClientFrameTime() - this.startTime);
             }
         }
 
-        public IKcpTransport Socket;
+        public IKcpTransport Transport;
+        
+        public NetworkProtocol Protocol { get; set; }
 
-        public KService(IPEndPoint ipEndPoint, ServiceType serviceType)
+        public KService(IPEndPoint ipEndPoint, ServiceType serviceType, NetworkProtocol protocol)
         {
             this.ServiceType = serviceType;
-            this.startTime = DateTime.UtcNow.Ticks;
-            this.Socket = new TcpTransport(ipEndPoint);
+            this.startTime = TimeInfo.Instance.ClientFrameTime();
+            this.Protocol = protocol;
+            switch (this.Protocol)
+            {
+                case NetworkProtocol.TCP:
+                    this.Transport = new TcpTransport(ipEndPoint);
+                    break;
+                case NetworkProtocol.UDP:
+                    this.Transport = new UdpTransport(ipEndPoint);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"{this.Protocol}");
+            }
         }
 
-        public KService(AddressFamily addressFamily, ServiceType serviceType)
+        public KService(AddressFamily addressFamily, ServiceType serviceType, NetworkProtocol protocol)
         {
             this.ServiceType = serviceType;
-            this.startTime = DateTime.UtcNow.Ticks;
-            this.Socket = new TcpTransport(addressFamily);
+            this.startTime = TimeInfo.Instance.ClientFrameTime();
+            this.Transport = new TcpTransport(addressFamily);
+            this.Protocol = protocol;
+            switch (this.Protocol)
+            {
+                case NetworkProtocol.TCP:
+                    this.Transport = new TcpTransport(addressFamily);
+                    break;
+                case NetworkProtocol.UDP:
+                    this.Transport = new UdpTransport(addressFamily);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"{this.Protocol}");
+            }
         }
 
         // 保存所有的channel
@@ -67,8 +92,6 @@ namespace ET
         private readonly byte[] cache = new byte[2048];
         
         private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-
         
 
         private readonly List<long> cacheIds = new();
@@ -90,7 +113,7 @@ namespace ET
         
         public override bool IsDisposed()
         {
-            return this.Socket == null;
+            return this.Transport == null;
         }
 
         public override void Dispose()
@@ -107,8 +130,8 @@ namespace ET
                 this.Remove(channelId);
             }
 
-            this.Socket.Dispose();
-            this.Socket = null;
+            this.Transport.Dispose();
+            this.Transport = null;
         }
 
         public override (uint, uint) GetChannelConn(long channelId)
@@ -133,14 +156,14 @@ namespace ET
 
         private void Recv()
         {
-            if (this.Socket == null)
+            if (this.Transport == null)
             {
                 return;
             }
 
-            while (this.Socket != null && this.Socket.Available() > 0)
+            while (this.Transport != null && this.Transport.Available() > 0)
             {
-                int messageLength = this.Socket.RecvNonAlloc(this.cache, ref this.ipEndPoint);
+                int messageLength = this.Transport.Recv(this.cache, ref this.ipEndPoint);
                 // 长度小于1，不是正常的消息
                 if (messageLength < 1)
                 {
@@ -149,7 +172,6 @@ namespace ET
 
                 // accept
                 byte flag = this.cache[0];
-                
                 // conn从100开始，如果为1，2，3则是特殊包
                 uint remoteConn = 0;
                 uint localConn = 0;
@@ -203,7 +225,7 @@ namespace ET
                                 buffer.WriteTo(0, KcpProtocalType.RouterReconnectACK);
                                 buffer.WriteTo(1, kChannel.LocalConn);
                                 buffer.WriteTo(5, kChannel.RemoteConn);
-                                this.Socket.Send(buffer, 0, 9, this.ipEndPoint);
+                                this.Transport.Send(buffer, 0, 9, this.ipEndPoint);
                             }
                             catch (Exception e)
                             {
@@ -269,9 +291,9 @@ namespace ET
                                 buffer.WriteTo(0, KcpProtocalType.ACK);
                                 buffer.WriteTo(1, kChannel.LocalConn);
                                 buffer.WriteTo(5, kChannel.RemoteConn);
-                                Log.Info($"kservice syn: {kChannel.Id} {remoteConn} {localConn}");
+                                Log.Info($"kservice syn: {kChannel.Id} {remoteConn} {localConn} {kChannel.RemoteAddress}");
                                 
-                                this.Socket.Send(buffer, 0, 9, kChannel.RemoteAddress);
+                                this.Transport.Send(buffer, 0, 9, kChannel.RemoteAddress);
                             }
                             catch (Exception e)
                             {
@@ -344,20 +366,17 @@ namespace ET
                                 this.Disconnect(localConn, remoteConn, ErrorCore.ERR_KcpNotFoundChannel, this.ipEndPoint, 1);
                                 break;
                             }
-                            
                             // 校验remoteConn，防止第三方攻击
                             if (kChannel.RemoteConn != remoteConn)
                             {
                                 break;
                             }
-
                             // 对方发来msg，说明kchannel连接完成
                             if (!kChannel.IsConnected)
                             {
                                 kChannel.IsConnected = true;
                                 this.waitAcceptChannels.Remove(kChannel.RemoteConn);
                             }
-
                             kChannel.HandleRecv(this.cache, 5, messageLength - 5);
                             break;
                     }
@@ -406,7 +425,7 @@ namespace ET
 
             kChannel.Error = error;
             
-            Log.Info($"kservice remove channel: {id} {kChannel.LocalConn} {kChannel.RemoteConn} {error}");
+            Log.Trace($"kservice remove channel: {id} {kChannel.LocalConn} {kChannel.RemoteConn} {error}");
             this.localConnChannels.Remove(kChannel.LocalConn);
             if (this.waitAcceptChannels.TryGetValue(kChannel.RemoteConn, out KChannel waitChannel))
             {
@@ -423,7 +442,7 @@ namespace ET
         {
             try
             {
-                if (this.Socket == null)
+                if (this.Transport == null)
                 {
                     return;
                 }
@@ -435,7 +454,7 @@ namespace ET
                 buffer.WriteTo(9, (uint) error);
                 for (int i = 0; i < times; ++i)
                 {
-                    this.Socket.Send(buffer, 0, 13, address);
+                    this.Transport.Send(buffer, 0, 13, address);
                 }
             }
             catch (Exception e)
@@ -453,7 +472,6 @@ namespace ET
             {
                 return;
             }
-            
             channel.Send(memoryBuffer);
         }
 
@@ -469,7 +487,7 @@ namespace ET
 
             this.UpdateChannel(timeNow);
             
-            this.Socket.Update();
+            this.Transport.Update();
         }
 
         private void CheckWaitAcceptChannel(uint timeNow)

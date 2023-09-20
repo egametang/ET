@@ -19,19 +19,22 @@ namespace ET.Client
                 routerAddressComponent =
                         root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                 await routerAddressComponent.Init();
-                root.AddComponent<NetComponent, AddressFamily>(routerAddressComponent.RouterManagerIPAddress.AddressFamily);
+                root.AddComponent<NetComponent, AddressFamily, NetworkProtocol>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, NetworkProtocol.TCP);
                 root.GetComponent<FiberParentComponent>().ParentFiberId = request.OwnerFiberId;
             }
+
+            NetComponent netComponent = root.GetComponent<NetComponent>();
+            
             IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);
 
             R2C_Login r2CLogin;
-            using (Session session = await RouterHelper.CreateRouterSession(root, realmAddress))
+            using (Session session = await RouterHelper.CreateRouterSession(netComponent, realmAddress))
             {
                 r2CLogin = (R2C_Login)await session.Call(new C2R_Login() { Account = account, Password = password });
             }
 
             // 创建一个gate Session,并且保存到SessionComponent中
-            Session gateSession = await RouterHelper.CreateRouterSession(root, NetworkHelper.ToIPEndPoint(r2CLogin.Address));
+            Session gateSession = await RouterHelper.CreateRouterSession(netComponent, NetworkHelper.ToIPEndPoint(r2CLogin.Address));
             gateSession.AddComponent<ClientSessionErrorComponent>();
             root.AddComponent<SessionComponent>().Session = gateSession;
             G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId });

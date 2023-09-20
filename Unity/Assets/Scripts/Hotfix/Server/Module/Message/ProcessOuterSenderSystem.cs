@@ -19,7 +19,7 @@ namespace ET.Server
                 }
                 case NetworkProtocol.KCP:
                 {
-                    self.AService = new KService(address, ServiceType.Inner);
+                    self.AService = new KService(address, ServiceType.Inner, NetworkProtocol.UDP);
                     break;
                 }
             }

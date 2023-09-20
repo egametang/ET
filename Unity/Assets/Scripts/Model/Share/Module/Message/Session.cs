@@ -138,7 +138,6 @@ namespace ET
             LogMsg.Instance.Debug(self.Fiber(), message);
 
             (ushort opcode, MemoryBuffer memoryBuffer) = MessageSerializeHelper.ToMemoryBuffer(self.AService, actorId, message);
-            
             self.AService.Send(self.Id, memoryBuffer);
         }
     }

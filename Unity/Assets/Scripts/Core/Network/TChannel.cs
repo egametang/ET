@@ -135,7 +135,6 @@ namespace ET
 			}
 			
 			this.sendBuffer.Write(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
-			
 			if (!this.isSending)
 			{
 				this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});

@@ -14,7 +14,7 @@ namespace ET
         public long Id { get; set; }
         
         public ServiceType ServiceType { get; protected set; }
-
+        
         private const int MaxMemoryBufferSize = 1024;
 		
         private readonly Queue<MemoryBuffer> pool = new();

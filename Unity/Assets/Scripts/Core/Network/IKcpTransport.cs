@@ -11,7 +11,6 @@ namespace ET
     {
         void Send(byte[] bytes, int index, int length, EndPoint endPoint);
         int Recv(byte[] buffer, ref EndPoint endPoint);
-        int RecvNonAlloc(byte[] buffer, ref EndPoint endPoint);
         int Available();
         void Update();
     }
@@ -57,11 +56,6 @@ namespace ET
             return this.socket.ReceiveFrom(buffer, ref endPoint);
         }
 
-        public int RecvNonAlloc(byte[] buffer, ref EndPoint endPoint)
-        {
-            return this.socket.ReceiveFrom_NonAlloc(buffer, ref endPoint);
-        }
-
         public int Available()
         {
             return this.socket.Available;
@@ -83,7 +77,7 @@ namespace ET
 
         private readonly DoubleMap<long, EndPoint> idEndpoints = new();
 
-        private readonly Queue<(long, MemoryBuffer)> channelRecvDatas = new();
+        private readonly Queue<(EndPoint, MemoryBuffer)> channelRecvDatas = new();
 
         private readonly Dictionary<long, long> readWriteTime = new();
 
@@ -125,7 +119,8 @@ namespace ET
         {
             long timeNow = TimeInfo.Instance.ClientFrameTime();
             this.readWriteTime[id] = timeNow;
-            channelRecvDatas.Enqueue((id, memoryBuffer));
+            TChannel channel = this.tService.Get(id);
+            channelRecvDatas.Enqueue((channel.RemoteAddress, memoryBuffer));
         }
         
         public void Send(byte[] bytes, int index, int length, EndPoint endPoint)
@@ -154,14 +149,8 @@ namespace ET
 
         public int RecvNonAlloc(byte[] buffer, ref EndPoint endPoint)
         {
-            (long channelId, MemoryBuffer memoryBuffer) = this.channelRecvDatas.Dequeue();
-            TChannel channel = this.tService.Get(channelId);
-            if (channel == null)
-            {
-                return 0;
-            }
-            
-            endPoint = channel.RemoteAddress;
+            (EndPoint e, MemoryBuffer memoryBuffer) = this.channelRecvDatas.Dequeue();
+            endPoint = e;
             int count = memoryBuffer.Read(buffer);
             this.tService.Recycle(memoryBuffer);
             return count;

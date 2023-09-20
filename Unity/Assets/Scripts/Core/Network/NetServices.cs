@@ -9,6 +9,7 @@ namespace ET
         TCP,
         KCP,
         Websocket,
+        UDP,
     }
 
     public class NetServices: Singleton<NetServices>, ISingletonAwake

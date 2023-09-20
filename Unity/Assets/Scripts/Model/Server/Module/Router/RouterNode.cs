@@ -15,6 +15,7 @@ namespace ET.Server
         public IPEndPoint InnerIpEndPoint;
         public IPEndPoint OuterIpEndPoint;
         public IPEndPoint SyncIpEndPoint;
+        public IKcpTransport KcpTransport;
         public uint OuterConn;
         public uint InnerConn;
         public long LastRecvOuterTime;

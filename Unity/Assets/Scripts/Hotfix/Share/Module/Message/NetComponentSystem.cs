@@ -8,18 +8,18 @@ namespace ET
     public static partial class NetComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this NetComponent self, IPEndPoint address)
+        private static void Awake(this NetComponent self, IPEndPoint address, NetworkProtocol protocol)
         {
-            self.AService = new KService(address, ServiceType.Outer);
+            self.AService = new KService(address, ServiceType.Outer, protocol);
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }
         
         [EntitySystem]
-        private static void Awake(this NetComponent self, AddressFamily addressFamily)
+        private static void Awake(this NetComponent self, AddressFamily addressFamily, NetworkProtocol protocol)
         {
-            self.AService = new KService(addressFamily, ServiceType.Outer);
+            self.AService = new KService(addressFamily, ServiceType.Outer, protocol);
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }

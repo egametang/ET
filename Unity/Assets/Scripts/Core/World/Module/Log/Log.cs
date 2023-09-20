@@ -93,7 +93,8 @@ namespace ET
             {
                 return;
             }
-            GetLog().Trace(ref message);
+            StackTrace st = new(1, true);
+            GetLog().Trace($"{message.ToStringAndClear()}\n{st.ToString()}");
         }
         [Conditional("DEBUG")]
         public static void Warning(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
