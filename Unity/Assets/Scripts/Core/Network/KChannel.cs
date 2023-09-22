@@ -333,19 +333,12 @@ namespace ET
 						}
 					}
 				}
-
-
-				switch (this.Service.ServiceType)
-				{
-					case ServiceType.Inner:
-						this.readMemory.Seek(Packet.ActorIdLength + Packet.OpcodeLength, SeekOrigin.Begin);
-						break;
-					case ServiceType.Outer:
-						this.readMemory.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
-						break;
-				}
+				
 				MemoryBuffer memoryBuffer = this.readMemory;
 				this.readMemory = null;
+				
+				memoryBuffer.Seek(0, SeekOrigin.Begin);
+				
 				this.OnRead(memoryBuffer);
 			}
 		}

@@ -76,18 +76,20 @@ namespace ET
             {
                 case ServiceType.Outer:
                 {
-                    ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+                    memoryStream.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
+                    ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), 0);
                     Type type = OpcodeType.Instance.GetType(opcode);
                     message = Deserialize(type, memoryStream);
                     break;
                 }
                 case ServiceType.Inner:
                 {
+                    memoryStream.Seek(Packet.ActorIdLength + Packet.OpcodeLength, SeekOrigin.Begin);
                     byte[] buffer = memoryStream.GetBuffer();
                     actorId.Process = BitConverter.ToInt32(buffer, Packet.ActorIdIndex);
                     actorId.Fiber = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 4);
                     actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 8);
-                    ushort opcode = BitConverter.ToUInt16(buffer, Packet.OpcodeIndex);
+                    ushort opcode = BitConverter.ToUInt16(buffer, Packet.ActorIdLength);
                     Type type = OpcodeType.Instance.GetType(opcode);
                     message = Deserialize(type, memoryStream);
                     break;

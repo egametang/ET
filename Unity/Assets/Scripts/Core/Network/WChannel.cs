@@ -196,7 +196,7 @@ namespace ET
 
                     MemoryBuffer memoryBuffer = this.Service.Fetch(receiveCount);
                     memoryBuffer.SetLength(receiveCount);
-                    memoryBuffer.Seek(2, SeekOrigin.Begin);
+                    memoryBuffer.Seek(0, SeekOrigin.Begin);
                     Array.Copy(this.cache, 0, memoryBuffer.GetBuffer(), 0, receiveCount);
                     this.OnRead(memoryBuffer);
                 }
