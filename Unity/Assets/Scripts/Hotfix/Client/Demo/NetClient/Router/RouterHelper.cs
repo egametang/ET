@@ -41,96 +41,56 @@ namespace ET.Client
         // 向router申请
         private static async ETTask<uint> Connect(NetComponent netComponent, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
-            IKcpTransport iKcpTransport = null;
-            try
+            uint synFlag;
+            if (localConn == 0)
             {
-                NetworkProtocol protocol = ((KService)netComponent.AService).Protocol;
-                switch (protocol)
-                {
-                    case NetworkProtocol.TCP:
-                        iKcpTransport = new TcpTransport(routerAddress.AddressFamily);
-                        break;
-                    case NetworkProtocol.UDP:
-                        iKcpTransport = new UdpTransport(routerAddress.AddressFamily);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                int count = 20;
-                byte[] sendCache = new byte[512];
-                byte[] recvCache = new byte[512];
-
-                uint synFlag;
-                if (localConn == 0)
-                {
-                    synFlag = KcpProtocalType.RouterSYN;
-                    localConn = RandomGenerator.RandUInt32();
-                }
-                else
-                {
-                    synFlag = KcpProtocalType.RouterReconnectSYN;
-                }
-
-                sendCache.WriteTo(0, synFlag);
-                sendCache.WriteTo(1, localConn);
-                sendCache.WriteTo(5, remoteConn);
-                byte[] addressBytes = realAddress.ToString().ToByteArray();
-                Array.Copy(addressBytes, 0, sendCache, 9, addressBytes.Length);
-                Fiber fiber = netComponent.Fiber();
-                Log.Info($"router connect: {localConn} {remoteConn} {routerAddress} {realAddress}");
-
-                EndPoint recvIPEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-                long lastSendTimer = 0;
-
-                while (true)
-                {
-                    iKcpTransport.Update();
-                    
-                    long timeNow = TimeInfo.Instance.ClientFrameTime();
-                    if (timeNow - lastSendTimer > 300)
-                    {
-                        if (--count < 0)
-                        {
-                            Log.Error($"router connect timeout fail! {localConn} {remoteConn} {routerAddress} {realAddress}");
-                            return 0;
-                        }
-
-                        lastSendTimer = timeNow;
-                        // 发送
-                        iKcpTransport.Send(sendCache, 0, addressBytes.Length + 9, routerAddress);
-                    }
-
-                    await fiber.TimerComponent.WaitFrameAsync();
-                    
-                    // 接收
-                    if (iKcpTransport.Available() > 0)
-                    {
-                        int messageLength = iKcpTransport.Recv(recvCache, ref recvIPEndPoint);
-                        if (messageLength != 9)
-                        {
-                            Log.Error($"router connect error1: {messageLength} {localConn} {remoteConn} {routerAddress} {realAddress}");
-                            continue;
-                        }
-
-                        byte flag = recvCache[0];
-                        if (flag != KcpProtocalType.RouterReconnectACK && flag != KcpProtocalType.RouterACK)
-                        {
-                            Log.Error($"router connect error2: {synFlag} {flag} {localConn} {remoteConn} {routerAddress} {realAddress}");
-                            continue;
-                        }
-
-                        uint recvRemoteConn = BitConverter.ToUInt32(recvCache, 1);
-                        uint recvLocalConn = BitConverter.ToUInt32(recvCache, 5);
-                        Log.Info($"router connect finish: {recvRemoteConn} {recvLocalConn} {localConn} {remoteConn} {routerAddress} {realAddress}");
-                        return recvLocalConn;
-                    }
-                }
+                synFlag = KcpProtocalType.RouterSYN;
+                localConn = RandomGenerator.RandUInt32();
             }
-            finally
+            else
             {
-                iKcpTransport?.Dispose();
+                synFlag = KcpProtocalType.RouterReconnectSYN;
+            }
+
+            using RouterConnector routerConnector = netComponent.AddChildWithId<RouterConnector>(localConn);
+            
+            int count = 20;
+            byte[] sendCache = new byte[512];
+
+            sendCache.WriteTo(0, synFlag);
+            sendCache.WriteTo(1, localConn);
+            sendCache.WriteTo(5, remoteConn);
+            byte[] addressBytes = realAddress.ToString().ToByteArray();
+            Array.Copy(addressBytes, 0, sendCache, 9, addressBytes.Length);
+            TimerComponent timerComponent = netComponent.Fiber().TimerComponent;
+            Log.Info($"router connect: {localConn} {remoteConn} {routerAddress} {realAddress}");
+
+            long lastSendTimer = 0;
+
+            while (true)
+            {
+                long timeNow = TimeInfo.Instance.ClientFrameTime();
+                if (timeNow - lastSendTimer > 300)
+                {
+                    if (--count < 0)
+                    {
+                        Log.Error($"router connect timeout fail! {localConn} {remoteConn} {routerAddress} {realAddress}");
+                        return 0;
+                    }
+
+                    lastSendTimer = timeNow;
+                    // 发送
+                    routerConnector.Connect(sendCache, 0, addressBytes.Length + 9, routerAddress);
+                }
+
+                await timerComponent.WaitFrameAsync();
+                
+                if (routerConnector.LocalConn != localConn || routerConnector.RemoteConn != remoteConn)
+                {
+                    continue;
+                }
+
+                return routerConnector.LocalConn;
             }
         }
     }

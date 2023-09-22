@@ -225,18 +225,36 @@ namespace ET.Server
                     {
                         break;
                     }
-
+                    
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 1);
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 5);
                     string realAddress = self.Cache.ToStr(9, messageLength - 9);
 
+                    // innerconn会在ack的时候赋值，所以routersync过程绝对是routerNode.InnerConn绝对是0
+                    if (innerConn != 0)
+                    {
+                        Log.Warning($"kcp router syn status innerConn != 0: {outerConn} {innerConn}");
+                        break;
+                    }
+                    
                     RouterNode routerNode;
-
                     if (!self.OuterNodes.TryGetValue(outerConn, out routerNode))
                     {
-                        outerConn = NetServices.Instance.CreateConnectChannelId();
                         routerNode = self.New(realAddress, outerConn, innerConn, self.CloneAddress());
                         Log.Info($"router create: {realAddress} {outerConn} {innerConn} {routerNode.SyncIpEndPoint}");
+                    }
+
+                    if (routerNode.Status != RouterStatus.Sync)
+                    {
+                        Log.Warning($"kcp router syn status error: {outerConn} {innerConn} {routerNode.InnerConn}");
+                        break;
+                    }
+
+                    // innerconn会在ack的时候赋值，所以routersync过程绝对是routerNode.InnerConn绝对是0
+                    if (routerNode.InnerConn != innerConn)
+                    {
+                        Log.Warning($"kcp router syn status InnerConn != 0: {outerConn} {innerConn} {routerNode.InnerConn}");
+                        break;
                     }
 
                     if (++routerNode.RouterSyncCount > 40)

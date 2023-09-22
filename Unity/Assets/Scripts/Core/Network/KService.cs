@@ -110,6 +110,18 @@ namespace ET
 #else
         public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,200);
 #endif
+
+        private readonly Dictionary<uint, Action<byte, uint, uint>> routerAckCallback = new();
+
+        public void AddRouterAckCallback(uint id, Action<byte, uint, uint> action)
+        {
+            this.routerAckCallback.Add(id, action);
+        }
+        
+        public void RemoveRouterAckCallback(uint id)
+        {
+            this.routerAckCallback.Remove(id);
+        }
         
         public override bool IsDisposed()
         {
@@ -175,12 +187,23 @@ namespace ET
                 // conn从100开始，如果为1，2，3则是特殊包
                 uint remoteConn = 0;
                 uint localConn = 0;
-                
                 try
                 {
                     KChannel kChannel = null;
                     switch (flag)
                     {
+                        case KcpProtocalType.RouterACK:
+                        case KcpProtocalType.RouterReconnectACK:
+                        {
+                            remoteConn = BitConverter.ToUInt32(this.cache, 1);
+                            localConn = BitConverter.ToUInt32(this.cache, 5);
+
+                            if (this.routerAckCallback.TryGetValue(localConn, out var action))
+                            {
+                                action.Invoke(flag, localConn, remoteConn);
+                            }
+                            break;
+                        }
                         case KcpProtocalType.RouterReconnectSYN:
                         {
                             // 长度!=5，不是RouterReconnectSYN消息
