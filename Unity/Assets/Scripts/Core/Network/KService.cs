@@ -48,7 +48,7 @@ namespace ET
         
         public NetworkProtocol Protocol { get; set; }
 
-        public KService(IPEndPoint ipEndPoint, ServiceType serviceType, NetworkProtocol protocol)
+        public KService(IPEndPoint ipEndPoint, NetworkProtocol protocol, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = TimeInfo.Instance.ClientFrameTime();
@@ -66,7 +66,7 @@ namespace ET
             }
         }
 
-        public KService(AddressFamily addressFamily, ServiceType serviceType, NetworkProtocol protocol)
+        public KService(AddressFamily addressFamily, NetworkProtocol protocol, ServiceType serviceType)
         {
             this.ServiceType = serviceType;
             this.startTime = TimeInfo.Instance.ClientFrameTime();

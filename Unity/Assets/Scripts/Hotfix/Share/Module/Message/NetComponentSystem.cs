@@ -10,7 +10,7 @@ namespace ET
         [EntitySystem]
         private static void Awake(this NetComponent self, IPEndPoint address, NetworkProtocol protocol)
         {
-            self.AService = new KService(address, ServiceType.Outer, protocol);
+            self.AService = new KService(address, protocol, ServiceType.Outer);
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
@@ -19,7 +19,7 @@ namespace ET
         [EntitySystem]
         private static void Awake(this NetComponent self, AddressFamily addressFamily, NetworkProtocol protocol)
         {
-            self.AService = new KService(addressFamily, ServiceType.Outer, protocol);
+            self.AService = new KService(addressFamily, protocol, ServiceType.Outer);
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }
