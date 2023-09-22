@@ -7,7 +7,7 @@ namespace ET.Client
     public static partial class RouterHelper
     {
         // 注册router
-        public static async ETTask<Session> CreateRouterSession(NetComponent netComponent, IPEndPoint address)
+        public static async ETTask<Session> CreateRouterSession(this NetComponent netComponent, IPEndPoint address)
         {
             (uint recvLocalConn, IPEndPoint routerAddress) = await GetRouterAddress(netComponent, address, 0, 0);
 
@@ -25,7 +25,7 @@ namespace ET.Client
             return routerSession;
         }
         
-        public static async ETTask<(uint, IPEndPoint)> GetRouterAddress(NetComponent netComponent, IPEndPoint address, uint localConn, uint remoteConn)
+        public static async ETTask<(uint, IPEndPoint)> GetRouterAddress(this NetComponent netComponent, IPEndPoint address, uint localConn, uint remoteConn)
         {
             Log.Info($"start get router address: {netComponent.Root().Id} {address} {localConn} {remoteConn}");
             //return (RandomHelper.RandUInt32(), address);
@@ -39,7 +39,7 @@ namespace ET.Client
         }
 
         // 向router申请
-        private static async ETTask<uint> Connect(NetComponent netComponent, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
+        private static async ETTask<uint> Connect(this NetComponent netComponent, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
             uint synFlag;
             if (localConn == 0)
@@ -52,7 +52,9 @@ namespace ET.Client
                 synFlag = KcpProtocalType.RouterReconnectSYN;
             }
 
-            using RouterConnector routerConnector = netComponent.AddChildWithId<RouterConnector>(localConn);
+            // 注意，session也以localConn作为id，所以这里不能用localConn作为id
+            long id = (long)(((ulong)localConn << 32) | remoteConn);
+            using RouterConnector routerConnector = netComponent.AddChildWithId<RouterConnector>(id);
             
             int count = 20;
             byte[] sendCache = new byte[512];
@@ -85,12 +87,12 @@ namespace ET.Client
 
                 await timerComponent.WaitFrameAsync();
                 
-                if (routerConnector.LocalConn != localConn || routerConnector.RemoteConn != remoteConn)
+                if (routerConnector.Flag == 0)
                 {
                     continue;
                 }
 
-                return routerConnector.LocalConn;
+                return localConn;
             }
         }
     }

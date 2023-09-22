@@ -111,14 +111,14 @@ namespace ET
         public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,200);
 #endif
 
-        private readonly Dictionary<uint, Action<byte, uint, uint>> routerAckCallback = new();
+        private readonly Dictionary<long, Action<byte>> routerAckCallback = new();
 
-        public void AddRouterAckCallback(uint id, Action<byte, uint, uint> action)
+        public void AddRouterAckCallback(long id, Action<byte> action)
         {
             this.routerAckCallback.Add(id, action);
         }
         
-        public void RemoveRouterAckCallback(uint id)
+        public void RemoveRouterAckCallback(long id)
         {
             this.routerAckCallback.Remove(id);
         }
@@ -198,16 +198,17 @@ namespace ET
                             remoteConn = BitConverter.ToUInt32(this.cache, 1);
                             localConn = BitConverter.ToUInt32(this.cache, 5);
 
-                            if (this.routerAckCallback.TryGetValue(localConn, out var action))
+                            long id = (long)(((ulong)localConn << 32) | remoteConn);
+                            if (this.routerAckCallback.TryGetValue(id, out var action))
                             {
-                                action.Invoke(flag, localConn, remoteConn);
+                                action.Invoke(flag);
                             }
                             break;
                         }
                         case KcpProtocalType.RouterReconnectSYN:
                         {
                             // 长度!=5，不是RouterReconnectSYN消息
-                            if (messageLength != 13)
+                            if (messageLength != 9)
                             {
                                 break;
                             }

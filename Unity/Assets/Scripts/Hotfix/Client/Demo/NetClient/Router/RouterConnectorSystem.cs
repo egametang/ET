@@ -12,11 +12,9 @@ namespace ET.Client
         {
             NetComponent netComponent = self.GetParent<NetComponent>();
             KService kService = (KService)netComponent.AService;
-            kService.AddRouterAckCallback((uint)self.Id, (flag, local, remote) =>
+            kService.AddRouterAckCallback(self.Id, (flag) =>
             {
                 self.Flag = flag;
-                self.LocalConn = local;
-                self.RemoteConn = remote;
             });
         }
         [EntitySystem]
@@ -24,7 +22,7 @@ namespace ET.Client
         {
             NetComponent netComponent = self.GetParent<NetComponent>();
             KService kService = (KService)netComponent.AService;
-            kService.RemoveRouterAckCallback((uint)self.Id);
+            kService.RemoveRouterAckCallback(self.Id);
         }
 
         public static void Connect(this RouterConnector self, byte[] bytes, int index, int length, IPEndPoint ipEndPoint)
