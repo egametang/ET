@@ -79,19 +79,13 @@ namespace ET
                 }
                 ss.Remove(symbols);
             }
-            BuildHelper.ShowNotification($"EnableDefineSymbols {symbols} {enable}");
+            Log.Debug($"EnableDefineSymbols {symbols} {enable}");
             defines = string.Join(";", ss);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
         
-        public static void ShowNotification(string tips)
-        {
-            EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-            game?.ShowNotification(new GUIContent($"{tips}"));
-        }
-
         public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool clearFolder)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
