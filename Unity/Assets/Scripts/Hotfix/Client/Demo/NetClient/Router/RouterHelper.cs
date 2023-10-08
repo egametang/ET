@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Net;
-using System.Net.Sockets;
 
 namespace ET.Client
 {
     public static partial class RouterHelper
     {
         // 注册router
-        public static async ETTask<Session> CreateRouterSession(this NetComponent netComponent, IPEndPoint address)
+        public static async ETTask<Session> CreateRouterSession(this NetComponent netComponent, IPEndPoint address, string account, string password)
         {
-            (uint recvLocalConn, IPEndPoint routerAddress) = await GetRouterAddress(netComponent, address, 0, 0);
+            uint localConn = (uint)(account.GetLongHashCode() ^ password.GetLongHashCode() ^ RandomGenerator.RandUInt32());
+            (uint recvLocalConn, IPEndPoint routerAddress) = await GetRouterAddress(netComponent, address, localConn, 0);
 
             if (recvLocalConn == 0)
             {
@@ -32,7 +32,7 @@ namespace ET.Client
             RouterAddressComponent routerAddressComponent = netComponent.Root().GetComponent<RouterAddressComponent>();
             IPEndPoint routerInfo = routerAddressComponent.GetAddress();
             
-            uint recvLocalConn = await Connect(netComponent, routerInfo, address, localConn, remoteConn);
+            uint recvLocalConn = await netComponent.Connect(routerInfo, address, localConn, remoteConn);
             
             Log.Info($"finish get router address: {netComponent.Root().Id} {address} {localConn} {remoteConn} {recvLocalConn} {routerInfo}");
             return (recvLocalConn, routerInfo);
@@ -41,16 +41,7 @@ namespace ET.Client
         // 向router申请
         private static async ETTask<uint> Connect(this NetComponent netComponent, IPEndPoint routerAddress, IPEndPoint realAddress, uint localConn, uint remoteConn)
         {
-            uint synFlag;
-            if (localConn == 0)
-            {
-                synFlag = KcpProtocalType.RouterSYN;
-                localConn = RandomGenerator.RandUInt32();
-            }
-            else
-            {
-                synFlag = KcpProtocalType.RouterReconnectSYN;
-            }
+            uint synFlag = remoteConn == 0? KcpProtocalType.RouterSYN : KcpProtocalType.RouterReconnectSYN;
 
             // 注意，session也以localConn作为id，所以这里不能用localConn作为id
             long id = (long)(((ulong)localConn << 32) | remoteConn);

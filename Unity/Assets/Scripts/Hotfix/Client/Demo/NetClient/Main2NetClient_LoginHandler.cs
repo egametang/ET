@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace ET.Client
@@ -28,13 +29,13 @@ namespace ET.Client
             IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);
 
             R2C_Login r2CLogin;
-            using (Session session = await RouterHelper.CreateRouterSession(netComponent, realmAddress))
+            using (Session session = await netComponent.CreateRouterSession(realmAddress, account, password))
             {
                 r2CLogin = (R2C_Login)await session.Call(new C2R_Login() { Account = account, Password = password });
             }
 
             // 创建一个gate Session,并且保存到SessionComponent中
-            Session gateSession = await RouterHelper.CreateRouterSession(netComponent, NetworkHelper.ToIPEndPoint(r2CLogin.Address));
+            Session gateSession = await netComponent.CreateRouterSession(NetworkHelper.ToIPEndPoint(r2CLogin.Address), account, password);
             gateSession.AddComponent<ClientSessionErrorComponent>();
             root.AddComponent<SessionComponent>().Session = gateSession;
             G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId });
