@@ -20,7 +20,7 @@ namespace ET.Client
                 routerAddressComponent =
                         root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                 await routerAddressComponent.Init();
-                root.AddComponent<NetComponent, AddressFamily, NetworkProtocol>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, NetworkProtocol.TCP);
+                root.AddComponent<NetComponent, AddressFamily, NetworkProtocol>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, NetworkProtocol.UDP);
                 root.GetComponent<FiberParentComponent>().ParentFiberId = request.OwnerFiberId;
             }
 

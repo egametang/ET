@@ -18,7 +18,7 @@ namespace ET.Server
             //root.AddComponent<GateSessionKeyComponent>();
             //root.AddComponent<LocationProxyComponent>();
             //root.AddComponent<ActorLocationSenderComponent>();
-            root.AddComponent<NetComponent, IPEndPoint, NetworkProtocol>(StartSceneConfigCategory.Instance.Benchmark.OuterIPPort, NetworkProtocol.TCP);
+            root.AddComponent<NetComponent, IPEndPoint, NetworkProtocol>(StartSceneConfigCategory.Instance.Benchmark.OuterIPPort, NetworkProtocol.UDP);
             root.AddComponent<BenchmarkServerComponent>();
             await ETTask.CompletedTask;
         }
