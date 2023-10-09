@@ -60,8 +60,6 @@ namespace ET
                 Fiber.Instance = null;
 
                 this.idQueue.Enqueue(id);
-
-                Thread.Sleep(1);
             }
         }
 

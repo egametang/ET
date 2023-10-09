@@ -460,6 +460,7 @@ namespace ET
             }
             
             kChannel.Dispose();
+            this.Transport.OnError(id, error);
         }
 
         public void Disconnect(uint localConn, uint remoteConn, int error, EndPoint address, int times)

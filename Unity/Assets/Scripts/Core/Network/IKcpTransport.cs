@@ -13,6 +13,7 @@ namespace ET
         int Recv(byte[] buffer, ref EndPoint endPoint);
         int Available();
         void Update();
+        void OnError(long id, int error);
     }
 
     public class UdpTransport: IKcpTransport
@@ -65,6 +66,10 @@ namespace ET
         {
         }
 
+        public void OnError(long id, int error)
+        {
+        }
+
         public void Dispose()
         {
             this.socket?.Dispose();
@@ -107,9 +112,9 @@ namespace ET
             this.idEndpoints.Add(id, channel.RemoteAddress);
         }
 
-        private void OnError(long id, int error)
+        public void OnError(long id, int error)
         {
-            Log.Warning($"IKcpTransport tcp error: {error}");
+            Log.Warning($"IKcpTransport tcp error: {id} {error}");
             this.tService.Remove(id, error);
             this.idEndpoints.RemoveByKey(id);
             this.readWriteTime.Remove(id);
