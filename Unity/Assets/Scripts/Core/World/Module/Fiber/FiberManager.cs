@@ -126,5 +126,10 @@ namespace ET
             this.fibers.TryGetValue(id, out Fiber fiber);
             return fiber;
         }
+
+        public int Count()
+        {
+            return this.fibers.Count;
+        }
     }
 }

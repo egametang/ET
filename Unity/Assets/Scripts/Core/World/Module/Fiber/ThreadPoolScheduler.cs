@@ -28,8 +28,18 @@ namespace ET
 
         private void Loop()
         {
+            int count = 0;
             while (true)
             {
+                if (count == 0)
+                {
+                    count = this.fiberManager.Count() / this.threads.Count;
+                    Thread.Sleep(1);
+                    continue;
+                }
+
+                --count;
+                
                 if (this.fiberManager.IsDisposed())
                 {
                     return;
