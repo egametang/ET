@@ -31,11 +31,13 @@ namespace ET
             int count = 0;
             while (true)
             {
-                if (count == 0)
+                if (count <= 0)
                 {
-                    count = this.fiberManager.Count() / this.threads.Count;
                     Thread.Sleep(1);
-                    continue;
+                    
+                    int n = this.fiberManager.Count() / this.threads.Count;
+                    // count最小为1
+                    count = n > 1? n : 1;
                 }
 
                 --count;
