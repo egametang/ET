@@ -18,6 +18,7 @@ namespace ET.Server
         public IKcpTransport KcpTransport;
         public uint OuterConn;
         public uint InnerConn;
+        public uint ConnectId;
         public long LastRecvOuterTime;
         public long LastRecvInnerTime;
 

@@ -52,7 +52,7 @@ namespace ET.Client
                     
                     Log.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
 
-                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(netComponent, realAddress, localConn, remoteConn);
+                    (uint recvLocalConn, IPEndPoint routerAddress) = await netComponent.GetRouterAddress(realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
                         Log.Error($"get recvLocalConn fail: {root.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
@@ -61,8 +61,7 @@ namespace ET.Client
                     
                     Log.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
 
-                    realAddress = routerAddress;
-                    session.RemoteAddress = realAddress.ToString();
+                    session.RemoteAddress = routerAddress.ToString();
                     
                     session.LastRecvTime = TimeInfo.Instance.ClientNow();
                     

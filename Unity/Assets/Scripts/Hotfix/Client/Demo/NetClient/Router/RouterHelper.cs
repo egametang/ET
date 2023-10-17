@@ -50,11 +50,13 @@ namespace ET.Client
             int count = 20;
             byte[] sendCache = new byte[512];
 
+            uint connectId = RandomGenerator.RandUInt32();
             sendCache.WriteTo(0, synFlag);
             sendCache.WriteTo(1, localConn);
             sendCache.WriteTo(5, remoteConn);
+            sendCache.WriteTo(9, connectId);
             byte[] addressBytes = realAddress.ToString().ToByteArray();
-            Array.Copy(addressBytes, 0, sendCache, 9, addressBytes.Length);
+            Array.Copy(addressBytes, 0, sendCache, 13, addressBytes.Length);
             TimerComponent timerComponent = netComponent.Fiber().TimerComponent;
             Log.Info($"router connect: {localConn} {remoteConn} {routerAddress} {realAddress}");
 
@@ -73,7 +75,7 @@ namespace ET.Client
 
                     lastSendTimer = timeNow;
                     // 发送
-                    routerConnector.Connect(sendCache, 0, addressBytes.Length + 9, routerAddress);
+                    routerConnector.Connect(sendCache, 0, addressBytes.Length + 13, routerAddress);
                 }
 
                 await timerComponent.WaitFrameAsync();
