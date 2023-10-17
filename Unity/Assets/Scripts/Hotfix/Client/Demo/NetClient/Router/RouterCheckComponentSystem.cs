@@ -19,7 +19,7 @@ namespace ET.Client
             Fiber fiber = self.Fiber();
             Scene root = fiber.Root;
             
-            IPEndPoint realAddress = NetworkHelper.ToIPEndPoint(self.GetParent<Session>().RemoteAddress);
+            IPEndPoint realAddress = NetworkHelper.ToIPEndPoint(session.RemoteAddress);
             NetComponent netComponent = root.GetComponent<NetComponent>();
             
             while (true)
@@ -60,8 +60,6 @@ namespace ET.Client
                     }
                     
                     Log.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
-
-                    session.RemoteAddress = routerAddress.ToString();
                     
                     session.LastRecvTime = TimeInfo.Instance.ClientNow();
                     

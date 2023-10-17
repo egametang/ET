@@ -16,9 +16,6 @@ namespace ET.Server
 
         public byte[] Cache = new byte[1500];
 
-        // 已经连接成功的，虽然跟id一样，但是没有经过验证的不会加到这里
-        public Dictionary<uint, RouterNode> OuterNodes = new();
-
         public Queue<uint> checkTimeout = new();
 
         public long LastCheckTime = 0;
