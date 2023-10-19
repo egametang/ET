@@ -57,6 +57,7 @@ namespace ET.Client
             }
 
             string address = self.Info.Routers[self.RouterIndex++ % self.Info.Routers.Count];
+            Log.Info($"get router address: {self.RouterIndex - 1} {address}");
             string[] ss = address.Split(':');
             IPAddress ipAddress = IPAddress.Parse(ss[0]);
             if (self.RouterManagerIPAddress.AddressFamily == AddressFamily.InterNetworkV6)

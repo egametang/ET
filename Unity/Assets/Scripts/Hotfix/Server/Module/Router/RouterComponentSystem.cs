@@ -24,7 +24,6 @@ namespace ET.Server
             self.OuterUdp.Dispose();
             self.OuterTcp.Dispose();
             self.InnerSocket.Dispose();
-            self.OuterNodes.Clear();
             self.IPEndPoint = null;
         }
 
@@ -93,7 +92,8 @@ namespace ET.Server
             for (int i = 0; i < n; ++i)
             {
                 uint id = self.checkTimeout.Dequeue();
-                if (!self.OuterNodes.TryGetValue(id, out var node))
+                RouterNode node = self.GetChild<RouterNode>(id);
+                if (node == null)
                 {
                     continue;
                 }
@@ -154,22 +154,22 @@ namespace ET.Server
             {
                 case KcpProtocalType.RouterReconnectSYN:
                 {
-                    if (messageLength < 9)
+                    if (messageLength < 13)
                     {
                         break;
                     }
 
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 1);
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 5);
-                    string realAddress = self.Cache.ToStr(9, messageLength - 9);
-
-                    RouterNode routerNode;
+                    uint connectId = BitConverter.ToUInt32(self.Cache, 9);
+                    string realAddress = self.Cache.ToStr(13, messageLength - 13);
 
                     // RouterAck之后ConnectIdNodes会删除，加入到OuterNodes中来
-                    if (!self.OuterNodes.TryGetValue(outerConn, out routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Info($"router create reconnect: {self.IPEndPoint} {realAddress} {outerConn} {innerConn}");
-                        routerNode = self.New(realAddress, outerConn, innerConn, self.CloneAddress());
+                        routerNode = self.New(realAddress, outerConn, innerConn, connectId, self.CloneAddress());
                     }
                     
                     // 不是自己的，outerConn冲突, 直接break,也就是说这个软路由上有个跟自己outerConn冲突的连接，就不能连接了
@@ -186,13 +186,14 @@ namespace ET.Server
                         break;
                     }
 
-                    // 校验ip，连接过程中ip不能变化
-                    if (!Equals(routerNode.SyncIpEndPoint, self.IPEndPoint))
+                    // reconnect检查了InnerConn跟OuterConn，到这里肯定保证了是同一客户端, 如果connectid不一样，证明是两次不同的连接,可以删除老的连接
+                    if (routerNode.ConnectId != connectId)
                     {
-                        Log.Warning($"kcp router syn ip is diff1: {routerNode.SyncIpEndPoint} {(IPEndPoint) self.IPEndPoint}");
+                        Log.Warning($"kcp router router reconnect connectId diff, maybe router count too less: {connectId} {routerNode.ConnectId} {routerNode.SyncIpEndPoint} {(IPEndPoint) self.IPEndPoint}");
+                        self.OnError(routerNode.Id, ErrorCore.ERR_KcpRouterSame);
                         break;
                     }
-
+                    
                     // 校验内网地址
                     if (routerNode.InnerAddress != realAddress)
                     {
@@ -221,14 +222,15 @@ namespace ET.Server
                 }
                 case KcpProtocalType.RouterSYN:
                 {
-                    if (messageLength < 9)
+                    if (messageLength < 13)
                     {
                         break;
                     }
                     
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 1);
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 5);
-                    string realAddress = self.Cache.ToStr(9, messageLength - 9);
+                    uint connectId = BitConverter.ToUInt32(self.Cache, 9);
+                    string realAddress = self.Cache.ToStr(13, messageLength - 13);
 
                     // innerconn会在ack的时候赋值，所以routersync过程绝对是routerNode.InnerConn绝对是0
                     if (innerConn != 0)
@@ -237,10 +239,10 @@ namespace ET.Server
                         break;
                     }
                     
-                    RouterNode routerNode;
-                    if (!self.OuterNodes.TryGetValue(outerConn, out routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
-                        routerNode = self.New(realAddress, outerConn, innerConn, self.CloneAddress());
+                        routerNode = self.New(realAddress, outerConn, innerConn, connectId, self.CloneAddress());
                         Log.Info($"router create: {realAddress} {outerConn} {innerConn} {routerNode.SyncIpEndPoint}");
                     }
 
@@ -256,17 +258,25 @@ namespace ET.Server
                         Log.Warning($"kcp router syn status InnerConn != 0: {outerConn} {innerConn} {routerNode.InnerConn}");
                         break;
                     }
-
+                    
                     if (++routerNode.RouterSyncCount > 40)
                     {
                         self.OnError(routerNode.Id, ErrorCore.ERR_KcpRouterRouterSyncCountTooMuchTimes);
                         break;
                     }
 
+                    // 这里可以注释，因增加了connectid的检查，第三方很难通过检查
                     // 校验ip，连接过程中ip不能变化
-                    if (!Equals(routerNode.SyncIpEndPoint, self.IPEndPoint))
+                    //if (!Equals(routerNode.SyncIpEndPoint, self.IPEndPoint))
+                    //{
+                    //    Log.Warning($"kcp router syn ip is diff1: {routerNode.SyncIpEndPoint} {self.IPEndPoint}");
+                    //    break;
+                    //}
+                    
+                    // 这里因为InnerConn是0，无法保证连接是同一客户端发过来的，所以这里如果connectid不同，则break。注意逻辑跟reconnect不一样
+                    if (routerNode.ConnectId != connectId)
                     {
-                        Log.Warning($"kcp router syn ip is diff1: {routerNode.SyncIpEndPoint} {self.IPEndPoint}");
+                        Log.Warning($"kcp router router connect connectId diff, maybe router count too less: {connectId} {routerNode.ConnectId} {routerNode.SyncIpEndPoint} {(IPEndPoint) self.IPEndPoint}");
                         break;
                     }
 
@@ -300,7 +310,8 @@ namespace ET.Server
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 1); // remote
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 5);
                     
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"kcp router syn not found outer nodes: {outerConn} {innerConn}");
                         break;
@@ -350,7 +361,8 @@ namespace ET.Server
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 1);
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 5);
 
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"kcp router outer fin not found outer nodes: {outerConn} {innerConn}");
                         break;
@@ -387,7 +399,8 @@ namespace ET.Server
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 1); // remote
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 5); // local
 
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"kcp router msg not found outer nodes: {outerConn} {innerConn}");
                         break;
@@ -443,7 +456,8 @@ namespace ET.Server
                 {
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 1);
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 5);
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"router node error: {innerConn} {outerConn}");
                         break;
@@ -483,7 +497,8 @@ namespace ET.Server
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 1); // remote
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 5); // local
 
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"kcp router ack not found outer nodes: {outerConn} {innerConn}");
                         break;
@@ -510,7 +525,8 @@ namespace ET.Server
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 1);
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 5);
 
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"kcp router inner fin not found outer nodes: {outerConn} {innerConn}");
                         break;
@@ -547,7 +563,8 @@ namespace ET.Server
                     uint innerConn = BitConverter.ToUInt32(self.Cache, 1); // remote
                     uint outerConn = BitConverter.ToUInt32(self.Cache, 5); // local
 
-                    if (!self.OuterNodes.TryGetValue(outerConn, out RouterNode routerNode))
+                    RouterNode routerNode = self.GetChild<RouterNode>(outerConn);
+                    if (routerNode == null)
                     {
                         Log.Warning($"kcp router inner msg not found outer nodes: {outerConn} {innerConn}");
                         break;
@@ -573,25 +590,16 @@ namespace ET.Server
             }
         }
 
-        public static RouterNode Get(this RouterComponent self, uint outerConn)
+        private static RouterNode New(this RouterComponent self, string innerAddress, uint outerConn, uint innerConn, uint connectId, IPEndPoint syncEndPoint)
         {
-            RouterNode routerNode = null;
-            self.OuterNodes.TryGetValue(outerConn, out routerNode);
-            return routerNode;
-        }
-
-        private static RouterNode New(this RouterComponent self, string innerAddress, uint outerConn, uint innerConn, IPEndPoint syncEndPoint)
-        {
-            RouterNode routerNode = self.AddChild<RouterNode>();
-            routerNode.OuterConn = outerConn;
+            RouterNode routerNode = self.AddChildWithId<RouterNode>(outerConn);
             routerNode.InnerConn = innerConn;
-
+            routerNode.ConnectId = connectId;
             routerNode.InnerIpEndPoint = NetworkHelper.ToIPEndPoint(innerAddress);
             routerNode.SyncIpEndPoint = syncEndPoint;
             routerNode.InnerAddress = innerAddress;
             routerNode.LastRecvInnerTime = TimeInfo.Instance.ClientNow();
             
-            self.OuterNodes.Add(outerConn, routerNode);
             self.checkTimeout.Enqueue(outerConn);
 
             routerNode.Status = RouterStatus.Sync;
@@ -620,9 +628,7 @@ namespace ET.Server
             {
                 return;
             }
-
-            self.OuterNodes.Remove(routerNode.OuterConn);
-
+            
             Log.Info($"router remove: {routerNode.Id} outerConn: {routerNode.OuterConn} innerConn: {routerNode.InnerConn}");
 
             routerNode.Dispose();

@@ -13,14 +13,12 @@
             self.OuterIpEndPoint = null;
             self.InnerIpEndPoint = null;
             self.RouterSyncCount = 0;
-            self.OuterConn = 0;
             self.InnerConn = 0;
         }
 
         [EntitySystem]
         private static void Destroy(this RouterNode self)
         {
-            self.OuterConn = 0;
             self.InnerConn = 0;
             self.LastRecvInnerTime = 0;
             self.LastRecvOuterTime = 0;
