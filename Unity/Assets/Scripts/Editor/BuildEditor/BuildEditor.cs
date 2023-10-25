@@ -40,7 +40,7 @@ namespace ET
 
         private void OnEnable()
 		{
-			globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+			globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Resources/GlobalConfig.asset");
 			
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
@@ -91,9 +91,16 @@ namespace ET
 			{
 				if (this.platformType == PlatformType.None)
 				{
-					ShowNotification(new GUIContent("please select platform!"));
+					Log.Error("please select platform!");
 					return;
 				}
+				
+				if (this.globalConfig.CodeMode != CodeMode.Client)
+				{
+					Log.Error("build package CodeMode must be CodeMode.Client, please select Client, RegenerateCSProject, then rebuild Hotfix and Model !!!");
+					return;
+				}
+				
 				if (platformType != activePlatform)
 				{
 					switch (EditorUtility.DisplayDialogComplex("Warning!", $"current platform is {activePlatform}, if change to {platformType}, may be take a long time", "change", "cancel", "no change"))
@@ -109,12 +116,20 @@ namespace ET
 					}
 				}
 				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.clearFolder);
+				return;
 			}
 			
 			GUILayout.Label("");
 			GUILayout.Label("Code Compile：");
-			
+			EditorGUI.BeginChangeCheck();
 			CodeMode codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+			if (EditorGUI.EndChangeCheck())
+			{
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssetIfDirty(this.globalConfig);
+				AssetDatabase.Refresh();
+			}
+
 			if (codeMode != this.globalConfig.CodeMode)
 			{
 				this.globalConfig.CodeMode = codeMode;
@@ -133,16 +148,19 @@ namespace ET
 			if (GUILayout.Button("ReGenerateProjectFiles"))
 			{
 				BuildHelper.ReGenerateProjectFiles();
+				return;
 			}
 			
 			if (GUILayout.Button("ExcelExporter"))
 			{
 				ToolsEditor.ExcelExporter();
+				return;
 			}
 			
 			if (GUILayout.Button("Proto2CS"))
 			{
 				ToolsEditor.Proto2CS();
+				return;
 			}
 
 			GUILayout.Space(5);

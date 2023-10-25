@@ -18,7 +18,7 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    self.Fiber().Error($"move timer error: {self.Id}\n{e}");
+                    Log.Error($"move timer error: {self.Id}\n{e}");
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace ET
 
                 if (aaiHandler == null)
                 {
-                    fiber.Error($"not found aihandler: {aiConfig.Name}");
+                    Log.Error($"not found aihandler: {aiConfig.Name}");
                     continue;
                 }
 

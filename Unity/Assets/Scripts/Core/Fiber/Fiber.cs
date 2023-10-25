@@ -15,6 +15,11 @@ namespace ET
     
     public class Fiber: IDisposable
     {
+        // 该字段只能框架使用，绝对不能改成public，改了后果自负
+        [StaticField]
+        [ThreadStatic]
+        internal static Fiber Instance;
+        
         public bool IsDisposed;
         
         public int Id;

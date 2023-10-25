@@ -8,7 +8,6 @@ namespace ET.Client
     {
         public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
         {
-	        Fiber fiber = uiComponent.Fiber();
 	        try
 	        {
 		        string assetsName = $"Assets/Bundles/UI/Demo/{UIType.UIHelp}.prefab";
@@ -21,7 +20,7 @@ namespace ET.Client
 	        }
 	        catch (Exception e)
 	        {
-		        fiber.Error(e);
+		        Log.Error(e);
 		        return null;
 	        }
 		}

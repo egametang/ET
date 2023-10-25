@@ -24,18 +24,22 @@ namespace ET
 
 		private readonly PacketParser parser;
 		
-		public IPEndPoint RemoteAddress { get; set; }
+		private IPEndPoint remoteAddress;
 
-		private readonly byte[] sendCache = new byte[Packet.OpcodeLength + Packet.ActorIdLength];
-		
-		private ILog Log
+		public IPEndPoint RemoteAddress
 		{
 			get
 			{
-				return this.Service.Log;
+				return this.remoteAddress;
+			}
+			set
+			{
+				this.remoteAddress = value;
 			}
 		}
 
+		private readonly byte[] sendCache = new byte[Packet.OpcodeLength + Packet.ActorIdLength];
+		
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
 		{
 			this.Service.Queue.Enqueue(new TArgs() {ChannelId = this.Id, SocketAsyncEventArgs = e});
@@ -100,17 +104,13 @@ namespace ET
 			this.socket = null;
 		}
 
-		public void Send(ActorId actorId, MessageObject message)
+		public void Send(MemoryBuffer stream)
 		{
 			if (this.IsDisposed)
 			{
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
-
-			MemoryBuffer stream = this.Service.Fetch();
-			MessageSerializeHelper.MessageToStream(stream, message);
-			message.Dispose();
-
+			
 			switch (this.Service.ServiceType)
 			{
 				case ServiceType.Inner:
@@ -123,28 +123,20 @@ namespace ET
 
 					this.sendCache.WriteTo(0, messageSize);
 					this.sendBuffer.Write(this.sendCache, 0, PacketParser.InnerPacketSizeLength);
-
-					// actorId
-					stream.GetBuffer().WriteTo(0, actorId);
-					this.sendBuffer.Write(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
 					break;
 				}
 				case ServiceType.Outer:
 				{
-					stream.Seek(Packet.ActorIdLength, SeekOrigin.Begin); // 外网不需要actorId
 					ushort messageSize = (ushort) (stream.Length - stream.Position);
-
 					this.sendCache.WriteTo(0, messageSize);
 					this.sendBuffer.Write(this.sendCache, 0, PacketParser.OuterPacketSizeLength);
-					
-					this.sendBuffer.Write(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
 					break;
 				}
 			}
 			
+			this.sendBuffer.Write(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
 			if (!this.isSending)
 			{
-				//this.StartSend();
 				this.Service.Queue.Enqueue(new TArgs() { Op = TcpOp.StartSend, ChannelId = this.Id});
 			}
 			
@@ -262,6 +254,10 @@ namespace ET
 				}
 				try
 				{
+					if (this.recvBuffer.Length == 0)
+					{
+						break;
+					}
 					bool ret = this.parser.Parse(out MemoryBuffer memoryBuffer);
 					if (!ret)
 					{
@@ -269,8 +265,6 @@ namespace ET
 					}
 					
 					this.OnRead(memoryBuffer);
-					
-					this.Service.Recycle(memoryBuffer);
 				}
 				catch (Exception ee)
 				{
@@ -317,7 +311,6 @@ namespace ET
 					{
 						sendSize = (int)this.sendBuffer.Length;
 					}
-					
 					this.outArgs.SetBuffer(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
 					
 					if (this.socket.SendAsync(this.outArgs))
@@ -374,36 +367,11 @@ namespace ET
 		{
 			try
 			{
-				long channelId = this.Id;
-				object message = null;
-				ActorId actorId = default;
-				switch (this.Service.ServiceType)
-				{
-					case ServiceType.Outer:
-					{
-						ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
-						Type type = OpcodeType.Instance.GetType(opcode);
-						message = MessageSerializeHelper.Deserialize(type, memoryStream);
-						break;
-					}
-					case ServiceType.Inner:
-					{
-						byte[] buffer = memoryStream.GetBuffer();
-						actorId.Process = BitConverter.ToInt32(buffer, Packet.ActorIdIndex);
-						actorId.Fiber = BitConverter.ToInt32(buffer, Packet.ActorIdIndex + 4);
-						actorId.InstanceId = BitConverter.ToInt64(buffer, Packet.ActorIdIndex + 8);
-						ushort opcode = BitConverter.ToUInt16(buffer, Packet.OpcodeIndex);
-						Type type = OpcodeType.Instance.GetType(opcode);
-						message = MessageSerializeHelper.Deserialize(type, memoryStream);
-						break;
-					}
-				}
-				this.Service.ReadCallback(channelId, actorId, message);
+				this.Service.ReadCallback(this.Id, memoryStream);
 			}
 			catch (Exception e)
 			{
-				Log.Error($"{this.RemoteAddress} {memoryStream.Length} {e}");
-				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
+				Log.Error(e);
 				this.OnError(ErrorCore.ERR_PacketParserError);
 			}
 		}

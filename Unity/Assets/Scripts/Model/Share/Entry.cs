@@ -29,9 +29,9 @@ namespace ET
         private static async ETTask StartAsync()
         {
             WinPeriod.Init();
-            
-            MongoHelper.RegisterStruct<LSInput>();
-            MongoHelper.Register();
+
+            // 注册Mongo type
+            MongoRegister.Init();
 
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();

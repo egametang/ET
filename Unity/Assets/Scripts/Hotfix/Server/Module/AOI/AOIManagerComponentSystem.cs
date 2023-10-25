@@ -75,12 +75,12 @@ namespace ET.Server
             // 检查
             if (aoiEntity.SeeUnits.Count > 1)
             {
-                fiber.Error($"aoiEntity has see units: {aoiEntity.SeeUnits.Count}");
+                Log.Error($"aoiEntity has see units: {aoiEntity.SeeUnits.Count}");
             }
 
             if (aoiEntity.BeSeeUnits.Count > 1)
             {
-                fiber.Error($"aoiEntity has beSee units: {aoiEntity.BeSeeUnits.Count}");
+                Log.Error($"aoiEntity has beSee units: {aoiEntity.BeSeeUnits.Count}");
             }
         }
 

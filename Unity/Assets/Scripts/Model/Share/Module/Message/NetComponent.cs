@@ -3,15 +3,15 @@ using System.Net.Sockets;
 
 namespace ET
 {
-    public struct NetOuterComponentOnRead
+    public struct NetComponentOnRead
     {
         public Session Session;
         public object Message;
     }
     
     [ComponentOf(typeof(Scene))]
-    public class NetComponent: Entity, IAwake<IPEndPoint>, IAwake<AddressFamily>, IDestroy, IUpdate
+    public class NetComponent: Entity, IAwake<IPEndPoint, NetworkProtocol>, IAwake<AddressFamily, NetworkProtocol>, IDestroy, IUpdate
     {
-        public AService AService;
+        public AService AService { get; set; }
     }
 }

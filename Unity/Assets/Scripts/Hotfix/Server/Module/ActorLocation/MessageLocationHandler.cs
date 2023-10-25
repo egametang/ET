@@ -13,13 +13,13 @@ namespace ET.Server
             Fiber fiber = entity.Fiber();
             if (actorMessage is not Message message)
             {
-                fiber.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
+                Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
                 return;
             }
 
             if (entity is not E e)
             {
-                fiber.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Message).FullName}");
+                Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Message).FullName}");
                 return;
             }
             
@@ -55,13 +55,13 @@ namespace ET.Server
                 Fiber fiber = entity.Fiber();
                 if (actorMessage is not Request request)
                 {
-                    fiber.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
+                    Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
                     return;
                 }
 
                 if (entity is not E ee)
                 {
-                    fiber.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Request).FullName}");
+                    Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Request).FullName}");
                     return;
                 }
 

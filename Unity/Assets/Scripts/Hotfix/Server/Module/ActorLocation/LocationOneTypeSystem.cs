@@ -39,7 +39,7 @@ namespace ET.Server
             using (await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key))
             {
                 self.locations[key] = instanceId;
-                self.Fiber().Info($"location add key: {key} instanceId: {instanceId}");
+                Log.Info($"location add key: {key} instanceId: {instanceId}");
             }
         }
 
@@ -49,7 +49,7 @@ namespace ET.Server
             using (await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key))
             {
                 self.locations.Remove(key);
-                self.Fiber().Info($"location remove key: {key}");
+                Log.Info($"location remove key: {key}");
             }
         }
 
@@ -61,7 +61,7 @@ namespace ET.Server
             LockInfo lockInfo = self.AddChild<LockInfo, ActorId, CoroutineLock>(actorId, coroutineLock);
             self.lockInfos.Add(key, lockInfo);
 
-            self.Fiber().Info($"location lock key: {key} instanceId: {actorId}");
+            Log.Info($"location lock key: {key} instanceId: {actorId}");
 
             if (time > 0)
             {
@@ -73,7 +73,7 @@ namespace ET.Server
                     {
                         return;
                     }
-                    self.Fiber().Info($"location timeout unlock key: {key} instanceId: {actorId} newInstanceId: {actorId}");
+                    Log.Info($"location timeout unlock key: {key} instanceId: {actorId} newInstanceId: {actorId}");
                     self.UnLock(key, actorId, actorId);
                 }
                 TimeWaitAsync().Coroutine();
@@ -84,17 +84,17 @@ namespace ET.Server
         {
             if (!self.lockInfos.TryGetValue(key, out LockInfo lockInfo))
             {
-                self.Fiber().Error($"location unlock not found key: {key} {oldActorId}");
+                Log.Error($"location unlock not found key: {key} {oldActorId}");
                 return;
             }
 
             if (oldActorId != lockInfo.LockActorId)
             {
-                self.Fiber().Error($"location unlock oldInstanceId is different: {key} {oldActorId}");
+                Log.Error($"location unlock oldInstanceId is different: {key} {oldActorId}");
                 return;
             }
 
-            self.Fiber().Info($"location unlock key: {key} instanceId: {oldActorId} newInstanceId: {newInstanceId}");
+            Log.Info($"location unlock key: {key} instanceId: {oldActorId} newInstanceId: {newInstanceId}");
 
             self.locations[key] = newInstanceId;
 
@@ -110,7 +110,7 @@ namespace ET.Server
             using (await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key))
             {
                 self.locations.TryGetValue(key, out ActorId actorId);
-                self.Fiber().Info($"location get key: {key} actorId: {actorId}");
+                Log.Info($"location get key: {key} actorId: {actorId}");
                 return actorId;
             }
         }

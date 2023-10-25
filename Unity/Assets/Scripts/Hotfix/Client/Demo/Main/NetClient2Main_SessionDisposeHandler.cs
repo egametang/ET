@@ -5,7 +5,7 @@
     {
         protected override async ETTask Run(Scene entity, NetClient2Main_SessionDispose message)
         {
-            entity.Fiber.Error($"session dispose, error: {message.Error}");
+            Log.Error($"session dispose, error: {message.Error}");
             await ETTask.CompletedTask;
         }
     }

@@ -19,7 +19,7 @@ namespace ET.Server
             root.AddComponent<MessageLocationSenderComponent>();
 
             StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get((int)root.Id);
-            root.AddComponent<NetComponent, IPEndPoint>(startSceneConfig.InnerIPPort);
+            root.AddComponent<NetComponent, IPEndPoint, NetworkProtocol>(startSceneConfig.InnerIPPort, NetworkProtocol.UDP);
             await ETTask.CompletedTask;
         }
     }

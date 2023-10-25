@@ -13,7 +13,7 @@ namespace ET
 
         private static Random GetRandom()
         {
-            return random ??= new Random(Guid.NewGuid().GetHashCode());
+            return random ??= new Random(Guid.NewGuid().GetHashCode() ^ Environment.TickCount);
         }
 
         public static ulong RandUInt64()

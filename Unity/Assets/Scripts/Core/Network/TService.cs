@@ -32,12 +32,12 @@ namespace ET
 
 		public ConcurrentQueue<TArgs> Queue = new();
 
-		public TService(AddressFamily addressFamily, ServiceType serviceType, ILog log): base(log)
+		public TService(AddressFamily addressFamily, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
 		}
 
-		public TService(IPEndPoint ipEndPoint, ServiceType serviceType, ILog log): base(log)
+		public TService(IPEndPoint ipEndPoint, ServiceType serviceType)
 		{
 			this.ServiceType = serviceType;
 			this.acceptor = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -124,7 +124,7 @@ namespace ET
 			this.idChannels.Add(channel.Id, channel);
 		}
 		
-		private TChannel Get(long id)
+		public TChannel Get(long id)
 		{
 			TChannel channel = null;
 			this.idChannels.TryGetValue(id, out channel);
@@ -157,7 +157,7 @@ namespace ET
 			this.idChannels.Remove(id);
 		}
 
-		public override void Send(long channelId, ActorId actorId, MessageObject message)
+		public override void Send(long channelId, MemoryBuffer memoryBuffer)
 		{
 			try
 			{
@@ -168,7 +168,7 @@ namespace ET
 					return;
 				}
 				
-				aChannel.Send(actorId, message);
+				aChannel.Send(memoryBuffer);
 			}
 			catch (Exception e)
 			{
@@ -186,7 +186,6 @@ namespace ET
 				}
 				
 				SocketAsyncEventArgs e = result.SocketAsyncEventArgs;
-
 				if (e == null)
 				{
 					switch (result.Op)

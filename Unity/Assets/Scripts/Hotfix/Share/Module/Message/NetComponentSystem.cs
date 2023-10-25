@@ -5,21 +5,21 @@ namespace ET
 {
     [EntitySystemOf(typeof(NetComponent))]
     [FriendOf(typeof(NetComponent))]
-    public static partial class NetOuterComponentSystem
+    public static partial class NetComponentSystem
     {
         [EntitySystem]
-        private static void Awake(this NetComponent self, IPEndPoint address)
+        private static void Awake(this NetComponent self, IPEndPoint address, NetworkProtocol protocol)
         {
-            self.AService = new KService(address, ServiceType.Outer, self.Fiber().Log);
+            self.AService = new KService(address, protocol, ServiceType.Outer);
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }
         
         [EntitySystem]
-        private static void Awake(this NetComponent self, AddressFamily addressFamily)
+        private static void Awake(this NetComponent self, AddressFamily addressFamily, NetworkProtocol protocol)
         {
-            self.AService = new KService(addressFamily, ServiceType.Outer, self.Fiber().Log);
+            self.AService = new KService(addressFamily, protocol, ServiceType.Outer);
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
         }
@@ -63,7 +63,7 @@ namespace ET
             }
         }
         
-        private static void OnRead(this NetComponent self, long channelId, ActorId actorId, object message)
+        private static void OnRead(this NetComponent self, long channelId, MemoryBuffer memoryBuffer)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -72,9 +72,11 @@ namespace ET
             }
             session.LastRecvTime = TimeInfo.Instance.ClientNow();
             
+            (ActorId _, object message) = MessageSerializeHelper.ToMessage(self.AService, memoryBuffer);
+            
             LogMsg.Instance.Debug(self.Fiber(), message);
             
-            EventSystem.Instance.Invoke((long)self.IScene.SceneType, new NetOuterComponentOnRead() {Session = session, Message = message});
+            EventSystem.Instance.Invoke((long)self.IScene.SceneType, new NetComponentOnRead() {Session = session, Message = message});
         }
         
         public static Session Create(this NetComponent self, IPEndPoint realIPEndPoint)

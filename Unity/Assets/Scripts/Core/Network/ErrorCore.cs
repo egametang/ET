@@ -7,6 +7,7 @@
         
         public const int ERR_KcpConnectTimeout = 100205;
         public const int ERR_KcpAcceptTimeout = 100206;
+        public const int ERR_KcpReadWriteTimeout = 100207;
         public const int ERR_PeerDisconnect = 100208;
         public const int ERR_SocketCantSend = 100209;
         public const int ERR_SocketError = 100210;

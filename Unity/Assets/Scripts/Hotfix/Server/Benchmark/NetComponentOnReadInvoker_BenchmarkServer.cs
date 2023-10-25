@@ -3,9 +3,9 @@
 namespace ET.Server
 {
     [Invoke((long)SceneType.BenchmarkServer)]
-    public class NetComponentOnReadInvoker_BenchmarkServer: AInvokeHandler<NetOuterComponentOnRead>
+    public class NetComponentOnReadInvoker_BenchmarkServer: AInvokeHandler<NetComponentOnRead>
     {
-        public override void Handle(NetOuterComponentOnRead args)
+        public override void Handle(NetComponentOnRead args)
         {
             Session session = args.Session;
             object message = args.Message;

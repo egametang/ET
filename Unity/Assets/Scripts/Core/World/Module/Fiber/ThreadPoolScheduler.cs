@@ -28,8 +28,19 @@ namespace ET
 
         private void Loop()
         {
+            int count = 0;
             while (true)
             {
+                if (count <= 0)
+                {
+                    Thread.Sleep(1);
+                    
+                    // count最小为1
+                    count = this.fiberManager.Count() / this.threads.Count + 1;
+                }
+
+                --count;
+                
                 if (this.fiberManager.IsDisposed())
                 {
                     return;
@@ -51,15 +62,15 @@ namespace ET
                 {
                     continue;
                 }
-                
+
+                Fiber.Instance = fiber;
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
                 fiber.LateUpdate();
                 SynchronizationContext.SetSynchronizationContext(null);
+                Fiber.Instance = null;
 
                 this.idQueue.Enqueue(id);
-
-                Thread.Sleep(1);
             }
         }
 

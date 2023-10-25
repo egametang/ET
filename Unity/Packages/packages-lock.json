@@ -5,14 +5,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "7c7a7b16d5e3af7c4210522cec22125485e19e53"
+      "hash": "5c750e9c0280530ca8a3d7be01e229029a1df569"
     },
     "com.cysharp.memorypack": {
       "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "09eb5f1535d0d01dee98c84fa110c21a436bd896"
+      "hash": "9aa51ce1e8da24e27053bf2448c127c4263c2096"
     },
     "com.gwiazdorrr.betterstreamingassets": {
       "version": "file:betterstreamingassets",

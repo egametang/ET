@@ -82,14 +82,7 @@ namespace ET
 						this.buffer.Read(memoryBuffer, this.packetSize);
 						//memoryStream.SetLength(this.packetSize - Packet.MessageIndex);
 
-						if (this.service.ServiceType == ServiceType.Inner)
-						{
-							memoryBuffer.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-						}
-						else
-						{
-							memoryBuffer.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
-						}
+						memoryBuffer.Seek(0, SeekOrigin.Begin);
 
 						this.state = ParserState.PacketSize;
 						return true;

@@ -10,7 +10,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this BenchmarkClientComponent self)
         {
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 self.Start().Coroutine();
             }

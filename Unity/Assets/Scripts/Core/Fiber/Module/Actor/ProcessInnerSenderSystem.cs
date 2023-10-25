@@ -50,7 +50,7 @@ namespace ET
             MailBoxComponent mailBoxComponent = self.Fiber().Mailboxes.Get(actorId.InstanceId);
             if (mailBoxComponent == null)
             {
-                self.Fiber().Warning($"actor not found mailbox, from: {actorId} current: {fiber.Address} {message}");
+                Log.Warning($"actor not found mailbox, from: {actorId} current: {fiber.Address} {message}");
                 if (message is IRequest request)
                 {
                     IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
@@ -196,7 +196,7 @@ namespace ET
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                fiber.Warning($"actor rpc time > 200: {costTime} {iRequest}");
+                Log.Warning($"actor rpc time > 200: {costTime} {iRequest}");
             }
             
             return response;

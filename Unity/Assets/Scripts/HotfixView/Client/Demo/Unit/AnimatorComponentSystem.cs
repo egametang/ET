@@ -89,7 +89,7 @@ namespace ET.Client
 			float motionSpeed = animationClip.length / time;
 			if (motionSpeed < 0.01f || motionSpeed > 1000f)
 			{
-				self.Fiber().Error($"motionSpeed数值异常, {motionSpeed}, 此动作跳过");
+				Log.Error($"motionSpeed数值异常, {motionSpeed}, 此动作跳过");
 				return;
 			}
 			self.MotionType = motionType;

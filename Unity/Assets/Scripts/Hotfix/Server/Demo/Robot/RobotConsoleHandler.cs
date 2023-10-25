@@ -20,13 +20,13 @@ namespace ET.Server
 
                     try
                     {
-                        fiber.Debug($"run case start: {caseType}");
+                        Log.Debug($"run case start: {caseType}");
                         await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Fiber = fiber, Content = content });
-                        fiber.Debug($"run case finish: {caseType}");
+                        Log.Debug($"run case finish: {caseType}");
                     }
                     catch (Exception e)
                     {
-                        fiber.Debug($"run case error: {caseType}\n{e}");
+                        Log.Debug($"run case error: {caseType}\n{e}");
                     }
                     break;
                 }
@@ -38,18 +38,18 @@ namespace ET.Server
                         int caseType = (int)fieldInfo.GetValue(null);
                         if (caseType > RobotCaseType.MaxCaseType)
                         {
-                            fiber.Debug($"case > {RobotCaseType.MaxCaseType}: {caseType}");
+                            Log.Debug($"case > {RobotCaseType.MaxCaseType}: {caseType}");
                             break;
                         }
                         try
                         {
-                            fiber.Debug($"run case start: {caseType}");
+                            Log.Debug($"run case start: {caseType}");
                             await EventSystem.Instance.Invoke<RobotInvokeArgs, ETTask>(caseType, new RobotInvokeArgs() { Fiber = fiber, Content = content});
-                            fiber.Debug($"---------run case finish: {caseType}");
+                            Log.Debug($"---------run case finish: {caseType}");
                         }
                         catch (Exception e)
                         {
-                            fiber.Debug($"run case error: {caseType}\n{e}");
+                            Log.Debug($"run case error: {caseType}\n{e}");
                             break;
                         }
                     }

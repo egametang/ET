@@ -11,13 +11,21 @@ namespace ET.Server
     [ChildOf(typeof(RouterComponent))]
     public class RouterNode: Entity, IDestroy, IAwake
     {
-        public uint ConnectId;
         public string InnerAddress;
         public IPEndPoint InnerIpEndPoint;
         public IPEndPoint OuterIpEndPoint;
         public IPEndPoint SyncIpEndPoint;
-        public uint OuterConn;
+        public IKcpTransport KcpTransport;
+
+        public uint OuterConn
+        {
+            get
+            {
+                return (uint)this.Id;
+            }
+        }
         public uint InnerConn;
+        public uint ConnectId;
         public long LastRecvOuterTime;
         public long LastRecvInnerTime;
 
