@@ -101,6 +101,12 @@ namespace ET
 					return;
 				}
 				
+				if (this.globalConfig.EPlayMode == EPlayMode.EditorSimulateMode)
+				{
+					Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select EditorMode");
+					return;
+				}
+				
 				if (platformType != activePlatform)
 				{
 					switch (EditorUtility.DisplayDialogComplex("Warning!", $"current platform is {activePlatform}, if change to {platformType}, may be take a long time", "change", "cancel", "no change"))
