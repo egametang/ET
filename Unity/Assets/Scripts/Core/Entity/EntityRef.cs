@@ -57,7 +57,7 @@ namespace ET
 
         private EntityWeakRef(T t)
         {
-            if (t != null)
+            if (t == null)
             {
                 this.instanceId = 0;
                 this.weakRef = null;
