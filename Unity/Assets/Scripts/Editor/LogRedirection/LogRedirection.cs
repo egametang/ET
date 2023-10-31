@@ -39,6 +39,7 @@ namespace ET
                         // 行号
                         line = Convert.ToInt32(pathLine.Substring(splitIndex + 1));
                         var fullPath = UnityEngine.Application.dataPath.Substring(0, UnityEngine.Application.dataPath.LastIndexOf("Assets", StringComparison.Ordinal));
+                        fullPath = $"{fullPath}{path}";
 #if UNITY_STANDALONE_WIN
                         fullPath = fullPath.Replace('/', '\\');
 #endif
