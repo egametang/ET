@@ -48,7 +48,4 @@
         <ProjectReference Include="..\Core\DotNet.Core.csproj" />
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup> 
-    <ItemGroup>
-      <Folder Include="Client\LockStep\" />
-    </ItemGroup>
 </Project>
