@@ -67,6 +67,7 @@ namespace ET
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
         private const string serverProtoDir = "../Config/Excel/{0}/{1}";
+        private const string replaceStr = "/{0}/{1}";
         private static Assembly[] configAssemblies = new Assembly[3];
 
         private static Dictionary<string, Table> tables = new Dictionary<string, Table>();
@@ -110,6 +111,23 @@ namespace ET
                 if (Directory.Exists(ServerClassDir))
                 {
                     Directory.Delete(ServerClassDir, true);
+                }
+
+                if (Directory.Exists(CSClassDir))
+                {
+                    Directory.Delete(CSClassDir, true);
+                }
+
+                string jsonProtoDirParent = jsonDir.Replace(replaceStr, string.Empty);
+                if (Directory.Exists(jsonProtoDirParent))
+                {
+                    Directory.Delete(jsonProtoDirParent, true);
+                }
+
+                string serverProtoDirParent = serverProtoDir.Replace(replaceStr, string.Empty);
+                if (Directory.Exists(serverProtoDirParent))
+                {
+                    Directory.Delete(serverProtoDirParent, true);
                 }
 
                 List<string> files = FileHelper.GetAllFiles(excelDir);
