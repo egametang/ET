@@ -1,29 +1,34 @@
 ﻿using System;
-using UnityEditor;
-using UnityEngine;
-using System.Xml;
 using System.IO;
+using System.Xml;
+using UnityEditor;
 
 namespace ET
 {
-    public class OnGenerateCSProjectProcessor: AssetPostprocessor
+    public class OnGenerateCSProjectProcessor : AssetPostprocessor
     {
-        private static string[] deleteFile = new string[] 
-        { 
-            "Library/ScriptAssemblies/Unity.AllModel.dll", 
+        /// <summary>
+        /// 被Unity编译完成后需要删除的dll列表
+        /// "Define.EnableDll"模式:运行游戏时由CodeLoader.cs动态加载dll, 故在此模式需要删除以下dll
+        /// "!Define.EnableDll"模式:保留在"Library/ScriptAssemblies"中, Unity会自动加载
+        /// </summary>
+        private static string[] deleteFile = new string[]
+        {
+            "Library/ScriptAssemblies/Unity.AllModel.dll",
             "Library/ScriptAssemblies/Unity.AllHotfix.dll",
-            "Library/ScriptAssemblies/Unity.AllModel.pdb", 
-            "Library/ScriptAssemblies/Unity.AllHotfix.pdb", 
+            "Library/ScriptAssemblies/Unity.AllModel.pdb",
+            "Library/ScriptAssemblies/Unity.AllHotfix.pdb",
         };
-        
+
+        /// <summary>
+        /// 文档:https://learn.microsoft.com/zh-cn/visualstudio/gamedev/unity/extensibility/customize-project-files-created-by-vstu#%E6%A6%82%E8%A7%88
+        /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
             if (path.EndsWith("Unity.Core.csproj"))
             {
-                return GenerateCustomProject(path, content);
+                return GenerateCustomProject(content);
             }
-            
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
 
             if (path.EndsWith("Unity.AllModel.csproj"))
             {
@@ -31,105 +36,127 @@ namespace ET
                 {
                     return content;
                 }
-                if (globalConfig.BuildType == BuildType.Release)
-                {
-                    content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
-                    content = content.Replace(";DEBUG;", ";");
-                }
 
-                string[] files = Array.Empty<string>();
-                switch (globalConfig.CodeMode)
+                GlobalConfig globalConfig = GetGlobalConfig();
+                if (globalConfig != null)
                 {
-                    case CodeMode.Client:
-                        files = new[]
-                        {
+                    if (globalConfig.BuildType == BuildType.Release)
+                    {
+                        content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
+                        content = content.Replace(";DEBUG;", ";");
+                    }
+
+                    string[] files = Array.Empty<string>();
+                    switch (globalConfig.CodeMode)
+                    {
+                        case CodeMode.Client:
+                            files = new[]
+                            {
                             @"Assets\Scripts\Model\Client\**\*.cs Model\Client\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Share\**\*.cs Model\Share\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Generate\Client\**\*.cs Model\Generate\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\ModelView\Client\**\*.cs ModelView\Client\%(RecursiveDir)%(FileName)%(Extension)",
                         };
-                        break;
-                    case CodeMode.ClientServer:
-                        files = new[]
-                        {
+                            break;
+                        case CodeMode.ClientServer:
+                            files = new[]
+                            {
                             @"Assets\Scripts\Model\Server\**\*.cs Model\Server\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Client\**\*.cs Model\Client\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Share\**\*.cs Model\Share\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Model\Generate\ClientServer\**\*.cs Model\Generate\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\ModelView\Client\**\*.cs ModelView\Client\%(RecursiveDir)%(FileName)%(Extension)",
                         };
-                        break;
-                }
+                            break;
+                    }
 
-                content = GenerateCustomProject(path, content, files);
-                content = content.Replace("<Target Name=\"AfterBuild\" />",
-                    "   <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.dll.bytes\" ContinueOnError=\"false\" />\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Model.dll\" ContinueOnError=\"false\" />\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Model.pdb\" ContinueOnError=\"false\" />\n" +
-                    "   </Target>\n");
-                return content;
+                    content = GenerateCustomProject(content, files);
+                    content = content.Replace("<Target Name=\"AfterBuild\" />",
+                        "   <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.dll.bytes\" ContinueOnError=\"false\" />\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Model.pdb.bytes\" ContinueOnError=\"false\" />\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Model.dll\" ContinueOnError=\"false\" />\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Model.pdb\" ContinueOnError=\"false\" />\n" +
+                        "   </Target>\n");
+                    return content;
+                }
             }
-            
+
             if (path.EndsWith("Unity.AllHotfix.csproj"))
             {
                 if (!Define.EnableDll)
                 {
                     return content;
                 }
-                
-                if (globalConfig.BuildType == BuildType.Release)
-                {
-                    content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
-                    content = content.Replace(";DEBUG;", ";");
-                }
 
-                string[] files = Array.Empty<string>();
-                switch (globalConfig.CodeMode)
+                GlobalConfig globalConfig = GetGlobalConfig();
+                if (globalConfig != null)
                 {
-                    case CodeMode.Client:
-                        files = new[]
-                        {
+                    if (globalConfig.BuildType == BuildType.Release)
+                    {
+                        content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
+                        content = content.Replace(";DEBUG;", ";");
+                    }
+
+                    string[] files = Array.Empty<string>();
+                    switch (globalConfig.CodeMode)
+                    {
+                        case CodeMode.Client:
+                            files = new[]
+                            {
                             @"Assets\Scripts\Hotfix\Client\**\*.cs Hotfix\Client\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Hotfix\Share\**\*.cs Hotfix\Share\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\HotfixView\Client\**\*.cs HotfixView\Client\%(RecursiveDir)%(FileName)%(Extension)"
                         };
-                        break;
-                    case CodeMode.ClientServer:
-                        files = new[]
-                        {
+                            break;
+                        case CodeMode.ClientServer:
+                            files = new[]
+                            {
                             @"Assets\Scripts\Hotfix\Client\**\*.cs Hotfix\Client\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Hotfix\Server\**\*.cs Hotfix\Server\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\Hotfix\Share\**\*.cs Hotfix\Share\%(RecursiveDir)%(FileName)%(Extension)",
                             @"Assets\Scripts\HotfixView\Client\**\*.cs HotfixView\Client\%(RecursiveDir)%(FileName)%(Extension)"
                         };
-                        break;
+                            break;
+                    }
+
+                    content = GenerateCustomProject(content, files);
+                    content = content.Replace("<Target Name=\"AfterBuild\" />",
+                        "   <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Hotfix.dll.bytes\" ContinueOnError=\"false\" />\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Hotfix.pdb.bytes\" ContinueOnError=\"false\" />\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Hotfix.dll\" ContinueOnError=\"false\" />\n" +
+                        $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Hotfix.pdb\" ContinueOnError=\"false\" />\n" +
+                        "   </Target>\n");
                 }
-
-                content = GenerateCustomProject(path, content, files);
-                content = content.Replace("<Target Name=\"AfterBuild\" />",
-                    "   <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Hotfix.dll.bytes\" ContinueOnError=\"false\" />\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/Hotfix.pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Hotfix.dll\" ContinueOnError=\"false\" />\n" +
-                    $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/Hotfix.pdb\" ContinueOnError=\"false\" />\n" +
-                    "   </Target>\n");
             }
-
 
             foreach (string file in deleteFile)
             {
                 if (File.Exists(file))
                 {
-                    File.Delete(file);    
+                    File.Delete(file);
                 }
             }
 
             return content;
         }
 
-        private static string GenerateCustomProject(string path, string content, params string[] links)
+        /// <summary>
+        /// 获取全局配置
+        /// </summary>
+        private static GlobalConfig GetGlobalConfig()
+        {
+            return AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Resources/GlobalConfig.asset");
+        }
+
+        /// <summary>
+        /// 自定义C#项目配置
+        /// 参考链接:
+        /// https://learn.microsoft.com/zh-cn/visualstudio/ide/reference/build-events-page-project-designer-csharp?view=vs-2022
+        /// https://learn.microsoft.com/zh-cn/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2022
+        /// </summary>
+        private static string GenerateCustomProject(string content, params string[] links)
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(content);
