@@ -45,6 +45,7 @@ namespace ET
                     if (name == "Unity.Model")
                     {
                         this.assembly = ass;
+                        break;
                     }
                 }
 
