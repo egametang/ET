@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEditor;
 
@@ -8,9 +9,7 @@ namespace ET
     public class OnGenerateCSProjectProcessor : AssetPostprocessor
     {
         /// <summary>
-        /// 被Unity编译完成后需要删除的dll列表
-        /// "Define.EnableDll"模式:运行游戏时由CodeLoader.cs动态加载dll, 故在此模式需要删除以下dll
-        /// "!Define.EnableDll"模式:保留在"Library/ScriptAssemblies"中, Unity会自动加载
+        /// 被Unity编译完成后需要删除的dll列表(因这些dll并没有实际作用)
         /// </summary>
         private static string[] deleteFile = new string[]
         {
@@ -21,7 +20,23 @@ namespace ET
         };
 
         /// <summary>
-        /// 文档:https://learn.microsoft.com/zh-cn/visualstudio/gamedev/unity/extensibility/customize-project-files-created-by-vstu#%E6%A6%82%E8%A7%88
+        /// 改变解决方案(sln文件)的生成
+        /// <para><a href ="https://dotnet-campus.github.io/post/understand-the-sln-file.html">解读sln文件</a></para>
+        /// <para><a href ="https://learn.microsoft.com/zh-cn/visualstudio/gamedev/unity/extensibility/customize-project-files-created-by-vstu#%E6%A6%82%E8%A7%88">查看调用时机</a></para>
+        /// </summary>
+        public static string OnGeneratedSlnSolution(string path, string content)
+        {
+            // 隐藏Hotfix和Model相关项目, 统一使用AllHotfix和AllModel
+            content = Regex.Replace(content, "Project.*\"Unity.Model\".*\\nEndProject", string.Empty);
+            content = Regex.Replace(content, "Project.*\"Unity.ModelView\".*\\nEndProject", string.Empty);
+            content = Regex.Replace(content, "Project.*\"Unity.Hotfix\".*\\nEndProject", string.Empty);
+            content = Regex.Replace(content, "Project.*\"Unity.HotfixView\".*\\nEndProject", string.Empty);
+            return content;
+        }
+
+        /// <summary>
+        /// 改变C#项目(csproj文件)的生成
+        /// <para><a href ="https://learn.microsoft.com/zh-cn/visualstudio/gamedev/unity/extensibility/customize-project-files-created-by-vstu#%E6%A6%82%E8%A7%88">查看调用时机</a></para>
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
@@ -32,11 +47,6 @@ namespace ET
 
             if (path.EndsWith("Unity.AllModel.csproj"))
             {
-                if (!Define.EnableDll)
-                {
-                    return content;
-                }
-
                 GlobalConfig globalConfig = GetGlobalConfig();
                 if (globalConfig != null)
                 {
@@ -84,11 +94,6 @@ namespace ET
 
             if (path.EndsWith("Unity.AllHotfix.csproj"))
             {
-                if (!Define.EnableDll)
-                {
-                    return content;
-                }
-
                 GlobalConfig globalConfig = GetGlobalConfig();
                 if (globalConfig != null)
                 {
@@ -151,10 +156,8 @@ namespace ET
         }
 
         /// <summary>
-        /// 自定义C#项目配置
-        /// 参考链接:
-        /// https://learn.microsoft.com/zh-cn/visualstudio/ide/reference/build-events-page-project-designer-csharp?view=vs-2022
-        /// https://learn.microsoft.com/zh-cn/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2022
+        /// 自定义C#项目配置。
+        /// <para><a href =" https://zhuanlan.zhihu.com/p/509046784">解读csproj文件</a></para>
         /// </summary>
         private static string GenerateCustomProject(string content, params string[] links)
         {
