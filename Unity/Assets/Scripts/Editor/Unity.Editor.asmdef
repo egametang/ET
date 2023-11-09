@@ -10,7 +10,9 @@
         "Unity.Model",
         "Unity.Hotfix",
         "YooAsset",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Unity.AllModel",
+        "Unity.AllHotfix"
     ],
     "includePlatforms": [
         "Editor"
