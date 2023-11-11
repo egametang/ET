@@ -5,7 +5,6 @@ namespace ET
     {
         protected override async ETTask Run(Scene root, EntryEvent1 args)
         {
-            await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ObjectWait>();
