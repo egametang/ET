@@ -8,17 +8,19 @@ namespace ET
         OnceTimer,
         OnceWaitTimer,
         RepeatedTimer,
+        OffsetCorrectRepeatedTimer,
     }
 
     public struct TimerAction
     {
-        public TimerAction(TimerClass timerClass, long startTime, long time, int type, object obj)
+        public TimerAction(TimerClass timerClass, long startTime, long time, int type, object obj, long offset = 0)
         {
             this.TimerClass = timerClass;
             this.StartTime = startTime;
             this.Object = obj;
             this.Time = time;
             this.Type = type;
+            this.Offset = offset;
         }
         
         public TimerClass TimerClass;
@@ -30,6 +32,8 @@ namespace ET
         public long StartTime;
 
         public long Time;
+
+        public long Offset;
     }
 
     public struct TimerCallback
@@ -136,12 +140,23 @@ namespace ET
                     EventSystem.Instance.Invoke(timerAction.Type, new TimerCallback() { Args = timerAction.Object });
                     break;
                 }
+                case TimerClass.OffsetCorrectRepeatedTimer:
+                {                    
+                    long timeNow = self.GetNow();
+                    long lastTillTime = timerAction.StartTime + timerAction.Time + timerAction.Offset;
+                    long offset = lastTillTime - timeNow;
+                    timerAction.Offset = offset;
+                    timerAction.StartTime = timeNow;
+                    self.AddTimer(timerId, ref timerAction);
+                    EventSystem.Instance.Invoke(timerAction.Type, new TimerCallback() { Args = timerAction.Object });
+                    break;
+                }
             }
         }
 
         private static void AddTimer(this TimerComponent self, long timerId, ref TimerAction timer)
         {
-            long tillTime = timer.StartTime + timer.Time;
+            long tillTime = timer.StartTime + timer.Time + timer.Offset;
             self.timeId.Add(tillTime, timerId);
             self.timerActions.Add(timerId, timer);
             if (tillTime < self.minTime)
