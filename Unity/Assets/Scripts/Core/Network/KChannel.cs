@@ -41,20 +41,6 @@ namespace ET
 		private MemoryBuffer readMemory;
 		private int needReadSplitCount;
 
-		private IPEndPoint remoteAddress;
-
-		public IPEndPoint RemoteAddress
-		{
-			get
-			{
-				return this.remoteAddress;
-			}
-			set
-			{
-				this.remoteAddress = value;
-			}
-		}
-
 		private void InitKcp()
 		{
 			switch (this.Service.ServiceType)

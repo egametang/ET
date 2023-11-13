@@ -19,7 +19,7 @@ namespace ET.Client
             Fiber fiber = self.Fiber();
             Scene root = fiber.Root;
             
-            IPEndPoint realAddress = NetworkHelper.ToIPEndPoint(session.RemoteAddress);
+            IPEndPoint realAddress = session.RemoteAddress;
             NetComponent netComponent = root.GetComponent<NetComponent>();
             
             while (true)

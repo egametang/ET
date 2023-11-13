@@ -16,18 +16,19 @@ namespace ET
 
         public ThreadSynchronizationContext ThreadSynchronizationContext;
 
-        public WService(ThreadSynchronizationContext threadSynchronizationContext, IEnumerable<string> prefixs)
+        public WService(IEnumerable<string> prefixs)
         {
-            this.ThreadSynchronizationContext = threadSynchronizationContext;
+            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
             
             this.httpListener = new HttpListener();
 
             StartAccept(prefixs).Coroutine();
         }
         
-        public WService(ThreadSynchronizationContext threadSynchronizationContext)
+        public WService()
         {
-            this.ThreadSynchronizationContext = threadSynchronizationContext;
+            this.ServiceType = ServiceType.Outer;
+            this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
         }
         
         private long GetId
@@ -38,15 +39,16 @@ namespace ET
             }
         }
         
-        public override void Create(long id, string address)
+        public override void Create(long id, IPEndPoint ipEndpoint)
         {
 			ClientWebSocket webSocket = new();
-            WChannel channel = new(id, webSocket, address, this);
+            WChannel channel = new(id, webSocket, ipEndpoint, this);
             this.channels[channel.Id] = channel;
         }
 
         public override void Update()
         {
+            this.ThreadSynchronizationContext.Update();
         }
 
         public override void Remove(long id, int error = 0)
@@ -68,12 +70,19 @@ namespace ET
             return this.ThreadSynchronizationContext == null;
         }
 
-        protected void Get(long id, string address)
+        protected void Get(long id, IPEndPoint ipEndPoint)
         {
             if (!this.channels.TryGetValue(id, out _))
             {
-                this.Create(id, address);
+                this.Create(id, ipEndPoint);
             }
+        }
+        
+        public WChannel Get(long id)
+        {
+            WChannel channel = null;
+            this.channels.TryGetValue(id, out channel);
+            return channel;
         }
 
         public override void Dispose()
@@ -105,7 +114,7 @@ namespace ET
                         HttpListenerWebSocketContext webSocketContext = await httpListenerContext.AcceptWebSocketAsync(null);
 
                         WChannel channel = new WChannel(this.GetId, webSocketContext, this);
-
+                        channel.RemoteAddress = httpListenerContext.Request.RemoteEndPoint;
                         this.channels[channel.Id] = channel;
 
                         this.AcceptCallback(channel.Id, channel.RemoteAddress);

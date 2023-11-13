@@ -67,8 +67,8 @@ namespace ET
         public abstract void Remove(long id, int error = 0);
         
         public abstract bool IsDisposed();
-
-        public abstract void Create(long id, string address);
+        
+        public abstract void Create(long id, IPEndPoint ipEndPoint);
 
         public abstract void Send(long channelId, MemoryBuffer memoryBuffer);
 

@@ -173,7 +173,7 @@ namespace ET
             set;
         }
 
-        public string RemoteAddress
+        public IPEndPoint RemoteAddress
         {
             get;
             set;
