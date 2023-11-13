@@ -29,7 +29,7 @@ namespace ET.Client
                     return;
                 }
 
-                await fiber.TimerComponent.WaitAsync(1000);
+                await fiber.Root.GetComponent<TimerComponent>().WaitAsync(1000);
                 
                 if (self.InstanceId != instanceId)
                 {

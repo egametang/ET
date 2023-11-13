@@ -22,7 +22,7 @@
             }
 
             long instanceId = mailBoxComponent.InstanceId;
-            using (await fiber.CoroutineLockComponent.Wait(CoroutineLockType.Mailbox, mailBoxComponent.ParentInstanceId))
+            using (await fiber.Root.GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.Mailbox, mailBoxComponent.ParentInstanceId))
             {
                 if (mailBoxComponent.InstanceId != instanceId)
                 {

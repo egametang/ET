@@ -35,7 +35,7 @@ namespace ET.Client
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
             self.netClientActorId = new ActorId(self.Fiber().Process, self.fiberId);
 
-            NetClient2Main_Login response = await self.Fiber().ProcessInnerSender.Call(self.netClientActorId, new Main2NetClient_Login()
+            NetClient2Main_Login response = await self.Root().GetComponent<ProcessInnerSender>().Call(self.netClientActorId, new Main2NetClient_Login()
             {
                 OwnerFiberId = self.Fiber().Id, Account = account, Password = password
             }) as NetClient2Main_Login;
@@ -46,14 +46,14 @@ namespace ET.Client
         {
             A2NetClient_Message a2NetClientMessage = A2NetClient_Message.Create();
             a2NetClientMessage.MessageObject = message;
-            self.Fiber().ProcessInnerSender.Send(self.netClientActorId, a2NetClientMessage);
+            self.Root().GetComponent<ProcessInnerSender>().Send(self.netClientActorId, a2NetClientMessage);
         }
 
         public static async ETTask<IResponse> Call(this ClientSenderCompnent self, IRequest request, bool needException = true)
         {
             A2NetClient_Request a2NetClientRequest = A2NetClient_Request.Create();
             a2NetClientRequest.MessageObject = request;
-            A2NetClient_Response a2NetClientResponse = await self.Fiber().ProcessInnerSender.Call(self.netClientActorId, a2NetClientRequest) as A2NetClient_Response;
+            A2NetClient_Response a2NetClientResponse = await self.Root().GetComponent<ProcessInnerSender>().Call(self.netClientActorId, a2NetClientRequest) as A2NetClient_Response;
             IResponse response = a2NetClientResponse.MessageObject;
                         
             if (response.Error == ErrorCore.ERR_MessageTimeout)

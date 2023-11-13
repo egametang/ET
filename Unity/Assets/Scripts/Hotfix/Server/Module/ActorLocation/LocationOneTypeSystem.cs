@@ -36,7 +36,7 @@ namespace ET.Server
         public static async ETTask Add(this LocationOneType self, long key, ActorId instanceId)
         {
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
-            using (await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key))
+            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, key))
             {
                 self.locations[key] = instanceId;
                 Log.Info($"location add key: {key} instanceId: {instanceId}");
@@ -46,7 +46,7 @@ namespace ET.Server
         public static async ETTask Remove(this LocationOneType self, long key)
         {
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
-            using (await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key))
+            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, key))
             {
                 self.locations.Remove(key);
                 Log.Info($"location remove key: {key}");
@@ -56,7 +56,7 @@ namespace ET.Server
         public static async ETTask Lock(this LocationOneType self, long key, ActorId actorId, int time = 0)
         {
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
-            CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key);
+            CoroutineLock coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, key);
 
             LockInfo lockInfo = self.AddChild<LockInfo, ActorId, CoroutineLock>(actorId, coroutineLock);
             self.lockInfos.Add(key, lockInfo);
@@ -68,7 +68,7 @@ namespace ET.Server
                 async ETTask TimeWaitAsync()
                 {
                     long lockInfoInstanceId = lockInfo.InstanceId;
-                    await self.Fiber().TimerComponent.WaitAsync(time);
+                    await self.Root().GetComponent<TimerComponent>().WaitAsync(time);
                     if (lockInfo.InstanceId != lockInfoInstanceId)
                     {
                         return;
@@ -107,7 +107,7 @@ namespace ET.Server
         public static async ETTask<ActorId> Get(this LocationOneType self, long key)
         {
             int coroutineLockType = (self.LocationType << 16) | CoroutineLockType.Location;
-            using (await self.Fiber().CoroutineLockComponent.Wait(coroutineLockType, key))
+            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, key))
             {
                 self.locations.TryGetValue(key, out ActorId actorId);
                 Log.Info($"location get key: {key} actorId: {actorId}");

@@ -20,7 +20,6 @@ namespace ET
         {
             Fiber fiber = self.Fiber();
             MessageQueue.Instance.AddQueue(fiber.Id);
-            fiber.ProcessInnerSender = self;
         }
 
         [EntitySystem]
@@ -167,7 +166,7 @@ namespace ET
             
             async ETTask Timeout()
             {
-                await fiber.TimerComponent.WaitAsync(ProcessInnerSender.TIMEOUT_TIME);
+                await fiber.Root.GetComponent<TimerComponent>().WaitAsync(ProcessInnerSender.TIMEOUT_TIME);
 
                 if (!self.requestCallback.Remove(rpcId, out MessageSenderStruct action))
                 {
