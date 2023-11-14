@@ -122,7 +122,7 @@ namespace ET
             ssthresh  = THRESH_INIT;
             fastlimit = FASTACK_LIMIT;
             dead_link = DEADLINK;
-            buffer = new byte[(mtu + OVERHEAD) * 3];
+            buffer = new byte[(mtu + OVERHEAD) * 3 + RESERVED_BYTE];
         }
 
         // ikcp_segment_new
@@ -778,10 +778,10 @@ namespace ET
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void MakeSpace(ref int size, int space)
         {
-            if (size - RESERVED_BYTE + space > mtu)
+            if (size + space > mtu)
             {
                 output(buffer, size);
-                size = RESERVED_BYTE;
+                size = 0;
             }
         }
 
@@ -790,7 +790,7 @@ namespace ET
         void FlushBuffer(int size)
         {
             // flush buffer up to 'offset' (<= MTU)
-            if (size > RESERVED_BYTE)
+            if (size > 0)
             {
                 output(buffer, size);
             }
@@ -804,7 +804,7 @@ namespace ET
         // with congestion control, the window will be extremely small(!).
         public void Flush()
         {
-            int size  = RESERVED_BYTE;     // amount of bytes to flush. 'buffer ptr' in C.
+            int size  = 0;     // amount of bytes to flush. 'buffer ptr' in C.
             bool lost = false; // lost segments
 
             // update needs to be called before flushing
@@ -832,7 +832,7 @@ namespace ET
                 // ikcp_ack_get assigns ack[i] to seg.sn, seg.ts
                 seg.SegHead.sn = ack.serialNumber;
                 seg.SegHead.ts = ack.timestamp;
-                seg.Encode(buffer.AsSpan(size), ref size);
+                seg.Encode(buffer.AsSpan(size + RESERVED_BYTE), ref size);
             }
             acklist.Clear();
 
@@ -869,7 +869,7 @@ namespace ET
             {
                 seg.SegHead.cmd = CMD_WASK;
                 MakeSpace(ref size, OVERHEAD);
-                seg.Encode(buffer.AsSpan(size), ref size);
+                seg.Encode(buffer.AsSpan(size + RESERVED_BYTE), ref size);
             }
 
             // flush window probing commands
@@ -877,7 +877,7 @@ namespace ET
             {
                 seg.SegHead.cmd = CMD_WINS;
                 MakeSpace(ref size, OVERHEAD);
-                seg.Encode(buffer.AsSpan(size), ref size);
+                seg.Encode(buffer.AsSpan(size + RESERVED_BYTE), ref size);
             }
 
             probe = 0;
@@ -986,11 +986,11 @@ namespace ET
                     int need = OVERHEAD + segment.WrittenCount;
                     this.MakeSpace(ref size, need);
 
-                    segment.Encode(this.buffer.AsSpan(size),ref size);
+                    segment.Encode(this.buffer.AsSpan(size + RESERVED_BYTE),ref size);
 
                     if (segment.WrittenCount > 0)
                     {
-                        segment.WrittenBuffer.CopyTo(this.buffer.AsSpan(size));
+                        segment.WrittenBuffer.CopyTo(this.buffer.AsSpan(size + RESERVED_BYTE));
                         
                         size += segment.WrittenCount;
                     }
@@ -1154,7 +1154,7 @@ namespace ET
             if (mtu < 50 || mtu < OVERHEAD)
                 this.ThrowMTUException();
 
-            buffer = new byte[(mtu + OVERHEAD) * 3];
+            buffer = new byte[(mtu + OVERHEAD) * 3 + RESERVED_BYTE];
             this.mtu = mtu;
             mss = mtu - OVERHEAD;
         }
