@@ -43,7 +43,6 @@ namespace ET
         [EntitySystem]
         private static void Awake(this TimerComponent self)
         {
-            self.Fiber().TimerComponent = self;
         }
         
         [EntitySystem]

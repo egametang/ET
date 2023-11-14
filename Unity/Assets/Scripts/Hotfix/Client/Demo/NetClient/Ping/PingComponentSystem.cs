@@ -46,7 +46,7 @@ namespace ET.Client
                     
                     TimeInfo.Instance.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
                     
-                    await fiber.TimerComponent.WaitAsync(2000);
+                    await fiber.Root.GetComponent<TimerComponent>().WaitAsync(2000);
                 }
                 catch (RpcException e)
                 {

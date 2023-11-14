@@ -41,7 +41,7 @@ namespace ET.Client
         // 等10分钟再获取一次
         public static async ETTask WaitTenMinGetAllRouter(this RouterAddressComponent self)
         {
-            await self.Fiber().TimerComponent.WaitAsync(5 * 60 * 1000);
+            await self.Root().GetComponent<TimerComponent>().WaitAsync(5 * 60 * 1000);
             if (self.IsDisposed)
             {
                 return;

@@ -27,7 +27,12 @@ namespace ET
         public object Fetch(Type type)
         {
             Pool pool = GetPool(type);
-            return pool.Get();
+            object obj = pool.Get();
+            if (obj is IPool p)
+            {
+                p.IsFromPool = true;
+            }
+            return obj;
         }
 
         public void Recycle(object obj)

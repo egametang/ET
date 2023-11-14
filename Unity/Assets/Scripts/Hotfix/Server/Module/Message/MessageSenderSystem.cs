@@ -14,7 +14,7 @@ namespace ET.Server
             // 如果发向同一个进程，则扔到消息队列中
             if (actorId.Process == fiber.Process)
             {
-                fiber.ProcessInnerSender.Send(actorId, message);
+                fiber.Root.GetComponent<ProcessInnerSender>().Send(actorId, message);
                 return;
             }
             
@@ -65,7 +65,7 @@ namespace ET.Server
             
             if (fiber.Process == actorId.Process)
             {
-                return await fiber.ProcessInnerSender.Call(actorId, rpcId, request, needException: needException);
+                return await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, rpcId, request, needException: needException);
             }
 
             // 发给NetInner纤程
@@ -73,7 +73,7 @@ namespace ET.Server
             a2NetInner_Request.ActorId = actorId;
             a2NetInner_Request.MessageObject = request;
             
-            A2NetInner_Response a2NetInnerResponse = await fiber.ProcessInnerSender.Call(
+            A2NetInner_Response a2NetInnerResponse = await fiber.Root.GetComponent<ProcessInnerSender>().Call(
                 new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInner_Request) as A2NetInner_Response;
             IResponse response = a2NetInnerResponse.MessageObject;
             

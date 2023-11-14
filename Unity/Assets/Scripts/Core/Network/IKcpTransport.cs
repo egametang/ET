@@ -134,7 +134,7 @@ namespace ET
             if (id == 0)
             {
                 id = IdGenerater.Instance.GenerateInstanceId();
-                this.tService.Create(id, endPoint.ToString());
+                this.tService.Create(id, (IPEndPoint)endPoint);
                 this.idEndpoints.Add(id, endPoint);
                 this.channelIds.Enqueue(id);
             }

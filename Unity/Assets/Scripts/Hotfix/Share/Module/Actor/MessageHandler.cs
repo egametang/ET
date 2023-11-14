@@ -84,7 +84,7 @@ namespace ET
                 }
                 
                 response.RpcId = rpcId;
-                fiber.ProcessInnerSender.Reply(fromAddress, response);
+                fiber.Root.GetComponent<ProcessInnerSender>().Reply(fromAddress, response);
             }
             catch (Exception e)
             {

@@ -73,7 +73,7 @@ namespace ET.Server
                     {
                         IRequest request = (IRequest)message;
                         // 注意这里都不能抛异常，因为这里只是中转消息
-                        IResponse response = await fiber.ProcessInnerSender.Call(actorId, request, false);
+                        IResponse response = await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, request, false);
                         actorId.Process = fromProcess;
                         self.Send(actorId, response);
                     }
@@ -82,7 +82,7 @@ namespace ET.Server
                 }
                 default:
                 {
-                    fiber.ProcessInnerSender.Send(actorId, (IMessage)message);
+                    fiber.Root.GetComponent<ProcessInnerSender>().Send(actorId, (IMessage)message);
                     break;
                 }
             }
@@ -104,14 +104,14 @@ namespace ET.Server
         private static void OnAccept(this ProcessOuterSender self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
-            session.RemoteAddress = ipEndPoint.ToString();
+            session.RemoteAddress = ipEndPoint;
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
 
         private static Session CreateInner(this ProcessOuterSender self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, AService>(channelId, self.AService);
-            session.RemoteAddress = ipEndPoint.ToString();
+            session.RemoteAddress = ipEndPoint;
             self.AService.Create(channelId, session.RemoteAddress);
 
             //session.AddComponent<InnerPingComponent>();
@@ -209,7 +209,7 @@ namespace ET.Server
 
             async ETTask Timeout()
             {
-                await fiber.TimerComponent.WaitAsync(ProcessOuterSender.TIMEOUT_TIME);
+                await fiber.Root.GetComponent<TimerComponent>().WaitAsync(ProcessOuterSender.TIMEOUT_TIME);
                 if (!self.requestCallback.Remove(rpcId, out MessageSenderStruct action))
                 {
                     return;

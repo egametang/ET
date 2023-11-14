@@ -1,6 +1,5 @@
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,26 +10,14 @@ namespace ET
         private const string relativeDirPrefix = "../Release";
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
-        
-        
+
         [InitializeOnLoadMethod]
         public static void ReGenerateProjectFiles()
         {
-            if (Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name== "RiderScriptEditor")
-            {
-                FieldInfo generator = Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().GetField("m_ProjectGeneration", BindingFlags.Static | BindingFlags.NonPublic);
-                var syncMethod = generator.FieldType.GetMethod("Sync");
-                syncMethod.Invoke(generator.GetValue(Unity.CodeEditor.CodeEditor.CurrentEditor), null);
-            }
-            else
-            {
-                Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
-            }
-            
+            Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
             Debug.Log("ReGenerateProjectFiles finished.");
         }
 
-              
 #if ENABLE_DLL
         [MenuItem("ET/ChangeDefine/Remove ENABLE_DLL")]
         public static void RemoveEnableDll()
@@ -60,7 +47,7 @@ namespace ET
 #endif
         public static void EnableDefineSymbols(string symbols, bool enable)
         {
-            Log.Debug($"EnableDefineSymbols {symbols} {enable}");
+            Debug.Log($"EnableDefineSymbols {symbols} {enable}");
             string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             var ss = defines.Split(';').ToList();
             if (enable)
@@ -79,13 +66,13 @@ namespace ET
                 }
                 ss.Remove(symbols);
             }
-            Log.Debug($"EnableDefineSymbols {symbols} {enable}");
+            Debug.Log($"EnableDefineSymbols {symbols} {enable}");
             defines = string.Join(";", ss);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
-        
+
         public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool clearFolder)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
@@ -107,7 +94,6 @@ namespace ET
                 case PlatformType.MacOS:
                     buildTarget = BuildTarget.StandaloneOSX;
                     break;
-                
                 case PlatformType.Linux:
                     buildTarget = BuildTarget.StandaloneLinux64;
                     break;
@@ -121,18 +107,17 @@ namespace ET
             }
             Directory.CreateDirectory(fold);
 
-            UnityEngine.Debug.Log("start build assetbundle");
+            Debug.Log("start build assetbundle");
             BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
-
-            UnityEngine.Debug.Log("finish build assetbundle");
+            Debug.Log("finish build assetbundle");
 
             AssetDatabase.Refresh();
             string[] levels = {
                 "Assets/Scenes/Init.unity",
             };
-            UnityEngine.Debug.Log("start build exe");
+            Debug.Log("start build exe");
             BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
-            UnityEngine.Debug.Log("finish build exe");
+            Debug.Log("finish build exe");
         }
     }
 }

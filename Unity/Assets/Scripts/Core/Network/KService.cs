@@ -184,6 +184,7 @@ namespace ET
 
                 // accept
                 byte flag = this.cache[0];
+                
                 // conn从100开始，如果为1，2，3则是特殊包
                 uint remoteConn = 0;
                 uint localConn = 0;
@@ -419,7 +420,7 @@ namespace ET
             return channel;
         }
 
-        public override void Create(long id, string address)
+        public override void Create(long id, IPEndPoint ipEndPoint)
         {
             if (this.localConnChannels.TryGetValue(id, out KChannel kChannel))
             {
@@ -430,8 +431,7 @@ namespace ET
             {
                 // 低32bit是localConn
                 uint localConn = (uint)id;
-                IPEndPoint endPoint = NetworkHelper.ToIPEndPoint(address);
-                kChannel = new KChannel(localConn, endPoint, this);
+                kChannel = new KChannel(localConn, ipEndPoint, this);
                 this.localConnChannels.Add(kChannel.LocalConn, kChannel);
             }
             catch (Exception e)

@@ -32,7 +32,7 @@ namespace ET.Client
                 Log.Debug($"攻击: {i}次");
 
                 // 因为协程可能被中断，任何协程都要传入cancellationToken，判断如果是中断则要返回
-                await fiber.TimerComponent.WaitAsync(1000, cancellationToken);
+                await fiber.Root.GetComponent<TimerComponent>().WaitAsync(1000, cancellationToken);
                 if (cancellationToken.IsCancel())
                 {
                     return;

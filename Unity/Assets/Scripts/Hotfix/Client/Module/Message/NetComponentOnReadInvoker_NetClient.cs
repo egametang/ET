@@ -27,7 +27,7 @@ namespace ET.Client
                 {
                     // 扔到Main纤程队列中
                     int parentFiberId = fiber.Root.GetComponent<FiberParentComponent>().ParentFiberId;
-                    fiber.ProcessInnerSender.Send(new ActorId(fiber.Process, parentFiberId), iActorMessage);
+                    fiber.Root.GetComponent<ProcessInnerSender>().Send(new ActorId(fiber.Process, parentFiberId), iActorMessage);
                     break;
                 }
                 default:

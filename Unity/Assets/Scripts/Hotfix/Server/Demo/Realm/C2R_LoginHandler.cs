@@ -26,7 +26,7 @@ namespace ET.Server
 
 		private async ETTask CloseSession(Session session)
 		{
-			await session.Fiber().TimerComponent.WaitAsync(1000);
+			await session.Root().GetComponent<TimerComponent>().WaitAsync(1000);
 			session.Dispose();
 		}
 	}

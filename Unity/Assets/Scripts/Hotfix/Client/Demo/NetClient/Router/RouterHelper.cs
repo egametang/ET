@@ -57,7 +57,7 @@ namespace ET.Client
             sendCache.WriteTo(9, connectId);
             byte[] addressBytes = realAddress.ToString().ToByteArray();
             Array.Copy(addressBytes, 0, sendCache, 13, addressBytes.Length);
-            TimerComponent timerComponent = netComponent.Fiber().TimerComponent;
+            TimerComponent timerComponent = netComponent.Root().GetComponent<TimerComponent>();
             Log.Info($"router connect: {localConn} {remoteConn} {routerAddress} {realAddress}");
 
             long lastSendTimer = 0;
