@@ -29,6 +29,26 @@ namespace ET
             {
                 return GenerateCustomProject(content);
             }
+            
+            if (path.EndsWith("Unity.Model.csproj"))
+            {
+                return GenerateCustomProject(content);
+            }
+            
+            if (path.EndsWith("Unity.ModelView.csproj"))
+            {
+                return GenerateCustomProject(content);
+            }
+            
+            if (path.EndsWith("Unity.Hotfix.csproj"))
+            {
+                return GenerateCustomProject(content);
+            }
+            
+            if (path.EndsWith("Unity.HotfixView.csproj"))
+            {
+                return GenerateCustomProject(content);
+            }
 
             if (path.EndsWith("Unity.AllModel.csproj"))
             {
@@ -130,7 +150,7 @@ namespace ET
                         "   </Target>\n");
                 }
             }
-
+            
             foreach (string file in deleteFile)
             {
                 if (File.Exists(file))
