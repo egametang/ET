@@ -15,9 +15,9 @@ namespace ET
         {
             ulong result = 0;
             result |= (ushort) this.Process;
-            result <<= 14;
-            result |= this.Time;
             result <<= 30;
+            result |= this.Time;
+            result <<= 20;
             result |= this.Value;
             return (long) result;
         }
