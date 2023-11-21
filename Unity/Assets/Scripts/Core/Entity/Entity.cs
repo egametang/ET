@@ -15,7 +15,7 @@ namespace ET
         IsNew = 1 << 4,
     }
 
-    public partial class Entity: DisposeObject
+    public abstract partial class Entity: DisposeObject, IPool
     {
 #if ENABLE_VIEW && UNITY_EDITOR
         [BsonIgnore]
@@ -524,10 +524,7 @@ namespace ET
             
             status = EntityStatus.None;
 
-            if (this.IsFromPool)
-            {
-                ObjectPool.Instance.Recycle(this);
-            }
+            ObjectPool.Instance.Recycle(this);
         }
 
         private void AddToComponents(Entity component)
@@ -693,17 +690,7 @@ namespace ET
 
         private static Entity Create(Type type, bool isFromPool)
         {
-            Entity component;
-            if (isFromPool)
-            {
-                component = (Entity) ObjectPool.Instance.Fetch(type);
-            }
-            else
-            {
-                component = Activator.CreateInstance(type) as Entity;
-            }
-
-            component.IsFromPool = isFromPool;
+            Entity component = (Entity) ObjectPool.Instance.Fetch(type, isFromPool);
             component.IsCreated = true;
             component.IsNew = true;
             component.Id = 0;

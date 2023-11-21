@@ -3,7 +3,7 @@ using System;
 namespace ET
 {
     [EnableMethod]
-    public class LSEntity: Entity
+    public abstract partial class LSEntity: Entity
     {
         public new K AddComponent<K>(bool isFromPool = false) where K : LSEntity, IAwake, new()
         {

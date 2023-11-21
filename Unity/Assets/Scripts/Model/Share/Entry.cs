@@ -1,4 +1,8 @@
-﻿namespace ET
+﻿using MemoryPack;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Serializers;
+
+namespace ET
 {
     public struct EntryEvent1
     {
