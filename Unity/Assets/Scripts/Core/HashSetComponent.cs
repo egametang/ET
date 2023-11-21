@@ -16,10 +16,6 @@ namespace ET
 
         public void Dispose()
         {
-            if (this.Count > 64) // 超过64，让gc回收
-            {
-                return;
-            }
             this.Clear();
             ObjectPool.Instance.Recycle(this);
         }

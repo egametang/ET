@@ -16,7 +16,7 @@ namespace ET
 
         public void Dispose()
         {
-            if (this.Count > 64) // 超过64，让gc回收
+            if (this.Capacity > 64) // 超过64，让gc回收
             {
                 return;
             }
