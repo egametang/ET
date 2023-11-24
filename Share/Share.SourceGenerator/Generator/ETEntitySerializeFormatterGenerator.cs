@@ -27,6 +27,8 @@ public class ETEntitySerializeFormatterGenerator : ISourceGenerator
         string typeHashCodeMapDeclaration = GenerateTypeHashCodeMapDeclaration(receiver);
         string serializeContent = GenerateSerializeContent(receiver);
         string deserializeContent = GenerateDeserializeContent(receiver);
+        string genericTypeParam = context.Compilation.AssemblyName == AnalyzeAssembly.DotNetModel? "<TBufferWriter>" : "";
+        string scopedCode = context.Compilation.AssemblyName == AnalyzeAssembly.DotNetModel? "scoped" : "";
         string code = $$"""
 #nullable enable
 #pragma warning disable CS0108 // hides inherited member
@@ -56,7 +58,7 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
     };
     
     [global::MemoryPack.Internal.Preserve]
-    public override void Serialize<TBufferWriter>(ref MemoryPackWriter<TBufferWriter> writer,scoped ref global::{{Definition.EntityType}}? value)
+    public override void Serialize{{genericTypeParam}}(ref MemoryPackWriter{{genericTypeParam}} writer,{{scopedCode}} ref global::{{Definition.EntityType}}? value)
     {
 
         if (value == null)
@@ -83,7 +85,7 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
     }
     
     [global::MemoryPack.Internal.Preserve]
-    public override void Deserialize(ref MemoryPackReader reader,scoped ref global::{{Definition.EntityType}}? value)
+    public override void Deserialize(ref MemoryPackReader reader,{{scopedCode}} ref global::{{Definition.EntityType}}? value)
     {
 
         bool isNull = reader.ReadValue<byte>() == global::MemoryPack.MemoryPackCode.NullObject;

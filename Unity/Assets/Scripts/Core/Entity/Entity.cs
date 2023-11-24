@@ -22,9 +22,11 @@ namespace ET
 #if ENABLE_VIEW && UNITY_EDITOR
         [BsonIgnore]
         [UnityEngine.HideInInspector]
+        [MemoryPackIgnore]
         public UnityEngine.GameObject ViewGO;
 #endif
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public long InstanceId { get; protected set; }
 
@@ -35,6 +37,7 @@ namespace ET
         [BsonIgnore]
         private EntityStatus status = EntityStatus.None;
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public bool IsFromPool
         {
@@ -157,6 +160,7 @@ namespace ET
             }
         }
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
         
@@ -164,6 +168,7 @@ namespace ET
         private Entity parent;
 
         // 可以改变parent，但是不能设置为null
+        [MemoryPackIgnore]
         [BsonIgnore]
         public Entity Parent
         {
@@ -292,6 +297,7 @@ namespace ET
         [BsonIgnore]
         protected IScene iScene;
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public IScene IScene
         {
@@ -370,13 +376,15 @@ namespace ET
             }
         }
 
+        [MemoryPackInclude]
         [BsonElement("Children")]
         [BsonIgnoreIfNull]
-        private List<Entity> childrenDB;
+        protected List<Entity> childrenDB;
 
         [BsonIgnore]
         private SortedDictionary<long, Entity> children;
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public SortedDictionary<long, Entity> Children
         {
@@ -407,13 +415,15 @@ namespace ET
             }
         }
 
+        [MemoryPackInclude]
         [BsonElement("C")]
         [BsonIgnoreIfNull]
-        private List<Entity> componentsDB;
+        protected List<Entity> componentsDB;
 
         [BsonIgnore]
         private SortedDictionary<long, Entity> components;
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public SortedDictionary<long, Entity> Components
         {
