@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using MemoryPack;
 using MongoDB.Bson.Serialization.Attributes;
 using Unity.Mathematics;
 
@@ -6,13 +7,16 @@ namespace ET
 {
     [ChildOf(typeof(UnitComponent))]
     [DebuggerDisplay("ViewName,nq")]
-    public class Unit: Entity, IAwake<int>
+    [MemoryPackable]
+    public partial class Unit: Entity, IAwake<int>
     {
         public int ConfigId { get; set; } //配置表id
 
+        [MemoryPackInclude]
         [BsonElement]
         private float3 position; //坐标
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public float3 Position
         {
@@ -25,6 +29,7 @@ namespace ET
             }
         }
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public float3 Forward
         {
@@ -32,9 +37,11 @@ namespace ET
             set => this.Rotation = quaternion.LookRotation(value, math.up());
         }
         
+        [MemoryPackInclude]
         [BsonElement]
         private quaternion rotation;
         
+        [MemoryPackIgnore]
         [BsonIgnore]
         public quaternion Rotation
         {

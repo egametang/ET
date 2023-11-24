@@ -46,12 +46,13 @@ public class ETEntitySerializeFormatterGenerator : ISourceGenerator
 
 using System;
 using MemoryPack;
+
 [global::MemoryPack.Internal.Preserve]
 public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definition.EntityType}}>
 {
     static readonly System.Collections.Generic.Dictionary<Type, long> __typeToTag = new({{count}})
     {
-        {{typeHashCodeMapDeclaration}}
+{{typeHashCodeMapDeclaration}}
     };
     
     [global::MemoryPack.Internal.Preserve]
@@ -70,7 +71,7 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
             writer.WriteValue<long>(tag);
             switch (tag)
             {
-                {{serializeContent}}               
+{{serializeContent}}               
                 default:
                     break;
             }
@@ -96,10 +97,23 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
 
         switch (tag)
         {
-            {{deserializeContent}}
+{{deserializeContent}}
             default:
                 //MemoryPackSerializationException.ThrowInvalidTag(tag, typeof(global::IForExternalUnion));
                 break;
+        }
+    }
+}
+namespace ET
+{
+    public static partial class EntitySerializeRegister
+    {
+        static partial void Register()
+        {
+            if (!global::MemoryPack.MemoryPackFormatterProvider.IsRegistered<global::{{Definition.EntityType}}>())
+            {
+                global::MemoryPack.MemoryPackFormatterProvider.Register(new ETEntitySerializeFormatter());
+            }
         }
     }
 }
@@ -112,7 +126,7 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
         StringBuilder sb = new StringBuilder();
         foreach (var entityName in receiver.entities)
         {
-            sb.AppendLine($$"""{ typeof(global::{{entityName}}), {{entityName.GetLongHashCode()}} },""");
+            sb.AppendLine($$"""        { typeof(global::{{entityName}}), {{entityName.GetLongHashCode()}} },""");
         }
         return sb.ToString();
     }
@@ -122,7 +136,7 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
         StringBuilder sb = new StringBuilder();
         foreach (var entityName in receiver.entities)
         {
-            sb.AppendLine($$"""case {{entityName.GetLongHashCode()}}: writer.WritePackable(System.Runtime.CompilerServices.Unsafe.As<global::{{Definition.EntityType}}?, global::{{entityName}}>(ref value)); break;""");
+            sb.AppendLine($$"""                case {{entityName.GetLongHashCode()}}: writer.WritePackable(System.Runtime.CompilerServices.Unsafe.As<global::{{Definition.EntityType}}?, global::{{entityName}}>(ref value)); break;""");
         }
         return sb.ToString();
     }
@@ -133,14 +147,14 @@ public class ETEntitySerializeFormatter : MemoryPackFormatter<global::{{Definiti
         foreach (var entityName in receiver.entities)
         {
             sb.AppendLine($$"""
-case {{entityName.GetLongHashCode()}}:
-        if(value is global::{{entityName}})
-        {
-            reader.ReadPackable(ref System.Runtime.CompilerServices.Unsafe.As<global::{{Definition.EntityType}}?, global::{{entityName}}>(ref value));
-        }else{
-            value = (global::{{entityName}})reader.ReadPackable<global::{{entityName}}>();
-        }
-        break;
+            case {{entityName.GetLongHashCode()}}:
+                    if(value is global::{{entityName}})
+                    {
+                        reader.ReadPackable(ref System.Runtime.CompilerServices.Unsafe.As<global::{{Definition.EntityType}}?, global::{{entityName}}>(ref value));
+                    }else{
+                        value = (global::{{entityName}})reader.ReadPackable<global::{{entityName}}>();
+                    }
+                    break;
 """);
         }
         return sb.ToString();
@@ -177,6 +191,11 @@ case {{entityName.GetLongHashCode()}}:
             
             // 筛选出实体类
             if (baseType!= Definition.EntityType && baseType != Definition.LSEntityType)
+            {
+                return;
+            }
+
+            if (!classTypeSymbol.HasAttribute("MemoryPack.MemoryPackableAttribute"))
             {
                 return;
             }

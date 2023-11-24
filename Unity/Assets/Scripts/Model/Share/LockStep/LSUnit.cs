@@ -1,11 +1,13 @@
 using System;
+using MemoryPack;
 using MongoDB.Bson.Serialization.Attributes;
 using TrueSync;
 
 namespace ET
 {
     [ChildOf(typeof(LSUnitComponent))]
-    public class LSUnit: LSEntity, IAwake, ISerializeToEntity
+    [MemoryPackable]
+    public partial class LSUnit: LSEntity, IAwake, ISerializeToEntity
     {
         public TSVector Position
         {
@@ -13,6 +15,7 @@ namespace ET
             set;
         }
 
+        [MemoryPackIgnore]
         [BsonIgnore]
         public TSVector Forward
         {

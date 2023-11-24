@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MemoryPack;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
@@ -15,6 +16,7 @@ namespace ET
         IsNew = 1 << 4,
     }
 
+    [MemoryPackable(GenerateType.NoGenerate)]
     public abstract partial class Entity: DisposeObject, IPool
     {
 #if ENABLE_VIEW && UNITY_EDITOR
@@ -524,7 +526,10 @@ namespace ET
             
             status = EntityStatus.None;
 
-            ObjectPool.Instance.Recycle(this);
+            if (this.IsFromPool)
+            {
+                ObjectPool.Instance.Recycle(this);
+            }
         }
 
         private void AddToComponents(Entity component)
@@ -690,7 +695,17 @@ namespace ET
 
         private static Entity Create(Type type, bool isFromPool)
         {
-            Entity component = (Entity) ObjectPool.Instance.Fetch(type, isFromPool);
+            Entity component;
+            if (isFromPool)
+            {
+                component = (Entity) ObjectPool.Instance.Fetch(type);
+            }
+            else
+            {
+                component = Activator.CreateInstance(type) as Entity;
+            }
+
+            component.IsFromPool = isFromPool;
             component.IsCreated = true;
             component.IsNew = true;
             component.Id = 0;
