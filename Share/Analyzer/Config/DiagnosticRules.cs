@@ -377,4 +377,22 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+
+    public static class EntityHashCodeAnalyzerRule
+    {
+        private const string Title = "实体类HashCode禁止重复";
+
+        private const string MessageFormat = "{0} 与 {1} 类名HashCode相同:{2}, 请修改类名保证实体类HashCode唯一";
+
+        private const string Description = "实体类HashCode禁止重复.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntityHashCodeAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

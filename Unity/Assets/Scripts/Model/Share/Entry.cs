@@ -34,7 +34,8 @@ namespace ET
 
             // 注册Mongo type
             MongoRegister.Init();
-
+            // 注册Entity序列化器
+            EntitySerializeRegister.Init();
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<ObjectPool>();

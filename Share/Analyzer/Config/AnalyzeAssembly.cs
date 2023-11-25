@@ -4,15 +4,15 @@ namespace ET.Analyzer
 {
     public static class AnalyzeAssembly
     {
-        private const string DotNetCore = "Core";
-        private const string DotNetModel = "Model";
-        private const string DotNetHotfix = "Hotfix";
+        public const string DotNetCore = "Core";
+        public const string DotNetModel = "Model";
+        public const string DotNetHotfix = "Hotfix";
 
-        private const string UnityCore = "Unity.Core";
-        private const string UnityModel = "Unity.Model";
-        private const string UnityHotfix = "Unity.Hotfix";
-        private const string UnityModelView = "Unity.ModelView";
-        private const string UnityHotfixView = "Unity.HotfixView";
+        public const string UnityCore = "Unity.Core";
+        public const string UnityModel = "Unity.Model";
+        public const string UnityHotfix = "Unity.Hotfix";
+        public const string UnityModelView = "Unity.ModelView";
+        public const string UnityHotfixView = "Unity.HotfixView";
 
         public const string UnityCodes = "Unity.Codes";
         public const string UnityAllModel = "Unity.AllModel";
@@ -48,14 +48,19 @@ namespace ET.Analyzer
         {
             DotNetModel,DotNetHotfix,
         };
+        
+        public static readonly string[] AllLogicModel =
+        {
+            DotNetModel, UnityModel,UnityAllModel
+        };
     }
 
     public static class UnityCodesPath
     {
-        private static readonly string UnityModel = @"Unity\Assets\Scripts\Model\".Replace('\\',Path.DirectorySeparatorChar);
-        private static readonly string UnityModelView = @"Unity\Assets\Scripts\ModelView\".Replace('\\',Path.DirectorySeparatorChar);
-        private static readonly string UnityHotfix = @"Unity\Assets\Scripts\Hotfix\".Replace('\\',Path.DirectorySeparatorChar);
-        private static readonly string UnityHotfixView = @"Unity\Assets\Scripts\HotfixView\".Replace('\\',Path.DirectorySeparatorChar);
+        public static readonly string UnityModel = @"Unity\Assets\Scripts\Model\".Replace('\\',Path.DirectorySeparatorChar);
+        public static readonly string UnityModelView = @"Unity\Assets\Scripts\ModelView\".Replace('\\',Path.DirectorySeparatorChar);
+        public static readonly string UnityHotfix = @"Unity\Assets\Scripts\Hotfix\".Replace('\\',Path.DirectorySeparatorChar);
+        public static readonly string UnityHotfixView = @"Unity\Assets\Scripts\HotfixView\".Replace('\\',Path.DirectorySeparatorChar);
 
         public static readonly string[] AllModelHotfix =
         {
@@ -71,5 +76,7 @@ namespace ET.Analyzer
         {
             UnityModel, UnityModelView
         };
+        
+        
     }
 }

@@ -18,6 +18,8 @@
             <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         <Compile Include="../Analyzer/Config/Definition.cs" />
+        <Compile Include="../../Unity/Assets/Scripts/Core/Helper/StringHashHelper.cs" />
+        <Compile Include="../Analyzer/Config/AnalyzeAssembly.cs" />
     </ItemGroup>
 
     <ItemGroup>
