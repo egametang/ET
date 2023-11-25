@@ -113,7 +113,7 @@ namespace ET.Client
                 room.LSWorld.Dispose();
                 // 回滚
                 byte[] memoryBuffer = room.Replay.Snapshots[snapshotIndex];
-                LSWorld lsWorld = MongoHelper.Deserialize(typeof (LSWorld), memoryBuffer, 0, memoryBuffer.Length) as LSWorld;
+                LSWorld lsWorld = MemoryPackHelper.Deserialize(typeof (LSWorld), memoryBuffer, 0, memoryBuffer.Length) as LSWorld;
                 room.LSWorld = lsWorld;
                 room.AuthorityFrame = snapshotIndex * LSConstValue.SaveLSWorldFrameCount;
                 RunLSRollbackSystem(room);

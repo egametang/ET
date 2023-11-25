@@ -5,7 +5,7 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene root, Room2C_CheckHashFail message)
         {
-            LSWorld serverWorld = MongoHelper.Deserialize(typeof(LSWorld), message.LSWorldBytes, 0, message.LSWorldBytes.Length) as LSWorld;
+            LSWorld serverWorld = MemoryPackHelper.Deserialize(typeof(LSWorld), message.LSWorldBytes, 0, message.LSWorldBytes.Length) as LSWorld;
             using (root.AddChild(serverWorld))
             {
                 Log.Debug($"check hash fail, server: {message.Frame} {serverWorld.ToJson()}");
