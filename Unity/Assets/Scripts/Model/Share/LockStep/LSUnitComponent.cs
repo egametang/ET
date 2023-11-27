@@ -1,7 +1,10 @@
-﻿namespace ET
+﻿using MemoryPack;
+
+namespace ET
 {
 	[ComponentOf(typeof(LSWorld))]
-	public class LSUnitComponent: LSEntity, IAwake, ISerializeToEntity
+	[MemoryPackable]
+	public partial class LSUnitComponent: LSEntity, IAwake, ISerializeToEntity
 	{
 	}
 }

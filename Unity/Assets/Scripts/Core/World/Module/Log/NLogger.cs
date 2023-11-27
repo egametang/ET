@@ -7,10 +7,14 @@ namespace ET
     {
         private readonly NLog.Logger logger;
 
-        public NLogger(string name, int process, int fiber, string configPath)
+        static NLogger()
         {
-            LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(configPath);
+            LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("../Config/NLog/NLog.config");
             LogManager.Configuration.Variables["currentDir"] = Environment.CurrentDirectory;
+        }
+
+        public NLogger(string name, int process, int fiber)
+        {
             this.logger = LogManager.GetLogger($"{(uint)process:000000}.{(uint)fiber:0000000000}.{name}");
         }
 

@@ -9,8 +9,11 @@
     <type fullname="MemoryPack.IMemoryPackFormatterRegister" preserve="all" />
     <type fullname="MemoryPack.IMemoryPackable`1" preserve="all" />
     <type fullname="MemoryPack.Internal.PreserveAttribute" preserve="all" />
+    <type fullname="MemoryPack.MemoryPackConstructorAttribute" preserve="all" />
     <type fullname="MemoryPack.MemoryPackFormatterProvider" preserve="all" />
     <type fullname="MemoryPack.MemoryPackFormatter`1" preserve="all" />
+    <type fullname="MemoryPack.MemoryPackIgnoreAttribute" preserve="all" />
+    <type fullname="MemoryPack.MemoryPackIncludeAttribute" preserve="all" />
     <type fullname="MemoryPack.MemoryPackOrderAttribute" preserve="all" />
     <type fullname="MemoryPack.MemoryPackReader" preserve="all" />
     <type fullname="MemoryPack.MemoryPackSerializationException" preserve="all" />
@@ -317,6 +320,7 @@
     <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.TaskAwaiter" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.TaskAwaiter`1" preserve="all" />
+    <type fullname="System.Runtime.Versioning.TargetFrameworkAttribute" preserve="all" />
     <type fullname="System.RuntimeTypeHandle" preserve="all" />
     <type fullname="System.Security.Permissions.SecurityAction" preserve="all" />
     <type fullname="System.Security.Permissions.SecurityPermissionAttribute" preserve="all" />

@@ -1,4 +1,8 @@
-﻿namespace ET
+﻿using MemoryPack;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Serializers;
+
+namespace ET
 {
     public struct EntryEvent1
     {
@@ -30,7 +34,8 @@
 
             // 注册Mongo type
             MongoRegister.Init();
-
+            // 注册Entity序列化器
+            EntitySerializeRegister.Init();
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
             World.Instance.AddSingleton<ObjectPool>();

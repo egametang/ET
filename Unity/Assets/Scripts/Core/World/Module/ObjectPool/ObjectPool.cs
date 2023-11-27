@@ -24,8 +24,13 @@ namespace ET
             return this.Fetch(typeof (T)) as T;
         }
 
-        public object Fetch(Type type)
+        public object Fetch(Type type, bool isFromPool = true)
         {
+            if (!isFromPool)
+            {
+                return Activator.CreateInstance(type);
+            }
+            
             Pool pool = GetPool(type);
             object obj = pool.Get();
             if (obj is IPool p)

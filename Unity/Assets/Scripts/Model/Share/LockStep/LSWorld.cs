@@ -1,6 +1,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using MemoryPack;
 using TrueSync;
 
 namespace ET
@@ -26,8 +27,10 @@ namespace ET
     [EnableMethod]
     [ChildOf]
     [ComponentOf]
-    public class LSWorld: Entity, IAwake, IScene
+    [MemoryPackable]
+    public partial class LSWorld: Entity, IAwake, IScene
     {
+        [MemoryPackConstructor]
         public LSWorld()
         {
         }
@@ -42,9 +45,11 @@ namespace ET
         private readonly LSUpdater updater = new();
         
         [BsonIgnore]
+        [MemoryPackIgnore]
         public Fiber Fiber { get; set; }
         
         [BsonElement]
+        [MemoryPackInclude]
         private long idGenerator;
 
         public long GetId()
@@ -55,6 +60,7 @@ namespace ET
         public TSRandom Random { get; set; }
         
         [BsonIgnore]
+        [MemoryPackIgnore]
         public SceneType SceneType { get; set; }
         
         public int Frame { get; set; }

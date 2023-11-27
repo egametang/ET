@@ -61,7 +61,7 @@ namespace ET
 #if UNITY
             this.Log = Logger.Instance.Log;
 #else
-            this.Log = new NLogger(sceneType.ToString(), this.Process, this.Id, "../Config/NLog/NLog.config");
+            this.Log = new NLogger(sceneType.ToString(), this.Process, this.Id);
 #endif
             this.Root = new Scene(this, id, 1, sceneType, name);
         }

@@ -11,7 +11,7 @@ namespace ET
 	{
 		public static Main2NetClient_Login Create(bool isFromPool = true) 
 		{ 
-			return !isFromPool? new Main2NetClient_Login() : ObjectPool.Instance.Fetch(typeof(Main2NetClient_Login)) as Main2NetClient_Login; 
+			return ObjectPool.Instance.Fetch(typeof(Main2NetClient_Login), isFromPool) as Main2NetClient_Login; 
 		}
 
 		[MemoryPackOrder(0)]
@@ -45,7 +45,7 @@ namespace ET
 	{
 		public static NetClient2Main_Login Create(bool isFromPool = true) 
 		{ 
-			return !isFromPool? new NetClient2Main_Login() : ObjectPool.Instance.Fetch(typeof(NetClient2Main_Login)) as NetClient2Main_Login; 
+			return ObjectPool.Instance.Fetch(typeof(NetClient2Main_Login), isFromPool) as NetClient2Main_Login; 
 		}
 
 		[MemoryPackOrder(0)]

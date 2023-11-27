@@ -19,7 +19,5 @@ namespace ET
             this.Clear();
             ObjectPool.Instance.Recycle(this);
         }
-
-        public bool IsFromPool { get; set; }
     }
 }

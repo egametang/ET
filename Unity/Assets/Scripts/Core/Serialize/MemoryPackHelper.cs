@@ -8,11 +8,19 @@ namespace ET
     {
         public static byte[] Serialize(object message)
         {
+            if (message is ISupportInitialize supportInitialize)
+            {
+                supportInitialize.BeginInit();
+            }
             return MemoryPackSerializer.Serialize(message.GetType(), message);
         }
 
         public static void Serialize(object message, MemoryBuffer stream)
         {
+            if (message is ISupportInitialize supportInitialize)
+            {
+                supportInitialize.BeginInit();
+            }
             MemoryPackSerializer.Serialize(message.GetType(), stream, message);
         }
         

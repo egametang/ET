@@ -149,7 +149,7 @@ namespace ET
                         sbDispose.Clear();
                         sb.Append("\t{\n");
                         
-                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = true) \n\t\t{{ \n\t\t\treturn !isFromPool? new {msgName}() : ObjectPool.Instance.Fetch(typeof({msgName})) as {msgName}; \n\t\t}}\n\n");
+                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = true) \n\t\t{{ \n\t\t\treturn ObjectPool.Instance.Fetch(typeof({msgName}), isFromPool) as {msgName}; \n\t\t}}\n\n");
                         
                         continue;
                     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using MemoryPack;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TrueSync {
@@ -6,7 +7,8 @@ namespace TrueSync {
     /**
      *  @brief Generates random numbers based on a deterministic approach.
      **/
-    public class TSRandom {
+    [MemoryPackable]
+    public partial class TSRandom {
         // From http://www.codeproject.com/Articles/164087/Random-Number-Generation
         // Class TSRandom generates random numbers
         // from a uniform distribution using the Mersenne
@@ -18,12 +20,16 @@ namespace TrueSync {
         private const uint LOWER_MASK = 0x7fffffffU;
         private const int MAX_RAND_INT = 0x7fffffff;
         [BsonElement]
+        [MemoryPackInclude]
         private uint[] mag01 = { 0x0U, MATRIX_A };
         [BsonElement]
+        [MemoryPackInclude]
         private uint[] mt = new uint[N];
         [BsonElement]
+        [MemoryPackInclude]
         private int mti = N + 1;
 
+        [MemoryPackConstructor]
         private TSRandom() {
         }
 
