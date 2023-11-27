@@ -18,20 +18,6 @@ namespace ET
             Debug.Log("ReGenerateProjectFiles finished.");
         }
 
-#if ENABLE_DLL
-        [MenuItem("ET/ChangeDefine/Remove ENABLE_DLL")]
-        public static void RemoveEnableDll()
-        {
-            EnableDefineSymbols("ENABLE_DLL", false);
-        }
-#else
-        [MenuItem("ET/ChangeDefine/Add ENABLE_DLL")]
-        public static void AddEnableDll()
-        {
-            EnableDefineSymbols("ENABLE_DLL", true);
-        }
-#endif
-
 #if ENABLE_VIEW
         [MenuItem("ET/ChangeDefine/Remove ENABLE_VIEW")]
         public static void RemoveEnableView()

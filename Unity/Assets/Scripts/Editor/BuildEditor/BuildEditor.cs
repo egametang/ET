@@ -145,20 +145,9 @@ namespace ET
                 EditorUtility.SetDirty(this.globalConfig);
                 AssetDatabase.SaveAssets();
             }
-
+            
             if (GUILayout.Button("ReGenerateProjectFiles"))
             {
-                if (Define.EnableDll)
-                {
-                    // 若没有生成以下工程，则切换到非ENABLE_DLL模式进行编译，编译完再切换回来, 保证代码编辑器正常显示所有项目
-                    if (!File.Exists("./Unity.Hotfix.csproj") || !File.Exists("./Unity.HotfixView.csproj") ||
-                        !File.Exists("./Unity.Model.csproj") || !File.Exists("./Unity.ModelView.csproj"))
-                    {
-                        BuildHelper.EnableDefineSymbols("ENABLE_DLL", false);
-                        BuildHelper.EnableDefineSymbols("ENABLE_DLL", true);
-                    }
-                }
-
                 BuildHelper.ReGenerateProjectFiles();
                 return;
             }

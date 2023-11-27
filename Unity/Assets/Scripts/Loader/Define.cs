@@ -5,7 +5,7 @@
         /// <summary>
         /// 编辑器下加载热更dll的目录
         /// </summary>
-        public const string CodeDir = "Assets/Bundles/Code/";
+        public const string CodeDir = "Assets/Bundles/Code";
 
         /// <summary>
         /// VS或Rider工程生成dll的所在目录, 使用HybridCLR打包时需要使用
@@ -28,12 +28,6 @@
         public static bool IsEditor = true;
 #else
         public static bool IsEditor = false;
-#endif
-
-#if ENABLE_DLL
-        public static bool EnableDll = true;
-#else
-        public static bool EnableDll = false;
 #endif
 
 #if ENABLE_VIEW

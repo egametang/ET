@@ -7,8 +7,6 @@
         "Unity.Loader",
         "HybridCLR.Runtime",
         "HybridCLR.Editor",
-        "Unity.Model",
-        "Unity.Hotfix",
         "YooAsset",
         "Unity.Mathematics"
     ],
