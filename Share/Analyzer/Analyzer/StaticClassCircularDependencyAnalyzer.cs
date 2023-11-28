@@ -46,13 +46,6 @@ namespace ET.Analyzer
             var dependencyMap = new ConcurrentDictionary<string, HashSet<string>>();
             var staticClassSet = new HashSet<string>();
             
-            if (context.Compilation.AssemblyName == AnalyzeAssembly.UnityCodes)
-            {
-                context.RegisterSyntaxNodeAction(analysisContext => { this.StaticClassDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); }, SyntaxKind.InvocationExpression);
-                context.RegisterCompilationEndAction(analysisContext => { this.CircularDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); });
-                return;
-            }
-            
             if (AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllHotfix))
             {
                 context.RegisterSyntaxNodeAction(analysisContext => { this.StaticClassDependencyAnalyze(analysisContext, dependencyMap, staticClassSet); }, SyntaxKind.InvocationExpression);
@@ -61,7 +54,6 @@ namespace ET.Analyzer
         }
 
         
-
         /// <summary>
         /// 静态类依赖分析 构建depedencyMap
         /// </summary>

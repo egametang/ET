@@ -35,19 +35,6 @@ namespace ET.Analyzer
             context.EnableConcurrentExecution();
             context.RegisterCompilationStartAction((analysisContext =>
             {
-                if (analysisContext.Compilation.AssemblyName==AnalyzeAssembly.UnityCodes)
-                {
-                    analysisContext.RegisterSemanticModelAction((modelAnalysisContext =>
-                    {
-                        if (AnalyzerHelper.IsSemanticModelNeedAnalyze(modelAnalysisContext.SemanticModel,UnityCodesPath.AllHotfix))
-                        {
-                            AnalyzeSemanticModel(modelAnalysisContext);
-                        }
-                        
-                    } ));
-                    return;
-                }
-                
                 if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName,AnalyzeAssembly.AllHotfix))
                 {
                     analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));

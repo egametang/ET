@@ -173,7 +173,7 @@ namespace ET
         
         public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
         {
-            if (!AnalyzerHelper.IsSemanticModelNeedAnalyze(context.SemanticModel, UnityCodesPath.UnityModel))
+            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.SemanticModel.Compilation.AssemblyName,AnalyzeAssembly.AllLogicModel))
             {
                 return;
             }
