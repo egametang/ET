@@ -21,22 +21,8 @@ namespace ET.Analyzer
             }
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            
             context.RegisterCompilationStartAction((analysisContext =>
             {
-                if (analysisContext.Compilation.AssemblyName==AnalyzeAssembly.UnityCodes)
-                {
-                    analysisContext.RegisterSemanticModelAction((modelAnalysisContext =>
-                    {
-                        if (AnalyzerHelper.IsSemanticModelNeedAnalyze(modelAnalysisContext.SemanticModel,UnityCodesPath.AllModelHotfix))
-                        {
-                            AnalyzeSemanticModel(modelAnalysisContext);
-                        }
-                        
-                    } ));
-                    return;
-                }
-                
                 if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName, AnalyzeAssembly.AllModelHotfix))
                 {
                     analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));
