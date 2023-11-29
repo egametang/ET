@@ -13,7 +13,7 @@ namespace ET.Analyzer
     public class EntityMemberDeclarationAnalyzer: DiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>ImmutableArray.Create(EntityDelegateDeclarationAnalyzerRule.Rule,
-            EntityFieldDeclarationInEntityAnalyzerRule.Rule, LSEntityFloatMemberAnalyzer.Rule);
+            EntityFieldDeclarationInEntityAnalyzerRule.Rule, LSEntityFloatMemberAnalyzer.Rule, EntityComponentChildAnalyzerRule.Rule);
         
         public override void Initialize(AnalysisContext context)
         {
@@ -53,11 +53,13 @@ namespace ET.Analyzer
             {
                 AnalyzeDelegateMember(context, namedTypeSymbol);
                 AnalyzeEntityMember(context, namedTypeSymbol);
+                AnalyzeComponentChildAttr(context, namedTypeSymbol);
             }else if (baseType == Definition.LSEntityType)
             {
                 AnalyzeDelegateMember(context, namedTypeSymbol);
                 AnalyzeEntityMember(context, namedTypeSymbol);
                 AnalyzeFloatMemberInLSEntity(context,namedTypeSymbol);
+                AnalyzeComponentChildAttr(context, namedTypeSymbol);
             }
         }
 
@@ -208,6 +210,21 @@ namespace ET.Analyzer
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 实体类是否同时标记为component child
+        /// </summary>
+        private void AnalyzeComponentChildAttr(SemanticModelAnalysisContext context, INamedTypeSymbol namedTypeSymbol)
+        {
+            bool hasComponentOf = namedTypeSymbol.HasAttribute(Definition.ComponentOfAttribute);
+            bool hasChildOf = namedTypeSymbol.HasAttribute(Definition.ChildOfAttribute);
+            if (hasComponentOf && hasChildOf)
+            {
+                var syntax = namedTypeSymbol.DeclaringSyntaxReferences.First().GetSyntax() as ClassDeclarationSyntax;
+                Diagnostic diagnostic = Diagnostic.Create(EntityComponentChildAnalyzerRule.Rule, syntax?.Identifier.GetLocation(),namedTypeSymbol.Name);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
     }
 }

@@ -395,4 +395,22 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+    
+    public static class EntityComponentChildAnalyzerRule
+    {
+        private const string Title = "实体类禁止同时标记为Component和Child";
+
+        private const string MessageFormat = "实体类:{0} 禁止同时标记为Component和Child";
+
+        private const string Description = "实体类禁止同时标记为Component和Child.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntityComponentChildAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

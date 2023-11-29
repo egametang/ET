@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ChildOf]
+    
     [ComponentOf]
     public class Room: Entity, IScene, IAwake, IUpdate
     {
