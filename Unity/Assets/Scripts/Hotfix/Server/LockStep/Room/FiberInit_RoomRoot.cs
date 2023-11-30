@@ -13,12 +13,9 @@ namespace ET.Server
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ProcessInnerSender>();
             root.AddComponent<MessageSender>();
-            Room room = root.AddChild<Room>();
             root.AddComponent<LocationProxyComponent>();
             root.AddComponent<MessageLocationSenderComponent>();
             
-            room.Name = "Server";
-
             await ETTask.CompletedTask;
         }
     }
