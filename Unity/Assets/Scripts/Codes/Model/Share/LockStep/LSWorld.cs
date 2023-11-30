@@ -26,7 +26,6 @@ namespace ET
 
     [EnableMethod]
     [ChildOf]
-    [ComponentOf]
     [MemoryPackable]
     public partial class LSWorld: Entity, IAwake, IScene
     {

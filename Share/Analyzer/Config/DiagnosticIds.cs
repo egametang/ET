@@ -56,5 +56,7 @@
         
         
         public const string EntityHashCodeAnalyzerRuleId = "ET0027";
+
+        public const string EntityComponentChildAnalyzerRuleId = "ET0028";
     }
 }
