@@ -23,11 +23,19 @@ namespace ET
             if (!string.IsNullOrEmpty(stackTrace))
             {
                 // 使用正则表达式匹配at的哪个脚本的哪一行
-                var matches = Regex.Match(stackTrace, @"\(at (.+)\)",
+                Match logMatches = Regex.Match(stackTrace, @"\(at (.+)\)",
                     RegexOptions.IgnoreCase);
-                while (matches.Success)
+                if (!logMatches.Success)
                 {
-                    var pathLine = matches.Groups[1].Value;
+                    Match compileErrorMatch = Regex.Match(stackTrace, @"(.*?)\(([0-9]+),([0-9]+)\): error");
+                    if (compileErrorMatch.Success)
+                    {
+                        OpenIDE(compileErrorMatch.Groups[1].Value, Convert.ToInt32(compileErrorMatch.Groups[2].Value), Convert.ToInt32(compileErrorMatch.Groups[3].Value));
+                    }
+                }
+                while (logMatches.Success)
+                {
+                    var pathLine = logMatches.Groups[1].Value;
 
                     if (!pathLine.Contains("Log.cs") && 
                         !pathLine.Contains("UnityLogger.cs") &&
@@ -38,23 +46,28 @@ namespace ET
                         var path = pathLine.Substring(0, splitIndex);
                         // 行号
                         line = Convert.ToInt32(pathLine.Substring(splitIndex + 1));
-                        var fullPath = UnityEngine.Application.dataPath.Substring(0, UnityEngine.Application.dataPath.LastIndexOf("Assets", StringComparison.Ordinal));
-                        fullPath = $"{fullPath}{path}";
-#if UNITY_STANDALONE_WIN
-                        fullPath = fullPath.Replace('/', '\\');
-#endif
-                        // 跳转到目标代码的特定行
-                        InternalEditorUtility.OpenFileAtLineExternal(fullPath, line);
+                        OpenIDE(path, line);
                         break;
                     }
 
-                    matches = matches.NextMatch();
+                    logMatches = logMatches.NextMatch();
                 }
 
                 return true;
             }
 
             return false;
+        }
+
+        private static void OpenIDE(string path, int line, int column = 0)
+        {
+            var fullPath = UnityEngine.Application.dataPath.Substring(0, UnityEngine.Application.dataPath.LastIndexOf("Assets", StringComparison.Ordinal));
+            fullPath = $"{fullPath}{path}";
+#if UNITY_STANDALONE_WIN
+                        fullPath = fullPath.Replace('/', '\\');
+#endif
+            // 跳转到目标代码的特定行
+            InternalEditorUtility.OpenFileAtLineExternal(fullPath, line, column);
         }
 
         /// <summary>
