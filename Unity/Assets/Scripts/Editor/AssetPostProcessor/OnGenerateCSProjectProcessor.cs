@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Xml;
 using UnityEditor;
 
@@ -13,8 +11,17 @@ namespace ET
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
+            BuildType buildType = BuildType.Debug;
+            CodeMode codeMode = CodeMode.Client;
             GlobalConfig globalConfig = GetGlobalConfig();
-            if (globalConfig.BuildType == BuildType.Release)
+            // 初次打开工程时会加载失败, 因为此时Unity的资源数据库(AssetDatabase)还未完成初始化
+            if (globalConfig)
+            {
+                buildType = globalConfig.BuildType;
+                codeMode = globalConfig.CodeMode;
+            }
+
+            if (buildType == BuildType.Release)
             {
                 content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
                 content = content.Replace(";DEBUG;", ";");
@@ -45,7 +52,7 @@ namespace ET
             if (path.EndsWith("Unity.Model.csproj"))
             {
                 string[] files = { };
-                switch (globalConfig.CodeMode)
+                switch (codeMode)
                 {
                     case CodeMode.Client:
                         files = new[]
@@ -73,7 +80,7 @@ namespace ET
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 string[] files = { };
-                switch (globalConfig.CodeMode)
+                switch (codeMode)
                 {
                     case CodeMode.Client:
                         files = new[]
@@ -115,6 +122,9 @@ namespace ET
             return content;
         }
 
+        /// <summary>
+        /// 编译dll文件后额外复制的目录配置
+        /// </summary>
         private static string AddCopyAfterBuild(string content)
         {
             content = content.Replace("<Target Name=\"AfterBuild\" />",
@@ -125,28 +135,6 @@ namespace ET
                 $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
                 "   </Target>\n");
             return content;
-        }
-
-        private static string RemoveRef(string content)
-        {
-            string[] lines = content.Split('\n');
-            StringBuilder sb = new StringBuilder();
-            foreach (string line in lines)
-            {
-                if (line.Contains("<Compile Include="))
-                {
-                    continue;
-                }
-
-                if (line.Contains("<Folder Include="))
-                {
-                    continue;
-                }
-
-                sb.AppendLine(line);
-            }
-
-            return sb.ToString();
         }
 
         /// <summary>
@@ -160,6 +148,7 @@ namespace ET
         /// <summary>
         /// 自定义C#项目配置
         /// 参考链接:
+        /// https://zhuanlan.zhihu.com/p/509046784
         /// https://learn.microsoft.com/zh-cn/visualstudio/ide/reference/build-events-page-project-designer-csharp?view=vs-2022
         /// https://learn.microsoft.com/zh-cn/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2022
         /// </summary>
