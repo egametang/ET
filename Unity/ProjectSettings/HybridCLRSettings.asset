@@ -18,10 +18,10 @@ MonoBehaviour:
   il2cppPlusRepoURL: https://gitee.com/focus-creative-games/il2cpp_plus
   hotUpdateAssemblyDefinitions: []
   hotUpdateAssemblies:
-  - Model
-  - Hotfix
-  - Unity.AllHotfix
-  - Unity.AllModel
+  - Unity.Model
+  - Unity.Hotfix
+  - Unity.ModelView
+  - Unity.HotfixView
   preserveHotUpdateAssemblies: []
   hotUpdateDllCompileOutputRootDir: HybridCLRData/HotUpdateDlls
   externalHotUpdateAssembliyDirs:
