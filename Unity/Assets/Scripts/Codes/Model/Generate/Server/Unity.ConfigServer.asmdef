@@ -1,15 +1,7 @@
 {
-    "name": "Unity.Codes",
+    "name": "Unity.ConfigServer",
     "rootNamespace": "",
-    "references": [
-        "Unity.Core",
-        "Unity.ThirdParty",
-        "Unity.Loader",
-        "BetterStreamingAssets",
-        "Unity.Mathematics",
-        "MemoryPack",
-        "YooAsset"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

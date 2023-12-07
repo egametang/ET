@@ -8,7 +8,8 @@
         "HybridCLR.Runtime",
         "HybridCLR.Editor",
         "YooAsset",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Unity.Codes"
     ],
     "includePlatforms": [
         "Editor"
