@@ -33,14 +33,19 @@ namespace ET
                 return false;
             }
 
-            // 不是相关文件不重定向
             Regex logFileRegex = new(@"((Log\.cs)|(UnityLogger\.cs)|(YooLogger\.cs))");
             Match stackLineMatch = Regex.Match(stackTrace, $@"\(at (.+):{line}\)");
+            if (!stackLineMatch.Success)
+            {
+                // 没堆栈 不重定向
+                return false;
+            }
             if (stackLineMatch.Success)
             {
                 string codePath = stackLineMatch.Groups[1].Value;
                 if (!logFileRegex.IsMatch(codePath))
                 {
+                    // 不是相关文件不重定向
                     return false;
                 }
             }
