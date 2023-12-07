@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "com.focus-creative-games.hybridclr_unity": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
-    "com.unity.ide.rider": "3.0.17",
-    "com.unity.ide.visualstudio": "2.0.17",
+    "com.code-philosophy.hybridclr": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
+    "com.unity.ide.rider": "3.0.27",
+    "com.unity.ide.visualstudio": "2.0.22",
     "com.unity.ide.vscode": "1.2.5",
-    "com.unity.render-pipelines.universal": "12.1.8",
+    "com.unity.render-pipelines.universal": "12.1.12",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.7.1",
     "com.unity.ugui": "1.0.0",
