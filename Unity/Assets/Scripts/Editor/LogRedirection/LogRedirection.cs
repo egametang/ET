@@ -73,9 +73,6 @@ namespace ET
             {
                 path = Path.GetFullPath(path);
             }
-#if UNITY_STANDALONE_WIN
-                        path = fullPath.Replace('/', '\\');
-#endif
             // 跳转到目标代码的特定行
             InternalEditorUtility.OpenFileAtLineExternal(path, line, column);
         }
