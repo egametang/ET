@@ -54,10 +54,11 @@ namespace ET.Server
             cell.SubsEnterEntities.Add(self.Id, self);
             foreach (KeyValuePair<long, AOIEntity> kv in cell.AOIUnits)
             {
-                if (kv.Key == self.Id)
+                // EnterSight 里已经判断过id 了，这里无需再判断
+                /*if (kv.Key == self.Id)
                 {
                     continue;
-                }
+                }*/
 
                 self.EnterSight(kv.Value);
             }
@@ -78,10 +79,11 @@ namespace ET.Server
         {
             foreach (KeyValuePair<long, AOIEntity> kv in cell.AOIUnits)
             {
-                if (kv.Key == self.Id)
+                // LeaveSight 里已经判断过id 了，这里无需再判断
+                /*if (kv.Key == self.Id)
                 {
                     continue;
-                }
+                }*/
 
                 self.LeaveSight(kv.Value);
             }
@@ -92,6 +94,12 @@ namespace ET.Server
         // enter进入self视野
         public static void EnterSight(this AOIEntity self, AOIEntity enter)
         {
+            //需要判断id，避免self自己进入自己的视野
+            if (self.Id == enter.Id)
+            {
+                return;
+            }
+            
             // 有可能之前在Enter，后来出了Enter还在LeaveCell，这样仍然没有删除，继续进来Enter，这种情况不需要处理
             if (self.SeeUnits.ContainsKey(enter.Id))
             {

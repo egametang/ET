@@ -51,7 +51,8 @@ namespace ET.Server
                 return;
             }
 
-            Fiber fiber = self.Fiber();
+            // 这里fiber没用到，所以先注释了
+            // Fiber fiber = self.Fiber();
             // 通知订阅该Cell Leave的Unit
             aoiEntity.Cell.Remove(aoiEntity);
             foreach (KeyValuePair<long, AOIEntity> kv in aoiEntity.Cell.SubsLeaveEntities)
