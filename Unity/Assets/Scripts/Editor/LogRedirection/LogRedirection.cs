@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -20,50 +21,25 @@ namespace ET
             {
                 return false;
             }
-            string stackTrace = GetStackTrace();
-            if (string.IsNullOrEmpty(stackTrace))
-            {
-                return false;
-            }
-
-            // 编译错误不重定向
-            Match compileErrorMatch = Regex.Match(stackTrace, @"(.*?)\(([0-9]+),([0-9]+)\): error");
-            if (compileErrorMatch.Success)
-            {
-                return false;
-            }
 
             Regex logFileRegex = new(@"((Log\.cs)|(UnityLogger\.cs)|(YooLogger\.cs))");
-            Match stackLineMatch = Regex.Match(stackTrace, $@"\(at (.+):{line}\)");
-            if (!stackLineMatch.Success)
+            string codePath = AssetDatabase.GetAssetPath(instanceID);
+            if (logFileRegex.IsMatch(codePath))
             {
-                // 没堆栈 不重定向
-                return false;
-            }
-            if (stackLineMatch.Success)
-            {
-                string codePath = stackLineMatch.Groups[1].Value;
-                if (!logFileRegex.IsMatch(codePath))
+                Match stackLineMatch = Regex.Match(GetStackTrace(), @"\(at (.+):([0-9]+)\)");
+                while (stackLineMatch.Success)
                 {
-                    // 不是相关文件不重定向
-                    return false;
+                    codePath = stackLineMatch.Groups[1].Value;
+                    if (!logFileRegex.IsMatch(codePath))
+                    {
+                        int matchLine = int.Parse(stackLineMatch.Groups[2].Value);
+                        OpenIDE(codePath, matchLine);
+                        return true;
+                    }
+                    stackLineMatch = stackLineMatch.NextMatch();
                 }
             }
-
-            // 重定向
-            stackLineMatch = Regex.Match(stackTrace, @"\(at (.+):([0-9]+)\)");
-            while (stackLineMatch.Success)
-            {
-                string codePath = stackLineMatch.Groups[1].Value;
-                if (!logFileRegex.IsMatch(codePath))
-                {
-                    int matchLine = int.Parse(stackLineMatch.Groups[2].Value);
-                    OpenIDE(codePath, matchLine);
-                    return true;
-                }
-                stackLineMatch = stackLineMatch.NextMatch();
-            }
-
+            
             return false;
         }
 
