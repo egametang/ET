@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>false</ImplicitUsings>
         <Nullable>disable</Nullable>
         <RootNamespace>ET</RootNamespace>
-        <LangVersion>11</LangVersion>
+        <LangVersion>12</LangVersion>
         <PackageId>Apps.Tool</PackageId>
         <AssemblyName>Tool</AssemblyName>
     </PropertyGroup>

@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec995e51a6e251468d2a3fd8a686257, type: 3}
   m_Name: UniversalRenderPipelineGlobalSettings
   m_EditorClassIdentifier: 
-  k_AssetVersion: 2
+  k_AssetVersion: 3
+  m_RenderingLayerNames:
+  - Light Layer default
+  - Light Layer 1
+  - Light Layer 2
+  - Light Layer 3
+  - Light Layer 4
+  - Light Layer 5
+  - Light Layer 6
+  - Light Layer 7
+  m_ValidRenderingLayers: 255
   lightLayerName0: Light Layer default
   lightLayerName1: Light Layer 1
   lightLayerName2: Light Layer 2
@@ -24,4 +34,8 @@ MonoBehaviour:
   m_StripDebugVariants: 1
   m_StripUnusedPostProcessingVariants: 0
   m_StripUnusedVariants: 1
+  m_StripUnusedLODCrossFadeVariants: 1
+  m_StripScreenCoordOverrideVariants: 1
   supportRuntimeDebugDisplay: 0
+  m_ShaderVariantLogLevel: 0
+  m_ExportShaderVariants: 1
