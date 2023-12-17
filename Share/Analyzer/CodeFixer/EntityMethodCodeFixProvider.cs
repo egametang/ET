@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -9,38 +9,35 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Simplification;
 
 namespace ET.Analyzer;
-
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EntitySystemCodeFixProvider)), Shared]
-public class EntitySystemCodeFixProvider:CodeFixProvider
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EntityMethodCodeFixProvider)), Shared]
+public class EntityMethodCodeFixProvider : CodeFixProvider
 {
-    public sealed override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(DiagnosticIds.EntitySystemAnalyzerRuleId);
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(DiagnosticIds.EntityPartialMethodAnalyzerRuleId);
+    
     public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
-    public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         SyntaxNode? root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             
         Diagnostic diagnostic = context.Diagnostics.First();
-
         Microsoft.CodeAnalysis.Text.TextSpan diagnosticSpan = diagnostic.Location.SourceSpan;
         
         ClassDeclarationSyntax? classDeclaration = root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<ClassDeclarationSyntax>().First();
         
         CodeAction codeAction = CodeAction.Create(
-            "Generate Entity System",
+            "Generate Entity Method",
             cancelToken => GenerateEntitySystemAsync(context.Document,classDeclaration,diagnostic,cancelToken), 
-            equivalenceKey: nameof(EntitySystemCodeFixProvider));
+            equivalenceKey: nameof(EntityMethodCodeFixProvider));
         context.RegisterCodeFix(codeAction,diagnostic);
-        
     }
 
-    private static async Task<Document> GenerateEntitySystemAsync(Document document, ClassDeclarationSyntax? classDeclaration,Diagnostic diagnostic,
+    private static async Task<Document> GenerateEntitySystemAsync(Document document, ClassDeclarationSyntax? classDeclaration, Diagnostic diagnostic,
     CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
@@ -48,71 +45,66 @@ public class EntitySystemCodeFixProvider:CodeFixProvider
         ImmutableDictionary<string, string?> properties = diagnostic.Properties;
 
         
-        if (classDeclaration==null || root==null)
+        
+        if (classDeclaration==null || root==null || properties.Count==0)
         {
-            return document;
-        }
-
-        var newMembers = new SyntaxList<MemberDeclarationSyntax>();
-        string? seuqenceStr = properties[Definition.EntitySystemInterfaceSequence];
-        if (seuqenceStr==null)
-        {
-            return document;
+            throw new Exception("classDeclaration==null || root==null || properties.Count==0!");
         }
         
-        string[] sequenceArr = seuqenceStr.Split('/');
-        for (int i = 0; i < sequenceArr.Length; i++)
+        var newMembers = new SyntaxList<MemberDeclarationSyntax>();
+        
+        foreach (var kv in properties)
         {
-            string methodName = sequenceArr[i];
-            string? methodArgs = properties[methodName];
-            if (methodArgs==null)
+            var methodDeclaration = GenerateEntityMethodSyntax(kv.Key,kv.Value);
+            if (methodDeclaration!=null)
             {
-                continue;
+                newMembers = newMembers.Add(methodDeclaration);
             }
-            var methodSyntax = CreateEntitySystemMethodSyntax(methodName, methodArgs);
-            if (methodSyntax!=null)
-            {
-                newMembers = newMembers.Add(methodSyntax);
-            }
-            else
-            {
-                throw new Exception("methodSyntax==null");
-            }
+            
         }
-
+        
         if (newMembers.Count==0)
         {
             throw new Exception("newMembers.Count==0");
         }
-        
         var newClassDeclaration = classDeclaration.WithMembers(classDeclaration.Members.AddRange(newMembers)).WithAdditionalAnnotations(Formatter.Annotation);
         document = document.WithSyntaxRoot(root.ReplaceNode(classDeclaration, newClassDeclaration));
         document = await CleanupDocumentAsync(document, cancellationToken);
         return document;
     }
 
-    private static MethodDeclarationSyntax? CreateEntitySystemMethodSyntax(string methodName,string methodArgs)
+    private static MethodDeclarationSyntax? GenerateEntityMethodSyntax(string methodName, string? valueString)
     {
-        string[] methodNameArr =  methodName.Split('`');
-        string[] methodArgsArr = methodArgs.Split('/');
-        string systemAttr = methodArgsArr[1];
-        string args = String.Empty;
-        if (methodArgsArr.Length>2)
+        if (valueString==null)
         {
-            for (int i = 2; i < methodArgsArr.Length; i++)
-            {
-                args += $", {methodArgsArr[i]} args{i}";
-            }
+            throw new Exception("valueString==null");
         }
+
+        var args = valueString.Split('/');
         
-        string code = $$"""
-        [{{systemAttr}}]
-        private static void {{methodNameArr[0]}}(this {{methodArgsArr[0]}} self{{args}})
-        {
-            
-        }
+        string returnType = args[0];
+        string methodArgs = args[1];
+        string fullMethodName = args[2];
+        string code = 
+$$"""
+[{{Definition.EntityMethodOfAttribute}}(nameof({{fullMethodName}}))]
+public static {{returnType}} {{methodName}}({{methodArgs}})
+{
+    throw new System.NotImplementedException();
+}
+
 """;
-        return SyntaxFactory.ParseMemberDeclaration(code) as MethodDeclarationSyntax;
+        var syntax = SyntaxFactory.ParseMemberDeclaration(code);
+        if (syntax==null)
+        {
+            throw new Exception("SyntaxFactory.ParseMemberDeclaration(code)==null");
+        }
+
+        if (syntax is not MethodDeclarationSyntax memberDeclarationSyntax)
+        {
+            throw new Exception("syntax is not MethodDeclarationSyntax");
+        }
+        return memberDeclarationSyntax;
     }
     
     internal static async Task<Document> CleanupDocumentAsync(
@@ -134,5 +126,6 @@ public class EntitySystemCodeFixProvider:CodeFixProvider
 
         return document;
     }
+    
     
 }

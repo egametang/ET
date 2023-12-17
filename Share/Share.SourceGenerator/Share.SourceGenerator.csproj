@@ -11,6 +11,7 @@
         <NoWarn>1701;1702;RS2008</NoWarn>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>

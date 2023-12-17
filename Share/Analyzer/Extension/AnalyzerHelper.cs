@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -535,6 +536,37 @@ namespace ET.Analyzer
                 }
             }
             return false;
+        }
+        
+        /// <summary>
+        /// 方法syntax是否为partial空方法
+        /// </summary>
+        public static bool IsPartialEmptyMethod(this MethodDeclarationSyntax method)
+        {
+            // 检查方法是否被标记为partial
+            bool isPartial = method.Modifiers.Any(SyntaxKind.PartialKeyword);
+
+            // 检查方法是否为空
+            bool isEmpty = method.Body == null;
+
+            return isPartial && isEmpty;
+        }
+
+        public static string GetMethodParamsString(this IMethodSymbol methodSymbol)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < methodSymbol.Parameters.Length; i++)
+            {
+                var paramSymbol = methodSymbol.Parameters[i];
+                if (i!=0)
+                {
+                    sb.Append(",");
+                }
+
+                sb.Append($"{paramSymbol.Type} {paramSymbol.Name}");
+            }
+            return sb.ToString();
         }
     }
 }

@@ -328,7 +328,7 @@ namespace ET.Analyzer
     {
         private const string Title = "Entity类存在未生成的生命周期函数";
 
-        private const string MessageFormat = "Entity类: {0} 存在未生成的生命周期函数111";
+        private const string MessageFormat = "Entity类: {0} 存在未生成的生命周期函数";
 
         private const string Description = "Entity类存在未生成的生命周期函数.";
 
@@ -406,6 +406,24 @@ namespace ET.Analyzer
 
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.EntityComponentChildAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    public static class EntityPartialMethodAnalyzerRule
+    {
+        private const string Title = "Entity类存在未生成的函数";
+
+        private const string MessageFormat = "Entity类: {0} 存在未生成的函数";
+
+        private const string Description = "Entity类存在未生成的函数.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntityPartialMethodAnalyzerRuleId,
                     Title,
                     MessageFormat,
                     DiagnosticCategories.All,

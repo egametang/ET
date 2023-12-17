@@ -86,6 +86,10 @@
         public const string LSUpdateMethod = "LSUpdate";
 
         public const string ETLog = "ET.Log";
+
+        public const string EntityMethodOfAttribute = "EntityMethodOf";
+
+        public const string EntityMethodOfAttributeMetaName = "ET.EntityMethodOfAttribute";
     }
 }
 

@@ -73,6 +73,7 @@ namespace ET.Analyzer
             {
                 return;
             }
+            
 
             foreach (var syntaxReference in namedTypeSymbol.DeclaringSyntaxReferences)
             {
@@ -84,6 +85,12 @@ namespace ET.Analyzer
 
                 foreach (var memberDeclarationSyntax in classDeclarationSyntax.Members)
                 {
+                    // 允许public partial 方法
+                    if (memberDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword) && memberDeclarationSyntax.Modifiers.Any(SyntaxKind.PublicKeyword))
+                    {
+                        continue;
+                    }
+                    
                     // 筛选出类声明语法节点下的所有方法声明语法节点
                     if (memberDeclarationSyntax is MethodDeclarationSyntax methodDeclarationSyntax)
                     {
@@ -92,7 +99,6 @@ namespace ET.Analyzer
                     }
                 }
             }
-            
         }
     }
 }
