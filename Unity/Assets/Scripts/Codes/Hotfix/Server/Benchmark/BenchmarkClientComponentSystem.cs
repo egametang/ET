@@ -20,7 +20,7 @@ namespace ET.Server
         {
             NetComponent netClientComponent = self.Root().GetComponent<NetComponent>();
             using Session session = netClientComponent.Create(StartSceneConfigCategory.Instance.Benchmark.OuterIPPort);
-            List<ETTask> list = new List<ETTask>(100000);
+            List<ETTask> list = new List<ETTask>(1000);
 
             async ETTask Call(Session s)
             {
