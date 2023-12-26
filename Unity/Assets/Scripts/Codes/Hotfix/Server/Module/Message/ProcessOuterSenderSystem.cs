@@ -158,7 +158,9 @@ namespace ET.Server
             }
 
             self.Tcs.SetResult(response);
-            ((MessageObject)response).Dispose();
+            // 这里不是最终的处理位置，这里的消息会通过消息队列送到最终的Fiber，所以这里不能dispose
+            // ProcessOuterSender都是转发消息，基本上不会最终处理response，都会转发给其它Fiber处理
+            //((MessageObject)response).Dispose();
         }
 
         public static void Send(this ProcessOuterSender self, ActorId actorId, IMessage message)

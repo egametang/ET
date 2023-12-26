@@ -17,14 +17,14 @@ namespace ET
 		
         public static MessageObject Deserialize(Type type, byte[] bytes, int index, int count)
         {
-            object o = ObjectPool.Instance.Fetch(type);
+            object o = ObjectPool.Instance.Fetch(type, false);
             MemoryPackHelper.Deserialize(type, bytes, index, count, ref o);
             return o as MessageObject;
         }
 
         public static MessageObject Deserialize(Type type, MemoryBuffer stream)
         {
-            object o = ObjectPool.Instance.Fetch(type);
+            object o = ObjectPool.Instance.Fetch(type, false);
             MemoryPackHelper.Deserialize(type, stream, ref o);
             return o as MessageObject;
         }
