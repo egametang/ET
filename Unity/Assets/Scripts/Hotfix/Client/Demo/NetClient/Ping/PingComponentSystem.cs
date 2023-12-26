@@ -33,7 +33,7 @@ namespace ET.Client
                 long time1 = TimeInfo.Instance.ClientNow();
                 try
                 {
-                    C2G_Ping c2GPing = C2G_Ping.Create(true);
+                    C2G_Ping c2GPing = C2G_Ping.Create();
                     G2C_Ping response = await session.Call(c2GPing) as G2C_Ping;
 
                     if (self.InstanceId != instanceId)

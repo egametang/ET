@@ -1,7 +1,7 @@
 {"dict": [
 [1, {"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":1,"SceneType":"Realm","Name":"Realm","Port":30002}],
-[2, {"_t":"StartSceneConfig","_id":2,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate1","Port":30003}],
-[3, {"_t":"StartSceneConfig","_id":3,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate2","Port":30004}],
+[2, {"_t":"StartSceneConfig","_id":2,"Process":2,"Zone":1,"SceneType":"Gate","Name":"Gate1","Port":30003}],
+[3, {"_t":"StartSceneConfig","_id":3,"Process":2,"Zone":1,"SceneType":"Gate","Name":"Gate2","Port":30004}],
 [11, {"_t":"StartSceneConfig","_id":11,"Process":2,"Zone":1,"SceneType":"Location","Name":"Location","Port":0}],
 [12, {"_t":"StartSceneConfig","_id":12,"Process":2,"Zone":1,"SceneType":"Map","Name":"Map1","Port":0}],
 [13, {"_t":"StartSceneConfig","_id":13,"Process":2,"Zone":1,"SceneType":"Map","Name":"Map2","Port":0}],
