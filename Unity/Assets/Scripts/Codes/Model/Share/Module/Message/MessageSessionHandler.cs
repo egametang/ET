@@ -63,7 +63,7 @@ namespace ET
                 int rpcId = request.RpcId;
                 long instanceId = session.InstanceId;
 
-                Response response = ObjectPool.Instance.Fetch<Response>();
+                using Response response = ObjectPool.Instance.Fetch<Response>();
                 try
                 {
                     await this.Run(session, request, response);

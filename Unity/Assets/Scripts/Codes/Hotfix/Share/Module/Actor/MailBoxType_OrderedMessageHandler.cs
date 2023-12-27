@@ -12,7 +12,7 @@
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
-            MessageObject messageObject = (MessageObject)args.MessageObject;
+            MessageObject messageObject = args.MessageObject;
 
             Fiber fiber = mailBoxComponent.Fiber();
             if (fiber.IsDisposed)

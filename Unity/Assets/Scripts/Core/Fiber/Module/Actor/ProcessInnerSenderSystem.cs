@@ -85,10 +85,6 @@ namespace ET
             }
 
             self.Tcs.SetResult(response);
-            // 这里可以dispose，两种情况，
-            // 1是这里是最终的Fiber
-            // 2是ProcessOuterSender转发request给Fiber，等待response然后转发给其它进程。ProcessOuterSender收到response后会立即send进行序列化，这里dispose问题不大
-            ((MessageObject)response).Dispose();
         }
         
         public static void Reply(this ProcessInnerSender self, Address fromAddress, IResponse message)
