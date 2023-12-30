@@ -1,23 +1,25 @@
 {
-    "name": "Unity.Codes",
-    "rootNamespace": "",
+    "name": "Unity.HotfixView",
+    "rootNamespace": "ET",
     "references": [
-        "Unity.Core",
         "Unity.ThirdParty",
-        "Unity.Loader",
-        "BetterStreamingAssets",
+        "Unity.Core",
         "Unity.Mathematics",
+        "Unity.Loader",
         "MemoryPack",
+        "Unity.Model",
+        "Unity.Hotfix",
+        "Unity.ModelView",
         "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "IGNORE"
+        "UNITY_COMPILE || UNITY_EDITOR"
     ],
     "versionDefines": [],
     "noEngineReferences": false

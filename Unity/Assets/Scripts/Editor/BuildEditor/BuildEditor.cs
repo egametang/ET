@@ -134,8 +134,23 @@ namespace ET
                 this.globalConfig.CodeMode = codeMode;
                 EditorUtility.SetDirty(this.globalConfig);
                 AssetDatabase.SaveAssets();
-                
-                BuildHelper.ReGenerateProjectFiles();
+                switch (codeMode)
+                {
+                    case CodeMode.Client:
+                        AssemblyTool.Enable_UNITY_CLIENT();
+                        break;
+                    case CodeMode.Server:
+                        AssemblyTool.Enable_UNITY_SERVER();
+                        break;
+                    case CodeMode.ClientServer:
+                        AssemblyTool.Enable_UNITY_CLIENTSERVER();
+                        break;
+                }
+            }
+            
+            if(GUILayout.Button("Compile Dlls"))
+            {
+                AssemblyTool.CompileDlls(this.platformType);
             }
 
             EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode: ", this.globalConfig.EPlayMode);
