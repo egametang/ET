@@ -9,7 +9,11 @@
         "HybridCLR.Editor",
         "YooAsset",
         "Unity.Mathematics",
-        "Unity.Codes"
+        "Unity.Model",
+        "Unity.ModelView",
+        "Unity.Hotfix",
+        "Unity.HotfixView",
+        "ToolbarExtension.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -11,138 +11,32 @@ namespace ET
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
-            BuildType buildType = BuildType.Debug;
-            CodeMode codeMode = CodeMode.Client;
-            GlobalConfig globalConfig = GetGlobalConfig();
-            // 初次打开工程时会加载失败, 因为此时Unity的资源数据库(AssetDatabase)还未完成初始化
-            if (globalConfig)
-            {
-                buildType = globalConfig.BuildType;
-                codeMode = globalConfig.CodeMode;
-            }
-
-            if (buildType == BuildType.Release)
-            {
-                content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
-                content = content.Replace(";DEBUG;", ";");
-            }
-
             if (path.EndsWith("Unity.Core.csproj"))
             {
-                return GenerateCustomProject(content);
+                content = GenerateCustomProject(content);
             }
 
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                string[] files = new[] { @"Assets\Scripts\Codes\ModelView\Client\**\*.cs ModelView\Client\%(RecursiveDir)%(FileName)%(Extension)", };
-                content = GenerateCustomProject(content, files);
-                content = AddCopyAfterBuild(content);
+                content = GenerateCustomProject(content);
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
-                string[] files = new[]
-                {
-                    @"Assets\Scripts\Codes\HotfixView\Client\**\*.cs HotfixView\Client\%(RecursiveDir)%(FileName)%(Extension)",
-                };
-                content = GenerateCustomProject(content, files);
-                content = AddCopyAfterBuild(content);
+                content = GenerateCustomProject(content);
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                string[] files = { };
-                switch (codeMode)
-                {
-                    case CodeMode.Client:
-                        files = new[]
-                        {
-                            @"Assets\Scripts\Codes\Model\Client\**\*.cs Model\Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Model\Share\**\*.cs Model\Share\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Model\Generate\Client\**\*.cs Model\Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                        };
-                        break;
-                    case CodeMode.ClientServer:
-                        files = new[]
-                        {
-                            @"Assets\Scripts\Codes\Model\Server\**\*.cs Model\Server\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Model\Client\**\*.cs Model\Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Model\Share\**\*.cs Model\Share\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Model\Generate\%(RecursiveDir)%(FileName)%(Extension)",
-                        };
-                        break;
-                }
-
-                content = GenerateCustomProject(content, files);
-                content = AddCopyAfterBuild(content);
+                content = GenerateCustomProject(content);
             }
 
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
-                string[] files = { };
-                switch (codeMode)
-                {
-                    case CodeMode.Client:
-                        files = new[]
-                        {
-                            @"Assets\Scripts\Codes\Hotfix\Client\**\*.cs Hotfix\Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Hotfix\Share\**\*.cs Hotfix\Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        };
-                        break;
-                    case CodeMode.ClientServer:
-                        files = new[]
-                        {
-                            @"Assets\Scripts\Codes\Hotfix\Client\**\*.cs Hotfix\Client\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Hotfix\Server\**\*.cs Hotfix\Server\%(RecursiveDir)%(FileName)%(Extension)",
-                            @"Assets\Scripts\Codes\Hotfix\Share\**\*.cs Hotfix\Share\%(RecursiveDir)%(FileName)%(Extension)",
-                        };
-                        break;
-                }
-
-                content = GenerateCustomProject(content, files);
-                content = AddCopyAfterBuild(content);
-            }
-
-            string[] deleteFiles =
-            {
-                "Library/ScriptAssemblies/Unity.Model.dll", "Library/ScriptAssemblies/Unity.Hotfix.dll",
-                "Library/ScriptAssemblies/Unity.Model.pdb", "Library/ScriptAssemblies/Unity.Hotfix.pdb",
-                "Library/ScriptAssemblies/Unity.ModelView.dll", "Library/ScriptAssemblies/Unity.HotfixView.dll",
-                "Library/ScriptAssemblies/Unity.ModelView.pdb", "Library/ScriptAssemblies/Unity.HotfixView.pdb",
-            };
-
-            foreach (string file in deleteFiles)
-            {
-                if (File.Exists(file))
-                {
-                    File.Delete(file);
-                }
+                content = GenerateCustomProject(content);
             }
 
             return content;
-        }
-
-        /// <summary>
-        /// 编译dll文件后额外复制的目录配置
-        /// </summary>
-        private static string AddCopyAfterBuild(string content)
-        {
-            content = content.Replace("<Target Name=\"AfterBuild\" />",
-                "   <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
-                $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
-                $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
-                $"       <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
-                "   </Target>\n");
-            return content;
-        }
-
-        /// <summary>
-        /// 获取全局配置
-        /// </summary>
-        private static GlobalConfig GetGlobalConfig()
-        {
-            return AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Resources/GlobalConfig.asset");
         }
 
         /// <summary>
@@ -205,3 +99,4 @@ namespace ET
         }
     }
 }
+
