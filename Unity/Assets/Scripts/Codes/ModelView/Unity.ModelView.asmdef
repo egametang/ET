@@ -1,15 +1,12 @@
 {
-    "name": "Unity.HotfixView",
+    "name": "Unity.ModelView",
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
         "Unity.Loader",
-        "MemoryPack",
         "Unity.Model",
-        "Unity.Hotfix",
-        "Unity.ModelView",
         "YooAsset"
     ],
     "includePlatforms": [],
@@ -18,7 +15,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_COMPILE || UNITY_EDITOR"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
