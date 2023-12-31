@@ -1,11 +1,13 @@
+using System;
 using System.IO;
+using System.Threading;
 using UnityEditor;
 using UnityEditor.Build.Player;
 using UnityEngine;
 
 namespace ET
 {
-    public class AssemblyTool
+    public static class AssemblyTool
     {
         public static readonly string[] dllNames = new[] { "Unity.Hotfix", "Unity.HotfixView", "Unity.Model", "Unity.ModelView" };
         
@@ -45,18 +47,34 @@ namespace ET
 
         public static void CompileDlls(BuildTarget target, ScriptCompilationOptions options = ScriptCompilationOptions.None)
         {
-            Directory.CreateDirectory(Define.BuildOutputDir);
-            BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-            ScriptCompilationSettings scriptCompilationSettings = new ScriptCompilationSettings();
-            scriptCompilationSettings.group = group;
-            scriptCompilationSettings.target = target;
-            scriptCompilationSettings.extraScriptingDefines = new[] { "UNITY_COMPILE" };
-            scriptCompilationSettings.options = options;
-            PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
+            SynchronizationContext lastSynchronizationContext = null;
+            if (Application.isPlaying) //运行时编译需要UnitySynchronizationContext
+            {
+                lastSynchronizationContext = SynchronizationContext.Current;
+                SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
+            }
+            try
+            {
+                Directory.CreateDirectory(Define.BuildOutputDir);
+                BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
+                ScriptCompilationSettings scriptCompilationSettings = new ScriptCompilationSettings();
+                scriptCompilationSettings.group = group;
+                scriptCompilationSettings.target = target;
+                scriptCompilationSettings.extraScriptingDefines = new[] { "UNITY_COMPILE" };
+                scriptCompilationSettings.options = options;
+                PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
 #if UNITY_2022
-            EditorUtility.ClearProgressBar();
+                EditorUtility.ClearProgressBar();
 #endif
-            Debug.Log("compile finish!!!");
+                Debug.Log("compile finish!!!");
+            }
+            finally
+            {
+                if (lastSynchronizationContext != null)
+                {
+                    SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
+                }
+            }
         }
 
         static void CopyHotUpdateDlls()
@@ -127,6 +145,11 @@ namespace ET
             string asmdefDisableFile = $"{asmdefFile}.DISABLED";
             if (File.Exists(asmdefDisableFile))
             {
+                if (File.Exists(asmdefFile))
+                {
+                    File.Delete(asmdefFile);
+                    File.Delete($"{asmdefFile}.meta");
+                }
                 File.Move(asmdefDisableFile, asmdefFile);
                 File.Delete(asmdefDisableFile);
                 File.Delete($"{asmdefDisableFile}.meta");
@@ -138,6 +161,11 @@ namespace ET
             if (File.Exists(asmdefFile))
             {
                 string asmdefDisableFile = $"{asmdefFile}.DISABLED";
+                if (File.Exists(asmdefDisableFile))
+                {
+                    File.Delete(asmdefDisableFile);
+                    File.Delete($"{asmdefDisableFile}.meta");
+                }
                 File.Move(asmdefFile, asmdefDisableFile);
                 File.Delete(asmdefFile);
                 File.Delete($"{asmdefFile}.meta");

@@ -6,15 +6,15 @@ namespace ET
 {
     public class CompileDllToolbar
     {
-        private static readonly GUIContent s_BuildReloadHotfixButtonGUIContent = new GUIContent("Reload", "Compile And Reload ET.Hotfix Dll When Playing.");
-        private static readonly GUIContent s_BuildHotfixModelButtonGUIContent = new GUIContent("Compile", "Compile All ET Dll.");
+        private static readonly GUIContent reloadButtonGUIContent = new GUIContent("Reload", "Compile And Reload ET.Hotfix Dll When Playing.");
+        private static readonly GUIContent compileButtonGUIContent = new GUIContent("Compile", "Compile All ET Dll.");
 
         [Toolbar(OnGUISide.Left, 0)]
         static void OnToolbarGUI()
         {
             EditorGUI.BeginDisabledGroup(!Application.isPlaying);
             {
-                if (GUILayout.Button(s_BuildReloadHotfixButtonGUIContent))
+                if (GUILayout.Button(reloadButtonGUIContent))
                 {
                     GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
                     if (!globalConfig.EnableDll)
@@ -29,7 +29,7 @@ namespace ET
             }
             EditorGUI.EndDisabledGroup();
 
-            if (GUILayout.Button(s_BuildHotfixModelButtonGUIContent))
+            if (GUILayout.Button(compileButtonGUIContent))
             {
                 AssemblyTool.DoCompile();
                 Debug.Log("compile success!");
