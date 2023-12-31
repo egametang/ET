@@ -147,11 +147,6 @@ namespace ET
                         break;
                 }
             }
-            
-            if(GUILayout.Button("Compile Dlls"))
-            {
-                AssemblyTool.CompileDlls(this.platformType);
-            }
 
             EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode: ", this.globalConfig.EPlayMode);
             if (ePlayMode != this.globalConfig.EPlayMode)
