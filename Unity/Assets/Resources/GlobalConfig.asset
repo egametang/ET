@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36527db572638af47b03c805671cba75, type: 3}
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
-  CodeMode: 2
+  CodeMode: 3
   EnableDll: 1
   BuildType: 1
   AppType: 7

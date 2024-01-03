@@ -94,49 +94,49 @@ namespace ET
 
         public static void Enable_UNITY_CLIENT()
         {
-            DisableAsmdef("Assets/Scripts/Codes/Model/Generate/Client/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/Model/Generate/Server/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/Model/Generate/ClientServer/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Generate/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Generate/Server/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Generate/ClientServer/Ignore.asmdef");
 
-            DisableAsmdef("Assets/Scripts/Codes/Model/Client/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/Model/Server/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Hotfix/Client/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/Hotfix/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Hotfix/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Hotfix/Server/Ignore.asmdef");
 
-            DisableAsmdef("Assets/Scripts/Codes/HotfixView/Client/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/ModelView/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/ModelView/Client/Ignore.asmdef");
             AssetDatabase.Refresh();
         }
 
         public static void Enable_UNITY_SERVER()
         {
-            EnableAsmdef("Assets/Scripts/Codes/Model/Generate/Client/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/Model/Generate/Server/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Model/Generate/ClientServer/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Generate/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Generate/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Generate/ClientServer/Ignore.asmdef");
 
-            DisableAsmdef("Assets/Scripts/Codes/Model/Client/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Model/Server/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Hotfix/Client/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Hotfix/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Hotfix/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Hotfix/Server/Ignore.asmdef");
 
-            EnableAsmdef("Assets/Scripts/Codes/HotfixView/Client/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/ModelView/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/ModelView/Client/Ignore.asmdef");
             AssetDatabase.Refresh();
         }
 
         public static void Enable_UNITY_CLIENTSERVER()
         {
-            EnableAsmdef("Assets/Scripts/Codes/Model/Generate/Client/Ignore.asmdef");
-            EnableAsmdef("Assets/Scripts/Codes/Model/Generate/Server/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Model/Generate/ClientServer/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Generate/Client/Ignore.asmdef");
+            EnableAsmdef("Assets/Scripts/Model/Generate/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Generate/ClientServer/Ignore.asmdef");
 
-            DisableAsmdef("Assets/Scripts/Codes/Model/Client/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Model/Server/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Hotfix/Client/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/Hotfix/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Model/Server/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Hotfix/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/Hotfix/Server/Ignore.asmdef");
 
-            DisableAsmdef("Assets/Scripts/Codes/HotfixView/Client/Ignore.asmdef");
-            DisableAsmdef("Assets/Scripts/Codes/ModelView/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
+            DisableAsmdef("Assets/Scripts/ModelView/Client/Ignore.asmdef");
             AssetDatabase.Refresh();
         }
 

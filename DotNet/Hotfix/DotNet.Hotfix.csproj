@@ -25,15 +25,15 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Client\**\*.cs"> 
+        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Client\**\*.cs"> 
             <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile> 
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Server\**\*.cs">
             <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Codes\Hotfix\Share\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Share\**\*.cs">
             <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link> 
         </Compile> 
     </ItemGroup>
