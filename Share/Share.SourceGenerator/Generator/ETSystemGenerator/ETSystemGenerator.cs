@@ -158,7 +158,8 @@ namespace {{namespaceName}}
                 string argsVars = string.Join(", ", argsVarsList);
                 string argsTypes = string.Join(", ", argsTypesList);
                 string argsTypesVars = string.Join(", ", argsTypeVarsList);
-                string argsTypesUnderLine = string.Join("_", argsTypesList).Replace(", ", "_").Replace(".", "_").Replace("<", "_").Replace(">", "_");
+                string argsTypesUnderLine = string.Join("_", argsTypesList).Replace(", ", "_").Replace(".", "_")
+                        .Replace("<", "_").Replace(">", "_").Replace("[]","Array").Replace("(","_").Replace(")","_");
                 string argsTypesWithout0 = string.Join(", ", argsTypesWithout0List);
                 string argsVarsWithout0 = string.Join(", ", argsVarsWithout0List);
                 string argsTypesVarsWithout0 = string.Join(", ", argsTypeVarsWithout0List);
