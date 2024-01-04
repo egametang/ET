@@ -13,15 +13,9 @@ namespace ET
             //Log.Debug($"Process Run exe:{exe} ,arguments:{arguments} ,workingDirectory:{workingDirectory}");
             try
             {
-                bool redirectStandardOutput = true;
-                bool redirectStandardError = true;
-                bool useShellExecute = false;
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    redirectStandardOutput = false;
-                    redirectStandardError = false;
-                    useShellExecute = true;
-                }
+                bool redirectStandardOutput = false;
+                bool redirectStandardError = false;
+                bool useShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                 
                 if (waitExit)
                 {
