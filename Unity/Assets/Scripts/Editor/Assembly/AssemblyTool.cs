@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading;
 using UnityEditor;
@@ -30,13 +29,29 @@ namespace ET
             return BuildTarget.StandaloneWindows;
         }
 
+        public static void RefreshCodeMode(CodeMode codeMode)
+        {
+            switch (codeMode)
+            {
+                case CodeMode.Client:
+                    Enable_UNITY_CLIENT();
+                    break;
+                case CodeMode.Server:
+                    Enable_UNITY_SERVER();
+                    break;
+                case CodeMode.ClientServer:
+                    Enable_UNITY_CLIENTSERVER();
+                    break;
+            }
+        }
+
         public static void DoCompile()
         {
-            BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
-            ScriptCompilationOptions options = EditorUserBuildSettings.development
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            ScriptCompilationOptions options = globalConfig.BuildType == BuildType.Debug
                     ? ScriptCompilationOptions.DevelopmentBuild
                     : ScriptCompilationOptions.None;
-            CompileDlls(target, options);
+            CompileDlls(EditorUserBuildSettings.activeBuildTarget, options);
             CopyHotUpdateDlls();
         }
 
@@ -47,10 +62,16 @@ namespace ET
 
         public static void CompileDlls(BuildTarget target, ScriptCompilationOptions options = ScriptCompilationOptions.None)
         {
+            //强制刷新一下，防止关闭auto refresh，编译出老代码
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             SynchronizationContext lastSynchronizationContext = null;
             if (Application.isPlaying) //运行时编译需要UnitySynchronizationContext
             {
                 lastSynchronizationContext = SynchronizationContext.Current;
+                SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
+            }
+            else
+            {
                 SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
             }
             try
@@ -70,7 +91,7 @@ namespace ET
             }
             finally
             {
-                if (lastSynchronizationContext != null)
+                if (Application.isPlaying && lastSynchronizationContext != null)
                 {
                     SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
                 }

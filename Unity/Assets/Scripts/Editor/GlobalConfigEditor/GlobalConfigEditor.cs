@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 
 namespace ET
@@ -22,18 +21,7 @@ namespace ET
             {
                 m_CurCodeMode = globalConfig.CodeMode;
                 this.serializedObject.Update();
-                switch (globalConfig.CodeMode)
-                {
-                    case CodeMode.Client:
-                        AssemblyTool.Enable_UNITY_CLIENT();
-                        break;
-                    case CodeMode.Server:
-                        AssemblyTool.Enable_UNITY_SERVER();
-                        break;
-                    case CodeMode.ClientServer:
-                        AssemblyTool.Enable_UNITY_CLIENTSERVER();
-                        break;
-                }
+                AssemblyTool.RefreshCodeMode(globalConfig.CodeMode);
             }
         }
     }

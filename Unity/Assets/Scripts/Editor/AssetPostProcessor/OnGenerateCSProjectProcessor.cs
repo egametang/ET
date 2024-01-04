@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Xml;
 using UnityEditor;
+using UnityEngine;
 
 namespace ET
 {
@@ -11,6 +12,10 @@ namespace ET
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
+            //刷新一下CodeMode，防止某些本地修改CodeMode测试后，使用svn更新，被改名的Ignore.asmdef被还原的问题
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            AssemblyTool.RefreshCodeMode(globalConfig.CodeMode);
+
             if (path.EndsWith("Unity.Core.csproj"))
             {
                 content = GenerateCustomProject(content);
