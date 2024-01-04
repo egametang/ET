@@ -70,6 +70,10 @@ namespace ET
                 lastSynchronizationContext = SynchronizationContext.Current;
                 SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
             }
+            else
+            {
+                SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
+            }
             try
             {
                 Directory.CreateDirectory(Define.BuildOutputDir);
@@ -87,7 +91,7 @@ namespace ET
             }
             finally
             {
-                if (lastSynchronizationContext != null)
+                if (Application.isPlaying && lastSynchronizationContext != null)
                 {
                     SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
                 }
