@@ -12,11 +12,19 @@ namespace ET
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
-            //刷新一下CodeMode，防止某些本地修改CodeMode测试后，使用svn更新，被改名的Ignore.asmdef被还原的问题
+            BuildType buildType = BuildType.Debug;
+            CodeMode codeMode = CodeMode.Client;
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            AssemblyTool.RefreshCodeMode(globalConfig.CodeMode);
+            // 初次打开工程时会加载失败, 因为此时Unity的资源数据库(AssetDatabase)还未完成初始化
+            if (globalConfig)
+            {
+                buildType = globalConfig.BuildType;
+                codeMode = globalConfig.CodeMode;
+            }
+            //刷新一下CodeMode，防止某些本地修改CodeMode测试后，使用svn更新，被改名的Ignore.asmdef被还原的问题
+            AssemblyTool.RefreshCodeMode(codeMode);
 
-            if (globalConfig.BuildType != BuildType.Debug)
+            if (buildType == BuildType.Release)
             {
                 content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
                 content = content.Replace(";DEBUG;", ";");
