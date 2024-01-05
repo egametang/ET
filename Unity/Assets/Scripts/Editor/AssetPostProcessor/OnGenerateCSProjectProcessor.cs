@@ -12,9 +12,23 @@ namespace ET
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
-            //刷新一下CodeMode，防止某些本地修改CodeMode测试后，使用svn更新，被改名的Ignore.asmdef被还原的问题
+            BuildType buildType = BuildType.Debug;
+            CodeMode codeMode = CodeMode.Client;
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            AssemblyTool.RefreshCodeMode(globalConfig.CodeMode);
+            // 初次打开工程时会加载失败, 因为此时Unity的资源数据库(AssetDatabase)还未完成初始化
+            if (globalConfig)
+            {
+                buildType = globalConfig.BuildType;
+                codeMode = globalConfig.CodeMode;
+            }
+            //刷新一下CodeMode，防止某些本地修改CodeMode测试后，使用svn更新，被改名的Ignore.asmdef被还原的问题
+            AssemblyTool.RefreshCodeMode(codeMode);
+
+            if (buildType == BuildType.Release)
+            {
+                content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
+                content = content.Replace(";DEBUG;", ";");
+            }
 
             if (path.EndsWith("Unity.Core.csproj"))
             {
@@ -24,23 +38,42 @@ namespace ET
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
+            return content;
+        }
+
+        /// <summary>
+        /// 编译dll文件后额外复制的目录配置
+        /// </summary>
+        private static string AddCopyAfterBuild(string content)
+        {
+            content = content.Replace("<Target Name=\"AfterBuild\" />",
+                "<Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
+                "  </Target>\n");
             return content;
         }
 

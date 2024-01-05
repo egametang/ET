@@ -62,6 +62,7 @@ namespace ET
                 this.globalConfig.BuildType = codeOptimization;
                 EditorUtility.SetDirty(this.globalConfig);
                 AssetDatabase.SaveAssets();
+                BuildHelper.ReGenerateProjectFiles();
             }
 
             EditorGUILayout.LabelField("BuildAssetBundleOptions ");
