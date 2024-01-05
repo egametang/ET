@@ -32,16 +32,12 @@ namespace ET
 
         public void Start()
         {
-            byte[] modelAssBytes;
-            byte[] modelPdbBytes;
-            byte[] modelViewAssBytes;
-            byte[] modelViewPdbBytes;
             if (!Define.IsEditor)
             {
-                modelAssBytes = this.dlls["Unity.Model.dll"].bytes;
-                modelPdbBytes = this.dlls["Unity.Model.pdb"].bytes;
-                modelViewAssBytes = this.dlls["Unity.ModelView.dll"].bytes;
-                modelViewPdbBytes = this.dlls["Unity.ModelView.pdb"].bytes;
+                byte[] modelAssBytes = this.dlls["Unity.Model.dll"].bytes;
+                byte[] modelPdbBytes = this.dlls["Unity.Model.pdb"].bytes;
+                byte[] modelViewAssBytes = this.dlls["Unity.ModelView.dll"].bytes;
+                byte[] modelViewPdbBytes = this.dlls["Unity.ModelView.pdb"].bytes;
                 // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Unity.Model.dll.bytes，但真正打包时必须使用上面的代码
                 //modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
                 //modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
@@ -56,15 +52,17 @@ namespace ET
                         RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
                     }
                 }
+                this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
+                this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
             }
             else
             {
                 if (this.enableDll)
                 {
-                    modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
-                    modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
-                    modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
-                    modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
+                    byte[] modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
+                    byte[] modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
+                    byte[] modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
+                    byte[] modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
                     this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
                     this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
                 }

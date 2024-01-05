@@ -16,6 +16,12 @@ namespace ET
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             AssemblyTool.RefreshCodeMode(globalConfig.CodeMode);
 
+            if (globalConfig.BuildType != BuildType.Debug)
+            {
+                content = content.Replace("<Optimize>false</Optimize>", "<Optimize>true</Optimize>");
+                content = content.Replace(";DEBUG;", ";");
+            }
+
             if (path.EndsWith("Unity.Core.csproj"))
             {
                 content = GenerateCustomProject(content);
@@ -24,23 +30,42 @@ namespace ET
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
                 content = GenerateCustomProject(content);
+                content = AddCopyAfterBuild(content);
             }
 
+            return content;
+        }
+
+        /// <summary>
+        /// 编译dll文件后额外复制的目录配置
+        /// </summary>
+        private static string AddCopyAfterBuild(string content)
+        {
+            content = content.Replace("<Target Name=\"AfterBuild\" />",
+                "<Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
+                "  </Target>\n");
             return content;
         }
 
