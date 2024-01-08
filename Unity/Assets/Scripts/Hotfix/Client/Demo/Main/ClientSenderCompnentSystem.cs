@@ -35,10 +35,11 @@ namespace ET.Client
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
             self.netClientActorId = new ActorId(self.Fiber().Process, self.fiberId);
 
-            NetClient2Main_Login response = await self.Root().GetComponent<ProcessInnerSender>().Call(self.netClientActorId, new Main2NetClient_Login()
-            {
-                OwnerFiberId = self.Fiber().Id, Account = account, Password = password
-            }) as NetClient2Main_Login;
+            Main2NetClient_Login main2NetClientLogin = Main2NetClient_Login.Create();
+            main2NetClientLogin.OwnerFiberId = self.Fiber().Id;
+            main2NetClientLogin.Account = account;
+            main2NetClientLogin.Password = password;
+            NetClient2Main_Login response = await self.Root().GetComponent<ProcessInnerSender>().Call(self.netClientActorId, main2NetClientLogin) as NetClient2Main_Login;
             return response.PlayerId;
         }
 

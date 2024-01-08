@@ -35,7 +35,7 @@ namespace ET.Client
                     }
                     
                     // C2G_Ping不需要调用dispose，Call中会判断，如果用了对象池会自动回收
-                    C2G_Ping c2GPing = C2G_Ping.Create(true);
+                    C2G_Ping c2GPing = C2G_Ping.Create();
                     // 这里response要用using才能回收到池，默认不回收
                     using G2C_Ping response = await session.Call(c2GPing) as G2C_Ping;
 

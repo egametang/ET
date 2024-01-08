@@ -9,7 +9,7 @@ namespace ET.Server
     {
         public static UnitInfo CreateUnitInfo(Unit unit)
         {
-            UnitInfo unitInfo = new();
+            UnitInfo unitInfo = UnitInfo.Create();
             NumericComponent nc = unit.GetComponent<NumericComponent>();
             unitInfo.UnitId = unit.Id;
             unitInfo.ConfigId = unit.ConfigId;
@@ -22,7 +22,7 @@ namespace ET.Server
             {
                 if (!moveComponent.IsArrived())
                 {
-                    unitInfo.MoveInfo = new MoveInfo();
+                    unitInfo.MoveInfo = MoveInfo.Create();
                     unitInfo.MoveInfo.Points.Add(unit.Position);
                     for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
                     {

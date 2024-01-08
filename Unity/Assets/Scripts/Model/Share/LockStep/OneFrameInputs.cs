@@ -44,11 +44,6 @@ namespace ET
             return HashCode.Combine(this.Inputs);
         }
 
-        public OneFrameInputs()
-        {
-            this.Inputs = new Dictionary<long, LSInput>(LSConstValue.MatchCount);
-        }
-
         public static bool operator==(OneFrameInputs a, OneFrameInputs b)
         {
             if (a is null || b is null)
@@ -84,14 +79,6 @@ namespace ET
         public static bool operator !=(OneFrameInputs a, OneFrameInputs b)
         {
             return !(a == b);
-        }
-    }
-    
-    public partial class Room2C_Start
-    {
-        public Room2C_Start()
-        {
-            this.UnitInfo = new List<LockStepUnitInfo>(LSConstValue.MatchCount);
         }
     }
 }

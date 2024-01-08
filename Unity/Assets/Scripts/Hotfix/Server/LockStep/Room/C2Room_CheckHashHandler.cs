@@ -10,7 +10,9 @@ namespace ET.Server
             if (message.Hash != hash)
             {
                 byte[] bytes = room.FrameBuffer.Snapshot(message.Frame).ToArray();
-                Room2C_CheckHashFail room2CCheckHashFail = new() { Frame = message.Frame, LSWorldBytes = bytes };
+                Room2C_CheckHashFail room2CCheckHashFail = Room2C_CheckHashFail.Create();
+                room2CCheckHashFail.Frame = message.Frame;
+                room2CCheckHashFail.LSWorldBytes = bytes;
                 room.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession).Send(message.PlayerId, room2CCheckHashFail);
             }
             await ETTask.CompletedTask;

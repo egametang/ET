@@ -29,7 +29,7 @@ namespace ET.Server
             OneFrameInputs oneFrameInputs = self.GetOneFrameMessage(frame);
             ++room.AuthorityFrame;
 
-            OneFrameInputs sendInput = new();
+            OneFrameInputs sendInput = OneFrameInputs.Create();
             oneFrameInputs.CopyTo(sendInput);
 
             RoomMessageHelper.BroadCast(room, sendInput);

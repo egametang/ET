@@ -10,7 +10,7 @@ namespace ET.Server
     {
         public async ETTask Handle(Scene scene, HttpListenerContext context)
         {
-            HttpGetRouterResponse response = new();
+            HttpGetRouterResponse response = HttpGetRouterResponse.Create();
             foreach (StartSceneConfig startSceneConfig in StartSceneConfigCategory.Instance.Realms)
             {
                 response.Realms.Add(startSceneConfig.InnerIPPort.ToString());

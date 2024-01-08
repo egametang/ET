@@ -13,32 +13,47 @@ namespace ET.Server
         {
             Fiber fiber = self.Fiber();
             Log.Info($"location proxy add {key}, {actorId} {TimeInfo.Instance.ServerNow()}");
-            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
-                new ObjectAddRequest() { Type = type, Key = key, ActorId = actorId });
+            ObjectAddRequest objectAddRequest = ObjectAddRequest.Create();
+            objectAddRequest.Type = type;
+            objectAddRequest.Key = key;
+            objectAddRequest.ActorId = actorId;
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectAddRequest);
         }
 
         public static async ETTask Lock(this LocationProxyComponent self, int type, long key, ActorId actorId, int time = 60000)
         {
             Fiber fiber = self.Fiber();
             Log.Info($"location proxy lock {key}, {actorId} {TimeInfo.Instance.ServerNow()}");
-            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
-                new ObjectLockRequest() { Type = type, Key = key, ActorId = actorId, Time = time });
+
+            ObjectLockRequest objectLockRequest = ObjectLockRequest.Create();
+            objectLockRequest.Type = type;
+            objectLockRequest.Key = key;
+            objectLockRequest.ActorId = actorId;
+            objectLockRequest.Time = time;
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectLockRequest);
         }
 
         public static async ETTask UnLock(this LocationProxyComponent self, int type, long key, ActorId oldActorId, ActorId newActorId)
         {
             Fiber fiber = self.Fiber();
             Log.Info($"location proxy unlock {key}, {newActorId} {TimeInfo.Instance.ServerNow()}");
-            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
-                new ObjectUnLockRequest() { Type = type, Key = key, OldActorId = oldActorId, NewActorId = newActorId });
+            ObjectUnLockRequest objectUnLockRequest = ObjectUnLockRequest.Create();
+            objectUnLockRequest.Type = type;
+            objectUnLockRequest.Key = key;
+            objectUnLockRequest.OldActorId = oldActorId;
+            objectUnLockRequest.NewActorId = newActorId;
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectUnLockRequest);
         }
 
         public static async ETTask Remove(this LocationProxyComponent self, int type, long key)
         {
             Fiber fiber = self.Fiber();
             Log.Info($"location proxy add {key}, {TimeInfo.Instance.ServerNow()}");
-            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key),
-                new ObjectRemoveRequest() { Type = type, Key = key });
+
+            ObjectRemoveRequest objectRemoveRequest = ObjectRemoveRequest.Create();
+            objectRemoveRequest.Type = type;
+            objectRemoveRequest.Key = key;
+            await fiber.Root.GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectRemoveRequest);
         }
 
         public static async ETTask<ActorId> Get(this LocationProxyComponent self, int type, long key)
@@ -49,9 +64,11 @@ namespace ET.Server
             }
 
             // location server配置到共享区，一个大战区可以配置N多个location server,这里暂时为1
+            ObjectGetRequest objectGetRequest = ObjectGetRequest.Create();
+            objectGetRequest.Type = type;
+            objectGetRequest.Key = key;
             ObjectGetResponse response =
-                    (ObjectGetResponse) await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key),
-                        new ObjectGetRequest() { Type = type, Key = key });
+                    (ObjectGetResponse) await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectGetRequest);
             return response.ActorId;
         }
 

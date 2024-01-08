@@ -86,7 +86,7 @@ namespace ET
                 return;
             }
             OneFrameInputs oneFrameInputs = self.FrameBuffer.FrameInputs(frame);
-            OneFrameInputs saveInput = new();
+            OneFrameInputs saveInput = OneFrameInputs.Create();
             oneFrameInputs.CopyTo(saveInput);
             self.Replay.FrameInputs.Add(saveInput);
             if (frame % LSConstValue.SaveLSWorldFrameCount == 0)

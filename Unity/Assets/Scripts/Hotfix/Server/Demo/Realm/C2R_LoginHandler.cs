@@ -14,8 +14,10 @@ namespace ET.Server
 			Log.Debug($"gate address: {config}");
 			
 			// 向gate请求一个key,客户端可以拿着这个key连接gate
+			R2G_GetLoginKey r2GGetLoginKey = R2G_GetLoginKey.Create();
+			r2GGetLoginKey.Account = request.Account;
 			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await session.Fiber().Root.GetComponent<MessageSender>().Call(
-				config.ActorId, new R2G_GetLoginKey() {Account = request.Account});
+				config.ActorId, r2GGetLoginKey);
 
 			response.Address = config.InnerIPPort.ToString();
 			response.Key = g2RGetLoginKey.Key;

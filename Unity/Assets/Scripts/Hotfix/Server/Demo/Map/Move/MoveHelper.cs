@@ -15,7 +15,7 @@ namespace ET.Server
                 return;
             }
 
-            M2C_PathfindingResult m2CPathfindingResult = new();
+            M2C_PathfindingResult m2CPathfindingResult = M2C_PathfindingResult.Create();
             unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, m2CPathfindingResult.Points);
 
             if (m2CPathfindingResult.Points.Count < 2)
@@ -46,13 +46,13 @@ namespace ET.Server
         // error: 0表示协程走完正常停止
         public static void SendStop(this Unit unit, int error)
         {
-            MapMessageHelper.Broadcast(unit, new M2C_Stop()
-            {
-                Error = error,
-                Id = unit.Id, 
-                Position = unit.Position,
-                Rotation = unit.Rotation,
-            });
+            M2C_Stop m2CStop = M2C_Stop.Create();
+            m2CStop.Error = error;
+            m2CStop.Id = unit.Id;
+            m2CStop.Position = unit.Position;
+            m2CStop.Rotation = unit.Rotation;
+            
+            MapMessageHelper.Broadcast(unit, m2CStop);
         }
     }
 }
