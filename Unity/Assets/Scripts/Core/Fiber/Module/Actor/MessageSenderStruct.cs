@@ -9,30 +9,30 @@ namespace ET
         public ActorId ActorId { get; }
         
         public IRequest Request { get; }
-
-        private readonly bool IsFromPool;
-
-        public bool NeedException { get; }
-
+        
         private readonly ETTask<IResponse> tcs;
 
-        public MessageSenderStruct(ActorId actorId, IRequest iRequest, ETTask<IResponse> tcs, bool needException)
+        private readonly bool isFromPool;
+
+        public bool NeedException { get; }
+        
+        public MessageSenderStruct(ActorId actorId, IRequest iRequest, bool needException)
         {
             this.ActorId = actorId;
             
             this.Request = iRequest;
             MessageObject messageObject = (MessageObject)this.Request;
-            this.IsFromPool = messageObject.IsFromPool;
+            this.isFromPool = messageObject.IsFromPool;
             messageObject.IsFromPool = false;
             
-            this.tcs = tcs;
+            this.tcs = ETTask<IResponse>.Create(true);
             this.NeedException = needException;
         }
         
         public void SetResult(IResponse response)
         {
             MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.IsFromPool = this.isFromPool;
             messageObject.Dispose();
             
             this.tcs.SetResult(response);
@@ -41,10 +41,15 @@ namespace ET
         public void SetException(Exception exception)
         {
             MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.IsFromPool = this.isFromPool;
             messageObject.Dispose();
             
             this.tcs.SetException(exception);
+        }
+
+        public async ETTask<IResponse> Wait()
+        {
+            return await this.tcs;
         }
     }
 }

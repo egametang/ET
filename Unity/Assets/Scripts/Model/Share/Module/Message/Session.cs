@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -8,16 +7,18 @@ namespace ET
 {
     public readonly struct RpcInfo
     {
-        public readonly bool IsFromPool;
-        public readonly IRequest Request { get; }
+        public IRequest Request { get; }
+        
         private readonly ETTask<IResponse> tcs;
+
+        private readonly bool isFromPool;
 
         public RpcInfo(IRequest request)
         {
             this.Request = request;
             
             MessageObject messageObject = (MessageObject)this.Request;
-            this.IsFromPool = messageObject.IsFromPool;
+            this.isFromPool = messageObject.IsFromPool;
             messageObject.IsFromPool = false;
 
             this.tcs = ETTask<IResponse>.Create(true);
@@ -26,7 +27,7 @@ namespace ET
         public void SetResult(IResponse response)
         {
             MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.IsFromPool = this.isFromPool;
             messageObject.Dispose();
 
             this.tcs.SetResult(response);
@@ -35,7 +36,7 @@ namespace ET
         public void SetException(Exception exception)
         {
             MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.IsFromPool = this.isFromPool;
             messageObject.Dispose();
 
             this.tcs.SetException(exception);

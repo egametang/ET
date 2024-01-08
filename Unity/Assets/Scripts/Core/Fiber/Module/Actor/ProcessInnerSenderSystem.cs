@@ -156,10 +156,9 @@ namespace ET
             {
                 throw new Exception($"actor inner process diff: {actorId.Process} {fiber.Process}");
             }
-            
-            var tcs = ETTask<IResponse>.Create(true);
 
-            self.requestCallback.Add(rpcId, new MessageSenderStruct(actorId, iRequest, tcs, needException));
+            MessageSenderStruct messageSenderStruct = new(actorId, iRequest, needException);
+            self.requestCallback.Add(rpcId, messageSenderStruct);
             
             self.SendInner(actorId, (MessageObject)iRequest);
 
@@ -188,7 +187,7 @@ namespace ET
             
             long beginTime = TimeInfo.Instance.ServerFrameTime();
 
-            IResponse response = await tcs;
+            IResponse response = await messageSenderStruct.Wait();
             
             long endTime = TimeInfo.Instance.ServerFrameTime();
 
