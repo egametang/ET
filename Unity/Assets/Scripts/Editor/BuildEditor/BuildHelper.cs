@@ -73,7 +73,7 @@ namespace ET
             AssetDatabase.Refresh();
         }
 
-        public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool clearFolder)
+        public static void Build(PlatformType type, BuildOptions buildOptions)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
             string programName = "ET";
@@ -101,15 +101,7 @@ namespace ET
 
             string fold = string.Format(BuildFolder, type);
 
-            if (clearFolder && Directory.Exists(fold))
-            {
-                Directory.Delete(fold, true);
-            }
             Directory.CreateDirectory(fold);
-
-            Debug.Log("start build assetbundle");
-            BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
-            Debug.Log("finish build assetbundle");
 
             AssetDatabase.Refresh();
             string[] levels = {
