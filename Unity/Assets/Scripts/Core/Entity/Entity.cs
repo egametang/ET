@@ -534,12 +534,12 @@ namespace ET
 
             base.Dispose();
             
-            if (this.IsFromPool)
-            {
-                ObjectPool.Instance.Recycle(this);
-            }
+            // 把status字段其它的status标记都还原
+            bool isFromPool = this.IsFromPool;
+            this.status = EntityStatus.None;
+            this.IsFromPool = isFromPool;
             
-            status = EntityStatus.None;
+            ObjectPool.Instance.Recycle(this);
         }
 
         private void AddToComponents(Entity component)
