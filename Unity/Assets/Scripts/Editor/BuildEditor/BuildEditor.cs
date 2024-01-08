@@ -19,9 +19,7 @@ namespace ET
     {
         private PlatformType activePlatform;
         private PlatformType platformType;
-        private bool clearFolder;
         private BuildOptions buildOptions;
-        private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
         private GlobalConfig globalConfig;
 
@@ -54,30 +52,9 @@ namespace ET
         private void OnGUI()
         {
             this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-            this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
-            BuildType codeOptimization = (BuildType)EditorGUILayout.EnumPopup("BuildType ", this.globalConfig.BuildType);
-
-            if (codeOptimization != this.globalConfig.BuildType)
-            {
-                this.globalConfig.BuildType = codeOptimization;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
-                BuildHelper.ReGenerateProjectFiles();
-            }
-
-            EditorGUILayout.LabelField("BuildAssetBundleOptions ");
-            this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
-
-            switch (this.globalConfig.BuildType)
-            {
-                case BuildType.None:
-                case BuildType.Debug:
-                    this.buildOptions = BuildOptions.BuildScriptsOnly;
-                    break;
-                case BuildType.Release:
-                    this.buildOptions = BuildOptions.BuildScriptsOnly;
-                    break;
-            }
+            
+            EditorGUILayout.LabelField("BuildOptions ");
+            this.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField(this.buildOptions);
 
             GUILayout.Space(5);
 
@@ -115,35 +92,8 @@ namespace ET
                             break;
                     }
                 }
-                BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.clearFolder);
+                BuildHelper.Build(this.platformType, this.buildOptions);
                 return;
-            }
-
-            GUILayout.Label("");
-            GUILayout.Label("Code Compile：");
-            EditorGUI.BeginChangeCheck();
-            CodeMode codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssetIfDirty(this.globalConfig);
-                AssetDatabase.Refresh();
-            }
-
-            if (codeMode != this.globalConfig.CodeMode)
-            {
-                this.globalConfig.CodeMode = codeMode;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
-                AssemblyTool.RefreshCodeMode(codeMode);
-            }
-
-            EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode: ", this.globalConfig.EPlayMode);
-            if (ePlayMode != this.globalConfig.EPlayMode)
-            {
-                this.globalConfig.EPlayMode = ePlayMode;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
             }
             
             if (GUILayout.Button("ReGenerateProjectFiles"))

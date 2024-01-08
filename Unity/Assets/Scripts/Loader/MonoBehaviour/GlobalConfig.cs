@@ -12,7 +12,6 @@ namespace ET
     
     public enum BuildType
     {
-        None,
         Debug,
         Release,
     }
