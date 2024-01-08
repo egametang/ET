@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace ET
 {
@@ -9,16 +10,41 @@ namespace ET
         
         public IRequest Request { get; }
 
+        private readonly bool IsFromPool;
+
         public bool NeedException { get; }
 
-        public ETTask<IResponse> Tcs { get; }
+        private readonly ETTask<IResponse> tcs;
 
         public MessageSenderStruct(ActorId actorId, IRequest iRequest, ETTask<IResponse> tcs, bool needException)
         {
             this.ActorId = actorId;
+            
             this.Request = iRequest;
-            this.Tcs = tcs;
+            MessageObject messageObject = (MessageObject)this.Request;
+            this.IsFromPool = messageObject.IsFromPool;
+            messageObject.IsFromPool = false;
+            
+            this.tcs = tcs;
             this.NeedException = needException;
+        }
+        
+        public void SetResult(IResponse response)
+        {
+            MessageObject messageObject = (MessageObject)this.Request;
+            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.Dispose();
+            
+            this.tcs.SetResult(response);
+        }
+        
+        public void SetException(Exception exception)
+        {
+            MessageObject messageObject = (MessageObject)this.Request;
+            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.Dispose();
+            
+            this.tcs.SetException(exception);
         }
     }
 }

@@ -8,13 +8,42 @@ namespace ET
 {
     public readonly struct RpcInfo
     {
-        public readonly IRequest Request;
-        public readonly ETTask<IResponse> Tcs;
+        public readonly bool IsFromPool;
+        public readonly IRequest Request { get; }
+        private readonly ETTask<IResponse> tcs;
 
         public RpcInfo(IRequest request)
         {
             this.Request = request;
-            this.Tcs = ETTask<IResponse>.Create(true);
+            
+            MessageObject messageObject = (MessageObject)this.Request;
+            this.IsFromPool = messageObject.IsFromPool;
+            messageObject.IsFromPool = false;
+
+            this.tcs = ETTask<IResponse>.Create(true);
+        }
+
+        public void SetResult(IResponse response)
+        {
+            MessageObject messageObject = (MessageObject)this.Request;
+            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.Dispose();
+
+            this.tcs.SetResult(response);
+        }
+
+        public void SetException(Exception exception)
+        {
+            MessageObject messageObject = (MessageObject)this.Request;
+            messageObject.IsFromPool = this.IsFromPool;
+            messageObject.Dispose();
+
+            this.tcs.SetException(exception);
+        }
+
+        public async ETTask<IResponse> Wait()
+        {
+            return await this.tcs;
         }
     }
     
@@ -42,7 +71,7 @@ namespace ET
             
             foreach (RpcInfo responseCallback in self.requestCallbacks.Values.ToArray())
             {
-                responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
+                responseCallback.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
             }
 
             Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeInfo.Instance.ClientNow()}");
@@ -56,13 +85,13 @@ namespace ET
             {
                 return;
             }
-            action.Tcs.SetResult(response);
+            action.SetResult(response);
         }
         
         public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
         {
             int rpcId = ++self.RpcId;
-            RpcInfo rpcInfo = new RpcInfo(request);
+            RpcInfo rpcInfo = new(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
 
@@ -70,23 +99,22 @@ namespace ET
             
             void CancelAction()
             {
-                if (!self.requestCallbacks.TryGetValue(rpcId, out RpcInfo action))
+                if (!self.requestCallbacks.Remove(rpcId, out RpcInfo action))
                 {
                     return;
                 }
 
-                self.requestCallbacks.Remove(rpcId);
                 Type responseType = OpcodeType.Instance.GetResponseType(action.Request.GetType());
                 IResponse response = (IResponse) Activator.CreateInstance(responseType);
                 response.Error = ErrorCore.ERR_Cancel;
-                action.Tcs.SetResult(response);
+                action.SetResult(response);
             }
 
             IResponse ret;
             try
             {
                 cancellationToken?.Add(CancelAction);
-                ret = await rpcInfo.Tcs;
+                ret = await rpcInfo.Wait();
             }
             finally
             {
@@ -118,13 +146,13 @@ namespace ET
                         return;
                     }
                     
-                    action.Tcs.SetException(new Exception($"session call timeout: {request} {time}"));
+                    action.SetException(new Exception($"session call timeout: {request} {time}"));
                 }
                 
                 Timeout().Coroutine();
             }
 
-            return await rpcInfo.Tcs;
+            return await rpcInfo.Wait();
         }
 
         public static void Send(this Session self, IMessage message)

@@ -7,7 +7,10 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, A2NetInner_Request request, A2NetInner_Response response)
         {
-            response.MessageObject = await root.GetComponent<ProcessOuterSender>().Call(request.ActorId, request.MessageObject, false);
+            int rpcId = request.RpcId;
+            IResponse res = await root.GetComponent<ProcessOuterSender>().Call(request.ActorId, request.MessageObject, false);
+            res.RpcId = rpcId;
+            response.MessageObject = res;
         }
     }
 }
