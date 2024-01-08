@@ -39,14 +39,15 @@ namespace ET.Server
                 bool needException = true
         )
         {
-            request.RpcId = self.GetRpcId();
+            int rpcId = self.GetRpcId();
+            request.RpcId = rpcId;
             
             if (actorId == default)
             {
                 throw new Exception($"actor id is 0: {request}");
             }
 
-            return await self.Call(actorId, request.RpcId, request, needException);
+            return await self.Call(actorId, rpcId, request, needException);
         }
         
         public static async ETTask<IResponse> Call(

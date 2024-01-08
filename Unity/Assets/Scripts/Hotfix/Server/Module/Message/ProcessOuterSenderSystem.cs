@@ -69,18 +69,21 @@ namespace ET.Server
                 case ILocationRequest:
                 case IRequest:
                 {
-                    async ETTask Call()
+                    CallInner().Coroutine();
+                    break;
+
+                    async ETTask CallInner()
                     {
-                        IRequest request = (IRequest)message;
+                        IRequest req = (IRequest)message;
+                        int rpcId = req.RpcId;
                         // 注意这里都不能抛异常，因为这里只是中转消息
-                        IResponse response = await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, request, false);
+                        IResponse res = await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, req, false);
                         // 注意这里的response会在该协程执行完之后由ProcessInnerSender dispose。
                         actorId.Process = fromProcess;
-                        self.Send(actorId, response);
-                        ((MessageObject)response).Dispose();
+                        res.RpcId = rpcId;
+                        self.Send(actorId, res);
+                        ((MessageObject)res).Dispose();
                     }
-                    Call().Coroutine();
-                    break;
                 }
                 default:
                 {
@@ -149,17 +152,17 @@ namespace ET.Server
         {
             if (response.Error == ErrorCore.ERR_MessageTimeout)
             {
-                self.Tcs.SetException(new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
+                self.SetException(new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
                 return;
             }
 
             if (self.NeedException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
-                self.Tcs.SetException(new RpcException(response.Error, $"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
+                self.SetException(new RpcException(response.Error, $"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
                 return;
             }
 
-            self.Tcs.SetResult(response);
+            self.SetResult(response);
         }
 
         public static void Send(this ProcessOuterSender self, ActorId actorId, IMessage message)
@@ -202,10 +205,12 @@ namespace ET.Server
             
             int rpcId = self.GetRpcId();
 
+            iRequest.RpcId = rpcId;
+
             var tcs = ETTask<IResponse>.Create(true);
 
-            self.requestCallback.Add(self.RpcId, new MessageSenderStruct(actorId, iRequest, tcs, needException));
-
+            self.requestCallback.Add(rpcId, new MessageSenderStruct(actorId, iRequest, tcs, needException));
+            
             self.SendInner(actorId, iRequest as MessageObject);
 
             async ETTask Timeout()
@@ -218,12 +223,12 @@ namespace ET.Server
                 
                 if (needException)
                 {
-                    action.Tcs.SetException(new Exception($"actor sender timeout: {iRequest}"));
+                    action.SetException(new Exception($"actor sender timeout: {iRequest}"));
                 }
                 else
                 {
                     IResponse response = ET.MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_Timeout);
-                    action.Tcs.SetResult(response);
+                    action.SetResult(response);
                 }
             }
 
