@@ -74,7 +74,7 @@ namespace ET.Server
             a2NetInner_Request.ActorId = actorId;
             a2NetInner_Request.MessageObject = request;
             
-            A2NetInner_Response a2NetInnerResponse = await fiber.Root.GetComponent<ProcessInnerSender>().Call(
+            using A2NetInner_Response a2NetInnerResponse = await fiber.Root.GetComponent<ProcessInnerSender>().Call(
                 new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInner_Request) as A2NetInner_Response;
             IResponse response = a2NetInnerResponse.MessageObject;
             
