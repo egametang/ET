@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -19,55 +21,36 @@ namespace ET
             {
                 return false;
             }
-            var stackTrace = GetStackTrace();
-            if (!string.IsNullOrEmpty(stackTrace))
+
+            Regex logFileRegex = new(@"((Log\.cs)|(UnityLogger\.cs)|(YooLogger\.cs))");
+            string codePath = AssetDatabase.GetAssetPath(instanceID);
+            if (logFileRegex.IsMatch(codePath))
             {
-                // 使用正则表达式匹配at的哪个脚本的哪一行
-                Match logMatches = Regex.Match(stackTrace, @"\(at (.+)\)",
-                    RegexOptions.IgnoreCase);
-                if (!logMatches.Success)
+                Match stackLineMatch = Regex.Match(GetStackTrace(), @"\(at (.+):([0-9]+)\)");
+                while (stackLineMatch.Success)
                 {
-                    Match compileErrorMatch = Regex.Match(stackTrace, @"(.*?)\(([0-9]+),([0-9]+)\): error");
-                    if (compileErrorMatch.Success)
+                    codePath = stackLineMatch.Groups[1].Value;
+                    if (!logFileRegex.IsMatch(codePath))
                     {
-                        OpenIDE(compileErrorMatch.Groups[1].Value, Convert.ToInt32(compileErrorMatch.Groups[2].Value), Convert.ToInt32(compileErrorMatch.Groups[3].Value));
+                        int matchLine = int.Parse(stackLineMatch.Groups[2].Value);
+                        OpenIDE(codePath, matchLine);
+                        return true;
                     }
+                    stackLineMatch = stackLineMatch.NextMatch();
                 }
-                while (logMatches.Success)
-                {
-                    var pathLine = logMatches.Groups[1].Value;
-
-                    if (!pathLine.Contains("Log.cs") && 
-                        !pathLine.Contains("UnityLogger.cs") &&
-                        !pathLine.Contains("YooLogger.cs:"))
-                    {
-                        var splitIndex = pathLine.LastIndexOf(":", StringComparison.Ordinal);
-                        // 脚本路径
-                        var path = pathLine.Substring(0, splitIndex);
-                        // 行号
-                        line = Convert.ToInt32(pathLine.Substring(splitIndex + 1));
-                        OpenIDE(path, line);
-                        break;
-                    }
-
-                    logMatches = logMatches.NextMatch();
-                }
-
-                return true;
             }
-
+            
             return false;
         }
 
         private static void OpenIDE(string path, int line, int column = 0)
         {
-            var fullPath = UnityEngine.Application.dataPath.Substring(0, UnityEngine.Application.dataPath.LastIndexOf("Assets", StringComparison.Ordinal));
-            fullPath = $"{fullPath}{path}";
-#if UNITY_STANDALONE_WIN
-                        fullPath = fullPath.Replace('/', '\\');
-#endif
+            if (!Path.IsPathFullyQualified(path))
+            {
+                path = Path.GetFullPath(path);
+            }
             // 跳转到目标代码的特定行
-            InternalEditorUtility.OpenFileAtLineExternal(fullPath, line, column);
+            InternalEditorUtility.OpenFileAtLineExternal(path, line, column);
         }
 
         /// <summary>

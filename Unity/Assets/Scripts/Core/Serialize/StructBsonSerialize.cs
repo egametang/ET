@@ -3,6 +3,7 @@ using System.Reflection;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
@@ -19,8 +20,13 @@ namespace ET
             FieldInfo[] fields = nominalType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (FieldInfo field in fields)
             {
+                BsonElementAttribute bsonElement = field.GetCustomAttribute<BsonElementAttribute>();
+                if (bsonElement == null && !field.IsPublic)
+                {
+                    continue;
+                }
                 bsonWriter.WriteName(field.Name);
-                BsonSerializer.Serialize(bsonWriter, field.FieldType, field.GetValue(value));
+                BsonSerializer.Serialize(bsonWriter, field.FieldType, field.GetValue(value)); 
             }
 
             bsonWriter.WriteEndDocument();
@@ -42,7 +48,7 @@ namespace ET
                     case BsonReaderState.Name:
                     {
                         string name = bsonReader.ReadName(Utf8NameDecoder.Instance);
-                        FieldInfo field = actualType.GetField(name);
+                        FieldInfo field = actualType.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                         if (field != null)
                         {
                             object value = BsonSerializer.Deserialize(bsonReader, field.FieldType);
