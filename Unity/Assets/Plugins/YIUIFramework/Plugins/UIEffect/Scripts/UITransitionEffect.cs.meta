@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 922b805bc01c243e5853d9cbb544118c
+timeCreated: 1538827562
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_EffectMaterial: {instanceID: 0}
+  - m_PtexMaterial: {instanceID: 0}
+  - m_TransitionTexture: {fileID: 2800000, guid: 3e04c247fb2604af186173fce0bc62de,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

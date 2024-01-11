@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ${Namespace}
+{
+    /// <summary>
+    /// Author  ${Author}
+    /// Date    ${CreateDate}
+    /// Desc    ${Desc}
+    /// </summary>
+    [FriendOf(typeof(${Name}Component))]
+    [EntitySystemOf(typeof(${Name}Component))]
+    public static partial class ${Name}ComponentSystem
+    {
+${Life}
+    }
+}

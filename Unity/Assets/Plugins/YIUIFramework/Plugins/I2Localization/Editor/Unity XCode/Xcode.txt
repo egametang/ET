@@ -1,0 +1,9 @@
+This is a copy of the Xcode Manipulation API
+https://bitbucket.org/Unity-Technologies/xcodeapi/overview
+
+This is already packed inside Unity under the UnityEditor.IOS.XCode namespace,
+but I'm including here as well because the version that comes with unity doesn't handle 
+localized files.
+This copy includes the pullrequest #13 (https://bitbucket.org/Unity-Technologies/xcodeapi/pull-requests/13/creation-of-variantgroup-and/diff)
+
+Hopefully that will be integrated in Unity soon, but until then, I will be including this files here!

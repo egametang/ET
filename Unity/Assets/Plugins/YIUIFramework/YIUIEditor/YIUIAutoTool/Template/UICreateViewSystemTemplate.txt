@@ -1,0 +1,35 @@
+﻿using System;
+using YIUIFramework;
+using System.Collections.Generic;
+
+namespace ${Namespace}
+{
+    /// <summary>
+    /// Author  ${Author}
+    /// Date    ${CreateDate}
+    /// Desc
+    /// </summary>
+    [FriendOf(typeof(${ResName}Component))]
+    public static partial class ${ResName}ComponentSystem
+    {
+        [EntitySystem]
+        private static void YIUIInitialize(this ${ResName}Component self)
+        {
+        }
+        
+        [EntitySystem]
+        private static void Destroy(this ${ResName}Component self)
+        {
+        }
+        
+        [EntitySystem]
+        private static async ETTask<bool> YIUIOpen(this ${ResName}Component self)
+        {
+            await ETTask.CompletedTask;
+            return true;
+        }
+        
+        #region YIUIEvent开始
+        #endregion YIUIEvent结束
+    }
+}

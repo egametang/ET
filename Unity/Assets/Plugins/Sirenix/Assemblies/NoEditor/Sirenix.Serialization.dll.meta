@@ -1,0 +1,79 @@
+fileFormatVersion: 2
+guid: 5651992cdad94894a3af7dc3f1da9170
+timeCreated: 1488828285
+PluginImporter:
+  serializedVersion: 1
+  iconMap: {}
+  executionOrder: {}
+  isPreloaded: 0
+  isOverridable: 0
+  platformData:
+    Any:
+      enabled: 0
+      settings:
+        Exclude Android: 1
+        Exclude Editor: 1
+        Exclude Linux: 1
+        Exclude Linux64: 1
+        Exclude LinuxUniversal: 1
+        Exclude N3DS: 0
+        Exclude OSXIntel: 1
+        Exclude OSXIntel64: 1
+        Exclude OSXUniversal: 1
+        Exclude PS4: 0
+        Exclude PSM: 0
+        Exclude PSP2: 0
+        Exclude SamsungTV: 0
+        Exclude Tizen: 0
+        Exclude WebGL: 0
+        Exclude WiiU: 0
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude WindowsStoreApps: 0
+        Exclude XboxOne: 0
+        Exclude iOS: 0
+        Exclude tvOS: 0
+    Editor:
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true
+    N3DS:
+      enabled: 1
+      settings: {}
+    PS4:
+      enabled: 1
+      settings: {}
+    PSM:
+      enabled: 1
+      settings: {}
+    PSP2:
+      enabled: 1
+      settings: {}
+    SamsungTV:
+      enabled: 1
+      settings: {}
+    Tizen:
+      enabled: 1
+      settings: {}
+    WebGL:
+      enabled: 1
+      settings: {}
+    WiiU:
+      enabled: 1
+      settings: {}
+    WindowsStoreApps:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+    XboxOne:
+      enabled: 1
+      settings: {}
+    iOS:
+      enabled: 1
+      settings: {}
+    tvOS:
+      enabled: 1
+      settings: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

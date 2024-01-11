@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ET.Analyzer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,14 +8,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace ET.Generator;
 
 [Generator(LanguageNames.CSharp)]
-public class ETSystemGenerator: ISourceGenerator
+public class ETSystemGenerator : ISourceGenerator
 {
     private AttributeTemplate? templates;
 
     public void Initialize(GeneratorInitializationContext context)
     {
         this.templates = new AttributeTemplate();
-        context.RegisterForSyntaxNotifications(()=> SyntaxContextReceiver.Create(this.templates));
+        context.RegisterForSyntaxNotifications(() => SyntaxContextReceiver.Create(this.templates));
     }
 
     public void Execute(GeneratorExecutionContext context)
@@ -83,7 +84,7 @@ public class ETSystemGenerator: ISourceGenerator
         {
             throw new Exception("attribute template is null");
         }
-        
+
         foreach (MethodDeclarationSyntax? methodDeclarationSyntax in methodDeclarationSyntaxes)
         {
             IMethodSymbol? methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclarationSyntax) as IMethodSymbol;
@@ -116,9 +117,9 @@ public class ETSystemGenerator: ISourceGenerator
                     continue;
                 }
                 string name = $"{methodSymbol.Parameters[i].Name}";
-                
 
-                
+
+
                 argsTypesList.Add(type);
                 argsVarsList.Add(name);
                 string typeName = $"{type} {name}";
@@ -131,7 +132,7 @@ public class ETSystemGenerator: ISourceGenerator
                     argsVarsWithout0List.Add(name);
                 }
             }
-            
+
             foreach (AttributeListSyntax attributeListSyntax in methodDeclarationSyntax.AttributeLists)
             {
                 AttributeSyntax? attribute = attributeListSyntax.Attributes.FirstOrDefault();
@@ -142,9 +143,9 @@ public class ETSystemGenerator: ISourceGenerator
 
                 string attributeType = attribute.Name.ToString();
                 string attributeString = $"[{attribute.ToString()}]";
-                    
+
                 string template = this.templates.Get(attributeType);
-                    
+
                 string code = $$"""
 namespace {{namespaceName}}
 {
@@ -158,14 +159,24 @@ namespace {{namespaceName}}
                 string argsVars = string.Join(", ", argsVarsList);
                 string argsTypes = string.Join(", ", argsTypesList);
                 string argsTypesVars = string.Join(", ", argsTypeVarsList);
-                string argsTypesUnderLine = string.Join("_", argsTypesList).Replace(", ", "_").Replace(".", "_")
-                        .Replace("<", "_").Replace(">", "_").Replace("[]","Array").Replace("(","_").Replace(")","_");
+                string argsTypesUnderLine = string.Join("_", argsTypesList).Replace(", ", "_").Replace(".", "_").Replace("<", "_").Replace(">", "_");
                 string argsTypesWithout0 = string.Join(", ", argsTypesWithout0List);
                 string argsVarsWithout0 = string.Join(", ", argsVarsWithout0List);
                 string argsTypesVarsWithout0 = string.Join(", ", argsTypeVarsWithout0List);
 
                 SpeicalProcessForArgs();
-                
+
+                if (methodSymbol.ReturnType.ToDisplayString() == "void")
+                {
+                    code = code.Replace("$returnType$", "void");
+                    code = code.Replace("$return$", "");
+                }
+                else
+                {
+                    code = code.Replace("$returnType$", methodSymbol.ReturnType.ToDisplayString());
+                    code = code.Replace("$return$", "return ");
+                }
+
                 code = code.Replace("$attribute$", attributeString);
                 code = code.Replace("$attributeType$", attributeType);
                 code = code.Replace("$methodName$", methodName);
@@ -186,12 +197,12 @@ namespace {{namespaceName}}
                 }
 
                 string fileName = $"{namespaceName}.{className}.{methodName}.{argsTypesUnderLine}.g.cs";
-                
+
                 context.AddSource(fileName, code);
-                
+
                 void SpeicalProcessForArgs()
                 {
-                    if ((attributeType=="EntitySystem" || attributeType=="LSEntitySystem")&&methodName==Definition.GetComponentMethod)
+                    if ((attributeType == "EntitySystem" || attributeType == "LSEntitySystem") && methodName == Definition.GetComponentMethod)
                     {
                         argsTypes = argsTypes.Split(',')[0];
                     }
@@ -201,9 +212,9 @@ namespace {{namespaceName}}
     }
 
 
-    
 
-    class SyntaxContextReceiver: ISyntaxContextReceiver
+
+    class SyntaxContextReceiver : ISyntaxContextReceiver
     {
         internal static ISyntaxContextReceiver Create(AttributeTemplate attributeTemplate)
         {

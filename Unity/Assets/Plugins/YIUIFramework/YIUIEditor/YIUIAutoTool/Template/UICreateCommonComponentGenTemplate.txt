@@ -1,0 +1,17 @@
+﻿using YIUIFramework;
+
+namespace ${Namespace}
+{
+${PanelViewEnum}
+    /// <summary>
+    /// 由YIUI工具自动创建 请勿修改
+    /// </summary>
+    [YIUI(EUICodeType.${CodeType})]
+    public partial class ${ResName}Component : Entity, IDestroy, IAwake, IYIUIBind, IYIUIInitialize
+    {
+        public const string PkgName = "${PkgName}";
+        public const string ResName = "${ResName}";
+
+${Variables}
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "$id": 0,
+    "$type": "0|YIUIFramework.Editor.UIAtlasModule+GlobalSpriteAtlasSettings, YIUIFramework",
+    "SpriteAtlasSettings": {
+        "$id": 1,
+        "$type": "1|YIUIFramework.Editor.UISpriteAtlasSettings, YIUIFramework",
+        "AtlasType": 0,
+        "IncludeInBuild": true,
+        "BlockOffset": 1,
+        "EnableRotation": false,
+        "EnableTightPacking": false,
+        "Padding": 4,
+        "GenerateMipMaps": false,
+        "Readable": false,
+        "sRGB": true,
+        "FilterMode": 1
+    },
+    "Default": {
+        "$id": 2,
+        "$type": "2|YIUIFramework.Editor.UIPlatformSettings, YIUIFramework",
+        "PlatformType": 0,
+        "BuildTargetName": "DefaultTexturePlatform",
+        "Overridden": true,
+        "MaxTextureSize": 2048,
+        "CrunchedCompression": true,
+        "compressionQuality": 50,
+        "Format": 18446744073709551615
+    },
+    "PC": {
+        "$id": 3,
+        "$type": 2,
+        "PlatformType": 1,
+        "BuildTargetName": "Standalone",
+        "Overridden": true,
+        "MaxTextureSize": 2048,
+        "CrunchedCompression": true,
+        "compressionQuality": 50,
+        "Format": 29
+    },
+    "Android": {
+        "$id": 4,
+        "$type": 2,
+        "PlatformType": 2,
+        "BuildTargetName": "Android",
+        "Overridden": true,
+        "MaxTextureSize": 2048,
+        "CrunchedCompression": true,
+        "compressionQuality": 50,
+        "Format": 50
+    },
+    "iPhone": {
+        "$id": 5,
+        "$type": 2,
+        "PlatformType": 3,
+        "BuildTargetName": "iPhone",
+        "Overridden": true,
+        "MaxTextureSize": 2048,
+        "CrunchedCompression": true,
+        "compressionQuality": 50,
+        "Format": 48
+    }
+}

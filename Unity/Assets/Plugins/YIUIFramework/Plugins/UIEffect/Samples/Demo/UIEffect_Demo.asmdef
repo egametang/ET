@@ -1,0 +1,14 @@
+{
+    "name": "UIEffect_Demo",
+    "references": [
+        "UIEffect"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": []
+}

@@ -1,0 +1,45 @@
+﻿using System;
+using YIUIFramework;
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace ${Namespace}
+{
+    /// <summary>
+    /// Author  ${Author}
+    /// Date    ${CreateDate}
+    /// Desc
+    /// </summary>
+    [YIUI(typeof(${ResName}Component))]
+    public sealed partial class ${ResName}:${ResName}Base
+    {
+        #region YIUIEvent开始
+        #endregion YIUIEvent结束
+    }
+        
+    #region DefaultComponentSystem开始
+    
+    public static partial class ${ResName}ComponentSystem
+    {
+        [EntitySystem]
+        private class ${ResName}ComponentYIUIAwakeSystem: AwakeSystem<${ResName}Component,UIBase>
+        {
+            protected override void Awake(${ResName}Component self, UIBase uiBase)
+            {
+                self.UI             = (${ResName})uiBase;
+                self.UI.UIComponent = self;
+            }
+        }
+        
+        [EntitySystem]
+        private class ${ResName}ComponentYIUIDestroySystem: DestroySystem<${ResName}Component>
+        {
+            protected override void Destroy(${ResName}Component self)
+            {
+                self.UI.EntityOnDestroy();
+            }
+        }
+    }
+    
+    #endregion DefaultComponentSystem结束
+}

@@ -1,0 +1,19 @@
+﻿    
+    
+    public static partial class ${ResName}ComponentSystem
+    {
+        [EntitySystem]
+        private static void Awake(this ${ResName}Component self, UIBase uiBase)
+        {
+            self.UI             = (${ResName})uiBase;
+            self.UI.UIComponent = self;
+        }
+        
+        [EntitySystem]
+        private static void Destroy(this ${ResName}Component self)
+        {
+            self.UI.EntityOnDestroy();
+        }
+    }
+    
+    

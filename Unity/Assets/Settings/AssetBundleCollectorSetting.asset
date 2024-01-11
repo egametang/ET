@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
   ShowPackageView: 0
-  EnableAddressable: 0
+  EnableAddressable: 1
   LocationToLower: 0
   IncludeAssetGUID: 0
-  UniqueBundleName: 0
-  ShowEditorAlias: 0
+  UniqueBundleName: 1
+  ShowEditorAlias: 1
   Packages:
   - PackageName: DefaultPackage
     PackageDesc: 
@@ -31,7 +31,7 @@ MonoBehaviour:
         CollectorGUID: 51f33a3e2065f5642bee2f96c2433544
         CollectorType: 0
         AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
+        PackRuleName: PackCollector
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
@@ -98,5 +98,44 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackSeparately
         FilterRuleName: CollectScene
+        AssetTags: 
+        UserData: 
+    - GroupName: RedDot
+      GroupDesc: "\u7EA2\u70B9"
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/RedDot
+        CollectorGUID: ba52b48ba95ac1840ac08c2741e07ae7
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: I2
+      GroupDesc: "\u591A\u8BED\u8A00"
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/I2Localization
+        CollectorGUID: e396aed730ac1b04883c6bc3dcd2f3aa
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: YIUI
+      GroupDesc: UI
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/YIUI
+        CollectorGUID: 39972cdc4694b1c4da7b914ddf3f784d
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
         AssetTags: 
         UserData: 

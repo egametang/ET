@@ -7,7 +7,9 @@
         "Unity.Mathematics",
         "Unity.Loader",
         "MemoryPack",
-        "YooAsset"
+        "YooAsset",
+        "Unity.TextMeshPro",
+        "YIUIFramework"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

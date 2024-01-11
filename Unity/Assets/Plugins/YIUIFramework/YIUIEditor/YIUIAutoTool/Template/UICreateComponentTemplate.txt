@@ -1,0 +1,14 @@
+﻿using YIUIFramework;
+
+namespace ${Namespace}
+{
+    /// <summary>
+    /// Author  ${Author}
+    /// Date    ${CreateDate}
+    /// Desc
+    /// </summary>
+    public partial class ${ResName}Component : Entity
+    {
+
+    }
+}

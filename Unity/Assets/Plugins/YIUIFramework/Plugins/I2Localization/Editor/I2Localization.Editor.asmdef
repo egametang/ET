@@ -1,0 +1,19 @@
+{
+    "name": "I2Localization.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "YIUIFramework"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

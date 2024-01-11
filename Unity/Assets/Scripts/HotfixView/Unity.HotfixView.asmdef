@@ -7,10 +7,12 @@
         "Unity.Mathematics",
         "Unity.Loader",
         "MemoryPack",
-        "Unity.Model",
         "Unity.Hotfix",
+        "Unity.Model",
         "Unity.ModelView",
-        "YooAsset"
+        "YooAsset",
+        "YIUIFramework",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

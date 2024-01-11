@@ -43,8 +43,10 @@ namespace ET
         [EntitySystem]
         private static void Awake(this TimerComponent self)
         {
+            //一个Entity引用另一个Entity,需要添加弱引用，比如TimerComponent/UIGlobalComponent
+            //self.Fiber().TimerComponent = self;
         }
-        
+
         [EntitySystem]
         private static void Update(this TimerComponent self)
         {

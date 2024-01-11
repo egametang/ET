@@ -8,7 +8,9 @@
         "Unity.Loader",
         "MemoryPack",
         "Unity.AllModel",
-        "YooAsset"
+        "YooAsset",
+        "Unity.TextMeshPro",
+        "YIUIFramework"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

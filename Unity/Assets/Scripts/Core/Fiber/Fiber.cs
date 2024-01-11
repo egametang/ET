@@ -49,6 +49,48 @@ namespace ET
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
         public ILog Log { get; }
 
+        //#region YIUI 添加代码
+        //private EntityRef<TimerComponent> timerCompnent;
+        //public TimerComponent TimerComponent
+        //{
+        //    get
+        //    {
+        //        return this.timerCompnent;
+        //    }
+        //    set
+        //    {
+        //        this.timerCompnent = value;
+        //    }
+        //}
+
+        //private EntityRef<CoroutineLockComponent> coroutineLockComponent;
+        //public CoroutineLockComponent CoroutineLockComponent
+        //{
+        //    get
+        //    {
+        //        return this.coroutineLockComponent;
+        //    }
+        //    set
+        //    {
+        //        this.coroutineLockComponent = value;
+        //    }
+        //}
+
+        //private EntityRef<ProcessInnerSender> processInnerSender;
+        //public ProcessInnerSender ProcessInnerSender
+        //{
+        //    get
+        //    {
+        //        return this.processInnerSender;
+        //    }
+        //    set
+        //    {
+        //        this.processInnerSender = value;
+        //    }
+        //}
+
+        //#endregion
+
         private readonly Queue<ETTask> frameFinishTasks = new();
         
         internal Fiber(int id, int zone, SceneType sceneType, string name)

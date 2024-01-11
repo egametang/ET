@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ${Namespace}
+{
+    /// <summary>
+    /// Author  ${Author}
+    /// Date    ${CreateDate}
+    /// Desc    ${Desc}
+    /// </summary>
+	public class ${Name}Component: Entity${Life}
+	{
+	
+	}
+}
