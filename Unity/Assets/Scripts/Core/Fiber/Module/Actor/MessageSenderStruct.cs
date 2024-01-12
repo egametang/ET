@@ -8,22 +8,17 @@ namespace ET
     {
         public ActorId ActorId { get; }
         
-        public IRequest Request { get; }
+        public Type RequestType { get; }
         
         private readonly ETTask<IResponse> tcs;
 
-        private readonly bool isFromPool;
-
         public bool NeedException { get; }
         
-        public MessageSenderStruct(ActorId actorId, IRequest iRequest, bool needException)
+        public MessageSenderStruct(ActorId actorId, Type requestType, bool needException)
         {
             this.ActorId = actorId;
             
-            this.Request = iRequest;
-            MessageObject messageObject = (MessageObject)this.Request;
-            this.isFromPool = messageObject.IsFromPool;
-            messageObject.IsFromPool = false;
+            this.RequestType = requestType;
             
             this.tcs = ETTask<IResponse>.Create(true);
             this.NeedException = needException;
@@ -31,19 +26,11 @@ namespace ET
         
         public void SetResult(IResponse response)
         {
-            MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.isFromPool;
-            messageObject.Dispose();
-            
             this.tcs.SetResult(response);
         }
         
         public void SetException(Exception exception)
         {
-            MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.isFromPool;
-            messageObject.Dispose();
-            
             this.tcs.SetException(exception);
         }
 

@@ -219,7 +219,8 @@ namespace ET.Server
             messageLocationSender.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
             
             Scene root = self.Root();
-            
+
+            Type requestType = iRequest.GetType();
             while (true)
             {
                 if (messageLocationSender.ActorId == default)
@@ -233,13 +234,13 @@ namespace ET.Server
 
                 if (messageLocationSender.ActorId == default)
                 {
-                    return MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_NotFoundActor);
+                    return MessageHelper.CreateResponse(requestType, rpcId, ErrorCore.ERR_NotFoundActor);
                 }
                 IResponse response = await root.GetComponent<MessageSender>().Call(messageLocationSender.ActorId, rpcId, iRequest, needException: false);
                 
                 if (messageLocationSender.InstanceId != instanceId)
                 {
-                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{iRequest}");
+                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{requestType.FullName}");
                 }
                 
                 switch (response.Error)
@@ -250,7 +251,7 @@ namespace ET.Server
                         ++failTimes;
                         if (failTimes > 20)
                         {
-                            Log.Debug($"actor send message fail, actorid: {messageLocationSender.Id} {iRequest}");
+                            Log.Debug($"actor send message fail, actorid: {messageLocationSender.Id} {requestType.FullName}");
                             
                             // 这里删除actor，后面等待发送的消息会判断InstanceId，InstanceId不一致返回ERR_NotFoundActor
                             self.Remove(messageLocationSender.Id);
@@ -261,7 +262,7 @@ namespace ET.Server
                         await root.GetComponent<TimerComponent>().WaitAsync(500);
                         if (messageLocationSender.InstanceId != instanceId)
                         {
-                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{iRequest}");
+                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{requestType.FullName}");
                         }
 
                         messageLocationSender.ActorId = default;
@@ -269,13 +270,13 @@ namespace ET.Server
                     }
                     case ErrorCore.ERR_MessageTimeout:
                     {
-                        throw new RpcException(response.Error, $"{iRequest}");
+                        throw new RpcException(response.Error, $"{requestType.FullName}");
                     }
                 }
 
                 if (ErrorCore.IsRpcNeedThrowException(response.Error))
                 {
-                    throw new RpcException(response.Error, $"Message: {response.Message} Request: {iRequest}");
+                    throw new RpcException(response.Error, $"Message: {response.Message} Request: {requestType.FullName}");
                 }
 
                 return response;
