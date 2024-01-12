@@ -11,7 +11,6 @@ namespace ET.Server
         {
             self.LastSendOrRecvTime = TimeInfo.Instance.ServerNow();
             self.ActorId = default;
-            self.Error = 0;
         }
         
         [EntitySystem]
@@ -20,7 +19,6 @@ namespace ET.Server
             Log.Debug($"actor location remove: {self.Id}");
             self.LastSendOrRecvTime = 0;
             self.ActorId = default;
-            self.Error = 0;
         }
     }
 }
