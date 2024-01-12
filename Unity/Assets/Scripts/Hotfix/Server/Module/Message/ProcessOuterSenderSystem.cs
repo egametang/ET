@@ -152,13 +152,13 @@ namespace ET.Server
         {
             if (response.Error == ErrorCore.ERR_MessageTimeout)
             {
-                self.SetException(new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.Request}, response: {response}"));
+                self.SetException(new RpcException(response.Error, $"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.RequestType.FullName}, response: {response}"));
                 return;
             }
 
             if (self.NeedException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
-                self.SetException(new RpcException(response.Error, $"Rpc error: actorId: {self.ActorId} request: {self.Request}, response: {response}"));
+                self.SetException(new RpcException(response.Error, $"Rpc error: actorId: {self.ActorId} request: {self.RequestType.FullName}, response: {response}"));
                 return;
             }
 
@@ -207,9 +207,9 @@ namespace ET.Server
 
             iRequest.RpcId = rpcId;
 
-            var tcs = ETTask<IResponse>.Create(true);
-
-            self.requestCallback.Add(rpcId, new MessageSenderStruct(actorId, iRequest, tcs, needException));
+            Type requestType = iRequest.GetType();
+            MessageSenderStruct messageSenderStruct = new(actorId, requestType, needException);
+            self.requestCallback.Add(rpcId, messageSenderStruct);
             
             self.SendInner(actorId, iRequest as MessageObject);
 
@@ -223,11 +223,11 @@ namespace ET.Server
                 
                 if (needException)
                 {
-                    action.SetException(new Exception($"actor sender timeout: {iRequest}"));
+                    action.SetException(new Exception($"actor sender timeout: {requestType.FullName}"));
                 }
                 else
                 {
-                    IResponse response = ET.MessageHelper.CreateResponse(iRequest, ErrorCore.ERR_Timeout);
+                    IResponse response = MessageHelper.CreateResponse(requestType, rpcId, ErrorCore.ERR_Timeout);
                     action.SetResult(response);
                 }
             }
@@ -236,14 +236,14 @@ namespace ET.Server
 
             long beginTime = TimeInfo.Instance.ServerFrameTime();
 
-            IResponse response = await tcs;
+            IResponse response = await messageSenderStruct.Wait();
 
             long endTime = TimeInfo.Instance.ServerFrameTime();
 
             long costTime = endTime - beginTime;
             if (costTime > 200)
             {
-                Log.Warning($"actor rpc time > 200: {costTime} {iRequest}");
+                Log.Warning($"actor rpc time > 200: {costTime} {requestType.FullName}");
             }
 
             return response;

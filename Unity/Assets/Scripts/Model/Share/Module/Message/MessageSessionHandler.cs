@@ -13,20 +13,19 @@ namespace ET
 
         private async ETTask HandleAsync(Session session, object message)
         {
-            using Message msg = message as Message;
             if (message == null)
             {
-                Log.Error($"消息类型转换错误: {msg.GetType().FullName} to {typeof (Message).Name}");
+                Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Message).Name}");
                 return;
             }
 
             if (session.IsDisposed)
             {
-                Log.Error($"session disconnect {msg}");
+                Log.Error($"session disconnect {message}");
                 return;
             }
 
-            await this.Run(session, msg);
+            await this.Run(session, (Message)message);
         }
 
         public Type GetMessageType()
@@ -54,7 +53,7 @@ namespace ET
         {
             try
             {
-                using Request request = message as Request;
+                Request request = message as Request;
                 if (request == null)
                 {
                     throw new Exception($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).FullName}");
@@ -63,6 +62,7 @@ namespace ET
                 int rpcId = request.RpcId;
                 long instanceId = session.InstanceId;
 
+                // 这里用using很安全，因为后面是session发送出去了
                 using Response response = ObjectPool.Instance.Fetch<Response>();
                 try
                 {

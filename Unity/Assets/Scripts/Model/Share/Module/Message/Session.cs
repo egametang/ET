@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -8,36 +7,24 @@ namespace ET
 {
     public readonly struct RpcInfo
     {
-        public readonly bool IsFromPool;
-        public readonly IRequest Request { get; }
+        public Type RequestType { get; }
+        
         private readonly ETTask<IResponse> tcs;
 
-        public RpcInfo(IRequest request)
+        public RpcInfo(Type requestType)
         {
-            this.Request = request;
+            this.RequestType = requestType;
             
-            MessageObject messageObject = (MessageObject)this.Request;
-            this.IsFromPool = messageObject.IsFromPool;
-            messageObject.IsFromPool = false;
-
             this.tcs = ETTask<IResponse>.Create(true);
         }
 
         public void SetResult(IResponse response)
         {
-            MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.IsFromPool;
-            messageObject.Dispose();
-
             this.tcs.SetResult(response);
         }
 
         public void SetException(Exception exception)
         {
-            MessageObject messageObject = (MessageObject)this.Request;
-            messageObject.IsFromPool = this.IsFromPool;
-            messageObject.Dispose();
-
             this.tcs.SetException(exception);
         }
 
@@ -81,7 +68,7 @@ namespace ET
         
         public static void OnResponse(this Session self, IResponse response)
         {
-            if (!self.requestCallbacks.Remove(response.RpcId, out var action))
+            if (!self.requestCallbacks.Remove(response.RpcId, out RpcInfo action))
             {
                 return;
             }
@@ -91,7 +78,7 @@ namespace ET
         public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
         {
             int rpcId = ++self.RpcId;
-            RpcInfo rpcInfo = new(request);
+            RpcInfo rpcInfo = new(request.GetType());
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
 
@@ -104,7 +91,7 @@ namespace ET
                     return;
                 }
 
-                Type responseType = OpcodeType.Instance.GetResponseType(action.Request.GetType());
+                Type responseType = OpcodeType.Instance.GetResponseType(action.RequestType);
                 IResponse response = (IResponse) Activator.CreateInstance(responseType);
                 response.Error = ErrorCore.ERR_Cancel;
                 action.SetResult(response);
@@ -126,7 +113,7 @@ namespace ET
         public static async ETTask<IResponse> Call(this Session self, IRequest request, int time = 0)
         {
             int rpcId = ++self.RpcId;
-            RpcInfo rpcInfo = new(request);
+            RpcInfo rpcInfo = new(request.GetType());
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
             self.Send(request);
@@ -146,7 +133,7 @@ namespace ET
                         return;
                     }
                     
-                    action.SetException(new Exception($"session call timeout: {request} {time}"));
+                    action.SetException(new Exception($"session call timeout: {action.RequestType.FullName} {time}"));
                 }
                 
                 Timeout().Coroutine();

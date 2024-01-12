@@ -17,7 +17,6 @@
             Fiber fiber = mailBoxComponent.Fiber();
             if (fiber.IsDisposed)
             {
-				messageObject.Dispose();
                 return;
             }
 
@@ -28,10 +27,9 @@
                 {
                     if (messageObject is IRequest request)
                     {
-                        IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                        IResponse resp = MessageHelper.CreateResponse(request.GetType(), request.RpcId, ErrorCore.ERR_NotFoundActor);
                         mailBoxComponent.Root().GetComponent<ProcessInnerSender>().Reply(args.FromAddress, resp);
                     }
-                    messageObject.Dispose();
                     return;
                 }
                 await MessageDispatcher.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
