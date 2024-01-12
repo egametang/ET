@@ -9,7 +9,5 @@ namespace ET
 
         // 最近接收或者发送消息的时间
         public long LastSendOrRecvTime;
-
-        public int Error;
     }
 }
