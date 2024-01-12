@@ -113,13 +113,7 @@ namespace ET.Server
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
-                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{iActorRequest}");
-                }
-
-                // 队列中没处理的消息返回跟上个消息一样的报错
-                if (actorLocationSender.Error == ErrorCore.ERR_NotFoundActor)
-                {
-                    return ActorHelper.CreateResponse(iActorRequest, actorLocationSender.Error);
+                    throw new RpcException(ErrorCore.ERR_NotFoundActor, $"{iActorRequest}");
                 }
                 
                 try
@@ -158,7 +152,6 @@ namespace ET.Server
 
                 if (actorLocationSender.ActorId == 0)
                 {
-                    actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                     return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
                 IActorResponse response = await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, rpcId, iActorRequest, false);
@@ -176,8 +169,8 @@ namespace ET.Server
                         if (failTimes > 20)
                         {
                             Log.Debug($"actor send message fail, actorid: {actorLocationSender.Id}");
-                            actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
-                            // 这里不能删除actor，要让后面等待发送的消息也返回ERR_NotFoundActor，直到超时删除
+                            // 这里删除actor，后面等待发送的消息会判断InstanceId，InstanceId不一致返回ERR_NotFoundActor
+                            self.Remove(actorLocationSender.Id);
                             return response;
                         }
 
