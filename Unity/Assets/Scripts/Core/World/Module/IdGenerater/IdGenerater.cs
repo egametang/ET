@@ -32,7 +32,7 @@ namespace ET
         public IdStruct(long id)
         {
             ulong result = (ulong) id; 
-            this.Value = (ushort) (result & IdGenerater.Mask20bit);
+            this.Value = (uint) (result & IdGenerater.Mask20bit);
             result >>= 20;
             this.Time = (uint) result & IdGenerater.Mask30bit;
             result >>= 30;
