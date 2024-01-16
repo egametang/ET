@@ -74,7 +74,7 @@ namespace ET
 
                 if (this.globalConfig.EPlayMode == EPlayMode.EditorSimulateMode)
                 {
-                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select EditorMode");
+                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select HostPlayMode");
                     return;
                 }
 
