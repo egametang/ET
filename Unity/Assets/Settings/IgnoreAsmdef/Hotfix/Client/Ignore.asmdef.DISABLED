@@ -1,5 +1,5 @@
 {
-    "name": "Unity.Ignore.Generate.ClientServer",
+    "name": "Ignore.Hotfix.Client",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

@@ -8,112 +8,171 @@ namespace ET
 {
     public static class AssemblyTool
     {
-        public static readonly string[] dllNames = new[] { "Unity.Hotfix", "Unity.HotfixView", "Unity.Model", "Unity.ModelView" };
-        
-        private static BuildTarget GetBuildTarget(PlatformType type)
-        {
-            switch (type)
-            {
-                case PlatformType.Windows:
-                    return BuildTarget.StandaloneWindows64;
-                case PlatformType.Android:
-                    return BuildTarget.Android;
-                case PlatformType.IOS:
-                    return BuildTarget.iOS;
-                case PlatformType.MacOS:
-                    return BuildTarget.StandaloneOSX;
-                case PlatformType.Linux:
-                    return BuildTarget.StandaloneLinux64;
-            }
+        /// <summary>
+        /// Unity线程的同步上下文
+        /// </summary>
+        static SynchronizationContext unitySynchronizationContext { get; set; }
 
-            return BuildTarget.StandaloneWindows;
+        /// <summary>
+        /// 程序集名字数组
+        /// </summary>
+        public static readonly string[] DllNames = { "Unity.Hotfix", "Unity.HotfixView", "Unity.Model", "Unity.ModelView" };
+
+        /// <summary>
+        /// 是否正在等待编译
+        /// 此处使用EditorPrefs是因为代码编译完成后变量都是默认值, 故使用一个不会被编译影响的地方记录
+        /// </summary>
+        static bool IsWaitingCompile
+        {
+            get { return EditorPrefs.GetBool("ETAssemblyToolIsWaitingCompile"); }
+            set { EditorPrefs.SetBool("ETAssemblyToolIsWaitingCompile", value); }
         }
 
-        public static void RefreshCodeMode(CodeMode codeMode)
+        /// <summary>
+        /// 是否编译完成
+        /// </summary>
+        public static bool IsCompileFinished
         {
+            get { return EditorPrefs.GetBool("ETAssemblyToolIsCompileFinished"); }
+            private set { EditorPrefs.SetBool("ETAssemblyToolIsCompileFinished", value); }
+        }
+
+        [InitializeOnLoadMethod]
+        static void Initialize()
+        {
+            unitySynchronizationContext = SynchronizationContext.Current;
+
+            // 因为每次关闭Unity都会删除Temp目录, 此处可保证Temp目录下有打包的dll, 以防HybridCLR找不到
+            if (!Directory.Exists(Define.BuildOutputDir))
+            {
+                IsWaitingCompile = false;
+                DoCompile();
+                return;
+            }
+
+            if (!IsWaitingCompile)
+                return;
+
+            IsWaitingCompile = false;
+
+            if (!IsCompileFinished)
+                DoCompile();
+        }
+
+        /// <summary>
+        /// 执行编译代码流程
+        /// </summary>
+        public static void DoCompile()
+        {
+            IsCompileFinished = false;
+
+            // 若编辑器在编译中, 则等到InitializeOnLoadMethod被调用时再进行此编译
+            if (!EditorApplication.isPlaying && EditorApplication.isCompiling)
+            {
+                IsWaitingCompile = true;
+                return;
+            }
+
+            RefreshCodeMode();
+
+            RefreshBuildType();
+
+            var options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None;
+            CompileDlls(EditorUserBuildSettings.activeBuildTarget, options);
+            CopyHotUpdateDlls();
+            BuildHelper.ReGenerateProjectFiles();
+        }
+
+        /// <summary>
+        /// 刷新代码模式
+        /// </summary>
+        static void RefreshCodeMode()
+        {
+            CodeMode codeMode = CodeMode.ClientServer;
+
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            if (globalConfig)
+                codeMode = globalConfig.CodeMode;
+
             switch (codeMode)
             {
                 case CodeMode.Client:
-                    Enable_UNITY_CLIENT();
+                    EnableUnityClient();
                     break;
                 case CodeMode.Server:
-                    Enable_UNITY_SERVER();
+                    EnableUnityServer();
                     break;
                 case CodeMode.ClientServer:
-                    Enable_UNITY_CLIENTSERVER();
+                    EnableUnityClientServer();
                     break;
             }
+
+            AssetDatabase.Refresh();
         }
 
-        public static void DoCompile()
+        /// <summary>
+        /// 刷新构建类型
+        /// </summary>
+        static void RefreshBuildType()
         {
+            BuildType buildType = BuildType.Release;
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            ScriptCompilationOptions options = globalConfig.BuildType == BuildType.Debug
-                    ? ScriptCompilationOptions.DevelopmentBuild
-                    : ScriptCompilationOptions.None;
-            CompileDlls(EditorUserBuildSettings.activeBuildTarget, options);
-            CopyHotUpdateDlls();
+            if (globalConfig)
+                buildType = globalConfig.BuildType;
+            EditorUserBuildSettings.development = buildType == BuildType.Debug;
         }
 
-        public static void CompileDlls(PlatformType platform, ScriptCompilationOptions options = ScriptCompilationOptions.None)
+        /// <summary>
+        /// 编译成dll
+        /// </summary>
+        static void CompileDlls(BuildTarget target, ScriptCompilationOptions options = ScriptCompilationOptions.None)
         {
-            CompileDlls(GetBuildTarget(platform), options);
-        }
-
-        public static void CompileDlls(BuildTarget target, ScriptCompilationOptions options = ScriptCompilationOptions.None)
-        {
-            //强制刷新一下，防止关闭auto refresh，编译出老代码
+            // 强制刷新一下，防止关闭auto refresh，编译出老代码
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-            SynchronizationContext lastSynchronizationContext = null;
-            if (Application.isPlaying) //运行时编译需要UnitySynchronizationContext
-            {
-                lastSynchronizationContext = SynchronizationContext.Current;
-                SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
-            }
-            else
-            {
-                SynchronizationContext.SetSynchronizationContext(AssemblyEditor.UnitySynchronizationContext);
-            }
+
+            // 运行时编译需要先设置为UnitySynchronizationContext, 编译完再还原为CurrentContext
+            SynchronizationContext lastSynchronizationContext = Application.isPlaying ? SynchronizationContext.Current : null;
+            SynchronizationContext.SetSynchronizationContext(unitySynchronizationContext);
+
             try
             {
                 Directory.CreateDirectory(Define.BuildOutputDir);
                 BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-                ScriptCompilationSettings scriptCompilationSettings = new ScriptCompilationSettings();
+                ScriptCompilationSettings scriptCompilationSettings = new();
                 scriptCompilationSettings.group = group;
                 scriptCompilationSettings.target = target;
-                scriptCompilationSettings.extraScriptingDefines = new[] { "UNITY_COMPILE" };
+                scriptCompilationSettings.extraScriptingDefines = new[] { "ET_COMPILE" };
                 scriptCompilationSettings.options = options;
-                PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
-#if UNITY_2022
+                ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
+                IsCompileFinished = result.assemblies.Count > 0;
                 EditorUtility.ClearProgressBar();
-#endif
-                Debug.Log("compile finish!!!");
             }
             finally
             {
-                if (Application.isPlaying && lastSynchronizationContext != null)
-                {
+                if (lastSynchronizationContext != null)
                     SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
-                }
             }
         }
 
+        /// <summary>
+        /// 将dll文件复制到加载目录
+        /// </summary>
         static void CopyHotUpdateDlls()
         {
             FileHelper.CleanDirectory(Define.CodeDir);
-            foreach (var dllName in dllNames)
+            foreach (string dllName in DllNames)
             {
                 string sourceDll = $"{Define.BuildOutputDir}/{dllName}.dll";
                 string sourcePdb = $"{Define.BuildOutputDir}/{dllName}.pdb";
                 File.Copy(sourceDll, $"{Define.CodeDir}/{dllName}.dll.bytes", true);
                 File.Copy(sourcePdb, $"{Define.CodeDir}/{dllName}.pdb.bytes", true);
-                Debug.Log($"copy:{Define.BuildOutputDir}/{dllName} => {Define.CodeDir}/{dllName}");
             }
-
-            Debug.Log("copy finish!!!");
         }
 
-        public static void Enable_UNITY_CLIENT()
+        /// <summary>
+        /// 启用纯客户端模式
+        /// </summary>
+        static void EnableUnityClient()
         {
             DisableAsmdef("Assets/Scripts/Model/Generate/Client/Ignore.asmdef");
             EnableAsmdef("Assets/Scripts/Model/Generate/Server/Ignore.asmdef");
@@ -121,15 +180,18 @@ namespace ET
 
             DisableAsmdef("Assets/Scripts/Model/Client/Ignore.asmdef");
             EnableAsmdef("Assets/Scripts/Model/Server/Ignore.asmdef");
+
             DisableAsmdef("Assets/Scripts/Hotfix/Client/Ignore.asmdef");
             EnableAsmdef("Assets/Scripts/Hotfix/Server/Ignore.asmdef");
 
-            DisableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
             DisableAsmdef("Assets/Scripts/ModelView/Client/Ignore.asmdef");
-            AssetDatabase.Refresh();
+            DisableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
         }
 
-        public static void Enable_UNITY_SERVER()
+        /// <summary>
+        /// 启用纯服务端模式
+        /// </summary>
+        static void EnableUnityServer()
         {
             EnableAsmdef("Assets/Scripts/Model/Generate/Client/Ignore.asmdef");
             EnableAsmdef("Assets/Scripts/Model/Generate/Server/Ignore.asmdef");
@@ -137,15 +199,18 @@ namespace ET
 
             DisableAsmdef("Assets/Scripts/Model/Client/Ignore.asmdef");
             DisableAsmdef("Assets/Scripts/Model/Server/Ignore.asmdef");
+
             DisableAsmdef("Assets/Scripts/Hotfix/Client/Ignore.asmdef");
             DisableAsmdef("Assets/Scripts/Hotfix/Server/Ignore.asmdef");
 
             EnableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
             EnableAsmdef("Assets/Scripts/ModelView/Client/Ignore.asmdef");
-            AssetDatabase.Refresh();
         }
 
-        public static void Enable_UNITY_CLIENTSERVER()
+        /// <summary>
+        /// 启用双端模式
+        /// </summary>
+        static void EnableUnityClientServer()
         {
             EnableAsmdef("Assets/Scripts/Model/Generate/Client/Ignore.asmdef");
             EnableAsmdef("Assets/Scripts/Model/Generate/Server/Ignore.asmdef");
@@ -153,44 +218,41 @@ namespace ET
 
             DisableAsmdef("Assets/Scripts/Model/Client/Ignore.asmdef");
             DisableAsmdef("Assets/Scripts/Model/Server/Ignore.asmdef");
+
             DisableAsmdef("Assets/Scripts/Hotfix/Client/Ignore.asmdef");
             DisableAsmdef("Assets/Scripts/Hotfix/Server/Ignore.asmdef");
 
             DisableAsmdef("Assets/Scripts/HotfixView/Client/Ignore.asmdef");
             DisableAsmdef("Assets/Scripts/ModelView/Client/Ignore.asmdef");
-            AssetDatabase.Refresh();
         }
 
+        /// <summary>
+        /// 启用指定的程序集定义文件
+        /// </summary>
         static void EnableAsmdef(string asmdefFile)
         {
             string asmdefDisableFile = $"{asmdefFile}.DISABLED";
-            if (File.Exists(asmdefDisableFile))
+            string srcFilePath = asmdefDisableFile.Replace("Assets/Scripts/", "Assets/Settings/IgnoreAsmdef/");
+
+            if (!File.Exists(srcFilePath))
             {
-                if (File.Exists(asmdefFile))
-                {
-                    File.Delete(asmdefFile);
-                    File.Delete($"{asmdefFile}.meta");
-                }
-                File.Move(asmdefDisableFile, asmdefFile);
-                File.Delete(asmdefDisableFile);
-                File.Delete($"{asmdefDisableFile}.meta");
+                Debug.LogError($"忽略编译配置的原文件不存在, 请检查项目文件完整性:{srcFilePath}");
+                return;
             }
+
+            if (File.Exists(asmdefFile) && new FileInfo(srcFilePath).LastWriteTime == new FileInfo(asmdefFile).LastWriteTime)
+                return;
+
+            File.Copy(srcFilePath, asmdefFile, true);
         }
 
+        /// <summary>
+        /// 删除指定的程序集定义文件
+        /// </summary>
         static void DisableAsmdef(string asmdefFile)
         {
-            if (File.Exists(asmdefFile))
-            {
-                string asmdefDisableFile = $"{asmdefFile}.DISABLED";
-                if (File.Exists(asmdefDisableFile))
-                {
-                    File.Delete(asmdefDisableFile);
-                    File.Delete($"{asmdefDisableFile}.meta");
-                }
-                File.Move(asmdefFile, asmdefDisableFile);
-                File.Delete(asmdefFile);
-                File.Delete($"{asmdefFile}.meta");
-            }
+            File.Delete(asmdefFile);
+            File.Delete($"{asmdefFile}.meta");
         }
     }
 }

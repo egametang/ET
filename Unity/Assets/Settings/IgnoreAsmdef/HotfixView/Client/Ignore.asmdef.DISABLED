@@ -1,5 +1,5 @@
 {
-    "name": "Unity.Ignore.HotfixView.Client",
+    "name": "Ignore.HotfixView.Client",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

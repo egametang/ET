@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using YooAsset;
 
@@ -51,8 +50,9 @@ namespace ET
 
         private void OnGUI()
         {
+            EditorGUILayout.LabelField("PlatformType ");
             this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-            
+
             EditorGUILayout.LabelField("BuildOptions ");
             this.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField(this.buildOptions);
 
@@ -68,7 +68,7 @@ namespace ET
 
                 if (this.globalConfig.CodeMode != CodeMode.Client)
                 {
-                    Log.Error("build package CodeMode must be CodeMode.Client, please select Client, RegenerateCSProject, then rebuild Hotfix and Model !!!");
+                    Log.Error("build package CodeMode must be CodeMode.Client, please select Client");
                     return;
                 }
 
@@ -92,13 +92,8 @@ namespace ET
                             break;
                     }
                 }
+
                 BuildHelper.Build(this.platformType, this.buildOptions);
-                return;
-            }
-            
-            if (GUILayout.Button("ReGenerateProjectFiles"))
-            {
-                BuildHelper.ReGenerateProjectFiles();
                 return;
             }
 
