@@ -1,6 +1,6 @@
-using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 namespace ET
@@ -15,17 +15,16 @@ namespace ET
         public static void ReGenerateProjectFiles()
         {
             Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
-            Debug.Log("ReGenerateProjectFiles finished.");
         }
 
 #if ENABLE_VIEW
-        [MenuItem("ET/ChangeDefine/Remove ENABLE_VIEW")]
+        [MenuItem("ET/ChangeDefine/Remove ENABLE_VIEW", false, ETMenuItemPriority.ChangeDefine)]
         public static void RemoveEnableView()
         {
             EnableDefineSymbols("ENABLE_VIEW", false);
         }
 #else
-        [MenuItem("ET/ChangeDefine/Add ENABLE_VIEW")]
+        [MenuItem("ET/ChangeDefine/Add ENABLE_VIEW", false, MenuItemPriority.ChangeDefine)]
         public static void AddEnableView()
         {
             EnableDefineSymbols("ENABLE_VIEW", true);
@@ -42,6 +41,7 @@ namespace ET
                 {
                     return;
                 }
+
                 ss.Add(symbols);
             }
             else
@@ -50,8 +50,10 @@ namespace ET
                 {
                     return;
                 }
+
                 ss.Remove(symbols);
             }
+
             Debug.Log($"EnableDefineSymbols {symbols} {enable}");
             defines = string.Join(";", ss);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
@@ -86,12 +88,19 @@ namespace ET
             }
 
             AssetDatabase.Refresh();
-            string[] levels = {
-                "Assets/Scenes/Init.unity",
-            };
+
             Debug.Log("start build exe");
-            BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
+
+            string[] levels = { "Assets/Scenes/Init.unity" };
+            BuildReport report = BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
+            if (report.summary.result != BuildResult.Succeeded)
+            {
+                Debug.Log($"BuildResult:{report.summary.result}");
+                return;
+            }
+
             Debug.Log("finish build exe");
+            EditorUtility.OpenWithDefaultApp(relativeDirPrefix);
         }
     }
 }
