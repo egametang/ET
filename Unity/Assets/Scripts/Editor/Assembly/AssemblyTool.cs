@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading;
 using UnityEditor;
@@ -107,7 +108,7 @@ namespace ET
         static bool CompileDlls()
         {
             // 运行时编译需要先设置为UnitySynchronizationContext, 编译完再还原为CurrentContext
-            SynchronizationContext lastSynchronizationContext = Application.isPlaying ? SynchronizationContext.Current : null;
+            SynchronizationContext lastSynchronizationContext = Application.isPlaying? SynchronizationContext.Current : null;
             SynchronizationContext.SetSynchronizationContext(unitySynchronizationContext);
 
             bool isCompileOk = false;
@@ -117,7 +118,7 @@ namespace ET
                 Directory.CreateDirectory(Define.BuildOutputDir);
                 BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
                 BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-                ScriptCompilationSettings scriptCompilationSettings = new() { group = group, target = target, extraScriptingDefines = new[] { "ET_COMPILE" }, options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None };
+                ScriptCompilationSettings scriptCompilationSettings = new() { group = group, target = target, extraScriptingDefines = new[] { "ET_COMPILE" }, options = EditorUserBuildSettings.development? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None };
                 ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
                 isCompileOk = result.assemblies.Count > 0;
                 EditorUtility.ClearProgressBar();
@@ -249,7 +250,7 @@ namespace ET
             if (!File.Exists(filePath))
                 return 0;
 
-            return int.TryParse(File.ReadAllText(filePath), out int version) ? version : 0;
+            return int.TryParse(File.ReadAllText(filePath), out int version)? version : 0;
         }
 
         /// <summary>
@@ -292,10 +293,28 @@ namespace ET
         /// <summary>
         /// 生成的dll的版本号
         /// </summary>
-        public static int GeneratedDllVersion
+        static int GeneratedDllVersion
         {
-            get{ return GetVersion(GeneratedDllVersionRecordFilePath); }
+            get { return GetVersion(GeneratedDllVersionRecordFilePath); }
             set { SetVersion(GeneratedDllVersionRecordFilePath, value); }
+        }
+
+        /// <summary>
+        /// IDE最新编译时间
+        /// </summary>
+        public static long IDECompileTime
+        {
+            get
+            {
+                const string IDECompileTimeFilePath = CompleRecordDirectory + "/IDECompileTime.etrec";
+                if (!File.Exists(IDECompileTimeFilePath))
+                    return 0;
+
+                if (!DateTime.TryParse(File.ReadAllText(IDECompileTimeFilePath), out DateTime dateTime))
+                    return 0;
+
+                return new DateTimeOffset(dateTime).ToUnixTimeMilliseconds();
+            }
         }
 
         #endregion
