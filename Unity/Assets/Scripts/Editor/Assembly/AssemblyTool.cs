@@ -108,7 +108,7 @@ namespace ET
         static bool CompileDlls()
         {
             // 运行时编译需要先设置为UnitySynchronizationContext, 编译完再还原为CurrentContext
-            SynchronizationContext lastSynchronizationContext = Application.isPlaying? SynchronizationContext.Current : null;
+            SynchronizationContext lastSynchronizationContext = Application.isPlaying ? SynchronizationContext.Current : null;
             SynchronizationContext.SetSynchronizationContext(unitySynchronizationContext);
 
             bool isCompileOk = false;
@@ -118,7 +118,7 @@ namespace ET
                 Directory.CreateDirectory(Define.BuildOutputDir);
                 BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
                 BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-                ScriptCompilationSettings scriptCompilationSettings = new() { group = group, target = target, extraScriptingDefines = new[] { "ET_COMPILE" }, options = EditorUserBuildSettings.development? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None };
+                ScriptCompilationSettings scriptCompilationSettings = new() { group = group, target = target, extraScriptingDefines = new[] { "ET_COMPILE" }, options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None };
                 ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
                 isCompileOk = result.assemblies.Count > 0;
                 EditorUtility.ClearProgressBar();
@@ -250,7 +250,7 @@ namespace ET
             if (!File.Exists(filePath))
                 return 0;
 
-            return int.TryParse(File.ReadAllText(filePath), out int version)? version : 0;
+            return int.TryParse(File.ReadAllText(filePath), out int version) ? version : 0;
         }
 
         /// <summary>
