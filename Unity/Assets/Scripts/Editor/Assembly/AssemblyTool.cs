@@ -118,7 +118,13 @@ namespace ET
                 Directory.CreateDirectory(Define.BuildOutputDir);
                 BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
                 BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-                ScriptCompilationSettings scriptCompilationSettings = new() { group = group, target = target, extraScriptingDefines = new[] { "ET_COMPILE" }, options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None };
+                ScriptCompilationSettings scriptCompilationSettings = new()
+                {
+                    group = group,
+                    target = target,
+                    extraScriptingDefines = new[] { "ET_COMPILE" },
+                    options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None
+                };
                 ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
                 isCompileOk = result.assemblies.Count > 0;
                 EditorUtility.ClearProgressBar();
