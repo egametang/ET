@@ -17,9 +17,9 @@ namespace ET
         {
         }
 
-        public void Send(ActorId actorId, MessageObject messageObject)
+        public bool Send(ActorId actorId, MessageObject messageObject)
         {
-            this.Send(actorId.Address, actorId, messageObject);
+            return this.Send(actorId.Address, actorId, messageObject);
         }
         
         public void Reply(ActorId actorId, MessageObject messageObject)
@@ -27,13 +27,14 @@ namespace ET
             this.Send(actorId.Address, actorId, messageObject);
         }
         
-        public void Send(Address fromAddress, ActorId actorId, MessageObject messageObject)
+        public bool Send(Address fromAddress, ActorId actorId, MessageObject messageObject)
         {
             if (!this.messages.TryGetValue(actorId.Address.Fiber, out var queue))
             {
-                return;
+                return false;
             }
             queue.Enqueue(new MessageInfo() {ActorId = new ActorId(fromAddress, actorId.InstanceId), MessageObject = messageObject});
+            return true;
         }
         
         public void Fetch(int fiberId, int count, List<MessageInfo> list)
