@@ -114,11 +114,10 @@ namespace ET
         {
             return content.Replace("<Target Name=\"AfterBuild\" />",
                 "<Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir){Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir){Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir){Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir){Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
-                "     <Exec Command=\"call $(ProjectDir)CompilePostprocess.bat\" />\n" + // 运行bat, 保证编译后dll和代码版本一致
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
+                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
                 "  </Target>\n");
         }
 

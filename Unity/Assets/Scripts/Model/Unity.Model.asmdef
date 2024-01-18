@@ -14,7 +14,7 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "ET_COMPILE || UNITY_EDITOR"
+        "UNITY_COMPILE || UNITY_EDITOR"
     ],
     "versionDefines": [],
     "noEngineReferences": true

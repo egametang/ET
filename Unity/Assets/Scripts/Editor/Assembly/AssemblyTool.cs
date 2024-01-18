@@ -28,16 +28,21 @@ namespace ET
         /// <summary>
         /// 菜单和快捷键编译按钮
         /// </summary>
-        [MenuItem("ET/Compile && Reload _F6", false, ETMenuItemPriority.Compile)]
-        static void CompileMenuItem()
+        [MenuItem("ET/Compile _F6", false, ETMenuItemPriority.Compile)]
+        static void MenuItemOfCompile()
         {
             // 强制刷新一下，防止关闭auto refresh，文件修改时间不准确
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
-            // 代码版本和生成的dll版本不一样的话就需要使用Unity编译, 反之则说明已编译过
-            if (ScriptVersion == 0 || ScriptVersion != GeneratedDllVersion)
-                DoCompile();
+            DoCompile();
+        }
 
+        /// <summary>
+        /// 菜单和快捷键热重载按钮
+        /// </summary>
+        [MenuItem("ET/Reload _F7", false, ETMenuItemPriority.Compile)]
+        static void MenuItemOfReload()
+        {
             if (Application.isPlaying)
                 CodeLoader.Instance?.Reload();
         }
@@ -59,9 +64,6 @@ namespace ET
 
             CopyHotUpdateDlls();
             BuildHelper.ReGenerateProjectFiles();
-
-            // 编译复制完后直接同步版本号(因部分dll文件不需要复制到Define.CodeDir目录下)
-            GeneratedDllVersion = ScriptVersion;
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace ET
                 {
                     group = group,
                     target = target,
-                    extraScriptingDefines = new[] { "ET_COMPILE" },
+                    extraScriptingDefines = new[] { "UNITY_COMPILE" },
                     options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None
                 };
                 ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
@@ -240,89 +242,5 @@ namespace ET
             File.Delete(asmdefFile);
             File.Delete($"{asmdefFile}.meta");
         }
-
-        #region 编译版本记录
-
-        /// <summary>
-        /// 编译记录文件夹
-        /// </summary>
-        const string CompleRecordDirectory = "Library/ETCompileRecord";
-
-        /// <summary>
-        /// 根据文件路径获取记录的版本号
-        /// </summary>
-        static int GetVersion(string filePath)
-        {
-            if (!File.Exists(filePath))
-                return 0;
-
-            return int.TryParse(File.ReadAllText(filePath), out int version) ? version : 0;
-        }
-
-        /// <summary>
-        /// 记录版本号
-        /// </summary>
-        static void SetVersion(string filePath, int version)
-        {
-            if (!Directory.Exists(CompleRecordDirectory))
-                Directory.CreateDirectory(CompleRecordDirectory);
-
-            File.WriteAllText(filePath, version.ToString());
-        }
-
-        /// <summary>
-        /// 代码版本号存储文件目录
-        /// </summary>
-        const string ScriptVersionRecordFilePath = CompleRecordDirectory + "/ScriptVersion.etrec";
-
-        /// <summary>
-        /// 代码版本号
-        /// </summary>
-        public static int ScriptVersion
-        {
-            get { return GetVersion(ScriptVersionRecordFilePath); }
-            set
-            {
-                // 限制一下版本号最大值
-                if (value > 1000)
-                    value = 1;
-
-                SetVersion(ScriptVersionRecordFilePath, value);
-            }
-        }
-
-        /// <summary>
-        /// dll版本号存储文件目录
-        /// </summary>
-        const string GeneratedDllVersionRecordFilePath = CompleRecordDirectory + "/GeneratedDllVersion.etrec";
-
-        /// <summary>
-        /// 生成的dll的版本号
-        /// </summary>
-        static int GeneratedDllVersion
-        {
-            get { return GetVersion(GeneratedDllVersionRecordFilePath); }
-            set { SetVersion(GeneratedDllVersionRecordFilePath, value); }
-        }
-
-        /// <summary>
-        /// IDE最新编译时间
-        /// </summary>
-        public static long IDECompileTime
-        {
-            get
-            {
-                const string IDECompileTimeFilePath = CompleRecordDirectory + "/IDECompileTime.etrec";
-                if (!File.Exists(IDECompileTimeFilePath))
-                    return 0;
-
-                if (!DateTime.TryParse(File.ReadAllText(IDECompileTimeFilePath), out DateTime dateTime))
-                    return 0;
-
-                return new DateTimeOffset(dateTime).ToUnixTimeMilliseconds();
-            }
-        }
-
-        #endregion
     }
 }
