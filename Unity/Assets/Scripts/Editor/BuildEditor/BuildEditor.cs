@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using YooAsset;
 
@@ -15,6 +14,19 @@ namespace ET
         Linux
     }
 
+    /// <summary>
+    /// ET菜单顺序
+    /// </summary>
+    public static class ETMenuItemPriority
+    {
+        public const int BuildTool = 1001;
+        public const int ChangeDefine = 1002;
+        public const int Compile = 1003;
+        public const int Reload = 1004;
+        public const int NavMesh = 1005;
+        public const int ServerTools = 1006;
+    }
+
     public class BuildEditor : EditorWindow
     {
         private PlatformType activePlatform;
@@ -23,7 +35,7 @@ namespace ET
 
         private GlobalConfig globalConfig;
 
-        [MenuItem("ET/Build Tool")]
+        [MenuItem("ET/Build Tool", false, ETMenuItemPriority.BuildTool)]
         public static void ShowWindow()
         {
             GetWindow<BuildEditor>(DockDefine.Types);
@@ -51,8 +63,9 @@ namespace ET
 
         private void OnGUI()
         {
+            EditorGUILayout.LabelField("PlatformType ");
             this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-            
+
             EditorGUILayout.LabelField("BuildOptions ");
             this.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField(this.buildOptions);
 
@@ -68,13 +81,13 @@ namespace ET
 
                 if (this.globalConfig.CodeMode != CodeMode.Client)
                 {
-                    Log.Error("build package CodeMode must be CodeMode.Client, please select Client, RegenerateCSProject, then rebuild Hotfix and Model !!!");
+                    Log.Error("build package CodeMode must be CodeMode.Client, please select Client");
                     return;
                 }
 
                 if (this.globalConfig.EPlayMode == EPlayMode.EditorSimulateMode)
                 {
-                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select EditorMode");
+                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select HostPlayMode");
                     return;
                 }
 
@@ -92,13 +105,8 @@ namespace ET
                             break;
                     }
                 }
+
                 BuildHelper.Build(this.platformType, this.buildOptions);
-                return;
-            }
-            
-            if (GUILayout.Button("ReGenerateProjectFiles"))
-            {
-                BuildHelper.ReGenerateProjectFiles();
                 return;
             }
 

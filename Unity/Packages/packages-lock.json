@@ -183,13 +183,6 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "me.xw.toolbarextension": {
-      "version": "https://github.com/XuToWei/ToolbarExtension.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "a1b161133146d43d268a011b2389360ef975afd5"
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

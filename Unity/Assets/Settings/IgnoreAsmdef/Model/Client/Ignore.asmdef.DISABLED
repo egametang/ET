@@ -1,5 +1,5 @@
 {
-    "name": "Unity.Ignore.ModelView.Client",
+    "name": "Ignore.Model.Client",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
