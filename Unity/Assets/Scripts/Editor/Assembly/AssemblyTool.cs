@@ -43,7 +43,9 @@ namespace ET
         static void MenuItemOfReload()
         {
             if (Application.isPlaying)
+            {
                 CodeLoader.Instance?.Reload();
+            }
         }
 
         /// <summary>
@@ -59,10 +61,14 @@ namespace ET
 
             bool isCompileOk = CompileDlls();
             if (!isCompileOk)
+            {
                 return;
+            }
 
             CopyHotUpdateDlls();
             BuildHelper.ReGenerateProjectFiles();
+            
+            Log.Info($"Compile Finish!");
         }
 
         /// <summary>
@@ -73,19 +79,27 @@ namespace ET
             CodeMode codeMode = CodeMode.ClientServer;
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             if (globalConfig)
+            {
                 codeMode = globalConfig.CodeMode;
+            }
 
             switch (codeMode)
             {
                 case CodeMode.Client:
+                {
                     EnableUnityClient();
                     break;
+                }
                 case CodeMode.Server:
+                {
                     EnableUnityServer();
                     break;
+                }
                 case CodeMode.ClientServer:
+                {
                     EnableUnityClientServer();
                     break;
+                }
             }
 
             AssetDatabase.Refresh();
@@ -99,7 +113,10 @@ namespace ET
             BuildType buildType = BuildType.Release;
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             if (globalConfig)
+            {
                 buildType = globalConfig.BuildType;
+            }
+
             EditorUserBuildSettings.development = buildType == BuildType.Debug;
         }
 
@@ -133,7 +150,9 @@ namespace ET
             finally
             {
                 if (lastSynchronizationContext != null)
+                {
                     SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
+                }
             }
 
             return isCompileOk;
@@ -228,7 +247,9 @@ namespace ET
             }
 
             if (File.Exists(asmdefFile) && new FileInfo(srcFilePath).LastWriteTime == new FileInfo(asmdefFile).LastWriteTime)
+            {
                 return;
+            }
 
             File.Copy(srcFilePath, asmdefFile, true);
         }

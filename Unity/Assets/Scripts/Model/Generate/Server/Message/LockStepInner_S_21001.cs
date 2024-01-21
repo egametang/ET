@@ -22,7 +22,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.Id = default;
 			
@@ -51,7 +51,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.Error = default;
 			this.Message = default;
@@ -79,7 +79,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.PlayerIds.Clear();
 			
@@ -112,7 +112,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.Error = default;
 			this.Message = default;
@@ -141,7 +141,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.PlayerId = default;
 			
@@ -179,7 +179,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.Error = default;
 			this.Message = default;
@@ -210,7 +210,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.PlayerIds.Clear();
 			
@@ -239,7 +239,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.Error = default;
 			this.Message = default;

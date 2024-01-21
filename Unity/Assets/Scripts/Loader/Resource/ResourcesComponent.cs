@@ -106,22 +106,38 @@ namespace ET
 
 #if UNITY_EDITOR
                 if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
+                {
                     return $"{hostServerIP}/CDN/Android/{appVersion}";
+                }
                 else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.iOS)
+                {
                     return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+                }
                 else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL)
+                {
                     return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+                }
                 else
+                {
                     return $"{hostServerIP}/CDN/PC/{appVersion}";
+                }
 #else
 		        if (Application.platform == RuntimePlatform.Android)
-		        	return $"{hostServerIP}/CDN/Android/{appVersion}";
-		        else if (Application.platform == RuntimePlatform.IPhonePlayer)
-		        	return $"{hostServerIP}/CDN/IPhone/{appVersion}";
-		        else if (Application.platform == RuntimePlatform.WebGLPlayer)
-		        	return $"{hostServerIP}/CDN/WebGL/{appVersion}";
-		        else
-		        	return $"{hostServerIP}/CDN/PC/{appVersion}";
+                {
+                    return $"{hostServerIP}/CDN/Android/{appVersion}";
+                }
+                else if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+                    return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+                }
+                else if (Application.platform == RuntimePlatform.WebGLPlayer)
+                {
+                    return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+                }
+                else
+                {
+                    return $"{hostServerIP}/CDN/PC/{appVersion}";
+                }
 #endif
             }
         }

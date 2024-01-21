@@ -664,9 +664,14 @@ namespace ETEditor
                     ObjMaterial objMaterial = new ObjMaterial();
                     objMaterial.name = nameMat;
                     if (mainTexture)
+                    {
                         objMaterial.textureName = AssetDatabase.GetAssetPath(mainTexture);
+                    }
                     else
+                    {
                         objMaterial.textureName = null;
+                    }
+
                     materialList.Add(objMaterial.name, objMaterial);
                 }
                 catch (ArgumentException)

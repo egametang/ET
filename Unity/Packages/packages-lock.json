@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "febff1c658fa9d76726f3aa25f26ec6d35c1e2e6"
+      "hash": "51da1d4c433504f3171fff66217035b89c45d823"
     },
     "com.cysharp.memorypack": {
       "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",

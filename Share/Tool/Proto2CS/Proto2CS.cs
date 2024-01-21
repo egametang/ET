@@ -162,7 +162,7 @@ namespace ET
                         if (!newline.Contains("// no dispose"))
                         {
                             sb.Append(
-                                $"\t\tpublic override void Dispose() \n\t\t{{\n\t\t\tif (!this.IsFromPool) return;\n\t\t\t{sbDispose.ToString()}\n\t\t\tObjectPool.Instance.Recycle(this); \n\t\t}}\n\n");
+                                $"\t\tpublic override void Dispose() \n\t\t{{\n\t\t\tif (!this.IsFromPool) {{ return; }}\n\t\t\t{sbDispose.ToString()}\n\t\t\tObjectPool.Instance.Recycle(this); \n\t\t}}\n\n");
                         }
 
                         sb.Append("\t}\n\n");

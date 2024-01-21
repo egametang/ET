@@ -18,7 +18,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			
 			ObjectPool.Instance.Recycle(this); 
@@ -46,7 +46,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.Error = default;
 			this.Message = default;
@@ -75,7 +75,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.RpcId = default;
 			this.ActorId = default;
 			
@@ -99,7 +99,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.PlayerId = default;
 			
 			ObjectPool.Instance.Recycle(this); 
@@ -127,7 +127,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.PlayerId = default;
 			this.Position = default;
 			this.Rotation = default;
@@ -155,7 +155,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.StartTime = default;
 			this.UnitInfo.Clear();
 			
@@ -184,7 +184,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.Frame = default;
 			this.PlayerId = default;
 			this.Input = default;
@@ -208,7 +208,7 @@ namespace ET
 		public Dictionary<long, LSInput> Inputs { get; set; } = new();
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.Inputs.Clear();
 			
 			ObjectPool.Instance.Recycle(this); 
@@ -230,7 +230,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.DiffTime = default;
 			
 			ObjectPool.Instance.Recycle(this); 
@@ -258,7 +258,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.PlayerId = default;
 			this.Frame = default;
 			this.Hash = default;
@@ -285,7 +285,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.Frame = default;
 			this.LSWorldBytes = default;
 			
@@ -314,7 +314,7 @@ namespace ET
 
 		public override void Dispose() 
 		{
-			if (!this.IsFromPool) return;
+			if (!this.IsFromPool) { return; }
 			this.StartTime = default;
 			this.UnitInfos.Clear();
 			this.Frame = default;

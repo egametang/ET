@@ -14,11 +14,15 @@ namespace ET
                 switch (change)
                 {
                     case PlayModeStateChange.ExitingEditMode:
+                    {
                         OnExitingEditMode();
                         break;
+                    }
                     case PlayModeStateChange.ExitingPlayMode:
+                    {
                         OnExitingPlayMode();
                         break;
+                    }
                 }
             };
         }
@@ -31,7 +35,9 @@ namespace ET
         {
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             if (!globalConfig.EnableDll)
+            {
                 return;
+            }
 
             foreach (string dll in AssemblyTool.DllNames)
             {
@@ -40,7 +46,9 @@ namespace ET
                 {
                     string dllDisableFile = $"{Application.dataPath}/../Library/ScriptAssemblies/{dll}.dll.DISABLE";
                     if (File.Exists(dllDisableFile))
+                    {
                         File.Delete(dllDisableFile);
+                    }
 
                     File.Move(dllFile, dllDisableFile);
                 }
@@ -50,7 +58,9 @@ namespace ET
                 {
                     string pdbDisableFile = $"{Application.dataPath}/../Library/ScriptAssemblies/{dll}.pdb.DISABLE";
                     if (File.Exists(pdbDisableFile))
+                    {
                         File.Delete(pdbDisableFile);
+                    }
 
                     File.Move(pdbFile, pdbDisableFile);
                 }
@@ -70,9 +80,13 @@ namespace ET
                 {
                     string dllFile = $"{Application.dataPath}/../Library/ScriptAssemblies/{dll}.dll";
                     if (File.Exists(dllFile))
+                    {
                         File.Delete(dllDisableFile);
+                    }
                     else
+                    {
                         File.Move(dllDisableFile, dllFile);
+                    }
                 }
 
                 string pdbDisableFile = $"{Application.dataPath}/../Library/ScriptAssemblies/{dll}.pdb.DISABLE";
@@ -80,9 +94,13 @@ namespace ET
                 {
                     string pdbFile = $"{Application.dataPath}/../Library/ScriptAssemblies/{dll}.pdb";
                     if (File.Exists(pdbFile))
+                    {
                         File.Delete(pdbDisableFile);
+                    }
                     else
+                    {
                         File.Move(pdbDisableFile, pdbFile);
+                    }
                 }
             }
         }

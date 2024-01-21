@@ -24,13 +24,19 @@ namespace ET
             }
 
             if (path.EndsWith("Unity.Core.csproj"))
+            {
                 return GenerateCustomProject(content);
+            }
 
             if (path.EndsWith("Unity.Model.csproj") || path.EndsWith("Unity.Hotfix.csproj"))
+            {
                 return AddCopyAfterBuild(GenerateCustomProject(content));
+            }
 
             if (path.EndsWith("Unity.ModelView.csproj") || path.EndsWith("Unity.HotfixView.csproj"))
+            {
                 return AddCopyAfterBuild(GenerateCustomProject(content));
+            }
 
             return content;
         }

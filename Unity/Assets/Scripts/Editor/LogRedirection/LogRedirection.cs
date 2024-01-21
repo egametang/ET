@@ -69,6 +69,7 @@ namespace ET
             {
                 var consoleInstance = fieldInfo.GetValue(null);
                 if (consoleInstance != null)
+                {
                     if (EditorWindow.focusedWindow == (EditorWindow)consoleInstance)
                     {
                         // 获取m_ActiveText成员
@@ -82,6 +83,7 @@ namespace ET
                             return activeText;
                         }
                     }
+                }
             }
 
             return null;
