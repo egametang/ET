@@ -24,7 +24,7 @@ namespace ET
             EnableDefineSymbols("ENABLE_VIEW", false);
         }
 #else
-        [MenuItem("ET/ChangeDefine/Add ENABLE_VIEW", false, MenuItemPriority.ChangeDefine)]
+        [MenuItem("ET/ChangeDefine/Add ENABLE_VIEW", false, ETMenuItemPriority.ChangeDefine)]
         public static void AddEnableView()
         {
             EnableDefineSymbols("ENABLE_VIEW", true);
