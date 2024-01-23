@@ -27,7 +27,7 @@ namespace ET.Server
             MessageQueue.Instance.Send(new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInnerMessage);
         }
 
-        public static int GetRpcId(this MessageSender self)
+        private static int GetRpcId(this MessageSender self)
         {
             return ++self.RpcId;
         }
@@ -39,44 +39,28 @@ namespace ET.Server
                 bool needException = true
         )
         {
-            int rpcId = self.GetRpcId();
-            request.RpcId = rpcId;
-            
-            if (actorId == default)
-            {
-                throw new Exception($"actor id is 0: {request}");
-            }
-
-            return await self.Call(actorId, rpcId, request, needException);
-        }
-        
-        public static async ETTask<IResponse> Call(
-                this MessageSender self,
-                ActorId actorId,
-                int rpcId,
-                IRequest request,
-                bool needException = true
-        )
-        {
             if (actorId == default)
             {
                 throw new Exception($"actor id is 0: {request}");
             }
             Fiber fiber = self.Fiber();
-            
+
+            IResponse response;
             if (fiber.Process == actorId.Process)
             {
-                return await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, rpcId, request, needException: needException);
+                response = await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, request, needException: needException);
             }
-
-            // 发给NetInner纤程
-            A2NetInner_Request a2NetInner_Request = A2NetInner_Request.Create();
-            a2NetInner_Request.ActorId = actorId;
-            a2NetInner_Request.MessageObject = request;
+            else
+            {
+                // 发给NetInner纤程
+                A2NetInner_Request a2NetInner_Request = A2NetInner_Request.Create();
+                a2NetInner_Request.ActorId = actorId;
+                a2NetInner_Request.MessageObject = request;
             
-            using A2NetInner_Response a2NetInnerResponse = await fiber.Root.GetComponent<ProcessInnerSender>().Call(
-                new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInner_Request) as A2NetInner_Response;
-            IResponse response = a2NetInnerResponse.MessageObject;
+                using A2NetInner_Response a2NetInnerResponse = await fiber.Root.GetComponent<ProcessInnerSender>().Call(
+                    new ActorId(fiber.Process, ConstFiberId.NetInner), a2NetInner_Request) as A2NetInner_Response;
+                response = a2NetInnerResponse.MessageObject;
+            }
             
             if (response.Error == ErrorCore.ERR_MessageTimeout)
             {
