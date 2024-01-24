@@ -6,8 +6,8 @@
         "Unity.Core",
         "HybridCLR.Runtime",
         "MemoryPack",
-        "BetterStreamingAssets",
-        "YooAsset"
+        "YooAsset",
+        "YooAsset.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

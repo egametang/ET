@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: YooAssetSettings
   m_EditorClassIdentifier: 
   ManifestFileName: PackageManifest
+  DefaultYooFolderName: Bundles
