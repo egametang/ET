@@ -115,7 +115,7 @@ namespace ET
             return MessageQueue.Instance.Send(fiber.Address, actorId, message);
         }
 
-        public static int GetRpcId(this ProcessInnerSender self)
+        private static int GetRpcId(this ProcessInnerSender self)
         {
             return ++self.RpcId;
         }
@@ -134,34 +134,19 @@ namespace ET
             {
                 throw new Exception($"actor id is 0: {request}");
             }
-
-            return await self.Call(actorId, rpcId, request, needException);
-        }
-        
-        public static async ETTask<IResponse> Call(
-                this ProcessInnerSender self,
-                ActorId actorId,
-                int rpcId,
-                IRequest iRequest,
-                bool needException = true
-        )
-        {
-            if (actorId == default)
-            {
-                throw new Exception($"actor id is 0: {iRequest}");
-            }
+            
             Fiber fiber = self.Fiber();
             if (fiber.Process != actorId.Process)
             {
                 throw new Exception($"actor inner process diff: {actorId.Process} {fiber.Process}");
             }
 
-            Type requestType = iRequest.GetType();
+            Type requestType = request.GetType();
             MessageSenderStruct messageSenderStruct = new(actorId, requestType, needException);
             self.requestCallback.Add(rpcId, messageSenderStruct);
 
             IResponse response;
-            if (!self.SendInner(actorId, (MessageObject)iRequest))  // 纤程不存在
+            if (!self.SendInner(actorId, (MessageObject)request))  // 纤程不存在
             {
                 response = MessageHelper.CreateResponse(requestType, rpcId, ErrorCore.ERR_NotFoundActor);
                 return response;
