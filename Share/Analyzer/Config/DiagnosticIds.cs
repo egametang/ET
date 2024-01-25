@@ -60,5 +60,7 @@
         public const string EntityComponentChildAnalyzerRuleId = "ET0028";
 
         public const string EntityCannotDeclareGenericTypeRuleId = "ET0029";
+
+        public const string NetMessageAnalyzerRuleId = "ET0030";
     }
 }

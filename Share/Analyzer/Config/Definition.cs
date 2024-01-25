@@ -86,6 +86,8 @@
         public const string LSUpdateMethod = "LSUpdate";
 
         public const string ETLog = "ET.Log";
+
+        public const string IMessageInterface = "ET.IMessage";
     }
 }
 
