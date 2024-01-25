@@ -431,4 +431,23 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+    
+    
+    public static class NetMessageAnalyzerRule
+    {
+        private const string Title = "消息类禁止声明实体字段";
+
+        private const string MessageFormat = "消息类: {0} 禁止声明实体字段: {1}";
+
+        private const string Description = "消息类禁止声明实体字段.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.NetMessageAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }
