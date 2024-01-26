@@ -13,7 +13,7 @@ namespace ET.Server
             HttpGetRouterResponse response = HttpGetRouterResponse.Create();
             foreach (StartSceneConfig startSceneConfig in StartSceneConfigCategory.Instance.Realms)
             {
-                response.Realms.Add(startSceneConfig.InnerIPPort.ToString());
+                response.Realms.Add(startSceneConfig.OuterIPPort.ToString());
             }
             foreach (StartSceneConfig startSceneConfig in StartSceneConfigCategory.Instance.Routers)
             {
