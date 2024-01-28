@@ -82,12 +82,13 @@ namespace ET.Server
 
         public static void UnLock(this LocationOneType self, long key, ActorId oldActorId, ActorId newInstanceId)
         {
-            if (!self.lockInfos.TryGetValue(key, out LockInfo lockInfo))
+            if (!self.lockInfos.TryGetValue(key, out EntityRef<LockInfo> lockInfoRef))
             {
                 Log.Error($"location unlock not found key: {key} {oldActorId}");
                 return;
             }
 
+            LockInfo lockInfo = lockInfoRef;
             if (oldActorId != lockInfo.LockActorId)
             {
                 Log.Error($"location unlock oldInstanceId is different: {key} {oldActorId}");

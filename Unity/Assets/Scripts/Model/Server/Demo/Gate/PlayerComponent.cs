@@ -6,6 +6,6 @@ namespace ET.Server
 	[ComponentOf(typeof(Scene))]
 	public class PlayerComponent : Entity, IAwake, IDestroy
 	{
-		public Dictionary<string, Player> dictionary = new Dictionary<string, Player>();
+		public Dictionary<string, EntityRef<Player>> dictionary = new Dictionary<string, EntityRef<Player>>();
 	}
 }

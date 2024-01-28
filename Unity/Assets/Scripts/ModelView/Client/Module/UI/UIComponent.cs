@@ -8,7 +8,7 @@ namespace ET.Client
 	[ComponentOf]
 	public class UIComponent: Entity, IAwake
 	{
-		public Dictionary<string, UI> UIs = new();
+		public Dictionary<string, EntityRef<UI>> UIs = new();
 
 		private EntityRef<UIGlobalComponent> uiGlobalComponent;
 

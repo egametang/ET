@@ -24,7 +24,7 @@ namespace ET.Client
 
 		public static void Remove(this UIComponent self, string uiType)
 		{
-			if (!self.UIs.TryGetValue(uiType, out UI ui))
+			if (!self.UIs.TryGetValue(uiType, out EntityRef<UI> uiRef))
 			{
 				return;
 			}
@@ -32,14 +32,14 @@ namespace ET.Client
 			self.UIGlobalComponent.OnRemove(self, uiType);
 			
 			self.UIs.Remove(uiType);
-			ui.Dispose();
+			UI ui = uiRef;
+			ui?.Dispose();
 		}
 
 		public static UI Get(this UIComponent self, string name)
 		{
-			UI ui = null;
-			self.UIs.TryGetValue(name, out ui);
-			return ui;
+			self.UIs.TryGetValue(name, out EntityRef<UI> uiRef);
+			return uiRef;
 		}
 	}
 }

@@ -38,9 +38,10 @@ namespace ET.Server
             aoiEntity.Cell = selfCell;
             selfCell.Add(aoiEntity);
             // 通知订阅该Cell Enter的Unit
-            foreach (KeyValuePair<long, AOIEntity> kv in selfCell.SubsEnterEntities)
+            foreach (KeyValuePair<long, EntityRef<AOIEntity>> kv in selfCell.SubsEnterEntities)
             {
-                kv.Value.EnterSight(aoiEntity);
+                AOIEntity e = kv.Value;
+                e.EnterSight(aoiEntity);
             }
         }
 
@@ -54,9 +55,10 @@ namespace ET.Server
             Fiber fiber = self.Fiber();
             // 通知订阅该Cell Leave的Unit
             aoiEntity.Cell.Remove(aoiEntity);
-            foreach (KeyValuePair<long, AOIEntity> kv in aoiEntity.Cell.SubsLeaveEntities)
+            foreach (KeyValuePair<long, EntityRef<AOIEntity>> kv in aoiEntity.Cell.SubsLeaveEntities)
             {
-                kv.Value.LeaveSight(aoiEntity);
+                AOIEntity e = kv.Value;
+                e.LeaveSight(aoiEntity);
             }
 
             // 通知自己订阅的Enter Cell，清理自己
@@ -101,26 +103,27 @@ namespace ET.Server
             preCell.Remove(aoiEntity);
             newCell.Add(aoiEntity);
             // 通知订阅该newCell Enter的Unit
-            foreach (KeyValuePair<long, AOIEntity> kv in newCell.SubsEnterEntities)
+            foreach (KeyValuePair<long, EntityRef<AOIEntity>> kv in newCell.SubsEnterEntities)
             {
-                if (kv.Value.SubEnterCells.Contains(preCell.Id))
+                AOIEntity e = kv.Value;
+                if (e.SubEnterCells.Contains(preCell.Id))
                 {
                     continue;
                 }
-
-                kv.Value.EnterSight(aoiEntity);
+                e.EnterSight(aoiEntity);
             }
 
             // 通知订阅preCell leave的Unit
-            foreach (KeyValuePair<long, AOIEntity> kv in preCell.SubsLeaveEntities)
+            foreach (KeyValuePair<long, EntityRef<AOIEntity>> kv in preCell.SubsLeaveEntities)
             {
                 // 如果新的cell仍然在对方订阅的subleave中
-                if (kv.Value.SubLeaveCells.Contains(newCell.Id))
+                AOIEntity e = kv.Value;
+                if (e.SubLeaveCells.Contains(newCell.Id))
                 {
                     continue;
                 }
 
-                kv.Value.LeaveSight(aoiEntity);
+                e.LeaveSight(aoiEntity);
             }
         }
 

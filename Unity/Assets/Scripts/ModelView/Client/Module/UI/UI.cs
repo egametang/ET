@@ -40,28 +40,29 @@ namespace ET.Client
 
         public static void Remove(this UI self, string name)
         {
-            UI ui;
-            if (!self.nameChildren.TryGetValue(name, out ui))
+            EntityRef<UI> uiRef;
+            if (!self.nameChildren.Remove(name, out uiRef))
             {
                 return;
             }
-            self.nameChildren.Remove(name);
-            ui.Dispose();
+
+            UI ui = uiRef;
+            ui?.Dispose();
         }
 
         public static UI Get(this UI self, string name)
         {
-            UI child;
-            if (self.nameChildren.TryGetValue(name, out child))
+            EntityRef<UI> uiRef;
+            if (self.nameChildren.TryGetValue(name, out uiRef))
             {
-                return child;
+                return uiRef;
             }
             GameObject childGameObject = self.GameObject.transform.Find(name)?.gameObject;
             if (childGameObject == null)
             {
                 return null;
             }
-            child = self.AddChild<UI, string, GameObject>(name, childGameObject);
+            UI child = self.AddChild<UI, string, GameObject>(name, childGameObject);
             self.Add(child);
             return child;
         }
@@ -74,6 +75,6 @@ namespace ET.Client
 		
         public string Name { get; set; }
 
-        public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
+        public Dictionary<string, EntityRef<UI>> nameChildren = new();
     }
 }

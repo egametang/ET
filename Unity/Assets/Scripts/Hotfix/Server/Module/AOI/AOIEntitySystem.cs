@@ -33,17 +33,17 @@ namespace ET.Server
     public static partial class AOIEntitySystem
     {
         // 获取在自己视野中的对象
-        public static Dictionary<long, AOIEntity> GetSeeUnits(this AOIEntity self)
+        public static Dictionary<long, EntityRef<AOIEntity>> GetSeeUnits(this AOIEntity self)
         {
             return self.SeeUnits;
         }
 
-        public static Dictionary<long, AOIEntity> GetBeSeePlayers(this AOIEntity self)
+        public static Dictionary<long, EntityRef<AOIEntity>> GetBeSeePlayers(this AOIEntity self)
         {
             return self.BeSeePlayers;
         }
 
-        public static Dictionary<long, AOIEntity> GetSeePlayers(this AOIEntity self)
+        public static Dictionary<long, EntityRef<AOIEntity>> GetSeePlayers(this AOIEntity self)
         {
             return self.SeePlayers;
         }
@@ -52,7 +52,7 @@ namespace ET.Server
         public static void SubEnter(this AOIEntity self, Cell cell)
         {
             cell.SubsEnterEntities.Add(self.Id, self);
-            foreach (KeyValuePair<long, AOIEntity> kv in cell.AOIUnits)
+            foreach (KeyValuePair<long, EntityRef<AOIEntity>> kv in cell.AOIUnits)
             {
                 if (kv.Key == self.Id)
                 {
@@ -76,7 +76,7 @@ namespace ET.Server
         // cell中的unit离开self的视野
         public static void UnSubLeave(this AOIEntity self, Cell cell)
         {
-            foreach (KeyValuePair<long, AOIEntity> kv in cell.AOIUnits)
+            foreach (KeyValuePair<long, EntityRef<AOIEntity>> kv in cell.AOIUnits)
             {
                 if (kv.Key == self.Id)
                 {

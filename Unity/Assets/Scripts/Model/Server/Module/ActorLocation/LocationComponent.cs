@@ -32,7 +32,7 @@ namespace ET.Server
         
         public readonly Dictionary<long, ActorId> locations = new();
 
-        public readonly Dictionary<long, LockInfo> lockInfos = new();
+        public readonly Dictionary<long, EntityRef<LockInfo>> lockInfos = new();
     }
 
     [ComponentOf(typeof(Scene))]

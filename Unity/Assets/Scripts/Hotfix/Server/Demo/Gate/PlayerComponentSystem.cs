@@ -18,7 +18,7 @@ namespace ET.Server
         
         public static Player GetByAccount(this PlayerComponent self,  string account)
         {
-            self.dictionary.TryGetValue(account, out Player player);
+            self.dictionary.TryGetValue(account, out EntityRef<Player> player);
             return player;
         }
     }

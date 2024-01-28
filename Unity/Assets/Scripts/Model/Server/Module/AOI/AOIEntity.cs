@@ -37,15 +37,15 @@ namespace ET.Server
         public HashSet<long> leaveHashSet = new HashSet<long>();
 
         // 我看的见的Unit
-        public Dictionary<long, AOIEntity> SeeUnits = new Dictionary<long, AOIEntity>();
+        public Dictionary<long, EntityRef<AOIEntity>> SeeUnits = new Dictionary<long, EntityRef<AOIEntity>>();
         
         // 看见我的Unit
-        public Dictionary<long, AOIEntity> BeSeeUnits = new Dictionary<long, AOIEntity>();
+        public Dictionary<long, EntityRef<AOIEntity>> BeSeeUnits = new Dictionary<long, EntityRef<AOIEntity>>();
         
         // 我看的见的Player
-        public Dictionary<long, AOIEntity> SeePlayers = new Dictionary<long, AOIEntity>();
+        public Dictionary<long, EntityRef<AOIEntity>> SeePlayers = new Dictionary<long, EntityRef<AOIEntity>>();
 
         // 看见我的Player单独放一个Dict，用于广播
-        public Dictionary<long, AOIEntity> BeSeePlayers = new Dictionary<long, AOIEntity>();
+        public Dictionary<long, EntityRef<AOIEntity>> BeSeePlayers = new Dictionary<long, EntityRef<AOIEntity>>();
     }
 }
