@@ -86,6 +86,14 @@
         public const string LSUpdateMethod = "LSUpdate";
 
         public const string ETLog = "ET.Log";
+
+        public const string IMessageInterface = "ET.IMessage";
+
+        public const string EntityRefType = "EntityRef";
+        
+        public const string EntityWeakRefType = "EntityWeakRef";
+
+        public const string DisableNewAttribute = "ET.DisableNewAttribute";
     }
 }
 

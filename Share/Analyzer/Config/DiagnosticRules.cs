@@ -256,7 +256,7 @@ namespace ET.Analyzer
     {
         private const string Title = "实体类禁止声明实体字段";
 
-        private const string MessageFormat = "实体类: {0} 不能在类内部声明实体字段: {1}";
+        private const string MessageFormat = "实体类: {0} 不能在类内部声明实体或含有实体类参数的泛型类字段: {1} 请使用EntityRef代替";
 
         private const string Description = "实体类禁止声明实体字段.";
 
@@ -424,6 +424,43 @@ namespace ET.Analyzer
 
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.EntityCannotDeclareGenericTypeRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    
+    public static class NetMessageAnalyzerRule
+    {
+        private const string Title = "消息类禁止声明实体字段";
+
+        private const string MessageFormat = "消息类: {0} 禁止声明实体字段: {1}";
+
+        private const string Description = "消息类禁止声明实体字段.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.NetMessageAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+    
+    public static class DisableNewAnalyzerRule
+    {
+        private const string Title = "含有DisableNew标记的类禁止使用new构造对象";
+
+        private const string MessageFormat = "禁止使用new构造{0}类型的对象";
+
+        private const string Description = "含有DisableNew标记的类禁止使用new构造对象.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.DisableNewAnalyzerRuleId,
                     Title,
                     MessageFormat,
                     DiagnosticCategories.All,

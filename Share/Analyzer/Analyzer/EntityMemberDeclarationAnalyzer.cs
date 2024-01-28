@@ -114,7 +114,27 @@ namespace ET.Analyzer
                 {
                     continue;
                 }
-                if (fieldSymbol.Type.ToString()is Definition.EntityType or Definition.LSEntityType || fieldSymbol.Type.BaseType?.ToString()is Definition.EntityType or Definition.LSEntityType)
+
+                if (fieldSymbol.Type is not INamedTypeSymbol namedTypeSymbol2)
+                {
+                    continue;
+                }
+
+                // 字段类型是否是实体类
+                if (namedTypeSymbol2.IsETEntity())
+                {
+                    var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault();
+                    if (syntaxReference==null)
+                    {
+                        continue;
+                    }
+                    Diagnostic diagnostic = Diagnostic.Create(EntityFieldDeclarationInEntityAnalyzerRule.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,fieldSymbol.Name);
+                    context.ReportDiagnostic(diagnostic);
+                    continue;
+                }
+
+                // 字段类型是否是含实体类参数的泛型类
+                if (namedTypeSymbol2.IsGenericType&&GenericTypeHasEntityTypeArgs(namedTypeSymbol2))
                 {
                     var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault();
                     if (syntaxReference==null)
@@ -225,6 +245,45 @@ namespace ET.Analyzer
                 Diagnostic diagnostic = Diagnostic.Create(EntityComponentChildAnalyzerRule.Rule, syntax?.Identifier.GetLocation(),namedTypeSymbol.Name);
                 context.ReportDiagnostic(diagnostic);
             }
+        }
+
+
+        /// <summary>
+        /// 泛型类 是否含有的实体类型参数 
+        /// 对于嵌套泛型参数 递归判断
+        /// </summary>
+        private bool GenericTypeHasEntityTypeArgs(INamedTypeSymbol namedTypeSymbol)
+        {
+            if (namedTypeSymbol.IsEntityRefOrEntityWeakRef())
+            {
+                return false;
+            }
+            
+            var typeArgs = namedTypeSymbol.TypeArguments;
+            foreach (var typeSymbol in typeArgs)
+            {
+                if (typeSymbol is not INamedTypeSymbol namedTypeSymbol2)
+                {
+                    break;
+                }
+
+                if (namedTypeSymbol2.IsGenericType)
+                {
+                    if (GenericTypeHasEntityTypeArgs(namedTypeSymbol2))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (namedTypeSymbol2.IsETEntity())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
