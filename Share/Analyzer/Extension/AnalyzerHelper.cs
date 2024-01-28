@@ -536,5 +536,35 @@ namespace ET.Analyzer
             }
             return false;
         }
+
+        /// <summary>
+        /// 类型symbol是否是实体类 包含 enity及其子类 lsentity及其子类
+        /// </summary>
+        public static bool IsETEntity(this ITypeSymbol typeSymbol)
+        {
+            string typeName = typeSymbol.ToString();
+            string? baseType = typeSymbol.BaseType?.ToString();
+            return typeName == Definition.EntityType || baseType == Definition.EntityType || baseType == Definition.LSEntityType;
+        }
+
+        /// <summary>
+        /// 类型symbol是否是EntiyRef 或EntityWeakRef类
+        /// </summary>
+        public static bool IsEntityRefOrEntityWeakRef(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol is not INamedTypeSymbol namedTypeSymbol)
+            {
+                return false;
+            }
+            
+
+            if (!namedTypeSymbol.IsGenericType)
+            {
+                return false;
+            }
+
+            string typeName = namedTypeSymbol.Name;
+            return typeName is Definition.EntityRefType or Definition.EntityWeakRefType;
+        }
     }
 }

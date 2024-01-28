@@ -64,15 +64,14 @@ namespace ET.Analyzer
                     continue;
                 }
 
-                string typeName = memberType.ToString();
-                string? baseType = memberType.BaseType?.ToString();
-                
-                if (typeName==Definition.EntityType || baseType==Definition.EntityType || baseType == Definition.LSEntityType)
+                if (!memberType.IsETEntity())
                 {
-                    var memberSyntax = member.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax();
-                    Diagnostic diagnostic = Diagnostic.Create(NetMessageAnalyzerRule.Rule, memberSyntax?.GetLocation(),namedTypeSymbol.Name, member.Name);
-                    context.ReportDiagnostic(diagnostic);
+                    continue;
                 }
+
+                var memberSyntax = member.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax();
+                Diagnostic diagnostic = Diagnostic.Create(NetMessageAnalyzerRule.Rule, memberSyntax?.GetLocation(),namedTypeSymbol.Name, member.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

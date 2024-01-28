@@ -256,7 +256,7 @@ namespace ET.Analyzer
     {
         private const string Title = "实体类禁止声明实体字段";
 
-        private const string MessageFormat = "实体类: {0} 不能在类内部声明实体字段: {1}";
+        private const string MessageFormat = "实体类: {0} 不能在类内部声明实体或含有实体类参数的泛型类字段: {1} 请使用EntityRef代替";
 
         private const string Description = "实体类禁止声明实体字段.";
 
