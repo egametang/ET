@@ -19,11 +19,10 @@ namespace ET.Analyzer
             }
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(Analyzer, SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(this.AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
         }
-
-
-        private void Analyzer(SyntaxNodeAnalysisContext context)
+        
+        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
             if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.AllModel))
             {

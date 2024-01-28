@@ -450,4 +450,22 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
+    
+    public static class DisableNewAnalyzerRule
+    {
+        private const string Title = "含有DisableNew标记的类禁止使用new构造对象";
+
+        private const string MessageFormat = "禁止使用new构造{0}类型的对象";
+
+        private const string Description = "含有DisableNew标记的类禁止使用new构造对象.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.DisableNewAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.All,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
 }

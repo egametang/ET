@@ -62,5 +62,7 @@
         public const string EntityCannotDeclareGenericTypeRuleId = "ET0029";
 
         public const string NetMessageAnalyzerRuleId = "ET0030";
+
+        public const string DisableNewAnalyzerRuleId = "ET0031";
     }
 }
