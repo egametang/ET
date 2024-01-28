@@ -83,9 +83,9 @@ namespace ET.Analyzer
         /// <summary>
         ///     INamedTypeSymbol 是否有指定的Attribute
         /// </summary>
-        public static bool HasAttribute(this INamedTypeSymbol namedTypeSymbol, string AttributeName)
+        public static bool HasAttribute(this ITypeSymbol typeSymbol, string AttributeName)
         {
-            foreach (AttributeData? attributeData in namedTypeSymbol.GetAttributes())
+            foreach (AttributeData? attributeData in typeSymbol.GetAttributes())
             {
                 if (attributeData.AttributeClass?.ToString() == AttributeName)
                 {
@@ -94,6 +94,33 @@ namespace ET.Analyzer
             }
 
             return false;
+        }
+
+        public static bool HasAttributeInTypeAndBaseTyes(this ITypeSymbol typeSymbol, string AttributeName)
+        {
+            if (typeSymbol.HasAttribute(AttributeName))
+            {
+                return true;
+            }
+
+            foreach (var baseType in typeSymbol.BaseTypes())
+            {
+                if (baseType.HasAttribute(AttributeName))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static IEnumerable<ITypeSymbol> BaseTypes(this ITypeSymbol typeSymbol)
+        {
+            ITypeSymbol? baseType = typeSymbol.BaseType;
+            while (baseType!=null)
+            {
+                yield return baseType;
+                baseType = baseType.BaseType;
+            }
         }
 
         /// <summary>

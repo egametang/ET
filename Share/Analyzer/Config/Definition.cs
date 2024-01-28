@@ -92,6 +92,8 @@
         public const string EntityRefType = "EntityRef";
         
         public const string EntityWeakRefType = "EntityWeakRef";
+
+        public const string DisableNewAttribute = "ET.DisableNewAttribute";
     }
 }
 
