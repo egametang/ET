@@ -7,4 +7,6 @@
 
 [Soft Router](https://gitee.com/wryl/router-et) 防攻击的软路由实现    
 
-[BundleMaster](https://github.com/mister91jiao/BundleMaster) 基于ETTask的资源加载方案    
+[BundleMaster](https://github.com/mister91jiao/BundleMaster) 基于ETTask的资源加载方案
+
+[ET8-Luban](https://github.com/EP-Toushirou/ET8-Luban) 基于ET8.1集成了新版Luban配置工具
