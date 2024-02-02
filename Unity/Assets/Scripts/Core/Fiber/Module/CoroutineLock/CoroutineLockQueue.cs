@@ -39,7 +39,8 @@ namespace ET
             return self.CurrentCoroutineLock;
         }
 
-        public static void Notify(this CoroutineLockQueue self, int level)
+        // 返回值，是否找到了一个有效的协程锁
+        public static bool Notify(this CoroutineLockQueue self, int level)
         {
             // 有可能WaitCoroutineLock已经超时抛出异常，所以要找到一个未处理的WaitCoroutineLock
             while (self.queue.Count > 0)
@@ -54,8 +55,9 @@ namespace ET
                 CoroutineLock coroutineLock = self.AddChild<CoroutineLock, int, long, int>(self.type, self.Id, level, true);
 
                 waitCoroutineLock.SetResult(coroutineLock);
-                break;
+                return true;
             }
+            return false;
         }
     }
     
