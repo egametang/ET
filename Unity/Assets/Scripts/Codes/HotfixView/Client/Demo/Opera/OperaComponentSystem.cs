@@ -31,6 +31,16 @@ namespace ET.Client
                         self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2MPathfindingResult);
                     }
                 }
+                
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    this.Test1().Coroutine();
+                }
+                
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    this.Test2().Coroutine();
+                }
 
                 if (Input.GetKeyDown(KeyCode.R))
                 {
@@ -44,6 +54,27 @@ namespace ET.Client
                     C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
                     self.ClientScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
                 }
+            }
+
+            private async ETTask Test1()
+            {
+                Log.Debug($"Croutine 1 start1 ");
+                using (await CoroutineLockComponent.Instance.Wait(1, 20000, 3000))
+                {
+                    await TimerComponent.Instance.WaitAsync(6000);
+                }
+
+                Log.Debug($"Croutine 1 end1");
+            }
+            
+            private async ETTask Test2()
+            {
+                Log.Debug($"Croutine 2 start2");
+                using (await CoroutineLockComponent.Instance.Wait(1, 20000, 3000))
+                {
+                    await TimerComponent.Instance.WaitAsync(1000);
+                }
+                Log.Debug($"Croutine 2 end2");
             }
         }
     }
