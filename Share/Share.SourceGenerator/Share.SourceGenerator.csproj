@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <Nullable>enable</Nullable>
+        <LangVersion>12</LangVersion>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <IncludeSymbols>false</IncludeSymbols>
+        <NoWarn>1701;1702;RS2008</NoWarn>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="../Analyzer/Extension/*.cs">
+            <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Include="../Analyzer/Config/Definition.cs" />
+        <Compile Include="../../Unity/Assets/Scripts/Core/Helper/StringHashHelper.cs" />
+        <Compile Include="../Analyzer/Config/AnalyzeAssembly.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
+<!--        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Assets/Plugins/" ContinueOnError="false" />-->
+<!--    </Target>-->
+
+</Project>

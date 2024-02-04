@@ -1,0 +1,1 @@
+{ "_t" : "RsyncConfig", "Host" : "127.0.0.1", "Account" : "ubuntu", "Password" : "1234567890", "RelativePath" : "Source/ET", "Exclude" : [".git/", "Logs/", "Bin/", "Server/packages/", "Temp/", "Server/Server.sdf", "Unity/Library/", "Unity/Temp/", "*/obj", "IOS-Build", "Unity/Assets/Res/", "Unity/Assets/Resources/", "Unity/Assets/Bundles/", "Unity/Assets/Scenes/"] }

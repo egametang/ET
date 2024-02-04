@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AssemblyName>Core</AssemblyName>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>DOTNET</DefineConstants>
+      <OutputPath>..\..\Bin\</OutputPath>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <Optimize>false</Optimize>
+      <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">  
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
+      <DefineConstants>DOTNET</DefineConstants>
+      <OutputPath>..\..\Bin\</OutputPath>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
+    </PropertyGroup>
+    
+    <ItemGroup> 
+        <Compile Include="..\..\Unity\Assets\Scripts\Core\**\*.cs">
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" /> 
+      <ProjectReference Include="..\..\Share\Share.SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,1003 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeEditing/Intellisense/ClrSymbolsFilterFactory/StoredFilters/@EntryValue">&lt;root&gt;&lt;filter&gt;&lt;namespace_mask&gt;Boo&lt;/namespace_mask&gt;&lt;has_type_parameters&gt;Any&lt;/has_type_parameters&gt;&lt;element_kind&gt;Any&lt;/element_kind&gt;&lt;/filter&gt;&lt;/root&gt;</s:String>
+	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/AutoCompleteBasicCompletion/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/CacheImportCompletion/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/CompletionFilters/PersistFilterState/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/IntelliSenseCompletingCharacters/CSharpCompletingCharacters/NonCompletingCharacters/@EntryValue">&lt;&gt;</s:String>
+	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/IntelliSenseCompletingCharacters/CSharpCompletingCharacters/UpgradedFromVSSettings/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/Localization/CSharpLocalizationOptions/DontAnalyseVerbatimStrings/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/VirtualSpaceOnEnter/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ArrangeAccessorOwnerBody/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ArrangeThisQualifier/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CheckNamespace/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CommentTypo/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertIfStatementToReturnStatement/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertPropertyToExpressionBody/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertToAutoProperty/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertToAutoPropertyWithPrivateSetter/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=DelegateSubtraction/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceDoWhileStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceFixedStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceForeachStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceForStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceIfStatementBraces/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceLockStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceUsingStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceWhileStatementBraces/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=FieldCanBeMadeReadOnly_002EGlobal/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ForCanBeConvertedToForeach/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=IdentifierTypo/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ImplicitlyCapturedClosure/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InconsistentNaming/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InlineOutVariableDeclaration/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=LoopCanBeConvertedToQuery/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=LoopCanBePartlyConvertedToQuery/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=PossibleNullReferenceException/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantAssignment/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantEmptyObjectCreationArgumentList/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantLambdaSignatureParentheses/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantStringInterpolation/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SpecifyACultureInStringConversionExplicitly/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=StringLiteralTypo/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestUseVarKeywordEverywhere/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestUseVarKeywordEvident/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SuggestVarOrType_005FElsewhere/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=SwitchStatementMissingSomeCases/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UnusedAutoPropertyAccessor_002EGlobal/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UnusedAutoPropertyAccessor_002ELocal/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UnusedMember_002EGlobal/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UseNullPropagation/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UseObjectOrCollectionInitializer/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeCleanup/Profiles/=Unity/@EntryIndexedValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;Profile name="Unity"&gt;&lt;CSArrangeThisQualifier&gt;True&lt;/CSArrangeThisQualifier&gt;&lt;CSRemoveCodeRedundancies&gt;True&lt;/CSRemoveCodeRedundancies&gt;&lt;CSUseVar&gt;&lt;BehavourStyle&gt;DISABLED&lt;/BehavourStyle&gt;&lt;LocalVariableStyle&gt;IMPLICIT_WHEN_INITIALIZER_HAS_TYPE&lt;/LocalVariableStyle&gt;&lt;ForeachVariableStyle&gt;IMPLICIT_EXCEPT_SIMPLE_TYPES&lt;/ForeachVariableStyle&gt;&lt;/CSUseVar&gt;&lt;CSOptimizeUsings&gt;&lt;OptimizeUsings&gt;True&lt;/OptimizeUsings&gt;&lt;EmbraceInRegion&gt;False&lt;/EmbraceInRegion&gt;&lt;RegionName&gt;&lt;/RegionName&gt;&lt;/CSOptimizeUsings&gt;&lt;CSShortenReferences&gt;True&lt;/CSShortenReferences&gt;&lt;CSReformatCode&gt;True&lt;/CSReformatCode&gt;&lt;RemoveCodeRedundancies&gt;True&lt;/RemoveCodeRedundancies&gt;&lt;CSCodeStyleAttributes ArrangeTypeAccessModifier="True" ArrangeTypeMemberAccessModifier="True" SortModifiers="True" RemoveRedundantParentheses="True" AddMissingParentheses="True" ArrangeBraces="True" ArrangeAttributes="True" ArrangeArgumentsStyle="True" ArrangeCodeBodyStyle="True" ArrangeVarStyle="True" /&gt;&lt;/Profile&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeCleanup/RecentlyUsedProfile/@EntryValue">Unity</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/APPLY_ON_COMPLETION/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_FOR/@EntryValue">Required</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_FOREACH/@EntryValue">Required</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_IFELSE/@EntryValue">Required</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_WHILE/@EntryValue">Required</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/ThisQualifier/INSTANCE_MEMBERS_QUALIFY_MEMBERS/@EntryValue">Field, Property, Event, Method</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_FIRST_ARG_BY_PAREN/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_BINARY_EXPRESSIONS_CHAIN/@EntryValue">False</s:Boolean>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/CONTINUOUS_INDENT_MULTIPLIER/@EntryValue">2</s:Int64>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_ATTRIBUTE_STYLE/@EntryValue">JOIN</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_FIXED_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_FOR_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_FOREACH_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_IFELSE_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_USING_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_WHILE_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INDENT_METHOD_DECL_PARS/@EntryValue">NONE</s:String>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_BLANK_LINES_IN_CODE/@EntryValue">1</s:Int64>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_BLANK_LINES_IN_DECLARATIONS/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_EXISTING_EXPR_MEMBER_ARRANGEMENT/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_EXISTING_INITIALIZER_ARRANGEMENT/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_EXISTING_INVOCATION_PARENS_ARRANGEMENT/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_USER_LINEBREAKS/@EntryValue">True</s:Boolean>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/MAX_ENUM_MEMBERS_ON_LINE/@EntryValue">1</s:Int64>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/MODIFIERS_ORDER/@EntryValue">private public protected internal new abstract virtual override sealed static readonly extern unsafe volatile async</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_ACCESSORHOLDER_ATTRIBUTE_ON_SAME_LINE_EX/@EntryValue">NEVER</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_EXPR_ACCESSOR_ON_SINGLE_LINE/@EntryValue">ALWAYS</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_EXPR_METHOD_ON_SINGLE_LINE/@EntryValue">ALWAYS</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_EXPR_PROPERTY_ON_SINGLE_LINE/@EntryValue">ALWAYS</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE_EX/@EntryValue">NEVER</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_SIMPLE_ACCESSOR_ON_SINGLE_LINE/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_SIMPLE_EMBEDDED_STATEMENT_ON_SAME_LINE/@EntryValue">NEVER</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/PLACE_WHILE_ON_NEW_LINE/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/REDUNDANT_THIS_QUALIFIER_STYLE/@EntryValue">ALWAYS_USE</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SIMPLE_CASE_STATEMENT_STYLE/@EntryValue">LINE_BREAK</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SIMPLE_EMBEDDED_STATEMENT_STYLE/@EntryValue">LINE_BREAK</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_AROUND_MULTIPLICATIVE_OP/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_CHECKED_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_DEFAULT_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_EXTENDS_COLON/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_NAMEOF_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_SIZEOF_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_TERNARY_QUEST/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_BEFORE_TYPEOF_PARENTHESES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_SINGLE_LINE_ARRAY_INITIALIZER_BRACES/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/STICK_COMMENT/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/USE_CONTINUOUS_INDENT_INSIDE_INITIALIZER_BRACES/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/USE_CONTINUOUS_INDENT_INSIDE_PARENS/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_AFTER_DECLARATION_LPAR/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_BEFORE_FIRST_TYPE_PARAMETER_CONSTRAINT/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_FOR_STMT_HEADER_STYLE/@EntryValue">WRAP_IF_LONG</s:String>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_LIMIT/@EntryValue">150</s:Int64>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_MULTIPLE_DECLARATION_STYLE/@EntryValue">WRAP_IF_LONG</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE/@EntryValue">WRAP_IF_LONG</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_TERNARY_EXPR_STYLE/@EntryValue">WRAP_IF_LONG</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/ALIGN_MULTIPLE_DECLARATION/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/JavaScriptFormatOther/ALIGN_MULTIPLE_DECLARATION/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/BlankLineAfterProcessingInstructions/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/ProcessingInstructionAttributeIndenting/@EntryValue">TwoSteps</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/TagAttributeIndenting/@EntryValue">TwoSteps</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/TagSpaceBeforeHeaderEnd1/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/WrapBeforeAttr/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CSharpMemberOrderPattern/CustomPattern/@EntryValue">&lt;?xml version="1.0" encoding="utf-8" ?&gt;&#xD;
+&#xD;
+&lt;!--&#xD;
+I. Overall&#xD;
+&#xD;
+I.1 Each pattern can have &lt;Match&gt;....&lt;/Match&gt; element. For the given type declaration, the pattern with the match, evaluated to 'true' with the largest weight, will be used &#xD;
+I.2 Each pattern consists of the sequence of &lt;Entry&gt;...&lt;/Entry&gt; elements. Type member declarations are distributed between entries&#xD;
+I.3 If pattern has RemoveAllRegions="true" attribute, then all regions will be cleared prior to reordering. Otherwise, only auto-generated regions will be cleared&#xD;
+I.4 The contents of each entry is sorted by given keys (First key is primary,  next key is secondary, etc). Then the declarations are grouped and en-regioned by given property&#xD;
+&#xD;
+II. Available match operands&#xD;
+&#xD;
+Each operand may have Weight="..." attribute. This weight will be added to the match weight if the operand is evaluated to 'true'.&#xD;
+The default weight is 1&#xD;
+&#xD;
+II.1 Boolean functions:&#xD;
+II.1.1 &lt;And&gt;....&lt;/And&gt;&#xD;
+II.1.2 &lt;Or&gt;....&lt;/Or&gt;&#xD;
+II.1.3 &lt;Not&gt;....&lt;/Not&gt;&#xD;
+&#xD;
+II.2 Operands&#xD;
+II.2.1 &lt;Kind Is="..."/&gt;. Kinds are: class, struct, interface, enum, delegate, type, constructor, destructor, property, indexer, method, operator, field, constant, event, member&#xD;
+II.2.2 &lt;Name Is="..." [IgnoreCase="true/false"] /&gt;. The 'Is' attribute contains regular expression&#xD;
+II.2.3 &lt;HasAttribute CLRName="..." [Inherit="true/false"] /&gt;. The 'CLRName' attribute contains regular expression&#xD;
+II.2.4 &lt;Access Is="..."/&gt;. The 'Is' values are: public, protected, internal, protected internal, private&#xD;
+II.2.5 &lt;Static/&gt;&#xD;
+II.2.6 &lt;Abstract/&gt;&#xD;
+II.2.7 &lt;Virtual/&gt;&#xD;
+II.2.8 &lt;Override/&gt;&#xD;
+II.2.9 &lt;Sealed/&gt;&#xD;
+II.2.10 &lt;Readonly/&gt;&#xD;
+II.2.11 &lt;ImplementsInterface CLRName="..."/&gt;. The 'CLRName' attribute contains regular expression&#xD;
+II.2.12 &lt;HandlesEvent /&gt;&#xD;
+--&gt;&#xD;
+&#xD;
+&lt;Patterns xmlns="urn:shemas-jetbrains-com:member-reordering-patterns"&gt;&#xD;
+&#xD;
+  &lt;!--Do not reorder COM interfaces and structs marked by StructLayout attribute--&gt;&#xD;
+  &lt;Pattern&gt;&#xD;
+    &lt;Match&gt;&#xD;
+      &lt;Or Weight="100"&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Kind Is="interface"/&gt;&#xD;
+          &lt;Or&gt;&#xD;
+            &lt;HasAttribute CLRName="System.Runtime.InteropServices.InterfaceTypeAttribute"/&gt;&#xD;
+            &lt;HasAttribute CLRName="System.Runtime.InteropServices.ComImport"/&gt;&#xD;
+          &lt;/Or&gt;&#xD;
+        &lt;/And&gt;&#xD;
+        &lt;HasAttribute CLRName="System.Runtime.InteropServices.StructLayoutAttribute"/&gt;&#xD;
+      &lt;/Or&gt;&#xD;
+    &lt;/Match&gt;&#xD;
+  &lt;/Pattern&gt;&#xD;
+&#xD;
+  &lt;!--Special formatting of NUnit test fixture--&gt;&#xD;
+  &lt;Pattern RemoveAllRegions="true"&gt;&#xD;
+    &lt;Match&gt;&#xD;
+      &lt;And Weight="100"&gt;&#xD;
+        &lt;Kind Is="class"/&gt;&#xD;
+        &lt;HasAttribute CLRName="NUnit.Framework.TestFixtureAttribute" Inherit="true"/&gt;&#xD;
+      &lt;/And&gt;&#xD;
+    &lt;/Match&gt;&#xD;
+&#xD;
+    &lt;!--Setup/Teardow--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Kind Is="method"/&gt;&#xD;
+          &lt;Or&gt;&#xD;
+            &lt;HasAttribute CLRName="NUnit.Framework.SetUpAttribute" Inherit="true"/&gt;&#xD;
+            &lt;HasAttribute CLRName="NUnit.Framework.TearDownAttribute" Inherit="true"/&gt;&#xD;
+            &lt;HasAttribute CLRName="NUnit.Framework.FixtureSetUpAttribute" Inherit="true"/&gt;&#xD;
+            &lt;HasAttribute CLRName="NUnit.Framework.FixtureTearDownAttribute" Inherit="true"/&gt;&#xD;
+          &lt;/Or&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Group Region="Setup/Teardown"/&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &#xD;
+    &lt;!--All other members--&gt;&#xD;
+    &lt;Entry/&gt;&#xD;
+    &#xD;
+    &lt;!--Test methods--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;And Weight="100"&gt;&#xD;
+          &lt;Kind Is="method"/&gt;&#xD;
+          &lt;HasAttribute CLRName="NUnit.Framework.TestAttribute" Inherit="false"/&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Name/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+  &lt;/Pattern&gt;&#xD;
+&#xD;
+  &lt;!--Default pattern--&gt;&#xD;
+  &lt;Pattern&gt;&#xD;
+&#xD;
+    &lt;!--public delegate--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;And Weight="100"&gt;&#xD;
+          &lt;Access Is="public"/&gt;&#xD;
+          &lt;Kind Is="delegate"/&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Name/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Delegates"/&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &#xD;
+    &lt;!--public enum--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;And Weight="100"&gt;&#xD;
+          &lt;Access Is="public"/&gt;&#xD;
+          &lt;Kind Is="enum"/&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Name/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+      &lt;Group&gt;&#xD;
+        &lt;Name Region="${Name} enum"/&gt;&#xD;
+      &lt;/Group&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+&#xD;
+    &lt;!--static fields and constants--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;Or&gt;&#xD;
+          &lt;Kind Is="constant"/&gt;&#xD;
+          &lt;And&gt;&#xD;
+            &lt;Kind Is="field"/&gt;&#xD;
+            &lt;Static/&gt;&#xD;
+          &lt;/And&gt;&#xD;
+        &lt;/Or&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Kind Order="constant field"/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &#xD;
+    &lt;!--instance fields--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Kind Is="field"/&gt;&#xD;
+          &lt;Not&gt;&#xD;
+            &lt;Static/&gt;&#xD;
+          &lt;/Not&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Readonly/&gt;&#xD;
+        &lt;Name/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+&#xD;
+    &lt;!--Constructors. Place static one first--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;Kind Is="constructor"/&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Static/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &#xD;
+    &lt;!--properties, indexers--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;Or&gt;&#xD;
+          &lt;Kind Is="property"/&gt;&#xD;
+          &lt;Kind Is="indexer"/&gt;&#xD;
+        &lt;/Or&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &#xD;
+    &lt;!--interface implementations--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;And Weight="100"&gt;&#xD;
+          &lt;Kind Is="member"/&gt;&#xD;
+          &lt;ImplementsInterface/&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;ImplementsInterface Immediate="true"/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+      &lt;Group&gt;&#xD;
+        &lt;ImplementsInterface Immediate="true" Region="${ImplementsInterface} Members"/&gt;&#xD;
+      &lt;/Group&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &#xD;
+    &lt;!--all other members--&gt;&#xD;
+    &lt;Entry/&gt;&#xD;
+    &#xD;
+    &lt;!--nested types--&gt;&#xD;
+    &lt;Entry&gt;&#xD;
+      &lt;Match&gt;&#xD;
+        &lt;Kind Is="type"/&gt;&#xD;
+      &lt;/Match&gt;&#xD;
+      &lt;Sort&gt;&#xD;
+        &lt;Name/&gt;&#xD;
+      &lt;/Sort&gt;&#xD;
+      &lt;Group&gt;&#xD;
+        &lt;Name Region="Nested type: ${Name}"/&gt;&#xD;
+      &lt;/Group&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+  &lt;/Pattern&gt;&#xD;
+  &#xD;
+&lt;/Patterns&gt;&#xD;
+</s:String>
+	<s:String x:Key="/Default/CodeStyle/CSharpVarKeywordUsage/ForBuiltInTypes/@EntryValue">UseExplicitType</s:String>
+	<s:String x:Key="/Default/CodeStyle/CSharpVarKeywordUsage/ForSimpleTypes/@EntryValue">UseExplicitType</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/Generate/=Implementations/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/Generate/=Implementations/Options/=Async/@EntryIndexedValue">False</s:String>
+	<s:String x:Key="/Default/CodeStyle/Generate/=Implementations/Options/=Mutable/@EntryIndexedValue">False</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/Generate/=Overrides/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/Generate/=Overrides/Options/=Async/@EntryIndexedValue">False</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/Generate/=Properties/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/Generate/=Properties/Options/=DebuggerStepsThrough/@EntryIndexedValue">False</s:String>
+	<s:String x:Key="/Default/CodeStyle/Generate/=Properties/Options/=XmlDocumentation/@EntryIndexedValue">False</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/Naming/CSharpAutoNaming/IsNamingAutoDetectionCompleted/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/Naming/CSharpAutoNaming/IsNotificationDisabled/@EntryValue">True</s:Boolean>
+	
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Constants/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=EnumMember/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Event/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Interfaces/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="I" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=LocalConstants/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Locals/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Method/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Parameters/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=PrivateConstants/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=PrivateInstanceFields/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="_" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=PrivateStaticFields/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="__" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=PrivateStaticReadonly/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="__" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=Property/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=PublicFields/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=StaticReadonly/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=TypeParameters/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="T" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=TypesAndNamespaces/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/EventHandlerPatternLong/@EntryValue">$object$_On$event$</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=PrivateInstanceFields/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=PrivateStaticFields/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/VBNaming/EventHandlerPatternLong/@EntryValue">$object$_On$event$</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/XamlNaming/UserRules/=NAMESPACE_005FALIAS/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/XamlNaming/UserRules/=XAML_005FFIELD/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/XamlNaming/UserRules/=XAML_005FRESOURCE/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	<s:String x:Key="/Default/CustomTools/CustomToolsData/@EntryValue"></s:String>
+	<s:String x:Key="/Default/Environment/Editor/MatchingBraceHighlighting/Position/@EntryValue">BOTH_SIDES</s:String>
+	<s:Boolean x:Key="/Default/Environment/ExternalSources/Decompiler/DecompilerLegalNoticeAccepted/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/ExternalSources/FirstTimeFormShown/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/ExternalSources/NavigationMode/@EntryValue">ObjectBrowser</s:String>
+	<s:Boolean x:Key="/Default/Environment/Feedback/ShouldPrompt/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/Xamarin/JavaDevelopmentKitPath/@EntryValue">C:\Apps\Java\jdk1.8.0_131</s:String>
+	<s:String x:Key="/Default/Environment/Hierarchy/CSharpInteractiveOptions/ToolPath/@EntryValue">C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\Roslyn\csi.exe</s:String>
+	<s:Int64 x:Key="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue">79</s:Int64>
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/NuGetOptions/GlobalEnabled/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/NuGetOptions/IncludePrerelease/@EntryValue">False</s:Boolean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/Environment/OpenDocument/OpenDocumentAfterModification/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/ReSharperHost/CurrentTheme/@EntryValue">Dark</s:String>
+	<s:Boolean x:Key="/Default/Environment/SearchAndNavigation/AutoExpandResults/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SearchAndNavigation/MergeOccurences/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SearchAndNavigation/OpenPreviewTabForSelectedItemInFindResults/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EApplication_002EExceptionReport_002EUserLoginInformationMigrateSettings/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EdotCover_002EInteractive_002ECore_002EFilterManagement_002EMigration_002EGlobalFilterSettingsManagerMigrateSettings/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpAttributeForSingleLineMethodUpgrade/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpFileLayoutPatternsUpgrade/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpKeepExistingMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpPlaceEmbeddedOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpRenamePlacementToArrangementMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpUseContinuousIndentInsideBracesMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EAddAccessorOwnerDeclarationBracesMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002ECSharpPlaceAttributeOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateThisQualifierSettings/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ESettingsUpgrade_002EJsCodeFormatterSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ESettingsUpgrade_002EJsParsFormattingSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ESettingsUpgrade_002EJsWrapperSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EXml_002ECodeStyle_002EFormatSettingsUpgrade_002EXmlMoveToCommonFormatterSettingsUpgrade/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002ERider_002EBackend_002EFeatures_002EDebugger_002ESettings_002EMigration_002ERiderSymbolServersSettingsUpgrade/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/TextControl/HighlightCurrentLine/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/UnitTesting/MsTestProvider/UseTestRunConfigFromMetadataFile/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/UpdatesManger/IsDownloadUpdateDataAllowed/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/Environment/UserInterface/ShortcutSchemeName/@EntryValue">VS</s:String>
+	<s:String x:Key="/Default/GlobalFilterSettingsManager/AppliedDefaultAttributeFilterString/@EntryValue">System.CodeDom.Compiler.GeneratedCodeAttribute</s:String>
+	<s:String x:Key="/Default/GlobalFilterSettingsManager/AttributeFilterXml/@EntryValue">&lt;data&gt;&lt;AttributeFilter ClassMask="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" IsEnabled="True" /&gt;&lt;AttributeFilter ClassMask="System.CodeDom.Compiler.GeneratedCodeAttribute" IsEnabled="True" /&gt;&lt;/data&gt;</s:String>
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=TabNavigationExplainer/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/IntellisenseHousekeeping/HintUsed/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/Housekeeping/Layout/DialogWindows/OptionsDialog/SelectedPageId/@EntryValue">CSharpBracesLayoutPage</s:String>
+	<s:String x:Key="/Default/Housekeeping/Layout/DialogWindows/RefactoringWizardWindow/Location/@EntryValue">247,0</s:String>
+	<s:Boolean x:Key="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue">CSharpOtherPage</s:String>
+	<s:Boolean x:Key="/Default/Housekeeping/RefactoringsMru/SerializedFieldRenameRefactoring/ShouldAddFormerlySerializedAs/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RefactoringsMru/UseInline/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=Directory/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=IssueCategory/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=IssueType/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=Member/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=Namespace/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=OccurrenceType/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=Project/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=Severity/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=SolutionFolder/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/RiderFindResultsBrowser/GroupingRules/=Type/@EntryIndexedValue">True</s:Boolean>
+	<s:Int64 x:Key="/Default/Housekeeping/TreeModelBrowserPanelPersistance/PreviewSplitterHorizontalPosition/=SearchUsagesDescriptor/@EntryIndexedValue">269</s:Int64>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=AnalyzeReferences/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=BlockComment/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EBookmarksMenu/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark0/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark1/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark2/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark3/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark4/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark5/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark6/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark7/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark8/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EGoToBookmark9/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark0/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark1/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark2/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark3/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark4/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark5/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark6/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark7/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark8/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Bookmarks_002EToggleBookmark9/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ChangeSignature/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=CleanupCode/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=CompleteCodeSmart/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=CompleteCodeTypeName/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=DuplicateText/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=EnableDaemon/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=EncapsulateField/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ExploreStackTrace/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ExtendSelection/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ExtractMethod/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=FindUsagesAdvanced/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ForceCompleteItem/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Generate/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GenerateFileBesides/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoBase/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoContainingDeclaration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoFile/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoFileMember/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoInheritors/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoLastEditLocation/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoNextErrorInSolution/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoNextHighlight/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoNextMethod/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoNextOccurence/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoPrevErrorInSolution/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoPrevHighlight/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoPreviousOccurence/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoPrevMethod/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoRecentEdits/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoRecentFiles/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoRelatedFiles/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoSymbol/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoType/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoTypeDeclaration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=GotoUsage/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=HighlightUsages/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=InlineVariable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=InspectThis/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=IntroduceField/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=IntroduceVariable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=IntroParameter/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=LineComment/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=LiveTemplates_002EInsert/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=LocateInSolutionExplorerAction/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Move/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=MoveDown/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=MoveLeft/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=MoveRight/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=MoveUp/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=NavigateTo/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ParameterInfo_002EGoToPreviousSignature/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=QuickDoc/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=QuickFix/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=RefactorThis/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=Rename/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ReSharper_005FUnitTest_005FDebugContext/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ReSharper_005FUnitTest_005FRunContext/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=SafeDelete/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=SelectContainingDeclaration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowAnalyzeReferences/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowCodeStructure/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowFindResults/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowHierarchyWindow/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowInspectionWindow/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowTodoExplorer/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowUnitTestExplorer/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShowUnitTestSessions/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=ShrinkSelection/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=SilentCleanupCode/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=SurroundWith/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=TypeHierarchy_002EBrowse/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=UnitTest_002ERunCurrentSession/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=UnitTest_002ERunSolution/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=UnitTestSession_002ERepeatPreviousRun/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=WindowManager_002EActivateRecentTool/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ActionsWithShortcuts/=WindowManager_002ECloseRecentTool/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=AnalyzeReferences/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=AnalyzeReferences/Shortcuts/=Control_002BAlt_002BY/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark1/Shortcuts/=Control_002BD1/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark2/Shortcuts/=Control_002BD2/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark3/Shortcuts/=Control_002BD3/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark4/Shortcuts/=Control_002BD4/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark5/Shortcuts/=Control_002BD5/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark6/Shortcuts/=Control_002BD6/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark7/Shortcuts/=Control_002BD7/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark8/Shortcuts/=Control_002BD8/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EGoToBookmark9/Shortcuts/=Control_002BD9/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark1/Shortcuts/=Shift_002BControl_002BD1/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark2/Shortcuts/=Shift_002BControl_002BD2/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark3/Shortcuts/=Shift_002BControl_002BD3/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark7/Shortcuts/=Shift_002BControl_002BD7/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Bookmarks_002EToggleBookmark8/Shortcuts/=Shift_002BControl_002BD8/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ChangeSignature/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ChangeSignature/Shortcuts/=Control_002BR_0020Control_002BS/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ChangeSignature/Shortcuts/=Control_002BR_0020S/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=CleanupCode/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=CleanupCode/Shortcuts/=Control_002BE_0020C/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=CleanupCode/Shortcuts/=Control_002BE_0020Control_002BC/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=CompleteCodeSmart/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=CompleteCodeSmart/Shortcuts/=Control_002BAlt_002BSpace/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=DuplicateText/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=DuplicateText/Shortcuts/=Control_002BD/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=EncapsulateField/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=EncapsulateField/Shortcuts/=Control_002BR_0020Control_002BE/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=EncapsulateField/Shortcuts/=Control_002BR_0020E/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExploreStackTrace/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExploreStackTrace/Shortcuts/=Control_002BE_0020Control_002BT/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExploreStackTrace/Shortcuts/=Control_002BE_0020T/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExtendSelection/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExtendSelection/Shortcuts/=Control_002BAlt_002BRight/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExtractMethod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExtractMethod/Shortcuts/=Control_002BR_0020Control_002BM/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ExtractMethod/Shortcuts/=Control_002BR_0020M/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=FindUsagesAdvanced/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=FindUsagesAdvanced/Shortcuts/=Shift_002BControl_002BAlt_002BF12/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GenerateFileBesides/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GenerateFileBesides/Shortcuts/=Control_002BAlt_002BInsert/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoContainingDeclaration/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoContainingDeclaration/Shortcuts/=Control_002BOemOpenBrackets/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoFile/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoFile/Shortcuts/=Shift_002BControl_002BT/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoNextHighlight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoNextHighlight/Shortcuts/=Alt_002BNext/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoNextMethod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoNextMethod/Shortcuts/=Alt_002BDown/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoNextOccurence/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoNextOccurence/Shortcuts/=Control_002BAlt_002BNext/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoPrevHighlight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoPrevHighlight/Shortcuts/=Alt_002BPageUp/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoPreviousOccurence/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoPreviousOccurence/Shortcuts/=Control_002BAlt_002BPageUp/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoPrevMethod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoPrevMethod/Shortcuts/=Alt_002BUp/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoRecentEdits/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoRecentEdits/Shortcuts/=Shift_002BControl_002BOemcomma/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoRecentFiles/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoRecentFiles/Shortcuts/=Control_002BOemcomma/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoSymbol/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoSymbol/Shortcuts/=Shift_002BAlt_002BT/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoType/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoType/Shortcuts/=Control_002BT/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoTypeDeclaration/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoTypeDeclaration/Shortcuts/=Shift_002BControl_002BF11/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoUsage/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=GotoUsage/Shortcuts/=Shift_002BAlt_002BF12/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=HighlightUsages/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=HighlightUsages/Shortcuts/=Shift_002BAlt_002BF11/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=InlineVariable/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=InlineVariable/Shortcuts/=Control_002BR_0020Control_002BI/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=InlineVariable/Shortcuts/=Control_002BR_0020I/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroduceField/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroduceField/Shortcuts/=Control_002BR_0020Control_002BF/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroduceField/Shortcuts/=Control_002BR_0020F/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroduceVariable/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroduceVariable/Shortcuts/=Control_002BR_0020Control_002BV/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroduceVariable/Shortcuts/=Control_002BR_0020V/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroParameter/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroParameter/Shortcuts/=Control_002BR_0020Control_002BP/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=IntroParameter/Shortcuts/=Control_002BR_0020P/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=LocateInSolutionExplorerAction/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=LocateInSolutionExplorerAction/Shortcuts/=Shift_002BAlt_002BL/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Move/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Move/Shortcuts/=Control_002BR_0020Control_002BO/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Move/Shortcuts/=Control_002BR_0020O/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveDown/Shortcuts/=Shift_002BControl_002BAlt_002BDown/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveLeft/Shortcuts/=Shift_002BControl_002BAlt_002BLeft/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveRight/Shortcuts/=Shift_002BControl_002BAlt_002BRight/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=MoveUp/Shortcuts/=Shift_002BControl_002BAlt_002BUp/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=QuickFix/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=QuickFix/Shortcuts/=Alt_002BReturn/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=RefactorThis/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=RefactorThis/Shortcuts/=Shift_002BControl_002BR/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Rename/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Rename/Shortcuts/=Control_002BR_0020Control_002BR/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=Rename/Shortcuts/=Control_002BR_0020R/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ReSharper_005FUnitTest_005FDebugContext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ReSharper_005FUnitTest_005FDebugContext/Shortcuts/=Control_002BU_0020Control_002BD/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ReSharper_005FUnitTest_005FDebugContext/Shortcuts/=Control_002BU_0020D/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ReSharper_005FUnitTest_005FRunContext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ReSharper_005FUnitTest_005FRunContext/Shortcuts/=Control_002BU_0020Control_002BR/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ReSharper_005FUnitTest_005FRunContext/Shortcuts/=Control_002BU_0020R/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SafeDelete/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SafeDelete/Shortcuts/=Control_002BR_0020Control_002BD/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SafeDelete/Shortcuts/=Control_002BR_0020D/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SelectContainingDeclaration/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SelectContainingDeclaration/Shortcuts/=Shift_002BControl_002BOemOpenBrackets/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowAnalyzeReferences/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowAnalyzeReferences/Shortcuts/=Control_002BAlt_002BY/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowCodeStructure/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowCodeStructure/Shortcuts/=Control_002BAlt_002BF/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowFindResults/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowFindResults/Shortcuts/=Control_002BAlt_002BF12/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowHierarchyWindow/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowHierarchyWindow/Shortcuts/=Control_002BAlt_002BH/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowInspectionWindow/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowInspectionWindow/Shortcuts/=Control_002BAlt_002BV/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowTodoExplorer/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowTodoExplorer/Shortcuts/=Control_002BAlt_002BD/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowUnitTestExplorer/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowUnitTestExplorer/Shortcuts/=Control_002BAlt_002BU/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowUnitTestSessions/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShowUnitTestSessions/Shortcuts/=Control_002BAlt_002BT/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShrinkSelection/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=ShrinkSelection/Shortcuts/=Control_002BAlt_002BLeft/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SilentCleanupCode/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SilentCleanupCode/Shortcuts/=Control_002BE_0020Control_002BF/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SilentCleanupCode/Shortcuts/=Control_002BE_0020F/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SurroundWith/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SurroundWith/Shortcuts/=Control_002BE_0020Control_002BU/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=SurroundWith/Shortcuts/=Control_002BE_0020U/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTest_002ERunCurrentSession/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTest_002ERunCurrentSession/Shortcuts/=Control_002BU_0020Control_002BY/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTest_002ERunCurrentSession/Shortcuts/=Control_002BU_0020Y/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTest_002ERunSolution/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTest_002ERunSolution/Shortcuts/=Control_002BU_0020Control_002BL/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTest_002ERunSolution/Shortcuts/=Control_002BU_0020L/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTestSession_002ERepeatPreviousRun/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTestSession_002ERepeatPreviousRun/Shortcuts/=Control_002BU_0020Control_002BU/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/ConflictingActions/=UnitTestSession_002ERepeatPreviousRun/Shortcuts/=Control_002BU_0020U/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Add/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BBack/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF10/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BF9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BG/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BM/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BMultiply/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BNext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BO/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BOem7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BOemcomma/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BOemPeriod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BP/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BPageUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BPause/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BR/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BReturn/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BS/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BSubtract/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Alt_002BW/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=B/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Back/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BA/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAdd/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BA/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BB/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BD/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BE/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF10/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BF6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BG/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BH/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BI/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BInsert/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BJ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BL/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BM/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BNext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BO/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BOem6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BOemPeriod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BP/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BPageUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BPause/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BQ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BR/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BS/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BSpace/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BT/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BU/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BV/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BW/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BX/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BY/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BAlt_002BZ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BB/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BBack/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BD9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BDelete/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BDivide/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BE/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BEnd/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF10/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BF9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BG/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BH/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BHome/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BI/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BInsert/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BJ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BK/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BL/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BM/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BN/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BNext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BO/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOem1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOem6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOem7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOemBackslash/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOemcomma/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOemOpenBrackets/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOemPeriod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BOemplus/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BP/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BPageUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BPause/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BQ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BR/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BReturn/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BS/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BSpace/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BSubtract/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BT/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BTab/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BU/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BV/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BW/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BX/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BY/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Control_002BZ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Delete/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Down/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=End/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Escape/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F10/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=F9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Home/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=I/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Insert/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Left/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Next/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=O/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=PageUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Return/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Right/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BA/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BB/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BBack/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BD/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BD3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BD4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BEnd/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BF/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BF10/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BF6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BF7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BH/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BHome/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BL/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BN/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BOemcomma/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BOemPeriod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BP/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BQ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BR/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BReturn/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BS/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BT/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BV/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BAlt_002BW/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BBack/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BA/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BP/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BR/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BS/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BAlt_002BW/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BB/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BD/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BD1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BD2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BD3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BD7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BD8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BE/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BEnd/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BF10/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BF5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BF6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BF9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BG/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BH/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BHome/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BI/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BInsert/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BJ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BL/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BM/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BN/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BNext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BO/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BOem6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BOemcomma/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BOemOpenBrackets/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BOemPeriod/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BP/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BPageUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BR/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BReturn/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BS/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BSpace/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BSubtract/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BT/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BTab/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BU/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BV/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BW/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BX/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BY/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BControl_002BZ/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BDelete/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BDown/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BEnd/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BEscape/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF11/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF12/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF4/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF6/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BF9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BHome/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BInsert/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BLeft/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BNext/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BPageUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BReturn/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BRight/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BSpace/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BTab/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Shift_002BUp/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Subtract/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Tab/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Housekeeping/VsActionManager/KeyboardShortcutToVsCommand/=Up/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/SnapshotsStore/CurrentStore/@EntryValue">C:\Users\USER-PC\AppData\Local\JetBrains\Shared\vAny\Sessions</s:String>
+	<s:Boolean x:Key="/Default/SymbolServers/RestoreDecompileSetting/@EntryValue">False</s:Boolean>
+	<s:Double x:Key="/Default/TimelineLayout/MethodsPanelHeight/@EntryValue">366</s:Double></wpf:ResourceDictionary>

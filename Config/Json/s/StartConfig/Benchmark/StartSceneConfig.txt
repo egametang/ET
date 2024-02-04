@@ -1,0 +1,18 @@
+{"dict": [
+[1, {"_t":"StartSceneConfig","_id":1,"Process":1,"Zone":1,"SceneType":"BenchmarkServer","Name":"BenchmarkServer","Port":10001}],
+[2, {"_t":"StartSceneConfig","_id":2,"Process":2,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient1","Port":0}],
+[3, {"_t":"StartSceneConfig","_id":3,"Process":3,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient2","Port":0}],
+[4, {"_t":"StartSceneConfig","_id":4,"Process":4,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient3","Port":0}],
+[5, {"_t":"StartSceneConfig","_id":5,"Process":5,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient4","Port":0}],
+[6, {"_t":"StartSceneConfig","_id":6,"Process":6,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient5","Port":0}],
+[7, {"_t":"StartSceneConfig","_id":7,"Process":7,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient6","Port":0}],
+[8, {"_t":"StartSceneConfig","_id":8,"Process":8,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient7","Port":0}],
+[9, {"_t":"StartSceneConfig","_id":9,"Process":9,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient8","Port":0}],
+[10, {"_t":"StartSceneConfig","_id":10,"Process":10,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient9","Port":0}],
+[11, {"_t":"StartSceneConfig","_id":11,"Process":11,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient10","Port":0}],
+[12, {"_t":"StartSceneConfig","_id":12,"Process":12,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient11","Port":0}],
+[13, {"_t":"StartSceneConfig","_id":13,"Process":13,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient12","Port":0}],
+[14, {"_t":"StartSceneConfig","_id":14,"Process":14,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient13","Port":0}],
+[15, {"_t":"StartSceneConfig","_id":15,"Process":15,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient14","Port":0}],
+[16, {"_t":"StartSceneConfig","_id":16,"Process":16,"Zone":1,"SceneType":"BenchmarkClient","Name":"BenchmarkClient15","Port":0}],
+]}

@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>false</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <PackageId>Apps.Tool</PackageId>
+        <AssemblyName>Tool</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>..\..\Bin\</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>DOTNET</DefineConstants>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>..\..\Bin\</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>DOTNET</DefineConstants>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        
+        <Compile Include="..\..\Unity\Assets\Scripts\Model\Share\Module\Config\**\*.cs">
+            <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\Model\Share\Module\Log\**\*.cs">
+            <Link>Module\Log\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\Core\Network\OpcodeRangeDefine.cs">
+            <Link>Module\Message\OpcodeRangeDefine.cs</Link>
+        </Compile>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Template.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\DotNet\Core\DotNet.Core.csproj" />
+      <ProjectReference Include="..\..\DotNet\ThirdParty\DotNet.ThirdParty.csproj" />
+    </ItemGroup>
+
+</Project>

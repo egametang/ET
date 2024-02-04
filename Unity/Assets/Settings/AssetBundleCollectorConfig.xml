@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root Version="2.4">
+  <Common AutoAddressable="False" LocationToLower="False" IncludeAssetGUID="False" UniqueBundleName="False" ShowPackageView="True" ShowEditorAlias="False" />
+  <Package PackageName="DefaultPackage" PackageDesc="">
+    <Group GroupActiveRule="EnableGroup" GroupName="Default Group" GroupDesc="" AssetTags="">
+      <Collector CollectPath="Assets/Bundles/AotDlls" CollectGUID="51f33a3e2065f5642bee2f96c2433544" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackDirectory" FilterRule="CollectAll" UserData="" AssetTags="" />
+      <Collector CollectPath="Assets/Bundles/Code" CollectGUID="55d9010d6a87934468703901aa518c85" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackDirectory" FilterRule="CollectAll" UserData="" AssetTags="" />
+      <Collector CollectPath="Assets/Bundles/Config" CollectGUID="ff3acf49577de0f44b9e1e1afc6f131e" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackDirectory" FilterRule="CollectAll" UserData="" AssetTags="" />
+      <Collector CollectPath="Assets/Bundles/UI" CollectGUID="3a57d524d1e0d7543828b2ac7273f608" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackSeparately" FilterRule="CollectPrefab" UserData="" AssetTags="" />
+      <Collector CollectPath="Assets/Bundles/Unit" CollectGUID="c3561f86a9d0b324680975876c94ca05" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackSeparately" FilterRule="CollectPrefab" UserData="" AssetTags="" />
+      <Collector CollectPath="Assets/Bundles/Scenes" CollectGUID="406b13cb70603ef449d91f5572708db2" CollectType="MainAssetCollector" AddressRule="AddressByFileName" PackRule="PackDirectory" FilterRule="CollectScene" UserData="" AssetTags="" />
+    </Group>
+  </Package>
+</root>

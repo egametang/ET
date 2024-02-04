@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <AssemblyName>Model</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>DOTNET</DefineConstants>
+        <OutputPath>..\..\Bin\</OutputPath> 
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Optimize>false</Optimize>
+        <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"> 
+        <DefineConstants>DOTNET</DefineConstants>
+        <OutputPath>..\..\Bin\</OutputPath>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Optimize>true</Optimize>
+        <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\Model\Server\**\*.cs"> 
+            <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link> 
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\Model\Client\**\*.cs"> 
+            <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        
+        <Compile Include="..\..\Unity\Assets\Scripts\Model\Share\**\*.cs">
+            <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\Model\Generate\Server\**\*.cs"> 
+            <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        
+    </ItemGroup> 
+    <ItemGroup> 
+        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Share\Share.SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Core\DotNet.Core.csproj" />
+        <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
+    </ItemGroup> 
+</Project>

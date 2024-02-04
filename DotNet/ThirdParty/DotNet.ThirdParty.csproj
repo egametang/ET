@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <LangVersion>12</LangVersion>
+        <RootNamespace>ET</RootNamespace>
+        <AssemblyName>ThirdParty</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DefineConstants>DOTNET;UNITY_DOTSPLAYER</DefineConstants>
+        <OutputPath>..\..\Bin\</OutputPath>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Optimize>true</Optimize>
+        <NoWarn>0169,0649,3021,8981,NU1903</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DefineConstants>DOTNET;UNITY_DOTSPLAYER</DefineConstants>
+        <OutputPath>..\..\Bin\</OutputPath>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>0169,0649,3021,8981,NU1903</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\TrueSync\**\*.cs">
+            <Link>TrueSync/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ETTask\**\*.cs">
+            <Link>ETTask/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Kcp\**\*.cs">
+            <Link>Kcp/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\NativeCollection\**\*.cs">
+            <Link>NativeCollection/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\DotRecast\**\*.cs">
+            <Link>DotRecast/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Library\PackageCache\com.unity.mathematics*\Unity.Mathematics\**\*.cs">
+            <Link>Unity.Mathematics/$([System.String]::new(%(RecursiveDir)).Substring($([System.String]::new(%(RecursiveDir)).Indexof("Unity.Mathematics"))).Replace("Unity.Mathematics", ""))/%(FileName)%(Extension)</Link>
+        </Compile>
+
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="EPPlus" Version="5.8.8" />
+        <PackageReference Include="MemoryPack" Version="1.10.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
+        <PackageReference Include="NLog" Version="4.7.15" />
+        <PackageReference Include="SharpZipLib" Version="1.3.3" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.1" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+    </ItemGroup>
+</Project>
