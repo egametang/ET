@@ -166,6 +166,15 @@ namespace {{namespaceName}}
 
                 SpeicalProcessForArgs();
                 
+                if (methodSymbol.ReturnType.ToDisplayString() == "void")
+                {
+                    code = code.Replace("$returnType$", "void");
+                    code = code.Replace("$return$", "");
+                }else{
+                    code = code.Replace("$returnType$", methodSymbol.ReturnType.ToDisplayString());
+                    code = code.Replace("$return$", "return ");
+                }
+                
                 code = code.Replace("$attribute$", attributeString);
                 code = code.Replace("$attributeType$", attributeType);
                 code = code.Replace("$methodName$", methodName);
