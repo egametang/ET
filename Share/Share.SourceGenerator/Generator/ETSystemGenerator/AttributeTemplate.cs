@@ -15,9 +15,9 @@ namespace ET.Generator
                 $attribute$
                         public class $argsTypesUnderLine$_$methodName$System: $methodName$System<$argsTypes$>
                         {   
-                            protected override void $methodName$($argsTypesVars$)
+                            protected override $returnType$ $methodName$($argsTypesVars$)
                             {
-                                $argsVars0$.$methodName$($argsVarsWithout0$);
+                                $return$$argsVars0$.$methodName$($argsVarsWithout0$);
                             }
                         }
                 """);
