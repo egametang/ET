@@ -115,6 +115,7 @@ namespace TrueSync {
         /**
          *  @brief Returns a {@link FP} between 0.0 [inclusive] and 1.0 [inclusive].
          **/
+        [MemoryPackIgnore]
         public FP value {
             get {
                 return this.NextFP();
@@ -124,6 +125,7 @@ namespace TrueSync {
         /**
          *  @brief Returns a random {@link TSVector} representing a point inside a sphere with radius 1.
          **/
+        [MemoryPackIgnore]
         public TSVector insideUnitSphere {
             get {
                 return new TSVector(value, value, value);
