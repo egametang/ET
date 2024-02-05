@@ -41,7 +41,7 @@ namespace ET
                 return;
             }
 
-            if (queue.Notify(level))
+            if (!queue.Notify(level))
             {
                 self.Remove(key);
             }
