@@ -473,7 +473,7 @@ namespace ET.Analyzer
     {
         private const string Title = "Model/ModelView程序集禁止声明非实体类";
 
-        private const string MessageFormat = "Model/ModelView程序集禁止声明非实体类";
+        private const string MessageFormat = "Model/ModelView程序集禁止声明非实体类:{0}";
 
         private const string Description = "Model/ModelView程序集禁止声明非实体类.";
 

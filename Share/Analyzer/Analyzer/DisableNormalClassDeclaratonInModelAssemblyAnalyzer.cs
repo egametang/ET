@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ET.Analyzer
@@ -8,7 +9,7 @@ namespace ET.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class DisableNormalClassDeclaratonInModelAssemblyAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(EntityClassDeclarationAnalyzerRule.Rule,EntityCannotDeclareGenericTypeRule.Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(EntityClassDeclarationAnalyzerrRule.Rule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -30,7 +31,30 @@ namespace ET.Analyzer
         
         private void Analyze(SyntaxNodeAnalysisContext context)
         {
+            if (context.Node is not ClassDeclarationSyntax classDeclarationSyntax)
+            {
+                return;
+            }
+
+            var namedTypeSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+
+            if (namedTypeSymbol==null)
+            {
+                return;
+            }
+
+            if (namedTypeSymbol.IsETEntity())
+            {
+                return;
+            }
+
+            if (namedTypeSymbol.HasAttribute(Definition.EnableClassAttribute))
+            {
+                return;
+            }
             
+            Diagnostic diagnostic = Diagnostic.Create(EntityClassDeclarationAnalyzerrRule.Rule, classDeclarationSyntax.Identifier.GetLocation(), namedTypeSymbol);
+            context.ReportDiagnostic(diagnostic);
         }
     }
 }
