@@ -65,7 +65,7 @@ namespace ET.Client
             C2Room_CheckHash c2RoomCheckHash = C2Room_CheckHash.Create();
             c2RoomCheckHash.Frame = frame;
             c2RoomCheckHash.Hash = hash;
-            self.Root().GetComponent<ClientSenderCompnent>().Send(c2RoomCheckHash);
+            self.Root().GetComponent<ClientSenderComponent>().Send(c2RoomCheckHash);
         }
         
         // 重新调整预测消息，只需要调整其他玩家的输入
