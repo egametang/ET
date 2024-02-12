@@ -14,7 +14,9 @@ namespace ET
 			List<string> list = new List<string>();
 			foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
 			{
-				if (networkInterface.NetworkInterfaceType != NetworkInterfaceType.Ethernet)
+				if (networkInterface.NetworkInterfaceType != NetworkInterfaceType.Ethernet 
+				    && networkInterface.NetworkInterfaceType != NetworkInterfaceType.Wireless80211
+				    && networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback)
 				{
 					continue;
 				}
