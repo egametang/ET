@@ -23,7 +23,7 @@ namespace ET.Client
             }
 
             // 停在当前位置
-            fiber.Root.GetComponent<ClientSenderCompnent>().Send(C2M_Stop.Create());
+            fiber.Root.GetComponent<ClientSenderComponent>().Send(C2M_Stop.Create());
             
             Log.Debug("开始攻击");
 
