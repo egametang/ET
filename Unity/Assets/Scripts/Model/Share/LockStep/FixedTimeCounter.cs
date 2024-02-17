@@ -1,6 +1,6 @@
 namespace ET
 {
-    public class FixedTimeCounter
+    public class FixedTimeCounter: Object
     {
         private long startTime;
         private int startFrame;

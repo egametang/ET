@@ -43,12 +43,12 @@ namespace ET.Analyzer
                 return;
             }
 
-            if (namedTypeSymbol.IsETEntity())
+            if (namedTypeSymbol.IsStatic)
             {
                 return;
             }
 
-            if (namedTypeSymbol.HasAttribute(Definition.EnableClassAttribute))
+            if (namedTypeSymbol.HasAttributeInTypeAndBaseTyes(Definition.EnableClassAttribute))
             {
                 return;
             }

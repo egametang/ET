@@ -3,6 +3,7 @@ using System;
 
 namespace ET
 {
+    [EnableClass]
     public class MessageSessionDispatcherInfo
     {
         public SceneType SceneType { get; }

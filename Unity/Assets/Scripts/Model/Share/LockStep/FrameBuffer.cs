@@ -4,7 +4,7 @@ using System.IO;
 
 namespace ET
 {
-    public class FrameBuffer
+    public class FrameBuffer: Object
     {
         public int MaxFrame { get; private set; }
         private readonly List<OneFrameInputs> frameInputs;

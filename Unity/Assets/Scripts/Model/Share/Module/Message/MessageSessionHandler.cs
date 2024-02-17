@@ -2,6 +2,7 @@ using System;
 
 namespace ET
 {
+    [EnableClass]
     public abstract class MessageSessionHandler<Message>: IMessageSessionHandler where Message : MessageObject
     {
         protected abstract ETTask Run(Session session, Message message);
@@ -39,7 +40,7 @@ namespace ET
         }
     }
     
-    
+    [EnableClass]
     public abstract class MessageSessionHandler<Request, Response>: IMessageSessionHandler where Request : MessageObject, IRequest where Response : MessageObject, IResponse
     {
         protected abstract ETTask Run(Session session, Request request, Response response);

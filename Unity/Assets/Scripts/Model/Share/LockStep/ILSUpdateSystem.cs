@@ -10,7 +10,8 @@ namespace ET
     {
         void Run(LSEntity o);
     }
-    
+
+    [EnableClass]
     [LSEntitySystem]
     public abstract class LSUpdateSystem<T> : ILSUpdateSystem where T: LSEntity, ILSUpdate
     {

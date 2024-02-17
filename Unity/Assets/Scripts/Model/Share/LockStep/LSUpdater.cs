@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class LSUpdater
+    public class LSUpdater: Object
     {
         private List<long> updateIds = new();
         private List<long> newUpdateIds = new();

@@ -12,6 +12,7 @@ namespace ET
         void Run(Entity o);
     }
     
+    [EnableClass]
     [LSEntitySystem]
     public abstract class LSRollbackSystem<T> : ILSRollbackSystem where T: Entity, ILSRollback
     {

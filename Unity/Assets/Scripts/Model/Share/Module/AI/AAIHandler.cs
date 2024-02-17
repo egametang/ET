@@ -6,6 +6,7 @@ namespace ET
     {
     }
     
+    [EnableClass]
     [AIHandler]
     public abstract class AAIHandler
     {
