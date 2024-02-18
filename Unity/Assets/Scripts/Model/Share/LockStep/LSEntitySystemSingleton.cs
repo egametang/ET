@@ -23,7 +23,7 @@ namespace ET
             this.TypeSystems = new(LSQueneUpdateIndex.Max);
             foreach (Type type in CodeTypes.Instance.GetTypes(typeof (LSEntitySystemAttribute)))
             {
-                object obj = Activator.CreateInstance(type);
+                SystemObject obj = (SystemObject)Activator.CreateInstance(type);
 
                 if (obj is not ISystemType iSystemType)
                 {
@@ -75,7 +75,7 @@ namespace ET
                 return;
             }
             
-            List<object> iLSRollbackSystems = this.TypeSystems.GetSystems(entity.GetType(), typeof (ILSRollbackSystem));
+            List<SystemObject> iLSRollbackSystems = this.TypeSystems.GetSystems(entity.GetType(), typeof (ILSRollbackSystem));
             if (iLSRollbackSystems == null)
             {
                 return;
@@ -106,7 +106,7 @@ namespace ET
                 return;
             }
             
-            List<object> iLSUpdateSystems = TypeSystems.GetSystems(entity.GetType(), typeof (ILSUpdateSystem));
+            List<SystemObject> iLSUpdateSystems = TypeSystems.GetSystems(entity.GetType(), typeof (ILSUpdateSystem));
             if (iLSUpdateSystems == null)
             {
                 return;

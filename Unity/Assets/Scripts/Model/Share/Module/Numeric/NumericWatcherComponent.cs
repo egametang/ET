@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class NumericWatcherInfo: Object
+    public struct NumericWatcherInfo
     {
         public SceneType SceneType { get; }
         public INumericWatcher INumericWatcher { get; }

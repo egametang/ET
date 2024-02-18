@@ -7,7 +7,7 @@ namespace ET
         Type Type { get; }
     }
     
-    public abstract class AInvokeHandler<A>: IInvoke where A: struct
+    public abstract class AInvokeHandler<A>: HandlerObject, IInvoke where A: struct
     {
         public Type Type
         {
@@ -20,7 +20,7 @@ namespace ET
         public abstract void Handle(A args);
     }
     
-    public abstract class AInvokeHandler<A, T>: IInvoke where A: struct
+    public abstract class AInvokeHandler<A, T>: HandlerObject, IInvoke where A: struct
     {
         public Type Type
         {

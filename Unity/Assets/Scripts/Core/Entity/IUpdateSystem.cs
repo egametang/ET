@@ -12,7 +12,7 @@ namespace ET
 	}
 
 	[EntitySystem]
-	public abstract class UpdateSystem<T> : IUpdateSystem where T: Entity, IUpdate
+	public abstract class UpdateSystem<T> : SystemObject, IUpdateSystem where T: Entity, IUpdate
 	{
 		void IUpdateSystem.Run(Entity o)
 		{
