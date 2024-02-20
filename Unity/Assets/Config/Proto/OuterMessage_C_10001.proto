@@ -13,7 +13,7 @@ message RouterSync
 	string Address = 2;
 }
 
-//ResponseType M2C_TestResponse
+// ResponseType M2C_TestResponse
 message C2M_TestRequest // ILocationRequest
 {
 	int32 RpcId = 1;
@@ -28,7 +28,7 @@ message M2C_TestResponse // IResponse
 	string response = 4;
 }
 
-//ResponseType G2C_EnterMap
+// ResponseType G2C_EnterMap
 message C2G_EnterMap // ISessionRequest
 {
 	int32 RpcId = 1;
@@ -39,7 +39,7 @@ message G2C_EnterMap // ISessionResponse
 	int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
-	// 自己unitId
+	/// 自己的UnitId
 	int64 MyId = 4;
 }
 
@@ -74,7 +74,7 @@ message M2C_CreateMyUnit // IMessage
 message M2C_StartSceneChange // IMessage
 {
 	int64 SceneInstanceId = 1;
-	string SceneName = 2;	
+	string SceneName = 2;
 }
 
 message M2C_RemoveUnits // IMessage
@@ -108,7 +108,7 @@ message M2C_Stop // IMessage
 	Unity.Mathematics.quaternion Rotation = 4;
 }
 
-//ResponseType G2C_Ping
+// ResponseType G2C_Ping
 message C2G_Ping // ISessionRequest
 {
 	int32 RpcId = 1;
@@ -127,7 +127,7 @@ message G2C_Test // ISessionMessage
 {
 }
 
-//ResponseType M2C_Reload
+// ResponseType M2C_Reload
 message C2M_Reload // ISessionRequest
 {
 	int32 RpcId = 1;
@@ -142,7 +142,7 @@ message M2C_Reload // ISessionResponse
 	string Message = 3;
 }
 
-//ResponseType R2C_Login
+// ResponseType R2C_Login
 message C2R_Login // ISessionRequest
 {
 	int32 RpcId = 1;
@@ -160,7 +160,7 @@ message R2C_Login // ISessionResponse
 	int64 GateId = 6;
 }
 
-//ResponseType G2C_LoginGate
+// ResponseType G2C_LoginGate
 message C2G_LoginGate // ISessionRequest
 {
 	int32 RpcId = 1;
@@ -181,7 +181,7 @@ message G2C_TestHotfixMessage // ISessionMessage
 	string Info = 1;
 }
 
-//ResponseType M2C_TestRobotCase
+// ResponseType M2C_TestRobotCase
 message C2M_TestRobotCase // ILocationRequest
 {
 	int32 RpcId = 1;
@@ -208,7 +208,7 @@ message M2C_TestRobotCase2 // ILocationMessage
 	int32 N = 2;
 }
 
-//ResponseType M2C_TransferMap
+// ResponseType M2C_TransferMap
 message C2M_TransferMap // ILocationRequest
 {
 	int32 RpcId = 1;
@@ -221,7 +221,7 @@ message M2C_TransferMap // ILocationResponse
 	string Message = 3;
 }
 
-//ResponseType G2C_Benchmark
+// ResponseType G2C_Benchmark
 message C2G_Benchmark // ISessionRequest
 {
 	int32 RpcId = 1;

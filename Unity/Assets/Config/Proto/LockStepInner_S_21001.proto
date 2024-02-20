@@ -1,8 +1,8 @@
 syntax = "proto3";
 package ET;
 
-// 请求匹配
-//ResponseType Match2G_Match
+/// 请求匹配
+// ResponseType Match2G_Match
 message G2Match_Match // IRequest
 {
 	int32 RpcId = 1;
@@ -17,7 +17,7 @@ message Match2G_Match // IResponse
 	string Message = 3;
 }
 
-//ResponseType Map2Match_GetRoom
+// ResponseType Map2Match_GetRoom
 message Match2Map_GetRoom // IRequest
 {
 	int32 RpcId = 1;
@@ -29,12 +29,12 @@ message Map2Match_GetRoom // IResponse
 	int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
-	
-	// 房间的ActorId
+
+	/// 房间的ActorId
 	ActorId ActorId = 4;
 }
 
-//ResponseType Room2G_Reconnect
+// ResponseType Room2G_Reconnect
 message G2Room_Reconnect // IRequest
 {
 	int32 RpcId = 1;
@@ -52,7 +52,7 @@ message Room2G_Reconnect // IResponse
 	int32 Frame = 6;
 }
 
-//ResponseType Room2RoomManager_Init
+// ResponseType Room2RoomManager_Init
 message RoomManager2Room_Init // IRequest
 {
 	int32 RpcId = 1;
