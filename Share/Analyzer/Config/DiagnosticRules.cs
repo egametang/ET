@@ -140,12 +140,12 @@ namespace ET.Analyzer
                 new DiagnosticDescriptor(DiagnosticIds.StaticFieldDeclarationAnalyzerRule,
                     Title,
                     MessageFormat,
-                    DiagnosticCategories.All, 
+                    DiagnosticCategories.All,
                     DiagnosticSeverity.Error,
                     true,
                     Description);
     }
-    
+
     public static class CheckETCancellTokenAfterAwaitAnalyzerRule
     {
         private const string Title = "含有ETCancelToken参数的异步函数内调用await表达式后必须判断CancelToken.IsCancel";
@@ -158,38 +158,38 @@ namespace ET.Analyzer
                 new DiagnosticDescriptor(DiagnosticIds.ETCancellationTokenAnalyzerRuleId,
                     Title,
                     MessageFormat,
-                    DiagnosticCategories.All, 
+                    DiagnosticCategories.All,
                     DiagnosticSeverity.Error,
                     true,
                     Description);
     }
-    
+
     public static class AwaitExpressionCancelTokenParamAnalyzerRule
     {
         private const string Title = "含有ETCancelToken参数的异步函数内调用await表达式必须传入同一个CancelToken";
-    
+
         private const string MessageFormat = "含有ETCancelToken参数的异步函数内调用await表达式必须传入同一个CancelToken";
-    
+
         private const string Description = "含有ETCancelToken参数的异步函数内调用await表达式必须传入同一个CancelToken.";
-    
+
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.AwaitExpressionCancelTokenParamAnalyzerRuleId,
                     Title,
                     MessageFormat,
-                    DiagnosticCategories.All, 
+                    DiagnosticCategories.All,
                     DiagnosticSeverity.Error,
                     true,
                     Description);
     }
-    
+
     public static class AsyncMethodWithCancelTokenParamAnalyzerRule
     {
         private const string Title = "异步函数声明处的ETCancelToken参数禁止声明默认值";
-    
+
         private const string MessageFormat = "异步函数声明处的ETCancelToken参数禁止声明默认值";
-    
+
         private const string Description = "异步函数声明处的ETCancelToken参数禁止声明默认值.";
-    
+
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.AsyncMethodWithCancelTokenParamAnalyzerRuleId,
                     Title,
@@ -199,16 +199,15 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-    
-    
+
     public static class ExpressionWithCancelTokenParamAnalyzerRule
     {
         private const string Title = "函数调用处的ETCancelToken参数禁止传入null";
-    
+
         private const string MessageFormat = "函数调用处的ETCancelToken参数禁止传入null";
-    
+
         private const string Description = "函数调用处的ETCancelToken参数禁止传入null.";
-    
+
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.ExpressionWithCancelTokenParamAnalyzerRuleId,
                     Title,
@@ -328,7 +327,7 @@ namespace ET.Analyzer
     {
         private const string Title = "Entity类存在未生成的生命周期函数";
 
-        private const string MessageFormat = "Entity类: {0} 存在未生成的生命周期函数111";
+        private const string MessageFormat = "Entity类: {0} 存在未生成的生命周期函数";
 
         private const string Description = "Entity类存在未生成的生命周期函数.";
 
@@ -395,7 +394,7 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-    
+
     public static class EntityComponentChildAnalyzerRule
     {
         private const string Title = "实体类禁止同时标记为Component和Child";
@@ -413,7 +412,7 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-    
+
     public static class EntityCannotDeclareGenericTypeRule
     {
         private const string Title = "实体类禁止声明为泛型实体类";
@@ -431,8 +430,7 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-    
-    
+
     public static class NetMessageAnalyzerRule
     {
         private const string Title = "消息类禁止声明实体字段";
@@ -450,7 +448,7 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-    
+
     public static class DisableNewAnalyzerRule
     {
         private const string Title = "含有DisableNew标记的类禁止使用new构造对象";
@@ -468,7 +466,7 @@ namespace ET.Analyzer
                     true,
                     Description);
     }
-    
+
     public static class EntityClassDeclarationAnalyzerrRule
     {
         private const string Title = "Model/ModelView程序集禁止声明非实体类";
