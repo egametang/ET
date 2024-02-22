@@ -38,7 +38,6 @@ namespace ET
         {
             this.arrayPool = arrayPool;
             buffer = arrayPool.Rent(size);
-            this.SegHead = new Kcp.SegmentHead() { len = 0 };
             this.SegHead = default;
             this.resendts = default;
             this.rto = default;
