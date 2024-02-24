@@ -216,6 +216,7 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 10. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
 11. [五星麻将](https://github.com/wufanjoin/fivestar)  
 12. [代号肉鸽：无限](https://www.taptap.cn/app/247225)  
+13. [卡车人生](https://www.kxdw.com/android/130033.html)  
 
 
 群友demo：  
