@@ -7,6 +7,8 @@
 ## 成都三猩元宇宙公司，拖欠员工工资，拖欠本人咨询费用  
 ---
 
+# 已出现多个一个人开发的MMO上线（具体看下面商业项目），足以证明ET的强大  
+
 # ET8.1 发布!  
 8.1跟8区别不大，代码结构完全没有变化，主要是编译方式的修改，可以在Unity中按F6进行编译，也可以在IDE中进行编译，运行中reload可以先按F6编译，再按F7进行热重载   
 
@@ -29,7 +31,7 @@
 16. 集成了sj的非托管容器库，性能爆炸  
 
 
-# 用ET的17个理由  
+# 用ET的18个理由  
 1. 多进程多线程Actor架构，客户端跟服务端都可以轻松创建纤程(fiber)利用多核，比如客户端网络一个纤程，寻路一个纤程，帧同步逻辑层一个纤程，表现层一个纤程  
 2. async await协程同步代码编写，避免回调地狱  
 3. 0GC消耗，超强的MemoryPack序列化, 超强的网络层性能  
@@ -204,13 +206,16 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
 2. [神选誓约](https://www.taptap.cn/app/248095)  
-3. [魔法点点2](https://www.taptap.com/app/227804)  
-4. [养不大](https://www.taptap.com/app/71064)  
-5. 天天躲猫猫2（ios2019春节下载排行19）  
-6. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
-7. [五星麻将](https://github.com/wufanjoin/fivestar)  
-8. [神选誓约](https://www.taptap.cn/app/248095)  
-9. [代号肉鸽：无限](https://www.taptap.cn/app/247225)  
+3. [危境](https://www.taptap.cn/app/271100) 一个人开发的mmo  
+4. 魔力回忆 许木一个人开发的魔力宝贝  
+5. [怒斩屠龙之乾坤剑指](http://wan.rxqu.com/mobile/downfile/index/gid/9.html) 传奇项目
+6. [魔法点点2](https://www.taptap.com/app/227804)  
+7. [养不大](https://www.taptap.com/app/71064)  
+8. 天天躲猫猫2（ios2019春节下载排行19）  
+9. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+10. [五星麻将](https://github.com/wufanjoin/fivestar)  
+11. [代号肉鸽：无限](https://www.taptap.cn/app/247225)  
+
 
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
@@ -242,7 +247,5 @@ __讨论QQ群 : 474643097__
 [xasset](https://github.com/xasset/xasset) 致力于为 Unity 项目提供了一套 精简稳健 的资源管理环境  
 [QFramework](https://github.com/liangxiegame/QFramework) Your first K.I.S.S Unity3d Framework  
 [ET UI框架](https://github.com/zzjfengqing/ET-EUI) 字母哥实现的UI框架，ET风格，各种事件分发  
-[ETCsharpToXLua](https://github.com/zzjfengqing/ETCsharpToXLua) 字母哥使用csharp.lua实现的ET客户端热更新  
-[et-6-with-ilruntime](https://www.lfzxb.top/et-6-with-ilruntime) 烟雨使用ILRuntime实现的ET客户端热更新  
 [Luban](https://github.com/focus-creative-games/luban) 适用于大中型项目的游戏配置解决方案  
 [ET-YIUI](https://github.com/LiShengYang-yiyi/YIUI/tree/YIUI-ET7.2) ETUI框架 
