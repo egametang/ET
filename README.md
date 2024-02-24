@@ -206,7 +206,7 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
 2. [神选誓约](https://www.taptap.cn/app/248095)  
-3. [危境](https://www.taptap.cn/app/271100) 一个人开发的mmo  
+3. [危境](https://www.taptap.cn/app/271100) 一个技术一个策划开发的mmo  
 4. 魔力回忆 许木一个人开发的魔力宝贝  
 5. [怒斩屠龙之乾坤剑指](http://wan.rxqu.com/mobile/downfile/index/gid/9.html) 传奇项目
 6. [魔法点点2](https://www.taptap.com/app/227804)  
