@@ -16,17 +16,18 @@ namespace ET.Client
             self.RouterManagerPort = port;
         }
         
-        public static async ETTask Init(this RouterAddressComponent self)
+        public static async ETTask<bool> Init(this RouterAddressComponent self)
         {
             self.RouterManagerIPAddress = NetworkHelper.GetHostAddress(self.RouterManagerHost);
-            await self.GetAllRouter();
+            return await self.GetAllRouter();
         }
 
-        private static async ETTask GetAllRouter(this RouterAddressComponent self)
+        private static async ETTask<bool> GetAllRouter(this RouterAddressComponent self)
         {
             string url = $"http://{self.RouterManagerHost}:{self.RouterManagerPort}/get_router?v={RandomGenerator.RandUInt32()}";
             Log.Debug($"start get router info: {url}");
-            string routerInfo = await HttpClientHelper.Get(url);
+            var (result, routerInfo) = await HttpClientHelper.Get(url);
+            if (!result) return false;
             Log.Debug($"recv router info: {routerInfo}");
             HttpGetRouterResponse httpGetRouterResponse = MongoHelper.FromJson<HttpGetRouterResponse>(routerInfo);
             self.Info = httpGetRouterResponse;
@@ -36,6 +37,7 @@ namespace ET.Client
             RandomGenerator.BreakRank(self.Info.Routers);
             
             self.WaitTenMinGetAllRouter().Coroutine();
+            return true;
         }
         
         // 等10分钟再获取一次
