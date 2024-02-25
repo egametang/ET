@@ -59,7 +59,7 @@ namespace ET
 
                 try
                 {
-                    List<object> iUpdateSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
+                    List<SystemObject> iUpdateSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
                     if (iUpdateSystems == null)
                     {
                         continue;
@@ -109,7 +109,7 @@ namespace ET
                     continue;
                 }
 
-                List<object> iLateUpdateSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
+                List<SystemObject> iLateUpdateSystems = EntitySystemSingleton.Instance.TypeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
                 if (iLateUpdateSystems == null)
                 {
                     continue;

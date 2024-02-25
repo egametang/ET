@@ -16,7 +16,7 @@ namespace ET
 	}
 
 	[EntitySystem]
-	public abstract class GetComponentSysSystem<T> : IGetComponentSysSystem where T: Entity, IGetComponentSys
+	public abstract class GetComponentSysSystem<T> : SystemObject, IGetComponentSysSystem where T: Entity, IGetComponentSys
 	{
 		void IGetComponentSysSystem.Run(Entity o, Type type)
 		{

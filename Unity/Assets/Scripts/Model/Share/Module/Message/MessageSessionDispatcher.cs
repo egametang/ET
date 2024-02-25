@@ -3,7 +3,7 @@ using System;
 
 namespace ET
 {
-    public class MessageSessionDispatcherInfo
+    public struct MessageSessionDispatcherInfo
     {
         public SceneType SceneType { get; }
         public IMessageSessionHandler IMHandler { get; }

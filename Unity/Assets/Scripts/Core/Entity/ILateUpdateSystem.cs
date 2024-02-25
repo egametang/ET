@@ -12,7 +12,7 @@ namespace ET
 	}
 
 	[EntitySystem]
-	public abstract class LateUpdateSystem<T> : ILateUpdateSystem where T: Entity, ILateUpdate
+	public abstract class LateUpdateSystem<T> : SystemObject, ILateUpdateSystem where T: Entity, ILateUpdate
 	{
 		void ILateUpdateSystem.Run(Entity o)
 		{

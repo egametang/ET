@@ -2,7 +2,7 @@ using CommandLine;
 
 namespace ET.Server
 {
-    public class CreateRobotArgs
+    public class CreateRobotArgs: Object
     {
         [Option("Num", Required = false, Default = 1)]
         public int Num { get; set; }

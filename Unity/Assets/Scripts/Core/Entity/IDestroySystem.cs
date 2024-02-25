@@ -12,7 +12,7 @@ namespace ET
 	}
 
 	[EntitySystem]
-	public abstract class DestroySystem<T> : IDestroySystem where T: Entity, IDestroy
+	public abstract class DestroySystem<T> : SystemObject, IDestroySystem where T: Entity, IDestroy
 	{
 		void IDestroySystem.Run(Entity o)
 		{

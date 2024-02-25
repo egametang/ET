@@ -4,7 +4,7 @@ using MemoryPack;
 namespace ET
 {
     [MemoryPackable]
-    public partial class Replay
+    public partial class Replay: Object
     {
         [MemoryPackOrder(1)]
         public List<LockStepUnitInfo> UnitInfos;

@@ -64,5 +64,7 @@
         public const string NetMessageAnalyzerRuleId = "ET0030";
 
         public const string DisableNewAnalyzerRuleId = "ET0031";
+
+        public const string DisableNormalClassDeclaratonInModelAssemblyAnalyzerRuleId = "ET0032";
     }
 }

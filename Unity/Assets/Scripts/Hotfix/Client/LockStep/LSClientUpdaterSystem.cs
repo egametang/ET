@@ -46,7 +46,7 @@ namespace ET.Client
                 FrameMessage frameMessage = FrameMessage.Create();
                 frameMessage.Frame = room.PredictionFrame;
                 frameMessage.Input = self.Input;
-                root.GetComponent<ClientSenderCompnent>().Send(frameMessage);
+                root.GetComponent<ClientSenderComponent>().Send(frameMessage);
                 
                 long timeNow2 = TimeInfo.Instance.ServerNow();
                 if (timeNow2 - timeNow > 5)

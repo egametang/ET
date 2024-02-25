@@ -12,7 +12,7 @@ namespace ET
                 this.QueueFlag = new bool[count];
             }
             
-            public readonly UnOrderMultiMap<Type, object> Map = new();
+            public readonly UnOrderMultiMap<Type, SystemObject> Map = new();
             // 这里不用hash，数量比较少，直接for循环速度更快
             public readonly bool[] QueueFlag;
         }
@@ -47,7 +47,7 @@ namespace ET
             return systems;
         }
 
-        public List<object> GetSystems(Type type, Type systemType)
+        public List<SystemObject> GetSystems(Type type, Type systemType)
         {
             OneTypeSystems oneTypeSystems = null;
             if (!this.typeSystemsMap.TryGetValue(type, out oneTypeSystems))
@@ -55,7 +55,7 @@ namespace ET
                 return null;
             }
 
-            if (!oneTypeSystems.Map.TryGetValue(systemType, out List<object> systems))
+            if (!oneTypeSystems.Map.TryGetValue(systemType, out List<SystemObject> systems))
             {
                 return null;
             }

@@ -1,9 +1,8 @@
 syntax = "proto3";
-// using 
 
 package ET;
 
-//ResponseType ObjectQueryResponse
+// ResponseType ObjectQueryResponse
 message ObjectQueryRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -11,7 +10,7 @@ message ObjectQueryRequest // IRequest
 	int64 InstanceId = 3;
 }
 
-//ResponseType A2M_Reload
+// ResponseType A2M_Reload
 message M2A_Reload // IRequest
 {
 	int32 RpcId = 1;
@@ -24,7 +23,7 @@ message A2M_Reload // IResponse
 	string Message = 3;
 }
 
-//ResponseType G2G_LockResponse
+// ResponseType G2G_LockResponse
 message G2G_LockRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -39,7 +38,7 @@ message G2G_LockResponse // IResponse
 	string Message = 3;
 }
 
-//ResponseType G2G_LockReleaseResponse
+// ResponseType G2G_LockReleaseResponse
 message G2G_LockReleaseRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -54,7 +53,7 @@ message G2G_LockReleaseResponse // IResponse
 	string Message = 3;
 }
 
-//ResponseType ObjectAddResponse
+// ResponseType ObjectAddResponse
 message ObjectAddRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -70,7 +69,7 @@ message ObjectAddResponse // IResponse
 	string Message = 3;
 }
 
-//ResponseType ObjectLockResponse
+// ResponseType ObjectLockResponse
 message ObjectLockRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -86,7 +85,7 @@ message ObjectLockResponse // IResponse
 	string Message = 3;
 }
 
-//ResponseType ObjectUnLockResponse
+// ResponseType ObjectUnLockResponse
 message ObjectUnLockRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -102,7 +101,7 @@ message ObjectUnLockResponse // IResponse
 	string Message = 3;
 }
 
-//ResponseType ObjectRemoveResponse
+// ResponseType ObjectRemoveResponse
 message ObjectRemoveRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -116,7 +115,7 @@ message ObjectRemoveResponse // IResponse
 	string Message = 3;
 }
 
-//ResponseType ObjectGetResponse
+// ResponseType ObjectGetResponse
 message ObjectGetRequest // IRequest
 {
 	int32 RpcId = 1;
@@ -132,7 +131,7 @@ message ObjectGetResponse // IResponse
 	ActorId ActorId = 5;
 }
 
-//ResponseType G2R_GetLoginKey
+// ResponseType G2R_GetLoginKey
 message R2G_GetLoginKey // IRequest
 {
 	int32 RpcId = 1;
@@ -161,7 +160,7 @@ message ObjectQueryResponse // IResponse
 	bytes Entity = 4;
 }
 
-//ResponseType M2M_UnitTransferResponse
+// ResponseType M2M_UnitTransferResponse
 message M2M_UnitTransferRequest // IRequest
 {
 	int32 RpcId = 1;

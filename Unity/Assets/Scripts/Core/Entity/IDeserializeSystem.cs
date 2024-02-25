@@ -16,7 +16,7 @@ namespace ET
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	[EntitySystem]
-	public abstract class DeserializeSystem<T> : IDeserializeSystem where T: Entity, IDeserialize
+	public abstract class DeserializeSystem<T> : SystemObject, IDeserializeSystem where T: Entity, IDeserialize
 	{
 		void IDeserializeSystem.Run(Entity o)
 		{

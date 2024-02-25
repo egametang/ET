@@ -48,7 +48,7 @@ namespace ET
     }
 
     [EntitySystem]
-    public abstract class AwakeSystem<T> : IAwakeSystem where T: Entity, IAwake
+    public abstract class AwakeSystem<T> : SystemObject, IAwakeSystem where T: Entity, IAwake
     {
         Type ISystemType.Type()
         {
@@ -74,7 +74,7 @@ namespace ET
     }
     
     [EntitySystem]
-    public abstract class AwakeSystem<T, A> : IAwakeSystem<A> where T: Entity, IAwake<A>
+    public abstract class AwakeSystem<T, A> : SystemObject, IAwakeSystem<A> where T: Entity, IAwake<A>
     {
         Type ISystemType.Type()
         {
@@ -100,7 +100,7 @@ namespace ET
     }
 
     [EntitySystem]
-    public abstract class AwakeSystem<T, A, B> : IAwakeSystem<A, B> where T: Entity, IAwake<A, B>
+    public abstract class AwakeSystem<T, A, B> : SystemObject, IAwakeSystem<A, B> where T: Entity, IAwake<A, B>
     {
         Type ISystemType.Type()
         {
@@ -126,7 +126,7 @@ namespace ET
     }
 
     [EntitySystem]
-    public abstract class AwakeSystem<T, A, B, C> : IAwakeSystem<A, B, C> where T: Entity, IAwake<A, B, C>
+    public abstract class AwakeSystem<T, A, B, C> : SystemObject, IAwakeSystem<A, B, C> where T: Entity, IAwake<A, B, C>
     {
         Type ISystemType.Type()
         {
@@ -152,7 +152,7 @@ namespace ET
     }
     
     [EntitySystem]
-    public abstract class AwakeSystem<T, A, B, C, D> : IAwakeSystem<A, B, C, D> where T: Entity, IAwake<A, B, C, D>
+    public abstract class AwakeSystem<T, A, B, C, D> : SystemObject, IAwakeSystem<A, B, C, D> where T: Entity, IAwake<A, B, C, D>
     {
         Type ISystemType.Type()
         {
