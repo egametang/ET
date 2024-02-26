@@ -30,6 +30,12 @@ namespace ET.Client
             await FiberManager.Instance.Remove(fiberId);
         }
 
+        public static async ETTask DisposeClientSender(this ClientSenderComponent self)
+        {
+            await self.RemoveFiberAsync();
+            self.Dispose();
+        }
+
         public static async ETTask<long> LoginAsync(this ClientSenderComponent self, string account, string password)
         {
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
