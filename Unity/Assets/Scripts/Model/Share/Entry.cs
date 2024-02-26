@@ -1,6 +1,7 @@
-﻿using MemoryPack;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Serializers;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using MemoryPack;
 
 namespace ET
 {
@@ -14,6 +15,28 @@ namespace ET
     
     public struct EntryEvent3
     {
+    }
+    
+    [MemoryPackable]
+    [ComponentOf(typeof(Scene))]
+    public partial class AA: Entity, IAwake
+    {
+    }
+
+    [MemoryPackable]
+    [ComponentOf(typeof(AA))]
+    public partial class BB : Entity, IAwake, ISerializeToEntity
+    {
+        [MemoryPackInclude]
+        public int B { get; set; }
+    }
+    
+    [MemoryPackable]
+    [ComponentOf(typeof(AA))]
+    public partial class CC : Entity, IAwake //, ISerializeToEntity
+    {
+        [MemoryPackInclude]
+        public int C { get; set; }
     }
     
     public static class Entry
@@ -34,6 +57,9 @@ namespace ET
 
             // 注册Mongo type
             MongoRegister.Init();
+            
+            MemoryPackFormatterProvider.Register(new MemoryPackSortedDictionaryFormatter<long, Entity>());
+            
             // 注册Entity序列化器
             EntitySerializeRegister.Init();
             World.Instance.AddSingleton<IdGenerater>();

@@ -23,6 +23,8 @@ namespace ET
             MethodInfo registerIdGenerators = typeof (BsonSerializer).GetMethod("RegisterIdGenerators", BindingFlags.Static | BindingFlags.NonPublic);
             registerIdGenerators.Invoke(null, Array.Empty<object>());
             
+            BsonSerializer.RegisterSerializer(new BsonSortedDictionaryInterfaceImplementerSerializer<SortedDictionary<long, Entity>>());
+            
             
             // 自动注册IgnoreExtraElements
             ConventionPack conventionPack = new() { new IgnoreExtraElementsConvention(true) };

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MemoryPack;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
@@ -221,11 +222,11 @@ namespace ET
                 this.ViewGO.GetComponent<ComponentView>().Component = this;
                 this.ViewGO.transform.SetParent(this.Parent == null ?
                         UnityEngine.GameObject.Find("Global").transform : this.Parent.ViewGO.transform);
-                foreach (var child in this.Children.Values)
+                foreach (Entity child in this.Children.Values)
                 {
                     child.ViewGO.transform.SetParent(this.ViewGO.transform);
                 }
-                foreach (var comp in this.Components.Values)
+                foreach (Entity comp in this.Components.Values)
                 {
                     comp.ViewGO.transform.SetParent(this.ViewGO.transform);
                 }
@@ -330,9 +331,9 @@ namespace ET
                     this.IsRegister = true;
 
                     // 反序列化出来的需要设置父子关系
-                    if (this.componentsDB != null)
+                    if (this.components != null)
                     {
-                        foreach (Entity component in this.componentsDB)
+                        foreach ((long _, Entity component) in this.components)
                         {
                             component.IsComponent = true;
                             this.Components.Add(this.GetLongHashCode(component.GetType()), component);
@@ -340,9 +341,9 @@ namespace ET
                         }
                     }
 
-                    if (this.childrenDB != null)
+                    if (this.children != null)
                     {
-                        foreach (Entity child in this.childrenDB)
+                        foreach ((long _, Entity child) in this.children)
                         {
                             child.IsComponent = false;
                             this.Children.Add(child.Id, child);
@@ -377,11 +378,9 @@ namespace ET
         }
 
         [MemoryPackInclude]
-        [BsonElement("Children")]
+        [BsonElement]
         [BsonIgnoreIfNull]
-        protected List<Entity> childrenDB;
-
-        [BsonIgnore]
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         private SortedDictionary<long, Entity> children;
 
         [MemoryPackIgnore]
@@ -416,11 +415,9 @@ namespace ET
         }
 
         [MemoryPackInclude]
-        [BsonElement("C")]
+        [BsonElement]
         [BsonIgnoreIfNull]
-        protected List<Entity> componentsDB;
-
-        [BsonIgnore]
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         private SortedDictionary<long, Entity> components;
 
         [MemoryPackIgnore]
@@ -471,19 +468,12 @@ namespace ET
                 }
 
                 this.children.Clear();
-                objectPool.Recycle(this.children);
-                this.children = null;
 
-                if (this.childrenDB != null)
+                if (this.IsNew)
                 {
-                    this.childrenDB.Clear();
-                    // 创建的才需要回到池中,从db中不需要回收
-                    if (this.IsNew)
-                    {
-                        objectPool.Recycle(this.childrenDB);
-                        this.childrenDB = null;
-                    }
+                    objectPool.Recycle(this.children);
                 }
+                this.children = null;
             }
 
             // 清理Component
@@ -495,19 +485,11 @@ namespace ET
                 }
 
                 this.components.Clear();
-                objectPool.Recycle(this.components);
-                this.components = null;
-
-                // 创建的才需要回到池中,从db中不需要回收
-                if (this.componentsDB != null)
+                if (this.IsNew)
                 {
-                    this.componentsDB.Clear();
-                    if (this.IsNew)
-                    {
-                        objectPool.Recycle(this.componentsDB);
-                        this.componentsDB = null;
-                    }
+                    objectPool.Recycle(this.components);
                 }
+                this.components = null;
             }
 
             // 触发Destroy事件
@@ -581,12 +563,11 @@ namespace ET
                 return;
             }
 
-            if (!this.children.TryGetValue(id, out Entity child))
+            if (!this.children.Remove(id, out Entity child))
             {
                 return;
             }
 
-            this.children.Remove(id);
             child.Dispose();
         }
 
@@ -939,42 +920,25 @@ namespace ET
 
         public override void BeginInit()
         {
+            if (this is not ISerializeToEntity)
+            {
+                return;
+            }
+            
             EntitySystemSingleton.Instance.Serialize(this);
             
-            if (!this.IsCreated) return;
-
-            this.componentsDB?.Clear();
             if (this.components != null && this.components.Count != 0)
             {
-                ObjectPool objectPool = ObjectPool.Instance;
-                foreach (Entity entity in this.components.Values)
+                foreach ((long _, Entity entity) in this.components)
                 {
-                    if (entity is not ISerializeToEntity)
-                    {
-                        continue;
-                    }
-
-                    this.componentsDB ??= objectPool.Fetch<List<Entity>>();
-                    this.componentsDB.Add(entity);
-
                     entity.BeginInit();
                 }
             }
 
-            this.childrenDB?.Clear();
             if (this.children != null && this.children.Count != 0)
             {
-                ObjectPool objectPool = ObjectPool.Instance;
-                foreach (Entity entity in this.children.Values)
+                foreach ((long _, Entity entity) in this.children)
                 {
-                    if (entity is not ISerializeToEntity)
-                    {
-                        continue;
-                    }
-
-                    this.childrenDB ??= objectPool.Fetch<List<Entity>>();
-                    this.childrenDB.Add(entity);
-
                     entity.BeginInit();
                 }
             }
