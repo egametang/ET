@@ -7,7 +7,23 @@
 ## 成都三猩元宇宙公司，拖欠员工工资，拖欠本人咨询费用  
 ---
 
-# 已出现多个一个人开发的MMO上线（具体看下面商业项目），足以证明ET的强大  
+---
+# 商业项目（已出现多个一个人开发的MMO上线，足以证明ET的强大）：    
+1. [千古风流](https://www.qiangu.com/) 大型mmo，团队100人2年开发完成  
+2. [神选誓约](https://www.taptap.cn/app/248095)  
+3. [危境](https://www.taptap.cn/app/271100) 一个技术一个策划开发的mmo，抖音可以搜索危境看直播  
+4. 魔力回忆 许木大厨一个人开发的魔力宝贝  
+5. [新生](https://store.steampowered.com/app/1704940/_/) steam上，一个人开发的科幻mmo  
+6. [怒斩屠龙之乾坤剑指](http://wan.rxqu.com/mobile/downfile/index/gid/9.html) 传奇项目  
+7. [魔法点点2](https://www.taptap.com/app/227804) 一个人开发  
+8. [养不大](https://www.taptap.com/app/71064)  
+9. 天天躲猫猫2（ios2019春节下载排行19）  
+10. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+11. [五星麻将](https://github.com/wufanjoin/fivestar)  
+12. [代号肉鸽：无限](https://www.taptap.cn/app/247225) 一个人开发  
+13. [卡车人生](https://www.kxdw.com/android/130033.html)  
+14. [掌门太闲](https://www.taptap.cn/app/361952) 一个人开发  
+---
 
 # ET8.1 发布!  
 8.1跟8区别不大，代码结构完全没有变化，主要是编译方式的修改，可以在Unity中按F6进行编译，也可以在IDE中进行编译，运行中reload可以先按F6编译，再按F7进行热重载   
@@ -202,22 +218,6 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
-
-商业项目:  
-1. [千古风流](https://www.qiangu.com/) 大型mmo，团队100人2年开发完成  
-2. [神选誓约](https://www.taptap.cn/app/248095)  
-3. [危境](https://www.taptap.cn/app/271100) 一个技术一个策划开发的mmo，抖音可以搜索危境看直播  
-4. 魔力回忆 许木一个人开发的魔力宝贝  
-5. [新生](https://store.steampowered.com/app/1704940/_/) steam上，一个人开发的科幻mmo  
-6. [怒斩屠龙之乾坤剑指](http://wan.rxqu.com/mobile/downfile/index/gid/9.html) 传奇项目
-7. [魔法点点2](https://www.taptap.com/app/227804) 一个人开发  
-8. [养不大](https://www.taptap.com/app/71064)  
-9. 天天躲猫猫2（ios2019春节下载排行19）  
-10. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
-11. [五星麻将](https://github.com/wufanjoin/fivestar)  
-12. [代号肉鸽：无限](https://www.taptap.cn/app/247225) 一个人开发  
-13. [卡车人生](https://www.kxdw.com/android/130033.html)  
-14. [掌门太闲](https://www.taptap.cn/app/361952) 一个人开发  
 
 
 群友demo：  
