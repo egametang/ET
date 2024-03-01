@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
+using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
@@ -11,13 +11,14 @@ namespace ET
     {
         [StaticField]
         private static readonly JsonWriterSettings defaultSettings = new() { OutputMode = JsonOutputMode.RelaxedExtendedJson };
-        
+
         public static string ToJson(object obj)
         {
             if (obj is ISupportInitialize supportInitialize)
             {
                 supportInitialize.BeginInit();
             }
+
             return obj.ToJson(defaultSettings);
         }
 
@@ -27,6 +28,7 @@ namespace ET
             {
                 supportInitialize.BeginInit();
             }
+
             return obj.ToJson(settings);
         }
 
@@ -34,17 +36,36 @@ namespace ET
         {
             try
             {
-                return BsonSerializer.Deserialize<T>(str);
+                var o = BsonSerializer.Deserialize<T>(str);
+                if (o is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.EndInit();
+                }
+
+                return o;
             }
             catch (Exception e)
             {
-                throw new Exception($"{str}\n{e}");
+                throw new Exception($"from json error: {typeof(T).FullName} {str}", e);
             }
         }
 
         public static object FromJson(Type type, string str)
         {
-            return BsonSerializer.Deserialize(str, type);
+            try
+            {
+                var o = BsonSerializer.Deserialize(str, type);
+                if (o is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.EndInit();
+                }
+
+                return o;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"from json error: {type.FullName} {str}", e);
+            }
         }
 
         public static byte[] Serialize(object obj)
@@ -53,6 +74,7 @@ namespace ET
             {
                 supportInitialize.BeginInit();
             }
+
             return obj.ToBson();
         }
 
@@ -64,10 +86,10 @@ namespace ET
             }
 
             using BsonBinaryWriter bsonWriter = new(stream, BsonBinaryWriterSettings.Defaults);
-            
+
             BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
-            BsonSerializationArgs args = default;
-            args.NominalType = typeof (object);
+            BsonSerializationArgs    args    = default;
+            args.NominalType = typeof(object);
             IBsonSerializer serializer = BsonSerializer.LookupSerializer(args.NominalType);
             serializer.Serialize(context, args, message);
         }
@@ -76,7 +98,13 @@ namespace ET
         {
             try
             {
-                return BsonSerializer.Deserialize(bytes, type);
+                var o = BsonSerializer.Deserialize(bytes, type);
+                if (o is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.EndInit();
+                }
+
+                return o;
             }
             catch (Exception e)
             {
@@ -89,8 +117,13 @@ namespace ET
             try
             {
                 using MemoryStream memoryStream = new(bytes, index, count);
-                
-                return BsonSerializer.Deserialize(memoryStream, type);
+                var o = BsonSerializer.Deserialize(memoryStream, type);
+                if (o is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.EndInit();
+                }
+
+                return o;
             }
             catch (Exception e)
             {
@@ -102,7 +135,13 @@ namespace ET
         {
             try
             {
-                return BsonSerializer.Deserialize(stream, type);
+                var o = BsonSerializer.Deserialize(stream, type);
+                if (o is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.EndInit();
+                }
+
+                return o;
             }
             catch (Exception e)
             {
@@ -115,18 +154,23 @@ namespace ET
             try
             {
                 using MemoryStream memoryStream = new(bytes);
-                
-                return (T)BsonSerializer.Deserialize(memoryStream, typeof (T));
+                var o = (T)BsonSerializer.Deserialize(memoryStream, typeof(T));
+                if (o is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.EndInit();
+                }
+
+                return o;
             }
             catch (Exception e)
             {
-                throw new Exception($"from bson error: {typeof (T).FullName} {bytes.Length}", e);
+                throw new Exception($"from bson error: {typeof(T).FullName} {bytes.Length}", e);
             }
         }
 
         public static T Deserialize<T>(byte[] bytes, int index, int count)
         {
-            return (T)Deserialize(typeof (T), bytes, index, count);
+            return (T)Deserialize(typeof(T), bytes, index, count);
         }
 
         public static T Clone<T>(T t)
