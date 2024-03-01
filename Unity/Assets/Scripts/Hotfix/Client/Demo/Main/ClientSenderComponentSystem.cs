@@ -30,7 +30,7 @@ namespace ET.Client
             await FiberManager.Instance.Remove(fiberId);
         }
 
-        public static async ETTask DisposeClientSender(this ClientSenderComponent self)
+        public static async ETTask DisposeAsync(this ClientSenderComponent self)
         {
             await self.RemoveFiberAsync();
             self.Dispose();
