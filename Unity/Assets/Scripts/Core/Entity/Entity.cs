@@ -381,7 +381,7 @@ namespace ET
         [BsonElement]
         [BsonIgnoreIfNull]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private SortedDictionary<long, Entity> children;
+        protected SortedDictionary<long, Entity> children;
 
         [MemoryPackIgnore]
         [BsonIgnore]
@@ -418,7 +418,7 @@ namespace ET
         [BsonElement]
         [BsonIgnoreIfNull]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private SortedDictionary<long, Entity> components;
+        protected SortedDictionary<long, Entity> components;
 
         [MemoryPackIgnore]
         [BsonIgnore]
