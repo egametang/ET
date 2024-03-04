@@ -6,6 +6,8 @@ namespace ET
     [Code]
     public class EntitySystemSingleton: Singleton<EntitySystemSingleton>, ISingletonAwake
     {
+        private readonly DoubleMap<Type, long> entityTypeLongHashCode = new();
+        
         public TypeSystems TypeSystems { get; private set; }
         
         public void Awake()
@@ -27,6 +29,29 @@ namespace ET
                     }
                 }
             }
+            
+            foreach (var kv in CodeTypes.Instance.GetTypes())
+            {
+                Type type = kv.Value;
+                if (typeof(Entity).IsAssignableFrom(type))
+                {
+                    long hash = type.FullName.GetLongHashCode();
+                    try
+                    {
+                        this.entityTypeLongHashCode.Add(type, type.FullName.GetLongHashCode());
+                    }
+                    catch (Exception e)
+                    {
+                        Type sameHashType = this.entityTypeLongHashCode.GetKeyByValue(hash);
+                        throw new Exception($"long hash add fail: {type.FullName} {sameHashType.FullName}", e);
+                    }
+                }
+            }
+        }
+        
+        public long GetLongHashCode(Type type)
+        {
+            return this.entityTypeLongHashCode.GetValueByKey(type);
         }
         
         public void Serialize(Entity component)

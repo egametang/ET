@@ -49,11 +49,6 @@ namespace ET
             return this.AddChildWithId<T, A, B, C>(this.GetId(), a, b, c, isFromPool);
         }
 
-        protected override long GetLongHashCode(Type type)
-        {
-            return LSEntitySystemSingleton.Instance.GetLongHashCode(type);
-        }
-
         protected override void RegisterSystem()
         {
             LSWorld lsWorld = (LSWorld)this.IScene;

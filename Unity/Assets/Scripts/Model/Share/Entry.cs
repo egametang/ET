@@ -58,7 +58,8 @@ namespace ET
             // 注册Mongo type
             MongoRegister.Init();
             
-            MemoryPackFormatterProvider.Register(new MemoryPackSortedDictionaryFormatter<long, Entity>());
+            MemoryPackFormatterProvider.Register(new MemoryPackChildrenCollectionFormatter());
+            MemoryPackFormatterProvider.Register(new MemoryPackComponentsCollectionFormatter());
             
             // 注册Entity序列化器
             EntitySerializeRegister.Init();
