@@ -33,14 +33,12 @@ namespace ET
             int count = 0;
             foreach (var kv in value)
             {
-                if (kv.Value is not ISerializeToEntity)
-                {
-                    continue;
-                }
-
                 Entity entity = kv.Value;
-                ++count;
-                formatter.Serialize(ref writer, ref entity!);
+                if (entity is ISerializeToEntity || entity.IsSerilizeWithParent)
+                {
+                    ++count;
+                    formatter.Serialize(ref writer, ref entity!);
+                }
             }
             Unsafe.WriteUnaligned(ref spanReference, count);
         }
@@ -72,6 +70,7 @@ namespace ET
             {
                 Entity entity = null!;
                 formatter.Deserialize(ref reader, ref entity!);
+                entity.IsSerilizeWithParent = true;
                 value.Add(entity.Id, entity);
             }
         }

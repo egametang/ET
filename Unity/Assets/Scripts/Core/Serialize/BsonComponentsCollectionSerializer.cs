@@ -15,6 +15,7 @@ namespace ET
             while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
             {
                 Entity entity = bsonSerializer.Deserialize(context);
+                entity.IsSerilizeWithParent = true;
                 componentsCollection.Add(Entity.GetLongHashCodeByType(entity.GetType()), entity);
             }
             bsonReader.ReadEndArray();
@@ -31,11 +32,10 @@ namespace ET
             IBsonSerializer<Entity> bsonSerializer = BsonSerializer.LookupSerializer<Entity>();
             foreach ((long _, Entity entity) in componentsCollection)
             {
-                if (entity is not ISerializeToEntity)
+                if (entity is ISerializeToEntity || entity.IsSerilizeWithParent)
                 {
-                    continue;
+                    bsonSerializer.Serialize(context, entity);
                 }
-                bsonSerializer.Serialize(context, entity);
             }
             bsonWriter.WriteEndArray();
         }

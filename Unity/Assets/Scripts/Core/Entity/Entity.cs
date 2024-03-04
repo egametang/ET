@@ -15,6 +15,7 @@ namespace ET
         IsComponent = 1 << 2,
         IsCreated = 1 << 3,
         IsNew = 1 << 4,
+        IsSerilizeWithParent = 1 << 5,
     }
 
     [MemoryPackable(GenerateType.NoGenerate)]
@@ -36,12 +37,12 @@ namespace ET
         [BsonIgnore]
         public long InstanceId { get; protected set; }
 
+        [BsonIgnore]
+        private EntityStatus status = EntityStatus.None;
+        
         protected Entity()
         {
         }
-
-        [BsonIgnore]
-        private EntityStatus status = EntityStatus.None;
 
         [MemoryPackIgnore]
         [BsonIgnore]
@@ -162,6 +163,23 @@ namespace ET
                 else
                 {
                     this.status &= ~EntityStatus.IsNew;
+                }
+            }
+        }
+        
+        [BsonIgnore]
+        public bool IsSerilizeWithParent
+        {
+            get => (this.status & EntityStatus.IsSerilizeWithParent) == EntityStatus.IsSerilizeWithParent;
+            set
+            {
+                if (value)
+                {
+                    this.status |= EntityStatus.IsSerilizeWithParent;
+                }
+                else
+                {
+                    this.status &= ~EntityStatus.IsSerilizeWithParent;
                 }
             }
         }
@@ -519,7 +537,7 @@ namespace ET
 
             base.Dispose();
             
-            // 把status字段其它的status标记都还原
+            // 把status字段除了IsFromPool其它的status标记都还原
             bool isFromPool = this.IsFromPool;
             this.status = EntityStatus.None;
             this.IsFromPool = isFromPool;
@@ -918,7 +936,7 @@ namespace ET
 
         public override void BeginInit()
         {
-            if (this is not ISerializeToEntity)
+            if (this is not ISerializeToEntity && !this.IsSerilizeWithParent)
             {
                 return;
             }

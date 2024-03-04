@@ -21,6 +21,7 @@ namespace ET
             CC cc = aa.AddComponent<CC>();
             bb.B = 1;
             cc.C = 2;
+            cc.IsSerilizeWithParent = true;
 
             byte[] bytes = MemoryPackSerializer.Serialize(aa);
 
