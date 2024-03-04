@@ -1,0 +1,44 @@
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+
+namespace ET
+{
+    public class BsonChildrenCollectionSerializer: IBsonSerializer
+    {
+        public object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+        {
+            ChildrenCollection childrenCollection = new ChildrenCollection();
+            IBsonSerializer<Entity> bsonSerializer = BsonSerializer.LookupSerializer<Entity>();
+            var bsonReader = context.Reader;
+            bsonReader.ReadStartArray();
+            while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
+            {
+                Entity entity = bsonSerializer.Deserialize(context);
+                childrenCollection.Add(entity.Id, entity);
+            }
+            bsonReader.ReadEndArray();
+
+            return childrenCollection;
+        }
+
+        public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
+        {
+            var bsonWriter = context.Writer;
+            bsonWriter.WriteStartArray();
+            ChildrenCollection childrenCollection = (ChildrenCollection)value;
+
+            IBsonSerializer<Entity> bsonSerializer = BsonSerializer.LookupSerializer<Entity>();
+            foreach ((long _, Entity entity) in childrenCollection)
+            {
+                if (entity is not ISerializeToEntity)
+                {
+                    continue;
+                }
+                bsonSerializer.Serialize(context, entity);
+            }
+            bsonWriter.WriteEndArray();
+        }
+
+        public System.Type ValueType { get; }
+    }
+}

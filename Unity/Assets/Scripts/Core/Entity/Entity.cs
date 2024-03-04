@@ -383,9 +383,8 @@ namespace ET
         }
 
         [MemoryPackInclude]
-        [BsonIgnore]
+        [BsonElement]
         [BsonIgnoreIfNull]
-        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         protected ChildrenCollection children;
 
         [MemoryPackIgnore]
@@ -420,9 +419,8 @@ namespace ET
         }
 
         [MemoryPackInclude]
-        [BsonIgnore]
+        [BsonElement]
         [BsonIgnoreIfNull]
-        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         protected ComponentsCollection components;
 
         [MemoryPackIgnore]
