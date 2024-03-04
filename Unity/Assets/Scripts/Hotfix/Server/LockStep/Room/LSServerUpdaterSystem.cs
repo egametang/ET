@@ -31,7 +31,7 @@ namespace ET.Server
 
             OneFrameInputs sendInput = OneFrameInputs.Create();
             oneFrameInputs.CopyTo(sendInput);
-
+            Log.Debug($"server broadcast: {sendInput}");
             RoomMessageHelper.BroadCast(room, sendInput);
 
             room.Update(oneFrameInputs);
@@ -72,6 +72,7 @@ namespace ET.Server
                 {
                     oneFrameInputs.Inputs[playerId] = new LSInput();
                 }
+                Log.Debug($"use last input, current frame: {frame} {playerId}:{oneFrameInputs.Inputs[playerId]}");
             }
 
             return oneFrameInputs;

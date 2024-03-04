@@ -12,6 +12,7 @@ namespace ET
 
         public void CopyTo(OneFrameInputs to)
         {
+            to.Frame = this.Frame;
             to.Inputs.Clear();
             foreach (var kv in this.Inputs)
             {
@@ -52,6 +53,11 @@ namespace ET
                 {
                     return true;
                 }
+                return false;
+            }
+
+            if (a.Frame != b.Frame)
+            {
                 return false;
             }
             

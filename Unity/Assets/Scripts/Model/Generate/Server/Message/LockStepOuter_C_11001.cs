@@ -232,6 +232,9 @@ namespace ET
             return ObjectPool.Instance.Fetch(typeof(OneFrameInputs), isFromPool) as OneFrameInputs;
         }
 
+        [MemoryPackOrder(0)]
+        public int Frame { get; set; }
+
         [MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
         [MemoryPackOrder(1)]
         public Dictionary<long, LSInput> Inputs { get; set; } = new();
@@ -242,6 +245,7 @@ namespace ET
                 return;
             }
 
+            this.Frame = default;
             this.Inputs.Clear();
 
             ObjectPool.Instance.Recycle(this);

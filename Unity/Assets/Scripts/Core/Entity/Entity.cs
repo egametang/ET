@@ -341,8 +341,8 @@ namespace ET
                         foreach ((long _, Entity component) in this.components)
                         {
                             component.IsComponent = true;
-                            this.Components.Add(GetLongHashCodeByType(component.GetType()), component);
                             component.parent = this;
+                            component.IScene = this.iScene;
                         }
                     }
 
@@ -351,26 +351,9 @@ namespace ET
                         foreach ((long _, Entity child) in this.children)
                         {
                             child.IsComponent = false;
-                            this.Children.Add(child.Id, child);
                             child.parent = this;
+                            child.IScene = this.iScene;
                         }
-                    }
-                }
-
-                // 递归设置孩子的Domain
-                if (this.children != null)
-                {
-                    foreach (Entity entity in this.children.Values)
-                    {
-                        entity.IScene = this.iScene;
-                    }
-                }
-
-                if (this.components != null)
-                {
-                    foreach (Entity component in this.components.Values)
-                    {
-                        component.IScene = this.iScene;
                     }
                 }
 

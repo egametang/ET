@@ -37,7 +37,7 @@ namespace ET.Client
 
                 ++room.PredictionFrame;
                 OneFrameInputs oneFrameInputs = self.GetOneFrameMessages(room.PredictionFrame);
-                
+                Log.Debug($"predictionFrame: {MongoHelper.ToJson(oneFrameInputs)}");
                 room.Update(oneFrameInputs);
                 room.SendHash(room.PredictionFrame);
                 
@@ -76,7 +76,7 @@ namespace ET.Client
                 authorityFrame.CopyTo(predictionFrame);
             }
             predictionFrame.Inputs[self.MyId] = self.Input;
-            
+            predictionFrame.Frame = frame;
             return predictionFrame;
         }
     }

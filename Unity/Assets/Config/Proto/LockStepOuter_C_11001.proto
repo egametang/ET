@@ -51,6 +51,7 @@ message FrameMessage // IMessage
 
 message OneFrameInputs // IMessage
 {
+	int32 Frame = 1;
 	map<int64, LSInput> Inputs = 2;
 }
 

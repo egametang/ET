@@ -68,6 +68,7 @@ namespace ET
         {
             EnsureFrame(frame);
             OneFrameInputs oneFrameInputs = this.frameInputs[frame % this.frameInputs.Capacity];
+            oneFrameInputs.Frame = frame;
             return oneFrameInputs;
         }
 
