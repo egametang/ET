@@ -191,10 +191,10 @@ namespace ET
                     throw new Exception($"cant set parent self: {this.GetType().FullName}");
                 }
 
-                // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
+                // 严格限制parent必须要有iSence,也就是说parent必须在数据树上面
                 if (value.IScene == null)
                 {
-                    throw new Exception($"cant set parent because parent domain is null: {this.GetType().FullName} {value.GetType().FullName}");
+                    throw new Exception($"cant set parent because parent iSence is null: {this.GetType().FullName} {value.GetType().FullName}");
                 }
 
                 if (this.parent != null) // 之前有parent
@@ -255,10 +255,10 @@ namespace ET
                     throw new Exception($"cant set parent self: {this.GetType().FullName}");
                 }
 
-                // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
+                // 严格限制parent必须要有iSence,也就是说parent必须在数据树上面
                 if (value.IScene == null)
                 {
-                    throw new Exception($"cant set parent because parent domain is null: {this.GetType().FullName} {value.GetType().FullName}");
+                    throw new Exception($"cant set parent because parent iSence is null: {this.GetType().FullName} {value.GetType().FullName}");
                 }
 
                 if (this.parent != null) // 之前有parent
@@ -315,7 +315,7 @@ namespace ET
             {
                 if (value == null)
                 {
-                    throw new Exception($"domain cant set null: {this.GetType().FullName}");
+                    throw new Exception($"iScene cant set null: {this.GetType().FullName}");
                 }
 
                 if (this.iScene == value)
@@ -323,43 +323,42 @@ namespace ET
                     return;
                 }
 
-                IScene preScene = this.iScene;
-                this.iScene = value;
-
-                if (preScene == null)
+                if (this.iScene != null)
                 {
-                    if (this.InstanceId == 0)
-                    {
-                        this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
-                    }
+                    this.iScene = value;
+                    return;
+                }
 
-                    this.IsRegister = true;
+                if (this.InstanceId == 0)
+                {
+                    this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                }
 
-                    // 反序列化出来的需要设置父子关系
-                    if (this.components != null)
-                    {
-                        foreach ((long _, Entity component) in this.components)
-                        {
-                            component.IsComponent = true;
-                            component.parent = this;
-                            component.IScene = this.iScene;
-                        }
-                    }
+                this.IsRegister = true;
 
-                    if (this.children != null)
+                // 反序列化出来的需要设置父子关系
+                if (this.components != null)
+                {
+                    foreach ((long _, Entity component) in this.components)
                     {
-                        foreach ((long _, Entity child) in this.children)
-                        {
-                            child.IsComponent = false;
-                            child.parent = this;
-                            child.IScene = this.iScene;
-                        }
+                        component.IsComponent = true;
+                        component.parent = this;
+                        component.IScene = this.iScene;
                     }
                 }
 
+                if (this.children != null)
+                {
+                    foreach ((long _, Entity child) in this.children)
+                    {
+                        child.IsComponent = false;
+                        child.parent = this;
+                        child.IScene = this.iScene;
+                    }
+                }
+                    
                 if (!this.IsNew)
                 {
-                    this.IsNew = true;
                     EntitySystemSingleton.Instance.Deserialize(this);
                 }
             }
