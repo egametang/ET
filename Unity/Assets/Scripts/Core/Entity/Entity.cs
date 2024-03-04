@@ -329,6 +329,8 @@ namespace ET
                     return;
                 }
 
+                this.iScene = value;
+                
                 if (this.InstanceId == 0)
                 {
                     this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
