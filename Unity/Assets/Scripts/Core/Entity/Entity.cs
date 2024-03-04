@@ -13,9 +13,8 @@ namespace ET
         IsFromPool = 1,
         IsRegister = 1 << 1,
         IsComponent = 1 << 2,
-        IsCreated = 1 << 3,
-        IsNew = 1 << 4,
-        IsSerilizeWithParent = 1 << 5,
+        IsNew = 1 << 3,
+        IsSerilizeWithParent = 1 << 4,
     }
 
     [MemoryPackable(GenerateType.NoGenerate)]
@@ -129,23 +128,6 @@ namespace ET
                 else
                 {
                     this.status &= ~EntityStatus.IsComponent;
-                }
-            }
-        }
-
-        [BsonIgnore]
-        protected bool IsCreated
-        {
-            get => (this.status & EntityStatus.IsCreated) == EntityStatus.IsCreated;
-            set
-            {
-                if (value)
-                {
-                    this.status |= EntityStatus.IsCreated;
-                }
-                else
-                {
-                    this.status &= ~EntityStatus.IsCreated;
                 }
             }
         }
@@ -392,9 +374,9 @@ namespace ET
                     }
                 }
 
-                if (!this.IsCreated)
+                if (!this.IsNew)
                 {
-                    this.IsCreated = true;
+                    this.IsNew = true;
                     EntitySystemSingleton.Instance.Deserialize(this);
                 }
             }
@@ -718,7 +700,6 @@ namespace ET
             }
 
             component.IsFromPool = isFromPool;
-            component.IsCreated = true;
             component.IsNew = true;
             component.Id = 0;
             return component;

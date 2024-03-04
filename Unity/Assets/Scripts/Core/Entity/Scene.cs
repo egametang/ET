@@ -28,7 +28,6 @@ namespace ET
             this.Name = name;
             this.InstanceId = instanceId;
             this.SceneType = sceneType;
-            this.IsCreated = true;
             this.IsNew = true;
             this.Fiber = fiber;
             this.IScene = this;
