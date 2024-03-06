@@ -20,6 +20,12 @@ namespace ET
     [MemoryPackable(GenerateType.NoGenerate)]
     public abstract partial class Entity: DisposeObject, IPool
     {
+        // 给source generater调用的
+        public static T Fetch<T>() where T : Entity
+        {
+            return ObjectPool.Fetch<T>();
+        }
+        
         public static long GetLongHashCodeByType(Type type)
         {
             return EntitySystemSingleton.Instance.GetLongHashCode(type);

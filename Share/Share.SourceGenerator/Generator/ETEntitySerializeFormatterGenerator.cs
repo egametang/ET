@@ -150,6 +150,10 @@ namespace ET
         {
             sb.AppendLine($$"""
             case {{entityName.GetLongHashCode()}}:
+                    if(value == null)
+                    {
+                        value = global::{{entityName}}.Fetch<global::{{entityName}}>();
+                    }
                     if(value is global::{{entityName}})
                     {
                         reader.ReadPackable(ref System.Runtime.CompilerServices.Unsafe.As<global::{{Definition.EntityType}}?, global::{{entityName}}>(ref value));
