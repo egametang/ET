@@ -11,10 +11,6 @@ namespace ET
         }
         
         public bool IsFromPool { get; set; }
-        
-        private ComponentsCollection()
-        {
-        }
 
         public void Dispose()
         {

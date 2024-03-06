@@ -42,23 +42,22 @@ namespace ET.Server
 
         private static void Check(this MessageLocationSenderOneType self)
         {
-            using (ListComponent<long> list = ListComponent<long>.Create())
+            using ListComponent<long> list = ListComponent<long>.Create();
+            
+            long timeNow = TimeInfo.Instance.ServerNow();
+            foreach ((long key, Entity value) in self.Children)
             {
-                long timeNow = TimeInfo.Instance.ServerNow();
-                foreach ((long key, Entity value) in self.Children)
-                {
-                    MessageLocationSender messageLocationMessageSender = (MessageLocationSender) value;
+                MessageLocationSender messageLocationMessageSender = (MessageLocationSender) value;
 
-                    if (timeNow > messageLocationMessageSender.LastSendOrRecvTime + MessageLocationSenderOneType.TIMEOUT_TIME)
-                    {
-                        list.Add(key);
-                    }
-                }
-
-                foreach (long id in list)
+                if (timeNow > messageLocationMessageSender.LastSendOrRecvTime + MessageLocationSenderOneType.TIMEOUT_TIME)
                 {
-                    self.Remove(id);
+                    list.Add(key);
                 }
+            }
+
+            foreach (long id in list)
+            {
+                self.Remove(id);
             }
         }
 

@@ -12,10 +12,6 @@ namespace ET
         
         public bool IsFromPool { get; set; }
         
-        private ChildrenCollection()
-        {
-        }
-        
         public void Dispose()
         {
             if (!this.IsFromPool)

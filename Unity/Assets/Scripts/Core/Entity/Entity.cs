@@ -206,7 +206,7 @@ namespace ET
                         return;
                     }
 
-                    this.parent.RemoveFromChildren(this);
+                    this.parent.RemoveChildNoDispose(this);
                 }
 
                 this.parent = value;
@@ -270,7 +270,7 @@ namespace ET
                         return;
                     }
 
-                    this.parent.RemoveFromComponents(this);
+                    this.parent.RemoveComponentNoDispose(this);
                 }
 
                 this.parent = value;
@@ -386,18 +386,22 @@ namespace ET
             this.Children.Add(entity.Id, entity);
         }
 
-        private void RemoveFromChildren(Entity entity)
+        private void RemoveChildNoDispose(Entity entity)
         {
             if (this.children == null)
             {
                 return;
             }
 
-            this.children.Remove(entity.Id);
+            if (!this.children.Remove(entity.Id))
+            {
+                return;
+            }
 
             if (this.children.Count == 0)
             {
-                ObjectPool.Recycle(ref this.children);
+                this.children.Dispose();
+                this.children = null;
             }
         }
 
@@ -480,11 +484,11 @@ namespace ET
             {
                 if (this.IsComponent)
                 {
-                    this.parent.RemoveComponent(this);
+                    this.parent.RemoveComponentNoDispose(this);
                 }
                 else
                 {
-                    this.parent.RemoveFromChildren(this);
+                    this.parent.RemoveChildNoDispose(this);
                 }
             }
 
@@ -505,14 +509,17 @@ namespace ET
             this.Components.Add(GetLongHashCodeByType(component.GetType()), component);
         }
 
-        private void RemoveFromComponents(Entity component)
+        private void RemoveComponentNoDispose(Entity component)
         {
             if (this.components == null)
             {
                 return;
             }
 
-            this.components.Remove(GetLongHashCodeByType(component.GetType()));
+            if (!this.components.Remove(GetLongHashCodeByType(component.GetType())))
+            {
+                return;
+            }
 
             if (this.components.Count == 0)
             {
@@ -544,13 +551,13 @@ namespace ET
                 return;
             }
             
-            child.Dispose();
-            
             if (this.children.Count == 0)
             {
                 this.children.Dispose();
                 this.children = null;
             }
+            
+            child.Dispose();
         }
 
         public void RemoveComponent<K>() where K : Entity
@@ -566,42 +573,11 @@ namespace ET
             }
 
             Type type = typeof (K);
-            
-            Entity c;
-            if (!this.components.TryGetValue(GetLongHashCodeByType(type), out c))
+
+            if (this.components.Remove(GetLongHashCodeByType(type), out Entity c))
             {
-                return;
+                c.Dispose();
             }
-
-            this.RemoveFromComponents(c);
-            c.Dispose();
-        }
-
-        private void RemoveComponent(Entity component)
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-
-            if (this.components == null)
-            {
-                return;
-            }
-
-            Entity c;
-            if (!this.components.TryGetValue(GetLongHashCodeByType(component.GetType()), out c))
-            {
-                return;
-            }
-
-            if (c.InstanceId != component.InstanceId)
-            {
-                return;
-            }
-
-            this.RemoveFromComponents(c);
-            c.Dispose();
         }
 
         public void RemoveComponent(Type type)
@@ -610,15 +586,16 @@ namespace ET
             {
                 return;
             }
-
-            Entity c;
-            if (!this.components.TryGetValue(GetLongHashCodeByType(type), out c))
+            
+            if (this.components == null)
             {
                 return;
             }
 
-            RemoveFromComponents(c);
-            c.Dispose();
+            if (this.components.Remove(GetLongHashCodeByType(type), out Entity c))
+            {
+                c.Dispose();
+            }
         }
 
         public K GetComponent<K>() where K : Entity
