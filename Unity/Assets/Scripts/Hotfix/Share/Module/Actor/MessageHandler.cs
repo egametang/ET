@@ -61,7 +61,7 @@ namespace ET
                 }
 
                 int rpcId = request.RpcId;
-                Response response = ObjectPool.Instance.Fetch<Response>();
+                Response response = ObjectPool.Fetch<Response>();
                 try
                 {
                     await this.Run(ee, request, response);

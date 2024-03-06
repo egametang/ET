@@ -59,7 +59,7 @@ namespace ET
             if (value == null)
             {
                 // 这里甚至可以用对象池
-                value = new ComponentsCollection();
+                value = ComponentsCollection.Create(true);
             }
             else
             {

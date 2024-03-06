@@ -377,7 +377,7 @@ namespace ET
         {
             get
             {
-                return this.children ??= ObjectPool.Instance.Fetch<ChildrenCollection>();
+                return this.children ??= ObjectPool.Fetch<ChildrenCollection>();
             }
         }
 
@@ -397,8 +397,7 @@ namespace ET
 
             if (this.children.Count == 0)
             {
-                ObjectPool.Instance.Recycle(this.children);
-                this.children = null;
+                ObjectPool.Recycle(ref this.children);
             }
         }
 
@@ -413,7 +412,7 @@ namespace ET
         {
             get
             {
-                return this.components ??= ObjectPool.Instance.Fetch<ComponentsCollection>();
+                return this.components ??= ObjectPool.Fetch<ComponentsCollection>();
             }
         }
 
@@ -445,7 +444,6 @@ namespace ET
             this.IsRegister = false;
             this.InstanceId = 0;
 
-            ObjectPool objectPool = ObjectPool.Instance;
             // 清理Children
             if (this.children != null)
             {
@@ -454,12 +452,7 @@ namespace ET
                     child.Dispose();
                 }
 
-                this.children.Clear();
-
-                if (this.IsNew)
-                {
-                    objectPool.Recycle(this.children);
-                }
+                this.children.Dispose();
                 this.children = null;
             }
 
@@ -471,11 +464,7 @@ namespace ET
                     kv.Value.Dispose();
                 }
 
-                this.components.Clear();
-                if (this.IsNew)
-                {
-                    objectPool.Recycle(this.components);
-                }
+                this.components.Dispose();
                 this.components = null;
             }
 
@@ -508,7 +497,7 @@ namespace ET
             this.status = EntityStatus.None;
             this.IsFromPool = isFromPool;
             
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
 
         private void AddToComponents(Entity component)
@@ -527,7 +516,7 @@ namespace ET
 
             if (this.components.Count == 0)
             {
-                ObjectPool.Instance.Recycle(this.components);
+                this.components.Dispose();
                 this.components = null;
             }
         }
@@ -554,8 +543,14 @@ namespace ET
             {
                 return;
             }
-
+            
             child.Dispose();
+            
+            if (this.children.Count == 0)
+            {
+                this.children.Dispose();
+                this.children = null;
+            }
         }
 
         public void RemoveComponent<K>() where K : Entity
@@ -673,15 +668,7 @@ namespace ET
 
         private static Entity Create(Type type, bool isFromPool)
         {
-            Entity component;
-            if (isFromPool)
-            {
-                component = (Entity) ObjectPool.Instance.Fetch(type);
-            }
-            else
-            {
-                component = Activator.CreateInstance(type) as Entity;
-            }
+            Entity component = (Entity) ObjectPool.Fetch(type, isFromPool);
 
             component.IsFromPool = isFromPool;
             component.IsNew = true;

@@ -10,7 +10,7 @@ namespace ET
     {
         public static ObjectQueryRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectQueryRequest), isFromPool) as ObjectQueryRequest;
+            return ObjectPool.Fetch<ObjectQueryRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -33,7 +33,7 @@ namespace ET
             this.Key = default;
             this.InstanceId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -44,7 +44,7 @@ namespace ET
     {
         public static M2A_Reload Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(M2A_Reload), isFromPool) as M2A_Reload;
+            return ObjectPool.Fetch<M2A_Reload>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -59,7 +59,7 @@ namespace ET
 
             this.RpcId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -69,7 +69,7 @@ namespace ET
     {
         public static A2M_Reload Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(A2M_Reload), isFromPool) as A2M_Reload;
+            return ObjectPool.Fetch<A2M_Reload>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -92,7 +92,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -103,7 +103,7 @@ namespace ET
     {
         public static G2G_LockRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2G_LockRequest), isFromPool) as G2G_LockRequest;
+            return ObjectPool.Fetch<G2G_LockRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -126,7 +126,7 @@ namespace ET
             this.Id = default;
             this.Address = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -136,7 +136,7 @@ namespace ET
     {
         public static G2G_LockResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2G_LockResponse), isFromPool) as G2G_LockResponse;
+            return ObjectPool.Fetch<G2G_LockResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -159,7 +159,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -170,7 +170,7 @@ namespace ET
     {
         public static G2G_LockReleaseRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2G_LockReleaseRequest), isFromPool) as G2G_LockReleaseRequest;
+            return ObjectPool.Fetch<G2G_LockReleaseRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -193,7 +193,7 @@ namespace ET
             this.Id = default;
             this.Address = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -203,7 +203,7 @@ namespace ET
     {
         public static G2G_LockReleaseResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2G_LockReleaseResponse), isFromPool) as G2G_LockReleaseResponse;
+            return ObjectPool.Fetch<G2G_LockReleaseResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -226,7 +226,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -237,7 +237,7 @@ namespace ET
     {
         public static ObjectAddRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectAddRequest), isFromPool) as ObjectAddRequest;
+            return ObjectPool.Fetch<ObjectAddRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -264,7 +264,7 @@ namespace ET
             this.Key = default;
             this.ActorId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -274,7 +274,7 @@ namespace ET
     {
         public static ObjectAddResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectAddResponse), isFromPool) as ObjectAddResponse;
+            return ObjectPool.Fetch<ObjectAddResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -297,7 +297,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -308,7 +308,7 @@ namespace ET
     {
         public static ObjectLockRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectLockRequest), isFromPool) as ObjectLockRequest;
+            return ObjectPool.Fetch<ObjectLockRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -339,7 +339,7 @@ namespace ET
             this.ActorId = default;
             this.Time = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -349,7 +349,7 @@ namespace ET
     {
         public static ObjectLockResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectLockResponse), isFromPool) as ObjectLockResponse;
+            return ObjectPool.Fetch<ObjectLockResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -372,7 +372,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -383,7 +383,7 @@ namespace ET
     {
         public static ObjectUnLockRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectUnLockRequest), isFromPool) as ObjectUnLockRequest;
+            return ObjectPool.Fetch<ObjectUnLockRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -414,7 +414,7 @@ namespace ET
             this.OldActorId = default;
             this.NewActorId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -424,7 +424,7 @@ namespace ET
     {
         public static ObjectUnLockResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectUnLockResponse), isFromPool) as ObjectUnLockResponse;
+            return ObjectPool.Fetch<ObjectUnLockResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -447,7 +447,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -458,7 +458,7 @@ namespace ET
     {
         public static ObjectRemoveRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectRemoveRequest), isFromPool) as ObjectRemoveRequest;
+            return ObjectPool.Fetch<ObjectRemoveRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -481,7 +481,7 @@ namespace ET
             this.Type = default;
             this.Key = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -491,7 +491,7 @@ namespace ET
     {
         public static ObjectRemoveResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectRemoveResponse), isFromPool) as ObjectRemoveResponse;
+            return ObjectPool.Fetch<ObjectRemoveResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -514,7 +514,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -525,7 +525,7 @@ namespace ET
     {
         public static ObjectGetRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectGetRequest), isFromPool) as ObjectGetRequest;
+            return ObjectPool.Fetch<ObjectGetRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -548,7 +548,7 @@ namespace ET
             this.Type = default;
             this.Key = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -558,7 +558,7 @@ namespace ET
     {
         public static ObjectGetResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectGetResponse), isFromPool) as ObjectGetResponse;
+            return ObjectPool.Fetch<ObjectGetResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -589,7 +589,7 @@ namespace ET
             this.Type = default;
             this.ActorId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -600,7 +600,7 @@ namespace ET
     {
         public static R2G_GetLoginKey Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(R2G_GetLoginKey), isFromPool) as R2G_GetLoginKey;
+            return ObjectPool.Fetch<R2G_GetLoginKey>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -619,7 +619,7 @@ namespace ET
             this.RpcId = default;
             this.Account = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -629,7 +629,7 @@ namespace ET
     {
         public static G2R_GetLoginKey Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2R_GetLoginKey), isFromPool) as G2R_GetLoginKey;
+            return ObjectPool.Fetch<G2R_GetLoginKey>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -660,7 +660,7 @@ namespace ET
             this.Key = default;
             this.GateId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -670,7 +670,7 @@ namespace ET
     {
         public static G2M_SessionDisconnect Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2M_SessionDisconnect), isFromPool) as G2M_SessionDisconnect;
+            return ObjectPool.Fetch<G2M_SessionDisconnect>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -685,7 +685,7 @@ namespace ET
 
             this.RpcId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -695,7 +695,7 @@ namespace ET
     {
         public static ObjectQueryResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(ObjectQueryResponse), isFromPool) as ObjectQueryResponse;
+            return ObjectPool.Fetch<ObjectQueryResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -722,7 +722,7 @@ namespace ET
             this.Message = default;
             this.Entity = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -733,7 +733,7 @@ namespace ET
     {
         public static M2M_UnitTransferRequest Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(M2M_UnitTransferRequest), isFromPool) as M2M_UnitTransferRequest;
+            return ObjectPool.Fetch<M2M_UnitTransferRequest>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -760,7 +760,7 @@ namespace ET
             this.Unit = default;
             this.Entitys.Clear();
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -770,7 +770,7 @@ namespace ET
     {
         public static M2M_UnitTransferResponse Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(M2M_UnitTransferResponse), isFromPool) as M2M_UnitTransferResponse;
+            return ObjectPool.Fetch<M2M_UnitTransferResponse>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -793,7 +793,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 

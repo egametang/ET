@@ -62,7 +62,7 @@ namespace ET
                 long instanceId = session.InstanceId;
 
                 // 这里用using很安全，因为后面是session发送出去了
-                using Response response = ObjectPool.Instance.Fetch<Response>();
+                using Response response = ObjectPool.Fetch<Response>();
                 try
                 {
                     await this.Run(session, request, response);

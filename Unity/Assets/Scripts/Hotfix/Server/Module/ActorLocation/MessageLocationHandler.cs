@@ -21,7 +21,7 @@ namespace ET.Server
                 return;
             }
             
-            MessageResponse response = ObjectPool.Instance.Fetch<MessageResponse>();
+            MessageResponse response = ObjectPool.Fetch<MessageResponse>();
             response.RpcId = message.RpcId;
             fiber.Root.GetComponent<ProcessInnerSender>().Reply(fromAddress, response);
 
@@ -63,7 +63,7 @@ namespace ET.Server
                 }
 
                 int rpcId = request.RpcId;
-                Response response = ObjectPool.Instance.Fetch<Response>();
+                Response response = ObjectPool.Fetch<Response>();
                 try
                 {
                     await this.Run(ee, request, response);

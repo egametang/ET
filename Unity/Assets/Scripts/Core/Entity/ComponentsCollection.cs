@@ -1,23 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
-    public class ComponentsCollection : SortedDictionary<long, Entity>
+    public class ComponentsCollection : SortedDictionary<long, Entity>, IPool
     {
-        public ComponentsCollection()
+        public static ComponentsCollection Create(bool isFromPool = false)
+        {
+            return ObjectPool.Fetch<ComponentsCollection>(isFromPool);
+        }
+        
+        public bool IsFromPool { get; set; }
+        
+        private ComponentsCollection()
         {
         }
 
-        public ComponentsCollection(IComparer<long> comparer) : base(comparer)
+        public void Dispose()
         {
-        }
-
-        public ComponentsCollection(IDictionary<long, Entity> dictionary) : base(dictionary)
-        {
-        }
-
-        public ComponentsCollection(IDictionary<long, Entity> dictionary, IComparer<long> comparer) : base(dictionary, comparer)
-        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+            
+            this.IsFromPool = false;
+            this.Clear();
+            
+            ObjectPool.Recycle(this);
         }
     }
 }

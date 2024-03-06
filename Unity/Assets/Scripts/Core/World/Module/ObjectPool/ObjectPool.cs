@@ -13,25 +13,28 @@ namespace ET
 
         public void Awake()
         {
-            lock (this)
+            objPool = new ConcurrentDictionary<Type, Pool>();
+        }
+
+        public static T Fetch<T>(bool isFromPool = true) where T : class, IPool
+        {
+            return Fetch(typeof (T), isFromPool) as T;
+        }
+
+        // 这里改成静态方法，主要为了兼容Unity Editor模式下没有初始化ObjectPool的情况
+        public static object Fetch(Type type, bool isFromPool = true)
+        {
+            if (Instance == null)
             {
-                objPool = new ConcurrentDictionary<Type, Pool>();
+                return Activator.CreateInstance(type);
             }
-        }
-
-        public T Fetch<T>() where T : class
-        {
-            return this.Fetch(typeof (T)) as T;
-        }
-
-        public object Fetch(Type type, bool isFromPool = true)
-        {
+            
             if (!isFromPool)
             {
                 return Activator.CreateInstance(type);
             }
             
-            Pool pool = GetPool(type);
+            Pool pool = Instance.GetPool(type);
             object obj = pool.Get();
             if (obj is IPool p)
             {
@@ -40,8 +43,19 @@ namespace ET
             return obj;
         }
 
-        public void Recycle(object obj)
+        public static void Recycle<T>(ref T obj) where T : class, IPool
         {
+            Recycle(obj);
+            obj = default;
+        }
+
+        public static void Recycle(object obj)
+        {
+            if (Instance == null)
+            {
+                return;
+            }
+            
             if (obj is IPool p)
             {
                 if (!p.IsFromPool)
@@ -54,7 +68,7 @@ namespace ET
             }
 
             Type type = obj.GetType();
-            Pool pool = GetPool(type);
+            Pool pool = Instance.GetPool(type);
             pool.Return(obj);
         }
 

@@ -11,7 +11,7 @@ namespace ET
         
         public static ListComponent<T> Create()
         {
-            return ObjectPool.Instance.Fetch(typeof (ListComponent<T>)) as ListComponent<T>;
+            return ObjectPool.Fetch(typeof (ListComponent<T>)) as ListComponent<T>;
         }
 
         public void Dispose()
@@ -21,7 +21,7 @@ namespace ET
                 return;
             }
             this.Clear();
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 }

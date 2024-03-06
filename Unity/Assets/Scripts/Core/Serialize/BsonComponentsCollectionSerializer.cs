@@ -8,7 +8,7 @@ namespace ET
     {
         public object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            ComponentsCollection componentsCollection = new();
+            ComponentsCollection componentsCollection = ComponentsCollection.Create(true);
             IBsonSerializer<Entity> bsonSerializer = BsonSerializer.LookupSerializer<Entity>();
             IBsonReader bsonReader = context.Reader;
             bsonReader.ReadStartArray();

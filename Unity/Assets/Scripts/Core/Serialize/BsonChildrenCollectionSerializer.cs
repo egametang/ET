@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 
 namespace ET
@@ -7,7 +8,7 @@ namespace ET
     {
         public object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            ChildrenCollection childrenCollection = new ChildrenCollection();
+            ChildrenCollection childrenCollection = ChildrenCollection.Create(true);
             IBsonSerializer<Entity> bsonSerializer = BsonSerializer.LookupSerializer<Entity>();
             var bsonReader = context.Reader;
             bsonReader.ReadStartArray();
@@ -24,7 +25,7 @@ namespace ET
 
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
         {
-            var bsonWriter = context.Writer;
+            IBsonWriter bsonWriter = context.Writer;
             bsonWriter.WriteStartArray();
             ChildrenCollection childrenCollection = (ChildrenCollection)value;
 

@@ -11,13 +11,13 @@ namespace ET
         
         public static HashSetComponent<T> Create()
         {
-            return ObjectPool.Instance.Fetch(typeof (HashSetComponent<T>)) as HashSetComponent<T>;
+            return ObjectPool.Fetch(typeof (HashSetComponent<T>)) as HashSetComponent<T>;
         }
 
         public void Dispose()
         {
             this.Clear();
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ET
     {
         public static G2Match_Match Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2Match_Match), isFromPool) as G2Match_Match;
+            return ObjectPool.Fetch<G2Match_Match>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -32,7 +32,7 @@ namespace ET
             this.RpcId = default;
             this.Id = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -42,7 +42,7 @@ namespace ET
     {
         public static Match2G_Match Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Match2G_Match), isFromPool) as Match2G_Match;
+            return ObjectPool.Fetch<Match2G_Match>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -65,7 +65,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -76,7 +76,7 @@ namespace ET
     {
         public static Match2Map_GetRoom Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Match2Map_GetRoom), isFromPool) as Match2Map_GetRoom;
+            return ObjectPool.Fetch<Match2Map_GetRoom>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -95,7 +95,7 @@ namespace ET
             this.RpcId = default;
             this.PlayerIds.Clear();
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -105,7 +105,7 @@ namespace ET
     {
         public static Map2Match_GetRoom Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Map2Match_GetRoom), isFromPool) as Map2Match_GetRoom;
+            return ObjectPool.Fetch<Map2Match_GetRoom>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -135,7 +135,7 @@ namespace ET
             this.Message = default;
             this.ActorId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -146,7 +146,7 @@ namespace ET
     {
         public static G2Room_Reconnect Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2Room_Reconnect), isFromPool) as G2Room_Reconnect;
+            return ObjectPool.Fetch<G2Room_Reconnect>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -165,7 +165,7 @@ namespace ET
             this.RpcId = default;
             this.PlayerId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -175,7 +175,7 @@ namespace ET
     {
         public static Room2G_Reconnect Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Room2G_Reconnect), isFromPool) as Room2G_Reconnect;
+            return ObjectPool.Fetch<Room2G_Reconnect>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -210,7 +210,7 @@ namespace ET
             this.UnitInfos.Clear();
             this.Frame = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -221,7 +221,7 @@ namespace ET
     {
         public static RoomManager2Room_Init Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(RoomManager2Room_Init), isFromPool) as RoomManager2Room_Init;
+            return ObjectPool.Fetch<RoomManager2Room_Init>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -240,7 +240,7 @@ namespace ET
             this.RpcId = default;
             this.PlayerIds.Clear();
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -250,7 +250,7 @@ namespace ET
     {
         public static Room2RoomManager_Init Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Room2RoomManager_Init), isFromPool) as Room2RoomManager_Init;
+            return ObjectPool.Fetch<Room2RoomManager_Init>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -273,7 +273,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 

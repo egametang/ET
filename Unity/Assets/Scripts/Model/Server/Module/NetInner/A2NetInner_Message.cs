@@ -7,7 +7,7 @@ namespace ET
     {
         public static A2NetInner_Message Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Message)) as A2NetInner_Message;
+            return ObjectPool.Fetch(typeof(A2NetInner_Message)) as A2NetInner_Message;
         }
 
         public override void Dispose()
@@ -15,7 +15,7 @@ namespace ET
             this.FromAddress = default;
             this.ActorId = default;
             
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
         
         public Address FromAddress;
@@ -29,7 +29,7 @@ namespace ET
     {
         public static A2NetInner_Request Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Request)) as A2NetInner_Request;
+            return ObjectPool.Fetch(typeof(A2NetInner_Request)) as A2NetInner_Request;
         }
 
         public override void Dispose()
@@ -38,7 +38,7 @@ namespace ET
             this.ActorId = default;
             this.MessageObject = default;
             
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
         
         public int RpcId { get; set; }
@@ -51,7 +51,7 @@ namespace ET
     {
         public static A2NetInner_Response Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetInner_Response)) as A2NetInner_Response;
+            return ObjectPool.Fetch(typeof(A2NetInner_Response)) as A2NetInner_Response;
         }
 
         public override void Dispose()
@@ -60,7 +60,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
             
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
         
         public int Error { get; set; }

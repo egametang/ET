@@ -10,7 +10,7 @@ namespace ET
     {
         public static C2G_Match Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(C2G_Match), isFromPool) as C2G_Match;
+            return ObjectPool.Fetch<C2G_Match>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -25,7 +25,7 @@ namespace ET
 
             this.RpcId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -35,7 +35,7 @@ namespace ET
     {
         public static G2C_Match Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2C_Match), isFromPool) as G2C_Match;
+            return ObjectPool.Fetch<G2C_Match>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -58,7 +58,7 @@ namespace ET
             this.Error = default;
             this.Message = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -71,7 +71,7 @@ namespace ET
     {
         public static Match2G_NotifyMatchSuccess Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Match2G_NotifyMatchSuccess), isFromPool) as Match2G_NotifyMatchSuccess;
+            return ObjectPool.Fetch<Match2G_NotifyMatchSuccess>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -93,7 +93,7 @@ namespace ET
             this.RpcId = default;
             this.ActorId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -106,7 +106,7 @@ namespace ET
     {
         public static C2Room_ChangeSceneFinish Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(C2Room_ChangeSceneFinish), isFromPool) as C2Room_ChangeSceneFinish;
+            return ObjectPool.Fetch<C2Room_ChangeSceneFinish>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -121,7 +121,7 @@ namespace ET
 
             this.PlayerId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -131,7 +131,7 @@ namespace ET
     {
         public static LockStepUnitInfo Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(LockStepUnitInfo), isFromPool) as LockStepUnitInfo;
+            return ObjectPool.Fetch<LockStepUnitInfo>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -154,7 +154,7 @@ namespace ET
             this.Position = default;
             this.Rotation = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -167,7 +167,7 @@ namespace ET
     {
         public static Room2C_Start Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Room2C_Start), isFromPool) as Room2C_Start;
+            return ObjectPool.Fetch<Room2C_Start>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -186,7 +186,7 @@ namespace ET
             this.StartTime = default;
             this.UnitInfo.Clear();
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -196,7 +196,7 @@ namespace ET
     {
         public static FrameMessage Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(FrameMessage), isFromPool) as FrameMessage;
+            return ObjectPool.Fetch<FrameMessage>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -219,7 +219,7 @@ namespace ET
             this.PlayerId = default;
             this.Input = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -229,7 +229,7 @@ namespace ET
     {
         public static OneFrameInputs Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(OneFrameInputs), isFromPool) as OneFrameInputs;
+            return ObjectPool.Fetch<OneFrameInputs>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -248,7 +248,7 @@ namespace ET
             this.Frame = default;
             this.Inputs.Clear();
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -258,7 +258,7 @@ namespace ET
     {
         public static Room2C_AdjustUpdateTime Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Room2C_AdjustUpdateTime), isFromPool) as Room2C_AdjustUpdateTime;
+            return ObjectPool.Fetch<Room2C_AdjustUpdateTime>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -273,7 +273,7 @@ namespace ET
 
             this.DiffTime = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -283,7 +283,7 @@ namespace ET
     {
         public static C2Room_CheckHash Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(C2Room_CheckHash), isFromPool) as C2Room_CheckHash;
+            return ObjectPool.Fetch<C2Room_CheckHash>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -306,7 +306,7 @@ namespace ET
             this.Frame = default;
             this.Hash = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -316,7 +316,7 @@ namespace ET
     {
         public static Room2C_CheckHashFail Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Room2C_CheckHashFail), isFromPool) as Room2C_CheckHashFail;
+            return ObjectPool.Fetch<Room2C_CheckHashFail>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -335,7 +335,7 @@ namespace ET
             this.Frame = default;
             this.LSWorldBytes = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -345,7 +345,7 @@ namespace ET
     {
         public static G2C_Reconnect Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(G2C_Reconnect), isFromPool) as G2C_Reconnect;
+            return ObjectPool.Fetch<G2C_Reconnect>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -368,7 +368,7 @@ namespace ET
             this.UnitInfos.Clear();
             this.Frame = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 

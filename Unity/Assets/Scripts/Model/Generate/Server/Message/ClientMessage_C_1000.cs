@@ -10,7 +10,7 @@ namespace ET
     {
         public static Main2NetClient_Login Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Main2NetClient_Login), isFromPool) as Main2NetClient_Login;
+            return ObjectPool.Fetch<Main2NetClient_Login>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -43,7 +43,7 @@ namespace ET
             this.Account = default;
             this.Password = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 
@@ -53,7 +53,7 @@ namespace ET
     {
         public static NetClient2Main_Login Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(NetClient2Main_Login), isFromPool) as NetClient2Main_Login;
+            return ObjectPool.Fetch<NetClient2Main_Login>(isFromPool);
         }
 
         [MemoryPackOrder(0)]
@@ -80,7 +80,7 @@ namespace ET
             this.Message = default;
             this.PlayerId = default;
 
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
     }
 

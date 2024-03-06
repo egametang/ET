@@ -5,13 +5,13 @@
     {
         public static A2NetClient_Message Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetClient_Message)) as A2NetClient_Message;
+            return ObjectPool.Fetch(typeof(A2NetClient_Message)) as A2NetClient_Message;
         }
 
         public override void Dispose()
         {
             this.MessageObject = default;
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
         
         public IMessage MessageObject;
@@ -23,14 +23,14 @@
     {
         public static A2NetClient_Request Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetClient_Request)) as A2NetClient_Request;
+            return ObjectPool.Fetch(typeof(A2NetClient_Request)) as A2NetClient_Request;
         }
 
         public override void Dispose()
         {
             this.RpcId = default;
             this.MessageObject = default;
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
      
         public int RpcId { get; set; }
@@ -42,7 +42,7 @@
     {
         public static A2NetClient_Response Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(A2NetClient_Response)) as A2NetClient_Response;
+            return ObjectPool.Fetch(typeof(A2NetClient_Response)) as A2NetClient_Response;
         }
 
         public override void Dispose()
@@ -51,7 +51,7 @@
             this.Error = default;
             this.Message = default;
             this.MessageObject = default;
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
 
         public int RpcId { get; set; }
@@ -66,12 +66,12 @@
     {
         public static NetClient2Main_SessionDispose Create()
         {
-            return ObjectPool.Instance.Fetch(typeof(NetClient2Main_SessionDispose)) as NetClient2Main_SessionDispose;
+            return ObjectPool.Fetch(typeof(NetClient2Main_SessionDispose)) as NetClient2Main_SessionDispose;
         }
 
         public override void Dispose()
         {
-            ObjectPool.Instance.Recycle(this);
+            ObjectPool.Recycle(this);
         }
         
         public int Error { get; set; }

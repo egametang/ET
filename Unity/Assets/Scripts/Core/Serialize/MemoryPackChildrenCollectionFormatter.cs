@@ -58,7 +58,7 @@ namespace ET
 
             if (value == null)
             {
-                value = new ChildrenCollection();
+                value = ChildrenCollection.Create(true);
             }
             else
             {
