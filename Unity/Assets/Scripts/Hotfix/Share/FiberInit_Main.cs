@@ -14,7 +14,7 @@ namespace ET
             await EventSystem.Instance.PublishAsync(root, new EntryEvent2());
             await EventSystem.Instance.PublishAsync(root, new EntryEvent3());
 
-
+/* 测试Entity自定义序列化反序列化
             AA aa = root.AddComponent<AA>();
 
             BB bb = aa.AddComponent<BB>();
@@ -34,6 +34,7 @@ namespace ET
             AA aa3 = MongoHelper.Deserialize<AA>(bytes2);
             
             Log.Debug($"11111111111111111111111111: {aa3}");
+*/
         }
     }
 }

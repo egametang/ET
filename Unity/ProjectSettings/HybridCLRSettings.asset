@@ -39,7 +39,7 @@ MonoBehaviour:
   - mscorlib.dll
   - MemoryPack.dll
   - System.Runtime.CompilerServices.Unsafe.dll
-  outputLinkFile: Scripts/Loader/Plugins/HybridCLR/Generated/link.xml
-  outputAOTGenericReferenceFile: Scripts/Loader/Plugins/HybridCLR/Generated/AOTGenericReferences.cs
+  outputLinkFile: Scripts/Loader/HybridCLR/Generated/link.xml
+  outputAOTGenericReferenceFile: Scripts/Loader/HybridCLR/Generated/AOTGenericReferences.cs
   maxGenericReferenceIteration: 10
   maxMethodBridgeGenericIteration: 10

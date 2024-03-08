@@ -14,7 +14,7 @@ namespace ET
         BenchmarkClient,
         BenchmarkServer,
         
-        Demo,
+        StateSync,
         LockStep,
     }
     
