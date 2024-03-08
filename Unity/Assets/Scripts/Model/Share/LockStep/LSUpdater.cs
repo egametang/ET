@@ -5,8 +5,8 @@ namespace ET
 {
     public class LSUpdater: Object
     {
-        private List<long> updateIds = new();
-        private List<long> newUpdateIds = new();
+        private readonly NativeCollection.SortedSet<long> updateIds = new();
+        private readonly NativeCollection.SortedSet<long> newUpdateIds = new();
 
         private readonly Dictionary<long, EntityRef<LSEntity>> lsEntities = new();
 
@@ -18,7 +18,6 @@ namespace ET
                 {
                     this.updateIds.Add(id);
                 }
-                this.updateIds.Sort();
                 this.newUpdateIds.Clear();
             }
 
@@ -30,11 +29,8 @@ namespace ET
                     this.lsEntities.Remove(id);
                     continue;
                 }
-                this.newUpdateIds.Add(id);
                 LSEntitySystemSingleton.Instance.LSUpdate(entity);
             }
-            this.updateIds.Clear();
-            ObjectHelper.Swap(ref this.updateIds, ref this.newUpdateIds);
         }
         
         public void Add(LSEntity entity)

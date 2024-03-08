@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ET
 {
@@ -16,6 +17,7 @@ namespace ET
         {
         }
 
+        [Conditional("DEBUG")]
         public void Debug(Fiber fiber, object msg)
         {
             ushort opcode = OpcodeType.Instance.GetOpcode(msg.GetType());
