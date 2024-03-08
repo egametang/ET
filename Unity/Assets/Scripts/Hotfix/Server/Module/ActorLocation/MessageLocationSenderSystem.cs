@@ -3,7 +3,6 @@ using System;
 namespace ET.Server
 {
     [EntitySystemOf(typeof(MessageLocationSender))]
-    [FriendOf(typeof(MessageLocationSender))]
     public static partial class MessageLocationSenderSystem
     {
         [EntitySystem]

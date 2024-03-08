@@ -1,7 +1,6 @@
 ﻿namespace ET.Server
 {
     [EntitySystemOf(typeof(RouterNode))]
-    [FriendOf(typeof(RouterNode))]
     public static partial class RouterNodeSystem
     {
         [EntitySystem]

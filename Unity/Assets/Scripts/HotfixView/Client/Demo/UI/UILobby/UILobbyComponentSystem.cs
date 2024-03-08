@@ -4,7 +4,6 @@ using UnityEngine.UI;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(UILobbyComponent))]
-    [FriendOf(typeof(UILobbyComponent))]
     public static partial class UILobbyComponentSystem
     {
         [EntitySystem]

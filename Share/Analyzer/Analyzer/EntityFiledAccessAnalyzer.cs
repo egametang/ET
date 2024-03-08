@@ -117,7 +117,7 @@ namespace ET.Analyzer
             var attributes = accessFieldTypeSymbol.GetAttributes();
             foreach (AttributeData? attributeData in attributes)
             {
-                if (attributeData.AttributeClass?.ToString() != Definition.FriendOfAttribute)
+                if (!Definition.FriendAttributes.Contains(attributeData.AttributeClass?.ToString()))
                 {
                     continue;
                 }

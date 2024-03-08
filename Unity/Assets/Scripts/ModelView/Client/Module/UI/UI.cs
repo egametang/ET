@@ -4,7 +4,6 @@ using UnityEngine;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(UI))]
-    [FriendOf(typeof(UI))]
     public static partial class UISystem
     {
         [EntitySystem]

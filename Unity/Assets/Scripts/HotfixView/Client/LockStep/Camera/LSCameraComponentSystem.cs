@@ -3,7 +3,6 @@
 namespace ET.Client
 {
 	[EntitySystemOf(typeof(LSCameraComponent))]
-	[FriendOf(typeof(LSCameraComponent))]
 	public static partial class LSCameraComponentSystem
 	{
 		[EntitySystem]

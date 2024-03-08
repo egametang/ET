@@ -1,7 +1,6 @@
 ﻿namespace ET
 {
     [EntitySystemOf(typeof(MailBoxComponent))]
-    [FriendOf(typeof(MailBoxComponent))]
     public static partial class MailBoxComponentSystem
     {
         [EntitySystem]       

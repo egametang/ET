@@ -6,7 +6,6 @@ using MongoDB.Driver;
 namespace ET.Server
 {
 	[EntitySystemOf(typeof(DBComponent))]
-	[FriendOf(typeof(DBComponent))]
     public static partial class DBComponentSystem
     {
 	    [EntitySystem]

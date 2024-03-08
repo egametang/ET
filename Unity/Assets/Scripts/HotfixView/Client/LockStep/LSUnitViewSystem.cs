@@ -6,7 +6,6 @@ namespace ET.Client
 {
     [EntitySystemOf(typeof(LSUnitView))]
     [LSEntitySystemOf(typeof(LSUnitView))]
-    [FriendOf(typeof(LSUnitView))]
     public static partial class LSUnitViewSystem
     {
         [EntitySystem]

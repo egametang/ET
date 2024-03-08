@@ -9,7 +9,6 @@ using Unity.Mathematics;
 namespace ET
 {
     [EntitySystemOf(typeof(PathfindingComponent))]
-    [FriendOf(typeof(PathfindingComponent))]
     public static partial class PathfindingComponentSystem
     {
         [EntitySystem]

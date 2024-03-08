@@ -5,7 +5,6 @@ using Unity.Mathematics;
 namespace ET
 {
     [EntitySystemOf(typeof(MoveComponent))]
-    [FriendOf(typeof(MoveComponent))]
     public static partial class MoveComponentSystem
     {
         [Invoke(TimerInvokeType.MoveTimer)]

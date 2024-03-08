@@ -1,4 +1,6 @@
-﻿namespace ET.Analyzer
+﻿using System.Collections.Generic;
+
+namespace ET.Analyzer
 {
     public static class Definition
     {
@@ -47,6 +49,13 @@
 
         public const string EntitySystemOfAttribute = "ET.EntitySystemOfAttribute";
         public const string EntitySystemInterfaceSequence = "EntitySystemInterfaceSequence";
+
+        public static string[] FriendAttributes =
+        [
+            FriendOfAttribute,
+            EntitySystemOfAttribute,
+            LSEntitySystemOfAttribute
+        ];   
 
         public const string IAwakeInterface = "ET.IAwake";
         public const string AwakeMethod = "Awake";

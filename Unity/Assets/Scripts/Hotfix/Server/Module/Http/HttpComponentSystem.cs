@@ -5,7 +5,6 @@ using System.Net;
 namespace ET.Server
 {
     [EntitySystemOf(typeof(HttpComponent))]
-    [FriendOf(typeof(HttpComponent))]
     public static partial class HttpComponentSystem
     {
         [EntitySystem]

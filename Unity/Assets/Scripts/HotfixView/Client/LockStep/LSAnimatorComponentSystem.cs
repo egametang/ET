@@ -4,7 +4,6 @@ using UnityEngine;
 namespace ET.Client
 {
 	[EntitySystemOf(typeof(LSAnimatorComponent))]
-	[FriendOf(typeof(LSAnimatorComponent))]
 	public static partial class LSAnimatorComponentSystem
 	{
 		[EntitySystem]

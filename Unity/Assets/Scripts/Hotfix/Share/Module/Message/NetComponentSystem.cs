@@ -4,7 +4,6 @@ using System.Net.Sockets;
 namespace ET
 {
     [EntitySystemOf(typeof(NetComponent))]
-    [FriendOf(typeof(NetComponent))]
     public static partial class NetComponentSystem
     {
         [EntitySystem]

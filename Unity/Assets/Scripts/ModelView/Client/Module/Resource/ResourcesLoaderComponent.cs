@@ -5,7 +5,6 @@ using YooAsset;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(ResourcesLoaderComponent))]
-    [FriendOf(typeof(ResourcesLoaderComponent))]
     public static partial class ResourcesLoaderComponentSystem
     {
         [EntitySystem]

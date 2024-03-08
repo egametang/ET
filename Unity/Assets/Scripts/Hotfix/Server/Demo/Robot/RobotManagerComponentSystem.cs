@@ -1,7 +1,6 @@
 ﻿namespace ET.Server
 {
     [EntitySystemOf(typeof(RobotManagerComponent))]
-    [FriendOf(typeof(RobotManagerComponent))]
     public static partial class RobotManagerComponentSystem
     {
         [EntitySystem]

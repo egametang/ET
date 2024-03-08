@@ -4,7 +4,6 @@ using System.Net;
 namespace ET.Server
 {
     [EntitySystemOf(typeof(ProcessOuterSender))]
-    [FriendOf(typeof(ProcessOuterSender))]
     public static partial class ProcessOuterSenderSystem
     {
         [EntitySystem]

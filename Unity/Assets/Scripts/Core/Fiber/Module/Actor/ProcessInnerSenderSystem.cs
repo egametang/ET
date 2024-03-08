@@ -5,7 +5,6 @@ using System.IO;
 namespace ET
 {
     [EntitySystemOf(typeof(ProcessInnerSender))]
-    [FriendOf(typeof(ProcessInnerSender))]
     public static partial class ProcessInnerSenderSystem
     {
         [EntitySystem]

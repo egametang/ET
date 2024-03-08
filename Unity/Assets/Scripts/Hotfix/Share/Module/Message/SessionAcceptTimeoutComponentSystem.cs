@@ -3,7 +3,6 @@
 namespace ET
 {
     [EntitySystemOf(typeof(SessionAcceptTimeoutComponent))]
-    [FriendOf(typeof(SessionAcceptTimeoutComponent))]
     public static partial class SessionAcceptTimeoutComponentHelper
     {
         [Invoke(TimerInvokeType.SessionAcceptTimeout)]

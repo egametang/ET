@@ -6,7 +6,6 @@ using System.Net.Sockets;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(RouterAddressComponent))]
-    [FriendOf(typeof(RouterAddressComponent))]
     public static partial class RouterAddressComponentSystem
     {
         [EntitySystem]

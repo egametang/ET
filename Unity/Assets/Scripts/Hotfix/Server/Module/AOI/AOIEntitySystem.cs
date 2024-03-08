@@ -4,7 +4,6 @@ using Unity.Mathematics;
 namespace ET.Server
 {
     [EntitySystemOf(typeof(AOIEntity))]
-    [FriendOf(typeof(AOIEntity))]
     public static partial class AOIEntitySystem2
     {
         [EntitySystem]

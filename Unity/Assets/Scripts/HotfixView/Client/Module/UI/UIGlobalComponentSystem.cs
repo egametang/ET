@@ -4,7 +4,6 @@ using UnityEngine;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(UIGlobalComponent))]
-    [FriendOf(typeof(UIGlobalComponent))]
     public static partial class UIGlobalComponentSystem
     {
         [EntitySystem]

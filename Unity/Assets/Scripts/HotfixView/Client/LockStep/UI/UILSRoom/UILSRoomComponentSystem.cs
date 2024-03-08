@@ -5,7 +5,6 @@ using UnityEngine.UI;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(UILSRoomComponent))]
-    [FriendOf(typeof (UILSRoomComponent))]
     public static partial class UILSRoomComponentSystem
     {
         [EntitySystem]

@@ -6,7 +6,6 @@ namespace ET.Client
 	/// 管理Scene上的UI
 	/// </summary>
 	[EntitySystemOf(typeof(UIComponent))]
-	[FriendOf(typeof(UIComponent))]
 	public static partial class UIComponentSystem
 	{
 		[EntitySystem]

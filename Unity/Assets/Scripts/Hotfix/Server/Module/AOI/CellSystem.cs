@@ -4,7 +4,6 @@ using System.Text;
 namespace ET.Server
 {
     [EntitySystemOf(typeof(Cell))]
-    [FriendOf(typeof(Cell))]
     public static partial class CellSystem
     {
         [EntitySystem]

@@ -3,7 +3,6 @@ using System;
 namespace ET
 {
     [EntitySystemOf(typeof(AIComponent))]
-    [FriendOf(typeof(AIComponent))]
     [FriendOf(typeof(AIDispatcherComponent))]
     public static partial class AIComponentSystem
     {

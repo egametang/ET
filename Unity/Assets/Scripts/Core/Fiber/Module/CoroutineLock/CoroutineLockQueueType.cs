@@ -3,7 +3,6 @@
 namespace ET
 {
     [EntitySystemOf(typeof(CoroutineLockQueueType))]
-    [FriendOf(typeof(CoroutineLockQueueType))]
     public static partial class CoroutineLockQueueTypeSystem
     {
         [EntitySystem]

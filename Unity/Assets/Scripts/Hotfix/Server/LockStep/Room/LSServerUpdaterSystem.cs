@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [EntitySystemOf(typeof(LSServerUpdater))]
-    [FriendOf(typeof(LSServerUpdater))]
     public static partial class LSServerUpdaterSystem
     {
         [EntitySystem]

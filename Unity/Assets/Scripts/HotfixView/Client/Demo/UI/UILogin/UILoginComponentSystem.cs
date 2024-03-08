@@ -4,7 +4,6 @@ using UnityEngine.UI;
 namespace ET.Client
 {
 	[EntitySystemOf(typeof(UILoginComponent))]
-	[FriendOf(typeof(UILoginComponent))]
 	public static partial class UILoginComponentSystem
 	{
 		[EntitySystem]

@@ -22,7 +22,6 @@ namespace ET
     }
 
     [EntitySystemOf(typeof(ObjectWait))]
-    [FriendOf(typeof(ObjectWait))]
     public static partial class ObjectWaitSystem
     {
         [EntitySystem]

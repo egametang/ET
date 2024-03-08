@@ -3,7 +3,6 @@ using System;
 namespace ET.Client
 {
     [EntitySystemOf(typeof(LSReplayUpdater))]
-    [FriendOf(typeof(LSReplayUpdater))]
     public static partial class LSReplayUpdaterSystem
     {
         [EntitySystem]

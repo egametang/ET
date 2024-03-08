@@ -3,7 +3,6 @@ using System.Net;
 
 namespace ET.Client
 {
-    [FriendOf(typeof(RouterConnector))]
     [EntitySystemOf(typeof(RouterConnector))]
     public static partial class RouterConnectorSystem
     {

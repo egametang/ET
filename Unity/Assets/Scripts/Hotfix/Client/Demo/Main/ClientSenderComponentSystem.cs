@@ -3,7 +3,6 @@
 namespace ET.Client
 {
     [EntitySystemOf(typeof(ClientSenderComponent))]
-    [FriendOf(typeof(ClientSenderComponent))]
     public static partial class ClientSenderComponentSystem
     {
         [EntitySystem]
