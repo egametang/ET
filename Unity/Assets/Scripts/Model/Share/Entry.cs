@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     public struct EntryEvent1
     {
@@ -35,7 +37,8 @@
             
             // 注册Entity序列化器
             EntitySerializeRegister.Init();
-            
+
+            World.Instance.AddSingleton<SceneTypeSingleton, Type>(typeof(SceneType));
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();

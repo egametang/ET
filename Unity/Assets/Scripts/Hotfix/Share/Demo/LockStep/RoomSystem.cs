@@ -53,7 +53,7 @@ namespace ET
             lsWorld.Update();
         }
         
-        public static LSWorld GetLSWorld(this Room self, SceneType sceneType, int frame)
+        public static LSWorld GetLSWorld(this Room self, int sceneType, int frame)
         {
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);

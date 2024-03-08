@@ -5,11 +5,11 @@ namespace ET
 {
     public class MessageDispatcherInfo
     {
-        public SceneType SceneType { get; }
+        public int SceneType { get; }
         
         public IMHandler IMHandler { get; }
 
-        public MessageDispatcherInfo(SceneType sceneType, IMHandler imHandler)
+        public MessageDispatcherInfo(int sceneType, IMHandler imHandler)
         {
             this.SceneType = sceneType;
             this.IMHandler = imHandler;
@@ -93,10 +93,10 @@ namespace ET
                 throw new Exception($"not found message handler: {message} {entity.GetType().FullName}");
             }
 
-            SceneType sceneType = entity.IScene.SceneType;
+            int sceneType = entity.IScene.SceneType;
             foreach (MessageDispatcherInfo actorMessageDispatcherInfo in list)
             {
-                if (!actorMessageDispatcherInfo.SceneType.HasSameFlag(sceneType))
+                if (!SceneTypeSingleton.IsSame(actorMessageDispatcherInfo.SceneType, sceneType))
                 {
                     continue;
                 }

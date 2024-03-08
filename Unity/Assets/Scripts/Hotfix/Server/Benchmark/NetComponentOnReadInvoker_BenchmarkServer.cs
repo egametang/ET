@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.BenchmarkServer)]
+    [Invoke(SceneType.BenchmarkServer)]
     public class NetComponentOnReadInvoker_BenchmarkServer: AInvokeHandler<NetComponentOnRead>
     {
         public override void Handle(NetComponentOnRead args)

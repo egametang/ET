@@ -12,7 +12,7 @@ namespace ET
         
         public string Name { get; }
         
-        public SceneType SceneType
+        public int SceneType
         {
             get;
             set;
@@ -22,7 +22,7 @@ namespace ET
         {
         }
 
-        public Scene(Fiber fiber, long id, long instanceId, SceneType sceneType, string name)
+        public Scene(Fiber fiber, long id, long instanceId, int sceneType, string name)
         {
             this.Id = id;
             this.Name = name;

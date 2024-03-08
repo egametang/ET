@@ -4,7 +4,7 @@ using ET.Client;
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.BenchmarkClient)]
+    [Invoke(SceneType.BenchmarkClient)]
     public class FiberInit_BenchmarkClient: AInvokeHandler<FiberInit, ETTask>
     {
         public override async ETTask Handle(FiberInit fiberInit)

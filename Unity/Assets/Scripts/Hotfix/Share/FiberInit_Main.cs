@@ -3,7 +3,7 @@ using MemoryPack;
 
 namespace ET
 {
-    [Invoke((long)SceneType.Main)]
+    [Invoke(SceneType.Main)]
     public class FiberInit_Main: AInvokeHandler<FiberInit, ETTask>
     {
         public override async ETTask Handle(FiberInit fiberInit)

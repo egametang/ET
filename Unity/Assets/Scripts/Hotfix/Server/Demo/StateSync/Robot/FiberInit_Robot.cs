@@ -1,6 +1,6 @@
 ﻿namespace ET.Client
 {
-    [Invoke((long)SceneType.Robot)]
+    [Invoke(SceneType.Robot)]
     public class FiberInit_Robot: AInvokeHandler<FiberInit, ETTask>
     {
         public override async ETTask Handle(FiberInit fiberInit)

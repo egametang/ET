@@ -5,10 +5,10 @@ namespace ET
 {
     public struct NumericWatcherInfo
     {
-        public SceneType SceneType { get; }
+        public int SceneType { get; }
         public INumericWatcher INumericWatcher { get; }
 
-        public NumericWatcherInfo(SceneType sceneType, INumericWatcher numericWatcher)
+        public NumericWatcherInfo(int sceneType, INumericWatcher numericWatcher)
         {
             this.SceneType = sceneType;
             this.INumericWatcher = numericWatcher;
@@ -52,10 +52,10 @@ namespace ET
                 return;
             }
 
-            SceneType unitDomainSceneType = unit.IScene.SceneType;
+            int unitDomainSceneType = unit.IScene.SceneType;
             foreach (NumericWatcherInfo numericWatcher in list)
             {
-                if (!numericWatcher.SceneType.HasSameFlag(unitDomainSceneType))
+                if (!SceneTypeSingleton.IsSame(numericWatcher.SceneType, unitDomainSceneType))
                 {
                     continue;
                 }

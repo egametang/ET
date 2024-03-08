@@ -4,9 +4,9 @@ namespace ET
 {
     public class MessageHandlerAttribute: BaseAttribute
     {
-        public SceneType SceneType { get; }
+        public int SceneType { get; }
 
-        public MessageHandlerAttribute(SceneType sceneType)
+        public MessageHandlerAttribute(int sceneType)
         {
             this.SceneType = sceneType;
         }

@@ -34,7 +34,7 @@ namespace ET
         {
         }
         
-        public LSWorld(SceneType sceneType)
+        public LSWorld(int sceneType)
         {
             this.Id = this.GetId();
 
@@ -60,7 +60,7 @@ namespace ET
         
         [BsonIgnore]
         [MemoryPackIgnore]
-        public SceneType SceneType { get; set; }
+        public int SceneType { get; set; }
         
         public int Frame { get; set; }
 

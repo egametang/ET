@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-    [Invoke((long)SceneType.NetClient)]
+    [Invoke(SceneType.NetClient)]
     public class NetComponentOnReadInvoker_NetClient: AInvokeHandler<NetComponentOnRead>
     {
         public override void Handle(NetComponentOnRead args)

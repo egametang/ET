@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.RoomRoot)]
+    [Invoke(SceneType.RoomRoot)]
     public class FiberInit_RoomRoot: AInvokeHandler<FiberInit, ETTask>
     {
         public override async ETTask Handle(FiberInit fiberInit)

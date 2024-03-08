@@ -5,10 +5,10 @@ namespace ET
 {
     public struct MessageSessionDispatcherInfo
     {
-        public SceneType SceneType { get; }
+        public int SceneType { get; }
         public IMessageSessionHandler IMHandler { get; }
 
-        public MessageSessionDispatcherInfo(SceneType sceneType, IMessageSessionHandler imHandler)
+        public MessageSessionDispatcherInfo(int sceneType, IMessageSessionHandler imHandler)
         {
             this.SceneType = sceneType;
             this.IMHandler = imHandler;
@@ -74,10 +74,10 @@ namespace ET
                 return;
             }
 
-            SceneType sceneType = session.IScene.SceneType;
+            int sceneType = session.IScene.SceneType;
             foreach (MessageSessionDispatcherInfo ev in actions)
             {
-                if (!ev.SceneType.HasSameFlag(sceneType))
+                if (!SceneTypeSingleton.IsSame(ev.SceneType, sceneType))
                 {
                     continue;
                 }

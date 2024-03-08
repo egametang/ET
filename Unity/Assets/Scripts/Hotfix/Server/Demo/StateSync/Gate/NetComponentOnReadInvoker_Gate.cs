@@ -2,7 +2,7 @@
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.Gate)]
+    [Invoke(SceneType.Gate)]
     public class NetComponentOnReadInvoker_Gate: AInvokeHandler<NetComponentOnRead>
     {
         public override void Handle(NetComponentOnRead args)

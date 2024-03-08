@@ -78,7 +78,7 @@ namespace ET
     {
         public ActorId ActorId;
         
-        public SceneType Type;
+        public int Type;
 
         public StartProcessConfig StartProcessConfig
         {
@@ -131,7 +131,7 @@ namespace ET
         public override void EndInit()
         {
             this.ActorId = new ActorId(this.Process, this.Id, 1);
-            this.Type = EnumHelper.FromString<SceneType>(this.SceneType);
+            this.Type = SceneTypeSingleton.Instance.GetSceneType(this.SceneType);
         }
     }
 }

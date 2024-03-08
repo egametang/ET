@@ -10,9 +10,9 @@ namespace ET
         {
             public IEvent IEvent { get; }
             
-            public SceneType SceneType {get; }
+            public int SceneType {get; }
 
-            public EventInfo(IEvent iEvent, SceneType sceneType)
+            public EventInfo(IEvent iEvent, int sceneType)
             {
                 this.IEvent = iEvent;
                 this.SceneType = sceneType;
@@ -95,7 +95,7 @@ namespace ET
             
             foreach (EventInfo eventInfo in iEvents)
             {
-                if (!scene.SceneType.HasSameFlag(eventInfo.SceneType))
+                if (!SceneTypeSingleton.IsSame(scene.SceneType, eventInfo.SceneType))
                 {
                     continue;
                 }
@@ -127,10 +127,10 @@ namespace ET
                 return;
             }
 
-            SceneType sceneType = scene.SceneType;
+            int sceneType = scene.SceneType;
             foreach (EventInfo eventInfo in iEvents)
             {
-                if (!sceneType.HasSameFlag(eventInfo.SceneType))
+                if (!SceneTypeSingleton.IsSame(sceneType, eventInfo.SceneType))
                 {
                     continue;
                 }

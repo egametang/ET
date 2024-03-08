@@ -36,13 +36,13 @@ namespace ET.Server
                     this.dispatcher.Add(httpHandlerAttribute.Path, dict);
                 }
                 
-                dict.Add((int)httpHandlerAttribute.SceneType, ihttpHandler);
+                dict.Add(httpHandlerAttribute.SceneType, ihttpHandler);
             }
         }
 
-        public IHttpHandler Get(SceneType sceneType, string path)
+        public IHttpHandler Get(int sceneType, string path)
         {
-            return this.dispatcher[path][(int)sceneType];
+            return this.dispatcher[path][sceneType];
         }
     }
 }

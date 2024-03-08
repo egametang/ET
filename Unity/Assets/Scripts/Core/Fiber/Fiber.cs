@@ -51,7 +51,7 @@ namespace ET
 
         private readonly Queue<ETTask> frameFinishTasks = new();
         
-        internal Fiber(int id, int zone, SceneType sceneType, string name)
+        internal Fiber(int id, int zone, int sceneType, string name)
         {
             this.Id = id;
             this.Zone = zone;
@@ -61,7 +61,7 @@ namespace ET
 #if UNITY
             this.Log = Logger.Instance.Log;
 #else
-            this.Log = new NLogger(sceneType.ToString(), this.Process, this.Id);
+            this.Log = new NLogger(SceneTypeSingleton.Instance.GetSceneName(sceneType), this.Process, this.Id);
 #endif
             this.Root = new Scene(this, id, 1, sceneType, name);
         }

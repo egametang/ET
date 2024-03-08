@@ -2,11 +2,11 @@
 {
     public class HttpHandlerAttribute: BaseAttribute
     {
-        public SceneType SceneType { get; }
+        public int SceneType { get; }
 
         public string Path { get; }
 
-        public HttpHandlerAttribute(SceneType sceneType, string path)
+        public HttpHandlerAttribute(int sceneType, string path)
         {
             this.SceneType = sceneType;
             this.Path = path;

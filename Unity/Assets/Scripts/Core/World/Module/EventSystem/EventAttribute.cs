@@ -4,9 +4,9 @@ namespace ET
 {
 	public class EventAttribute: BaseAttribute
 	{
-		public SceneType SceneType { get; }
+		public int SceneType { get; }
 
-		public EventAttribute(SceneType sceneType)
+		public EventAttribute(int sceneType)
 		{
 			this.SceneType = sceneType;
 		}

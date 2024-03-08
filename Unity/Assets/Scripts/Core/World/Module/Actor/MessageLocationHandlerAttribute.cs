@@ -4,7 +4,7 @@ namespace ET
 {
     public class MessageLocationHandlerAttribute: MessageHandlerAttribute
     {
-        public MessageLocationHandlerAttribute(SceneType sceneType): base(sceneType)
+        public MessageLocationHandlerAttribute(int sceneType): base(sceneType)
         {
         }
     }
