@@ -871,6 +871,12 @@ namespace ET
 
         public override void BeginInit()
         {
+            // 如果没有挂到树上，不用执行SerializeSystem
+            if (this.iScene == null)
+            {
+                return;
+            }
+            
             if (this is not ISerializeToEntity && !this.IsSerilizeWithParent)
             {
                 return;
