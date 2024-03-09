@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ET
@@ -48,6 +49,11 @@ namespace ET
         public int GetSceneType(string sceneName)
         {
             return this.sceneNames.GetKeyByValue(sceneName);
+        }
+
+        public Dictionary<int, string> GetAll()
+        {
+            return this.sceneNames.GetAll();
         }
     }
 }

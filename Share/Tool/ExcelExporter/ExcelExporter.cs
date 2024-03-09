@@ -207,8 +207,6 @@ namespace ET
                     Directory.Delete(clientProtoDir, true);
                 }
                 FileHelper.CopyDirectory("../Config/Excel/c", clientProtoDir);
-                
-                Log.Console("Export Excel Sucess!");
             }
             catch (Exception e)
             {

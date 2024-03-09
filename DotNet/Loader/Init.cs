@@ -20,7 +20,7 @@ namespace ET
 						.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 						.WithParsed((o)=>World.Instance.AddSingleton(o));
 				
-				World.Instance.AddSingleton<Logger>().Log = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, 0);
+				World.Instance.AddSingleton<Logger>().Log = new NLogger(Options.Instance.SceneName, Options.Instance.Process, 0);
 				
 				ETTask.ExceptionHandler += Log.Error;
 				World.Instance.AddSingleton<TimeInfo>();

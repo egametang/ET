@@ -43,7 +43,7 @@ namespace ET.Server
             const string exe = "dotnet";
             string arguments = $"App.dll" + 
                     $" --Process={startProcessConfig.Id}" +
-                    $" --AppType=Server" +  
+                    $" --SceneName=Server" +  
                     $" --StartConfig={Options.Instance.StartConfig}" +
                     $" --Develop={Options.Instance.Develop}" +
                     $" --LogLevel={Options.Instance.LogLevel}" +

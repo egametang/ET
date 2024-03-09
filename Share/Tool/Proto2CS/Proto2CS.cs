@@ -17,7 +17,6 @@ namespace ET
         public static void Export()
         {
             InnerProto2CS.Proto2CS();
-            Log.Console("proto2cs succeed!");
         }
     }
 

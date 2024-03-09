@@ -75,6 +75,11 @@ namespace ET
 			return default(K);
 		}
 
+		public Dictionary<K, V> GetAll()
+		{
+			return this.kv;
+		}
+
 		public void RemoveByKey(K key)
 		{
 			if (key == null)

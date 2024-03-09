@@ -51,7 +51,7 @@ namespace ET
 
             if (GUILayout.Button("Start Watcher"))
             {
-                string arguments = $"App.dll --AppType=Watcher --StartConfig=StartConfig/{this.startConfig} --Console=1";
+                string arguments = $"App.dll --SceneName=Watcher --StartConfig=StartConfig/{this.startConfig} --Console=1";
                 ProcessHelper.Run(dotnet, arguments, "../Bin/");
             }
 

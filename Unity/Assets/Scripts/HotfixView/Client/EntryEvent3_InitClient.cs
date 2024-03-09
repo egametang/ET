@@ -17,9 +17,8 @@ namespace ET.Client
             root.AddComponent<CurrentScenesComponent>();
             
             // 根据配置修改掉Main Fiber的SceneType
-            int sceneType = SceneTypeSingleton.Instance.GetSceneType(globalComponent.GlobalConfig.AppType.ToString());
+            int sceneType = SceneTypeSingleton.Instance.GetSceneType(globalComponent.GlobalConfig.SceneName);
             root.SceneType = sceneType;
-            
             await EventSystem.Instance.PublishAsync(root, new AppStartInitFinish());
         }
     }

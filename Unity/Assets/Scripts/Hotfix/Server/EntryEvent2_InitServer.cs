@@ -8,9 +8,10 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, EntryEvent2 args)
         {
-            switch (Options.Instance.AppType)
+            int sceneType = SceneTypeSingleton.Instance.GetSceneType(Options.Instance.SceneName);
+            switch (sceneType)
             {
-                case AppType.Server:
+                case SceneType.Server:
                 {
                     int process = root.Fiber.Process;
                     StartProcessConfig startProcessConfig = StartProcessConfigCategory.Instance.Get(process);
@@ -28,12 +29,12 @@ namespace ET.Server
 
                     break;
                 }
-                case AppType.Watcher:
+                case SceneType.Watcher:
                 {
                     root.AddComponent<WatcherComponent>();
                     break;
                 }
-                case AppType.GameTool:
+                case SceneType.GameTool:
                 {
                     break;
                 }

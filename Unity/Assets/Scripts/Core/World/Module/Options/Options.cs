@@ -4,24 +4,10 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public enum AppType
-    {
-        Server,
-        Watcher, // 每台物理机一个守护进程，用来启动该物理机上的所有进程
-        GameTool,
-        ExcelExporter,
-        Proto2CS,
-        BenchmarkClient,
-        BenchmarkServer,
-        
-        StateSync,
-        LockStep,
-    }
-    
     public class Options: Singleton<Options>
     {
-        [Option("AppType", Required = false, Default = AppType.Server, HelpText = "AppType enum")]
-        public AppType AppType { get; set; }
+        [Option("SceneName", Required = false, Default = "Server", HelpText = "define in SceneType class")]
+        public string SceneName { get; set; }
 
         [Option("StartConfig", Required = false, Default = "StartConfig/Localhost")]
         public string StartConfig { get; set; }

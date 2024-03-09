@@ -4,8 +4,32 @@ using System.Reflection;
 using System.Threading;
 using CommandLine;
 
-namespace ET.Server
+namespace ET
 {
+    public class ToolScene: IScene
+    {
+        public Fiber Fiber { get; set; }
+
+        public int SceneType
+        {
+            get;
+            set;
+        }
+
+        public ToolScene()
+        {
+        }
+
+        public ToolScene(int sceneType)
+        {
+            this.SceneType = sceneType;
+        }
+    }
+    
+    public struct ToolEvent
+    {
+    }
+    
     internal static class Init
     {
         private static int Main(string[] args)
@@ -22,33 +46,23 @@ namespace ET.Server
                     .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
                     .WithParsed((o)=>World.Instance.AddSingleton(o));
                 
-                World.Instance.AddSingleton<Logger>().Log = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, 0);
+                World.Instance.AddSingleton<Logger>().Log = new NLogger(Options.Instance.SceneName, Options.Instance.Process, 0);
                 
-                World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (Init).Assembly });
+                World.Instance.AddSingleton<CodeTypes, Assembly[]>([typeof (Init).Assembly]);
                 World.Instance.AddSingleton<EventSystem>();
+                World.Instance.AddSingleton<SceneTypeSingleton, Type>(typeof(SceneType));
                 
                 // 强制调用一下mongo，避免mongo库被裁剪
                 MongoHelper.ToJson(1);
                 
                 ETTask.ExceptionHandler += Log.Error;
+
+                int sceneType = SceneTypeSingleton.Instance.GetSceneType(Options.Instance.SceneName);
+
+                ToolScene scene = new(sceneType);
+                EventSystem.Instance.Publish(scene, new ToolEvent());
                 
-                Log.Info($"server start........................ ");
-				
-                switch (Options.Instance.AppType)
-                {
-                    case AppType.ExcelExporter:
-                    {
-                        Options.Instance.Console = 1;
-                        ExcelExporter.Export();
-                        return 0;
-                    }
-                    case AppType.Proto2CS:
-                    {
-                        Options.Instance.Console = 1;
-                        Proto2CS.Export();
-                        return 0;
-                    }
-                }
+                Log.Console($"{Options.Instance.SceneName} run finish!");
             }
             catch (Exception e)
             {

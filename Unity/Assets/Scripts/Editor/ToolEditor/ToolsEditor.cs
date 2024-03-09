@@ -9,7 +9,7 @@
 #else
             const string tools = ".\\Tool.exe";
 #endif
-            ShellHelper.Run($"{tools} --AppType=ExcelExporter --Console=1", "../Bin/");
+            ShellHelper.Run($"{tools} --SceneName=ExcelExporter --Console=1", "../Bin/");
         }
         
         public static void Proto2CS()
@@ -19,7 +19,7 @@
 #else
             const string tools = ".\\Tool.exe";
 #endif
-            ShellHelper.Run($"{tools} --AppType=Proto2CS --Console=1", "../Bin/");
+            ShellHelper.Run($"{tools} --SceneName=Proto2CS --Console=1", "../Bin/");
         }
     }
 }

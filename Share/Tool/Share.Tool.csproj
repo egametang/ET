@@ -46,6 +46,14 @@
         <Compile Include="..\..\Unity\Assets\Scripts\Core\Network\OpcodeRangeDefine.cs">
             <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
+
+        <Compile Update="Proto2CS\ToolEvent_Proto2CS.cs">
+          <Link>Share\ToolEvent_Proto2CS.cs</Link>
+        </Compile>
+
+        <Compile Update="ExcelExporter\ToolEvent_ExcelExporter.cs">
+          <Link>Share\FiberInit_Proto2CS.cs</Link>
+        </Compile>
     </ItemGroup>
     
     <ItemGroup>
