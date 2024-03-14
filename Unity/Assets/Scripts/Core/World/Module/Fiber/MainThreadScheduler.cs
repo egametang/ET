@@ -54,6 +54,9 @@ namespace ET
                 
                 this.idQueue.Enqueue(id);
             }
+            
+            // Fiber调度完成，要还原成默认的上下文，否则unity的回调会找不到正确的上下文
+            SynchronizationContext.SetSynchronizationContext(this.threadSynchronizationContext);
         }
 
         public void LateUpdate()
@@ -90,6 +93,9 @@ namespace ET
                 this.addIds.TryDequeue(out int result);
                 this.idQueue.Enqueue(result);
             }
+            
+            // Fiber调度完成，要还原成默认的上下文，否则unity的回调会找不到正确的上下文
+            SynchronizationContext.SetSynchronizationContext(this.threadSynchronizationContext);
         }
 
 
