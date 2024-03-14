@@ -23,6 +23,8 @@
 12. [代号肉鸽：无限](https://www.taptap.cn/app/247225) 一个人开发  
 13. [卡车人生](https://www.kxdw.com/android/130033.html)  
 14. [掌门太闲](https://www.taptap.cn/app/361952) 一个人开发  
+15. [万世镜](https://www.taptap.cn/app/235872)  
+16. [Culture & Chest](https://play.google.com/store/apps/details?id=com.Inutan.CultureChest)  
 ---
 
 # ET8.1 发布!  
