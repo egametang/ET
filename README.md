@@ -25,6 +25,7 @@
 14. [掌门太闲](https://www.taptap.cn/app/361952) 一个人开发  
 15. [万世镜](https://www.taptap.cn/app/235872)  
 16. [Culture & Chest](https://play.google.com/store/apps/details?id=com.Inutan.CultureChest)  
+17. [史莱姆大乱斗](https://www.taptap.cn/app/228923)  
 ---
 
 # ET8.1 发布!  
