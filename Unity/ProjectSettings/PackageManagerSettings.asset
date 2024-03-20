@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnablePreReleasePackages: 0
-  m_EnablePackageDependencies: 1
   m_AdvancedSettingsExpanded: 1
   m_ScopedRegistriesSettingsExpanded: 1
   m_SeeAllPackageVersions: 0
+  m_DismissPreviewPackagesInUse: 0
   oneTimeWarningShown: 1
   m_Registries:
   - m_Id: main
     m_Name: 
-    m_Url: https://packages.unity.com
+    m_Url: https://packages.unity.cn
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
@@ -39,6 +39,6 @@ MonoBehaviour:
   m_RegistryInfoDraft:
     m_Modified: 0
     m_ErrorMessage: 
-    m_UserModificationsInstanceId: -828
-    m_OriginalInstanceId: -830
+    m_UserModificationsInstanceId: -860
+    m_OriginalInstanceId: -864
   m_LoadAssets: 0

@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185f6993d5150494d98da50e26cb1c25, type: 3}
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
-  ShowPackageView: 0
-  EnableAddressable: 0
-  LocationToLower: 0
-  IncludeAssetGUID: 0
-  UniqueBundleName: 0
+  ShowPackageView: 1
   ShowEditorAlias: 0
+  UniqueBundleName: 0
   Packages:
   - PackageName: DefaultPackage
     PackageDesc: 
+    EnableAddressable: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    IgnoreDefaultType: 1
+    AutoCollectShaders: 1
     Groups:
     - GroupName: AotDlls
       GroupDesc: 
