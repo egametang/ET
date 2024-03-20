@@ -44,18 +44,22 @@ namespace ET
 
         public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
+            //加载YooAsset配置好的包
             ResourcePackage package = YooAssets.CreatePackage(packageName);
             if (isDefault)
             {
                 YooAssets.SetDefaultPackage(package);
             }
 
+            //读取全局配置文件，包括代码执行类型（客户端/服务端/双端）、打包类型（Develop/Release）、App类型（状态同步/帧同步）、运行模式
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            //运行模式
             EPlayMode ePlayMode = globalConfig.EPlayMode;
 
-            // 编辑器下的模拟模式
+            //资源初始化
             switch (ePlayMode)
             {
+                //编辑器下的模拟模式
                 case EPlayMode.EditorSimulateMode:
                 {
                     EditorSimulateModeParameters createParameters = new();
@@ -63,12 +67,14 @@ namespace ET
                     await package.InitializeAsync(createParameters).Task;
                     break;
                 }
+                //离线运行模式
                 case EPlayMode.OfflinePlayMode:
                 {
                     OfflinePlayModeParameters createParameters = new();
                     await package.InitializeAsync(createParameters).Task;
                     break;
                 }
+                //联网运行模式
                 case EPlayMode.HostPlayMode:
                 {
                     string defaultHostServer = GetHostServerURL();

@@ -7,31 +7,56 @@ using UnityEngine;
 
 namespace ET
 {
+    /// <summary>
+    /// 代码加载器
+    /// </summary>
     public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
+        /// <summary>
+        /// model程序集
+        /// </summary>
         private Assembly modelAssembly;
+        /// <summary>
+        /// modelView程序集
+        /// </summary>
         private Assembly modelViewAssembly;
 
+        /// <summary>
+        /// Dll
+        /// </summary>
         private Dictionary<string, TextAsset> dlls;
+        /// <summary>
+        /// 静态编译Dll
+        /// </summary>
         private Dictionary<string, TextAsset> aotDlls;
         private bool enableDll;
 
         public void Awake()
         {
+            //赋值是否启用Dll
             this.enableDll = Resources.Load<GlobalConfig>("GlobalConfig").EnableDll;
         }
 
+        /// <summary>
+        /// 加载Dll
+        /// </summary>
         public async ETTask DownloadAsync()
         {
+            //非编辑器下才需要加载Dll
             if (!Define.IsEditor)
             {
+                //todo:这里的路径理论上需要文件夹或具体的Dll列表或者YooAsset包里的GroupName，不知道为什么只各写了一个
                 this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Unity.Model.dll.bytes");
                 this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
             }
         }
 
+        /// <summary>
+        /// 非Mono生命周期，在DownloadAsync后执行
+        /// </summary>
         public void Start()
         {
+            //如果不是编辑器，直接读取已经加载好的Dll
             if (!Define.IsEditor)
             {
                 byte[] modelAssBytes = this.dlls["Unity.Model.dll"].bytes;
@@ -44,21 +69,27 @@ namespace ET
                 //modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
                 //modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
 
+                //HybridCLR的IL2CPP的处理方式
                 if (Define.EnableIL2CPP)
                 {
                     foreach (var kv in this.aotDlls)
                     {
                         TextAsset textAsset = kv.Value;
+                        //补充元数据，使用超集的模式（在允许使用裁剪后的Dll的情况下，还允许使用原始Dll进行补充）
                         RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
                     }
                 }
+                //加载model的程序集
                 this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
+                //加载modelView的程序集
                 this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
             }
             else
             {
+                //编辑器模式下，如果启动Dll的模式
                 if (this.enableDll)
                 {
+                    //直接从文件读取后加载，无需补充元数据
                     byte[] modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
                     byte[] modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
                     byte[] modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
@@ -68,6 +99,7 @@ namespace ET
                 }
                 else
                 {
+                    //反射加载
                     Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
                     foreach (Assembly ass in assemblies)
                     {
@@ -89,18 +121,25 @@ namespace ET
                 }
             }
             
+            //加载热更代码（元组？），与这个方法类似
             (Assembly hotfixAssembly, Assembly hotfixViewAssembly) = this.LoadHotfix();
-
+            
+            //添加CodeTypes的单例并Awake
             World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[]
             {
+                //之前加载完毕的程序集
                 typeof (World).Assembly, typeof (Init).Assembly, this.modelAssembly, this.modelViewAssembly, hotfixAssembly,
                 hotfixViewAssembly
             });
 
+            //热更代码结束，进入正式逻辑，反射执行ET.Entry类的Start方法
             IStaticMethod start = new StaticMethod(this.modelAssembly, "ET.Entry", "Start");
             start.Run();
         }
 
+        /// <summary>
+        /// 加载热更程序集
+        /// </summary>
         private (Assembly, Assembly) LoadHotfix()
         {
             byte[] hotfixAssBytes;

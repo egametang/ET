@@ -2,6 +2,9 @@ using System;
 
 namespace ET
 {
+    /// <summary>
+    /// 时间信息类
+    /// </summary>
     public class TimeInfo: Singleton<TimeInfo>, ISingletonAwake
     {
         private int timeZone;
