@@ -34,6 +34,7 @@ namespace ET
                     throw new Exception($"type not is AEvent: {type.Name}");
                 }
                 
+                //找到所有带[Event]标记的类，全部添加到allEvents里面，格式为 类型,所有同类型的事件列表
                 object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
                 foreach (object attr in attrs)
                 {
@@ -86,29 +87,35 @@ namespace ET
         public async ETTask PublishAsync<S, T>(S scene, T a) where S: class, IScene where T : struct
         {
             List<EventInfo> iEvents;
+            //寻找符合抛出事件类型的事件，如果没有就返回
             if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
             {
                 return;
             }
 
+            //因为不知道事件总数，使用列表组件进行存储
             using ListComponent<ETTask> list = ListComponent<ETTask>.Create();
             
             foreach (EventInfo eventInfo in iEvents)
             {
+                //如果场景不符合，跳过
                 if (!scene.SceneType.HasSameFlag(eventInfo.SceneType))
                 {
                     continue;
                 }
                     
+                //如果事件类型不符合，报错并跳过（好像不会出现这种情况）
                 if (!(eventInfo.IEvent is AEvent<S, T> aEvent))
                 {
                     Log.Error($"event error: {eventInfo.IEvent.GetType().FullName}");
                     continue;
                 }
 
+                //添加符合的事件
                 list.Add(aEvent.Handle(scene, a));
             }
 
+            //执行全部事件
             try
             {
                 await ETTaskHelper.WaitAll(list);

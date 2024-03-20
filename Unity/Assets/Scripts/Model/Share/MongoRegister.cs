@@ -17,7 +17,7 @@ namespace ET
         
         public static void Init()
         {
-            // 清理老的数据
+            // 反射获取类，清理老的数据
             MethodInfo createSerializerRegistry = typeof (BsonSerializer).GetMethod("CreateSerializerRegistry", BindingFlags.Static | BindingFlags.NonPublic);
             createSerializerRegistry.Invoke(null, Array.Empty<object>());
             MethodInfo registerIdGenerators = typeof (BsonSerializer).GetMethod("RegisterIdGenerators", BindingFlags.Static | BindingFlags.NonPublic);
@@ -29,6 +29,7 @@ namespace ET
 
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
+            //注册需要序列化的结构体
             RegisterStruct<float2>();
             RegisterStruct<float3>();
             RegisterStruct<float4>();
