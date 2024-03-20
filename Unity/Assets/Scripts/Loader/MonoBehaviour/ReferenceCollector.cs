@@ -105,17 +105,29 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		serializedObject.UpdateIfRequiredOrScript();
 	}
 
-	public void Sort()
-	{
-		UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
-		data.Sort(new ReferenceCollectorDataComparer());
-		UnityEditor.EditorUtility.SetDirty(this);
-		serializedObject.ApplyModifiedProperties();
-		serializedObject.UpdateIfRequiredOrScript();
-	}
+    public void Sort()
+    {
+        UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
+        data.Sort(new ReferenceCollectorDataComparer());
+        UnityEditor.EditorUtility.SetDirty(this);
+        serializedObject.ApplyModifiedProperties();
+        serializedObject.UpdateIfRequiredOrScript();
+    }
+
+    public void SetName()
+    {
+        UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
+		foreach (var item in data)
+		{
+			item.key = item.gameObject.name;
+		}
+        UnityEditor.EditorUtility.SetDirty(this);
+        serializedObject.ApplyModifiedProperties();
+        serializedObject.UpdateIfRequiredOrScript();
+    }
 #endif
     //使用泛型返回对应key的gameobject
-	public T Get<T>(string key) where T : class
+    public T Get<T>(string key) where T : class
 	{
 		Object dictGo;
 		if (!dict.TryGetValue(key, out dictGo))

@@ -75,12 +75,16 @@ public class ReferenceCollectorEditor: Editor
 		if (GUILayout.Button("删除空引用"))
 		{
 			DelNullReference();
-		}
-		if (GUILayout.Button("排序"))
-		{
-			referenceCollector.Sort();
-		}
-		EditorGUILayout.EndHorizontal();
+        }
+        if (GUILayout.Button("排序"))
+        {
+            referenceCollector.Sort();
+        }
+        if (GUILayout.Button("自动取名"))
+        {
+			referenceCollector.SetName();
+        }
+        EditorGUILayout.EndHorizontal();
 		EditorGUILayout.BeginHorizontal();
         //可以在编辑器中对searchKey进行赋值，只要输入对应的Key值，就可以点后面的删除按钮删除相对应的元素
         searchKey = EditorGUILayout.TextField(searchKey);
@@ -137,6 +141,7 @@ public class ReferenceCollectorEditor: Editor
 		{
 			dataProperty.DeleteArrayElementAtIndex(i);
 		}
+
 		serializedObject.ApplyModifiedProperties();
 		serializedObject.UpdateIfRequiredOrScript();
 	}
