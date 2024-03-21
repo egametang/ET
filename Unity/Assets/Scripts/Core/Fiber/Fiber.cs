@@ -63,7 +63,7 @@ namespace ET
 #else
             this.Log = new NLogger(sceneType.ToString(), this.Process, this.Id);
 #endif
-            //todo:这里互相引用了，不知道为什么这么做
+            //这里的意思是Scene属于该纤程
             this.Root = new Scene(this, id, 1, sceneType, name);
         }
 

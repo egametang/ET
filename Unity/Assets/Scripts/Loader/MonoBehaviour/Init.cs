@@ -25,7 +25,7 @@ namespace ET
 				Log.Error(e.ExceptionObject.ToString());
 			};
 
-			// 命令行参数
+			// 服务器启动服务的命令行参数
 			string[] args = "".Split(" ");
 			//解析配置
 			Parser.Default.ParseArguments<Options>(args)
@@ -36,7 +36,6 @@ namespace ET
 			
 			//添加Logger单例
 			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
-			//todo:没看懂
 			ETTask.ExceptionHandler += Log.Error;
 			
 			//添加时间信息类单例
@@ -75,6 +74,4 @@ namespace ET
 			World.Instance.Dispose();
 		}
 	}
-	
-	
 }
