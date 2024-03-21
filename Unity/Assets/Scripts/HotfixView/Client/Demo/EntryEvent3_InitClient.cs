@@ -15,6 +15,8 @@ namespace ET.Client
             root.AddComponent<ResourcesLoaderComponent>();
             root.AddComponent<PlayerComponent>();
             root.AddComponent<CurrentScenesComponent>();
+            //添加创建电脑组件集合的组件
+            root.AddComponent<ComputersComponent>(); 
             
             // 根据配置修改掉Main Fiber的SceneType
             SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
