@@ -8,10 +8,23 @@ using Object = UnityEngine.Object;
 [Serializable]
 public class ReferenceCollectorData
 {
+	//key
 	public string key;
-    //Object并非C#基础中的Object，而是 UnityEngine.Object
+	//游戏对象
     public Object gameObject;
+    //需要捕获的类型
+    public E_Type type;
 }
+
+public enum E_Type
+{
+	RectTransform,
+	Button,
+	Image,
+	Text,
+	InputField,
+}
+
 //继承IComparer对比器，Ordinal会使用序号排序规则比较字符串，因为是byte级别的比较，所以准确性和性能都不错
 public class ReferenceCollectorDataComparer: IComparer<ReferenceCollectorData>
 {
@@ -32,6 +45,9 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
     private readonly Dictionary<string, Object> dict = new Dictionary<string, Object>();
 
 #if UNITY_EDITOR
+	public bool IsUpdate;
+	public bool IsDestroy;
+
     //添加新的元素
 	public void Add(string key, Object obj)
 	{

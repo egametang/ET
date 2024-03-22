@@ -26,7 +26,7 @@ public class ReferenceCollectorEditor: Editor
 		}
 	}
 
-	private ReferenceCollector referenceCollector;
+	protected ReferenceCollector referenceCollector;
 
 	private Object heroPrefab;
 
@@ -110,6 +110,8 @@ public class ReferenceCollectorEditor: Editor
             property.stringValue = EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
             property.objectReferenceValue = EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
+            property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("type");
+            property.enumValueIndex = (int)(E_Type)EditorGUILayout.EnumPopup((E_Type)property.enumValueIndex, GUILayout.Width(150));
 			if (GUILayout.Button("X"))
 			{
                 //将元素添加进删除list

@@ -173,12 +173,18 @@ MonoBehaviour:
   data:
   - key: Account
     gameObject: {fileID: 1670632076201042}
+    type: 4
   - key: CloseBtn
     gameObject: {fileID: 442621797865003623}
+    type: 1
   - key: LoginBtn
     gameObject: {fileID: 1920061237828514}
+    type: 1
   - key: Password
     gameObject: {fileID: 1568484768885604}
+    type: 4
+  IsUpdate: 0
+  IsDestroy: 0
 --- !u!1 &1568484768885604
 GameObject:
   m_ObjectHideFlags: 0
