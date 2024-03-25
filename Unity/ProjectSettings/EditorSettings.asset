@@ -3,13 +3,14 @@
 --- !u!159 &1
 EditorSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_SerializationMode: 2
   m_LineEndingsForNewScripts: 1
   m_DefaultBehaviorMode: 0
   m_PrefabRegularEnvironment: {fileID: 0}
   m_PrefabUIEnvironment: {fileID: 0}
   m_SpritePackerMode: 5
+  m_SpritePackerCacheSize: 10
   m_SpritePackerPaddingPower: 1
   m_Bc7TextureCompressor: 0
   m_EtcTextureCompressorBehavior: 0
@@ -20,14 +21,15 @@ EditorSettings:
   m_ProjectGenerationRootNamespace: ET
   m_EnableTextureStreamingInEditMode: 1
   m_EnableTextureStreamingInPlayMode: 1
+  m_EnableEditorAsyncCPUTextureLoading: 0
   m_AsyncShaderCompilation: 1
-  m_CachingShaderPreprocessor: 1
   m_PrefabModeAllowAutoSave: 1
   m_EnterPlayModeOptionsEnabled: 0
   m_EnterPlayModeOptions: 3
   m_GameObjectNamingDigits: 1
   m_GameObjectNamingScheme: 0
   m_AssetNamingUsesSpace: 1
+  m_InspectorUseIMGUIDefaultInspector: 0
   m_UseLegacyProbeSampleCount: 1
   m_SerializeInlineMappingsOnOneLine: 0
   m_DisableCookiesInLightmapper: 1
@@ -41,3 +43,5 @@ EditorSettings:
   m_CacheServerEnableAuth: 0
   m_CacheServerEnableTls: 0
   m_CacheServerValidationMode: 2
+  m_CacheServerDownloadBatchSize: 128
+  m_EnableEnlightenBakedGI: 0

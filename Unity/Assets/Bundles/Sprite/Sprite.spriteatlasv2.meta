@@ -1,0 +1,43 @@
+fileFormatVersion: 2
+guid: f4d07eb12cc6a9c4fafd0f2b8afb4d61
+SpriteAtlasImporter:
+  externalObjects: {}
+  textureSettings:
+    serializedVersion: 2
+    anisoLevel: 0
+    compressionQuality: 0
+    maxTextureSize: 0
+    textureCompression: 0
+    filterMode: 1
+    generateMipMaps: 0
+    readable: 0
+    crunchedCompression: 0
+    sRGB: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 1
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  packingSettings:
+    serializedVersion: 2
+    padding: 2
+    blockOffset: 1
+    allowAlphaSplitting: 0
+    enableRotation: 0
+    enableTightPacking: 0
+    enableAlphaDilation: 0
+  secondaryTextureSettings: {}
+  variantMultiplier: 1
+  bindAsDefault: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

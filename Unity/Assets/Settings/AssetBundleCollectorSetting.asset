@@ -18,7 +18,7 @@ MonoBehaviour:
   Packages:
   - PackageName: DefaultPackage
     PackageDesc: 
-    EnableAddressable: 0
+    EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
     IgnoreDefaultType: 1
@@ -89,16 +89,16 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags: 
         UserData: 
-    - GroupName: Scene
+    - GroupName: Sprite
       GroupDesc: 
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/Bundles/Scenes
-        CollectorGUID: 406b13cb70603ef449d91f5572708db2
+      - CollectPath: Assets/Bundles/Sprite
+        CollectorGUID: ac255573495b53d418d175a2022e9a7f
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackSeparately
-        FilterRuleName: CollectScene
+        FilterRuleName: CollectAll
         AssetTags: 
         UserData: 

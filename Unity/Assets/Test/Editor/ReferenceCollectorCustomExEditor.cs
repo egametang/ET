@@ -226,7 +226,7 @@ namespace ET.Client
 		sbBindComponent.AppendLine("            ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();");
 		foreach (var item in referenceCollector.data)
 		{
-			sbBindComponent.AppendLine($"            self.{item.key} = rc.Get<{item.type.ToString()}>(\"{item.key}\");");
+			sbBindComponent.AppendLine($"            self.{item.key} = rc.Get<GameObject>(\"{item.key}\").GetComponent<{item.type.ToString()}>();");
 			//按钮类型绑定方法
 			if (item.type == E_Type.Button)
 			{

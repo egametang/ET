@@ -449,6 +449,9 @@ MonoBehaviour:
   - key: Unit
     gameObject: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b,
       type: 3}
+    type: 0
+  IsUpdate: 0
+  IsDestroy: 0
 --- !u!114 &575235023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,12 +937,18 @@ MonoBehaviour:
   data:
   - key: Hidden
     gameObject: {fileID: 872594939}
+    type: 0
   - key: Low
     gameObject: {fileID: 251107983}
+    type: 0
   - key: Mid
     gameObject: {fileID: 493985069}
+    type: 0
   - key: High
     gameObject: {fileID: 1439952248}
+    type: 0
+  IsUpdate: 0
+  IsDestroy: 0
 --- !u!850595691 &1972482029
 LightingSettings:
   m_ObjectHideFlags: 0
