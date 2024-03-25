@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -10,6 +11,13 @@ namespace ET
     {
         public string Name;
         public int Opcode;
+    }
+
+    internal class ParamInfo
+    {
+        public string Type;
+        public string Name;
+        public string Comment;
     }
 
     public static class Proto2CS
@@ -28,6 +36,8 @@ namespace ET
         private const string serverMessagePath = "../Unity/Assets/Scripts/Model/Generate/Server/Message/";
         private const string clientServerMessagePath = "../Unity/Assets/Scripts/Model/Generate/ClientServer/Message/";
         private static readonly char[] splitChars = [' ', '\t'];
+        private static readonly Dictionary<string, bool> requestTypes = new() { ["IRequest"] = true, ["ISessionRequest"] = true, ["ILocationRequest"] = true, ["ILocationMessage"] = true };
+        private static readonly Dictionary<string, bool> responeTypes = new() { ["IResponse"] = true, ["ISessionResponse"] = true, ["ILocationResponse"] = true };
         private static readonly List<OpcodeInfo> msgOpcode = [];
 
         public static void Proto2CS()
@@ -76,6 +86,9 @@ namespace ET
             string msgName = "";
             string responseType = "";
             StringBuilder sbDispose = new();
+            List<ParamInfo> paramInfos = [];
+            string lastComment = "";
+            string parentClass = "";
             Regex responseTypeRegex = ResponseTypeRegex();
             foreach (string line in s.Split('\n'))
             {
@@ -112,7 +125,7 @@ namespace ET
                 {
                     isMsgStart = true;
 
-                    string parentClass = "";
+                    parentClass = "";
                     msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
                     string[] ss = newline.Split(["//"], StringSplitOptions.RemoveEmptyEntries);
                     if (ss.Length == 2)
@@ -130,20 +143,7 @@ namespace ET
                     }
 
                     sb.Append($"\tpublic partial class {msgName} : MessageObject");
-
-                    if (parentClass is "IActorMessage" or "IActorRequest" or "IActorResponse")
-                    {
-                        sb.Append($", {parentClass}\n");
-                    }
-                    else if (parentClass != "")
-                    {
-                        sb.Append($", {parentClass}\n");
-                    }
-                    else
-                    {
-                        sb.Append('\n');
-                    }
-
+                    sb.Append(!string.IsNullOrEmpty(parentClass) ? $", {parentClass}\n" : '\n');
                     continue;
                 }
 
@@ -152,8 +152,8 @@ namespace ET
                     if (newline.StartsWith('{'))
                     {
                         sbDispose.Clear();
+                        paramInfos.Clear();
                         sb.Append("\t{\n");
-                        sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = false)\n\t\t{{\n\t\t\treturn ObjectPool.Instance.Fetch(typeof({msgName}), isFromPool) as {msgName};\n\t\t}}\n\n");
                         continue;
                     }
 
@@ -162,10 +162,116 @@ namespace ET
                         isMsgStart = false;
                         responseType = "";
 
-                        // 加了no dispose则自己去定义dispose函数，不要自动生成
-                        if (!newline.Contains("// no dispose"))
+                        #region Create方法和Set方法
+
+                        if (requestTypes.ContainsKey(parentClass) || responeTypes.ContainsKey(parentClass))
                         {
-                            sb.Append($"\t\tpublic override void Dispose()\n\t\t{{\n\t\t\tif (!this.IsFromPool)\n\t\t\t{{\n\t\t\t\treturn;\n\t\t\t}}\n\n\t\t\t{sbDispose.ToString().TrimEnd('\t')}\n\t\t\tObjectPool.Instance.Recycle(this);\n\t\t}}\n");
+                            // IRequest和IResponse的固定参数RpcId不参与手动赋值
+                            for (int i = 0; i < paramInfos.Count; i++)
+                            {
+                                if (paramInfos[i].Name == "RpcId")
+                                {
+                                    paramInfos.RemoveAt(i);
+                                    break;
+                                }
+                            }
+                        }
+
+                        // 带参数消息才生成带参Create方法和Set方法
+                        if (paramInfos.Count > 0)
+                        {
+                            StringBuilder funcParamSb = new();
+                            StringBuilder funcParamCommentSb = null;
+                            StringBuilder callSetFuncParamSb = new();
+                            StringBuilder setFuncContentSb = new();
+                            if (paramInfos.Any(paramInfo => paramInfo.Comment != ""))
+                            {
+                                funcParamCommentSb = new StringBuilder();
+                            }
+
+                            int paramCount = paramInfos.Count;
+                            for (int i = 0; i < paramInfos.Count; i++)
+                            {
+                                ParamInfo paramInfo = paramInfos[i];
+                                string lowerCamelCaseParamName = paramInfo.Name[0].ToString().ToLower() + paramInfo.Name[1..];
+
+                                funcParamSb.Append($"{paramInfo.Type} {lowerCamelCaseParamName} = default");
+                                callSetFuncParamSb.Append(lowerCamelCaseParamName);
+                                if (i < paramCount - 1)
+                                {
+                                    funcParamSb.Append(", ");
+                                    callSetFuncParamSb.Append(", ");
+                                }
+
+                                if (funcParamCommentSb != null)
+                                {
+                                    string comment = paramInfo.Comment;
+                                    if (comment == "")
+                                    {
+                                        if (responeTypes.ContainsKey(parentClass) && paramInfo.Name is "Error" or "Message")
+                                        {
+                                            comment = paramInfo.Name == "Error" ? "错误码" : "错误消息";
+                                        }
+                                        else
+                                        {
+                                            comment = paramInfo.Name;
+                                        }
+                                    }
+
+                                    funcParamCommentSb.Append($"\t\t/// <param name=\"{lowerCamelCaseParamName}\">{comment}</param>\n");
+                                }
+
+                                setFuncContentSb.Append($"\t\t\tthis.{paramInfo.Name} = {lowerCamelCaseParamName};\n");
+                            }
+
+                            // Create
+                            if (funcParamCommentSb != null)
+                            {
+                                sb.Append($"\t\t/// <summary>\n\t\t/// Create {msgName}\n\t\t/// </summary>\n");
+                                sb.Append(funcParamCommentSb);
+                                sb.Append("\t\t/// <param name=\"isFromPool\"></param>\n");
+                            }
+
+                            string funcParamStr = funcParamSb.ToString();
+                            sb.Append($"\t\tpublic static {msgName} Create({funcParamStr}, bool isFromPool = false)\n");
+                            sb.Append("\t\t{\n");
+                            sb.Append($"\t\t\t{msgName} msg = ObjectPool.Instance.Fetch(typeof({msgName}), isFromPool) as {msgName};\n");
+                            sb.Append($"\t\t\tmsg.Set({callSetFuncParamSb.ToString()});\n");
+                            sb.Append("\t\t\treturn msg;\n");
+                            sb.Append("\t\t}\n\n");
+
+                            // Set
+                            if (funcParamCommentSb != null)
+                            {
+                                sb.Append($"\t\t/// <summary>\n\t\t/// Set {msgName}\n\t\t/// </summary>\n");
+                                sb.Append(funcParamCommentSb);
+                            }
+
+                            sb.Append($"\t\tpublic void Set({funcParamStr})\n");
+                            sb.Append("\t\t{\n");
+                            sb.Append(setFuncContentSb);
+                            sb.Append("\t\t}\n\n");
+                        }
+                        else
+                        {
+                            // 普通Create方法
+                            sb.Append($"\t\tpublic static {msgName} Create(bool isFromPool = false)\n\t\t{{\n\t\t\treturn ObjectPool.Instance.Fetch(typeof({msgName}), isFromPool) as {msgName};\n\t\t}}\n\n");
+                        }
+
+                        #endregion
+
+                        // Dispose方法
+                        // 加了no dispose则自己去定义dispose函数，不要自动生成
+                        if (!(newline.Contains("//") && newline.Contains("no dispose")))
+                        {
+                            if (sbDispose.Length > 0)
+                            {
+                                sb.Append($"\t\tpublic override void Dispose()\n\t\t{{\n\t\t\tif (!this.IsFromPool)\n\t\t\t{{\n\t\t\t\treturn;\n\t\t\t}}\n\n\t\t\t{sbDispose.ToString().TrimEnd('\t')}\n\t\t\tObjectPool.Instance.Recycle(this);\n\t\t}}\n");
+                            }
+                            else
+                            {
+                                sb.Append($"\t\tpublic override void Dispose()\n\t\t{{\n\t\t\tif (!this.IsFromPool)\n\t\t\t{{\n\t\t\t\treturn;\n\t\t\t}}\n\n\t\t\tObjectPool.Instance.Recycle(this);\n\t\t}}\n");
+                            }
                         }
 
                         sb.Append("\t}\n\n");
@@ -174,9 +280,11 @@ namespace ET
 
                     if (newline.StartsWith("//"))
                     {
+                        string comment = newline.TrimStart('/', ' ');
                         sb.Append("\t\t/// <summary>\n");
-                        sb.Append($"\t\t/// {newline.TrimStart('/', ' ')}\n");
+                        sb.Append($"\t\t/// {comment}\n");
                         sb.Append("\t\t/// </summary>\n");
+                        lastComment = comment;
                         continue;
                     }
 
@@ -185,9 +293,11 @@ namespace ET
                     {
                         string[] lineSplit = newline.Split("//");
                         memberStr = lineSplit[0].Trim();
+                        string comment = lineSplit[1].Trim();
                         sb.Append("\t\t/// <summary>\n");
-                        sb.Append($"\t\t/// {lineSplit[1].Trim()}\n");
+                        sb.Append($"\t\t/// {comment}\n");
                         sb.Append("\t\t/// </summary>\n");
+                        lastComment = comment;
                     }
                     else
                     {
@@ -196,16 +306,20 @@ namespace ET
 
                     if (memberStr.StartsWith("map<"))
                     {
-                        Map(sb, memberStr, sbDispose);
+                        Map(memberStr, sb, sbDispose);
                     }
                     else if (memberStr.StartsWith("repeated"))
                     {
-                        Repeated(sb, memberStr, sbDispose);
+                        Repeated(memberStr, sb, sbDispose);
                     }
                     else
                     {
-                        Members(sb, memberStr, sbDispose);
+                        ParamInfo paramInfo = new() { Comment = lastComment };
+                        Members(memberStr, sb, sbDispose, paramInfo);
+                        paramInfos.Add(paramInfo);
                     }
+
+                    lastComment = "";
                 }
             }
 
@@ -249,7 +363,23 @@ namespace ET
             sw.Write(result);
         }
 
-        private static void Map(StringBuilder sb, string newline, StringBuilder sbDispose)
+        private static string ConvertType(string type)
+        {
+            return type switch
+            {
+                "int16" => "short",
+                "int32" => "int",
+                "bytes" => "byte[]",
+                "uint32" => "uint",
+                "long" => "long",
+                "int64" => "long",
+                "uint64" => "ulong",
+                "uint16" => "ushort",
+                _ => type
+            };
+        }
+
+        private static void Map(string newline, StringBuilder sb, StringBuilder sbDispose)
         {
             int start = newline.IndexOf('<') + 1;
             int end = newline.IndexOf('>');
@@ -264,12 +394,12 @@ namespace ET
 
             sb.Append("\t\t[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]\n");
             sb.Append($"\t\t[MemoryPackOrder({n - 1})]\n");
-            sb.Append($"\t\tpublic Dictionary<{keyType}, {valueType}> {v} {{ get; set; }} = new();\n");
+            sb.Append($"\t\tpublic Dictionary<{keyType}, {valueType}> {v} {{ get; set; }} = new();\n\n");
 
             sbDispose.Append($"this.{v}.Clear();\n\t\t\t");
         }
 
-        private static void Repeated(StringBuilder sb, string newline, StringBuilder sbDispose)
+        private static void Repeated(string newline, StringBuilder sb, StringBuilder sbDispose)
         {
             try
             {
@@ -292,23 +422,7 @@ namespace ET
             }
         }
 
-        private static string ConvertType(string type)
-        {
-            return type switch
-            {
-                "int16" => "short",
-                "int32" => "int",
-                "bytes" => "byte[]",
-                "uint32" => "uint",
-                "long" => "long",
-                "int64" => "long",
-                "uint64" => "ulong",
-                "uint16" => "ushort",
-                _ => type
-            };
-        }
-
-        private static void Members(StringBuilder sb, string newline, StringBuilder sbDispose)
+        private static void Members(string newline, StringBuilder sb, StringBuilder sbDispose, ParamInfo paramInfo)
         {
             try
             {
@@ -333,6 +447,9 @@ namespace ET
                         sbDispose.Append($"this.{name} = default;\n\t\t\t");
                         break;
                 }
+
+                paramInfo.Type = typeCs;
+                paramInfo.Name = name;
             }
             catch (Exception e)
             {

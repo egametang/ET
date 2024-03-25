@@ -8,11 +8,6 @@ namespace ET
     [ResponseType(nameof(NetClient2Main_Login))]
     public partial class Main2NetClient_Login : MessageObject, IRequest
     {
-        public static Main2NetClient_Login Create(bool isFromPool = false)
-        {
-            return ObjectPool.Instance.Fetch(typeof(Main2NetClient_Login), isFromPool) as Main2NetClient_Login;
-        }
-
         [MemoryPackOrder(0)]
         public int RpcId { get; set; }
 
@@ -30,6 +25,33 @@ namespace ET
         /// </summary>
         [MemoryPackOrder(3)]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Create Main2NetClient_Login
+        /// </summary>
+        /// <param name="ownerFiberId">OwnerFiberId</param>
+        /// <param name="account">账号</param>
+        /// <param name="password">密码</param>
+        /// <param name="isFromPool"></param>
+        public static Main2NetClient_Login Create(int ownerFiberId = default, string account = default, string password = default, bool isFromPool = false)
+        {
+            Main2NetClient_Login msg = ObjectPool.Instance.Fetch(typeof(Main2NetClient_Login), isFromPool) as Main2NetClient_Login;
+            msg.Set(ownerFiberId, account, password);
+            return msg;
+        }
+
+        /// <summary>
+        /// Set Main2NetClient_Login
+        /// </summary>
+        /// <param name="ownerFiberId">OwnerFiberId</param>
+        /// <param name="account">账号</param>
+        /// <param name="password">密码</param>
+        public void Set(int ownerFiberId = default, string account = default, string password = default)
+        {
+            this.OwnerFiberId = ownerFiberId;
+            this.Account = account;
+            this.Password = password;
+        }
 
         public override void Dispose()
         {
@@ -51,11 +73,6 @@ namespace ET
     [Message(ClientMessage.NetClient2Main_Login)]
     public partial class NetClient2Main_Login : MessageObject, IResponse
     {
-        public static NetClient2Main_Login Create(bool isFromPool = false)
-        {
-            return ObjectPool.Instance.Fetch(typeof(NetClient2Main_Login), isFromPool) as NetClient2Main_Login;
-        }
-
         [MemoryPackOrder(0)]
         public int RpcId { get; set; }
 
@@ -67,6 +84,20 @@ namespace ET
 
         [MemoryPackOrder(3)]
         public long PlayerId { get; set; }
+
+        public static NetClient2Main_Login Create(int error = default, string message = default, long playerId = default, bool isFromPool = false)
+        {
+            NetClient2Main_Login msg = ObjectPool.Instance.Fetch(typeof(NetClient2Main_Login), isFromPool) as NetClient2Main_Login;
+            msg.Set(error, message, playerId);
+            return msg;
+        }
+
+        public void Set(int error = default, string message = default, long playerId = default)
+        {
+            this.Error = error;
+            this.Message = message;
+            this.PlayerId = playerId;
+        }
 
         public override void Dispose()
         {
