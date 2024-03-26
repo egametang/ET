@@ -62,7 +62,7 @@ namespace ET.Client
         }
         #endregion
 
-        #region 单资源加载
+        #region 资源加载
         /// <summary>
         /// 异步加载资源
         /// </summary>
@@ -118,7 +118,7 @@ namespace ET.Client
         }
         
         /// <summary>
-        /// 同步直接创建对象
+        /// 同步直接创建完整资源对象
         /// </summary>
         public static GameObject CreateGameObjectSync(this LoaderComponent self,string location, Transform trans = null)
         {
@@ -127,13 +127,114 @@ namespace ET.Client
         }
         
         /// <summary>
-        /// 异步直接创建对象
+        /// 异步直接创建完整资源对象
         /// </summary>
         public static async ETTask<GameObject> CreateGameObjectAsync(this LoaderComponent self,string location, Transform trans = null)
         {
             var obj = await self.LoadAssetAsync<GameObject>(location);
             return UnityEngine.Object.Instantiate(obj, trans);
         }
+        #endregion
+
+        #region 子资源加载
+        /// <summary>
+        /// 异步加载子资源
+        /// </summary>
+        public static async ETTask<T> LoadSubAssetsAsync<T>(this LoaderComponent self, string location) where T : UnityEngine.Object
+        {
+            using CoroutineLock coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.ResourcesLoader, location.GetHashCode());
+
+            HandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadSubAssetsAsync<T>(location);
+
+                await handler.Task;
+
+                self.handlers.Add(location, handler);
+            }
+
+            return (T)((AssetHandle)handler).AssetObject;
+        }        
+        
+        /// <summary>
+        /// 同步加载子资源
+        /// </summary>
+        public static T LoadSubAssetsSync<T>(this LoaderComponent self, string location) where T : UnityEngine.Object
+        {
+            HandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadSubAssetsSync<T>(location);
+                self.handlers.Add(location, handler);
+            }
+            return (T)((AssetHandle)handler).AssetObject;
+        }
+
+        /// <summary>
+        /// 同步子加载资源带回调
+        /// </summary>
+        public static void LoadSubAssetsSync<T>(this LoaderComponent self, string location,Action<T> callback) where T : UnityEngine.Object
+        {
+            HandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadSubAssetsSync<T>(location);
+                self.handlers.Add(location, handler);
+            }
+            callback?.Invoke((T)((AssetHandle)handler).AssetObject);
+        }
+        #endregion
+
+        #region 原生资源加载
+        /// <summary>
+        /// 异步加载原生资源
+        /// </summary>
+        public static async ETTask<T> LoadRawFileAsync<T>(this LoaderComponent self, string location) where T : UnityEngine.Object
+        {
+            using CoroutineLock coroutineLock = await self.Root().GetComponent<CoroutineLockComponent>().Wait(CoroutineLockType.ResourcesLoader, location.GetHashCode());
+
+            HandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadRawFileAsync(location);
+
+                await handler.Task;
+
+                self.handlers.Add(location, handler);
+            }
+
+            return (T)((AssetHandle)handler).AssetObject;
+        }        
+        
+        /// <summary>
+        /// 同步加载原生资源
+        /// </summary>
+        public static T LoadRawFileSync<T>(this LoaderComponent self, string location) where T : UnityEngine.Object
+        {
+            HandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadRawFileSync(location);
+                self.handlers.Add(location, handler);
+            }
+            return (T)((AssetHandle)handler).AssetObject;
+        }
+
+        /// <summary>
+        /// 同步原生加载资源带回调
+        /// </summary>
+        public static void LoadRawFileSync(this LoaderComponent self, string location,Action<UnityEngine.Object> callback) 
+        {
+            HandleBase handler;
+            if (!self.handlers.TryGetValue(location, out handler))
+            {
+                handler = self.package.LoadRawFileSync(location);
+                self.handlers.Add(location, handler);
+            }
+            callback?.Invoke(((AssetHandle)handler).AssetObject);
+        }
+        #endregion
 
         /// <summary>
         /// 同步加载Sprite
@@ -148,7 +249,20 @@ namespace ET.Client
             }
             return sp;
         }
-        #endregion
+        
+        /// <summary>
+        /// 异步加载Sprite
+        /// </summary>
+        public static async ETTask<Sprite> GetSpriteAsync(this LoaderComponent self,string atlasName, string spriteName)
+        {
+            Sprite sp = null;
+            SpriteAtlas atlas = await self.LoadAssetAsync<SpriteAtlas>(atlasName);
+            if (atlas != null)
+            {
+                sp = atlas.GetSprite(spriteName);
+            }
+            return sp;
+        }
 
         #region 加载全部资源
         /// <summary>
