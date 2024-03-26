@@ -43,8 +43,14 @@ namespace ET
 			//添加纤程管理类单例
 			World.Instance.AddSingleton<FiberManager>();
 
-			//异步等待添加资源加载组件单例，并且执行YooAsset资源包初始化
-			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
+			//添加资源加载组件单例
+			var resourcesComponent = World.Instance.AddSingleton<ResourcesComponent>();
+			//异步等待并且执行YooAsset资源包初始化
+			await resourcesComponent.CreatePackageAsync("DefaultPackage", true);
+#if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS
+			//热更资源
+			await resourcesComponent.CheckPackageVersionAndUpdate();
+#endif
 			
 			//添加代码加载器单例
 			CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();

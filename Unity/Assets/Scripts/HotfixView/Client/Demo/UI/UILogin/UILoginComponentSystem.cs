@@ -24,7 +24,7 @@ namespace ET.Client
             self.Password = rc.Get<GameObject>("Password").GetComponent<InputField>();
 
 			//图集加载测试
-            var loader = self.AddComponent<LoaderComponent,string>("DefaultPackage");
+            var loader = self.AddComponent<ResourcesLoaderComponent,string>("DefaultPackage");
             Sprite sp = loader.GetSpriteSync("Sprite","ffxiv");
             self.CloseBtn.image.sprite = sp;
             Debug.Log("sp.InstanceId="+sp.GetInstanceID());

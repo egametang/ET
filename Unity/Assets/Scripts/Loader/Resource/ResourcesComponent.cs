@@ -32,6 +32,8 @@ namespace ET
 
     public class ResourcesComponent : Singleton<ResourcesComponent>, ISingletonAwake
     {
+        private ResourcePackage _package;
+        
         public void Awake()
         {
             YooAssets.Initialize();
@@ -45,10 +47,10 @@ namespace ET
         public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
             //加载YooAsset配置好的包
-            ResourcePackage package = YooAssets.CreatePackage(packageName);
+            _package = YooAssets.CreatePackage(packageName);
             if (isDefault)
             {
-                YooAssets.SetDefaultPackage(package);
+                YooAssets.SetDefaultPackage(_package);
             }
 
             //读取全局配置文件，包括代码执行类型（客户端/服务端/双端）、打包类型（Develop/Release）、App类型（状态同步/帧同步）、运行模式
@@ -64,14 +66,14 @@ namespace ET
                 {
                     EditorSimulateModeParameters createParameters = new();
                     createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
-                    await package.InitializeAsync(createParameters).Task;
+                    await _package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 //离线运行模式
                 case EPlayMode.OfflinePlayMode:
                 {
                     OfflinePlayModeParameters createParameters = new();
-                    await package.InitializeAsync(createParameters).Task;
+                    await _package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 //联网运行模式
@@ -82,7 +84,8 @@ namespace ET
                     HostPlayModeParameters createParameters = new();
                     createParameters.BuildinQueryServices = new GameQueryServices();
                     createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                    await package.InitializeAsync(createParameters).Task;
+                    Debug.Log(defaultHostServer);
+                    await _package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 default:
@@ -92,26 +95,28 @@ namespace ET
 
         static string GetHostServerURL()
         {
-            //string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址
-            string hostServerIP = "http://127.0.0.1";
-            string appVersion = "v1.0";
-
 #if UNITY_EDITOR
+            string hostServerIP = Application.dataPath.Substring(0,Application.dataPath.Length - 7);
+            string appVersion = "v1.0";
+            
             if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
             {
-                return $"{hostServerIP}/CDN/Android/{appVersion}";
+                return $"{hostServerIP}/Bundles/Android/DefaultPackage/{appVersion}";
             }
             else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.iOS)
             {
-                return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+                return $"{hostServerIP}/Bundles/IPhone/DefaultPackage/{appVersion}";
             }
             else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL)
             {
-                return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+                return $"{hostServerIP}/Bundles/WebGL/DefaultPackage/{appVersion}";
             }
 
-            return $"{hostServerIP}/CDN/PC/{appVersion}";
+            return $"{hostServerIP}/Bundles/StandaloneWindows64/DefaultPackage/{appVersion}";
 #else
+            string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址
+            string appVersion = "v1.0";
+
             if (Application.platform == RuntimePlatform.Android)
             {
                 return $"{hostServerIP}/CDN/Android/{appVersion}";
@@ -128,6 +133,117 @@ namespace ET
             return $"{hostServerIP}/CDN/PC/{appVersion}";
 #endif
         }
+
+        #region 检测并下载更新
+        public ResourceDownloaderOperation Downloader{ private set;get; }
+        /// <summary>
+        /// 下载状态 0=未检测 1=版本检测完毕 2=下载清单检测完毕 3=下载中 4=下载成功 5=下载失败
+        /// </summary>
+        public int DownloadStatus { private set;get; }
+        
+        /// <summary>
+        /// 检测并更新版本号
+        /// </summary>
+        public async ETTask CheckPackageVersionAndUpdate()
+        {
+            var operation = _package.UpdatePackageVersionAsync(false);
+
+            await operation.Task;
+
+            if (operation.Status == EOperationStatus.Succeed)
+            {
+                //检测成功
+                string packageVersion = operation.PackageVersion;
+                Debug.Log($"Updated package Version : {packageVersion}");
+                this.DownloadStatus = 1;
+                await CheckPackageManifest(packageVersion);
+            }
+            else
+            {
+                //检测失败
+                this.DownloadStatus = 5; 
+                Debug.LogError(operation.Error);
+            }
+        }
+
+        /// <summary>
+        /// 检测并更新资源清单
+        /// </summary>
+        private async ETTask CheckPackageManifest(string packageVersion)
+        {
+            // 更新成功后自动保存版本号，作为下次初始化的版本。
+            // 也可以通过operation.SavePackageVersion()方法保存。
+            bool savePackageVersion = true;
+            var operation = _package.UpdatePackageManifestAsync(packageVersion, savePackageVersion);
+            
+            await operation.Task;
+
+            if (operation.Status == EOperationStatus.Succeed)
+            {
+                //检测成功
+                this.DownloadStatus = 2;
+                await DownloadPackageAsset();
+            }
+            else
+            {
+                //检测失败
+                this.DownloadStatus = 5;
+                Debug.LogError(operation.Error);
+            }
+        }
+        
+        /// <summary>
+        /// 真正下载资源的地方
+        /// </summary>
+        public async ETTask DownloadPackageAsset()
+        {
+            if (Downloader == null)
+            {
+                //同时下载数量
+                int downloadingMaxNum = 5;
+                //重试次数
+                int failedTryAgain = 3;
+                //创建下载器
+                Downloader = _package.CreateResourceDownloader(downloadingMaxNum, failedTryAgain);
+            }
+            
+            //没有需要下载的资源
+            if (Downloader.TotalDownloadCount == 0)
+            {
+                this.DownloadStatus = 4;
+                return;
+            }
+
+            //需要下载的文件总数和总大小
+            //int totalDownloadCount = Downloader.TotalDownloadCount;
+            //long totalDownloadBytes = Downloader.TotalDownloadBytes;    
+
+            //注册回调方法，不注册也可
+            Downloader.OnDownloadErrorCallback = (fileName, error) => { };
+            Downloader.OnDownloadProgressCallback = (totalDownloadCount, currentDownloadCount, totalDownloadBytes, currentDownloadBytes) => { };
+            Downloader.OnDownloadOverCallback = (fileName) => { };
+            Downloader.OnStartDownloadFileCallback = (fileName, sizeBytes) => { };
+
+            //开启下载
+            Downloader.BeginDownload();
+            
+            this.DownloadStatus = 3; 
+            
+            await Downloader.Task;
+                   
+            //检测下载结果
+            if (Downloader.Status == EOperationStatus.Succeed)
+            {
+                //下载成功
+                this.DownloadStatus = 4;
+            }
+            else
+            {
+                //下载失败
+                this.DownloadStatus = 5;
+            }
+        }
+        #endregion
 
         public void DestroyPackage(string packageName)
         {
