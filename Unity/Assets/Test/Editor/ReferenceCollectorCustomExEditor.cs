@@ -201,8 +201,7 @@ namespace ET.Client
 	[EntitySystemOf(typeof(#ComponentName))]
 	[FriendOf(typeof(#ComponentName))]
 	public static partial class #SystemName
-	{#InterfaceFunc
-#ButtonOnClick
+	{#InterfaceFunc#ButtonOnClick
 	}
 }
 ";
@@ -232,7 +231,7 @@ namespace ET.Client
 			{
 				var funcStr = $"On{item.key.Replace("Btn","")}";
 				sbBindComponent.AppendLine($"            self.{item.key}.onClick.AddListener(() => {{ self.{funcStr}();}});");
-				sbButtonFunc.AppendLine($"\n        public static void {funcStr}(this {componentName} self)\n        {{\n\n        }}");
+				sbButtonFunc.AppendLine($"\n        public static void {funcStr}(this {componentName} self)\n        {{\n            Debug.Log(\"Click {item.key}\");\n        }}");
 			}
 		}
 		//替换按钮方法
