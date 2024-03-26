@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using UnityEngine;
 
 namespace ET
 {
@@ -13,6 +14,15 @@ namespace ET
                 return;
             }
             waitCoroutineLock.SetException(new Exception("coroutine is timeout!"));
+        }
+    }
+    
+    [Invoke(123231)]
+    public class TestInvoke2: ATimer<TestInvoke2>
+    {
+        protected override void Run(TestInvoke2 testInvoke2)
+        {
+            Debug.Log("testInvoke2");
         }
     }
     

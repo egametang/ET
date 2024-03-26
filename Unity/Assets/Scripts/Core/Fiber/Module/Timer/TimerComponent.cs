@@ -5,8 +5,11 @@ namespace ET
     public enum TimerClass
     {
         None,
+        //一次
         OnceTimer,
+        //一次等待
         OnceWaitTimer,
+        //反复执行
         RepeatedTimer,
     }
 
@@ -170,6 +173,10 @@ namespace ET
             return true;
         }
 
+        /// <summary>
+        /// 直到指定时间（毫秒），todo：但是回调执行不到，很奇怪
+        /// </summary>
+        /// <param name="tillTime">指定时间</param>
         public static async ETTask WaitTillAsync(this TimerComponent self, long tillTime, ETCancellationToken cancellationToken = null)
         {
             long timeNow = self.GetNow();
@@ -202,11 +209,18 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 等待标准时1秒，todo:cancellationToken好像没有调用到
+        /// </summary>
+        /// <param name="cancellationToken">回调</param>
         public static async ETTask WaitFrameAsync(this TimerComponent self, ETCancellationToken cancellationToken = null)
         {
             await self.WaitAsync(1, cancellationToken);
         }
 
+        /// <summary>
+        /// 等待时间（毫秒）
+        /// </summary>
         public static async ETTask WaitAsync(this TimerComponent self, long time, ETCancellationToken cancellationToken = null)
         {
             if (time == 0)
@@ -243,6 +257,12 @@ namespace ET
         // 用这个优点是可以热更，缺点是回调式的写法，逻辑不连贯。WaitTillAsync不能热更，优点是逻辑连贯。
         // wait时间短并且逻辑需要连贯的建议WaitTillAsync
         // wait时间长不需要逻辑连贯的建议用NewOnceTimer
+        /// <summary>
+        /// 执行一次的定时器
+        /// </summary>
+        /// <param name="tillTime">指定执行时间（毫秒）</param>
+        /// <param name="type">接收的事件</param>
+        /// <returns></returns>
         public static long NewOnceTimer(this TimerComponent self, long tillTime, int type, object args)
         {
             long timeNow = self.GetNow();
@@ -286,6 +306,12 @@ namespace ET
             return timerId;
         }
 
+        /// <summary>
+        /// 持续定时器
+        /// </summary>
+        /// <param name="time">间隔多久执行一次（毫秒）</param>
+        /// <param name="type">接收的事件</param>
+        /// <returns></returns>
         public static long NewRepeatedTimer(this TimerComponent self, long time, int type, object args)
         {
             if (time < 100)

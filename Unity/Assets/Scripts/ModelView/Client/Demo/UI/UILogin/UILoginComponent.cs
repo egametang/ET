@@ -1,7 +1,7 @@
 ﻿/*********************************************
  * 
  * 脚本名：UILoginComponent.cs
- * 创建时间：2024/03/26 15:30:34
+ * 创建时间：2024/03/26 16:24:17
  *********************************************/
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,12 +9,16 @@ using UnityEngine.UI;
 namespace ET.Client
 {
 	[ComponentOf(typeof(UI))]
-	public class UILoginComponent: Entity, IAwake 
+	public partial class UILoginComponent: Entity, IAwake , IUpdate
 	{
-        public InputField Account;
-        public Button CloseBtn;
-        public Button LoginBtn;
-        public InputField Password;
-
+		public InputField Account;
+		public Button CloseBtn;
+		public Button LoginBtn;
+		public InputField Password;
+	}
+	
+	public partial class UILoginComponent
+	{
+		public long timerId;
 	}
 }
