@@ -29,9 +29,9 @@ namespace ET.Client
             self.CloseBtn.image.sprite = sp;
             Debug.Log("sp.InstanceId="+sp.GetInstanceID());
             //UI创建测试
-            var obj2 = loader.LoadAssetSync<UnityEngine.GameObject>("UIHelp");
-            var uiHelp2 = UnityEngine.Object.Instantiate(obj2);
-            Debug.Log("obj2.InstanceId="+obj2.GetInstanceID());
+            //var obj2 = loader.LoadAssetSync<UnityEngine.GameObject>("UIHelp");
+            //var uiHelp2 = UnityEngine.Object.Instantiate(obj2);
+            //Debug.Log("obj2.InstanceId="+obj2.GetInstanceID());
 			//Close
             loader.Dispose();
 		}
