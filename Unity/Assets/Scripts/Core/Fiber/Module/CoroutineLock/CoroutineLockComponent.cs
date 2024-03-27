@@ -32,7 +32,15 @@ namespace ET
 
             self.nextFrameRun.Enqueue((coroutineLockType, key, level));
         }
-
+        
+        /// <summary>
+        /// 等待方法执行完毕释放
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="coroutineLockType">组件的ChildId，自定义不同模块的锁</param>
+        /// <param name="key">组件里的队列的Key，同一个Key的协程将排队处理，不同Key则各自执行</param>
+        /// <param name="time">进入队列之后开始计时，超过这个时间就会抛出错误</param>
+        /// <returns></returns>
         public static async ETTask<CoroutineLock> Wait(this CoroutineLockComponent self, int coroutineLockType, long key, int time = 60000)
         {
             CoroutineLockQueueType coroutineLockQueueType = self.GetChild<CoroutineLockQueueType>(coroutineLockType) ?? self.AddChildWithId<CoroutineLockQueueType>(coroutineLockType);

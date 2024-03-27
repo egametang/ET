@@ -53,7 +53,7 @@ namespace ET.Client
         private static async ETTask Test1(this OperaComponent self)
         {
             Log.Debug($"Croutine 1 start1 ");
-            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(1, 20000, 3000))
+            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(1, 10000, 1000))
             {
                 await self.Root().GetComponent<TimerComponent>().WaitAsync(6000);
             }
@@ -64,7 +64,7 @@ namespace ET.Client
         private static async ETTask Test2(this OperaComponent self)
         {
             Log.Debug($"Croutine 2 start2");
-            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(1, 20000, 3000))
+            using (await self.Root().GetComponent<CoroutineLockComponent>().Wait(1, 10000, 1000))
             {
                 await self.Root().GetComponent<TimerComponent>().WaitAsync(1000);
             }
