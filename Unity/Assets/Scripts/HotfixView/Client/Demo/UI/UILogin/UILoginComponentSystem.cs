@@ -17,9 +17,9 @@ namespace ET.Client
         {
             ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
             self.Account = rc.Get<GameObject>("Account").GetComponent<InputField>();
-            self.CloseBtn = rc.Get<GameObject>("CloseBtn").GetComponent<Button>(); ;
+            self.CloseBtn = rc.Get<GameObject>("CloseBtn").GetComponent<Button>();
             self.CloseBtn.onClick.AddListener(() => { self.OnClose(); });
-            self.LoginBtn = rc.Get<GameObject>("LoginBtn").GetComponent<Button>(); ; ;
+            self.LoginBtn = rc.Get<GameObject>("LoginBtn").GetComponent<Button>();
             self.LoginBtn.onClick.AddListener(() => { self.OnLogin(); });
             self.Password = rc.Get<GameObject>("Password").GetComponent<InputField>();
 

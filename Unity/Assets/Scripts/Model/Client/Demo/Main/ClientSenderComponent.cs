@@ -1,4 +1,6 @@
-﻿namespace ET.Client
+﻿using System.Collections.Generic;
+
+namespace ET.Client
 {
     [ComponentOf(typeof(Scene))]
     public class ClientSenderComponent: Entity, IAwake, IDestroy

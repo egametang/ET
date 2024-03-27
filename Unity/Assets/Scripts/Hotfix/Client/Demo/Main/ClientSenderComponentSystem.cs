@@ -38,17 +38,26 @@ namespace ET.Client
 
         public static async ETTask<long> LoginAsync(this ClientSenderComponent self, string account, string password)
         {
+            //声明一个纤程，来自池
             self.fiberId = await FiberManager.Instance.Create(SchedulerType.ThreadPool, 0, SceneType.NetClient, "");
             self.netClientActorId = new ActorId(self.Fiber().Process, self.fiberId);
-
+            //声明协议，设置数值
             Main2NetClient_Login main2NetClientLogin = Main2NetClient_Login.Create();
             main2NetClientLogin.OwnerFiberId = self.Fiber().Id;
             main2NetClientLogin.Account = account;
             main2NetClientLogin.Password = password;
+            main2NetClientLogin.token = "我是token";
+            //发送消息，并且等待回信
             NetClient2Main_Login response = await self.Root().GetComponent<ProcessInnerSender>().Call(self.netClientActorId, main2NetClientLogin) as NetClient2Main_Login;
+            //回信来了，返回值
             return response.PlayerId;
         }
 
+        /// <summary>
+        /// 只发不收
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="message"></param>
         public static void Send(this ClientSenderComponent self, IMessage message)
         {
             A2NetClient_Message a2NetClientMessage = A2NetClient_Message.Create();
@@ -56,6 +65,9 @@ namespace ET.Client
             self.Root().GetComponent<ProcessInnerSender>().Send(self.netClientActorId, a2NetClientMessage);
         }
 
+        /// <summary>
+        /// 发了还收
+        /// </summary>
         public static async ETTask<IResponse> Call(this ClientSenderComponent self, IRequest request, bool needException = true)
         {
             A2NetClient_Request a2NetClientRequest = A2NetClient_Request.Create();
