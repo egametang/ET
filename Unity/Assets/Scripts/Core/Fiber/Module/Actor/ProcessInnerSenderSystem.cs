@@ -91,6 +91,9 @@ namespace ET
             self.SendInner(new ActorId(fromAddress, 0), (MessageObject)message);
         }
 
+        /// <summary>
+        /// 只发不收
+        /// </summary>
         public static void Send(this ProcessInnerSender self, ActorId actorId, IMessage message)
         {
             self.SendInner(actorId, (MessageObject)message);
@@ -120,6 +123,15 @@ namespace ET
             return ++self.RpcId;
         }
 
+        /// <summary>
+        /// 要发也要收
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="actorId"></param>
+        /// <param name="request"></param>
+        /// <param name="needException"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static async ETTask<IResponse> Call(
                 this ProcessInnerSender self,
                 ActorId actorId,
@@ -127,6 +139,7 @@ namespace ET
                 bool needException = true
         )
         {
+            //随机RpcId
             int rpcId = self.GetRpcId();
             request.RpcId = rpcId;
             
