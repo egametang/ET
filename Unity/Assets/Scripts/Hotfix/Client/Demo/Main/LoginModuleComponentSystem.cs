@@ -20,11 +20,10 @@ namespace ET.Client
         
         public static async ETTask<long> AddExpAsync(this LoginModuleComponent self, int addExp)
         {
-            //给消息中心发送消息，使用NetClient的ActorId
             C2G_AddExp c2GAddExp = C2G_AddExp.Create();
             c2GAddExp.AddExp = addExp;
             //这样调用内部封装了发送给NetClient的消息，不需要像下面再写一遍
-            G2C_AddExp g2CAddExp = await self.Root().GetComponent<ClientSenderComponent>().Call(c2GAddExp) as G2C_AddExp;
+            G2C_AddExp g2CAddExp = await self.GetParent<ClientSenderComponent>().Call(c2GAddExp) as G2C_AddExp;
             return g2CAddExp.Exp;
         }
 

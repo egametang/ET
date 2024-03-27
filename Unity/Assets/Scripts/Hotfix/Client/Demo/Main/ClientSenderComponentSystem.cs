@@ -59,7 +59,7 @@ namespace ET.Client
         }
 
         /// <summary>
-        /// 发了还收
+        /// 外部发了还收
         /// </summary>
         public static async ETTask<IResponse> Call(this ClientSenderComponent self, IRequest request, bool needException = true)
         {

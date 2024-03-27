@@ -124,7 +124,7 @@ namespace ET
         }
 
         /// <summary>
-        /// 要发也要收
+        /// 内部要发也要收
         /// </summary>
         /// <param name="self"></param>
         /// <param name="actorId"></param>
