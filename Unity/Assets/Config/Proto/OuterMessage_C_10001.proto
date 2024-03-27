@@ -233,3 +233,20 @@ message G2C_Benchmark // ISessionResponse
 	int32 Error = 2;
 	string Message = 3;
 }
+
+// ResponseType G2C_AddExp
+message C2G_AddExp // ISessionRequest
+{
+	int32 RpcId = 1;
+	int32 AddExp = 2;
+}
+
+message G2C_AddExp // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	/// 自己的UnitId
+	int32 Lv = 1;
+	int32 Exp = 2;
+}

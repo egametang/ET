@@ -12,12 +12,12 @@ namespace ET.Client
             root.RemoveComponent<LoginModuleComponent>();
             var loginModuleComponent = root.AddComponent<LoginModuleComponent>();
             //test
-            //long playerId1 = await loginModuleComponent.RegisterAsync(account, password);
-            //Log.Debug("playerId1=" + playerId1);
-            long playerId2 = await loginModuleComponent.LoginAsync(account, password);
-            Log.Debug("playerId2=" + playerId2);
+            long playerId = await loginModuleComponent.LoginAsync(account, password);
+            Log.Debug("playerId=" + playerId);
+            var exp = await loginModuleComponent.AddExpAsync(120);
+            Log.Debug("exp=" + exp);
 
-            root.GetComponent<PlayerComponent>().MyId = playerId2;
+            root.GetComponent<PlayerComponent>().MyId = playerId;
             
             await EventSystem.Instance.PublishAsync(root, new LoginFinish());
         }

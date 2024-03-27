@@ -1082,6 +1082,80 @@ namespace ET
         }
     }
 
+    [MemoryPackable]
+    [Message(OuterMessage.C2G_AddExp)]
+    [ResponseType(nameof(G2C_AddExp))]
+    public partial class C2G_AddExp : MessageObject, ISessionRequest
+    {
+        public static C2G_AddExp Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(C2G_AddExp), isFromPool) as C2G_AddExp;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int AddExp { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.AddExp = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_AddExp)]
+    public partial class G2C_AddExp : MessageObject, ISessionResponse
+    {
+        public static G2C_AddExp Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_AddExp), isFromPool) as G2C_AddExp;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Error { get; set; }
+
+        [MemoryPackOrder(2)]
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 自己的UnitId
+        /// </summary>
+        [MemoryPackOrder(0)]
+        public int Lv { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Exp { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+            this.Lv = default;
+            this.Exp = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
     public static class OuterMessage
     {
         public const ushort HttpGetRouterResponse = 10002;
@@ -1118,5 +1192,7 @@ namespace ET
         public const ushort M2C_TransferMap = 10033;
         public const ushort C2G_Benchmark = 10034;
         public const ushort G2C_Benchmark = 10035;
+        public const ushort C2G_AddExp = 10036;
+        public const ushort G2C_AddExp = 10037;
     }
 }
