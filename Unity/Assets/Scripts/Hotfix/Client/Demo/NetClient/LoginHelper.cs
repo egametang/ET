@@ -9,8 +9,7 @@ namespace ET.Client
             ClientSenderComponent clientSenderComponent = root.AddComponent<ClientSenderComponent>();
             await clientSenderComponent.OnAwake();
             //重新初始化剩下的数据模块
-            root.RemoveComponent<LoginModuleComponent>();
-            var loginModuleComponent = root.AddComponent<LoginModuleComponent>();
+            var loginModuleComponent = clientSenderComponent.AddComponent<LoginModuleComponent>();
             //test
             long playerId = await loginModuleComponent.LoginAsync(account, password);
             Log.Debug("playerId=" + playerId);
