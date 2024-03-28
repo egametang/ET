@@ -24,6 +24,7 @@ namespace ET.Client
             
             IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);
 
+            //登录Router服务器
             R2C_Login r2CLogin;
             using (Session session = await netComponent.CreateRouterSession(realmAddress, account, password))
             {
