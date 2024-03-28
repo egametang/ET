@@ -106,6 +106,8 @@ public class ReferenceCollectorCustomExEditor : ReferenceCollectorEditor
 		//寻找到当前obj的路径
 		var hotfixViewPath = $"Assets/Scripts/HotfixView/Client/{globalCfg.AppType.ToString()}/UI/{go.name}/";
 		var modelViewPath = $"Assets/Scripts/ModelView/Client/{globalCfg.AppType.ToString()}/UI/{go.name}/";
+		var prefabsPath = $"Assets/Bundles/UI/{globalCfg.AppType.ToString()}";
+		var uiTypePath = $"Assets/Scripts/ModelView/Client/{globalCfg.AppType.ToString()}/UI/UIType.cs";
 		//创建目录
 		if (!Directory.Exists(hotfixViewPath))
 		{
@@ -117,7 +119,9 @@ public class ReferenceCollectorCustomExEditor : ReferenceCollectorEditor
 		}
             
 		CreateUIComponent(go, modelViewPath);
+		CreateUIEvent(go, hotfixViewPath);
 		CreateUIComponentSystem(go, hotfixViewPath);
+		CreateUIType(prefabsPath,uiTypePath);
 
 		Debug.Log(go.name + "生成完毕！");
 		//回收资源
@@ -134,7 +138,7 @@ public class ReferenceCollectorCustomExEditor : ReferenceCollectorEditor
 	private void CreateUIComponent(GameObject go, string path)
 	{
 		string temp = @"/*********************************************
- * 
+ * 自动生成代码，请勿手动修改
  * 脚本名：#ComponentName.cs
  * 创建时间：#Time
  *********************************************/
@@ -177,6 +181,54 @@ namespace ET.Client
 		File.WriteAllText(path + componentName + ".cs", temp, Encoding.UTF8);
 	}
 
+	/// <summary>
+	/// 生成UI事件监听，只生成一次
+	/// </summary>
+	/// <param name="go"></param>
+	/// <param name="path"></param>
+	private void CreateUIEvent(GameObject go, string path)
+	{
+		string temp = @"/*********************************************
+ * 自动生成代码，请勿手动修改
+ * 脚本名：#UINameEvent.cs
+ * 创建时间：#Time
+ *********************************************/
+using System;
+using UnityEngine;
+
+namespace ET.Client
+{
+    [UIEvent(UIType.#UIName)]
+    public class #UINameEvent: AUIEvent
+    {
+        public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
+        {
+            string assetsName = $""Assets/Bundles/UI/Demo/{UIType.#UIName}.prefab"";
+            GameObject bundleGameObject = await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(assetsName);
+            GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));
+            UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.#UIName, gameObject);
+            ui.AddComponent<#UINameComponent>();
+            return ui;
+        }
+
+        public override void OnRemove(UIComponent uiComponent)
+        {
+        }
+    }
+}
+";
+
+		//替换UI名和时间
+		temp = temp.Replace("#UIName", go.name);
+		temp = temp.Replace("#Time", System.DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+
+		//输出文本
+		File.WriteAllText(path + go.name + "Event.cs", temp, Encoding.UTF8);
+	}
+
+	/// <summary>
+	/// 生成UI操作类，只生成一次
+	/// </summary>
 	private void CreateUIComponentSystem(GameObject go, string path)
 	{
 		var componentName = go.name + "Component";
@@ -250,5 +302,43 @@ namespace ET.Client
 		
 		//输出文本
 		File.WriteAllText(codeSavePath, temp, Encoding.UTF8);
+	}
+
+	/// <summary>
+	/// 生成UITyps，每次覆盖
+	/// </summary>
+	private void CreateUIType(string prefabsPath,string savePath)
+	{
+		string temp = @"/*********************************************
+ * 自动生成代码，请勿手动修改
+ * 脚本名：UIType.cs
+ * 创建时间：#Time
+ *********************************************/
+using System;
+using System.Collections.Generic;
+
+namespace ET.Client
+{
+    public static partial class UIType
+    {
+	    public const string Root = ""Root"";
+#UITypeList
+    }
+}
+";
+
+		//替换时间
+		temp = temp.Replace("#Time", System.DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+		//替换变量
+		var sb = new StringBuilder();
+		foreach (var file in Directory.GetFiles(prefabsPath,"*.prefab", SearchOption.AllDirectories))
+		{
+			var fileName = Path.GetFileNameWithoutExtension(file);
+			sb.AppendLine($"        public const string {fileName} = \"{fileName}\";");
+		}
+		temp = temp.Replace("#UITypeList", sb.ToString());
+
+		//输出文本
+		File.WriteAllText(savePath, temp, Encoding.UTF8);
 	}
 }

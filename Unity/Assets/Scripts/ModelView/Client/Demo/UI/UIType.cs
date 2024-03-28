@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*********************************************
+ * 
+ * 脚本名：UIType.cs
+ * 创建时间：2024/03/28 11:40:37
+ *********************************************/
+using System;
 using System.Collections.Generic;
 
 namespace ET.Client
@@ -6,9 +11,10 @@ namespace ET.Client
     public static partial class UIType
     {
 	    public const string Root = "Root";
-	    public const string UILoading = "UILoading";
-	    public const string UILogin = "UILogin";
-	    public const string UILobby = "UILobby";
-	    public const string UIHelp = "UIHelp";
+        public const string UIHelp = "UIHelp";
+        public const string UILobby = "UILobby";
+        public const string UILogin = "UILogin";
+        public const string UIRegister = "UIRegister";
+
     }
 }
