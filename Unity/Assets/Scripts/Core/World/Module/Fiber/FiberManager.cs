@@ -23,6 +23,10 @@ namespace ET
         private int idGenerator = 10000000; // 10000000以下为保留的用于StartSceneConfig的fiber id, 1个区配置1000个纤程，可以配置10000个区
         private ConcurrentDictionary<int, Fiber> fibers = new();
 
+#if UNITY_EDITOR
+        public ConcurrentDictionary<int, Fiber> GetFibers() => this.fibers;
+#endif
+
         private MainThreadScheduler mainThreadScheduler;
         
         public void Awake()

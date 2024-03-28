@@ -30,6 +30,13 @@ namespace ET
         [BsonIgnore]
         public long InstanceId { get; protected set; }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// 编辑器用 是否展开
+        /// </summary>
+        public bool IsExpanded = false;
+#endif
+        
         protected Entity()
         {
         }
