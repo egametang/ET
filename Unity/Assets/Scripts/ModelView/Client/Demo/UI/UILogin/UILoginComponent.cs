@@ -16,7 +16,7 @@ namespace ET.Client
 		public Button LoginBtn;
 		public InputField Password;
 	}
-	
+
 	public partial class UILoginComponent
 	{
 		public long timerId;

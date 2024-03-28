@@ -50,14 +50,24 @@ namespace ET.Client
             //Debug.Log("obj2.InstanceId="+obj2.GetInstanceID());
             //Close
             //loader.Dispose();
-
-            await UIHelper.Create(self.Scene(), "UIRegister", UILayer.Mid);
         }
-
         
         [EntitySystem]
         private static void Update(this ET.Client.UILoginComponent self)
         {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                 UIHelper.Create(self.Scene(), UIType.UIRegister, UILayer.High).Coroutine();
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                UIHelper.Hide(self.Scene(), UIType.UIRegister).Coroutine();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                UIHelper.ShowTips(self.Scene(),"这里是调用了ShowTips").Coroutine();
+            }
+            
             if (Input.GetKeyDown(KeyCode.A))
             {
                 var timerComponent = self.Scene().GetComponent<TimerComponent>();
@@ -66,14 +76,12 @@ namespace ET.Client
                 self.timerId = timerComponent.NewRepeatedTimer(100,123231,null);
                 Debug.Log("???222???");
             }
-            
             if (Input.GetKeyDown(KeyCode.S))
             {
                 var timerComponent = self.Scene().GetComponent<TimerComponent>();
                 
                 timerComponent.Remove(ref self.timerId);
             }
-            
             if (Input.GetKeyDown(KeyCode.D))
             {
                 var timerComponent = self.Scene().GetComponent<TimerComponent>();
