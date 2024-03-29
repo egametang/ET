@@ -93,6 +93,23 @@ namespace ET.Client
                 });
                 timerComponent.WaitFrameAsync(callback).Coroutine();
             }
+            
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                self.Root().RemoveComponent<MainTaskComponent>();
+                var taskComponent = self.Root().AddComponent<MainTaskComponent>();
+                taskComponent.SetTaskId(1, 1);
+                taskComponent.SetType(1);
+                taskComponent.SetNeedProgress(1);
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                EventSystem.Instance.Publish(self.Root(),new RoleUpgrade());
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                EventSystem.Instance.Publish(self.Root(),new GetItem(){ ItemValue = 2});
+            }
         }
     }
 }
