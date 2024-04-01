@@ -97,10 +97,7 @@ namespace ET.Client
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 self.Root().RemoveComponent<MainTaskComponent>();
-                var taskComponent = self.Root().AddComponent<MainTaskComponent>();
-                taskComponent.SetTaskId(1, 1);
-                taskComponent.SetType(1);
-                taskComponent.SetNeedProgress(1);
+                var taskComponent = self.Root().AddComponent<MainTaskComponent,int,int>(1,0);
             }
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -108,7 +105,10 @@ namespace ET.Client
             }
             if (Input.GetKeyDown(KeyCode.C))
             {
-                EventSystem.Instance.Publish(self.Root(),new GetItem(){ ItemValue = 2});
+                var unit = self.Root().CurrentScene().GetComponent<UnitComponent>();
+                unit.GetChild<NumericComponent>(1).Set(NumericType.Level,10);
+                
+                //EventSystem.Instance.Publish(self.Root(),new GetItem(){ ItemValue = 2});
             }
         }
     }

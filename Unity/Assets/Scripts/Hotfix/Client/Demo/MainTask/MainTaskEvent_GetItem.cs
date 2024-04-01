@@ -9,10 +9,10 @@ namespace ET.Client
         protected override async ETTask Run(Scene root, GetItem args)
         {
             var taskComponent = root.GetComponent<MainTaskComponent>();
-            if (taskComponent.Type == 1)
+            if (taskComponent.Table.Type == 1)
             {
                 Log.Debug("修改前 taskComponent.Progress="+taskComponent.Progress);
-                taskComponent.SetProgress(taskComponent.Progress + args.ItemValue);
+                taskComponent.UpdateProgress(taskComponent.Progress + args.ItemValue);
                 Log.Debug("修改后 taskComponent.Progress="+taskComponent.Progress);
             }
         }
