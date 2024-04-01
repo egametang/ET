@@ -4,6 +4,9 @@
     public static class NumericType
     {
 	    public const int Max = 10000;
+	    
+	    public const int Level = 1;
+	    public const int MainTaskId = 1;
 
 	    public const int Speed = 1000;
 	    public const int SpeedBase = Speed * 10 + 1;

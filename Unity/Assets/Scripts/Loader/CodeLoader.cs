@@ -45,7 +45,7 @@ namespace ET
             //非编辑器下才需要加载Dll
             if (!Define.IsEditor)
             {
-                //todo:这里的路径理论上需要文件夹或具体的Dll列表或者YooAsset包里的GroupName，不知道为什么只各写了一个
+                //这里的API调用，路径参数只需要文件夹里的任一文件即可，具体底层会获取当前资源包文件夹里的全部文件
                 this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Unity.Model.dll.bytes");
                 this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
             }
@@ -121,15 +121,14 @@ namespace ET
                 }
             }
             
-            //加载热更代码（元组？），与这个方法类似
+            //加载热更代码（元组？），与本方法类似
             (Assembly hotfixAssembly, Assembly hotfixViewAssembly) = this.LoadHotfix();
             
             //添加CodeTypes的单例并Awake
             World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[]
             {
                 //之前加载完毕的程序集
-                typeof (World).Assembly, typeof (Init).Assembly, this.modelAssembly, this.modelViewAssembly, hotfixAssembly,
-                hotfixViewAssembly
+                typeof (World).Assembly, typeof (Init).Assembly, this.modelAssembly, this.modelViewAssembly, hotfixAssembly,hotfixViewAssembly
             });
 
             //热更代码结束，进入正式逻辑，反射执行ET.Entry类的Start方法
