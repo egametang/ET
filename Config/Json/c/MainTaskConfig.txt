@@ -1,4 +1,4 @@
 {"dict": [
-[1, {"_t":"MainTaskConfig","_id":1,"MainId":1,"SubId":1,"Type":1,"Name":"解救商人","Desc":"商人被绑架了，速救","AutoComplete":0}],
-[2, {"_t":"MainTaskConfig","_id":2,"MainId":1,"SubId":2,"Type":2,"Name":"你好世界","Desc":"商人给了你一个cmd窗口","AutoComplete":1}],
+[1, {"_t":"MainTaskConfig","_id":1,"MainId":1,"SubId":1,"Type":1,"Name":"解救商人","Desc":"商人被绑架了，速救","AutoComplete":0,"NeedProgress":1}],
+[2, {"_t":"MainTaskConfig","_id":2,"MainId":1,"SubId":2,"Type":2,"Name":"你好世界","Desc":"商人给了你一个cmd窗口","AutoComplete":1,"NeedProgress":1}],
 ]}

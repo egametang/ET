@@ -70,6 +70,8 @@ namespace ET
 		public string Desc { get; set; }
 		/// <summary>是否自动提交</summary>
 		public int AutoComplete { get; set; }
+		/// <summary>需要的数量</summary>
+		public int NeedProgress { get; set; }
 
 	}
 }

@@ -26,7 +26,7 @@
         private static void CheckProgress(this MainTaskComponent self)
         {
             MainTaskConfig table = self.Table;
-            if (self.Progress >= 1)
+            if (self.Progress >= table.NeedProgress)
             {
                 if (table.AutoComplete == 1)
                 {
@@ -43,10 +43,6 @@
         private static void Destroy(this MainTaskComponent self)
         {
         }
-    }
-
-    public struct MainTaskStatusUpdate
-    {
     }
 
     public struct MainTaskStart
