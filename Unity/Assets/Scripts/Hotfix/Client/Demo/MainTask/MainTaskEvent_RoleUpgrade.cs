@@ -20,5 +20,6 @@ namespace ET.Client
     
     public struct RoleUpgrade
     {
+        public int Level;
     }
 }

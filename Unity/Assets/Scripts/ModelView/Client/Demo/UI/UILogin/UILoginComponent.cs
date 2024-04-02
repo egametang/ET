@@ -15,6 +15,7 @@ namespace ET.Client
 		public Button CloseBtn;
 		public Button LoginBtn;
 		public InputField Password;
+		public Image CloseBtnRedPoint;
 	}
 
 	public partial class UILoginComponent

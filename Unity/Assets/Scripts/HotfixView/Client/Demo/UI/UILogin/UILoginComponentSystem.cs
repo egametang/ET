@@ -22,7 +22,12 @@ namespace ET.Client
             self.LoginBtn = rc.Get<GameObject>("LoginBtn").GetComponent<Button>();
             self.LoginBtn.onClick.AddListener(() => { self.OnLogin(); });
             self.Password = rc.Get<GameObject>("Password").GetComponent<InputField>();
+            self.CloseBtnRedPoint = rc.Get<GameObject>("CloseBtnRedPoint").GetComponent<Image>();
+        }
 
+        public static void RefreshRedPoint(this UILoginComponent self,RedPointNode redPointNode)
+        {
+            
         }
 
         public static void OnLogin(this UILoginComponent self)
