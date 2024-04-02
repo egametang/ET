@@ -10,7 +10,7 @@ namespace ET.Client
         protected override async ETTask Run(Scene root, Chat chats)
         {
             var plotComponent = root.GetComponent<PlotComponent>();
-            await UIHelper.ShowChat(root,chats.TableId);
+            //await UIHelper.ShowChat(root,chats.TableId);
         }
     }
     

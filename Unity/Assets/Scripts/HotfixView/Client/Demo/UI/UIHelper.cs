@@ -36,14 +36,5 @@
             await uiTipsComponent.Log(tips);
             await Hide(scene, UIType.UITips);
         }
-        
-        [EnableAccessEntiyChild]
-        public static async ETTask ShowChat(Entity scene,int  chatId)
-        {
-            UI ui = await Create(scene, UIType.UIDialog,UILayer.High);
-            var uiDialogComponent = ui.GetComponent<UIDialogComponent>();
-            await uiDialogComponent.Chat(chatId);
-        }
-
     }
 }
