@@ -42,10 +42,8 @@ namespace ET
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
-            
             World.Instance.AddSingleton<MessageQueue>();
             World.Instance.AddSingleton<NetServices>();
-            World.Instance.AddSingleton<NavmeshComponent>();
             World.Instance.AddSingleton<LogMsg>();
             
             // 创建需要reload的code singleton
@@ -53,7 +51,7 @@ namespace ET
             
             await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
 
-            await FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
+            await FiberManager.Instance.Create(SchedulerType.Main, SceneType.Main, 0, SceneType.Main, "");
         }
     }
 }

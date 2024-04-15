@@ -100,7 +100,7 @@ namespace ET
         // 下帧要更新的channel
         private readonly HashSet<long> updateIds = new();
         // 下次时间更新的channel
-        private readonly NativeCollection.MultiMap<long, long> timeId = new();
+        private readonly MultiMap<long, long> timeId = new();
         private readonly List<long> timeOutTime = new();
         // 记录最小时间，不用每次都去MultiMap取第一个值
         private long minTime;

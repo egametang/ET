@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-using TrueSync;
-using Unity.Mathematics;
 
 namespace ET
 {
@@ -32,16 +30,16 @@ namespace ET
 
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
-            RegisterStruct<float2>();
-            RegisterStruct<float3>();
-            RegisterStruct<float4>();
-            RegisterStruct<quaternion>();
-            RegisterStruct<FP>();
-            RegisterStruct<TSVector>();
-            RegisterStruct<TSVector2>();
-            RegisterStruct<TSVector4>();
-            RegisterStruct<TSQuaternion>();
-            RegisterStruct<LSInput>();
+            //RegisterStruct<float2>();
+            //RegisterStruct<float3>();
+            //RegisterStruct<float4>();
+            //RegisterStruct<quaternion>();
+            //RegisterStruct<FP>();
+            //RegisterStruct<TSVector>();
+            //RegisterStruct<TSVector2>();
+            //RegisterStruct<TSVector4>();
+            //RegisterStruct<TSQuaternion>();
+            //RegisterStruct<LSInput>();
 
             Dictionary<string, Type> types = CodeTypes.Instance.GetTypes();
             foreach (Type type in types.Values)

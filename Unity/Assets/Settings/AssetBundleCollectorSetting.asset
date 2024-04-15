@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
   ShowPackageView: 0
-  EnableAddressable: 0
-  LocationToLower: 0
-  IncludeAssetGUID: 0
-  UniqueBundleName: 0
   ShowEditorAlias: 0
+  UniqueBundleName: 0
   Packages:
   - PackageName: DefaultPackage
     PackageDesc: 
+    EnableAddressable: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    IgnoreDefaultType: 1
+    AutoCollectShaders: 1
     Groups:
     - GroupName: AotDlls
       GroupDesc: 
@@ -59,44 +61,5 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-    - GroupName: UI
-      GroupDesc: 
-      AssetTags: 
-      ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Assets/Bundles/UI
-        CollectorGUID: 3a57d524d1e0d7543828b2ac7273f608
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
-        FilterRuleName: CollectPrefab
-        AssetTags: 
-        UserData: 
-    - GroupName: Unit
-      GroupDesc: 
-      AssetTags: 
-      ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Assets/Bundles/Unit
-        CollectorGUID: c3561f86a9d0b324680975876c94ca05
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
-        FilterRuleName: CollectPrefab
-        AssetTags: 
-        UserData: 
-    - GroupName: Scene
-      GroupDesc: 
-      AssetTags: 
-      ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Assets/Bundles/Scenes
-        CollectorGUID: 406b13cb70603ef449d91f5572708db2
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
-        FilterRuleName: CollectScene
         AssetTags: 
         UserData: 
