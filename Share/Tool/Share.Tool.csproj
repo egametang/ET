@@ -30,20 +30,16 @@
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
-    <ItemGroup>
-        <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
-            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-        
-        <Compile Include="..\..\Unity\Assets\Scripts\Model\Share\Module\Config\**\*.cs">
+    <ItemGroup>        
+        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Model~\Share\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Model\Share\Module\Log\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Model\Share\Module\Log\**\*.cs">
             <Link>Module\Log\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Core\Network\OpcodeRangeDefine.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Core\Network\OpcodeRangeDefine.cs">
             <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
 
@@ -64,7 +60,6 @@
     
     <ItemGroup>
       <ProjectReference Include="..\..\DotNet\Core\DotNet.Core.csproj" />
-      <ProjectReference Include="..\..\DotNet\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup>
 
 </Project>

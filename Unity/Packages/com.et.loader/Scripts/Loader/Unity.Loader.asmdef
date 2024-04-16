@@ -2,7 +2,6 @@
     "name": "Unity.Loader",
     "rootNamespace": "ET",
     "references": [
-        "Unity.ThirdParty",
         "Unity.Core",
         "HybridCLR.Runtime",
         "MemoryPack",

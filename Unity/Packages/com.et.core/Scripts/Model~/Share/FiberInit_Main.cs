@@ -8,6 +8,10 @@ namespace ET
     {
         public override async ETTask Handle(FiberInit fiberInit)
         {
+            // 注册序列化
+            MongoRegister.Init();
+            MemoryPackRegister.Init();
+            
             Scene root = fiberInit.Fiber.Root;
            
             await EventSystem.Instance.PublishAsync(root, new EntryEvent1());

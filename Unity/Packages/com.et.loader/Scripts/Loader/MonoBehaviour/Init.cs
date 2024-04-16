@@ -32,13 +32,22 @@ namespace ET
 			
 			World.Instance.AddSingleton<TimeInfo>();
 			World.Instance.AddSingleton<FiberManager>();
+            
+			World.Instance.AddSingleton<ObjectPool>();
+			World.Instance.AddSingleton<IdGenerater>();
+			World.Instance.AddSingleton<OpcodeType>();
+			World.Instance.AddSingleton<MessageQueue>();
+			World.Instance.AddSingleton<NetServices>();
+			World.Instance.AddSingleton<LogMsg>();
 
 			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
 			
-			CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();
-			await codeLoader.DownloadAsync();
-			
-			codeLoader.Start();
+			World.Instance.AddSingleton<CodeLoader>();
+
+			await LoadCodeHelper.LoadDlls();
+
+			// 创建Main Fiber
+			await FiberManager.Instance.Create(SchedulerType.Main, 1, 0, 1, "Main");
 		}
 
 		private void Update()

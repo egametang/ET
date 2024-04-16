@@ -24,7 +24,7 @@ public class ReferenceCollectorDataComparer: IComparer<ReferenceCollectorData>
 //继承ISerializationCallbackReceiver后会增加OnAfterDeserialize和OnBeforeSerialize两个回调函数，如果有需要可以在对需要序列化的东西进行操作
 //ET在这里主要是在OnAfterDeserialize回调函数中将data中存储的ReferenceCollectorData转换为dict中的Object，方便之后的使用
 //注意UNITY_EDITOR宏定义，在编译以后，部分编辑器相关函数并不存在
-public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
+public class  ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 {
     //用于序列化的List
 	public List<ReferenceCollectorData> data = new List<ReferenceCollectorData>();

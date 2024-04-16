@@ -20,6 +20,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.et.loader": {
+      "version": "file:com.et.loader",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.tuyoogame.yooasset": {
       "version": "2.1.1",
       "depth": 0,
