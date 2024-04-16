@@ -2,6 +2,7 @@
     "name": "Unity.Hotfix",
     "rootNamespace": "ET",
     "references": [
+        "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
         "MemoryPack",

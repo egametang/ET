@@ -1,11 +1,13 @@
 {
-    "name": "Unity.Hotfix",
+    "name": "Unity.ModelView",
     "rootNamespace": "ET",
     "references": [
+        "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
-        "MemoryPack",
-        "Unity.Model"
+        "Unity.Loader",
+        "Unity.Model",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -17,5 +19,5 @@
         "UNITY_COMPILE || UNITY_EDITOR"
     ],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

@@ -1,11 +1,9 @@
 {
-    "name": "Unity.Hotfix",
+    "name": "Unity.Core",
     "rootNamespace": "ET",
     "references": [
-        "Unity.Core",
         "Unity.Mathematics",
-        "MemoryPack",
-        "Unity.Model"
+        "MemoryPack"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -13,9 +11,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "UNITY_COMPILE || UNITY_EDITOR"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

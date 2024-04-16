@@ -1,11 +1,11 @@
 {
-    "name": "Unity.Hotfix",
+    "name": "Unity.Model",
     "rootNamespace": "ET",
     "references": [
+        "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
-        "MemoryPack",
-        "Unity.Model"
+        "MemoryPack"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
