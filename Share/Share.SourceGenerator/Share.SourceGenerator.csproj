@@ -18,7 +18,7 @@
             <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         <Compile Include="../Analyzer/Config/Definition.cs" />
-        <Compile Include="../../Unity/Assets/Scripts/Core/Helper/StringHashHelper.cs" />
+        <Compile Include="../../Unity/Packages/com.et.core/Scripts/Core/Helper/StringHashHelper.cs" />
         <Compile Include="../Analyzer/Config/AnalyzeAssembly.cs" />
     </ItemGroup>
 
@@ -30,8 +30,8 @@
         </PackageReference>
     </ItemGroup>
 
-<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
-<!--        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Assets/Plugins/" ContinueOnError="false" />-->
-<!--    </Target>-->
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Packages/com.et.core/Plugins/" ContinueOnError="false" />
+    </Target>
 
 </Project>

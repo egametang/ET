@@ -1,11 +1,7 @@
 {
-    "name": "Unity.Core",
+    "name": "Unity.ThirdParty",
     "rootNamespace": "ET",
-    "references": [
-        "Unity.Mathematics",
-        "MemoryPack",
-        "Unity.ThirdParty"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,

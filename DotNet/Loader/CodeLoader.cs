@@ -6,6 +6,7 @@ using System.Runtime.Loader;
 
 namespace ET
 {
+    /*
     public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
         private AssemblyLoadContext assemblyLoadContext;
@@ -53,4 +54,5 @@ namespace ET
             Log.Debug($"reload dll finish!");
         }
     }
+    */
 }

@@ -6,7 +6,8 @@
         "HybridCLR.Runtime",
         "MemoryPack",
         "YooAsset",
-        "YooAsset.Editor"
+        "YooAsset.Editor",
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

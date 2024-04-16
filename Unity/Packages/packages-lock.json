@@ -26,6 +26,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.et.thirdparty": {
+      "version": "file:com.et.thirdparty",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.tuyoogame.yooasset": {
       "version": "2.1.1",
       "depth": 0,

@@ -5,6 +5,6 @@
     <DebugType>Portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="Assets\Plugins\Share.SourceGenerator.dll" />
+    <Analyzer Include="Packages\com.et.core\Plugins\Share.SourceGenerator.dll" />
   </ItemGroup>
 </Project>

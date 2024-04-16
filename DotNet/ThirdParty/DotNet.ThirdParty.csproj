@@ -31,31 +31,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\TrueSync\**\*.cs">
-            <Link>TrueSync/%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\ETTask\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.thirdparty\Scripts\ETTask\**\*.cs">
             <Link>ETTask/%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Kcp\**\*.cs">
-            <Link>Kcp/%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\NativeCollection\**\*.cs">
-            <Link>NativeCollection/%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\DotRecast\**\*.cs">
-            <Link>DotRecast/%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
         <Compile Include="..\..\Unity\Library\PackageCache\com.unity.mathematics*\Unity.Mathematics\**\*.cs">
             <Link>Unity.Mathematics/$([System.String]::new(%(RecursiveDir)).Substring($([System.String]::new(%(RecursiveDir)).Indexof("Unity.Mathematics"))).Replace("Unity.Mathematics", ""))/%(FileName)%(Extension)</Link>
         </Compile>
-
     </ItemGroup>
 
     <ItemGroup>

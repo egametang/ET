@@ -10,10 +10,8 @@ namespace ET
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
     public class ETTask: ICriticalNotifyCompletion
     {
-        [StaticField]
         public static Action<Exception> ExceptionHandler;
         
-        [StaticField]
         public static ETTaskCompleted CompletedTask
         {
             get
@@ -22,7 +20,6 @@ namespace ET
             }
         }
 
-        [StaticField]
         private static readonly ConcurrentQueue<ETTask> queue = new();
 
         /// <summary>
@@ -168,7 +165,6 @@ namespace ET
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder<>))]
     public class ETTask<T>: ICriticalNotifyCompletion
     {
-        [StaticField]
         private static readonly ConcurrentQueue<ETTask<T>> queue = new();
         
         /// <summary>
