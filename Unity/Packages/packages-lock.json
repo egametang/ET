@@ -15,19 +15,19 @@
       "hash": "2554e81f0315ddf835026940ccc4ba8175edfda3"
     },
     "com.et.core": {
-      "version": "file:com.et.core",
+      "version": "file:com.et.Core",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.et.loader": {
-      "version": "file:com.et.loader",
+      "version": "file:com.et.Loader",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.et.thirdparty": {
-      "version": "file:com.et.thirdparty",
+      "version": "file:com.et.Thirdparty",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

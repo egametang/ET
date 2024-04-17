@@ -8,46 +8,11 @@ namespace ET
 	{
 		private void Start()
 		{
-			this.StartAsync().Coroutine();
-		}
-		
-		private async ETTask StartAsync()
-		{
 			DontDestroyOnLoad(gameObject);
-			
-			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-			{
-				Log.Error(e.ExceptionObject.ToString());
-			};
 
-			// 命令行参数
-			string[] args = "".Split(" ");
-			Parser.Default.ParseArguments<Options>(args)
-				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-				.WithParsed((o)=>World.Instance.AddSingleton(o));
-			Options.Instance.StartConfig = $"StartConfig/Localhost";
-			
 			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
-			ETTask.ExceptionHandler += Log.Error;
 			
-			World.Instance.AddSingleton<TimeInfo>();
-			World.Instance.AddSingleton<FiberManager>();
-            
-			World.Instance.AddSingleton<ObjectPool>();
-			World.Instance.AddSingleton<IdGenerater>();
-			World.Instance.AddSingleton<OpcodeType>();
-			World.Instance.AddSingleton<MessageQueue>();
-			World.Instance.AddSingleton<NetServices>();
-			World.Instance.AddSingleton<LogMsg>();
-
-			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
-			
-			World.Instance.AddSingleton<CodeLoader>();
-
-			await LoadCodeHelper.LoadDlls();
-
-			// 创建Main Fiber
-			await FiberManager.Instance.Create(SchedulerType.Main, 1, 0, 1, "Main");
+			Entry.Start();
 		}
 
 		private void Update()
