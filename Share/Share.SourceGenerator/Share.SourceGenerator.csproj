@@ -30,8 +30,8 @@
         </PackageReference>
     </ItemGroup>
 
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Packages/com.et.core/Plugins/" ContinueOnError="false" />
-    </Target>
+<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
+<!--        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Packages/com.et.core/Plugins/" ContinueOnError="false" />-->
+<!--    </Target>-->
 
 </Project>

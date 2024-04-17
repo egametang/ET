@@ -5,7 +5,8 @@
         "Unity.Core",
         "Unity.Mathematics",
         "MemoryPack",
-        "Unity.Model"
+        "Unity.Model",
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
