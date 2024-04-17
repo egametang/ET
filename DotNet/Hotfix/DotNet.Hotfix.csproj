@@ -25,17 +25,30 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Client\**\*.cs"> 
-            <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile> 
-
-        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Server\**\*.cs">
-            <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Hotfix~\Share\**\*.cs">
+            <Link>Share/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Scripts\Hotfix\Share\**\*.cs">
-            <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link> 
-        </Compile> 
+        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Hotfix~\Client\**\*.cs">
+            <Link>Client/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Hotfix~\Server\**\*.cs">
+            <Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Hotfix~\Share\**\*.cs">
+            <Link>Share/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Hotfix~\Client\**\*.cs">
+            <Link>Client/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Hotfix~\Server\**\*.cs">
+            <Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
+        </Compile>
+        
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
