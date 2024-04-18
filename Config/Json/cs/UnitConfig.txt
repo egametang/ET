@@ -1,6 +1,0 @@
-{"dict": [
-[1001, {"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔","Position":1,"Height":178,"Weight":68}],
-[1002, {"_t":"UnitConfig","_id":1002,"Type":1,"Name":"米克尔2","Position":2,"Height":278,"Weight":78}],
-[1003, {"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Position":1,"Height":178,"Weight":68}],
-[1004, {"_t":"UnitConfig","_id":1004,"Type":1,"Name":"米克尔4","Position":2,"Height":278,"Weight":78}],
-]}

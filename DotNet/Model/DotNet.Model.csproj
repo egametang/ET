@@ -50,6 +50,10 @@
         <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Model~\Server\**\*.cs">
             <Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link>
         </Compile>
+
+        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\CodeMode~\Server\**\*.cs"><Link>CodeMode/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof("Scripts"))).Replace("Scripts", ""))/%(FileName)%(Extension)</Link></Compile>
+
+        <Compile Include="..\..\Generate\Server\**\*.cs"><Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>
         
     </ItemGroup> 
     <ItemGroup> 

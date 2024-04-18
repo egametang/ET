@@ -22,10 +22,9 @@ namespace ET
 
     public static partial class InnerProto2CS
     {
-        private const string protoDir = "../Unity/Assets/Config/Proto";
-        private const string clientMessagePath = "../Unity/Assets/Scripts/Model/Generate/Client/Message/";
-        private const string serverMessagePath = "../Unity/Assets/Scripts/Model/Generate/Server/Message/";
-        private const string clientServerMessagePath = "../Unity/Assets/Scripts/Model/Generate/ClientServer/Message/";
+        private const string clientMessagePath = "../Generate/Client/Proto/";
+        private const string serverMessagePath = "../Generate/Server/Proto/";
+        private const string clientServerMessagePath = "../Generate/ClientServer/Proto/";
         private static readonly char[] splitChars = [' ', '\t'];
         private static readonly List<OpcodeInfo> msgOpcode = [];
 
@@ -33,12 +32,52 @@ namespace ET
         {
             msgOpcode.Clear();
 
+            if (!Directory.Exists(clientMessagePath))
+            {
+                Directory.CreateDirectory(clientMessagePath);
+            }
+            
+            if (!Directory.Exists(serverMessagePath))
+            {
+                Directory.CreateDirectory(serverMessagePath);
+            }
+            
+            if (!Directory.Exists(clientServerMessagePath))
+            {
+                Directory.CreateDirectory(clientServerMessagePath);
+            }
+
             RemoveAllFilesExceptMeta(clientMessagePath);
             RemoveAllFilesExceptMeta(serverMessagePath);
             RemoveAllFilesExceptMeta(clientServerMessagePath);
 
-            List<string> list = FileHelper.GetAllFiles(protoDir, "*proto");
+            List<string> list = new List<string>();
+            foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
+            {
+                string p = Path.Combine(directory, "Proto");
+                if (!Directory.Exists(p))
+                {
+                    continue;
+                }
+                list.Add(p);
+            }
+            foreach (string directory in Directory.GetDirectories("../Unity/Library/PackageCache", "com.et.*"))
+            {
+                string p = Path.Combine(directory, "Proto");
+                if (!Directory.Exists(p))
+                {
+                    continue;
+                }
+                list.Add(p);
+            }
+
+            List<string> protoList = new List<string>();
             foreach (string s in list)
+            {
+                protoList.AddRange(FileHelper.GetAllFiles(s, "*.proto"));
+            }
+            
+            foreach (string s in protoList)
             {
                 if (!s.EndsWith(".proto"))
                 {
@@ -50,7 +89,7 @@ namespace ET
                 string protoName = ss2[0];
                 string cs = ss2[1];
                 int startOpcode = int.Parse(ss2[2]);
-                ProtoFile2CS(fileName, protoName, cs, startOpcode);
+                ProtoFile2CS(s, fileName, protoName, cs, startOpcode);
             }
 
             RemoveUnusedMetaFiles(clientMessagePath);
@@ -58,11 +97,11 @@ namespace ET
             RemoveUnusedMetaFiles(clientServerMessagePath);
         }
 
-        private static void ProtoFile2CS(string fileName, string protoName, string cs, int startOpcode)
+        private static void ProtoFile2CS(string path, string fileName, string protoName, string cs, int startOpcode)
         {
             msgOpcode.Clear();
 
-            string proto = Path.Combine(protoDir, $"{fileName}.proto");
+            string proto = path;
             string s = File.ReadAllText(proto);
 
             StringBuilder sb = new();

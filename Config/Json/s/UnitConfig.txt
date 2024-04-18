@@ -1,5 +1,0 @@
-{"dict": [
-[1001, {"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔","Position":1,"Weight":68}],
-[1002, {"_t":"UnitConfig","_id":1002,"Type":1,"Name":"米克尔2","Position":2,"Weight":78}],
-[1003, {"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Position":1,"Weight":68}],
-]}

@@ -55,13 +55,11 @@ namespace ET
     {
         private static string template;
 
-        private const string ClientClassDir = "../Unity/Assets/Scripts/Model/Generate/Client/Config";
+        private const string ClientClassDir = "../Generate/Client/Excel/";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        private const string ServerClassDir = "../Unity/Assets/Scripts/Model/Generate/Server/Config";
+        private const string ServerClassDir = "../Generate/Server/Excel/";
 
-        private const string CSClassDir = "../Unity/Assets/Scripts/Model/Generate/ClientServer/Config";
-
-        private const string excelDir = "../Unity/Assets/Config/Excel/";
+        private const string CSClassDir = "../Generate/ClientServer/Excel/";
 
         private const string jsonDir = "../Config/Json/{0}/{1}";
 
@@ -103,19 +101,19 @@ namespace ET
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-                if (Directory.Exists(ClientClassDir))
+                if (!Directory.Exists(ClientClassDir))
                 {
-                    Directory.Delete(ClientClassDir, true);
+                    Directory.CreateDirectory(ClientClassDir);
                 }
 
-                if (Directory.Exists(ServerClassDir))
+                if (!Directory.Exists(ServerClassDir))
                 {
-                    Directory.Delete(ServerClassDir, true);
+                    Directory.CreateDirectory(ServerClassDir);
                 }
 
-                if (Directory.Exists(CSClassDir))
+                if (!Directory.Exists(CSClassDir))
                 {
-                    Directory.Delete(CSClassDir, true);
+                    Directory.CreateDirectory(CSClassDir);
                 }
 
                 string jsonProtoDirParent = jsonDir.Replace(replaceStr, string.Empty);
@@ -129,9 +127,42 @@ namespace ET
                 {
                     Directory.Delete(serverProtoDirParent, true);
                 }
+                
+                List<string> list = new List<string>();
+                foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
+                {
+                    string p = Path.Combine(directory, "Excel");
+                    if (!Directory.Exists(p))
+                    {
+                        continue;
+                    }
+                    list.Add(p);
+                }
+                
+                foreach (string directory in Directory.GetDirectories("../Unity/Library/PackageCache", "com.et.*"))
+                {
+                    string p = Path.Combine(directory, "Excel");
+                    if (!Directory.Exists(p))
+                    {
+                        continue;
+                    }
+                    list.Add(p);
+                }
 
-                List<string> files = FileHelper.GetAllFiles(excelDir);
-                foreach (string path in files)
+                List<(string, string)> paths = new List<(string, string)>();
+                foreach (string s in list)
+                {
+                    var aa = FileHelper.GetAllFiles(s);
+                    foreach (string k in aa)
+                    {
+                        if (k.EndsWith(".xlsx") || k.EndsWith(".xlsm"))
+                        {
+                            paths.Add((s, k));
+                        }
+                    }
+                }
+                
+                foreach ((string s, string path) in paths)
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
@@ -194,12 +225,10 @@ namespace ET
                 configAssemblies[(int) ConfigType.c] = DynamicBuild(ConfigType.c);
                 configAssemblies[(int) ConfigType.s] = DynamicBuild(ConfigType.s);
                 configAssemblies[(int) ConfigType.cs] = DynamicBuild(ConfigType.cs);
-
-                List<string> excels = FileHelper.GetAllFiles(excelDir, "*.xlsx");
                 
-                foreach (string path in excels)
+                foreach ((string s, string path) in paths)
                 {
-                    ExportExcel(path);
+                    ExportExcel(s, path);
                 }
                 
                 if (Directory.Exists(clientProtoDir))
@@ -224,10 +253,10 @@ namespace ET
             }
         }
 
-        private static void ExportExcel(string path)
+        private static void ExportExcel(string root, string path)
         {
             string dir = Path.GetDirectoryName(path);
-            string relativePath = Path.GetRelativePath(excelDir, dir);
+            string relativePath = Path.GetRelativePath(root, dir);
             string fileName = Path.GetFileName(path);
             if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
             {

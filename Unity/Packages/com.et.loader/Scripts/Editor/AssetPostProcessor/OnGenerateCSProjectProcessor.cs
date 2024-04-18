@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEditor;
@@ -30,6 +31,10 @@ namespace ET
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
+                content = content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", "<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />\n" +
+                    "<Compile Include=\"..\\Generate\\" + globalConfig.CodeMode + "\\**\\*.cs\"><Link>Generate\\%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>");
+                content = content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", "<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />\n" +
+                    "<Compile Include=\"Packages\\com.et.*\\Scripts\\CodeMode~\\" + globalConfig.CodeMode + "\\**\\*.cs\"><Link>CodeMode/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link></Compile>");
                 return AddCopyAfterBuild(GenerateCustomProject(content), "Model");
             }
             
