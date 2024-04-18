@@ -4,7 +4,4 @@
     <NoWarn>0169,0649,3021,8981</NoWarn>
     <DebugType>Portable</DebugType>
   </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="Packages\com.et.core\Plugins\Share.SourceGenerator.dll" />
-  </ItemGroup>
 </Project>
