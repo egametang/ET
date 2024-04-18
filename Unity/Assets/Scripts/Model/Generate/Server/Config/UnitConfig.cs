@@ -50,7 +50,10 @@ namespace ET
             {
                 return null;
             }
-            return this.dict.Values.GetEnumerator().Current;
+            
+            var enumerator = this.dict.Values.GetEnumerator();
+            enumerator.MoveNext();
+            return enumerator.Current; 
         }
     }
 
