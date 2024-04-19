@@ -19,5 +19,8 @@
         "UNITY_COMPILE || UNITY_EDITOR"
     ],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": false,
+    "optionalUnityReferences": [],
+    "additionalReferences": [],
+    "compilerOptions": ""
 }

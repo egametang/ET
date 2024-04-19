@@ -1,0 +1,8 @@
+{
+    "references": [
+        "Unity.ThirdParty",
+        "Unity.Core",
+        "Unity.Mathematics",
+        "MemoryPack"
+    ]
+}
