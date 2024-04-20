@@ -51,7 +51,7 @@ namespace ET
             RemoveAllFilesExceptMeta(serverMessagePath);
             RemoveAllFilesExceptMeta(clientServerMessagePath);
 
-            List<string> list = new List<string>();
+            System.Collections.Generic.List<(string, string)> list = new ();
             foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
             {
                 string p = Path.Combine(directory, "Proto");
@@ -59,7 +59,12 @@ namespace ET
                 {
                     continue;
                 }
-                list.Add(p);
+                
+                string baseName = Path.GetFileName(directory);
+                string moduleName = baseName.Substring(7);
+                moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
+                
+                list.Add((p, moduleName));
             }
             foreach (string directory in Directory.GetDirectories("../Unity/Library/PackageCache", "com.et.*"))
             {
@@ -68,16 +73,24 @@ namespace ET
                 {
                     continue;
                 }
-                list.Add(p);
+                
+                string baseName = Path.GetFileName(directory);
+                string moduleName = baseName.Substring(7);
+                moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
+                
+                list.Add((p, moduleName));
             }
 
-            List<string> protoList = new List<string>();
-            foreach (string s in list)
+            System.Collections.Generic.List<(string, string)> protoList = new ();
+            foreach ((string s, string module) in list)
             {
-                protoList.AddRange(FileHelper.GetAllFiles(s, "*.proto"));
+                foreach (var f in FileHelper.GetAllFiles(s, "*.proto"))
+                {
+                    protoList.Add((f, module));
+                }
             }
             
-            foreach (string s in protoList)
+            foreach ((string s, string module) in protoList)
             {
                 if (!s.EndsWith(".proto"))
                 {
@@ -89,7 +102,7 @@ namespace ET
                 string protoName = ss2[0];
                 string cs = ss2[1];
                 int startOpcode = int.Parse(ss2[2]);
-                ProtoFile2CS(s, fileName, protoName, cs, startOpcode);
+                ProtoFile2CS(s, module, protoName, cs, startOpcode);
             }
 
             RemoveUnusedMetaFiles(clientMessagePath);
@@ -97,7 +110,7 @@ namespace ET
             RemoveUnusedMetaFiles(clientServerMessagePath);
         }
 
-        private static void ProtoFile2CS(string path, string fileName, string protoName, string cs, int startOpcode)
+        private static void ProtoFile2CS(string path, string module, string protoName, string cs, int startOpcode)
         {
             msgOpcode.Clear();
 
@@ -262,15 +275,15 @@ namespace ET
 
             if (cs.Contains('C'))
             {
-                GenerateCS(result, clientMessagePath, proto);
-                GenerateCS(result, serverMessagePath, proto);
-                GenerateCS(result, clientServerMessagePath, proto);
+                GenerateCS(result, clientMessagePath + module, proto);
+                GenerateCS(result, serverMessagePath + module, proto);
+                GenerateCS(result, clientServerMessagePath + module, proto);
             }
 
             if (cs.Contains('S'))
             {
-                GenerateCS(result, serverMessagePath, proto);
-                GenerateCS(result, clientServerMessagePath, proto);
+                GenerateCS(result, serverMessagePath + module, proto);
+                GenerateCS(result, clientServerMessagePath + module, proto);
             }
         }
 

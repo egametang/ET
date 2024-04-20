@@ -26,30 +26,26 @@ namespace ET
 
             if (path.EndsWith("Unity.Core.csproj"))
             {
-                return GenerateCustomProject(content);
+                return GenerateCustomProject(content, globalConfig.CodeMode);
             }
 
             if (path.EndsWith("Unity.Model.csproj"))
             {
-                content = content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", "<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />\n" +
-                    "<Compile Include=\"..\\Generate\\" + globalConfig.CodeMode + "\\**\\*.cs\"><Link>Generate\\%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>");
-                content = content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", "<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />\n" +
-                    "<Compile Include=\"Packages\\com.et.*\\Scripts\\CodeMode~\\" + globalConfig.CodeMode + "\\**\\*.cs\"><Link>CodeMode/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link></Compile>");
-                return AddCopyAfterBuild(GenerateCustomProject(content), "Model");
+                return GenerateCustomProject(content, globalConfig.CodeMode, "Model");
             }
             
             if (path.EndsWith("Unity.Hotfix.csproj"))
             {
-                return AddCopyAfterBuild(GenerateCustomProject(content), "Hotfix");
+                return GenerateCustomProject(content, globalConfig.CodeMode, "Hotfix");
             }
 
             if (path.EndsWith("Unity.ModelView.csproj"))
             {
-                return AddCopyAfterBuild(GenerateCustomProject(content), "ModelView");
+                return GenerateCustomProject(content, globalConfig.CodeMode, "ModelView");
             }
             if (path.EndsWith("Unity.HotfixView.csproj"))
             {
-                return AddCopyAfterBuild(GenerateCustomProject(content), "HotfixView");
+                return GenerateCustomProject(content, globalConfig.CodeMode, "HotfixView");
             }
 
             return content;
@@ -85,12 +81,57 @@ namespace ET
         /// https://learn.microsoft.com/zh-cn/visualstudio/ide/reference/build-events-page-project-designer-csharp?view=vs-2022
         /// https://learn.microsoft.com/zh-cn/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2022
         /// </summary>
-        static string GenerateCustomProject(string content)
+        static string GenerateCustomProject(string content, CodeMode codeMode, string dllName = "")
         {
             XmlDocument doc = new();
             doc.LoadXml(content);
             var newDoc = doc.Clone() as XmlDocument;
             var rootNode = newDoc.GetElementsByTagName("Project")[0];
+
+            {
+                string links = "<Compile Include=\"Library/PackageCache/com.et.*/Scripts/" + dllName + "~/Share/**/*.cs\">\n            " +
+                    "<Link>Share/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
+                    "</Compile>\n\n        " +
+                    "<Compile Include=\"Library/PackageCache/com.et.*/Scripts/" + dllName + "~/Client/**/*.cs\">\n            " +
+                    "<Link>Client/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
+                    "</Compile>\n\n        " +
+                    "<Compile Include=\"Library/PackageCache/com.et.*/Scripts/" + dllName + "~/Server/**/*.cs\">\n            " +
+                    "<Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
+                    "</Compile>\n\n        " +
+                    "<Compile Include=\"Packages/com.et.*/Scripts/" + dllName + "~/Share/**/*.cs\">\n            " +
+                    "<Link>Share/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
+                    "</Compile>\n\n        " +
+                    "<Compile Include=\"Packages/com.et.*/Scripts/" + dllName + "~/Client/**/*.cs\">\n            " +
+                    "<Link>Client/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
+                    "</Compile>\n\n        " +
+                    "<Compile Include=\"Packages/com.et.*/Scripts/" + dllName + "~/Server/**/*.cs\">\n            " +
+                    "<Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
+                    "</Compile>";
+                
+                switch (dllName)
+                {
+                    case "Model":
+                        links += "<Compile Include=\"../Generate/" + codeMode + "/**/*.cs\"><Link>Generate/%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
+                        links += "<Compile Include=\"Packages/com.et.*/Scripts/CodeMode~/" + codeMode + "/**/*.cs\"><Link>CodeMode/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link></Compile>";
+                        break;
+                    case "Hotfix":
+                        break;
+                    case "HotfixView":
+                        break;
+                    case "ModelView":
+                        break;
+                    default:
+                        links = null;
+                        break;
+                }
+                
+                if (links != null)
+                {
+                    XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
+                    itemGroup.InnerXml = links;
+                    rootNode.AppendChild(itemGroup);
+                }
+            }
 
             // 添加分析器引用
             {
@@ -114,9 +155,26 @@ namespace ET
 
             // AfterBuild(字符串替换后作用是编译后复制到CodeDir)
             {
-                var target = newDoc.CreateElement("Target", newDoc.DocumentElement.NamespaceURI);
-                target.SetAttribute("Name", "AfterBuild");
-                rootNode.AppendChild(target);
+
+                string afterBuild =
+                        $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
+                        $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
+                        $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
+                        $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n";
+                switch (dllName)
+                {
+                    case "Model":
+                    case "Hotfix":
+                    case "HotfixView":
+                    case "ModelView":
+                    {
+                        var target = newDoc.CreateElement("Target", newDoc.DocumentElement.NamespaceURI);
+                        target.SetAttribute("Name", "AfterBuild");
+                        target.InnerXml = afterBuild;
+                        rootNode.AppendChild(target);
+                        break;
+                    }
+                }
             }
 
             using StringWriter sw = new();
@@ -125,42 +183,6 @@ namespace ET
             newDoc.WriteTo(tx);
             tx.Flush();
             return sw.GetStringBuilder().ToString();
-        }
-
-        /// <summary>
-        /// 编译dll文件后额外复制的目录配置
-        /// </summary>
-        static string AddCopyAfterBuild(string content, string dllName)
-        {
-            content = content.Replace("<None Include=\"Assets\\Scripts\\" + dllName + "\\Unity." + dllName + ".asmdef\" />", "");
-            content = content.Replace("<Target Name=\"AfterBuild\" />",
-                "<Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).dll.bytes\" ContinueOnError=\"false\" />\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.CodeDir}/$(TargetName).pdb.bytes\" ContinueOnError=\"false\" />\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).dll\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).dll\" ContinueOnError=\"false\" />\n" +
-                $"    <Copy SourceFiles=\"$(TargetDir)/$(TargetName).pdb\" DestinationFiles=\"$(ProjectDir)/{Define.BuildOutputDir}/$(TargetName).pdb\" ContinueOnError=\"false\" />\n" +
-                "  </Target>\n");
-            content = content.Replace("<Compile Include=\"Assets\\Scripts\\" + dllName + "\\Empty.cs\" />", 
-                "<Compile Include=\"Library\\PackageCache\\com.et.*\\Scripts\\" + dllName + "~\\Share\\**\\*.cs\">\n            " +
-                "<Link>Share/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
-                "</Compile>\n\n        " +
-                "<Compile Include=\"Library\\PackageCache\\com.et.*\\Scripts\\" + dllName + "~\\Client\\**\\*.cs\">\n            " +
-                "<Link>Client/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
-                "</Compile>\n\n        " +
-                "<Compile Include=\"Library\\PackageCache\\com.et.*\\Scripts\\" + dllName + "~\\Server\\**\\*.cs\">\n            " +
-                "<Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
-                "</Compile>\n\n        " +
-                "<Compile Include=\"Packages\\com.et.*\\Scripts\\" + dllName + "~\\Share\\**\\*.cs\">\n            " +
-                "<Link>Share/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
-                "</Compile>\n\n        " +
-                "<Compile Include=\"Packages\\com.et.*\\Scripts\\" + dllName + "~\\Client\\**\\*.cs\">\n            " +
-                "<Link>Client/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
-                "</Compile>\n\n        " +
-                "<Compile Include=\"Packages\\com.et.*\\Scripts\\" + dllName + "~\\Server\\**\\*.cs\">\n            " +
-                "<Link>Server/$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Indexof(\"Scripts\"))).Replace(\"Scripts\", \"\"))/%(FileName)%(Extension)</Link>\n        " +
-                "</Compile>"
-                );
-            return content;
         }
 
         /// <summary>

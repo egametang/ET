@@ -7,6 +7,16 @@ namespace ET
 {
 	public static class StringHelper
 	{
+		public static string CapitalizeFirstLetter(string input)
+		{
+			if (string.IsNullOrEmpty(input))
+				return input;
+
+			string s1 = input[..1];
+			string s2 = input[1..];
+			return s1.ToUpper() + s2;
+		}
+		
 		public static IEnumerable<byte> ToBytes(this string str)
 		{
 			byte[] byteArray = Encoding.Default.GetBytes(str);

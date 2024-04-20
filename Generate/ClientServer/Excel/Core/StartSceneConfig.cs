@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using System.ComponentModel;
 
-namespace ET
+namespace ET.Core
 {
     [Config]
     public partial class StartSceneConfigCategory : Singleton<StartSceneConfigCategory>, IMerge

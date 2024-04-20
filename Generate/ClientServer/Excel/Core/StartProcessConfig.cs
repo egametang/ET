@@ -4,31 +4,31 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using System.ComponentModel;
 
-namespace ET
+namespace ET.Core
 {
     [Config]
-    public partial class StartMachineConfigCategory : Singleton<StartMachineConfigCategory>, IMerge
+    public partial class StartProcessConfigCategory : Singleton<StartProcessConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, StartMachineConfig> dict = new();
+        private Dictionary<int, StartProcessConfig> dict = new();
 		
         public void Merge(object o)
         {
-            StartMachineConfigCategory s = o as StartMachineConfigCategory;
+            StartProcessConfigCategory s = o as StartProcessConfigCategory;
             foreach (var kv in s.dict)
             {
                 this.dict.Add(kv.Key, kv.Value);
             }
         }
 		
-        public StartMachineConfig Get(int id)
+        public StartProcessConfig Get(int id)
         {
-            this.dict.TryGetValue(id, out StartMachineConfig item);
+            this.dict.TryGetValue(id, out StartProcessConfig item);
 
             if (item == null)
             {
-                throw new Exception($"配置找不到，配置表名: {nameof (StartMachineConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (StartProcessConfig)}，配置id: {id}");
             }
 
             return item;
@@ -39,12 +39,12 @@ namespace ET
             return this.dict.ContainsKey(id);
         }
 
-        public Dictionary<int, StartMachineConfig> GetAll()
+        public Dictionary<int, StartProcessConfig> GetAll()
         {
             return this.dict;
         }
 
-        public StartMachineConfig GetOne()
+        public StartProcessConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
             {
@@ -54,16 +54,14 @@ namespace ET
         }
     }
 
-	public partial class StartMachineConfig: ProtoObject, IConfig
+	public partial class StartProcessConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
 		public int Id { get; set; }
-		/// <summary>内网地址</summary>
-		public string InnerIP { get; set; }
-		/// <summary>外网地址</summary>
-		public string OuterIP { get; set; }
-		/// <summary>守护进程端口</summary>
-		public string WatcherPort { get; set; }
+		/// <summary>所属机器</summary>
+		public int MachineId { get; set; }
+		/// <summary>外网端口</summary>
+		public int Port { get; set; }
 
 	}
 }

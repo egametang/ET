@@ -4,31 +4,31 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using System.ComponentModel;
 
-namespace ET
+namespace ET.Core
 {
     [Config]
-    public partial class StartZoneConfigCategory : Singleton<StartZoneConfigCategory>, IMerge
+    public partial class StartMachineConfigCategory : Singleton<StartMachineConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, StartZoneConfig> dict = new();
+        private Dictionary<int, StartMachineConfig> dict = new();
 		
         public void Merge(object o)
         {
-            StartZoneConfigCategory s = o as StartZoneConfigCategory;
+            StartMachineConfigCategory s = o as StartMachineConfigCategory;
             foreach (var kv in s.dict)
             {
                 this.dict.Add(kv.Key, kv.Value);
             }
         }
 		
-        public StartZoneConfig Get(int id)
+        public StartMachineConfig Get(int id)
         {
-            this.dict.TryGetValue(id, out StartZoneConfig item);
+            this.dict.TryGetValue(id, out StartMachineConfig item);
 
             if (item == null)
             {
-                throw new Exception($"配置找不到，配置表名: {nameof (StartZoneConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (StartMachineConfig)}，配置id: {id}");
             }
 
             return item;
@@ -39,12 +39,12 @@ namespace ET
             return this.dict.ContainsKey(id);
         }
 
-        public Dictionary<int, StartZoneConfig> GetAll()
+        public Dictionary<int, StartMachineConfig> GetAll()
         {
             return this.dict;
         }
 
-        public StartZoneConfig GetOne()
+        public StartMachineConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
             {
@@ -54,14 +54,16 @@ namespace ET
         }
     }
 
-	public partial class StartZoneConfig: ProtoObject, IConfig
+	public partial class StartMachineConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
 		public int Id { get; set; }
-		/// <summary>数据库地址</summary>
-		public string DBConnection { get; set; }
-		/// <summary>数据库名</summary>
-		public string DBName { get; set; }
+		/// <summary>内网地址</summary>
+		public string InnerIP { get; set; }
+		/// <summary>外网地址</summary>
+		public string OuterIP { get; set; }
+		/// <summary>守护进程端口</summary>
+		public string WatcherPort { get; set; }
 
 	}
 }

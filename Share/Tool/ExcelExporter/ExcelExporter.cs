@@ -45,6 +45,8 @@ namespace ET
     // 这里加个标签是为了防止编译时裁剪掉protobuf，因为整个tool工程没有用到protobuf，编译会去掉引用，然后动态编译就会出错
     class Table
     {
+        public string Name;
+        public string Module;
         public bool C;
         public bool S;
         public int Index;
@@ -61,22 +63,25 @@ namespace ET
 
         private const string CSClassDir = "../Generate/ClientServer/Excel/";
 
-        private const string jsonDir = "../Config/Json/{0}/{1}";
+        private const string jsonDir = "../Config/Json/{0}/{1}/{2}/";
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
-        private const string serverProtoDir = "../Config/Excel/{0}/{1}";
+        private const string serverProtoDir = "../Config/Excel/{0}/{1}/{2}";
         private const string replaceStr = "/{0}/{1}";
         private static Assembly[] configAssemblies = new Assembly[3];
 
         private static Dictionary<string, Table> tables = new Dictionary<string, Table>();
         private static Dictionary<string, ExcelPackage> packages = new Dictionary<string, ExcelPackage>();
 
-        private static Table GetTable(string protoName)
+        private static Table GetTable(string module, string protoName)
         {
-            if (!tables.TryGetValue(protoName, out var table))
+            string fullName = module + "." + protoName;
+            if (!tables.TryGetValue(fullName, out var table))
             {
                 table = new Table();
-                tables[protoName] = table;
+                table.Module = module;
+                table.Name = protoName;
+                tables[fullName] = table;
             }
 
             return table;
@@ -128,7 +133,7 @@ namespace ET
                     Directory.Delete(serverProtoDirParent, true);
                 }
                 
-                List<string> list = new List<string>();
+                List<(string, string)> list = new();
                 foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
                 {
                     string p = Path.Combine(directory, "Excel");
@@ -136,7 +141,11 @@ namespace ET
                     {
                         continue;
                     }
-                    list.Add(p);
+                    
+                    string baseName = Path.GetFileName(directory);
+                    string moduleName = baseName.Substring(7);
+                    moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
+                    list.Add((moduleName, p));
                 }
                 
                 foreach (string directory in Directory.GetDirectories("../Unity/Library/PackageCache", "com.et.*"))
@@ -146,23 +155,28 @@ namespace ET
                     {
                         continue;
                     }
-                    list.Add(p);
+                    
+                    string baseName = Path.GetFileName(directory);
+                    string moduleName = baseName.Substring(7);
+                    moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
+                    list.Add((moduleName, p));
                 }
 
-                List<(string, string)> paths = new List<(string, string)>();
-                foreach (string s in list)
+                List<(string, string, string)> paths = new();
+                foreach ((string moduleName, string s) in list)
                 {
                     var aa = FileHelper.GetAllFiles(s);
+                    
                     foreach (string k in aa)
                     {
                         if (k.EndsWith(".xlsx") || k.EndsWith(".xlsm"))
                         {
-                            paths.Add((s, k));
+                            paths.Add((moduleName, s, k));
                         }
                     }
                 }
                 
-                foreach ((string s, string path) in paths)
+                foreach ((string module, string s, string path) in paths)
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
@@ -193,7 +207,7 @@ namespace ET
                         protoName = fileNameWithoutCS.Substring(0, fileNameWithoutCS.LastIndexOf('_'));
                     }
 
-                    Table table = GetTable(protoName);
+                    Table table = GetTable(module, protoName);
 
                     if (cs.Contains("c"))
                     {
@@ -212,13 +226,13 @@ namespace ET
                 {
                     if (kv.Value.C)
                     {
-                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.c);
+                        ExportClass(kv.Value, ConfigType.c);
                     }
                     if (kv.Value.S)
                     {
-                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.s);
+                        ExportClass(kv.Value, ConfigType.s);
                     }
-                    ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.cs);
+                    ExportClass(kv.Value, ConfigType.cs);
                 }
 
                 // 动态编译生成的配置代码
@@ -226,9 +240,9 @@ namespace ET
                 configAssemblies[(int) ConfigType.s] = DynamicBuild(ConfigType.s);
                 configAssemblies[(int) ConfigType.cs] = DynamicBuild(ConfigType.cs);
                 
-                foreach ((string s, string path) in paths)
+                foreach ((string module, string s, string path) in paths)
                 {
-                    ExportExcel(s, path);
+                    ExportExcel(module, s, path);
                 }
                 
                 if (Directory.Exists(clientProtoDir))
@@ -253,7 +267,7 @@ namespace ET
             }
         }
 
-        private static void ExportExcel(string root, string path)
+        private static void ExportExcel(string module, string root, string path)
         {
             string dir = Path.GetDirectoryName(path);
             string relativePath = Path.GetRelativePath(root, dir);
@@ -284,28 +298,28 @@ namespace ET
                 protoName = fileNameWithoutCS.Substring(0, fileNameWithoutCS.LastIndexOf('_'));
             }
 
-            Table table = GetTable(protoName);
+            Table table = GetTable(module, protoName);
 
             ExcelPackage p = GetPackage(Path.GetFullPath(path));
 
             if (cs.Contains("c"))
             {
                 ExportExcelJson(p, fileNameWithoutCS, table, ConfigType.c, relativePath);
-                ExportExcelProtobuf(ConfigType.c, protoName, relativePath);
+                ExportExcelProtobuf(ConfigType.c, table, relativePath);
             }
 
             if (cs.Contains("s"))
             {
                 ExportExcelJson(p, fileNameWithoutCS, table, ConfigType.s, relativePath);
-                ExportExcelProtobuf(ConfigType.s, protoName, relativePath);
+                ExportExcelProtobuf(ConfigType.s, table, relativePath);
             }
             ExportExcelJson(p, fileNameWithoutCS, table, ConfigType.cs, relativePath);
-            ExportExcelProtobuf(ConfigType.cs, protoName, relativePath);
+            ExportExcelProtobuf(ConfigType.cs, table, relativePath);
         }
 
-        private static string GetProtoDir(ConfigType configType, string relativeDir)
+        private static string GetProtoDir(ConfigType configType, string module, string relativeDir)
         {
-            return string.Format(serverProtoDir, configType.ToString(), relativeDir);
+            return string.Format(serverProtoDir, configType.ToString(), module, relativeDir);
         }
 
         private static Assembly GetAssembly(ConfigType configType)
@@ -329,7 +343,7 @@ namespace ET
             string classPath = GetClassDir(configType);
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
             List<string> protoNames = new List<string>();
-            foreach (string classFile in Directory.GetFiles(classPath, "*.cs"))
+            foreach (string classFile in FileHelper.GetAllFiles(classPath, "*.cs"))
             {
                 protoNames.Add(Path.GetFileNameWithoutExtension(classFile));
                 syntaxTrees.Add(CSharpSyntaxTree.ParseText(File.ReadAllText(classFile)));
@@ -447,7 +461,7 @@ namespace ET
             }
         }
 
-        static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
+        static void ExportClass(Table table, ConfigType configType)
         {
             string dir = GetClassDir(configType);
             if (!Directory.Exists(dir))
@@ -455,13 +469,18 @@ namespace ET
                 Directory.CreateDirectory(dir);
             }
 
-            string exportPath = Path.Combine(dir, $"{protoName}.cs");
+            string exportPath = Path.Combine(dir, table.Module, $"{table.Name}.cs");
 
+            if (!Directory.Exists(Path.GetDirectoryName(exportPath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(exportPath));
+            }
+            
             using FileStream txt = new FileStream(exportPath, FileMode.Create);
             using StreamWriter sw = new StreamWriter(txt);
 
             StringBuilder sb = new StringBuilder();
-            foreach ((string _, HeadInfo headInfo) in classField)
+            foreach ((string _, HeadInfo headInfo) in table.HeadInfos)
             {
                 if (headInfo == null)
                 {
@@ -478,7 +497,8 @@ namespace ET
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
-            string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
+            template = template.Replace("(ns)", $"ET.{table.Module}");
+            string content = template.Replace("(ConfigName)", table.Name).Replace(("(Fields)"), sb.ToString());
             sw.Write(content);
         }
 
@@ -498,12 +518,12 @@ namespace ET
                     continue;
                 }
 
-                ExportSheetJson(worksheet, name, table.HeadInfos, configType, sb);
+                ExportSheetJson(worksheet, name, table, configType, sb);
             }
 
             sb.Append("]}\n");
 
-            string dir = string.Format(jsonDir, configType.ToString(), relativeDir);
+            string dir = string.Format(jsonDir, configType.ToString(), table.Module, relativeDir);
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -516,7 +536,7 @@ namespace ET
         }
 
         static void ExportSheetJson(ExcelWorksheet worksheet, string name, 
-                Dictionary<string, HeadInfo> classField, ConfigType configType, StringBuilder sb)
+                Table table, ConfigType configType, StringBuilder sb)
         {
             string configTypeStr = configType.ToString();
             for (int row = 6; row <= worksheet.Dimension.End.Row; ++row)
@@ -546,12 +566,12 @@ namespace ET
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
                     string fieldName = worksheet.Cells[4, col].Text.Trim();
-                    if (!classField.ContainsKey(fieldName))
+                    if (!table.HeadInfos.ContainsKey(fieldName))
                     {
                         continue;
                     }
 
-                    HeadInfo headInfo = classField[fieldName];
+                    HeadInfo headInfo = table.HeadInfos[fieldName];
 
                     if (headInfo == null)
                     {
@@ -614,22 +634,22 @@ namespace ET
 
 
         // 根据生成的类，把json转成protobuf
-        private static void ExportExcelProtobuf(ConfigType configType, string protoName, string relativeDir)
+        private static void ExportExcelProtobuf(ConfigType configType, Table table, string relativeDir)
         {
-            string dir = GetProtoDir(configType, relativeDir);
-            if (!Directory.Exists(dir))
+            string dir = GetProtoDir(configType, table.Module, relativeDir);
+            string moduleDir = Path.Combine(dir);
+            if (!Directory.Exists(moduleDir))
             {
-                Directory.CreateDirectory(dir);
+                Directory.CreateDirectory(moduleDir);
             }
 
             Assembly ass = GetAssembly(configType);
-            Type type = ass.GetType($"ET.{protoName}Category");
-            Type subType = ass.GetType($"ET.{protoName}");
+            Type type = ass.GetType($"ET.{table.Module}.{table.Name}Category");
 
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
-            string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
-            string[] ss = Directory.GetFiles(p, $"{protoName}*.txt");
+            string p = Path.Combine(string.Format(jsonDir, configType, table.Module, relativeDir));
+            string[] ss = Directory.GetFiles(p, $"{table.Name}*.txt");
             List<string> jsonPaths = ss.ToList();
 
             jsonPaths.Sort();
@@ -648,7 +668,7 @@ namespace ET
                 }
             }
 
-            string path = Path.Combine(dir, $"{protoName}Category.bytes");
+            string path = Path.Combine(moduleDir, $"{table.Name}Category.bytes");
 
             using FileStream file = File.Create(path);
             file.Write(final.ToBson());

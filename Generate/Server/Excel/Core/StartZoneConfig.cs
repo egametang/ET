@@ -4,31 +4,31 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using System.ComponentModel;
 
-namespace ET
+namespace ET.Core
 {
     [Config]
-    public partial class StartProcessConfigCategory : Singleton<StartProcessConfigCategory>, IMerge
+    public partial class StartZoneConfigCategory : Singleton<StartZoneConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, StartProcessConfig> dict = new();
+        private Dictionary<int, StartZoneConfig> dict = new();
 		
         public void Merge(object o)
         {
-            StartProcessConfigCategory s = o as StartProcessConfigCategory;
+            StartZoneConfigCategory s = o as StartZoneConfigCategory;
             foreach (var kv in s.dict)
             {
                 this.dict.Add(kv.Key, kv.Value);
             }
         }
 		
-        public StartProcessConfig Get(int id)
+        public StartZoneConfig Get(int id)
         {
-            this.dict.TryGetValue(id, out StartProcessConfig item);
+            this.dict.TryGetValue(id, out StartZoneConfig item);
 
             if (item == null)
             {
-                throw new Exception($"配置找不到，配置表名: {nameof (StartProcessConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (StartZoneConfig)}，配置id: {id}");
             }
 
             return item;
@@ -39,12 +39,12 @@ namespace ET
             return this.dict.ContainsKey(id);
         }
 
-        public Dictionary<int, StartProcessConfig> GetAll()
+        public Dictionary<int, StartZoneConfig> GetAll()
         {
             return this.dict;
         }
 
-        public StartProcessConfig GetOne()
+        public StartZoneConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
             {
@@ -54,14 +54,14 @@ namespace ET
         }
     }
 
-	public partial class StartProcessConfig: ProtoObject, IConfig
+	public partial class StartZoneConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
 		public int Id { get; set; }
-		/// <summary>所属机器</summary>
-		public int MachineId { get; set; }
-		/// <summary>外网端口</summary>
-		public int Port { get; set; }
+		/// <summary>数据库地址</summary>
+		public string DBConnection { get; set; }
+		/// <summary>数据库名</summary>
+		public string DBName { get; set; }
 
 	}
 }

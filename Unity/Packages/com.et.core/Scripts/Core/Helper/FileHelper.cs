@@ -15,7 +15,7 @@ namespace ET
 		
 		public static void GetAllFiles(List<string> files, string dir, string searchPattern = "*")
 		{
-			string[] fls = Directory.GetFiles(dir);
+			string[] fls = Directory.GetFiles(dir, searchPattern);
 			foreach (string fl in fls)
 			{
 				files.Add(fl);
