@@ -41,7 +41,7 @@ namespace ET.Loader
     public static class AsmdefEditor
     {
         public static readonly string[] AssNames = { "Model", "ModelView", "Hotfix", "HotfixView" };
-        public static readonly string[] PackagePaths = { "Packages", "Library\\PackageCache" };
+        public static readonly string[] PackagePaths = { "Packages", "Library/PackageCache" };
         
         // 自动把各个包中的引用加到Assets对应的包中去，后面搞个编辑器来编辑每个包的引用
         [MenuItem("ET/Update Assembly Definition")]
