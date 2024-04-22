@@ -20,8 +20,7 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.mathematics": "1.2.6",
-        "com.cysharp.memorypack": "",
-        "com.et.thirdparty": ""
+        "com.cysharp.memorypack": ""
       }
     },
     "com.et.loader": {
@@ -30,15 +29,8 @@
       "source": "embedded",
       "dependencies": {
         "com.et.core": "",
-        "com.et.thirdparty": "",
         "com.et.yooassets": ""
       }
-    },
-    "com.et.thirdparty": {
-      "version": "file:com.et.thirdparty",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
     },
     "com.et.yooassets": {
       "version": "file:com.et.yooassets",
@@ -46,7 +38,6 @@
       "source": "embedded",
       "dependencies": {
         "com.tuyoogame.yooasset": "2.1.1",
-        "com.et.thirdparty": "",
         "com.et.core": ""
       }
     },

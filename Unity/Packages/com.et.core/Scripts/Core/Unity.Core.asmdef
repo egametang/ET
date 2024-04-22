@@ -3,8 +3,7 @@
     "rootNamespace": "ET",
     "references": [
         "Unity.Mathematics",
-        "MemoryPack",
-        "Unity.ThirdParty"
+        "MemoryPack"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

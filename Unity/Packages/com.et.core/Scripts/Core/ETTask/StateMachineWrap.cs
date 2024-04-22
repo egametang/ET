@@ -12,6 +12,7 @@ namespace ET
     
     public class StateMachineWrap<T>: IStateMachineWrap where T: IAsyncStateMachine
     {
+        [StaticField]
         private static readonly ConcurrentQueue<StateMachineWrap<T>> queue = new();
 
         public static StateMachineWrap<T> Fetch(ref T stateMachine)

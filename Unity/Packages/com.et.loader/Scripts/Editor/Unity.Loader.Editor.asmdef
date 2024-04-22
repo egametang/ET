@@ -8,7 +8,6 @@
         "HybridCLR.Editor",
         "YooAsset",
         "Unity.Mathematics",
-        "Unity.ThirdParty",
         "Unity.Core.Editor"
     ],
     "includePlatforms": [

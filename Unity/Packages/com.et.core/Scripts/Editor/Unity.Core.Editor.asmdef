@@ -4,7 +4,6 @@
     "references": [
         "Unity.Mathematics",
         "MemoryPack",
-        "Unity.ThirdParty",
         "Unity.Core"
     ],
     "includePlatforms": [],

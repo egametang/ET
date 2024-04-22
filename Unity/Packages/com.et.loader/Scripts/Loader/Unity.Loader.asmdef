@@ -7,7 +7,6 @@
         "MemoryPack",
         "YooAsset",
         "YooAsset.Editor",
-        "Unity.ThirdParty",
         "Unity.YooAssets"
     ],
     "includePlatforms": [],
