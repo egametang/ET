@@ -13,5 +13,9 @@
     "url": "https://github.com/egametang/ET"
   },
   "relatedPackages": {},
-  "dependencies": {}
+  "dependencies": {
+    "com.unity.mathematics": "1.2.6",
+    "com.cysharp.memorypack": "",
+    "com.et.thirdparty": ""
+  }
 }

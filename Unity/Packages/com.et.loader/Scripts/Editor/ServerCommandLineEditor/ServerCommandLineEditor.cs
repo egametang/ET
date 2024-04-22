@@ -17,7 +17,7 @@ namespace ET
         [MenuItem("ET/ServerTools", false, ETMenuItemPriority.ServerTools)]
         public static void ShowWindow()
         {
-            GetWindow<ServerCommandLineEditor>(DockDefine.Types);
+            GetWindow<ServerCommandLineEditor>();
         }
 
         private int selectStartConfigIndex = 1;

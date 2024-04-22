@@ -1,22 +1,17 @@
 {
-    "name": "Unity.Loader",
+    "name": "Unity.Core.Editor",
     "rootNamespace": "ET",
     "references": [
-        "Unity.Core",
-        "HybridCLR.Runtime",
+        "Unity.Mathematics",
         "MemoryPack",
-        "YooAsset",
-        "YooAsset.Editor",
         "Unity.ThirdParty",
-        "Unity.YooAssets"
+        "Unity.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
-    "precompiledReferences": [
-        ""
-    ],
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

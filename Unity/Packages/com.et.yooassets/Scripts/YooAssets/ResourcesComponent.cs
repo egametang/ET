@@ -42,16 +42,13 @@ namespace ET
             YooAssets.Destroy();
         }
 
-        public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
+        public async ETTask CreatePackageAsync(string packageName, EPlayMode ePlayMode, bool isDefault = false)
         {
             ResourcePackage package = YooAssets.CreatePackage(packageName);
             if (isDefault)
             {
                 YooAssets.SetDefaultPackage(package);
             }
-
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            EPlayMode ePlayMode = globalConfig.EPlayMode;
 
             // 编辑器下的模拟模式
             switch (ePlayMode)
