@@ -61,7 +61,7 @@ namespace ET
                 }
                 
                 string baseName = Path.GetFileName(directory);
-                string moduleName = baseName.Substring(7);
+                string moduleName = baseName.Replace("com.et.", "");
                 moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
                 
                 list.Add((p, moduleName));
@@ -75,7 +75,7 @@ namespace ET
                 }
                 
                 string baseName = Path.GetFileName(directory);
-                string moduleName = baseName.Substring(7);
+                string moduleName = baseName.Replace("com.et.", "");
                 moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
                 
                 list.Add((p, moduleName));
