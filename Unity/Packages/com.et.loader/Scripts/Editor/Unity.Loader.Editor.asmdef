@@ -1,5 +1,5 @@
 {
-    "name": "Unity.Editor",
+    "name": "Unity.Loader.Editor",
     "rootNamespace": "",
     "references": [
         "Unity.Core",
