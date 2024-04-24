@@ -17,6 +17,7 @@
     "com.et.core": "",
     "com.et.yooassets": "",
     "com.et.loader": "",
-    "com.et.mapscenes": ""
+    "com.et.mapscenes": "",
+    "com.et.dotrecast": ""
   }
 }

@@ -5,7 +5,8 @@
         "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
-        "MemoryPack"
+        "MemoryPack",
+        "Unity.DotRecast"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

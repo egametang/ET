@@ -1,0 +1,9 @@
+{
+    "references": [
+        "Unity.Core",
+        "Unity.Mathematics",
+        "Unity.Loader",
+        "MemoryPack",
+        "Unity.Model"
+    ]
+}
