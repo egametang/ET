@@ -31,17 +31,6 @@
         "com.et.yooassets": ""
       }
     },
-    "com.et.lockstep": {
-      "version": "file:com.et.lockstep",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.et.core": "",
-        "com.et.yooassets": "",
-        "com.et.loader": "",
-        "com.et.mapscenes": ""
-      }
-    },
     "com.et.mapscenes": {
       "version": "file:com.et.mapscenes",
       "depth": 0,
@@ -65,7 +54,8 @@
       "source": "embedded",
       "dependencies": {
         "com.tuyoogame.yooasset": "2.1.1",
-        "com.et.core": ""
+        "com.et.core": "",
+        "com.unity.mathematics": "1.2.6"
       }
     },
     "com.tuyoogame.yooasset": {

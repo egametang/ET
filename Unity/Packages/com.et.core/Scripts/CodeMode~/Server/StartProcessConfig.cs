@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace ET.Core
+namespace ET
 {
     public partial class StartProcessConfig
     {

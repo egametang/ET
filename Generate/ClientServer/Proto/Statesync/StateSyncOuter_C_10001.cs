@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ET
 {
     [MemoryPackable]
-    [Message(OuterMessage.HttpGetRouterResponse)]
+    [Message(StateSyncOuter.HttpGetRouterResponse)]
     public partial class HttpGetRouterResponse : MessageObject
     {
         public static HttpGetRouterResponse Create(bool isFromPool = false)
@@ -33,7 +33,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.RouterSync)]
+    [Message(StateSyncOuter.RouterSync)]
     public partial class RouterSync : MessageObject
     {
         public static RouterSync Create(bool isFromPool = false)
@@ -62,7 +62,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_TestRequest)]
+    [Message(StateSyncOuter.C2M_TestRequest)]
     [ResponseType(nameof(M2C_TestResponse))]
     public partial class C2M_TestRequest : MessageObject, ILocationRequest
     {
@@ -92,7 +92,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_TestResponse)]
+    [Message(StateSyncOuter.M2C_TestResponse)]
     public partial class M2C_TestResponse : MessageObject, IResponse
     {
         public static M2C_TestResponse Create(bool isFromPool = false)
@@ -129,7 +129,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2G_EnterMap)]
+    [Message(StateSyncOuter.C2G_EnterMap)]
     [ResponseType(nameof(G2C_EnterMap))]
     public partial class C2G_EnterMap : MessageObject, ISessionRequest
     {
@@ -155,7 +155,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.G2C_EnterMap)]
+    [Message(StateSyncOuter.G2C_EnterMap)]
     public partial class G2C_EnterMap : MessageObject, ISessionResponse
     {
         public static G2C_EnterMap Create(bool isFromPool = false)
@@ -195,7 +195,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.MoveInfo)]
+    [Message(StateSyncOuter.MoveInfo)]
     public partial class MoveInfo : MessageObject
     {
         public static MoveInfo Create(bool isFromPool = false)
@@ -228,7 +228,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.UnitInfo)]
+    [Message(StateSyncOuter.UnitInfo)]
     public partial class UnitInfo : MessageObject
     {
         public static UnitInfo Create(bool isFromPool = false)
@@ -277,7 +277,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_CreateUnits)]
+    [Message(StateSyncOuter.M2C_CreateUnits)]
     public partial class M2C_CreateUnits : MessageObject, IMessage
     {
         public static M2C_CreateUnits Create(bool isFromPool = false)
@@ -302,7 +302,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_CreateMyUnit)]
+    [Message(StateSyncOuter.M2C_CreateMyUnit)]
     public partial class M2C_CreateMyUnit : MessageObject, IMessage
     {
         public static M2C_CreateMyUnit Create(bool isFromPool = false)
@@ -327,7 +327,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_StartSceneChange)]
+    [Message(StateSyncOuter.M2C_StartSceneChange)]
     public partial class M2C_StartSceneChange : MessageObject, IMessage
     {
         public static M2C_StartSceneChange Create(bool isFromPool = false)
@@ -356,7 +356,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_RemoveUnits)]
+    [Message(StateSyncOuter.M2C_RemoveUnits)]
     public partial class M2C_RemoveUnits : MessageObject, IMessage
     {
         public static M2C_RemoveUnits Create(bool isFromPool = false)
@@ -381,7 +381,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_PathfindingResult)]
+    [Message(StateSyncOuter.C2M_PathfindingResult)]
     public partial class C2M_PathfindingResult : MessageObject, ILocationMessage
     {
         public static C2M_PathfindingResult Create(bool isFromPool = false)
@@ -410,7 +410,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_Stop)]
+    [Message(StateSyncOuter.C2M_Stop)]
     public partial class C2M_Stop : MessageObject, ILocationMessage
     {
         public static C2M_Stop Create(bool isFromPool = false)
@@ -435,7 +435,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_PathfindingResult)]
+    [Message(StateSyncOuter.M2C_PathfindingResult)]
     public partial class M2C_PathfindingResult : MessageObject, IMessage
     {
         public static M2C_PathfindingResult Create(bool isFromPool = false)
@@ -468,7 +468,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_Stop)]
+    [Message(StateSyncOuter.M2C_Stop)]
     public partial class M2C_Stop : MessageObject, IMessage
     {
         public static M2C_Stop Create(bool isFromPool = false)
@@ -505,7 +505,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2G_Ping)]
+    [Message(StateSyncOuter.C2G_Ping)]
     [ResponseType(nameof(G2C_Ping))]
     public partial class C2G_Ping : MessageObject, ISessionRequest
     {
@@ -531,7 +531,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.G2C_Ping)]
+    [Message(StateSyncOuter.G2C_Ping)]
     public partial class G2C_Ping : MessageObject, ISessionResponse
     {
         public static G2C_Ping Create(bool isFromPool = false)
@@ -568,7 +568,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.G2C_Test)]
+    [Message(StateSyncOuter.G2C_Test)]
     public partial class G2C_Test : MessageObject, ISessionMessage
     {
         public static G2C_Test Create(bool isFromPool = false)
@@ -589,7 +589,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_Reload)]
+    [Message(StateSyncOuter.C2M_Reload)]
     [ResponseType(nameof(M2C_Reload))]
     public partial class C2M_Reload : MessageObject, ISessionRequest
     {
@@ -623,7 +623,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_Reload)]
+    [Message(StateSyncOuter.M2C_Reload)]
     public partial class M2C_Reload : MessageObject, ISessionResponse
     {
         public static M2C_Reload Create(bool isFromPool = false)
@@ -656,7 +656,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2R_Login)]
+    [Message(StateSyncOuter.C2R_Login)]
     [ResponseType(nameof(R2C_Login))]
     public partial class C2R_Login : MessageObject, ISessionRequest
     {
@@ -696,7 +696,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.R2C_Login)]
+    [Message(StateSyncOuter.R2C_Login)]
     public partial class R2C_Login : MessageObject, ISessionResponse
     {
         public static R2C_Login Create(bool isFromPool = false)
@@ -741,7 +741,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2G_LoginGate)]
+    [Message(StateSyncOuter.C2G_LoginGate)]
     [ResponseType(nameof(G2C_LoginGate))]
     public partial class C2G_LoginGate : MessageObject, ISessionRequest
     {
@@ -778,7 +778,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.G2C_LoginGate)]
+    [Message(StateSyncOuter.G2C_LoginGate)]
     public partial class G2C_LoginGate : MessageObject, ISessionResponse
     {
         public static G2C_LoginGate Create(bool isFromPool = false)
@@ -815,7 +815,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.G2C_TestHotfixMessage)]
+    [Message(StateSyncOuter.G2C_TestHotfixMessage)]
     public partial class G2C_TestHotfixMessage : MessageObject, ISessionMessage
     {
         public static G2C_TestHotfixMessage Create(bool isFromPool = false)
@@ -840,7 +840,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_TestRobotCase)]
+    [Message(StateSyncOuter.C2M_TestRobotCase)]
     [ResponseType(nameof(M2C_TestRobotCase))]
     public partial class C2M_TestRobotCase : MessageObject, ILocationRequest
     {
@@ -870,7 +870,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_TestRobotCase)]
+    [Message(StateSyncOuter.M2C_TestRobotCase)]
     public partial class M2C_TestRobotCase : MessageObject, ILocationResponse
     {
         public static M2C_TestRobotCase Create(bool isFromPool = false)
@@ -907,7 +907,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_TestRobotCase2)]
+    [Message(StateSyncOuter.C2M_TestRobotCase2)]
     public partial class C2M_TestRobotCase2 : MessageObject, ILocationMessage
     {
         public static C2M_TestRobotCase2 Create(bool isFromPool = false)
@@ -936,7 +936,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_TestRobotCase2)]
+    [Message(StateSyncOuter.M2C_TestRobotCase2)]
     public partial class M2C_TestRobotCase2 : MessageObject, ILocationMessage
     {
         public static M2C_TestRobotCase2 Create(bool isFromPool = false)
@@ -965,7 +965,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2M_TransferMap)]
+    [Message(StateSyncOuter.C2M_TransferMap)]
     [ResponseType(nameof(M2C_TransferMap))]
     public partial class C2M_TransferMap : MessageObject, ILocationRequest
     {
@@ -991,7 +991,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.M2C_TransferMap)]
+    [Message(StateSyncOuter.M2C_TransferMap)]
     public partial class M2C_TransferMap : MessageObject, ILocationResponse
     {
         public static M2C_TransferMap Create(bool isFromPool = false)
@@ -1024,7 +1024,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.C2G_Benchmark)]
+    [Message(StateSyncOuter.C2G_Benchmark)]
     [ResponseType(nameof(G2C_Benchmark))]
     public partial class C2G_Benchmark : MessageObject, ISessionRequest
     {
@@ -1050,7 +1050,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(OuterMessage.G2C_Benchmark)]
+    [Message(StateSyncOuter.G2C_Benchmark)]
     public partial class G2C_Benchmark : MessageObject, ISessionResponse
     {
         public static G2C_Benchmark Create(bool isFromPool = false)
@@ -1082,7 +1082,7 @@ namespace ET
         }
     }
 
-    public static class OuterMessage
+    public static class StateSyncOuter
     {
         public const ushort HttpGetRouterResponse = 10002;
         public const ushort RouterSync = 10003;

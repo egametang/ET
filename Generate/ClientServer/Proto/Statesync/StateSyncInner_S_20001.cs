@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ET
 {
     [MemoryPackable]
-    [Message(InnerMessage.ObjectQueryRequest)]
+    [Message(StateSyncInner.ObjectQueryRequest)]
     [ResponseType(nameof(ObjectQueryResponse))]
     public partial class ObjectQueryRequest : MessageObject, IRequest
     {
@@ -38,7 +38,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.M2A_Reload)]
+    [Message(StateSyncInner.M2A_Reload)]
     [ResponseType(nameof(A2M_Reload))]
     public partial class M2A_Reload : MessageObject, IRequest
     {
@@ -64,7 +64,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.A2M_Reload)]
+    [Message(StateSyncInner.A2M_Reload)]
     public partial class A2M_Reload : MessageObject, IResponse
     {
         public static A2M_Reload Create(bool isFromPool = false)
@@ -97,7 +97,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.G2G_LockRequest)]
+    [Message(StateSyncInner.G2G_LockRequest)]
     [ResponseType(nameof(G2G_LockResponse))]
     public partial class G2G_LockRequest : MessageObject, IRequest
     {
@@ -131,7 +131,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.G2G_LockResponse)]
+    [Message(StateSyncInner.G2G_LockResponse)]
     public partial class G2G_LockResponse : MessageObject, IResponse
     {
         public static G2G_LockResponse Create(bool isFromPool = false)
@@ -164,7 +164,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.G2G_LockReleaseRequest)]
+    [Message(StateSyncInner.G2G_LockReleaseRequest)]
     [ResponseType(nameof(G2G_LockReleaseResponse))]
     public partial class G2G_LockReleaseRequest : MessageObject, IRequest
     {
@@ -198,7 +198,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.G2G_LockReleaseResponse)]
+    [Message(StateSyncInner.G2G_LockReleaseResponse)]
     public partial class G2G_LockReleaseResponse : MessageObject, IResponse
     {
         public static G2G_LockReleaseResponse Create(bool isFromPool = false)
@@ -231,7 +231,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectAddRequest)]
+    [Message(StateSyncInner.ObjectAddRequest)]
     [ResponseType(nameof(ObjectAddResponse))]
     public partial class ObjectAddRequest : MessageObject, IRequest
     {
@@ -269,7 +269,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectAddResponse)]
+    [Message(StateSyncInner.ObjectAddResponse)]
     public partial class ObjectAddResponse : MessageObject, IResponse
     {
         public static ObjectAddResponse Create(bool isFromPool = false)
@@ -302,7 +302,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectLockRequest)]
+    [Message(StateSyncInner.ObjectLockRequest)]
     [ResponseType(nameof(ObjectLockResponse))]
     public partial class ObjectLockRequest : MessageObject, IRequest
     {
@@ -344,7 +344,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectLockResponse)]
+    [Message(StateSyncInner.ObjectLockResponse)]
     public partial class ObjectLockResponse : MessageObject, IResponse
     {
         public static ObjectLockResponse Create(bool isFromPool = false)
@@ -377,7 +377,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectUnLockRequest)]
+    [Message(StateSyncInner.ObjectUnLockRequest)]
     [ResponseType(nameof(ObjectUnLockResponse))]
     public partial class ObjectUnLockRequest : MessageObject, IRequest
     {
@@ -419,7 +419,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectUnLockResponse)]
+    [Message(StateSyncInner.ObjectUnLockResponse)]
     public partial class ObjectUnLockResponse : MessageObject, IResponse
     {
         public static ObjectUnLockResponse Create(bool isFromPool = false)
@@ -452,7 +452,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectRemoveRequest)]
+    [Message(StateSyncInner.ObjectRemoveRequest)]
     [ResponseType(nameof(ObjectRemoveResponse))]
     public partial class ObjectRemoveRequest : MessageObject, IRequest
     {
@@ -486,7 +486,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectRemoveResponse)]
+    [Message(StateSyncInner.ObjectRemoveResponse)]
     public partial class ObjectRemoveResponse : MessageObject, IResponse
     {
         public static ObjectRemoveResponse Create(bool isFromPool = false)
@@ -519,7 +519,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectGetRequest)]
+    [Message(StateSyncInner.ObjectGetRequest)]
     [ResponseType(nameof(ObjectGetResponse))]
     public partial class ObjectGetRequest : MessageObject, IRequest
     {
@@ -553,7 +553,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectGetResponse)]
+    [Message(StateSyncInner.ObjectGetResponse)]
     public partial class ObjectGetResponse : MessageObject, IResponse
     {
         public static ObjectGetResponse Create(bool isFromPool = false)
@@ -594,7 +594,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.R2G_GetLoginKey)]
+    [Message(StateSyncInner.R2G_GetLoginKey)]
     [ResponseType(nameof(G2R_GetLoginKey))]
     public partial class R2G_GetLoginKey : MessageObject, IRequest
     {
@@ -624,7 +624,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.G2R_GetLoginKey)]
+    [Message(StateSyncInner.G2R_GetLoginKey)]
     public partial class G2R_GetLoginKey : MessageObject, IResponse
     {
         public static G2R_GetLoginKey Create(bool isFromPool = false)
@@ -665,7 +665,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.G2M_SessionDisconnect)]
+    [Message(StateSyncInner.G2M_SessionDisconnect)]
     public partial class G2M_SessionDisconnect : MessageObject, ILocationMessage
     {
         public static G2M_SessionDisconnect Create(bool isFromPool = false)
@@ -690,7 +690,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.ObjectQueryResponse)]
+    [Message(StateSyncInner.ObjectQueryResponse)]
     public partial class ObjectQueryResponse : MessageObject, IResponse
     {
         public static ObjectQueryResponse Create(bool isFromPool = false)
@@ -727,7 +727,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.M2M_UnitTransferRequest)]
+    [Message(StateSyncInner.M2M_UnitTransferRequest)]
     [ResponseType(nameof(M2M_UnitTransferResponse))]
     public partial class M2M_UnitTransferRequest : MessageObject, IRequest
     {
@@ -765,7 +765,7 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(InnerMessage.M2M_UnitTransferResponse)]
+    [Message(StateSyncInner.M2M_UnitTransferResponse)]
     public partial class M2M_UnitTransferResponse : MessageObject, IResponse
     {
         public static M2M_UnitTransferResponse Create(bool isFromPool = false)
@@ -797,7 +797,7 @@ namespace ET
         }
     }
 
-    public static class InnerMessage
+    public static class StateSyncInner
     {
         public const ushort ObjectQueryRequest = 20002;
         public const ushort M2A_Reload = 20003;

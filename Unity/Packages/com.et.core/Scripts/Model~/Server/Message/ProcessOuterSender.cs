@@ -134,7 +134,7 @@ namespace ET.Server
                 return session;
             }
 
-            IPEndPoint ipEndPoint = ET.Core.StartProcessConfigCategory.Instance.Get((int) channelId).IPEndPoint;
+            IPEndPoint ipEndPoint = StartProcessConfigCategory.Instance.Get((int) channelId).IPEndPoint;
             session = self.CreateInner(channelId, ipEndPoint);
             return session;
         }
@@ -184,7 +184,7 @@ namespace ET.Server
                 throw new Exception($"actor is the same process: {fiber.Process} {actorId.Process}");
             }
             
-            ET.Core.StartProcessConfig startProcessConfig = ET.Core.StartProcessConfigCategory.Instance.Get(actorId.Process);
+            StartProcessConfig startProcessConfig = StartProcessConfigCategory.Instance.Get(actorId.Process);
             Session session = self.Get(startProcessConfig.Id);
             actorId.Process = fiber.Process;
             session.Send(actorId, message);
