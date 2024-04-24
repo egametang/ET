@@ -44,14 +44,12 @@ namespace ET
                 //modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
                 //modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
 
-                if (Define.EnableIL2CPP)
+                foreach (var kv in this.aotDlls)
                 {
-                    foreach (var kv in this.aotDlls)
-                    {
-                        TextAsset textAsset = kv.Value;
-                        RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
-                    }
+                    TextAsset textAsset = kv.Value;
+                    RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
                 }
+                
                 this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
                 this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
             }
