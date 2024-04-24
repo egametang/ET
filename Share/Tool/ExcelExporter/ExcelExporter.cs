@@ -497,7 +497,8 @@ namespace ET
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
-            template = template.Replace("(ns)", $"ET.{table.Module}");
+            //template = template.Replace("(ns)", $"ET.{table.Module}");
+            template = template.Replace("(ns)", "ET");
             string content = template.Replace("(ConfigName)", table.Name).Replace(("(Fields)"), sb.ToString());
             sw.Write(content);
         }
@@ -644,7 +645,7 @@ namespace ET
             }
 
             Assembly ass = GetAssembly(configType);
-            Type type = ass.GetType($"ET.{table.Module}.{table.Name}Category");
+            Type type = ass.GetType($"ET.{table.Name}Category");
 
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
