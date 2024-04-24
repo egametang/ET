@@ -23,7 +23,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="../../Unity/Packages/com.et.core/Scripts/Core/Helper/StringHashHelper.cs" />
+        <Compile Include="../../Unity/Packages/com.et.core/Runtime/Helper/StringHashHelper.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" PrivateAssets="all" />
