@@ -31,6 +31,34 @@
         "com.et.yooassets": ""
       }
     },
+    "com.et.lockstep": {
+      "version": "file:com.et.lockstep",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.et.core": "",
+        "com.et.yooassets": "",
+        "com.et.loader": "",
+        "com.et.mapscenes": ""
+      }
+    },
+    "com.et.mapscenes": {
+      "version": "file:com.et.mapscenes",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.et.statesync": {
+      "version": "file:com.et.statesync",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.et.core": "",
+        "com.et.yooassets": "",
+        "com.et.loader": "",
+        "com.et.mapscenes": ""
+      }
+    },
     "com.et.yooassets": {
       "version": "file:com.et.yooassets",
       "depth": 0,
