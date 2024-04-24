@@ -2,7 +2,6 @@
     "name": "Unity.Core",
     "rootNamespace": "ET",
     "references": [
-        "Unity.Mathematics",
         "MemoryPack"
     ],
     "includePlatforms": [],

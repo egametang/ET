@@ -2,9 +2,9 @@
     "name": "Unity.Core.Editor",
     "rootNamespace": "ET",
     "references": [
-        "Unity.Mathematics",
         "MemoryPack",
-        "Unity.Core"
+        "Unity.Core",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

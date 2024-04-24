@@ -25,16 +25,19 @@ namespace ET
 
         static ComponentViewHelper()
         {
-            Assembly assembly = typeof (ComponentViewHelper).Assembly;
-            foreach (Type type in assembly.GetTypes())
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (Assembly assembly in assemblies)
             {
-                if (!type.IsDefined(typeof (TypeDrawerAttribute)))
+                foreach (Type type in assembly.GetTypes())
                 {
-                    continue;
-                }
+                    if (!type.IsDefined(typeof (TypeDrawerAttribute)))
+                    {
+                        continue;
+                    }
 
-                ITypeDrawer iTypeDrawer = (ITypeDrawer) Activator.CreateInstance(type);
-                typeDrawers.Add(iTypeDrawer);
+                    ITypeDrawer iTypeDrawer = (ITypeDrawer) Activator.CreateInstance(type);
+                    typeDrawers.Add(iTypeDrawer);
+                }
             }
         }
         
