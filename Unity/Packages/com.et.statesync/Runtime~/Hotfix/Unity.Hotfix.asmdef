@@ -4,6 +4,7 @@
         "Unity.Mathematics",
         "Unity.Loader",
         "MemoryPack",
-        "Unity.Model"
+        "Unity.Model",
+        "Unity.DotRecast"
     ]
 }

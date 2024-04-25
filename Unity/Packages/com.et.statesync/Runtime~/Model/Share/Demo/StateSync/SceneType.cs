@@ -12,13 +12,11 @@
 		public const int Robot = 11;
 		public const int BenchmarkClient = 12;
 		public const int BenchmarkServer = 13;
-		public const int Match = 14;
-		public const int Room = 15;
 		public const int LockStepClient = 16;
 		public const int LockStepServer = 17;
-		public const int RoomRoot = 18;
 		public const int Watcher = 19;
 		public const int GameTool = 20;
+		public const int Server = 21;
 		
 
 		// 客户端

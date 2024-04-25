@@ -5,8 +5,6 @@
         // 场景切换协程
         public static async ETTask SceneChangeTo(Scene root, string sceneName, long sceneInstanceId)
         {
-            root.RemoveComponent<AIComponent>();
-            
             CurrentScenesComponent currentScenesComponent = root.GetComponent<CurrentScenesComponent>();
             currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
             Scene currentScene = CurrentSceneFactory.Create(sceneInstanceId, sceneName, currentScenesComponent);
@@ -19,7 +17,6 @@
             M2C_CreateMyUnit m2CCreateMyUnit = waitCreateMyUnit.Message;
             Unit unit = UnitFactory.Create(currentScene, m2CCreateMyUnit.Unit);
             unitComponent.Add(unit);
-            root.RemoveComponent<AIComponent>();
             
             EventSystem.Instance.Publish(currentScene, new SceneChangeFinish());
             // 通知等待场景切换的协程

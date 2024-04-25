@@ -55,7 +55,7 @@ namespace ET.Loader
                 {
                     foreach (string assName in AssNames)
                     {
-                        string p = Path.Combine(directory, "Scripts/" + assName + "~/Unity." + assName + ".asmdef");
+                        string p = Path.Combine(directory, "Runtime~/" + assName + "/Unity." + assName + ".asmdef");
                         if (!File.Exists(p))
                         {
                             continue;
