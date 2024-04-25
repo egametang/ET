@@ -111,10 +111,8 @@ namespace ET
                 switch (dllName)
                 {
                     case "Model":
-                        links += "<Compile Include=\"../Generate/" + codeMode + "/**/*.cs\"><Link>Generate/%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/CodeMode/" + codeMode + "/**/*.cs\">" +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" + 
-                                "</Compile>";
+                        links += "<Compile Include=\"../Generate/*/" + codeMode + "/**/*.cs\"><Link>Generate/%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
+                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/CodeMode/" + codeMode + "/**/*.cs\"><Link>%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
                         break;
                     case "Hotfix":
                         break;

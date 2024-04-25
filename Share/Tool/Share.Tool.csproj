@@ -31,15 +31,15 @@
     </PropertyGroup>
     
     <ItemGroup>        
-        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Model~\Share\Module\Config\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.core\Runtime\Model\Share\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Model\Share\Module\Log\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.core\Runtime\Model\Share\Module\Log\**\*.cs">
             <Link>Module\Log\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Core\Network\OpcodeRangeDefine.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.core\Runtime\Network\OpcodeRangeDefine.cs">
             <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
 

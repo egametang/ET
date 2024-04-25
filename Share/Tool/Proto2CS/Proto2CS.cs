@@ -22,9 +22,9 @@ namespace ET
 
     public static partial class InnerProto2CS
     {
-        private const string clientMessagePath = "../Generate/Client/Proto/";
-        private const string serverMessagePath = "../Generate/Server/Proto/";
-        private const string clientServerMessagePath = "../Generate/ClientServer/Proto/";
+        private const string clientMessagePath = "../Generate/Proto/Client/";
+        private const string serverMessagePath = "../Generate/Proto/Server/";
+        private const string clientServerMessagePath = "../Generate/Proto/ClientServer/";
         private static readonly char[] splitChars = [' ', '\t'];
         private static readonly List<OpcodeInfo> msgOpcode = [];
 
@@ -32,24 +32,10 @@ namespace ET
         {
             msgOpcode.Clear();
 
-            if (!Directory.Exists(clientMessagePath))
+            if (Directory.Exists("../Generate/Proto"))
             {
-                Directory.CreateDirectory(clientMessagePath);
+                Directory.Delete("../Generate/Proto", true);
             }
-            
-            if (!Directory.Exists(serverMessagePath))
-            {
-                Directory.CreateDirectory(serverMessagePath);
-            }
-            
-            if (!Directory.Exists(clientServerMessagePath))
-            {
-                Directory.CreateDirectory(clientServerMessagePath);
-            }
-
-            RemoveAllFilesExceptMeta(clientMessagePath);
-            RemoveAllFilesExceptMeta(serverMessagePath);
-            RemoveAllFilesExceptMeta(clientServerMessagePath);
 
             System.Collections.Generic.List<(string, string)> list = new ();
             foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
@@ -104,10 +90,6 @@ namespace ET
                 int startOpcode = int.Parse(ss2[2]);
                 ProtoFile2CS(s, module, protoName, cs, startOpcode);
             }
-
-            RemoveUnusedMetaFiles(clientMessagePath);
-            RemoveUnusedMetaFiles(serverMessagePath);
-            RemoveUnusedMetaFiles(clientServerMessagePath);
         }
 
         private static void ProtoFile2CS(string path, string module, string protoName, string cs, int startOpcode)
@@ -275,15 +257,15 @@ namespace ET
 
             if (cs.Contains('C'))
             {
-                GenerateCS(result, clientMessagePath + module, proto);
-                GenerateCS(result, serverMessagePath + module, proto);
-                GenerateCS(result, clientServerMessagePath + module, proto);
+                GenerateCS(result, clientMessagePath, proto);
+                GenerateCS(result, serverMessagePath, proto);
+                GenerateCS(result, clientServerMessagePath, proto);
             }
 
             if (cs.Contains('S'))
             {
-                GenerateCS(result, serverMessagePath + module, proto);
-                GenerateCS(result, clientServerMessagePath + module, proto);
+                GenerateCS(result, serverMessagePath, proto);
+                GenerateCS(result, clientServerMessagePath, proto);
             }
         }
 
@@ -388,49 +370,6 @@ namespace ET
             catch (Exception e)
             {
                 Console.WriteLine($"{newline}\n {e}");
-            }
-        }
-
-        /// <summary>
-        /// 删除meta以外的所有文件
-        /// </summary>
-        static void RemoveAllFilesExceptMeta(string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo targetDir = new(directory);
-            FileInfo[] fileInfos = targetDir.GetFiles("*", SearchOption.AllDirectories);
-            foreach (FileInfo info in fileInfos)
-            {
-                if (!info.Name.EndsWith(".meta"))
-                {
-                    File.Delete(info.FullName);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 删除多余的meta文件
-        /// </summary>
-        static void RemoveUnusedMetaFiles(string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo targetDir = new(directory);
-            FileInfo[] fileInfos = targetDir.GetFiles("*.meta", SearchOption.AllDirectories);
-            foreach (FileInfo info in fileInfos)
-            {
-                string pathWithoutMeta = info.FullName.Remove(info.FullName.LastIndexOf(".meta", StringComparison.Ordinal));
-                if (!File.Exists(pathWithoutMeta) && !Directory.Exists(pathWithoutMeta))
-                {
-                    File.Delete(info.FullName);
-                }
             }
         }
 
