@@ -17,7 +17,7 @@ namespace ET.Server
                     StartProcessConfig startProcessConfig = StartProcessConfigCategory.Instance.Get(process);
                     if (startProcessConfig.Port != 0)
                     {
-                        await FiberManager.Instance.Create(SchedulerType.ThreadPool, ConstFiberId.NetInner, 0, SceneType.NetInner, "NetInner");
+                        await FiberManager.Instance.Create(SchedulerType.ThreadPool, SceneType.NetInner, 0, SceneType.NetInner, "NetInner");
                     }
 
                     // 根据配置创建纤程

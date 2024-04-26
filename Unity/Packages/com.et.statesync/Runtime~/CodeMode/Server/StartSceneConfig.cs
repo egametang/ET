@@ -19,10 +19,6 @@ namespace ET
         public List<StartSceneConfig> Routers = new();
         
         public List<StartSceneConfig> Maps = new();
-
-        public StartSceneConfig Match;
-
-        public StartSceneConfig Benchmark;
         
         public List<StartSceneConfig> GetByProcess(int process)
         {
@@ -63,18 +59,12 @@ namespace ET
                     case SceneType.Map:
                         this.Maps.Add(startSceneConfig);
                         break;
-                    case SceneType.Match:
-                        this.Match = startSceneConfig;
-                        break;
-                    case SceneType.BenchmarkServer:
-                        this.Benchmark = startSceneConfig;
-                        break;
                 }
             }
         }
     }
     
-    public partial class StartSceneConfig: ISupportInitialize
+    public partial class StartSceneConfig
     {
         public ActorId ActorId;
         
@@ -103,7 +93,7 @@ namespace ET
         {
             get
             {
-                if (this.innerIPPort == null)
+                if (innerIPPort == null)
                 {
                     this.innerIPPort = NetworkHelper.ToIPEndPoint($"{this.StartProcessConfig.InnerIP}:{this.Port}");
                 }
