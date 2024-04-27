@@ -1,6 +1,5 @@
 ﻿namespace ET
 {
-	[UniqueId]
 	public static partial class SceneType
 	{
 		public const int Location = 3;

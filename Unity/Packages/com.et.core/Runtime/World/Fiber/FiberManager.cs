@@ -63,6 +63,11 @@ namespace ET
 
         public async ETTask<int> Create(SchedulerType schedulerType, int fiberId, int zone, int sceneType, string name)
         {
+            if (sceneType == 0)
+            {
+                throw new Exception("fiberId is 0");
+            } 
+            
             try
             {
                 Fiber fiber = new(fiberId, zone, sceneType, name);

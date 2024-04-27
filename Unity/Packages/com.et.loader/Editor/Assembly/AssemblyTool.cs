@@ -44,7 +44,7 @@ namespace ET
         {
             if (Application.isPlaying)
             {
-                LoadCodeHelper.ReLoadDlls().Coroutine();
+                CodeLoader.Instance.Reload();
             }
         }
 

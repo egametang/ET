@@ -1,0 +1,58 @@
+﻿using System;
+
+namespace ET
+{
+    public struct EntryEvent1
+    {
+    }   
+    
+    public struct EntryEvent2
+    {
+    } 
+    
+    public struct EntryEvent3
+    {
+    }
+    
+    public static class Entry
+    {
+        public static void Init()
+        {
+            
+        }
+        
+        public static void Start()
+        {
+            StartAsync().Coroutine();
+        }
+        
+        private static async ETTask StartAsync()
+        {
+            WinPeriod.Init();
+
+            // 注册Mongo type
+            MongoRegister.Init();
+            
+            MemoryPackRegister.Init();
+            
+            // 注册Entity序列化器
+            EntitySerializeRegister.Init();
+
+            World.Instance.AddSingleton<SceneTypeSingleton, Type>(typeof(SceneType));
+            World.Instance.AddSingleton<ObjectPool>();
+            World.Instance.AddSingleton<IdGenerater>();
+            World.Instance.AddSingleton<OpcodeType>();
+            
+            World.Instance.AddSingleton<MessageQueue>();
+            World.Instance.AddSingleton<NetServices>();
+            World.Instance.AddSingleton<LogMsg>();
+            
+            // 创建需要reload的code singleton
+            CodeTypes.Instance.CreateCode();
+            
+            await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
+
+            await FiberManager.Instance.Create(SchedulerType.Main, SceneType.Main, 0, SceneType.Main, "");
+        }
+    }
+}

@@ -22,6 +22,12 @@
         "com.cysharp.memorypack": ""
       }
     },
+    "com.et.demores": {
+      "version": "file:com.et.demores",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.et.dotrecast": {
       "version": "file:com.et.dotrecast",
       "depth": 0,
@@ -37,12 +43,6 @@
         "com.et.yooassets": ""
       }
     },
-    "com.et.mapscenes": {
-      "version": "file:com.et.mapscenes",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.et.statesync": {
       "version": "file:com.et.statesync",
       "depth": 0,
@@ -51,7 +51,7 @@
         "com.et.core": "",
         "com.et.yooassets": "",
         "com.et.loader": "",
-        "com.et.mapscenes": "",
+        "com.et.demores": "",
         "com.et.dotrecast": ""
       }
     },

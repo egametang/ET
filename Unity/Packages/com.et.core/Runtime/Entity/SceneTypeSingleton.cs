@@ -48,7 +48,12 @@ namespace ET
 		
         public int GetSceneType(string sceneName)
         {
-            return this.sceneNames.GetKeyByValue(sceneName);
+            int type = this.sceneNames.GetKeyByValue(sceneName);
+            if (type == 0)
+            {
+                throw new Exception($"not found scene type: {type} {sceneName}");
+            }
+            return type;
         }
 
         public Dictionary<int, string> GetAll()
