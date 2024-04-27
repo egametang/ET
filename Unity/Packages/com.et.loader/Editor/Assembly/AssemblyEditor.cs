@@ -33,12 +33,6 @@ namespace ET
         /// </summary>
         static void OnExitingEditMode()
         {
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            if (!globalConfig.EnableDll)
-            {
-                return;
-            }
-
             foreach (string dll in AssemblyTool.DllNames)
             {
                 string dllFile = $"{Application.dataPath}/../Library/ScriptAssemblies/{dll}.dll";

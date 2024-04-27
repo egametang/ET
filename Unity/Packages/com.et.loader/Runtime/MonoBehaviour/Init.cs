@@ -33,8 +33,7 @@ namespace ET
             World.Instance.AddSingleton<TimeInfo>();
             World.Instance.AddSingleton<FiberManager>();
 
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", globalConfig.EPlayMode, true);
+            await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
             
             World.Instance.AddSingleton<CodeLoader>().Start().Coroutine();
         }

@@ -42,8 +42,9 @@ namespace ET
             YooAssets.Destroy();
         }
 
-        public async ETTask CreatePackageAsync(string packageName, EPlayMode ePlayMode, bool isDefault = false)
+        public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
+            YooConfig yooConfig = Resources.Load<YooConfig>("YooConfig");
             ResourcePackage package = YooAssets.CreatePackage(packageName);
             if (isDefault)
             {
@@ -51,7 +52,7 @@ namespace ET
             }
 
             // 编辑器下的模拟模式
-            switch (ePlayMode)
+            switch (yooConfig.EPlayMode)
             {
                 case EPlayMode.EditorSimulateMode:
                 {

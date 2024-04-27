@@ -26,13 +26,6 @@ namespace ET
                 EditorResHelper.SaveAssets(globalConfig);
                 AssemblyTool.DoCompile();
             }
-
-            bool enableDll = EditorGUILayout.Toggle("EnableDll", globalConfig.EnableDll);
-            if (enableDll != globalConfig.EnableDll)
-            {
-                globalConfig.EnableDll = enableDll;
-                EditorResHelper.SaveAssets(globalConfig);
-            }
             
             BuildType buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType", globalConfig.BuildType);
             if (buildType != globalConfig.BuildType)
@@ -46,13 +39,6 @@ namespace ET
                 };
                 EditorResHelper.SaveAssets(globalConfig);
                 AssemblyTool.DoCompile();
-            }
-            
-            EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode", globalConfig.EPlayMode);
-            if (ePlayMode != globalConfig.EPlayMode)
-            {
-                globalConfig.EPlayMode = ePlayMode;
-                EditorResHelper.SaveAssets(globalConfig);
             }
             
             string sceneName = EditorGUILayout.TextField($"SceneName", globalConfig.SceneName);

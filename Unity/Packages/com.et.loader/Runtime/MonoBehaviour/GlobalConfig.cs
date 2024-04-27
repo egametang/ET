@@ -21,12 +21,8 @@ namespace ET
     {
         public CodeMode CodeMode;
 
-        public bool EnableDll;
-
         public BuildType BuildType;
 
         public string SceneName;
-
-        public EPlayMode EPlayMode;
     }
 }
