@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>12</LangVersion>
-    <AssemblyName>App</AssemblyName>
+    <AssemblyName>ET.App</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,7 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Loader\DotNet.Loader.csproj" />
-    <ProjectReference Include="..\Model\DotNet.Model.csproj" />
+    <ProjectReference Include="..\..\Unity\Packages\com.et.core\DotNet~\ET.Core.csproj" />
+    <ProjectReference Include="..\..\Unity\Packages\com.et.loader\DotNet~\ET.Loader.csproj" />
+    <ProjectReference Include="..\Model\ET.Model.csproj" />
   </ItemGroup>
 </Project>

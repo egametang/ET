@@ -59,7 +59,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\DotNet\Core\DotNet.Core.csproj" />
+      <ProjectReference Include="..\..\Unity\Packages\com.et.core\DotNet~\ET.Core.csproj" />
     </ItemGroup>
 
 </Project>

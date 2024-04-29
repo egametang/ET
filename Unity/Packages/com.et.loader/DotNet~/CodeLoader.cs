@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
 namespace ET
 {
-    /*
     public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
         private AssemblyLoadContext assemblyLoadContext;
@@ -27,7 +25,7 @@ namespace ET
 
             Assembly hotfixAssembly = this.LoadHotfix();
 
-            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
+            World.Instance.AddSingleton<CodeTypes, Assembly[]>([typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly]);
 
             IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
             start.Run();
@@ -48,11 +46,11 @@ namespace ET
         {
             Assembly hotfixAssembly = this.LoadHotfix();
 			
-            CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
+            CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>([typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly
+            ]);
 
             codeTypes.CreateCode();
             Log.Debug($"reload dll finish!");
         }
     }
-    */
 }

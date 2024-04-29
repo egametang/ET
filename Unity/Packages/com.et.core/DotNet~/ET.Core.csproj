@@ -17,7 +17,7 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <DefineConstants>DOTNET;UNITY_DOTSPLAYER</DefineConstants>
-      <OutputPath>..\..\Bin\</OutputPath>
+      <OutputPath>./obj</OutputPath>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <Optimize>false</Optimize>
       <NoWarn>0169,0649,3021,8981,CS9193,CS9192,NU1903</NoWarn>
@@ -26,20 +26,30 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">  
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
       <DefineConstants>DOTNET;UNITY_DOTSPLAYER</DefineConstants>
-      <OutputPath>..\..\Bin\</OutputPath>
+      <OutputPath>./obj</OutputPath>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <NoWarn>0169,0649,3021,8981,CS9193,CS9192,NU1903</NoWarn>
     </PropertyGroup>
     
-    <ItemGroup> 
-        <Compile Include="..\..\Unity\Packages\com.et.core\Scripts\Core\**\*.cs">
-            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    <ItemGroup>
+        <Compile Include="../Runtime/**/*.cs" xmlns="">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" /> 
-      <ProjectReference Include="..\..\Share\Share.SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-      <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
+      <ProjectReference Include="..\..\..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" /> 
+      <ProjectReference Include="..\..\..\..\Share\SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="EPPlus" Version="5.8.8" />
+        <PackageReference Include="MemoryPack" Version="1.10.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
+        <PackageReference Include="NLog" Version="4.7.15" />
+        <PackageReference Include="SharpZipLib" Version="1.3.3" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.1" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
     </ItemGroup>
 </Project>

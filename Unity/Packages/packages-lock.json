@@ -43,6 +43,14 @@
         "com.et.yooassets": ""
       }
     },
+    "com.et.mathematics": {
+      "version": "file:com.et.mathematics",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.6"
+      }
+    },
     "com.et.statesync": {
       "version": "file:com.et.statesync",
       "depth": 0,
