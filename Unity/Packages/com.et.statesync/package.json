@@ -18,6 +18,7 @@
     "com.et.yooassets": "",
     "com.et.loader": "",
     "com.et.demores": "",
-    "com.et.dotrecast": ""
+    "com.et.dotrecast": "",
+    "com.unity.mathematics": "1.2.6"
   }
 }
