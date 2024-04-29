@@ -1,10 +1,10 @@
 {
-    "name": "Unity.Core.Editor",
+    "name": "ET.Core.Editor",
     "rootNamespace": "ET",
     "references": [
         "MemoryPack",
-        "Unity.Core",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "ET.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

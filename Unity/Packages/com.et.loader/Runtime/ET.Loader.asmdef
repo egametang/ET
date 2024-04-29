@@ -1,13 +1,13 @@
 {
-    "name": "Unity.Loader",
+    "name": "ET.Loader",
     "rootNamespace": "ET",
     "references": [
-        "Unity.Core",
+        "ET.Core",
         "HybridCLR.Runtime",
         "MemoryPack",
         "YooAsset",
         "YooAsset.Editor",
-        "Unity.YooAssets"
+        "ET.YooAssets"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

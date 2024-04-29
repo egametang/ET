@@ -1,17 +1,12 @@
 {
-    "name": "Unity.HotfixView",
+    "name": "ET.Model",
     "rootNamespace": "ET",
     "references": [
-        "Unity.ThirdParty",
-        "Unity.Core",
+        "ET.Core",
         "Unity.Mathematics",
-        "Unity.Loader",
         "MemoryPack",
-        "Unity.Model",
-        "Unity.Hotfix",
-        "Unity.ModelView",
-        "YooAsset",
-        "Unity.YooAssets"
+        "ET.DotRecast",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -23,7 +18,7 @@
         "UNITY_COMPILE || UNITY_EDITOR"
     ],
     "versionDefines": [],
-    "noEngineReferences": false,
+    "noEngineReferences": true,
     "optionalUnityReferences": [],
     "additionalReferences": [],
     "compilerOptions": ""

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -55,18 +56,24 @@ namespace ET.Loader
                 {
                     foreach (string assName in AssNames)
                     {
-                        string p = Path.Combine(directory, "Runtime~/" + assName + "/Unity." + assName + ".asmdef");
+                        string p = Path.Combine(directory, "Runtime~/" + assName + "/ET." + assName + ".asmdef");
                         if (!File.Exists(p))
                         {
                             continue;
                         }
 
                         string json = File.ReadAllText(p);
-                        AssemblyDefinitionAsset assemblyDefinitionAsset = JsonUtility.FromJson<AssemblyDefinitionAsset>(json);
-
-                        foreach (string reference in assemblyDefinitionAsset.references)
+                        try
                         {
-                            allRefInfo.References[assName].Add(reference);
+                            AssemblyDefinitionAsset assemblyDefinitionAsset = JsonUtility.FromJson<AssemblyDefinitionAsset>(json);
+                            foreach (string reference in assemblyDefinitionAsset.references)
+                            {
+                                allRefInfo.References[assName].Add(reference);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception($"parse json error: {p} {json}");
                         }
                     }
                 }
@@ -74,7 +81,7 @@ namespace ET.Loader
 
             foreach (string assName in AssNames)
             {
-                string p = Path.Combine("Assets/Scripts/" + assName + "/Unity." + assName + ".asmdef");
+                string p = Path.Combine("Assets/Scripts/" + assName + "/ET." + assName + ".asmdef");
                 if (!File.Exists(p))
                 {
                     continue;

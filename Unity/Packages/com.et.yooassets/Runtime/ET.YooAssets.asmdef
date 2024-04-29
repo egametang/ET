@@ -1,20 +1,14 @@
 {
-    "name": "Unity.Loader.Editor",
+    "name": "ET.YooAssets",
     "rootNamespace": "",
     "references": [
-        "Unity.Core",
-        "Unity.Loader",
-        "HybridCLR.Runtime",
-        "HybridCLR.Editor",
         "YooAsset",
-        "Unity.Core.Editor",
-        "Unity.YooAssets"
+        "ET.Core",
+        "YooAsset.Editor"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

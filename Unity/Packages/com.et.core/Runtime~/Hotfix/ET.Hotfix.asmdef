@@ -1,8 +1,8 @@
 {
     "references": [
-        "Unity.Core",
+        "ET.Core",
         "Unity.Mathematics",
         "MemoryPack",
-        "Unity.DotRecast"
+        "ET.Model"
     ]
 }

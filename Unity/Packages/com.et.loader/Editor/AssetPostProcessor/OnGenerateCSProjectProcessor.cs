@@ -24,26 +24,26 @@ namespace ET
                 content = content.Replace(";DEBUG;", ";");
             }
 
-            if (path.EndsWith("Unity.Core.csproj"))
+            if (path.EndsWith("ET.Core.csproj"))
             {
                 return GenerateCustomProject(content, globalConfig.CodeMode);
             }
 
-            if (path.EndsWith("Unity.Model.csproj"))
+            if (path.EndsWith("ET.Model.csproj"))
             {
                 return GenerateCustomProject(content, globalConfig.CodeMode, "Model");
             }
             
-            if (path.EndsWith("Unity.Hotfix.csproj"))
+            if (path.EndsWith("ET.Hotfix.csproj"))
             {
                 return GenerateCustomProject(content, globalConfig.CodeMode, "Hotfix");
             }
 
-            if (path.EndsWith("Unity.ModelView.csproj"))
+            if (path.EndsWith("ET.ModelView.csproj"))
             {
                 return GenerateCustomProject(content, globalConfig.CodeMode, "ModelView");
             }
-            if (path.EndsWith("Unity.HotfixView.csproj"))
+            if (path.EndsWith("ET.HotfixView.csproj"))
             {
                 return GenerateCustomProject(content, globalConfig.CodeMode, "HotfixView");
             }

@@ -16,7 +16,7 @@ namespace ET
         /// <summary>
         /// 程序集名字数组
         /// </summary>
-        public static readonly string[] DllNames = { "Unity.Hotfix", "Unity.HotfixView", "Unity.Model", "Unity.ModelView" };
+        public static readonly string[] DllNames = { "ET.Hotfix", "ET.HotfixView", "ET.Model", "ET.ModelView" };
 
         [InitializeOnLoadMethod]
         static void Initialize()

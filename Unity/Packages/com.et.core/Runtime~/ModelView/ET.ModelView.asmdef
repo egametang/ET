@@ -1,9 +1,9 @@
 {
     "references": [
-        "Unity.Core",
+        "ET.Core",
         "Unity.Mathematics",
-        "Unity.Loader",
-        "Unity.Model",
+        "ET.Loader",
+        "ET.Model",
         "YooAsset"
     ]
 }
