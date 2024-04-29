@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandLine;
+using UnityEditor;
 using UnityEngine;
 
 namespace ET
@@ -25,7 +26,9 @@ namespace ET
             Parser.Default.ParseArguments<Options>(args)
                     .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
                     .WithParsed((o)=>World.Instance.AddSingleton(o));
-            Options.Instance.StartConfig = $"StartConfig/Localhost";
+
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            Options.Instance.SceneName = globalConfig.SceneName;
 			
             World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
             ETTask.ExceptionHandler += Log.Error;

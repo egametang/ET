@@ -14,20 +14,34 @@ namespace ET
         
         public static string ToJson(object obj)
         {
-            if (obj is ISupportInitialize supportInitialize)
+            try
             {
-                supportInitialize.BeginInit();
+                if (obj is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.BeginInit();
+                }
+                return obj.ToJson(defaultSettings);
             }
-            return obj.ToJson(defaultSettings);
+            catch (Exception e)
+            {
+                throw new Exception($"to json error {obj.GetType().FullName}\n{e}");
+            }
         }
 
         public static string ToJson(object obj, JsonWriterSettings settings)
         {
-            if (obj is ISupportInitialize supportInitialize)
+            try
             {
-                supportInitialize.BeginInit();
+                if (obj is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.BeginInit();
+                }
+                return obj.ToJson(settings);
             }
-            return obj.ToJson(settings);
+            catch (Exception e)
+            {
+                throw new Exception($"to json error {obj.GetType().FullName}\n{e}");
+            }
         }
 
         public static T FromJson<T>(string str)
@@ -38,38 +52,59 @@ namespace ET
             }
             catch (Exception e)
             {
-                throw new Exception($"{str}\n{e}");
+                throw new Exception($"from json error: {str}\n{e}");
             }
         }
 
         public static object FromJson(Type type, string str)
         {
-            return BsonSerializer.Deserialize(str, type);
+            try
+            {
+                return BsonSerializer.Deserialize(str, type);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"from json error: {str}\n{e}");
+            }
         }
 
         public static byte[] Serialize(object obj)
         {
-            if (obj is ISupportInitialize supportInitialize)
+            try
             {
-                supportInitialize.BeginInit();
+                if (obj is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.BeginInit();
+                }
+                return obj.ToBson();
             }
-            return obj.ToBson();
+            catch (Exception e)
+            {
+                throw new Exception($"Serialize error {obj.GetType().FullName}\n{e}");
+            }
         }
 
         public static void Serialize(object message, MemoryStream stream)
         {
-            if (message is ISupportInitialize supportInitialize)
+            try
             {
-                supportInitialize.BeginInit();
-            }
+                if (message is ISupportInitialize supportInitialize)
+                {
+                    supportInitialize.BeginInit();
+                }
 
-            using BsonBinaryWriter bsonWriter = new(stream, BsonBinaryWriterSettings.Defaults);
+                using BsonBinaryWriter bsonWriter = new(stream, BsonBinaryWriterSettings.Defaults);
             
-            BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
-            BsonSerializationArgs args = default;
-            args.NominalType = typeof (object);
-            IBsonSerializer serializer = BsonSerializer.LookupSerializer(args.NominalType);
-            serializer.Serialize(context, args, message);
+                BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
+                BsonSerializationArgs args = default;
+                args.NominalType = typeof (object);
+                IBsonSerializer serializer = BsonSerializer.LookupSerializer(args.NominalType);
+                serializer.Serialize(context, args, message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Serialize error {message.GetType().FullName}\n{e}");
+            }
         }
 
         public static object Deserialize(Type type, byte[] bytes)

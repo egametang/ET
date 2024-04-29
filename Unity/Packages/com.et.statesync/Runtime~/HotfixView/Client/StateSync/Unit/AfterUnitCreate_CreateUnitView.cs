@@ -9,7 +9,7 @@ namespace ET.Client
         {
             Unit unit = args.Unit;
             // Unit View层
-            string assetsName = $"Assets/Bundles/Unit/Unit.prefab";
+            string assetsName = $"Packages/com.et.demores/Bundles/Unit/Unit.prefab";
             GameObject bundleGameObject = await scene.GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(assetsName);
             GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 

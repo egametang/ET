@@ -15,7 +15,7 @@ namespace ET.Client
                 ResourcesLoaderComponent resourcesLoaderComponent = currentScene.GetComponent<ResourcesLoaderComponent>();
             
                 // 加载场景资源
-                await resourcesLoaderComponent.LoadSceneAsync($"Assets/Bundles/Scenes/{currentScene.Name}.unity", LoadSceneMode.Single);
+                await resourcesLoaderComponent.LoadSceneAsync($"Packages/com.et.demores/Scenes/{currentScene.Name}.unity", LoadSceneMode.Single);
                 // 切换到map场景
 
                 //await SceneManager.LoadSceneAsync(currentScene.Name);

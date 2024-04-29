@@ -38,7 +38,7 @@ namespace ET
             // 注册Entity序列化器
             EntitySerializeRegister.Init();
 
-            World.Instance.AddSingleton<SceneTypeSingleton, Type>(typeof(SceneType));
+            SceneTypeSingleton sceneTypeSingleton = World.Instance.AddSingleton<SceneTypeSingleton, Type>(typeof(SceneType));
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
@@ -51,7 +51,7 @@ namespace ET
             CodeTypes.Instance.CreateCode();
             
             await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
-
+            
             await FiberManager.Instance.Create(SchedulerType.Main, SceneType.Main, 0, SceneType.Main, "");
         }
     }

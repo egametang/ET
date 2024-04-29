@@ -8,7 +8,7 @@ namespace ET
 {
     public static class MongoRegister
     {
-        private static void RegisterStruct<T>() where T : struct
+        public static void RegisterStruct<T>() where T : struct
         {
             BsonSerializer.RegisterSerializer(typeof (T), new StructBsonSerialize<T>());
         }
