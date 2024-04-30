@@ -20,6 +20,7 @@
     "com.et.demores": "",
     "com.et.dotrecast": "",
     "com.unity.mathematics": "1.2.6",
-    "com.et.router": ""
+    "com.et.router": "",
+    "com.et.console": ""
   }
 }

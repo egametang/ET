@@ -63,9 +63,4 @@
         <ProjectReference Include="..\..\Unity\Packages\com.et.dotrecast\DotNet~\ET.DotRecast.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\com.et.mathematics\Runtime~\ET.Mathematics.csproj" />
     </ItemGroup> 
-    <ItemGroup>
-      <Folder Include="..\..\Unity\Packages\com.et.statesync\Runtime~\Model\Server\Module\Http\">
-        <Link>com.et.statesync\Runtime~\Model\Server\Module\Http</Link>
-      </Folder>
-    </ItemGroup> 
 </Project>
