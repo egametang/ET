@@ -49,7 +49,7 @@ namespace ET
             CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>([typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly
             ]);
 
-            codeTypes.CreateCode();
+            codeTypes.CodeProcess();
             Log.Debug($"reload dll finish!");
         }
     }

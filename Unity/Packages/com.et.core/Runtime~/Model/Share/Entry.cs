@@ -48,7 +48,7 @@ namespace ET
             World.Instance.AddSingleton<LogMsg>();
             
             // 创建需要reload的code singleton
-            CodeTypes.Instance.CreateCode();
+            CodeTypes.Instance.CodeProcess();
             
             await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
             

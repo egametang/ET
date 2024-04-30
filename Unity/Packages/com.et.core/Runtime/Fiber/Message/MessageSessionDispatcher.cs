@@ -15,7 +15,7 @@ namespace ET
         }
     }
     
-    [Code]
+    [CodeProcess]
     public class MessageSessionDispatcher: Singleton<MessageSessionDispatcher>, ISingletonAwake
     {
         private readonly Dictionary<ushort, List<MessageSessionDispatcherInfo>> handlers = new();

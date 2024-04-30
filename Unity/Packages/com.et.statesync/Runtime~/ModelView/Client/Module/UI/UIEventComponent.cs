@@ -6,7 +6,7 @@ namespace ET.Client
 	/// <summary>
 	/// 管理所有UI GameObject
 	/// </summary>
-	[Code]
+	[CodeProcess]
 	public class UIEventComponent: Singleton<UIEventComponent>, ISingletonAwake
 	{
 		public Dictionary<string, AUIEvent> UIEvents { get; } = new();

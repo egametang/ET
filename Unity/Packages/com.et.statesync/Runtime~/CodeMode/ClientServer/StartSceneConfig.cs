@@ -12,8 +12,6 @@ namespace ET
         
         public Dictionary<long, Dictionary<string, StartSceneConfig>> ClientScenesByName = new();
 
-        public StartSceneConfig LocationConfig;
-
         public List<StartSceneConfig> Realms = new();
         
         public List<StartSceneConfig> Routers = new();
@@ -49,9 +47,6 @@ namespace ET
                         break;
                     case SceneType.Gate:
                         this.Gates.Add(startSceneConfig.Zone, startSceneConfig);
-                        break;
-                    case SceneType.Location:
-                        this.LocationConfig = startSceneConfig;
                         break;
                     case SceneType.Router:
                         this.Routers.Add(startSceneConfig);

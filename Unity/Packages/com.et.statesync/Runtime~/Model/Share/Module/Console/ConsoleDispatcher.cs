@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [Code]
+    [CodeProcess]
     public class ConsoleDispatcher: Singleton<ConsoleDispatcher>, ISingletonAwake
     {
         private readonly Dictionary<string, IConsoleHandler> handlers = new();

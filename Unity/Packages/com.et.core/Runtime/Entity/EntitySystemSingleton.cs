@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [Code]
+    [CodeProcess]
     public class EntitySystemSingleton: Singleton<EntitySystemSingleton>, ISingletonAwake
     {
         private readonly DoubleMap<Type, long> entityTypeLongHashCode = new();

@@ -51,9 +51,9 @@ namespace ET
             return this.allTypes[typeName];
         }
         
-        public void CreateCode()
+        public void CodeProcess()
         {
-            var hashSet = this.GetTypes(typeof (CodeAttribute));
+            var hashSet = this.GetTypes(typeof (CodeProcessAttribute));
             foreach (Type type in hashSet)
             {
                 object obj = Activator.CreateInstance(type);

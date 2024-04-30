@@ -73,7 +73,7 @@ namespace ET.Loader
                         }
                         catch (Exception e)
                         {
-                            throw new Exception($"parse json error: {p} {json}");
+                            throw new Exception($"parse json error: {p} {json}", e);
                         }
                     }
                 }

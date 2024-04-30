@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [Code]
+    [CodeProcess]
     public class EventSystem: Singleton<EventSystem>, ISingletonAwake
     {
         private class EventInfo

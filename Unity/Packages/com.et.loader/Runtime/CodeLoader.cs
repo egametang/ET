@@ -124,7 +124,7 @@ namespace ET
                 typeof (World).Assembly, typeof (Init).Assembly, this.modelAssembly, this.modelViewAssembly, hotfixAssembly,
                 hotfixViewAssembly
             });
-            codeTypes.CreateCode();
+            codeTypes.CodeProcess();
 
             Log.Info($"reload dll finish!");
         }

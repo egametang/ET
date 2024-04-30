@@ -14,6 +14,12 @@
       "dependencies": {},
       "hash": "2554e81f0315ddf835026940ccc4ba8175edfda3"
     },
+    "com.et.actorlocation": {
+      "version": "file:com.et.actorlocation",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.et.core": {
       "version": "file:com.et.core",
       "depth": 0,
