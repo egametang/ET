@@ -40,6 +40,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.et.http": {
+      "version": "file:com.et.http",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.et.loader": {
       "version": "file:com.et.loader",
       "depth": 0,
@@ -57,6 +63,14 @@
         "com.unity.mathematics": "1.2.6"
       }
     },
+    "com.et.router": {
+      "version": "file:com.et.router",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.et.http": ""
+      }
+    },
     "com.et.statesync": {
       "version": "file:com.et.statesync",
       "depth": 0,
@@ -67,7 +81,8 @@
         "com.et.loader": "",
         "com.et.demores": "",
         "com.et.dotrecast": "",
-        "com.unity.mathematics": "1.2.6"
+        "com.unity.mathematics": "1.2.6",
+        "com.et.router": ""
       }
     },
     "com.et.yooassets": {

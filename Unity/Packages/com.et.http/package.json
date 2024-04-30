@@ -1,0 +1,18 @@
+{
+  "name": "com.et.http",
+  "displayName": "ET.Http",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "description": "et http",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+  }
+}
