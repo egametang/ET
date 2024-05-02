@@ -22,9 +22,9 @@ namespace ET
 
     public static partial class InnerProto2CS
     {
-        private const string clientMessagePath = "../Generate/Proto/Client/";
-        private const string serverMessagePath = "../Generate/Proto/Server/";
-        private const string clientServerMessagePath = "../Generate/Proto/ClientServer/";
+        private const string clientMessagePath = "../Generate/Proto/Model/Client/";
+        private const string serverMessagePath = "../Generate/Proto/Model/Server/";
+        private const string clientServerMessagePath = "../Generate/Proto/Model/ClientServer/";
         private static readonly char[] splitChars = [' ', '\t'];
         private static readonly List<OpcodeInfo> msgOpcode = [];
 

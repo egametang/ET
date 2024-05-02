@@ -56,11 +56,11 @@ namespace ET
     {
         private static string template;
 
-        private const string ClientClassDir = "../Generate/Excel/Client/";
+        private const string ClientClassDir = "../Generate/Excel/Model/Client/";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        private const string ServerClassDir = "../Generate/Excel/Server/";
+        private const string ServerClassDir = "../Generate/Excel/Model/Server/";
 
-        private const string CSClassDir = "../Generate/Excel/ClientServer/";
+        private const string CSClassDir = "../Generate/Excel/Model/ClientServer/";
 
         private const string jsonDir = "../Config/Json/{0}/{1}/";
 
