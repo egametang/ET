@@ -109,6 +109,14 @@
         "com.et.core": ""
       }
     },
+    "com.et.referencecollector": {
+      "version": "file:com.et.referencecollector",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.et.core": ""
+      }
+    },
     "com.et.robotcase": {
       "version": "file:com.et.robotcase",
       "depth": 0,
@@ -145,7 +153,17 @@
         "com.et.move": "",
         "com.et.watcher": "",
         "com.et.db": "",
-        "com.et.aoi": ""
+        "com.et.aoi": "",
+        "com.et.ui": "",
+        "com.et.referencecollector": ""
+      }
+    },
+    "com.et.ui": {
+      "version": "file:com.et.ui",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.et.core": ""
       }
     },
     "com.et.unit": {

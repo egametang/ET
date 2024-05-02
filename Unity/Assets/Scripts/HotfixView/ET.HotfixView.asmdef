@@ -10,7 +10,9 @@
         "ET.Hotfix",
         "ET.ModelView",
         "YooAsset",
-        "ET.YooAssets"
+        "ET.YooAssets",
+        "ET.UI",
+        "ET.ReferenceCollector"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

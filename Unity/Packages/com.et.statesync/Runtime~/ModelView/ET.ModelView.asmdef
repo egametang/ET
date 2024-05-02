@@ -4,6 +4,7 @@
         "Unity.Mathematics",
         "ET.Loader",
         "ET.Model",
-        "YooAsset"
+        "YooAsset",
+        "ET.UI"
     ]
 }

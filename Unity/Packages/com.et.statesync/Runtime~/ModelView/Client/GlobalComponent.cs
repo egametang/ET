@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendOf(typeof(GlobalComponent))]
+    [EntitySystemOf(typeof(GlobalComponent))]
     public static partial class GlobalComponentSystem
     {
         [EntitySystem]

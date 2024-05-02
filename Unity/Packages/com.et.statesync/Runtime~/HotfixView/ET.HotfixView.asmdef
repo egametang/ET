@@ -8,6 +8,8 @@
         "ET.Hotfix",
         "ET.ModelView",
         "ET.YooAssets",
-        "YooAsset"
+        "YooAsset",
+        "ET.UI",
+        "ET.ReferenceCollector"
     ]
 }

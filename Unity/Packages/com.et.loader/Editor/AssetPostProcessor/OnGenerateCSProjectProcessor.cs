@@ -111,15 +111,13 @@ namespace ET
                 switch (dllName)
                 {
                     case "Model":
-                        links += "<Compile Include=\"../Generate/*/" + codeMode + "/**/*.cs\"><Link>Generate/%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/CodeMode/" + codeMode + "/**/*.cs\"><Link>%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
-                        break;
                     case "Hotfix":
-                        break;
                     case "HotfixView":
-                        break;
                     case "ModelView":
+                        links += "<Compile Include=\"../Generate/*/" + dllName + "/"  + codeMode + "/**/*.cs\"><Link>Generate/%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
+                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/CodeMode/" + codeMode  + "/**/*.cs\"><Link>%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
                         break;
+
                     default:
                         links = null;
                         break;

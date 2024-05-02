@@ -5,8 +5,7 @@
         "ET.Core",
         "Unity.Mathematics",
         "MemoryPack",
-        "ET.DotRecast",
-        "YooAsset"
+        "ET.DotRecast"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -35,7 +35,7 @@
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Runtime~\CodeMode\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Runtime~\Model\CodeMode\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -47,11 +47,11 @@
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\Runtime~\CodeMode\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.*\Runtime~\Model\CodeMode\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Generate\*\Server\**\*.cs">
+        <Compile Include="..\..\Generate\*\Model\Server\**\*.cs">
             <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         

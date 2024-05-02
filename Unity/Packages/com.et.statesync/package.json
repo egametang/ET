@@ -29,6 +29,8 @@
     "com.et.move": "",
     "com.et.watcher": "",
     "com.et.db": "",
-    "com.et.aoi": ""
+    "com.et.aoi": "",
+    "com.et.ui": "",
+    "com.et.referencecollector": ""
   }
 }
