@@ -1,9 +1,9 @@
 {
-  "name": "com.et.http",
-  "displayName": "ET.Http",
+  "name": "com.et.numeric",
+  "displayName": "ET.Numeric",
   "version": "0.0.1",
   "unity": "2022.3",
-  "description": "et http",
+  "description": "et numeric",
   "author": {
     "name": "tanghai",
     "url": "https://github.com/egametang/ET"
@@ -14,6 +14,6 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "com.et.core": ""
+    "com.et.unit": ""
   }
 }

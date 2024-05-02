@@ -1,9 +1,9 @@
 {
-  "name": "com.et.http",
-  "displayName": "ET.Http",
+  "name": "com.et.robotcase",
+  "displayName": "ET.RobotCase",
   "version": "0.0.1",
   "unity": "2022.3",
-  "description": "et http",
+  "description": "et robotcase",
   "author": {
     "name": "tanghai",
     "url": "https://github.com/egametang/ET"

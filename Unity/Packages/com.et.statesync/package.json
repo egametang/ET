@@ -21,6 +21,14 @@
     "com.et.dotrecast": "",
     "com.unity.mathematics": "1.2.6",
     "com.et.router": "",
-    "com.et.console": ""
+    "com.et.console": "",
+    "com.et.unit": "",
+    "com.et.http": "",
+    "com.et.recast": "",
+    "com.et.numeric": "",
+    "com.et.move": "",
+    "com.et.watcher": "",
+    "com.et.db": "",
+    "com.et.aoi": ""
   }
 }
