@@ -14,18 +14,15 @@
         "ET.UI",
         "ET.ReferenceCollector"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "UNITY_COMPILE || UNITY_EDITOR"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false,
-    "optionalUnityReferences": [],
-    "additionalReferences": [],
-    "compilerOptions": ""
+    "noEngineReferences": false
 }

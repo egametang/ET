@@ -7,18 +7,15 @@
         "MemoryPack",
         "ET.DotRecast"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "UNITY_COMPILE || UNITY_EDITOR"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true,
-    "optionalUnityReferences": [],
-    "additionalReferences": [],
-    "compilerOptions": ""
+    "noEngineReferences": true
 }

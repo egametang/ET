@@ -33,6 +33,7 @@ namespace ET
 
         public void OnGUI()
         {
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             selectStartConfigIndex = EditorGUILayout.Popup(selectStartConfigIndex, this.startConfigs);
             this.startConfig = this.startConfigs[this.selectStartConfigIndex];
             this.developMode = (DevelopMode)EditorGUILayout.EnumPopup("起服模式：", this.developMode);
@@ -45,13 +46,13 @@ namespace ET
 
             if (GUILayout.Button("Start Server(Single Process)"))
             {
-                string arguments = $"App.dll --Process=1 --StartConfig=StartConfig/{this.startConfig} --Console=1";
+                string arguments = $"ET.App.dll --SceneName={globalConfig.SceneName} --Process=1 --StartConfig=StartConfig/{this.startConfig} --Console=1";
                 ProcessHelper.Run(dotnet, arguments, "../Bin/");
             }
 
             if (GUILayout.Button("Start Watcher"))
             {
-                string arguments = $"App.dll --SceneName=Watcher --StartConfig=StartConfig/{this.startConfig} --Console=1";
+                string arguments = $"ET.App.dll --SceneName=Watcher --StartConfig=StartConfig/{this.startConfig} --Console=1";
                 ProcessHelper.Run(dotnet, arguments, "../Bin/");
             }
 

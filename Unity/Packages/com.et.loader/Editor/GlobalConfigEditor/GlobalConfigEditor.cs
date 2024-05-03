@@ -24,7 +24,8 @@ namespace ET
             {
                 globalConfig.CodeMode = codeMode;
                 EditorResHelper.SaveAssets(globalConfig);
-                AssemblyTool.DoCompile();
+                AssetDatabase.Refresh();
+                BuildHelper.ReGenerateProjectFiles();
             }
             
             BuildType buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType", globalConfig.BuildType);
@@ -38,7 +39,8 @@ namespace ET
                     _ => throw new ArgumentOutOfRangeException()
                 };
                 EditorResHelper.SaveAssets(globalConfig);
-                AssemblyTool.DoCompile();
+                AssetDatabase.Refresh();
+                BuildHelper.ReGenerateProjectFiles();
             }
             
             string sceneName = EditorGUILayout.TextField($"SceneName", globalConfig.SceneName);
@@ -46,7 +48,9 @@ namespace ET
             {
                 globalConfig.SceneName = sceneName;
                 EditorResHelper.SaveAssets(globalConfig);
+                AssetDatabase.Refresh();
             }
+            
         }
     }
 }

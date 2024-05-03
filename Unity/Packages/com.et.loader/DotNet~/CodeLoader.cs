@@ -13,10 +13,14 @@ namespace ET
 
         public void Awake()
         {
+        }
+
+        public void Start()
+        {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly ass in assemblies)
             {
-                if (ass.GetName().Name == "Model")
+                if (ass.GetName().Name == "ET.Model")
                 {
                     this.assembly = ass;
                     break;
@@ -35,9 +39,9 @@ namespace ET
         {
             assemblyLoadContext?.Unload();
             GC.Collect();
-            assemblyLoadContext = new AssemblyLoadContext("Hotfix", true);
-            byte[] dllBytes = File.ReadAllBytes("./Hotfix.dll");
-            byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
+            assemblyLoadContext = new AssemblyLoadContext("ET.Hotfix", true);
+            byte[] dllBytes = File.ReadAllBytes("./ET.Hotfix.dll");
+            byte[] pdbBytes = File.ReadAllBytes("./ET.Hotfix.pdb");
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
             return hotfixAssembly;
         }

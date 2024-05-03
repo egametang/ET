@@ -90,23 +90,49 @@ namespace ET
 
             {
                 string links = "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "~/Share/**/*.cs\">\n            " +
-                    "<Link>$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Replace(\"Runtime~\", \"\")\"%(FileName)%(Extension)</Link>\n" +
-                    "</Compile>\n\n        " +
-                    "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
-                    "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                    "</Compile>\n\n        " +
-                    "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
-                    "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                    "</Compile>\n\n        " +
-                    "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Share/**/*.cs\">\n            " +
-                    "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                    "</Compile>\n\n        " +
-                    "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
-                    "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                    "</Compile>\n\n        " +
-                    "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
-                    "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                    "</Compile>";
+                        "<Link>$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Replace(\"Runtime~\", \"\")\"%(FileName)%(Extension)</Link>\n" +
+                        "</Compile>\n\n        " +
+                        
+                        "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Share/**/*.cs\">\n            " +
+                        "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                        "</Compile>\n\n        ";
+                
+                switch (codeMode)
+                {
+                    case CodeMode.Client:
+                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n\n        ";
+                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n\n        ";
+                        break;
+                    case CodeMode.Server:
+                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n\n        ";
+                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n";
+                        break;
+                    case CodeMode.ClientServer:
+                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n\n        ";
+                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n";
+                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n\n        ";
+                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
+                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
+                                "</Compile>\n\n        ";
+                        
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(codeMode), codeMode, null);
+                }
                 
                 switch (dllName)
                 {

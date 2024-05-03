@@ -15,6 +15,7 @@ namespace ET
         public static void ReGenerateProjectFiles()
         {
             Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
+            Debug.Log("regenerate csproj");
         }
 
 #if ENABLE_VIEW
