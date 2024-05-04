@@ -57,8 +57,8 @@
         
     </ItemGroup> 
     <ItemGroup> 
-        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\Share\SourceGenerator\Share.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Share\Analyzer\ET.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\Share\SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\..\Unity\Packages\com.et.core\DotNet~\ET.Core.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\com.et.dotrecast\DotNet~\ET.DotRecast.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\com.et.loader\DotNet~\ET.Loader.csproj" />

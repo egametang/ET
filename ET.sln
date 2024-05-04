@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet", "DotNet", "{46008B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Share", "Share", "{1272AF7B-A962-4BA4-8A9C-FFA7E131A0AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Share.Analyzer", "Share\Analyzer\Share.Analyzer.csproj", "{FCB2EF97-BA34-49F7-B859-68E1AC98877E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ET.Analyzer", "Share\Analyzer\ET.Analyzer.csproj", "{FCB2EF97-BA34-49F7-B859-68E1AC98877E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Share.Tool", "Share\Tool\Share.Tool.csproj", "{1D028A2B-515C-49E2-923B-094CBD89BE5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ET.Tool", "Share\Tool\ET.Tool.csproj", "{1D028A2B-515C-49E2-923B-094CBD89BE5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Share.SourceGenerator", "Share\SourceGenerator\Share.SourceGenerator.csproj", "{7053CEF4-1559-47C5-80FF-FBE7B02E50E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.SourceGenerator", "Share\SourceGenerator\ET.SourceGenerator.csproj", "{7053CEF4-1559-47C5-80FF-FBE7B02E50E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.Core", "Unity\ET.Core.csproj", "{357275F9-23B5-ED06-A723-291680D452AA}"
 EndProject

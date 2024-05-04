@@ -5,6 +5,7 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <Nullable>enable</Nullable>
         <LangVersion>12</LangVersion>
+        <RootNamespace>ET</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
