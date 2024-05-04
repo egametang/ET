@@ -61,5 +61,11 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Unity\Packages\com.et.core\DotNet~\ET.Core.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="EPPlus" Version="7.1.2" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
+    </ItemGroup>
 
 </Project>
