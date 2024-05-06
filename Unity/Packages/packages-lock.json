@@ -54,12 +54,6 @@
       "source": "embedded",
       "dependencies": {}
     },
-    "com.et.dotrecast": {
-      "version": "file:com.et.dotrecast",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.et.http": {
       "version": "file:com.et.http",
       "depth": 0,
@@ -142,7 +136,6 @@
         "com.et.yooassets": "",
         "com.et.loader": "",
         "com.et.demores": "",
-        "com.et.dotrecast": "",
         "com.unity.mathematics": "1.2.6",
         "com.et.router": "",
         "com.et.console": "",

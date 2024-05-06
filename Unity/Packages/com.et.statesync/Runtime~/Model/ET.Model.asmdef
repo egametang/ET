@@ -2,7 +2,6 @@
     "references": [
         "ET.Core",
         "Unity.Mathematics",
-        "MemoryPack",
-        "ET.DotRecast"
+        "MemoryPack"
     ]
 }

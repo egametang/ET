@@ -4,8 +4,7 @@
     "references": [
         "ET.Core",
         "Unity.Mathematics",
-        "MemoryPack",
-        "ET.DotRecast"
+        "MemoryPack"
     ],
     "includePlatforms": [
         "Editor"
@@ -17,5 +16,8 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": true,
+    "optionalUnityReferences": [],
+    "additionalReferences": [],
+    "compilerOptions": ""
 }
