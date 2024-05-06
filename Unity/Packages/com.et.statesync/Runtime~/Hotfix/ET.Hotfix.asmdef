@@ -4,7 +4,6 @@
         "Unity.Mathematics",
         "ET.Loader",
         "MemoryPack",
-        "ET.Model",
-        "ET.DotRecast"
+        "ET.Model"
     ]
 }

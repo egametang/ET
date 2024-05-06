@@ -89,8 +89,8 @@ namespace ET
             var rootNode = newDoc.GetElementsByTagName("Project")[0];
 
             {
-                string links = "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "~/Share/**/*.cs\">\n            " +
-                        "<Link>$([System.String]::new(%(RecursiveDir)).Substring(7, $([System.String]::new(%(RecursiveDir)).Replace(\"Runtime~\", \"\")\"%(FileName)%(Extension)</Link>\n" +
+                string links = "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Share/**/*.cs\">\n            " +
+                        "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
                         "</Compile>\n\n        " +
                         
                         "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Share/**/*.cs\">\n            " +

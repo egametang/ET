@@ -5,7 +5,7 @@ namespace ET.Server
 {
     [EntitySystemOf(typeof(AOIEntity))]
     [FriendOf(typeof(Cell))]
-    public static partial class AOIEntitySystem
+    public static partial class AOIEntitySystem2
     {
         [EntitySystem]
         private static void Awake(this AOIEntity self, int distance, float3 pos)
@@ -13,7 +13,7 @@ namespace ET.Server
             self.ViewDistance = distance;
             self.Scene().GetComponent<AOIManagerComponent>().Add(self, pos.x, pos.z);
         }
-        
+
         [EntitySystem]
         private static void Destroy(this AOIEntity self)
         {
@@ -26,7 +26,12 @@ namespace ET.Server
             self.SubEnterCells.Clear();
             self.SubLeaveCells.Clear();
         }
-        
+    }
+
+    [FriendOf(typeof(Cell))]
+    [FriendOf(typeof(AOIEntity))]
+    public static partial class AOIEntitySystem
+    {
         // 获取在自己视野中的对象
         public static Dictionary<long, EntityRef<AOIEntity>> GetSeeUnits(this AOIEntity self)
         {

@@ -6,8 +6,8 @@
         "Unity.Mathematics",
         "MemoryPack",
         "ET.Model",
-        "ET.Loader",
-        "ET.DotRecast"
+        "ET.Recast",
+        "ET.Loader"
     ],
     "includePlatforms": [
         "Editor"

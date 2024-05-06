@@ -1,3 +1,5 @@
+#define DOTNET
+
 using System.Collections.Generic;
 using System.Text;
 using ET.Analyzer;
@@ -27,8 +29,14 @@ public class ETEntitySerializeFormatterGenerator : ISourceGenerator
         string typeHashCodeMapDeclaration = GenerateTypeHashCodeMapDeclaration(receiver);
         string serializeContent = GenerateSerializeContent(receiver);
         string deserializeContent = GenerateDeserializeContent(receiver);
-        string genericTypeParam = context.Compilation.AssemblyName == AnalyzeAssembly.DotNetModel? "<TBufferWriter>" : "";
-        string scopedCode = context.Compilation.AssemblyName == AnalyzeAssembly.DotNetModel? "scoped" : "";
+#if DOTNET
+        string genericTypeParam = "<TBufferWriter>";
+        string scopedCode = "scoped";
+#else
+        string genericTypeParam = "";
+        string scopedCode = "";
+#endif
+        
         string code = $$"""
 #nullable enable
 #pragma warning disable CS0108 // hides inherited member

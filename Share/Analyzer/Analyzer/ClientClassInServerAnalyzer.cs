@@ -20,10 +20,10 @@ namespace ET.Analyzer
 
         private static void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
-            if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.ServerModelHotfix))
-            {
-                return;
-            }
+            //if (!AnalyzerHelper.IsAssemblyNeedAnalyze(context.Compilation.AssemblyName, AnalyzeAssembly.ServerModelHotfix))
+            //{
+            //    return;
+            //}
             
             var usingDirective = (UsingDirectiveSyntax)context.Node;
             var namespaceName = usingDirective.Name.ToString();

@@ -4,47 +4,36 @@ namespace ET.Analyzer
 {
     public static class AnalyzeAssembly
     {
-        public const string DotNetCore = "Core";
-        public const string DotNetModel = "Model";
-        public const string DotNetHotfix = "Hotfix";
-
-        public const string UnityCore = "Unity.Core";
-        public const string UnityModel = "Unity.Model";
-        public const string UnityHotfix = "Unity.Hotfix";
-        public const string UnityModelView = "Unity.ModelView";
-        public const string UnityHotfixView = "Unity.HotfixView";
+        private const string Core = "ET.Core";
+        private const string Model = "ET.Model";
+        private const string Hotfix = "ET.Hotfix";
+        private const string ModelView = "ET.ModelView";
+        private const string HotfixView = "ET.HotfixView";
 
         public static readonly string[] AllHotfix =
-        {
-            DotNetHotfix, UnityHotfix, UnityHotfixView,
-        };
+        [
+            Hotfix, HotfixView
+        ];
 
         public static readonly string[] AllModel =
-        {
-            DotNetModel, UnityModel, UnityModelView
-        };
+        [
+            Model, ModelView
+        ];
 
         public static readonly string[] AllModelHotfix =
-        {
-            DotNetModel, DotNetHotfix, 
-            UnityModel, UnityHotfix, UnityModelView, UnityHotfixView, 
-        };
+        [
+            Model, Hotfix, ModelView, HotfixView
+        ];
         
         public static readonly string[] All =
-        {
-            DotNetCore, DotNetModel, DotNetHotfix, 
-            UnityCore, UnityModel, UnityHotfix, UnityModelView, UnityHotfixView, 
-        };
-
-        public static readonly string[] ServerModelHotfix =
-        {
-            DotNetModel,DotNetHotfix,
-        };
+        [
+            Core, Model, Hotfix, ModelView, HotfixView
+        ];
         
         public static readonly string[] AllLogicModel =
-        {
-            DotNetModel, UnityModel
-        };
+        [
+            Model
+        ];
     }
     
 }
