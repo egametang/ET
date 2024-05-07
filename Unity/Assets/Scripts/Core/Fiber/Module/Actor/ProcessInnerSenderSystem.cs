@@ -142,15 +142,16 @@ namespace ET
             }
 
             Type requestType = request.GetType();
-            MessageSenderStruct messageSenderStruct = new(actorId, requestType, needException);
-            self.requestCallback.Add(rpcId, messageSenderStruct);
-
+            
             IResponse response;
             if (!self.SendInner(actorId, (MessageObject)request))  // 纤程不存在
             {
                 response = MessageHelper.CreateResponse(requestType, rpcId, ErrorCore.ERR_NotFoundActor);
                 return response;
             }
+            
+            MessageSenderStruct messageSenderStruct = new(actorId, requestType, needException);
+            self.requestCallback.Add(rpcId, messageSenderStruct);
             
             async ETTask Timeout()
             {
