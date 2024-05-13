@@ -56,21 +56,8 @@ namespace ET
         /// </summary>
         public static string OnGeneratedSlnSolution(string _, string content)
         {
-            // Client
-            content = HideCSProject(content, "Ignore.Generate.Client.csproj");
-            content = HideCSProject(content, "Ignore.Model.Client.csproj");
-            content = HideCSProject(content, "Ignore.Hotfix.Client.csproj");
-            content = HideCSProject(content, "Ignore.ModelView.Client.csproj");
-            content = HideCSProject(content, "Ignore.HotfixView.Client.csproj");
-
-            // Server
-            content = HideCSProject(content, "Ignore.Generate.Server.csproj");
-            content = HideCSProject(content, "Ignore.Model.Server.csproj");
-            content = HideCSProject(content, "Ignore.Hotfix.Server.csproj");
-
-            // ClientServer
-            content = HideCSProject(content, "Ignore.Generate.ClientServer.csproj");
-
+            content = Regex.Replace(content, $"Project.*Ignore\\.ET.*\r\nEndProject", string.Empty);
+            content = Regex.Replace(content, $"Project.*Ignore\\.ET.*\nEndProject", string.Empty);
             return content;
         }
 
