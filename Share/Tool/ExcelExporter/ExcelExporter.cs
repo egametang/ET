@@ -56,11 +56,11 @@ namespace ET
     {
         private static string template;
 
-        private const string ClientClassDir = "../Generate/Excel/Model/Client/";
+        private const string ClientClassDir = "../Unity/Assets/Generate/Model/Excel/Client/";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        private const string ServerClassDir = "../Generate/Excel/Model/Server/";
+        private const string ServerClassDir = "../Unity/Assets/Generate/Model/Excel/Server/";
 
-        private const string CSClassDir = "../Generate/Excel/Model/ClientServer/";
+        private const string CSClassDir = "../Unity/Assets/Generate/Model/Excel/ClientServer/";
 
         private const string jsonDir = "../Config/Json/{0}/{1}/";
 
@@ -104,9 +104,9 @@ namespace ET
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 
-                if (Directory.Exists("../Generate/Excel"))
+                if (Directory.Exists("../Generate/Model/Excel"))
                 {
-                    Directory.Delete("../Generate/Excel", true);
+                    Directory.Delete("../Generate/Model/Excel", true);
                 }
 
                 if (!Directory.Exists(ClientClassDir))

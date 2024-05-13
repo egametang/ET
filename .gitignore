@@ -51,4 +51,5 @@ obj/
 Publish/
 */Temp/
 */TestResults/
-Generate
+Unity/Assets/Generate/Model/Proto*
+Unity/Assets/Generate/Model/Excel*

@@ -22,9 +22,9 @@ namespace ET
 
     public static partial class InnerProto2CS
     {
-        private const string clientMessagePath = "../Generate/Proto/Model/Client/";
-        private const string serverMessagePath = "../Generate/Proto/Model/Server/";
-        private const string clientServerMessagePath = "../Generate/Proto/Model/ClientServer/";
+        private const string clientMessagePath = "../Unity/Assets/Generate/Model/Proto/Client/";
+        private const string serverMessagePath = "../Unity/Assets/Generate/Model/Proto/Server/";
+        private const string clientServerMessagePath = "../Unity/Assets/Generate/Model/Proto/ClientServer/";
         private static readonly char[] splitChars = [' ', '\t'];
         private static readonly List<OpcodeInfo> msgOpcode = [];
 
@@ -32,9 +32,9 @@ namespace ET
         {
             msgOpcode.Clear();
 
-            if (Directory.Exists("../Generate/Proto"))
+            if (Directory.Exists("../Generate/Model/Proto"))
             {
-                Directory.Delete("../Generate/Proto", true);
+                Directory.Delete("../Generate/Model/Proto", true);
             }
 
             System.Collections.Generic.List<(string, string)> list = new ();
