@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -15,6 +16,11 @@ namespace ET
         public static void ReGenerateProjectFiles()
         {
             Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
+            
+            foreach (string s in FileHelper.GetAllFiles(".", "Ignore.ET*.csproj"))
+            {
+                File.Delete(s);
+            }
             Debug.Log("regenerate csproj");
         }
 
