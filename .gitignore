@@ -53,3 +53,7 @@ Publish/
 */TestResults/
 Unity/Assets/Generate/Model/Proto*
 Unity/Assets/Generate/Model/Excel*
+Unity/**/AssemblyReference.asmref
+Unity/**/AssemblyReference.asmref.meta
+Unity/Unity.sln
+Unity/Unity.sln.DotSettings.user

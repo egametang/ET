@@ -23,7 +23,11 @@ namespace ET
             if (codeMode != globalConfig.CodeMode)
             {
                 globalConfig.CodeMode = codeMode;
+                
                 EditorResHelper.SaveAssets(globalConfig);
+                
+                CodeModeChangeHelper.ChangeToCodeMode(codeMode);
+                
                 AssetDatabase.Refresh();
                 BuildHelper.ReGenerateProjectFiles();
             }
