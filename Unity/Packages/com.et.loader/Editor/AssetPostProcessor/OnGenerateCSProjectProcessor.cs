@@ -75,75 +75,6 @@ namespace ET
             var newDoc = doc.Clone() as XmlDocument;
             var rootNode = newDoc.GetElementsByTagName("Project")[0];
 
-            {
-                string links = "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Share/**/*.cs\">\n            " +
-                        "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                        "</Compile>\n\n        " +
-                        
-                        "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Share/**/*.cs\">\n            " +
-                        "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                        "</Compile>\n\n        ";
-                
-                switch (codeMode)
-                {
-                    case CodeMode.Client:
-                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n\n        ";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n\n        ";
-                        break;
-                    case CodeMode.Server:
-                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n\n        ";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n";
-                        break;
-                    case CodeMode.ClientServer:
-                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n\n        ";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Server/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n";
-                        links += "<Compile Include=\"Library/PackageCache/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n\n        ";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/Client/**/*.cs\">\n            " +
-                                "<Link>%(RecursiveDir)%(FileName)%(Extension)</Link>\n" +
-                                "</Compile>\n\n        ";
-                        
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(codeMode), codeMode, null);
-                }
-                
-                switch (dllName)
-                {
-                    case "Model":
-                    case "Hotfix":
-                    case "HotfixView":
-                    case "ModelView":
-                        links += "<Compile Include=\"../Generate/*/" + dllName + "/"  + codeMode + "/**/*.cs\"><Link>Generate/%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
-                        links += "<Compile Include=\"Packages/com.et.*/Runtime~/" + dllName + "/CodeMode/" + codeMode  + "/**/*.cs\"><Link>%(RecursiveDir)%(FileName)%(Extension)</Link></Compile>";
-                        break;
-
-                    default:
-                        links = null;
-                        break;
-                }
-                
-                if (links != null)
-                {
-                    XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
-                    itemGroup.InnerXml = links;
-                    rootNode.AppendChild(itemGroup);
-                }
-            }
-
             // 添加分析器引用
             {
                 XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
@@ -194,14 +125,6 @@ namespace ET
             newDoc.WriteTo(tx);
             tx.Flush();
             return sw.GetStringBuilder().ToString();
-        }
-
-        /// <summary>
-        /// 隐藏指定项目
-        /// </summary>
-        static string HideCSProject(string content, string projectName)
-        {
-            return Regex.Replace(content, $"Project.*{projectName}.*\nEndProject", string.Empty);
         }
     }
 }
