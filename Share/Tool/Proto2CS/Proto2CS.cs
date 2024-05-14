@@ -22,9 +22,9 @@ namespace ET
 
     public static partial class InnerProto2CS
     {
-        private const string clientMessagePath = "../Unity/Assets/Generate/Model/Proto/Client/";
-        private const string serverMessagePath = "../Unity/Assets/Generate/Model/Proto/Server/";
-        private const string clientServerMessagePath = "../Unity/Assets/Generate/Model/Proto/ClientServer/";
+        private const string clientMessagePath = "../Unity/Assets/Proto/Model/Client/";
+        private const string serverMessagePath = "../Unity/Assets/Proto/Model/Server/";
+        private const string clientServerMessagePath = "../Unity/Assets/Proto/Model/ClientServer/";
         private static readonly char[] splitChars = [' ', '\t'];
         private static readonly List<OpcodeInfo> msgOpcode = [];
 
@@ -32,10 +32,14 @@ namespace ET
         {
             msgOpcode.Clear();
 
-            if (Directory.Exists("../Generate/Model/Proto"))
+            if (Directory.Exists("../Unity/Assets/Proto"))
             {
-                Directory.Delete("../Generate/Model/Proto", true);
+                Directory.Delete("../Unity/Assets/Proto", true);
             }
+
+            Directory.CreateDirectory("../Unity/Assets/Proto/Model");
+            
+            File.WriteAllText("../Unity/Assets/Proto/Model/AssemblyReference.asmref", "[\"reference\": \"ET.Model\"]");
 
             System.Collections.Generic.List<(string, string)> list = new ();
             foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))

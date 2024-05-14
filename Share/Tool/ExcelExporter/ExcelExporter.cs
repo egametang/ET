@@ -56,11 +56,11 @@ namespace ET
     {
         private static string template;
 
-        private const string ClientClassDir = "../Unity/Assets/Generate/Model/Excel/Client/";
+        private const string ClientClassDir = "../Unity/Assets/Excel/Model/Client/";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        private const string ServerClassDir = "../Unity/Assets/Generate/Model/Excel/Server/";
+        private const string ServerClassDir = "../Unity/Assets/Excel/Model/Server/";
 
-        private const string CSClassDir = "../Unity/Assets/Generate/Model/Excel/ClientServer/";
+        private const string CSClassDir = "../Unity/Assets/Excel/Model/ClientServer/";
 
         private const string jsonDir = "../Config/Json/{0}/{1}/";
 
@@ -104,10 +104,12 @@ namespace ET
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 
-                if (Directory.Exists("../Generate/Model/Excel"))
+                if (Directory.Exists("../Unity/Assets/Excel"))
                 {
-                    Directory.Delete("../Generate/Model/Excel", true);
+                    Directory.Delete("../Unity/Assets/Excel", true);
                 }
+                
+                File.WriteAllText("../Unity/Assets/Excel/Model/AssemblyReference.asmref", "[\"reference\": \"ET.Model\"]");
 
                 if (!Directory.Exists(ClientClassDir))
                 {

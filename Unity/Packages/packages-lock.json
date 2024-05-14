@@ -39,7 +39,9 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.cysharp.memorypack": ""
+        "com.et.scripts": "",
+        "com.et.excel": "",
+        "com.et.proto": ""
       }
     },
     "com.et.db": {
@@ -50,6 +52,12 @@
     },
     "com.et.demores": {
       "version": "file:com.et.demores",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.et.excel": {
+      "version": "file:com.et.excel",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
@@ -95,6 +103,12 @@
         "com.et.unit": ""
       }
     },
+    "com.et.proto": {
+      "version": "file:com.et.proto",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.et.recast": {
       "version": "file:com.et.recast",
       "depth": 0,
@@ -126,6 +140,12 @@
       "dependencies": {
         "com.et.http": ""
       }
+    },
+    "com.et.scripts": {
+      "version": "file:com.et.scripts",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.et.statesync": {
       "version": "file:com.et.statesync",
