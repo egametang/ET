@@ -33,7 +33,7 @@
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\CodeMode\Server\Hotfix\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\CodeMode\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
@@ -45,7 +45,7 @@
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\CodeMode\Server\Hotfix\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\com.et.*\CodeMode\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         

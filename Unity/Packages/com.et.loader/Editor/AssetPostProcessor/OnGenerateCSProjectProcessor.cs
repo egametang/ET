@@ -24,11 +24,6 @@ namespace ET
                 content = content.Replace(";DEBUG;", ";");
             }
 
-            if (path.EndsWith("ET.Core.csproj"))
-            {
-                return GenerateCustomProject(content, globalConfig.CodeMode);
-            }
-
             if (path.EndsWith("ET.Model.csproj"))
             {
                 return GenerateCustomProject(content, globalConfig.CodeMode, "Model");
