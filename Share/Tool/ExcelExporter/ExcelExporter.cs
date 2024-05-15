@@ -56,17 +56,15 @@ namespace ET
     {
         private static string template;
 
-        private const string ClientClassDir = "../Unity/Assets/Excel/Model/Client/";
+        private static string ClientClassDir;
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        private const string ServerClassDir = "../Unity/Assets/Excel/Model/Server/";
+        private static string ServerClassDir;
+        private static string CSClassDir;
 
-        private const string CSClassDir = "../Unity/Assets/Excel/Model/ClientServer/";
-
-        private const string jsonDir = "../Config/Json/{0}/{1}/";
+        private const string jsonDir = "../Config/Json";
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
-        private const string serverProtoDir = "../Config/Excel/{0}/{1}";
-        private const string replaceStr = "/{0}/{1}";
+        private const string serverProtoDir = "../Config/Excel";
         private static Assembly[] configAssemblies = new Assembly[3];
 
         private static Dictionary<string, Table> tables = new Dictionary<string, Table>();
@@ -104,65 +102,30 @@ namespace ET
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 
-                if (Directory.Exists("../Unity/Assets/Excel"))
+                PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("../Unity");
+                PackageInfo excelPackage = packagesLock.dependencies["com.et.excel"];
+                ClientClassDir = Path.Combine(excelPackage.dir, "CodeMode/Model/Client");
+                ServerClassDir = Path.Combine(excelPackage.dir, "CodeMode/Model/Server");
+                CSClassDir = Path.Combine(excelPackage.dir, "CodeMode/Model/ClientServer");
+            
+                if (Directory.Exists(jsonDir))
                 {
-                    Directory.Delete("../Unity/Assets/Excel", true);
-                }
-                
-                File.WriteAllText("../Unity/Assets/Excel/Model/AssemblyReference.asmref", "[\"reference\": \"ET.Model\"]");
-
-                if (!Directory.Exists(ClientClassDir))
-                {
-                    Directory.CreateDirectory(ClientClassDir);
-                }
-
-                if (!Directory.Exists(ServerClassDir))
-                {
-                    Directory.CreateDirectory(ServerClassDir);
+                    Directory.Delete(jsonDir, true);
                 }
 
-                if (!Directory.Exists(CSClassDir))
+                if (Directory.Exists(serverProtoDir))
                 {
-                    Directory.CreateDirectory(CSClassDir);
-                }
-
-                string jsonProtoDirParent = jsonDir.Replace(replaceStr, string.Empty);
-                if (Directory.Exists(jsonProtoDirParent))
-                {
-                    Directory.Delete(jsonProtoDirParent, true);
-                }
-
-                string serverProtoDirParent = serverProtoDir.Replace(replaceStr, string.Empty);
-                if (Directory.Exists(serverProtoDirParent))
-                {
-                    Directory.Delete(serverProtoDirParent, true);
+                    Directory.Delete(serverProtoDir, true);
                 }
                 
                 List<string> list = new();
-                foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
+                foreach ((string key, PackageInfo packageInfo) in packagesLock.dependencies)
                 {
-                    string p = Path.Combine(directory, "Excel");
+                    string p = Path.Combine(packageInfo.dir, "Excel");
                     if (!Directory.Exists(p))
                     {
                         continue;
                     }
-                    
-                    string baseName = Path.GetFileName(directory);
-                    string moduleName = baseName.Replace("com.et.", "");
-                    list.Add(p);
-                }
-                
-                foreach (string directory in Directory.GetDirectories("../Unity/Library/PackageCache", "com.et.*"))
-                {
-                    string p = Path.Combine(directory, "Excel");
-                    if (!Directory.Exists(p))
-                    {
-                        continue;
-                    }
-                    
-                    string baseName = Path.GetFileName(directory);
-                    string moduleName = baseName.Replace("com.et.", "");
-                    moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
                     list.Add(p);
                 }
 
@@ -323,7 +286,7 @@ namespace ET
 
         private static string GetProtoDir(ConfigType configType, string relativeDir)
         {
-            return string.Format(serverProtoDir, configType.ToString(), relativeDir);
+            return Path.Combine(serverProtoDir, configType.ToString(), relativeDir);
         }
 
         private static Assembly GetAssembly(ConfigType configType)
@@ -528,7 +491,7 @@ namespace ET
 
             sb.Append("]}\n");
 
-            string dir = string.Format(jsonDir, configType.ToString(), relativeDir);
+            string dir = Path.Combine(jsonDir, configType.ToString(), relativeDir);
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -653,7 +616,7 @@ namespace ET
 
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
-            string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
+            string p = Path.Combine(jsonDir, configType.ToString(), relativeDir);
             string[] ss = Directory.GetFiles(p, $"{table.Name}*.txt");
             List<string> jsonPaths = ss.ToList();
 

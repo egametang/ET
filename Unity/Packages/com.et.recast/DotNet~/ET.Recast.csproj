@@ -14,7 +14,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DefineConstants>DOTNET;UNITY_DOTSPLAYER</DefineConstants>
+        <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>./obj</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -23,7 +23,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DefineConstants>DOTNET;UNITY_DOTSPLAYER</DefineConstants>
+        <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>./obj</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

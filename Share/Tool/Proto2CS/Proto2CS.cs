@@ -22,9 +22,9 @@ namespace ET
 
     public static partial class InnerProto2CS
     {
-        private const string clientMessagePath = "../Unity/Assets/Proto/Model/Client/";
-        private const string serverMessagePath = "../Unity/Assets/Proto/Model/Server/";
-        private const string clientServerMessagePath = "../Unity/Assets/Proto/Model/ClientServer/";
+        private static string clientMessagePath;
+        private static string serverMessagePath;
+        private static string clientServerMessagePath;
         private static readonly char[] splitChars = [' ', '\t'];
         private static readonly List<OpcodeInfo> msgOpcode = [];
 
@@ -32,55 +32,28 @@ namespace ET
         {
             msgOpcode.Clear();
 
-            if (Directory.Exists("../Unity/Assets/Proto"))
-            {
-                Directory.Delete("../Unity/Assets/Proto", true);
-            }
-
-            Directory.CreateDirectory("../Unity/Assets/Proto/Model");
+            PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("../Unity");
+            PackageInfo protoPackage = packagesLock.dependencies["com.et.proto"];
+            clientMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/Client");
+            serverMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/Server");
+            clientServerMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/ClientServer");
             
-            File.WriteAllText("../Unity/Assets/Proto/Model/AssemblyReference.asmref", "[\"reference\": \"ET.Model\"]");
-
-            System.Collections.Generic.List<(string, string)> list = new ();
-            foreach (string directory in Directory.GetDirectories("../Unity/Packages", "com.et.*"))
+            List<(string, string)> list = new ();
+            foreach ((string key, PackageInfo packageInfo) in packagesLock.dependencies)
             {
-                string p = Path.Combine(directory, "Proto");
+                string p = Path.Combine(packageInfo.dir, "Proto");
                 if (!Directory.Exists(p))
                 {
                     continue;
                 }
                 
-                string baseName = Path.GetFileName(directory);
-                string moduleName = baseName.Replace("com.et.", "");
-                moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
-                
-                list.Add((p, moduleName));
-            }
-            foreach (string directory in Directory.GetDirectories("../Unity/Library/PackageCache", "com.et.*"))
-            {
-                string p = Path.Combine(directory, "Proto");
-                if (!Directory.Exists(p))
+                foreach (var f in FileHelper.GetAllFiles(p, "*.proto"))
                 {
-                    continue;
+                    list.Add((f, packageInfo.module));
                 }
-                
-                string baseName = Path.GetFileName(directory);
-                string moduleName = baseName.Replace("com.et.", "");
-                moduleName = StringHelper.CapitalizeFirstLetter(moduleName);
-                
-                list.Add((p, moduleName));
             }
-
-            System.Collections.Generic.List<(string, string)> protoList = new ();
+            
             foreach ((string s, string module) in list)
-            {
-                foreach (var f in FileHelper.GetAllFiles(s, "*.proto"))
-                {
-                    protoList.Add((f, module));
-                }
-            }
-            
-            foreach ((string s, string module) in protoList)
             {
                 if (!s.EndsWith(".proto"))
                 {
