@@ -15,6 +15,6 @@
   "relatedPackages": {},
   "dependencies": {
     "com.tuyoogame.yooasset": "2.1.1",
-    "com.et.core": ""
+    "com.et.core": "0.0.1"
   }
 }

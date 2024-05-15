@@ -14,5 +14,6 @@
   },
   "relatedPackages": {},
   "dependencies": {
+    "com.et.core": "0.0.1"
   }
 }

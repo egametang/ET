@@ -14,7 +14,7 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "com.et.core": "",
-    "com.et.yooassets": ""
+    "com.et.core": "0.0.1",
+    "com.et.yooassets": "0.0.1"
   }
 }

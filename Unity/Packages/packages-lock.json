@@ -18,37 +18,43 @@
       "version": "file:com.et.actorlocation",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.et.core": "0.0.1"
+      }
     },
     "com.et.aoi": {
       "version": "file:com.et.aoi",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.unit": ""
+        "com.et.unit": "0.0.1"
       }
     },
     "com.et.console": {
       "version": "file:com.et.console",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.et.core": "0.0.1"
+      }
     },
     "com.et.core": {
       "version": "file:com.et.core",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.scripts": "",
-        "com.et.excel": "",
-        "com.et.proto": ""
+        "com.et.scripts": "0.0.1",
+        "com.et.excel": "0.0.1",
+        "com.et.proto": "0.0.1"
       }
     },
     "com.et.db": {
       "version": "file:com.et.db",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.et.core": "0.0.1"
+      }
     },
     "com.et.demores": {
       "version": "file:com.et.demores",
@@ -67,7 +73,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.loader": {
@@ -75,8 +81,8 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": "",
-        "com.et.yooassets": ""
+        "com.et.core": "0.0.1",
+        "com.et.yooassets": "0.0.1"
       }
     },
     "com.et.mathematics": {
@@ -92,7 +98,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.unit": ""
+        "com.et.unit": "0.0.1"
       }
     },
     "com.et.numeric": {
@@ -100,7 +106,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.unit": ""
+        "com.et.unit": "0.0.1"
       }
     },
     "com.et.proto": {
@@ -114,7 +120,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.referencecollector": {
@@ -122,7 +128,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.robotcase": {
@@ -130,7 +136,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.router": {
@@ -138,7 +144,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.http": ""
+        "com.et.http": "0.0.1"
       }
     },
     "com.et.scripts": {
@@ -152,23 +158,23 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": "",
-        "com.et.yooassets": "",
-        "com.et.loader": "",
-        "com.et.demores": "",
-        "com.unity.mathematics": "1.2.6",
-        "com.et.router": "",
-        "com.et.console": "",
-        "com.et.unit": "",
-        "com.et.http": "",
-        "com.et.recast": "",
-        "com.et.numeric": "",
-        "com.et.move": "",
-        "com.et.watcher": "",
-        "com.et.db": "",
-        "com.et.aoi": "",
-        "com.et.ui": "",
-        "com.et.referencecollector": ""
+        "com.et.core": "0.0.1",
+        "com.et.yooassets": "0.0.1",
+        "com.et.loader": "0.0.1",
+        "com.et.demores": "0.0.1",
+        "com.et.mathematics": "0.0.1",
+        "com.et.router": "0.0.1",
+        "com.et.console": "0.0.1",
+        "com.et.unit": "0.0.1",
+        "com.et.http": "0.0.1",
+        "com.et.recast": "0.0.1",
+        "com.et.numeric": "0.0.1",
+        "com.et.move": "0.0.1",
+        "com.et.watcher": "0.0.1",
+        "com.et.db": "0.0.1",
+        "com.et.aoi": "0.0.1",
+        "com.et.ui": "0.0.1",
+        "com.et.referencecollector": "0.0.1"
       }
     },
     "com.et.ui": {
@@ -176,7 +182,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.unit": {
@@ -184,7 +190,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.watcher": {
@@ -192,7 +198,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.et.yooassets": {
@@ -201,7 +207,7 @@
       "source": "embedded",
       "dependencies": {
         "com.tuyoogame.yooasset": "2.1.1",
-        "com.et.core": ""
+        "com.et.core": "0.0.1"
       }
     },
     "com.tuyoogame.yooasset": {

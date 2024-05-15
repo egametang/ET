@@ -14,8 +14,8 @@
   },
   "relatedPackages": {},
   "dependencies": {
-    "com.et.scripts": "",
-    "com.et.excel": "",
-    "com.et.proto": ""
+    "com.et.scripts": "0.0.1",
+    "com.et.excel": "0.0.1",
+    "com.et.proto": "0.0.1"
   }
 }
