@@ -115,6 +115,22 @@ namespace ET.Analyzer
                     continue;
                 }
 
+                // 字段类型是否是实体类型数组
+                if (fieldSymbol.Type is IArrayTypeSymbol arrayTypeSymbol)
+                {
+                    if (arrayTypeSymbol.ElementType.IsETEntity())
+                    {
+                        var syntaxReference = fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault();
+                        if (syntaxReference==null)
+                        {
+                            continue;
+                        }
+                        Diagnostic diagnostic = Diagnostic.Create(EntityFieldDeclarationInEntityAnalyzerRule.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,fieldSymbol.Name);
+                        context.ReportDiagnostic(diagnostic);
+                    }
+                    continue;
+                }
+
                 if (fieldSymbol.Type is not INamedTypeSymbol namedTypeSymbol2)
                 {
                     continue;
@@ -144,6 +160,7 @@ namespace ET.Analyzer
                     Diagnostic diagnostic = Diagnostic.Create(EntityFieldDeclarationInEntityAnalyzerRule.Rule, syntaxReference.GetSyntax().GetLocation(),namedTypeSymbol.Name,fieldSymbol.Name);
                     context.ReportDiagnostic(diagnostic);
                 }
+                
             }
         }
 
