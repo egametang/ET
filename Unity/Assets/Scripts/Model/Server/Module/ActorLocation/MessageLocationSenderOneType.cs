@@ -1,16 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace ET.Server
+﻿namespace ET.Server
 {
     
     [ChildOf(typeof(MessageLocationSenderComponent))]
-    public class MessageLocationSenderOneType: Entity, IAwake<int>, IDestroy
+    public class MessageLocationSenderOneType: Entity, IAwake, IDestroy
     {
         public const long TIMEOUT_TIME = 60 * 1000;
 
         public long CheckTimer;
-
-        public int LocationType;
     }
     
     
@@ -20,7 +16,5 @@ namespace ET.Server
         public const long TIMEOUT_TIME = 60 * 1000;
 
         public long CheckTimer;
-
-        public MessageLocationSenderOneType[] messageLocationSenders = new MessageLocationSenderOneType[LocationType.Max];
     }
 }
