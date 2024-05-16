@@ -1,6 +1,6 @@
 # English: please use your browser to translate to english
 
-# __讨论QQ群 : 474643097__  
+# __讨论QQ群 : 688514974__  
 
 ---
 # 公司黑名单：  
