@@ -45,7 +45,8 @@
       "dependencies": {
         "com.et.scripts": "0.0.1",
         "com.et.excel": "0.0.1",
-        "com.et.proto": "0.0.1"
+        "com.et.proto": "0.0.1",
+        "com.et.sourcegenerator": "0.0.1"
       }
     },
     "com.et.db": {
@@ -149,6 +150,14 @@
     },
     "com.et.scripts": {
       "version": "file:com.et.scripts",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.et.sourcegenerator": "0.0.1"
+      }
+    },
+    "com.et.sourcegenerator": {
+      "version": "file:com.et.sourcegenerator",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

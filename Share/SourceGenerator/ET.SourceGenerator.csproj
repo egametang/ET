@@ -32,7 +32,7 @@
     </ItemGroup>
 
 <!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Packages/com.et.core/Plugins/" ContinueOnError="false" />
+        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Packages/com.et.sourcegenerator/" ContinueOnError="false" />
     </Target>-->
 
 </Project>

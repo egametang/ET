@@ -1,9 +1,9 @@
 {
-  "name": "com.et.scripts",
-  "displayName": "ET.Scripts",
+  "name": "com.et.sourcegenerator",
+  "displayName": "ET.SourceGenerator",
   "version": "0.0.1",
   "unity": "2022.3",
-  "description": "et scripts",
+  "description": "et sourcegenerator",
   "author": {
     "name": "tanghai",
     "url": "https://github.com/egametang/ET"
@@ -12,8 +12,5 @@
     "type": "git",
     "url": "https://github.com/egametang/ET"
   },
-  "relatedPackages": {},
-  "dependencies": {
-    "com.et.sourcegenerator": "0.0.1"
-  }
+  "relatedPackages": {}
 }
