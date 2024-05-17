@@ -6,10 +6,11 @@ using MongoDB.Driver;
 namespace ET.Server
 {
 	[EntitySystemOf(typeof(DBComponent))]
+	[FriendOf(typeof(DBComponent))]
     public static partial class DBComponentSystem
     {
 	    [EntitySystem]
-	    private static void Awake(this DBComponent self, string dbConnection, string dbName, int zone)
+	    private static void Awake(this DBComponent self, string dbConnection, string dbName)
 		{
 			self.mongoClient = new MongoClient(dbConnection);
 			self.database = self.mongoClient.GetDatabase(dbName);
