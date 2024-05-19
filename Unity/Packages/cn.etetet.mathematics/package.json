@@ -1,0 +1,19 @@
+{
+  "name": "cn.etetet.mathematics",
+  "displayName": "ET.Mathematics",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "description": "et mathematics",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "com.unity.mathematics": "1.2.6"
+  }
+}

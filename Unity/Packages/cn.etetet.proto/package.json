@@ -1,0 +1,16 @@
+{
+  "name": "cn.etetet.proto",
+  "displayName": "ET.Proto",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "description": "et proto",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {}
+}

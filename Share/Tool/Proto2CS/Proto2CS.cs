@@ -33,7 +33,7 @@ namespace ET
             msgOpcode.Clear();
 
             PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("../Unity");
-            PackageInfo protoPackage = packagesLock.dependencies["com.et.proto"];
+            PackageInfo protoPackage = packagesLock.dependencies["cn.etetet.proto"];
             clientMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/Client");
             serverMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/Server");
             clientServerMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/ClientServer");

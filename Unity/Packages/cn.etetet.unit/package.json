@@ -1,0 +1,19 @@
+{
+  "name": "cn.etetet.unit",
+  "displayName": "ET.Unit",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "description": "et unit",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "0.0.1"
+  }
+}

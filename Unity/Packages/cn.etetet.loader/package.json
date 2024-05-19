@@ -1,0 +1,20 @@
+{
+  "name": "cn.etetet.loader",
+  "displayName": "ET.Loader",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "description": "et loader",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "0.0.1",
+    "cn.etetet.yooassets": "0.0.1"
+  }
+}

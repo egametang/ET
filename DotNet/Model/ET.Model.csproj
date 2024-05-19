@@ -27,27 +27,27 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Model\Share\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\Scripts\Model\Share\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Model\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\Scripts\Model\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\CodeMode\Model\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\CodeMode\Model\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Model\Share\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\cn.etetet.*\Scripts\Model\Share\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Model\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\cn.etetet.*\Scripts\Model\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\CodeMode\Model\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\cn.etetet.*\CodeMode\Model\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         
@@ -55,9 +55,9 @@
     <ItemGroup> 
         <ProjectReference Include="..\..\Share\Analyzer\ET.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\..\Share\SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\Unity\Packages\com.et.core\DotNet~\ET.Core.csproj" />
-        <ProjectReference Include="..\..\Unity\Packages\com.et.loader\DotNet~\ET.Loader.csproj" />
-        <ProjectReference Include="..\..\Unity\Packages\com.et.mathematics\DotNet~\ET.Mathematics.csproj" />
-        <ProjectReference Include="..\..\Unity\Packages\com.et.recast\DotNet~\ET.Recast.csproj" />
+        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.core\DotNet~\ET.Core.csproj" />
+        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.loader\DotNet~\ET.Loader.csproj" />
+        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
+        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.recast\DotNet~\ET.Recast.csproj" />
     </ItemGroup> 
 </Project>

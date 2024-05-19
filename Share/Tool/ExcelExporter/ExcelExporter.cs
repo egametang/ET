@@ -103,7 +103,7 @@ namespace ET
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 
                 PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("../Unity");
-                PackageInfo excelPackage = packagesLock.dependencies["com.et.excel"];
+                PackageInfo excelPackage = packagesLock.dependencies["cn.etetet.excel"];
                 ClientClassDir = Path.Combine(excelPackage.dir, "CodeMode/Model/Client");
                 ServerClassDir = Path.Combine(excelPackage.dir, "CodeMode/Model/Server");
                 CSClassDir = Path.Combine(excelPackage.dir, "CodeMode/Model/ClientServer");

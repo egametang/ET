@@ -25,27 +25,27 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Hotfix\Share\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\Scripts\Hotfix\Share\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\Scripts\Hotfix\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\Scripts\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\com.et.*\CodeMode\Hotfix\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\CodeMode\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Hotfix\Share\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\cn.etetet.*\Scripts\Hotfix\Share\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\Scripts\Hotfix\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\cn.etetet.*\Scripts\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\com.et.*\CodeMode\Hotfix\Server\**\*.cs">
+        <Compile Include="..\..\Unity\Packages\cn.etetet.*\CodeMode\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         

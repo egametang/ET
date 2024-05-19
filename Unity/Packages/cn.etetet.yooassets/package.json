@@ -1,0 +1,20 @@
+{
+  "name": "cn.etetet.yooassets",
+  "displayName": "ET.YooAssets",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "description": "et yooassets",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "com.tuyoogame.yooasset": "2.1.1",
+    "cn.etetet.core": "0.0.1"
+  }
+}
