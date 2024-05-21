@@ -4,7 +4,7 @@ namespace ET
 {
     public static partial class SceneType
     {
-        public const int Proto2CS = 2;
+        public const int Proto2CS = PackageType.Proto2CS * 1000 + 1;
     }
     
     [Event(SceneType.Proto2CS)]

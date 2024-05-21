@@ -2,8 +2,8 @@
 {
     public static partial class UnitType
     {
-        public const int Player = 1;
-        public const int Monster = 2;
-        public const int NPC = 3;
+        public const int Player = PackageType.Unit * 1000 + 1;
+        public const int Monster = PackageType.Unit * 1000 + 2;
+        public const int NPC = PackageType.Unit * 1000 + 3;
     }
 }

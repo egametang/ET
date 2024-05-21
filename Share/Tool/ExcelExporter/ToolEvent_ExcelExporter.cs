@@ -4,7 +4,7 @@ namespace ET
 {
     public static partial class SceneType
     {
-        public const int ExcelExporter = 1;
+        public const int ExcelExporter = PackageType.ExcelExporter * 1000 + 1;
     }
     
     [Event(SceneType.ExcelExporter)]
