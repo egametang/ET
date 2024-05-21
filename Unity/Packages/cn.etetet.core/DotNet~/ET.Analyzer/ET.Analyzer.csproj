@@ -16,15 +16,17 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>1701;1702;RS2008</NoWarn>
+        <OutputPath>./obj</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>1701;1702;RS2008</NoWarn>
+        <OutputPath>./obj</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="../../Unity/Packages/cn.etetet.core/Runtime/Helper/StringHashHelper.cs" />
+        <Compile Include="../../Runtime/Helper/StringHashHelper.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" PrivateAssets="all" />

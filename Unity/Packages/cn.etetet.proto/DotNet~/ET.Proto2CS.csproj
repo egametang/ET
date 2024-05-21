@@ -7,8 +7,6 @@
         <Nullable>disable</Nullable>
         <RootNamespace>ET</RootNamespace>
         <LangVersion>12</LangVersion>
-        <PackageId>Apps.Tool</PackageId>
-        <AssemblyName>Tool</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -17,30 +15,26 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>..\..\Bin\</OutputPath>
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <DefineConstants>DOTNET</DefineConstants>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>..\..\Bin\</OutputPath>
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <DefineConstants>DOTNET</DefineConstants>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
     <ItemGroup>        
-        <Compile Include="..\..\Unity\Packages\cn.etetet.core\Runtime\Model\Share\Module\Config\**\*.cs">
+        <Compile Include="..\..\cn.etetet.core\Runtime\Model\Share\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Packages\cn.etetet.core\Runtime\Model\Share\Module\Log\**\*.cs">
+        <Compile Include="..\..\cn.etetet.core\Runtime\Model\Share\Module\Log\**\*.cs">
             <Link>Module\Log\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Packages\cn.etetet.core\Runtime\Network\OpcodeRangeDefine.cs">
-            <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
     </ItemGroup>
     
@@ -51,13 +45,13 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\Unity\Packages\cn.etetet.core\DotNet~\ET.Core.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
       <PackageReference Include="EPPlus" Version="7.1.2" />
       <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\cn.etetet.core\DotNet~\ET.Core\ET.Core.csproj" />
     </ItemGroup>
 
 </Project>

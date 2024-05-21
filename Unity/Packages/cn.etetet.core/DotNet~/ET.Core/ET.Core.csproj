@@ -16,7 +16,7 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <DefineConstants>DOTNET</DefineConstants>
-      <OutputPath>./obj</OutputPath>
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <Optimize>false</Optimize>
       <NoWarn>0169,0649,3021,8981,CS9193,CS9192,NU1903</NoWarn>
@@ -25,22 +25,17 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">  
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
       <DefineConstants>DOTNET</DefineConstants>
-      <OutputPath>./obj</OutputPath>
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <NoWarn>0169,0649,3021,8981,CS9193,CS9192,NU1903</NoWarn>
     </PropertyGroup>
-    
+
     <ItemGroup>
-        <Compile Include="../Runtime/**/*.cs" xmlns="">
+        <Compile Include="../../Runtime/**/*.cs" xmlns="">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
     </ItemGroup>
     
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\..\Share\Analyzer\ET.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" /> 
-      <ProjectReference Include="..\..\..\..\Share\SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="CommandLineParser" Version="2.9.1" />
         <PackageReference Include="MemoryPack" Version="1.21.1" />

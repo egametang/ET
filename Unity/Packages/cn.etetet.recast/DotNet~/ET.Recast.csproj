@@ -15,7 +15,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>DOTNET</DefineConstants>
-        <OutputPath>./obj</OutputPath>
+        <OutputPath>$(SolutionDir)Bin</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Optimize>true</Optimize>
@@ -24,7 +24,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DefineConstants>DOTNET</DefineConstants>
-        <OutputPath>./obj</OutputPath>
+        <OutputPath>$(SolutionDir)Bin</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>0169,0649,3021,8981,NU1903</NoWarn>

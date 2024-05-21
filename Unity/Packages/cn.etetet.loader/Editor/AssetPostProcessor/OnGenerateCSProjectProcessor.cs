@@ -74,7 +74,7 @@ namespace ET
             {
                 XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
                 var projectReference = newDoc.CreateElement("ProjectReference", newDoc.DocumentElement.NamespaceURI);
-                projectReference.SetAttribute("Include", @"..\Share\Analyzer\ET.Analyzer.csproj");
+                projectReference.SetAttribute("Include", @"$(SolutionDir)Unity\Packages\cn.etetet.core\DotNet~\ET.Analyzer\ET.Analyzer.csproj");
                 projectReference.SetAttribute("OutputItemType", @"Analyzer");
                 projectReference.SetAttribute("ReferenceOutputAssembly", @"false");
 

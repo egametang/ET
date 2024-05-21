@@ -11,7 +11,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>DOTNET</DefineConstants>
-        <OutputPath>..\..\Bin\</OutputPath> 
+        <OutputPath>$(SolutionDir)Bin</OutputPath> 
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Optimize>false</Optimize>
@@ -19,7 +19,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"> 
         <DefineConstants>DOTNET</DefineConstants>
-        <OutputPath>..\..\Bin\</OutputPath>
+        <OutputPath>$(SolutionDir)Bin</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Optimize>true</Optimize>
@@ -53,9 +53,6 @@
         
     </ItemGroup> 
     <ItemGroup> 
-        <ProjectReference Include="..\..\Share\Analyzer\ET.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\Share\SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.core\DotNet~\ET.Core.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\cn.etetet.loader\DotNet~\ET.Loader.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\cn.etetet.recast\DotNet~\ET.Recast.csproj" />

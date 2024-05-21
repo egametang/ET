@@ -15,20 +15,19 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DOTNET</DefineConstants>
-    <OutputPath>..\..\Bin\</OutputPath>
+    <OutputPath>$(SolutionDir)Bin</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>DOTNET</DefineConstants>
-    <OutputPath>..\..\Bin\</OutputPath>
+    <OutputPath>$(SolutionDir)Bin</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Unity\Packages\cn.etetet.core\DotNet~\ET.Core.csproj" />
     <ProjectReference Include="..\..\Unity\Packages\cn.etetet.loader\DotNet~\ET.Loader.csproj" />
     <ProjectReference Include="..\..\Unity\Packages\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
     <ProjectReference Include="..\..\Unity\Packages\cn.etetet.recast\DotNet~\ET.Recast.csproj" />

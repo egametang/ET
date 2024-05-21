@@ -14,12 +14,20 @@
         <RootNamespace>ET</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>../../Plugins</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>../../Plugins</OutputPath>
+    </PropertyGroup>
+
     <ItemGroup>
         <Compile Include="../Analyzer/Extension/*.cs">
             <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         <Compile Include="../Analyzer/Config/Definition.cs" />
-        <Compile Include="../../Unity/Packages/cn.etetet.core/Runtime/Helper/StringHashHelper.cs" />
+        <Compile Include="../../Runtime/Helper/StringHashHelper.cs" />
         <Compile Include="../Analyzer/Config/AnalyzeAssembly.cs" />
     </ItemGroup>
 
