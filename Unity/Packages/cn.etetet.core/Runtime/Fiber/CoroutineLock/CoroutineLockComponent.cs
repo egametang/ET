@@ -17,12 +17,12 @@ namespace ET
             // 循环过程中会有对象继续加入队列
             while (self.nextFrameRun.Count > 0)
             {
-                (int coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
+                (long coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
                 self.Notify(coroutineLockType, key, count);
             }
         }
 
-        public static void RunNextCoroutine(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
+        public static void RunNextCoroutine(this CoroutineLockComponent self, long coroutineLockType, long key, int level)
         {
             // 一个协程队列一帧处理超过100个,说明比较多了,打个warning,检查一下是否够正常
             if (level == 100)
@@ -33,13 +33,13 @@ namespace ET
             self.nextFrameRun.Enqueue((coroutineLockType, key, level));
         }
 
-        public static async ETTask<CoroutineLock> Wait(this CoroutineLockComponent self, int coroutineLockType, long key, int time = 60000)
+        public static async ETTask<CoroutineLock> Wait(this CoroutineLockComponent self, long coroutineLockType, long key, int time = 60000)
         {
             CoroutineLockQueueType coroutineLockQueueType = self.GetChild<CoroutineLockQueueType>(coroutineLockType) ?? self.AddChildWithId<CoroutineLockQueueType>(coroutineLockType);
             return await coroutineLockQueueType.Wait(key, time);
         }
 
-        private static void Notify(this CoroutineLockComponent self, int coroutineLockType, long key, int level)
+        private static void Notify(this CoroutineLockComponent self, long coroutineLockType, long key, int level)
         {
             CoroutineLockQueueType coroutineLockQueueType = self.GetChild<CoroutineLockQueueType>(coroutineLockType);
             if (coroutineLockQueueType == null)
@@ -56,6 +56,6 @@ namespace ET
         public Fiber Fiber { get; set; }
         public int SceneType { get; set; }
         
-        public readonly Queue<(int, long, int)> nextFrameRun = new();
+        public readonly Queue<(long, long, int)> nextFrameRun = new();
     }
 }

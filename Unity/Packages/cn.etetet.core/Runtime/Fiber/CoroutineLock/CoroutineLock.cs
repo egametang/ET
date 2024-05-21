@@ -6,7 +6,7 @@ namespace ET
     public static partial class CoroutineLockSystem
     {
         [EntitySystem]
-        private static void Awake(this CoroutineLock self, int type, long k, int count)
+        private static void Awake(this CoroutineLock self, long type, long k, int count)
         {
             self.type = type;
             self.key = k;
@@ -17,16 +17,16 @@ namespace ET
         private static void Destroy(this CoroutineLock self)
         {
             self.Scene<CoroutineLockComponent>().RunNextCoroutine(self.type, self.key, self.level + 1);
-            self.type = CoroutineLockType.None;
+            self.type = 0;
             self.key = 0;
             self.level = 0;
         }
     }
     
     [ChildOf(typeof(CoroutineLockQueue))]
-    public class CoroutineLock: Entity, IAwake<int, long, int>, IDestroy
+    public class CoroutineLock: Entity, IAwake<long, long, int>, IDestroy
     {
-        public int type;
+        public long type;
         public long key;
         public int level;
     }

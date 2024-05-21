@@ -4,7 +4,7 @@
     public static partial class MailBoxComponentSystem
     {
         [EntitySystem]       
-        private static void Awake(this MailBoxComponent self, MailBoxType mailBoxType)
+        private static void Awake(this MailBoxComponent self, int mailBoxType)
         {
             Fiber fiber = self.Fiber();
             self.MailBoxType = mailBoxType;
@@ -22,7 +22,7 @@
         public static void Add(this MailBoxComponent self, Address fromAddress, MessageObject messageObject)
         {
             // 根据mailboxType进行分发处理
-            EventSystem.Instance.Invoke((long)self.MailBoxType, new MailBoxInvoker() {MailBoxComponent = self, MessageObject = messageObject, FromAddress = fromAddress});
+            EventSystem.Instance.Invoke(self.MailBoxType, new MailBoxInvoker() {MailBoxComponent = self, MessageObject = messageObject, FromAddress = fromAddress});
         }
     }
 
@@ -37,10 +37,10 @@
     /// 挂上这个组件表示该Entity是一个Actor,接收的消息将会队列处理
     /// </summary>
     [ComponentOf]
-    public class MailBoxComponent: Entity, IAwake<MailBoxType>, IDestroy
+    public class MailBoxComponent: Entity, IAwake<int>, IDestroy
     {
         public long ParentInstanceId { get; set; }
         // Mailbox的类型
-        public MailBoxType MailBoxType { get; set; }
+        public int MailBoxType { get; set; }
     }
 }

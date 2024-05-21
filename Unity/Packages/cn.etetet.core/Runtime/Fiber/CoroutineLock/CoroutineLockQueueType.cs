@@ -17,7 +17,7 @@ namespace ET
 
         public static CoroutineLockQueue New(this CoroutineLockQueueType self, long key)
         {
-            CoroutineLockQueue queue = self.AddChildWithId<CoroutineLockQueue, int>(key, (int)self.Id, true);
+            CoroutineLockQueue queue = self.AddChildWithId<CoroutineLockQueue, long>(key, self.Id, true);
             return queue;
         }
 

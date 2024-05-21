@@ -7,7 +7,7 @@ namespace ET
     public static partial class CoroutineLockQueueSystem
     {
         [EntitySystem]
-        private static void Awake(this CoroutineLockQueue self, int type)
+        private static void Awake(this CoroutineLockQueue self, long type)
         {
             self.type = type;
         }
@@ -24,7 +24,7 @@ namespace ET
         {
             if (self.CurrentCoroutineLock == null)
             {
-                self.CurrentCoroutineLock = self.AddChild<CoroutineLock, int, long, int>(self.type, self.Id, 1, true);
+                self.CurrentCoroutineLock = self.AddChild<CoroutineLock, long, long, int>(self.type, self.Id, 1, true);
                 return self.CurrentCoroutineLock;
             }
 
@@ -52,7 +52,7 @@ namespace ET
                     continue;
                 }
 
-                CoroutineLock coroutineLock = self.AddChild<CoroutineLock, int, long, int>(self.type, self.Id, level, true);
+                CoroutineLock coroutineLock = self.AddChild<CoroutineLock, long, long, int>(self.type, self.Id, level, true);
 
                 waitCoroutineLock.SetResult(coroutineLock);
                 return true;
@@ -62,9 +62,9 @@ namespace ET
     }
     
     [ChildOf(typeof(CoroutineLockQueueType))]
-    public class CoroutineLockQueue: Entity, IAwake<int>, IDestroy
+    public class CoroutineLockQueue: Entity, IAwake<long>, IDestroy
     {
-        public int type;
+        public long type;
 
         private EntityRef<CoroutineLock> currentCoroutineLock;
 

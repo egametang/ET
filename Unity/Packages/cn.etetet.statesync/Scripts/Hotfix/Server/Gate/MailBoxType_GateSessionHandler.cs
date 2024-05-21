@@ -1,6 +1,6 @@
 ﻿namespace ET.Server
 {
-    [Invoke((long)MailBoxType.GateSession)]
+    [Invoke(MailBoxType.GateSession)]
     public class MailBoxType_GateSessionHandler: AInvokeHandler<MailBoxInvoker>
     {
         public override void Handle(MailBoxInvoker args)

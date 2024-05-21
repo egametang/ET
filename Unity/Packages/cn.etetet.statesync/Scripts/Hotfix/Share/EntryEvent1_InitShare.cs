@@ -10,7 +10,7 @@ namespace ET
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ObjectWait>();
-            root.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.UnOrderedMessage);
+            root.AddComponent<MailBoxComponent, int>(MailBoxType.UnOrderedMessage);
             root.AddComponent<ProcessInnerSender>();
             
             MongoRegister.RegisterStruct<float2>();

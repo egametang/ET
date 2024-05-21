@@ -111,7 +111,7 @@ namespace ET.Server
             
             long instanceId = messageLocationSender.InstanceId;
             
-            int coroutineLockType = ((int)self.Id << 16) | CoroutineLockType.MessageLocationSender;
+            long coroutineLockType = (self.Id << 32) | CoroutineLockType.MessageLocationSender;
             using (await root.Root().GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
             {
                 if (messageLocationSender.InstanceId != instanceId)
@@ -149,7 +149,7 @@ namespace ET.Server
             
             long instanceId = messageLocationSender.InstanceId;
             
-            int coroutineLockType = ((int)self.Id << 16) | CoroutineLockType.MessageLocationSender;
+            long coroutineLockType = (self.Id << 32) | CoroutineLockType.MessageLocationSender;
             using (await root.GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
             {
                 if (messageLocationSender.InstanceId != instanceId)
@@ -183,7 +183,7 @@ namespace ET.Server
             Scene root = self.Root();
             Type iRequestType = iRequest.GetType();
             long actorLocationSenderInstanceId = messageLocationSender.InstanceId;
-            int coroutineLockType = ((int)self.Id << 16) | CoroutineLockType.MessageLocationSender;
+            long coroutineLockType = (self.Id << 32) | CoroutineLockType.MessageLocationSender;
             using (await root.GetComponent<CoroutineLockComponent>().Wait(coroutineLockType, entityId))
             {
                 if (messageLocationSender.InstanceId != actorLocationSenderInstanceId)

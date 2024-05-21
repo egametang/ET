@@ -13,8 +13,6 @@
     [ComponentOf(typeof(Scene))]
     public class MessageLocationSenderComponent: Entity, IAwake
     {
-        public const long TIMEOUT_TIME = 60 * 1000;
-
         public long CheckTimer;
     }
 }
