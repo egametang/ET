@@ -15,20 +15,20 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>../../Plugins</OutputPath>
+      <OutputPath>./obj</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>../../Plugins</OutputPath>
+      <OutputPath>./obj</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="../Analyzer/Extension/*.cs">
+        <Compile Include="../ET.Analyzer/Extension/*.cs">
             <Link>Extension\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
-        <Compile Include="../Analyzer/Config/Definition.cs" />
-        <Compile Include="../../Runtime/Helper/StringHashHelper.cs" />
-        <Compile Include="../Analyzer/Config/AnalyzeAssembly.cs" />
+        <Compile Include="../ET.Analyzer/Config/Definition.cs" />
+        <Compile Include="../StringHashHelper.cs" />
+        <Compile Include="../ET.Analyzer/Config/AnalyzeAssembly.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,9 +38,9 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-
+<!--注意，复制到unity中需要开启下面的copy,并且关闭ETEntitySerializeFormatterGenerator中的DONET宏-->
 <!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ProjectDir)/../../Unity/Packages/cn.etetet.sourcegenerator/" ContinueOnError="false" />
+        <Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="../../" ContinueOnError="false" />
     </Target>-->
 
 </Project>
