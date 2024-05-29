@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 
-namespace ET.Server
+namespace ET
 {
     [ComponentOf(typeof(Scene))]
-    public class ProcessOuterSender: Entity, IAwake<IPEndPoint>, IUpdate, IDestroy
+    public class ProcessInnerSender: Entity, IAwake, IDestroy, IUpdate
     {
         public const long TIMEOUT_TIME = 40 * 1000;
         
@@ -13,8 +12,6 @@ namespace ET.Server
 
         public readonly Dictionary<int, MessageSenderStruct> requestCallback = new();
         
-        public AService AService;
-        
-        public NetworkProtocol InnerProtocol = NetworkProtocol.KCP;
+        public readonly List<MessageInfo> list = new();
     }
 }
