@@ -58,5 +58,10 @@
         <ProjectReference Include="..\..\Unity\Packages\cn.etetet.loader\DotNet~\ET.Loader.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
         <ProjectReference Include="..\..\Unity\Packages\cn.etetet.recast\DotNet~\ET.Recast.csproj" />
-    </ItemGroup> 
+    </ItemGroup>
+
+    <!-- sourcegenerator use -->
+    <ItemGroup>
+        <CompilerVisibleProperty Include="DotNetAssembly" />
+    </ItemGroup>
 </Project>

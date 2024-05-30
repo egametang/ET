@@ -29,13 +29,14 @@ public class ETEntitySerializeFormatterGenerator : ISourceGenerator
         string typeHashCodeMapDeclaration = GenerateTypeHashCodeMapDeclaration(receiver);
         string serializeContent = GenerateSerializeContent(receiver);
         string deserializeContent = GenerateDeserializeContent(receiver);
-#if DOTNET
-        string genericTypeParam = "<TBufferWriter>";
-        string scopedCode = "scoped";
-#else
+        
         string genericTypeParam = "";
         string scopedCode = "";
-#endif
+        if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.DotNetAssembly", out string? _))
+        {
+            genericTypeParam = "<TBufferWriter>";
+            scopedCode = "scoped";
+        }
         
         string code = $$"""
 #nullable enable

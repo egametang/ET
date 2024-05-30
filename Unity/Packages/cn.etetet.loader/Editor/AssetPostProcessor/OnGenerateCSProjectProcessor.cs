@@ -70,26 +70,6 @@ namespace ET
             var newDoc = doc.Clone() as XmlDocument;
             var rootNode = newDoc.GetElementsByTagName("Project")[0];
 
-            // 添加分析器引用
-            {
-                XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
-                var projectReference = newDoc.CreateElement("ProjectReference", newDoc.DocumentElement.NamespaceURI);
-                projectReference.SetAttribute("Include", @"$(SolutionDir)Unity\Packages\cn.etetet.sourcegenerator\DotNet~\ET.Analyzer\ET.Analyzer.csproj");
-                projectReference.SetAttribute("OutputItemType", @"Analyzer");
-                projectReference.SetAttribute("ReferenceOutputAssembly", @"false");
-
-                var project = newDoc.CreateElement("Project", newDoc.DocumentElement.NamespaceURI);
-                project.InnerText = @"{d1f2986b-b296-4a2d-8f12-be9f470014c3}";
-                projectReference.AppendChild(project);
-
-                var name = newDoc.CreateElement("Name", newDoc.DocumentElement.NamespaceURI);
-                name.InnerText = "Analyzer";
-                projectReference.AppendChild(name);
-
-                itemGroup.AppendChild(projectReference);
-                rootNode.AppendChild(itemGroup);
-            }
-
             // AfterBuild(字符串替换后作用是编译后复制到CodeDir)
             {
 
