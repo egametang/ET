@@ -30,6 +30,9 @@ namespace ET
 
         public static void Proto2CS()
         {
+            // 强制调用一下mongo，避免mongo库被裁剪
+            MongoHelper.ToJson(1);
+            
             msgOpcode.Clear();
 
             PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("../Unity");

@@ -30,26 +30,6 @@
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
-    <ItemGroup>        
-        <Compile Include="..\..\cn.etetet.core\Runtime\Model\Share\Module\Config\**\*.cs">
-            <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\cn.etetet.core\Runtime\Model\Share\Module\Log\**\*.cs">
-            <Link>Module\Log\%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\cn.etetet.core\Runtime\Network\OpcodeRangeDefine.cs">
-          <Link>OpcodeRangeDefine.cs</Link>
-        </Compile>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <None Update="Template.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-    
     <ItemGroup>
       <PackageReference Include="EPPlus" Version="7.1.2" />
       <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
