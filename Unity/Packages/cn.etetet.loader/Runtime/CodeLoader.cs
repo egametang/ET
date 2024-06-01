@@ -23,7 +23,7 @@ namespace ET
         {
             if (!Define.IsEditor)
             {
-                this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/ET.Model.dll.bytes");
+                this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Packages/cn.etetet.loader/Code/ET.Model.dll.bytes");
                 if (Define.EnableIL2CPP)
                 {
                     this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
@@ -41,7 +41,7 @@ namespace ET
                 byte[] modelPdbBytes = this.dlls["ET.Model.pdb"].bytes;
                 byte[] modelViewAssBytes = this.dlls["ET.ModelView.dll"].bytes;
                 byte[] modelViewPdbBytes = this.dlls["ET.ModelView.pdb"].bytes;
-                // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/ET.Model.dll.bytes，但真正打包时必须使用上面的代码
+                // 如果需要测试，可替换成下面注释的代码直接加载Packages/cn.etetet.loader/Code/ET.Model.dll.bytes，但真正打包时必须使用上面的代码
                 //modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "ET.Model.dll.bytes"));
                 //modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "ET.Model.pdb.bytes"));
                 //modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "ET.ModelView.dll.bytes"));
@@ -94,7 +94,7 @@ namespace ET
                 hotfixPdbBytes = this.dlls["ET.Hotfix.pdb"].bytes;
                 hotfixViewAssBytes = this.dlls["ET.HotfixView.dll"].bytes;
                 hotfixViewPdbBytes = this.dlls["ET.HotfixView.pdb"].bytes;
-                // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Hotfix.dll.bytes，但真正打包时必须使用上面的代码
+                // 如果需要测试，可替换成下面注释的代码直接加载Packages/cn.etetet.loader/Code/Hotfix.dll.bytes，但真正打包时必须使用上面的代码
                 //hotfixAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "ET.Hotfix.dll.bytes"));
                 //hotfixPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "ET.Hotfix.pdb.bytes"));
                 //hotfixViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "ET.HotfixView.dll.bytes"));
