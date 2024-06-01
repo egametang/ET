@@ -7,9 +7,9 @@
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
             const string tools = "./Tool";
 #else
-            const string tools = ".\\Tool.exe";
+            const string tools = "dotnet.exe";
 #endif
-            ShellHelper.Run($"{tools} --SceneName=ExcelExporter --Console=1", "../Bin/");
+            ShellHelper.Run($"{tools} ET.ExcelExporter.dll", "../Bin/");
         }
         
         public static void Proto2CS()
@@ -17,9 +17,9 @@
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
             const string tools = "./Tool";
 #else
-            const string tools = ".\\Tool.exe";
+            const string tools = "dotnet.exe";
 #endif
-            ShellHelper.Run($"{tools} --SceneName=Proto2CS --Console=1", "../Bin/");
+            ShellHelper.Run($"{tools} ET.Proto2CS.dll", "../Bin/");
         }
     }
 }
