@@ -14,6 +14,7 @@ namespace ET
             {
                 Log.Console(e.ToString());
             }
+            Console.WriteLine("excelexporter ok!");
             return 1;
         }
     }

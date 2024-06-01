@@ -2,14 +2,6 @@ syntax = "proto3";
 
 package ET;
 
-// ResponseType ObjectQueryResponse
-message ObjectQueryRequest // IRequest
-{
-	int32 RpcId = 1;
-	int64 Key = 2;
-	int64 InstanceId = 3;
-}
-
 // ResponseType A2M_Reload
 message M2A_Reload // IRequest
 {
@@ -51,84 +43,6 @@ message G2G_LockReleaseResponse // IResponse
 	int32 RpcId = 1;
 	int32 Error = 2;
 	string Message = 3;
-}
-
-// ResponseType ObjectAddResponse
-message ObjectAddRequest // IRequest
-{
-	int32 RpcId = 1;
-	int32 Type = 2;
-	int64 Key = 3;
-	ActorId ActorId = 4;
-}
-
-message ObjectAddResponse // IResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-}
-
-// ResponseType ObjectLockResponse
-message ObjectLockRequest // IRequest
-{
-	int32 RpcId = 1;
-	int32 Type = 2;
-	int64 Key = 3;
-	ActorId ActorId = 4;
-	int32 Time = 5;
-}
-message ObjectLockResponse // IResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-}
-
-// ResponseType ObjectUnLockResponse
-message ObjectUnLockRequest // IRequest
-{
-	int32 RpcId = 1;
-	int32 Type = 2;
-	int64 Key = 3;
-	ActorId OldActorId = 4;
-	ActorId NewActorId = 5;
-}
-message ObjectUnLockResponse // IResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-}
-
-// ResponseType ObjectRemoveResponse
-message ObjectRemoveRequest // IRequest
-{
-	int32 RpcId = 1;
-	int32 Type = 2;
-	int64 Key = 3;
-}
-message ObjectRemoveResponse // IResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-}
-
-// ResponseType ObjectGetResponse
-message ObjectGetRequest // IRequest
-{
-	int32 RpcId = 1;
-	int32 Type = 2;
-	int64 Key = 3;
-}
-message ObjectGetResponse // IResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-	string Message = 3;
-	int32 Type = 4;
-	ActorId ActorId = 5;
 }
 
 // ResponseType G2R_GetLoginKey
