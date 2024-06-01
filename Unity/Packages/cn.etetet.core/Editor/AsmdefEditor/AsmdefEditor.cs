@@ -81,7 +81,7 @@ namespace ET.Loader
 
             foreach (string assName in AssNames)
             {
-                string p = Path.Combine("Assets/Scripts/" + assName + "/ET." + assName + ".asmdef");
+                string p = Path.Combine("Packages/cn.etetet.loader/Scripts/" + assName + "/ET." + assName + ".asmdef");
                 if (!File.Exists(p))
                 {
                     continue;
