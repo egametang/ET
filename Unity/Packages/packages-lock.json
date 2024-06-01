@@ -29,7 +29,6 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cn.etetet.scripts": "0.0.1",
         "cn.etetet.excel": "0.0.1",
         "cn.etetet.proto": "0.0.1",
         "cn.etetet.sourcegenerator": "0.0.1"
@@ -132,14 +131,6 @@
       "source": "embedded",
       "dependencies": {
         "cn.etetet.http": "0.0.1"
-      }
-    },
-    "cn.etetet.scripts": {
-      "version": "file:cn.etetet.scripts",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "cn.etetet.sourcegenerator": "0.0.1"
       }
     },
     "cn.etetet.sourcegenerator": {
