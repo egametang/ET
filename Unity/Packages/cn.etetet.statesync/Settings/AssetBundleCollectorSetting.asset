@@ -42,8 +42,8 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/Bundles/Code
-        CollectorGUID: 55d9010d6a87934468703901aa518c85
+      - CollectPath: Packages/cn.etetet.loader/Code
+        CollectorGUID: 750bf868de4ad9a4aae2958c57b5bb16
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory

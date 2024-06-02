@@ -26,7 +26,7 @@ namespace ET
                 this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Packages/cn.etetet.loader/Code/ET.Model.dll.bytes");
                 if (Define.EnableIL2CPP)
                 {
-                    this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
+                    this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Packages/cn.etetet.loader/AotDlls/mscorlib.dll.bytes");
                 }
             }
         }
