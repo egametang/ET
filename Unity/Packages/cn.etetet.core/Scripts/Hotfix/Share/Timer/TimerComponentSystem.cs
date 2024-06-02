@@ -137,7 +137,7 @@ namespace ET
             return true;
         }
 
-        public static async ETTask WaitTillAsync(this TimerComponent self, long tillTime, ETCancellationToken cancellationToken = null)
+        public static async ETTask WaitTillAsync(this TimerComponent self, long tillTime)
         {
             long timeNow = self.GetNow();
             if (timeNow >= tillTime)
@@ -158,6 +158,7 @@ namespace ET
                 }
             }
 
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
             try
             {
                 cancellationToken?.Add(CancelAction);
@@ -169,12 +170,12 @@ namespace ET
             }
         }
 
-        public static async ETTask WaitFrameAsync(this TimerComponent self, ETCancellationToken cancellationToken = null)
+        public static async ETTask WaitFrameAsync(this TimerComponent self)
         {
-            await self.WaitAsync(1, cancellationToken);
+            await self.WaitAsync(1);
         }
 
-        public static async ETTask WaitAsync(this TimerComponent self, long time, ETCancellationToken cancellationToken = null)
+        public static async ETTask WaitAsync(this TimerComponent self, long time)
         {
             if (time == 0)
             {
@@ -196,6 +197,7 @@ namespace ET
                 }
             }
 
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
             try
             {
                 cancellationToken?.Add(CancelAction);

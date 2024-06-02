@@ -7,18 +7,59 @@ using System.Runtime.ExceptionServices;
 
 namespace ET
 {
+    internal static class IETTaskExtension
+    {
+        internal static void SetCancelToken(this IETTask task, ETCancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                if (task == null)
+                {
+                    return;
+                }
+                if (task.TaskType == TaskType.TokenTask)
+                {
+                    (task as ETTask<ETCancellationToken>).SetResult(cancellationToken);
+                    break;
+                }
+
+                // cancellationToken传下去
+                task.TaskType = TaskType.WithToken;
+                object child = task.Object;
+                task.Object = cancellationToken;
+                task = child as IETTask;
+            }
+        }
+    }
+    
+    public enum TaskType: byte
+    {
+        Common,
+        WithToken,
+        TokenTask,
+    }
+    
+    public interface IETTask
+    {
+        public TaskType TaskType { get; set; }
+        public object Object { get; set; }
+    }
+    
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
-    public class ETTask: ICriticalNotifyCompletion
+    public class ETTask: ICriticalNotifyCompletion, IETTask
     {
         [StaticField]
         public static Action<Exception> ExceptionHandler;
+
+        [StaticField]
+        private static ETTask completedTask;
         
         [StaticField]
-        public static ETTaskCompleted CompletedTask
+        public static ETTask CompletedTask
         {
             get
             {
-                return new ETTaskCompleted();
+                return completedTask ??= new ETTask() { state = AwaiterStatus.Succeeded };
             }
         }
 
@@ -30,6 +71,7 @@ namespace ET
         /// 假如开启了池,await之后不能再操作ETTask，否则可能操作到再次从池中分配出来的ETTask，产生灾难性的后果
         /// SetResult的时候请现将tcs置空，避免多次对同一个ETTask SetResult
         /// </summary>
+        [DebuggerHidden]
         public static ETTask Create(bool fromPool = false)
         {
             if (!fromPool)
@@ -43,6 +85,7 @@ namespace ET
             return task;
         }
 
+        [DebuggerHidden]
         private void Recycle()
         {
             if (!this.fromPool)
@@ -52,6 +95,8 @@ namespace ET
             
             this.state = AwaiterStatus.Pending;
             this.callback = null;
+            this.Object = null;
+            this.TaskType = TaskType.Common;
             // 太多了
             if (queue.Count > 1000)
             {
@@ -64,8 +109,10 @@ namespace ET
         private AwaiterStatus state;
         private object callback; // Action or ExceptionDispatchInfo
 
+        [DebuggerHidden]
         private ETTask()
         {
+            this.TaskType = TaskType.Common;
         }
         
         [DebuggerHidden]
@@ -77,6 +124,14 @@ namespace ET
         [DebuggerHidden]
         public void Coroutine()
         {
+            this.SetCancelToken(null);
+            InnerCoroutine().Coroutine();
+        }
+        
+        [DebuggerHidden]
+        public void Coroutine(ETCancellationToken cancellationToken)
+        {
+            this.SetCancelToken(cancellationToken);
             InnerCoroutine().Coroutine();
         }
 
@@ -163,10 +218,13 @@ namespace ET
             this.callback = ExceptionDispatchInfo.Capture(e);
             c?.Invoke();
         }
+
+        public TaskType TaskType { get; set; }
+        public object Object { get; set; }
     }
 
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder<>))]
-    public class ETTask<T>: ICriticalNotifyCompletion
+    public class ETTask<T>: ICriticalNotifyCompletion, IETTask
     {
         [StaticField]
         private static readonly ConcurrentQueue<ETTask<T>> queue = new();
@@ -176,6 +234,7 @@ namespace ET
         /// 假如开启了池,await之后不能再操作ETTask，否则可能操作到再次从池中分配出来的ETTask，产生灾难性的后果
         /// SetResult的时候请现将tcs置空，避免多次对同一个ETTask SetResult
         /// </summary>
+        [DebuggerHidden]
         public static ETTask<T> Create(bool fromPool = false)
         {
             if (!fromPool)
@@ -190,6 +249,7 @@ namespace ET
             return task;
         }
         
+        [DebuggerHidden]
         private void Recycle()
         {
             if (!this.fromPool)
@@ -199,6 +259,8 @@ namespace ET
             this.callback = null;
             this.value = default;
             this.state = AwaiterStatus.Pending;
+            this.Object = null;
+            this.TaskType = TaskType.Common;
             // 太多了
             if (queue.Count > 1000)
             {
@@ -212,8 +274,10 @@ namespace ET
         private T value;
         private object callback; // Action or ExceptionDispatchInfo
 
+        [DebuggerHidden]
         private ETTask()
         {
+            this.TaskType = TaskType.Common;
         }
 
         [DebuggerHidden]
@@ -225,6 +289,14 @@ namespace ET
         [DebuggerHidden]
         public void Coroutine()
         {
+            this.SetCancelToken(null);
+            InnerCoroutine().Coroutine();
+        }
+        
+        [DebuggerHidden]
+        public void Coroutine(ETCancellationToken cancellationToken)
+        {
+            this.SetCancelToken(cancellationToken);
             InnerCoroutine().Coroutine();
         }
 
@@ -253,8 +325,7 @@ namespace ET
                     throw new NotSupportedException("ETask does not allow call GetResult directly when task not completed. Please use 'await'.");
             }
         }
-
-
+        
         public bool IsCompleted
         {
             [DebuggerHidden]
@@ -313,5 +384,8 @@ namespace ET
             this.callback = ExceptionDispatchInfo.Capture(e);
             c?.Invoke();
         }
+
+        public TaskType TaskType { get; set; }
+        public object Object { get; set; }
     }
 }

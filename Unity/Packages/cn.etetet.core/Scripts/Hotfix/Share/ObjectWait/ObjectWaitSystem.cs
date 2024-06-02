@@ -23,7 +23,7 @@ namespace ET
             }
         }
         
-        public static async ETTask<T> Wait<T>(this ObjectWait self, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
+        public static async ETTask<T> Wait<T>(this ObjectWait self) where T : struct, IWaitType
         {
             ResultCallback<T> tcs = new ResultCallback<T>();
             Type type = typeof (T);
@@ -35,6 +35,7 @@ namespace ET
             }
 
             T ret;
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
             try
             {
                 cancellationToken?.Add(CancelAction);
@@ -47,12 +48,13 @@ namespace ET
             return ret;
         }
 
-        public static async ETTask<T> Wait<T>(this ObjectWait self, int timeout, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
+        public static async ETTask<T> Wait<T>(this ObjectWait self, int timeout) where T : struct, IWaitType
         {
             ResultCallback<T> tcs = new ResultCallback<T>();
             async ETTask WaitTimeout()
             {
-                await self.Root().GetComponent<TimerComponent>().WaitAsync(timeout, cancellationToken);
+                await self.Root().GetComponent<TimerComponent>().WaitAsync(timeout);
+                ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
                 if (cancellationToken.IsCancel())
                 {
                     return;
@@ -74,6 +76,7 @@ namespace ET
             }
             
             T ret;
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
             try
             {
                 cancellationToken?.Add(CancelAction);

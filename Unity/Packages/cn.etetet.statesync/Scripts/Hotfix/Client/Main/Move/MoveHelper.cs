@@ -7,7 +7,7 @@ namespace ET.Client
     public static partial class MoveHelper
     {
         // 可以多次调用，多次调用的话会取消上一次的协程
-        public static async ETTask<int> MoveToAsync(this Unit unit, float3 targetPos, ETCancellationToken cancellationToken = null)
+        public static async ETTask<int> MoveToAsync(this Unit unit, float3 targetPos)
         {
             C2M_PathfindingResult msg = C2M_PathfindingResult.Create();
             msg.Position = targetPos;
@@ -19,7 +19,8 @@ namespace ET.Client
             objectWait.Notify(new Wait_UnitStop() { Error = WaitTypeError.Cancel });
             
             // 一直等到unit发送stop
-            Wait_UnitStop waitUnitStop = await objectWait.Wait<Wait_UnitStop>(cancellationToken);
+            Wait_UnitStop waitUnitStop = await objectWait.Wait<Wait_UnitStop>();
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
             if (cancellationToken.IsCancel())
             {
                 return WaitTypeError.Cancel;

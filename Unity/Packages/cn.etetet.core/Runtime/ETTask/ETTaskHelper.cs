@@ -5,6 +5,13 @@ namespace ET
 {
     public static class ETTaskHelper
     {
+        public static async ETTask<ETCancellationToken> GetCancelToken()
+        {
+            ETTask<ETCancellationToken> tcs = ETTask<ETCancellationToken>.Create(true);
+            tcs.TaskType = TaskType.TokenTask;
+            return await tcs;
+        }
+        
         public static bool IsCancel(this ETCancellationToken self)
         {
             if (self == null)

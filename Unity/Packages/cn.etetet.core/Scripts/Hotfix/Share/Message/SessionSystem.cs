@@ -43,7 +43,7 @@ namespace ET
             action.SetResult(response);
         }
         
-        public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request)
         {
             int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new(request.GetType());
@@ -66,6 +66,7 @@ namespace ET
             }
 
             IResponse ret;
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
             try
             {
                 cancellationToken?.Add(CancelAction);
