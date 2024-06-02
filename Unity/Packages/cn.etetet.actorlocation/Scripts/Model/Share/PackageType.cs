@@ -2,6 +2,6 @@ namespace ET
 {
     public static partial class PackageType
     {
-        public const int Core = 1;
+        public const int ActorLocation = 3;
     }
 }

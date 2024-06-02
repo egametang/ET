@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PackageConfig
   m_EditorClassIdentifier: 
   Id: 3
+  Name: ActorLocation
   CreatePackageTypeFile: 1

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PackageConfig
   m_EditorClassIdentifier: 
   Id: 2
+  Name: Loader
   CreatePackageTypeFile: 0

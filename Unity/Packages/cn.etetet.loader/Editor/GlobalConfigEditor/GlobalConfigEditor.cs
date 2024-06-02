@@ -9,6 +9,15 @@ namespace ET
     [CustomEditor(typeof(GlobalConfig))]
     public class GlobalConfigEditor : Editor
     {
+        [MenuItem("ET/CodeMode Refresh")]
+        public static void Refresh()
+        {
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/cn.etetet.loader/Resources/GlobalConfig.asset");
+            CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
+            AssetDatabase.Refresh();
+            Log.Debug("code mode refresh finish!");
+        }
+        
         private void OnEnable()
         {
             GlobalConfig globalConfig = (GlobalConfig)this.target;

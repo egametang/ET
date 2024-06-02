@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PackageConfig
   m_EditorClassIdentifier: 
   Id: 6
+  Name: DB
   CreatePackageTypeFile: 1

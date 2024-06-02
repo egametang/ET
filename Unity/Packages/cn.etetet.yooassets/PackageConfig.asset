@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PackageConfig
   m_EditorClassIdentifier: 
   Id: 7
+  Name: YooAssets
   CreatePackageTypeFile: 1

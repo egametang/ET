@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PackageConfig
   m_EditorClassIdentifier: 
   Id: 1
+  Name: Core
   CreatePackageTypeFile: 1
