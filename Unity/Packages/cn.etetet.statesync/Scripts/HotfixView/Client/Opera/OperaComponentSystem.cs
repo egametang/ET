@@ -40,6 +40,11 @@ namespace ET.Client
             {
                 self.TestCancelAfter().Coroutine();
             }
+            
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                self.TestCancelAfter2().Coroutine();
+            }
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -86,6 +91,11 @@ namespace ET.Client
                 Log.Debug($"TestCancelAfter oldCancellationToken is not cancel!");
             }
             Log.Debug($"TestCancelAfter end");
+        }
+
+        private static async ETTask TestCancelAfter2(this OperaComponent self)
+        {
+            
         }
     }
 }

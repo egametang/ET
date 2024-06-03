@@ -13,10 +13,6 @@ namespace ET
         {
             while (true)
             {
-                if (task == null)
-                {
-                    return;
-                }
                 if (task.TaskType == TaskType.TokenTask)
                 {
                     (task as ETTask<ETCancellationToken>).SetResult(cancellationToken);
@@ -28,6 +24,15 @@ namespace ET
                 object child = task.Object;
                 task.Object = cancellationToken;
                 task = child as IETTask;
+                if (task == null)
+                {
+                    break;
+                }
+                //// 传递到WithToken为止，因为可能这一层设置了新的canceltoken
+                if (task.TaskType == TaskType.WithToken)
+                {
+                    break;
+                }
             }
         }
     }
