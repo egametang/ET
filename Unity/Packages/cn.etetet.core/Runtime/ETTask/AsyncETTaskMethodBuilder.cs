@@ -68,14 +68,14 @@ namespace ET
                 return;
             }
 
-            if (this.tcs.TaskType == TaskType.WithToken)
+            if (this.tcs.TaskType == TaskType.WithContext)
             {
-                ETCancellationToken cancellationToken = this.tcs.Object as ETCancellationToken;
-                task.SetCancelToken(cancellationToken);
+                ETCancellationToken cancellationToken = this.tcs.Context as ETCancellationToken;
+                task.SetContext(cancellationToken);
                 return;
             }
             
-            this.tcs.Object = task;
+            this.tcs.Context = task;
         }
 
         // 7. Start
@@ -155,14 +155,14 @@ namespace ET
                 return;
             }
             
-            if (this.tcs.TaskType == TaskType.WithToken)
+            if (this.tcs.TaskType == TaskType.WithContext)
             {
-                ETCancellationToken cancellationToken = this.tcs.Object as ETCancellationToken;
-                task.SetCancelToken(cancellationToken);
+                ETCancellationToken cancellationToken = this.tcs.Context as ETCancellationToken;
+                task.SetContext(cancellationToken);
                 return;
             }
             
-            this.tcs.Object = task;
+            this.tcs.Context = task;
         }
 
         // 7. Start

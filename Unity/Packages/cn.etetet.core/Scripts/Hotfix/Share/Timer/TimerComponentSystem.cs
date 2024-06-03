@@ -158,7 +158,7 @@ namespace ET
                 }
             }
 
-            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             try
             {
                 cancellationToken?.Add(CancelAction);
@@ -197,7 +197,7 @@ namespace ET
                 }
             }
 
-            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             try
             {
                 cancellationToken?.Add(CancelAction);

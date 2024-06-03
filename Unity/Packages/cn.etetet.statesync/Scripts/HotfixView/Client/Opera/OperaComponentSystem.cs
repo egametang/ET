@@ -76,11 +76,11 @@ namespace ET.Client
         
         private static async ETTask TestCancelAfter(this OperaComponent self)
         {
-            ETCancellationToken oldCancellationToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken oldCancellationToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             
             Log.Debug($"TestCancelAfter start");
             ETCancellationToken newCancellationToken = new();
-            await self.Fiber().Root.GetComponent<TimerComponent>().WaitAsync(3000).Timeout(newCancellationToken, 1000);
+            await self.Fiber().Root.GetComponent<TimerComponent>().WaitAsync(3000).TimeoutAsync(newCancellationToken, 1000);
             if (newCancellationToken.IsCancel())
             {
                 Log.Debug($"TestCancelAfter newCancellationToken is cancel!");

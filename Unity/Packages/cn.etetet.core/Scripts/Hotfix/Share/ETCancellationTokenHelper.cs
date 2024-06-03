@@ -4,7 +4,7 @@ namespace ET
 {
     public static class ETCancellationTokenHelper
     {
-        private static async ETTask Timeout(this ETCancellationToken self, long afterTimeCancel)
+        private static async ETTask TimeoutAsync(this ETCancellationToken self, long afterTimeCancel)
         {
             if (afterTimeCancel <= 0)
             {
@@ -34,11 +34,11 @@ namespace ET
             {
                 throw new Exception("add cancel token is null");
             }
-            ETCancellationToken cancelToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken cancelToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             
             cancelToken?.Add(addCancelToken.Cancel);
             
-            await task.NewCancel(addCancelToken);
+            await task.NewContext(addCancelToken);
         }
         
         /// <summary>
@@ -51,36 +51,36 @@ namespace ET
                 throw new Exception("add cancel token is null");
             }
             
-            ETCancellationToken cancelToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken cancelToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             
             cancelToken?.Add(addCancelToken.Cancel);
             
-            return await task.NewCancel(addCancelToken);
+            return await task.NewContext(addCancelToken);
         }
         
-        public static async ETTask Timeout(this ETTask task, ETCancellationToken cancellationToken, long afterTimeCancel)
+        public static async ETTask TimeoutAsync(this ETTask task, ETCancellationToken cancellationToken, long afterTimeCancel)
         {
-            cancellationToken.Timeout(afterTimeCancel).Coroutine();
+            cancellationToken.TimeoutAsync(afterTimeCancel).Coroutine();
             await AddCancel(task, cancellationToken);
         }
         
-        public static async ETTask<T> Timeout<T>(this ETTask<T> task, ETCancellationToken cancellationToken, long afterTimeCancel)
+        public static async ETTask<T> TimeoutAsync<T>(this ETTask<T> task, ETCancellationToken cancellationToken, long afterTimeCancel)
         {
-            cancellationToken.Timeout(afterTimeCancel).Coroutine();
+            cancellationToken.TimeoutAsync(afterTimeCancel).Coroutine();
             return await AddCancel(task, cancellationToken);
         }
         
-        public static async ETTask Timeout(this ETTask task, long afterTimeCancel)
+        public static async ETTask TimeoutAsync(this ETTask task, long afterTimeCancel)
         {
             ETCancellationToken cancellationToken = new();
-            cancellationToken.Timeout(afterTimeCancel).Coroutine();
+            cancellationToken.TimeoutAsync(afterTimeCancel).Coroutine();
             await AddCancel(task, cancellationToken);
         }
         
-        public static async ETTask<T> Timeout<T>(this ETTask<T> task, long afterTimeCancel)
+        public static async ETTask<T> TimeoutAsync<T>(this ETTask<T> task, long afterTimeCancel)
         {
             ETCancellationToken cancellationToken = new();
-            cancellationToken.Timeout(afterTimeCancel).Coroutine();
+            cancellationToken.TimeoutAsync(afterTimeCancel).Coroutine();
             return await AddCancel(task, cancellationToken);
         }
     }

@@ -9,27 +9,27 @@ namespace ET
 {
     internal static class IETTaskExtension
     {
-        internal static void SetCancelToken(this IETTask task, ETCancellationToken cancellationToken)
+        internal static void SetContext(this IETTask task, object context)
         {
             while (true)
             {
-                if (task.TaskType == TaskType.TokenTask)
+                if (task.TaskType == TaskType.ContextTask)
                 {
-                    (task as ETTask<ETCancellationToken>).SetResult(cancellationToken);
+                    ((ETTask<object>)task).SetResult(context);
                     break;
                 }
 
                 // cancellationToken传下去
-                task.TaskType = TaskType.WithToken;
-                object child = task.Object;
-                task.Object = cancellationToken;
+                task.TaskType = TaskType.WithContext;
+                object child = task.Context;
+                task.Context = context;
                 task = child as IETTask;
                 if (task == null)
                 {
                     break;
                 }
                 //// 传递到WithToken为止，因为可能这一层设置了新的canceltoken
-                if (task.TaskType == TaskType.WithToken)
+                if (task.TaskType == TaskType.WithContext)
                 {
                     break;
                 }
@@ -40,14 +40,14 @@ namespace ET
     public enum TaskType: byte
     {
         Common,
-        WithToken,
-        TokenTask,
+        WithContext,
+        ContextTask,
     }
     
     public interface IETTask
     {
         public TaskType TaskType { get; set; }
-        public object Object { get; set; }
+        public object Context { get; set; }
     }
     
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
@@ -100,7 +100,7 @@ namespace ET
             
             this.state = AwaiterStatus.Pending;
             this.callback = null;
-            this.Object = null;
+            this.Context = null;
             this.TaskType = TaskType.Common;
             // 太多了
             if (queue.Count > 1000)
@@ -129,14 +129,14 @@ namespace ET
         [DebuggerHidden]
         public void Coroutine()
         {
-            this.SetCancelToken(null);
+            this.SetContext(null);
             InnerCoroutine().Coroutine();
         }
         
         [DebuggerHidden]
-        public void Coroutine(ETCancellationToken cancellationToken)
+        public void WithContext(object context)
         {
-            this.SetCancelToken(cancellationToken);
+            this.SetContext(context);
             InnerCoroutine().Coroutine();
         }
         
@@ -144,9 +144,9 @@ namespace ET
         /// 在await的同时可以换一个新的cancellationToken
         /// </summary>
         [DebuggerHidden]
-        public async ETTask NewCancel(ETCancellationToken cancellationToken)
+        public async ETTask NewContext(object context)
         {
-            this.SetCancelToken(cancellationToken);
+            this.SetContext(context);
             await this;
         }
 
@@ -235,7 +235,7 @@ namespace ET
         }
 
         public TaskType TaskType { get; set; }
-        public object Object { get; set; }
+        public object Context { get; set; }
     }
 
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder<>))]
@@ -274,7 +274,7 @@ namespace ET
             this.callback = null;
             this.value = default;
             this.state = AwaiterStatus.Pending;
-            this.Object = null;
+            this.Context = null;
             this.TaskType = TaskType.Common;
             // 太多了
             if (queue.Count > 1000)
@@ -304,14 +304,14 @@ namespace ET
         [DebuggerHidden]
         public void Coroutine()
         {
-            this.SetCancelToken(null);
+            this.SetContext(null);
             InnerCoroutine().Coroutine();
         }
         
         [DebuggerHidden]
-        public void Coroutine(ETCancellationToken cancellationToken)
+        public void WithContext(object context)
         {
-            this.SetCancelToken(cancellationToken);
+            this.SetContext(context);
             InnerCoroutine().Coroutine();
         }
         
@@ -319,9 +319,9 @@ namespace ET
         /// 在await的同时可以换一个新的cancellationToken
         /// </summary>
         [DebuggerHidden]
-        public async ETTask<T> NewCancel(ETCancellationToken cancellationToken)
+        public async ETTask<T> NewContext(object context)
         {
-            this.SetCancelToken(cancellationToken);
+            this.SetContext(context);
             return await this;
         }
 
@@ -411,6 +411,6 @@ namespace ET
         }
 
         public TaskType TaskType { get; set; }
-        public object Object { get; set; }
+        public object Context { get; set; }
     }
 }

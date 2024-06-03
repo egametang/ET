@@ -20,7 +20,7 @@ namespace ET.Client
             
             // 一直等到unit发送stop
             Wait_UnitStop waitUnitStop = await objectWait.Wait<Wait_UnitStop>();
-            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             if (cancellationToken.IsCancel())
             {
                 return WaitTypeError.Cancel;

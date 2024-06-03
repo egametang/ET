@@ -66,7 +66,7 @@ namespace ET
                 action.SetResult(response);
             }
 
-            ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
+            ETCancellationToken cancellationToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
             IResponse ret;
             try
             {
@@ -82,7 +82,7 @@ namespace ET
 
         public static async ETTask<IResponse> Call(this Session self, IRequest request, int timeout)
         {
-            return await self.Call(request).Timeout(timeout);
+            return await self.Call(request).TimeoutAsync(timeout);
         }
 
         public static void Send(this Session self, IMessage message)

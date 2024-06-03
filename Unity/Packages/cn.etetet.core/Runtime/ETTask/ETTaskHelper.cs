@@ -5,10 +5,10 @@ namespace ET
 {
     public static class ETTaskHelper
     {
-        public static async ETTask<ETCancellationToken> GetCancelToken()
+        public static async ETTask<object> GetContextAsync()
         {
-            ETTask<ETCancellationToken> tcs = ETTask<ETCancellationToken>.Create(true);
-            tcs.TaskType = TaskType.TokenTask;
+            ETTask<object> tcs = ETTask<object>.Create(true);
+            tcs.TaskType = TaskType.ContextTask;
             return await tcs;
         }
         
