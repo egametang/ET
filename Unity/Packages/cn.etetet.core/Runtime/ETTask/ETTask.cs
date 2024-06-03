@@ -134,6 +134,16 @@ namespace ET
             this.SetCancelToken(cancellationToken);
             InnerCoroutine().Coroutine();
         }
+        
+        /// <summary>
+        /// 在await的同时可以换一个新的cancellationToken
+        /// </summary>
+        [DebuggerHidden]
+        public async ETTask NewCancel(ETCancellationToken cancellationToken)
+        {
+            this.SetCancelToken(cancellationToken);
+            await this;
+        }
 
         [DebuggerHidden]
         public ETTask GetAwaiter()
@@ -298,6 +308,16 @@ namespace ET
         {
             this.SetCancelToken(cancellationToken);
             InnerCoroutine().Coroutine();
+        }
+        
+        /// <summary>
+        /// 在await的同时可以换一个新的cancellationToken
+        /// </summary>
+        [DebuggerHidden]
+        public async ETTask<T> NewCancel(ETCancellationToken cancellationToken)
+        {
+            this.SetCancelToken(cancellationToken);
+            return await this;
         }
 
         [DebuggerHidden]

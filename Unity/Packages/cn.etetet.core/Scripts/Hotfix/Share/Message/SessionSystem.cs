@@ -42,12 +42,13 @@ namespace ET
             }
             action.SetResult(response);
         }
-        
+
         public static async ETTask<IResponse> Call(this Session self, IRequest request)
         {
             int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new(request.GetType());
             self.requestCallbacks[rpcId] = rpcInfo;
+            
             request.RpcId = rpcId;
 
             self.Send(request);
@@ -65,8 +66,8 @@ namespace ET
                 action.SetResult(response);
             }
 
-            IResponse ret;
             ETCancellationToken cancellationToken = await ETTaskHelper.GetCancelToken();
+            IResponse ret;
             try
             {
                 cancellationToken?.Add(CancelAction);
@@ -79,36 +80,9 @@ namespace ET
             return ret;
         }
 
-        public static async ETTask<IResponse> Call(this Session self, IRequest request, int time = 0)
+        public static async ETTask<IResponse> Call(this Session self, IRequest request, int timeout)
         {
-            int rpcId = ++self.RpcId;
-            RpcInfo rpcInfo = new(request.GetType());
-            self.requestCallbacks[rpcId] = rpcInfo;
-            request.RpcId = rpcId;
-            self.Send(request);
-
-            if (time > 0)
-            {
-                async ETTask Timeout()
-                {
-                    await self.Root().GetComponent<TimerComponent>().WaitAsync(time);
-                    if (!self.requestCallbacks.TryGetValue(rpcId, out RpcInfo action))
-                    {
-                        return;
-                    }
-
-                    if (!self.requestCallbacks.Remove(rpcId))
-                    {
-                        return;
-                    }
-                    
-                    action.SetException(new Exception($"session call timeout: {action.RequestType.FullName} {time}"));
-                }
-                
-                Timeout().Coroutine();
-            }
-
-            return await rpcInfo.Wait();
+            return await self.Call(request).Timeout(timeout);
         }
 
         public static void Send(this Session self, IMessage message)

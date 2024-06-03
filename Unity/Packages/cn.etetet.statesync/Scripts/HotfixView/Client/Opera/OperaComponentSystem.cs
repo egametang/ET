@@ -35,6 +35,11 @@ namespace ET.Client
             {
                 self.Test2().Coroutine();
             }
+            
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                self.TestCancelAfter().Coroutine();
+            }
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -62,6 +67,25 @@ namespace ET.Client
                 await self.Root().GetComponent<TimerComponent>().WaitAsync(1000);
             }
             Log.Debug($"Croutine 2 end2");
+        }
+        
+        private static async ETTask TestCancelAfter(this OperaComponent self)
+        {
+            ETCancellationToken oldCancellationToken = await ETTaskHelper.GetCancelToken();
+            
+            Log.Debug($"TestCancelAfter start");
+            ETCancellationToken newCancellationToken = new();
+            await self.Fiber().Root.GetComponent<TimerComponent>().WaitAsync(3000).Timeout(newCancellationToken, 1000);
+            if (newCancellationToken.IsCancel())
+            {
+                Log.Debug($"TestCancelAfter newCancellationToken is cancel!");
+            }
+            
+            if (!oldCancellationToken.IsCancel())
+            {
+                Log.Debug($"TestCancelAfter oldCancellationToken is not cancel!");
+            }
+            Log.Debug($"TestCancelAfter end");
         }
     }
 }

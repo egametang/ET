@@ -6,7 +6,7 @@ namespace ET
 {
     public class ETCancellationToken
     {
-        private HashSet<Action> actions = new HashSet<Action>();
+        private HashSet<Action> actions = new();
 
         public void Add(Action callback)
         {
