@@ -25,7 +25,7 @@ namespace ET.Server
 
                 self.Listener.Start();
 
-                self.Accept().Coroutine();
+                self.Accept().NoContext();
             }
             catch (HttpListenerException e)
             {
@@ -48,7 +48,7 @@ namespace ET.Server
                 try
                 {
                     HttpListenerContext context = await self.Listener.GetContextAsync();
-                    self.Handle(context).Coroutine();
+                    self.Handle(context).NoContext();
                 }
                 catch (ObjectDisposedException)
                 {

@@ -7,7 +7,7 @@ namespace ET.Server
     {
         public override void Handle(NetComponentOnRead args)
         {
-            HandleAsync(args).Coroutine();
+            HandleAsync(args).NoContext();
         }
 
         private async ETTask HandleAsync(NetComponentOnRead args)

@@ -12,7 +12,7 @@ namespace ET.Client
             ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 
             self.enterMap = rc.Get<GameObject>("EnterMap");
-            self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
+            self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().NoContext(); });
         }
         
         public static async ETTask EnterMap(this UILobbyComponent self)

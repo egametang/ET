@@ -28,7 +28,7 @@ namespace ET
                 {
                     break;
                 }
-                //// 传递到WithToken为止，因为可能这一层设置了新的canceltoken
+                //// 传递到WithContext为止，因为可能这一层设置了新的context
                 if (task.TaskType == TaskType.WithContext)
                 {
                     break;
@@ -127,7 +127,7 @@ namespace ET
         }
 
         [DebuggerHidden]
-        public void Coroutine()
+        public void NoContext()
         {
             this.SetContext(null);
             InnerCoroutine().Coroutine();
@@ -141,7 +141,7 @@ namespace ET
         }
         
         /// <summary>
-        /// 在await的同时可以换一个新的cancellationToken
+        /// 在await的同时可以换一个新的上下文
         /// </summary>
         [DebuggerHidden]
         public async ETTask NewContext(object context)
@@ -302,7 +302,7 @@ namespace ET
         }
 
         [DebuggerHidden]
-        public void Coroutine()
+        public void NoContext()
         {
             this.SetContext(null);
             InnerCoroutine().Coroutine();

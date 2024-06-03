@@ -23,7 +23,7 @@ namespace ET
         
         public static void Start()
         {
-            StartAsync().Coroutine();
+            StartAsync().NoContext();
         }
         
         private static async ETTask StartAsync()

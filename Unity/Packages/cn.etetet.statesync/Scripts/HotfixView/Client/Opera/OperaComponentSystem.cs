@@ -28,12 +28,12 @@ namespace ET.Client
             
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                self.Test1().Coroutine();
+                self.Test1().NoContext();
             }
                 
             if (Input.GetKeyDown(KeyCode.W))
             {
-                self.Test2().Coroutine();
+                self.Test2().NoContext();
             }
             
             if (Input.GetKeyDown(KeyCode.A))
@@ -43,13 +43,13 @@ namespace ET.Client
             
             if (Input.GetKeyDown(KeyCode.D))
             {
-                self.TestCancelAfter2().Coroutine();
+                self.TestCancelAfter2().NoContext();
             }
 
             if (Input.GetKeyDown(KeyCode.T))
             {
                 C2M_TransferMap c2MTransferMap = C2M_TransferMap.Create();
-                self.Root().GetComponent<ClientSenderComponent>().Call(c2MTransferMap).Coroutine();
+                self.Root().GetComponent<ClientSenderComponent>().Call(c2MTransferMap).NoContext();
             }
         }
         

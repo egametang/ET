@@ -22,7 +22,7 @@ namespace ET
             
             this.httpListener = new HttpListener();
 
-            StartAccept(prefixs).Coroutine();
+            StartAccept(prefixs).NoContext();
         }
         
         public WService()

@@ -93,7 +93,7 @@ namespace ET.Server
         // 发送过去找不到actor不会重试,用此方法，你得保证actor提前注册好了location
         public static void Send(this MessageLocationSenderOneType self, long entityId, IMessage message)
         {
-            self.SendInner(entityId, message).Coroutine();
+            self.SendInner(entityId, message).NoContext();
         }
         
         private static async ETTask SendInner(this MessageLocationSenderOneType self, long entityId, IMessage message)
@@ -173,7 +173,7 @@ namespace ET.Server
 
         public static void Send(this MessageLocationSenderOneType self, long entityId, ILocationMessage message)
         {
-            self.Call(entityId, message).Coroutine();
+            self.Call(entityId, message).NoContext();
         }
 
         public static async ETTask<IResponse> Call(this MessageLocationSenderOneType self, long entityId, ILocationRequest iRequest)

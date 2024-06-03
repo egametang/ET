@@ -75,7 +75,7 @@ namespace ET.Server
                     Log.Info($"location timeout unlock key: {key} instanceId: {actorId} newInstanceId: {actorId}");
                     self.UnLock(key, actorId, actorId);
                 }
-                TimeWaitAsync().Coroutine();
+                TimeWaitAsync().NoContext();
             }
         }
 

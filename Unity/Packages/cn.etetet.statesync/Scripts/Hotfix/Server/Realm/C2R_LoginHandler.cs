@@ -23,7 +23,7 @@ namespace ET.Server
 			response.Key = g2RGetLoginKey.Key;
 			response.GateId = g2RGetLoginKey.GateId;
 			
-			CloseSession(session).Coroutine();
+			CloseSession(session).NoContext();
 		}
 
 		private async ETTask CloseSession(Session session)

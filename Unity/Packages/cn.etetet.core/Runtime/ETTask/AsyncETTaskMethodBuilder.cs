@@ -70,8 +70,7 @@ namespace ET
 
             if (this.tcs.TaskType == TaskType.WithContext)
             {
-                ETCancellationToken cancellationToken = this.tcs.Context as ETCancellationToken;
-                task.SetContext(cancellationToken);
+                task.SetContext(this.tcs.Context);
                 return;
             }
             
@@ -157,8 +156,7 @@ namespace ET
             
             if (this.tcs.TaskType == TaskType.WithContext)
             {
-                ETCancellationToken cancellationToken = this.tcs.Context as ETCancellationToken;
-                task.SetContext(cancellationToken);
+                task.SetContext(this.tcs.Context);
                 return;
             }
             

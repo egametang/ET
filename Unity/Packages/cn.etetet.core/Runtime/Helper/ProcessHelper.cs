@@ -39,7 +39,7 @@ namespace ET
 
                 if (waitExit)
                 {
-                    WaitExitAsync(process).Coroutine();
+                    WaitExitAsync(process).NoContext();
                 }
 
                 return process;

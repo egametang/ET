@@ -142,7 +142,7 @@ namespace ET
                     continue;
                 }
                 
-                aEvent.Handle(scene, a).Coroutine();
+                aEvent.Handle(scene, a).NoContext();
             }
         }
         

@@ -34,7 +34,7 @@ namespace ET.Client
             // 打乱顺序
             RandomGenerator.BreakRank(self.Info.Routers);
             
-            self.WaitTenMinGetAllRouter().Coroutine();
+            self.WaitTenMinGetAllRouter().NoContext();
         }
         
         // 等10分钟再获取一次

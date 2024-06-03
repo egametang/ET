@@ -8,7 +8,7 @@ namespace ET
 
         public void Handle(Session session, object msg)
         {
-            HandleAsync(session, msg).Coroutine();
+            HandleAsync(session, msg).NoContext();
         }
 
         private async ETTask HandleAsync(Session session, object message)
@@ -45,7 +45,7 @@ namespace ET
 
         public void Handle(Session session, object message)
         {
-            HandleAsync(session, message).Coroutine();
+            HandleAsync(session, message).NoContext();
         }
 
         private async ETTask HandleAsync(Session session, object message)

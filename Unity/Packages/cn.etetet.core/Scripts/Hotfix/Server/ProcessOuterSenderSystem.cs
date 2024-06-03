@@ -68,7 +68,7 @@ namespace ET.Server
                 case ILocationRequest:
                 case IRequest:
                 {
-                    CallInner().Coroutine();
+                    CallInner().NoContext();
                     break;
 
                     async ETTask CallInner()
@@ -231,7 +231,7 @@ namespace ET.Server
                 }
             }
 
-            Timeout().Coroutine();
+            Timeout().NoContext();
 
             long beginTime = TimeInfo.Instance.ServerFrameTime();
 
