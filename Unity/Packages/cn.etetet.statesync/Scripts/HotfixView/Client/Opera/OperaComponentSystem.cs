@@ -38,7 +38,7 @@ namespace ET.Client
             
             if (Input.GetKeyDown(KeyCode.A))
             {
-                self.TestCancelAfter().Coroutine();
+                self.TestCancelAfter().WithContext(new ETCancellationToken());
             }
             
             if (Input.GetKeyDown(KeyCode.D))
@@ -86,7 +86,7 @@ namespace ET.Client
                 Log.Debug($"TestCancelAfter newCancellationToken is cancel!");
             }
             
-            if (!oldCancellationToken.IsCancel())
+            if (oldCancellationToken != null && !oldCancellationToken.IsCancel())
             {
                 Log.Debug($"TestCancelAfter oldCancellationToken is not cancel!");
             }
