@@ -75,7 +75,7 @@ namespace ET.Client
             
             Log.Debug($"TestCancelAfter start");
             ETCancellationToken newCancellationToken = new();
-            await self.Fiber().Root.GetComponent<TimerComponent>().WaitAsync(3000).TimeoutAsync(newCancellationToken, 1000);
+            await self.Root().GetComponent<TimerComponent>().WaitAsync(3000).TimeoutAsync(newCancellationToken, 1000);
             if (newCancellationToken.IsCancel())
             {
                 Log.Debug($"TestCancelAfter newCancellationToken is cancel!");
