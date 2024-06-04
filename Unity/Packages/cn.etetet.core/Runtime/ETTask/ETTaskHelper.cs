@@ -5,11 +5,16 @@ namespace ET
 {
     public static class ETTaskHelper
     {
-        public static async ETTask<object> GetContextAsync()
+        public static async ETTask<T> GetContextAsync<T>() where T: class
         {
             ETTask<object> tcs = ETTask<object>.Create(true);
             tcs.TaskType = TaskType.ContextTask;
-            return await tcs;
+            object ret = await tcs;
+            if (ret == null)
+            {
+                return null;
+            }
+            return (T)ret;
         }
         
         public static bool IsCancel(this ETCancellationToken self)

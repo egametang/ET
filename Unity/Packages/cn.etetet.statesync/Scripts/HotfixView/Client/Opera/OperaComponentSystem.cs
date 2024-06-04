@@ -40,11 +40,6 @@ namespace ET.Client
             {
                 self.TestCancelAfter().WithContext(new ETCancellationToken());
             }
-            
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                self.TestCancelAfter2().NoContext();
-            }
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -76,7 +71,7 @@ namespace ET.Client
         
         private static async ETTask TestCancelAfter(this OperaComponent self)
         {
-            ETCancellationToken oldCancellationToken = await ETTaskHelper.GetContextAsync() as ETCancellationToken;
+            ETCancellationToken oldCancellationToken = await ETTaskHelper.GetContextAsync<ETCancellationToken>();
             
             Log.Debug($"TestCancelAfter start");
             ETCancellationToken newCancellationToken = new();
@@ -91,11 +86,6 @@ namespace ET.Client
                 Log.Debug($"TestCancelAfter oldCancellationToken is not cancel!");
             }
             Log.Debug($"TestCancelAfter end");
-        }
-
-        private static async ETTask TestCancelAfter2(this OperaComponent self)
-        {
-            
         }
     }
 }
