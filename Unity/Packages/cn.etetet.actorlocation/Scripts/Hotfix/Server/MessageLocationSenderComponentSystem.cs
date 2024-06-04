@@ -91,9 +91,9 @@ namespace ET.Server
         
         // 发给不会改变位置的actorlocation用这个，这种actor消息不会阻塞发送队列，性能更高
         // 发送过去找不到actor不会重试,用此方法，你得保证actor提前注册好了location
-        public static void Send(this MessageLocationSenderOneType self, long entityId, IMessage message)
+        public static async ETTask Send(this MessageLocationSenderOneType self, long entityId, IMessage message)
         {
-            self.SendInner(entityId, message).NoContext();
+            await self.SendInner(entityId, message);
         }
         
         private static async ETTask SendInner(this MessageLocationSenderOneType self, long entityId, IMessage message)
