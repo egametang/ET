@@ -50,7 +50,7 @@ namespace ET.Loader
         {
             AllRefInfo allRefInfo = new();
 
-            foreach (var packagePath in PackagePaths)
+            foreach (string packagePath in PackagePaths)
             {
                 foreach (string directory in Directory.GetDirectories(packagePath, "cn.etetet.*"))
                 {
@@ -79,12 +79,15 @@ namespace ET.Loader
                 }
             }
 
+            List<string> findRet = new List<string>();
             foreach (string assName in AssNames)
             {
-                string p = Path.Combine("Packages/cn.etetet.loader/Scripts/" + assName + "/ET." + assName + ".asmdef");
+                findRet.Clear();
+                FileHelper.GetAllFiles(findRet, "./Packages", $"ET.{assName}.asmdef");
+                string p = findRet[0];
                 if (!File.Exists(p))
                 {
-                    continue;
+                    throw new Exception($"not found: {p}");
                 }
 
                 string json = File.ReadAllText(p);

@@ -25,6 +25,11 @@
         <Optimize>true</Optimize>
         <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+    </PropertyGroup>
+    
     <ItemGroup>
         <Compile Include="$(SolutionDir)Unity\Packages\cn.etetet.*\Scripts\Model\Share\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
@@ -42,9 +47,9 @@
     <ItemGroup>
         <ProjectReference Include="$(SolutionDir)Unity\Packages\cn.etetet.sourcegenerator\DotNet~\ET.Analyzer\ET.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="$(SolutionDir)Unity\Packages\cn.etetet.sourcegenerator\DotNet~\ET.SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\..\cn.etetet.loader\DotNet~\Loader\ET.Loader.csproj" />
         <ProjectReference Include="..\..\..\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
         <ProjectReference Include="..\..\..\cn.etetet.recast\DotNet~\ET.Recast.csproj" />
-        <ProjectReference Include="..\Loader\ET.Loader.csproj" />
     </ItemGroup>
 
     <!-- sourcegenerator use -->

@@ -12,7 +12,8 @@ namespace ET
 
             foreach (Assembly ass in args)
             {
-                foreach (Type type in ass.GetTypes())
+                var ts = ass.GetTypes();
+                foreach (Type type in ts)
                 {
                     types[type.FullName] = type;
                 }

@@ -13,7 +13,7 @@ namespace ET
         {
             BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
             string fromDir = Path.Combine(HybridCLRSettings.Instance.strippedAOTDllOutputRootDir, target.ToString());
-            string toDir = "Packages/cn.etetet.loader/AotDlls";
+            string toDir = "Packages/cn.etetet.loader/Bundles/AotDlls";
             if (Directory.Exists(toDir))
             {
                 Directory.Delete(toDir, true);

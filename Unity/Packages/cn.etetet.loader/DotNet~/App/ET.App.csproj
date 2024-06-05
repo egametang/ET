@@ -20,6 +20,10 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>DOTNET</DefineConstants>
     <OutputPath>$(SolutionDir)Bin</OutputPath>
@@ -28,6 +32,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\ET.Model.csproj" />
+    <ProjectReference Include="..\..\..\cn.etetet.statesync\DotNet~\Model\ET.Model.csproj" />
+    <ProjectReference Include="..\Loader\ET.Loader.csproj" />
   </ItemGroup>
 </Project>

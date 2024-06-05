@@ -63,7 +63,7 @@ namespace ET
 
         private const string jsonDir = "../Config/Json";
 
-        private const string clientProtoDir = "../Unity/Packages/cn.etetet.Excel/Config/";
+        private const string clientProtoDir = "../Unity/Packages/cn.etetet.Excel/Bundles/Config/";
         private const string serverProtoDir = "../Config/Excel";
         private static Assembly[] configAssemblies = new Assembly[3];
 
