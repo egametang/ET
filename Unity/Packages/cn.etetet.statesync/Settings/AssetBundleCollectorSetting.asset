@@ -55,7 +55,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Packages/cn.etetet.excel/Config
+      - CollectPath: Packages/cn.etetet.excel/Bundles/Config
         CollectorGUID: c38044662d5e70b46adf8d791fa062f0
         CollectorType: 0
         AddressRuleName: AddressByFileName
