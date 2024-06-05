@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework> 
         <RootNamespace>ET</RootNamespace>
         <LangVersion>12</LangVersion>
-        <AssemblyName>ET.Model</AssemblyName>
+        <AssemblyName>ET.Hotfix</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -12,56 +12,41 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>$(SolutionDir)Bin</OutputPath> 
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Optimize>false</Optimize>
         <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"> 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <DefineConstants>DOTNET</DefineConstants>
         <OutputPath>$(SolutionDir)Bin</OutputPath>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Optimize>true</Optimize>
+        <Optimize>false</Optimize>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
     </PropertyGroup>
     <ItemGroup>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\Scripts\Model\Share\**\*.cs">
+        <Compile Include="$(SolutionDir)Unity\Packages\cn.etetet.*\Scripts\Hotfix\Share\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\Scripts\Model\Server\**\*.cs">
+        <Compile Include="$(SolutionDir)Unity\Packages\cn.etetet.*\Scripts\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Library\PackageCache\cn.etetet.*\CodeMode\Model\Server\**\*.cs">
-            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Packages\cn.etetet.*\Scripts\Model\Share\**\*.cs">
-            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Packages\cn.etetet.*\Scripts\Model\Server\**\*.cs">
-            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
-        </Compile>
-
-        <Compile Include="..\..\Unity\Packages\cn.etetet.*\CodeMode\Model\Server\**\*.cs">
+        <Compile Include="$(SolutionDir)Unity\Packages\cn.etetet.*\CodeMode\Hotfix\Server\**\*.cs">
             <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         
-    </ItemGroup> 
+    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="$(SolutionDir)Unity\Packages\cn.etetet.sourcegenerator\DotNet~\ET.Analyzer\ET.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="$(SolutionDir)Unity\Packages\cn.etetet.sourcegenerator\DotNet~\ET.SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.loader\DotNet~\ET.Loader.csproj" />
-        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
-        <ProjectReference Include="..\..\Unity\Packages\cn.etetet.recast\DotNet~\ET.Recast.csproj" />
+        <ProjectReference Include="..\Model\ET.Model.csproj" />
     </ItemGroup>
-
+    
     <!-- sourcegenerator use -->
     <ItemGroup>
         <CompilerVisibleProperty Include="DotNetAssembly" />
     </ItemGroup>
+
 </Project>

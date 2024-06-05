@@ -24,6 +24,6 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\cn.etetet.core\DotNet~\ET.Core\ET.Core.csproj" />
+      <ProjectReference Include="$(SolutionDir)Unity\Packages\cn.etetet.core\DotNet~\ET.Core\ET.Core.csproj" />
     </ItemGroup>
 </Project>
