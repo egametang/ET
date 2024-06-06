@@ -15,5 +15,8 @@
   "relatedPackages": {},
   "dependencies": {
     "cn.etetet.unit": "0.0.1"
+  },
+  "gitDependencies": {
+    "cn.etetet.unit": "https://github.com/ET-Packages/cn.etetet.unit.git#0.0.1"
   }
 }

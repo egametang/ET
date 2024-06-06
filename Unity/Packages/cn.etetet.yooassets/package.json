@@ -16,5 +16,8 @@
   "dependencies": {
     "com.tuyoogame.yooasset": "2.1.1",
     "cn.etetet.core": "0.0.1"
+  },
+  "gitDependencies": {
+    "cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1"
   }
 }

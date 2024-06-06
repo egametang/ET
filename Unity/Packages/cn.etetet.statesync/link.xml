@@ -3,14 +3,11 @@
     <assembly fullname="Unity.Loader" preserve="all"/>
     <assembly fullname="UnityEngine" preserve="all"/>
     <assembly fullname="System" preserve="all"/>
-    <assembly fullname="CommandLine" preserve="all"/>
     <assembly fullname="MongoDB.Bson" preserve="all"/>
     <assembly fullname="System.Runtime.CompilerServices.Unsafe" preserve="all"/>
     <assembly fullname="UnityEngine.AnimationModule" preserve="all" />
-    <assembly fullname="System.Net.Http" preserve="all" />
     <assembly fullname="mscorlib" preserve="all" />
     <assembly fullname="UnityEngine.AssetBundleModule" preserve="all" />
-    <assembly fullname="NLog" preserve="all" />
     <assembly fullname="UnityEngine.CoreModule" preserve="all" />
     <assembly fullname="UnityEngine.InputLegacyModule" preserve="all" />
 </linker>

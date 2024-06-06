@@ -17,5 +17,10 @@
     "cn.etetet.excel": "0.0.1",
     "cn.etetet.proto": "0.0.1",
     "cn.etetet.sourcegenerator": "0.0.1"
+  },
+  "gitDependencies": {
+    "cn.etetet.excel": "https://github.com/ET-Packages/cn.etetet.excel.git#0.0.1",
+    "cn.etetet.proto": "https://github.com/ET-Packages/cn.etetet.proto.git#0.0.1",
+    "cn.etetet.sourcegenerator": "https://github.com/ET-Packages/cn.etetet.sourcegenerator.git#0.0.1"
   }
 }
