@@ -13,25 +13,25 @@ _ReSharper.CSharp/
 ~$*.xlsx.meta
 
 #Unity相关目录
-Unity/.gradle
-Unity/Bundles
-Unity/Library
-Unity/Logs
-Unity/UserSettings
-Unity/*.csproj
-Unity/*.vsconfig
-Unity/ProjectSettings/RiderScriptEditorPersistedState.asset
-Unity/HybridCLRData
+.gradle
+Bundles
+Library
+Logs
+UserSettings
+*.csproj
+*.vsconfig
+ProjectSettings/RiderScriptEditorPersistedState.asset
+HybridCLRData
 
 #Unity/Assets
-Unity/Assets/Bundles/Code/*
-Unity/Assets/Bundles/AotDlls/*
-Unity/Assets/StreamingAssets/
-Unity/Assets/StreamingAssets.meta
+Assets/Bundles/Code/*
+Assets/Bundles/AotDlls/*
+Assets/StreamingAssets/
+Assets/StreamingAssets.meta
 
 #Unity中的IgnoreAssembly定义文件
-Unity/Assets/Scripts/**/Ignore.asmdef
-Unity/Assets/Scripts/**/Ignore.asmdef.meta
+Assets/Scripts/**/Ignore.asmdef
+Assets/Scripts/**/Ignore.asmdef.meta
 
 #WebGL
 WebGL
@@ -51,9 +51,9 @@ obj/
 Publish/
 */Temp/
 */TestResults/
-Unity/Assets/Generate/Model/Proto*
-Unity/Assets/Generate/Model/Excel*
-Unity/**/AssemblyReference.asmref
-Unity/**/AssemblyReference.asmref.meta
-Unity/Unity.sln
-Unity/Unity.sln.DotSettings.user
+Assets/Generate/Model/Proto*
+Assets/Generate/Model/Excel*
+/**/AssemblyReference.asmref
+/**/AssemblyReference.asmref.meta
+Unity.sln
+Unity.sln.DotSettings.user
