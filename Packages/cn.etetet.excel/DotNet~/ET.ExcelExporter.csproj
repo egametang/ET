@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>false</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <PackageId>Apps.Tool</PackageId>
+        <AssemblyName>ET.ExcelExporter</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>DOTNET</DefineConstants>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>DOTNET</DefineConstants>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="EPPlus" Version="7.1.2" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\cn.etetet.core\DotNet~\ET.Core\ET.Core.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Template.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

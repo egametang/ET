@@ -18,7 +18,7 @@ Bundles
 Library
 Logs
 UserSettings
-*.csproj
+/*.csproj
 *.vsconfig
 ProjectSettings/RiderScriptEditorPersistedState.asset
 HybridCLRData
