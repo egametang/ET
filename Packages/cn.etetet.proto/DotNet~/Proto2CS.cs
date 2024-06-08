@@ -35,7 +35,7 @@ namespace ET
             
             msgOpcode.Clear();
 
-            PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("../");
+            PackagesLock packagesLock = PackageHelper.LoadEtPackagesLock("./");
             PackageInfo protoPackage = packagesLock.dependencies["cn.etetet.proto"];
             clientMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/Client");
             serverMessagePath = Path.Combine(protoPackage.dir, "CodeMode/Model/Server");

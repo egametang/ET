@@ -12,7 +12,6 @@ namespace ET
             }
             catch (Exception e)
             {
-                Log.Console(e.ToString());
                 Console.WriteLine(e.ToString());
             }
             Console.WriteLine("proto2cs ok!");
