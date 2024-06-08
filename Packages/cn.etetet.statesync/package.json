@@ -13,25 +13,6 @@
     "url": "https://github.com/egametang/ET"
   },
   "relatedPackages": {},
-  "dependencies": {
-    "cn.etetet.core": "0.0.1",
-    "cn.etetet.yooassets": "0.0.1",
-    "cn.etetet.loader": "0.0.1",
-    "cn.etetet.demores": "0.0.1",
-    "cn.etetet.mathematics": "0.0.1",
-    "cn.etetet.router": "0.0.1",
-    "cn.etetet.console": "0.0.1",
-    "cn.etetet.unit": "0.0.1",
-    "cn.etetet.http": "0.0.1",
-    "cn.etetet.recast": "0.0.1",
-    "cn.etetet.numeric": "0.0.1",
-    "cn.etetet.move": "0.0.1",
-    "cn.etetet.watcher": "0.0.1",
-    "cn.etetet.db": "0.0.1",
-    "cn.etetet.aoi": "0.0.1",
-    "cn.etetet.ui": "0.0.1",
-    "cn.etetet.referencecollector": "0.0.1"
-  },
   "gitDependencies": {
     "cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1",
     "cn.etetet.yooassets": "https://github.com/ET-Packages/cn.etetet.yooassets.git#0.0.1",

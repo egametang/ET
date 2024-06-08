@@ -13,10 +13,6 @@
     "url": "https://github.com/egametang/ET"
   },
   "relatedPackages": {},
-  "dependencies": {
-    "cn.etetet.core": "0.0.1",
-    "cn.etetet.yooassets": "0.0.1"
-  },
   "gitDependencies": {
     "cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1",
     "cn.etetet.yooassets": "https://github.com/ET-Packages/cn.etetet.yooassets.git#0.0.1"
