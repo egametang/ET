@@ -4,43 +4,31 @@
       "version": "file:cn.etetet.actorlocation",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.aoi": {
       "version": "file:cn.etetet.aoi",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.unit": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.console": {
       "version": "file:cn.etetet.console",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.core": {
       "version": "file:cn.etetet.core",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.excel": "0.0.1",
-        "cn.etetet.proto": "0.0.1",
-        "cn.etetet.sourcegenerator": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.db": {
       "version": "file:cn.etetet.db",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.demores": {
       "version": "file:cn.etetet.demores",
@@ -58,18 +46,13 @@
       "version": "file:cn.etetet.http",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.loader": {
       "version": "file:cn.etetet.loader",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1",
-        "cn.etetet.yooassets": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.mathematics": {
       "version": "file:cn.etetet.mathematics",
@@ -83,17 +66,13 @@
       "version": "file:cn.etetet.move",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.unit": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.numeric": {
       "version": "file:cn.etetet.numeric",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.unit": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.proto": {
       "version": "file:cn.etetet.proto",
@@ -105,33 +84,25 @@
       "version": "file:cn.etetet.recast",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.referencecollector": {
       "version": "file:cn.etetet.referencecollector",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.robotcase": {
       "version": "file:cn.etetet.robotcase",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.router": {
       "version": "file:cn.etetet.router",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.http": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.sourcegenerator": {
       "version": "file:cn.etetet.sourcegenerator",
@@ -143,57 +114,32 @@
       "version": "file:cn.etetet.statesync",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1",
-        "cn.etetet.yooassets": "0.0.1",
-        "cn.etetet.loader": "0.0.1",
-        "cn.etetet.demores": "0.0.1",
-        "cn.etetet.mathematics": "0.0.1",
-        "cn.etetet.router": "0.0.1",
-        "cn.etetet.console": "0.0.1",
-        "cn.etetet.unit": "0.0.1",
-        "cn.etetet.http": "0.0.1",
-        "cn.etetet.recast": "0.0.1",
-        "cn.etetet.numeric": "0.0.1",
-        "cn.etetet.move": "0.0.1",
-        "cn.etetet.watcher": "0.0.1",
-        "cn.etetet.db": "0.0.1",
-        "cn.etetet.aoi": "0.0.1",
-        "cn.etetet.ui": "0.0.1",
-        "cn.etetet.referencecollector": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.ui": {
       "version": "file:cn.etetet.ui",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.unit": {
       "version": "file:cn.etetet.unit",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.watcher": {
       "version": "file:cn.etetet.watcher",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {
-        "cn.etetet.core": "0.0.1"
-      }
+      "dependencies": {}
     },
     "cn.etetet.yooassets": {
       "version": "file:cn.etetet.yooassets",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.tuyoogame.yooasset": "2.1.1",
-        "cn.etetet.core": "0.0.1"
+        "com.tuyoogame.yooasset": "2.1.1"
       }
     },
     "com.code-philosophy.hybridclr": {

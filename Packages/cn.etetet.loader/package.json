@@ -15,6 +15,9 @@
   "relatedPackages": {},
   "gitDependencies": {
     "cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1",
-    "cn.etetet.yooassets": "https://github.com/ET-Packages/cn.etetet.yooassets.git#0.0.1"
+    "cn.etetet.yooassets": "https://github.com/ET-Packages/cn.etetet.yooassets.git#0.0.1",
+    "cn.etetet.excel": "https://github.com/ET-Packages/cn.etetet.excel.git#0.0.1",
+    "cn.etetet.proto": "https://github.com/ET-Packages/cn.etetet.proto.git#0.0.1",
+    "cn.etetet.sourcegenerator": "https://github.com/ET-Packages/cn.etetet.sourcegenerator.git#0.0.1"
   }
 }
