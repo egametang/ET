@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using YooAsset;
 
 namespace ET
 {
