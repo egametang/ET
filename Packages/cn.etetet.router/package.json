@@ -14,6 +14,6 @@
   },
   "relatedPackages": {},
   "gitDependencies": {
-    "cn.etetet.http": "https://github.com/ET-Packages/cn.etetet.http.git#0.0.1"
+    "cn.etetet.http": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.http.git#develop"
   }
 }
