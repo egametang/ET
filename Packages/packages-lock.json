@@ -48,6 +48,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "cn.etetet.init": {
+      "version": "file:cn.etetet.init",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "cn.etetet.loader": {
       "version": "file:cn.etetet.loader",
       "depth": 0,

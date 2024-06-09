@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ET;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -79,7 +79,7 @@ namespace Hibzz.DependencyResolver
             string package_json_path = $"{packageInfo.resolvedPath}/package.json";
             string package_json_content = File.ReadAllText(package_json_path);
 
-            PackageGitDependency packageGitDependency = MongoHelper.FromJson<PackageGitDependency>(package_json_content);
+            PackageGitDependency packageGitDependency = BsonSerializer.Deserialize<PackageGitDependency>(package_json_content);
             // if no token with the key git-dependecies is found, failed to get git dependencies
             if (packageGitDependency.gitDependencies is null || packageGitDependency.gitDependencies.Count == 0)
             {

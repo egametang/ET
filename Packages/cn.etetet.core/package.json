@@ -12,5 +12,11 @@
     "type": "git",
     "url": "https://github.com/egametang/ET"
   },
-  "relatedPackages": {}
+  "relatedPackages": {},
+  "gitDependencies": {
+    "memorypack": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack#1.10.0",
+    "cn.etetet.excel": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.excel#develop",
+    "cn.etetet.proto": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.proto#develop",
+    "cn.etetet.sourcegenerator": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.sourcegenerator#develop"
+  }
 }
