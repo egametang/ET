@@ -1,5 +1,5 @@
 {
-    "name": "ET.GitResolver.Editor",
+    "name": "ET.Init.Editor",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [

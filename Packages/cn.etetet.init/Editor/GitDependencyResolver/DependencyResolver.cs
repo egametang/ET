@@ -33,36 +33,38 @@ namespace Hibzz.DependencyResolver
         // Invoked when the package manager completes registering new packages
         static void OnPackagesRegistered(PackageRegistrationEventArgs packageRegistrationInfo)
         {
-            // stores all the dependencies that needs to be installed in this step
-            Dictionary<string, string> dependencies = new ();
-
+            if (packageRegistrationInfo.added.Count == 0)
+            {
+                return;
+            }
+            
+            Debug.Log($"Packages Registered: {string.Join(" ", packageRegistrationInfo.added.Select(x=>x.name))}");
+            
             // loop through all of the added packages and get their git
             // dependencies and add it to the list that contains all the
             // dependencies that need to be installed
+            Dictionary<string, string> dependencies = new();
+            List<PackageInfo> installedPackages = PackageInfo.GetAllRegisteredPackages().ToList();
             foreach (var package in packageRegistrationInfo.added)
             {
                 // get the dependencies of the added package
-                if (!GetDependencies(package, out PackageGitDependency package_dependencies))
+                if (!GetDependencies(package, out PackageGitDependency packageDependencies))
                 {
                     continue;
                 }
-
-                foreach (var gitDependency in package_dependencies.gitDependencies)
+                
+                foreach (var gitDependency in packageDependencies.gitDependencies)
                 {
+                    if (IsInCollection(gitDependency.Key, installedPackages))
+                    {
+                        continue;
+                    }
                     dependencies[gitDependency.Key] = gitDependency.Value;
                 }
             }
-
-            // remove any dependencies that's already installed
-            var installed_packages = PackageInfo.GetAllRegisteredPackages().ToList();
-            foreach (string dependency in dependencies.Keys.ToArray())
-            {
-                if (IsInCollection(dependency, installed_packages))
-                {
-                    dependencies.Remove(dependency);
-                }
-            }
-
+            
+            Debug.Log($"Packages Dependency: {string.Join(" ", dependencies.Keys)}");
+            
             // Install the dependencies
             InstallDependencies(dependencies);
         }
@@ -76,10 +78,10 @@ namespace Hibzz.DependencyResolver
         static bool GetDependencies(PackageInfo packageInfo, out PackageGitDependency dependencies)
         {
             // Read the contents of the package.json file
-            string package_json_path = $"{packageInfo.resolvedPath}/package.json";
-            string package_json_content = File.ReadAllText(package_json_path);
+            string packageJsonPath = $"{packageInfo.resolvedPath}/package.json";
+            string packageJsonContent = File.ReadAllText(packageJsonPath);
 
-            PackageGitDependency packageGitDependency = BsonSerializer.Deserialize<PackageGitDependency>(package_json_content);
+            PackageGitDependency packageGitDependency = BsonSerializer.Deserialize<PackageGitDependency>(packageJsonContent);
             // if no token with the key git-dependecies is found, failed to get git dependencies
             if (packageGitDependency.gitDependencies is null || packageGitDependency.gitDependencies.Count == 0)
             {
@@ -89,6 +91,7 @@ namespace Hibzz.DependencyResolver
 
             // convert the git dependency token to a list of strings...
             // maybe we should check for errors in this process? what if git-dependency isn't array of string?
+            
             dependencies = packageGitDependency;
             return true;
         }
@@ -102,7 +105,10 @@ namespace Hibzz.DependencyResolver
         static bool IsInCollection(string dependency, List<PackageInfo> collection)
         {
             // when package collection given is null, it's inferred that the dependency is not in the collection
-            if (collection == null) { return false; }
+            if (collection == null)
+            {
+                return false;
+            }
 
             // check if any of the installed package has the dependency
             foreach (var package in collection)
@@ -125,15 +131,13 @@ namespace Hibzz.DependencyResolver
         /// <summary>
         /// Install all the given dependencies
         /// </summary>
-        /// <param name="dependencies">A list of dependencies to install</param>
         static void InstallDependencies(Dictionary<string, string> dependencies)
         {
-            // there are no dependencies to install, skip
-            if (dependencies == null || dependencies.Count <= 0)
+            if (dependencies.Count == 0)
             {
                 return;
             }
-
+            
             // before installing the packages, make sure that user knows what
             // the dependencies to install are... additionally, check if the
             // application is being run on batch mode so that we can skip the
@@ -141,7 +145,7 @@ namespace Hibzz.DependencyResolver
             if (!Application.isBatchMode &&
                 !EditorUtility.DisplayDialog(
                     $"Dependency Resolver",
-                    $"The following dependencies are required: \n\n{GetPrintFriendlyName(dependencies.Keys.ToList())}",
+                    $"The following dependencies are required:\n{string.Join("\n", dependencies.Keys)}",
                     "Install Dependencies",
                     "Cancel"))
             {
@@ -151,39 +155,26 @@ namespace Hibzz.DependencyResolver
 
             // the user pressed install, perform the actual installation
             // (or the application was in batch mode)
-            packageInstallationRequest = Client.AddAndRemove(dependencies.Values.ToArray(), null);
+            packageInstallationRequest = Client.AddAndRemove(dependencies.Values.ToArray());
 
             // show the progress bar till the installation is complete
             EditorUtility.DisplayProgressBar("Dependency Resolver", "Preparing installation of dependencies...", 0);
             EditorApplication.update += DisplayProgress;
         }
 
-        /// <summary>
-        /// Get a print friendly name of all dependencies to show in the dialog box
-        /// </summary>
-        /// <param name="dependencies">The list of dependencies to parse through</param>
-        /// <returns>A print friendly string representing all the dependencies</returns>
-        static string GetPrintFriendlyName(List<string> dependencies)
-        {
-            // ideally, we want the package name, but that requires downloading the package.json and parsing through
-            // it, which is kinda too much... i could ask for the users to give a package name along with the url in
-            // package.json, but again too complicated just for a dialog message... username/repo will do fine for now
-
-            string result = string.Join("\n", dependencies);    // concatenate dependencies on a new line
-
-            return result;
-        }
 
         /// <summary>
         /// Shows a progress bar till the AddAndRemoveRequest is completed
         /// </summary>
         static void DisplayProgress()
         {
-            if(packageInstallationRequest.IsCompleted)
+            if (!packageInstallationRequest.IsCompleted)
             {
-                EditorUtility.ClearProgressBar();
-                EditorApplication.update -= DisplayProgress;
+                return;
             }
+            
+            EditorUtility.ClearProgressBar();
+            EditorApplication.update -= DisplayProgress;
         }
     }
 }
