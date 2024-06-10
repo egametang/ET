@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ET;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using UnityEditor;
@@ -22,6 +23,16 @@ namespace Hibzz.DependencyResolver
     [InitializeOnLoad]
     public class DependencyResolver
     {
+        [MenuItem("ET/MoveToPackages")]
+        static void MoveToPackage()
+        {
+#if UNITY_EDITOR_WIN
+            ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"");
+#else
+            ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"");
+#endif
+        }
+        
         static AddAndRemoveRequest packageInstallationRequest;
 
         // called by the attribute [InitializeOnLoad]
