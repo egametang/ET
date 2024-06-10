@@ -15,7 +15,7 @@
   "relatedPackages": {},
   "gitDependencies": {
     "hybridclr": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
-    "cn.etetet.core": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.core#develop",
-    "cn.etetet.yooassets": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.yooassets#develop"
+    "cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1",
+    "cn.etetet.yooassets": "https://github.com/ET-Packages/cn.etetet.yooassets.git#0.0.1"
     }
 }

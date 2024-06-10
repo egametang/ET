@@ -17,6 +17,6 @@
     "com.tuyoogame.yooasset": "2.1.1"
   },
   "gitDependencies": {
-    "cn.etetet.core": "https://github.com/egametang/ET.git?path=Packages/cn.etetet.core#develop"
+    "cn.etetet.core": "https://github.com/ET-Packages/cn.etetet.core.git#0.0.1"
   }
 }
