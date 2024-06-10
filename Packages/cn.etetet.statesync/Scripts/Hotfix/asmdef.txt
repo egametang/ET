@@ -1,9 +1,0 @@
-{
-    "references": [
-        "ET.Core",
-        "Unity.Mathematics",
-        "ET.Loader",
-        "MemoryPack",
-        "ET.Model"
-    ]
-}
