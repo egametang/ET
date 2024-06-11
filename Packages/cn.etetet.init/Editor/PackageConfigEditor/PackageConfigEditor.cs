@@ -7,25 +7,6 @@ namespace ET
     [CustomEditor(typeof(PackageConfig))]
     public class PackageConfigEditor: Editor
     {
-        [MenuItem("ET/Create All PackageType")]
-        public static void GeneratePackageTypeFile()
-        {
-            string[] packageConfigs = AssetDatabase.FindAssets("t:PackageConfig");
-            foreach (string packageConfig in packageConfigs)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(packageConfig);
-                PackageConfig config = AssetDatabase.LoadAssetAtPath<PackageConfig>(path);
-                if (!config.CreatePackageTypeFile)
-                {
-                    continue;
-                }
-
-                string dir = Application.dataPath + "/../" + $"{Path.GetDirectoryName(path)}" + "/Scripts/Model/Share/";
-                CreatePackageTypeFile(dir, config);
-            }
-            Debug.Log("Generate PackageType File Finish!");
-        }
-
         public static void CreatePackageTypeFile(string dir, PackageConfig config)
         {
             if (!Directory.Exists(dir))
