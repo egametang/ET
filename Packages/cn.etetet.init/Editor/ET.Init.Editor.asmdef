@@ -1,7 +1,9 @@
 {
     "name": "ET.Init.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "ET.Init"
+    ],
     "includePlatforms": [
         "Editor"
     ],
