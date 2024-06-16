@@ -63,6 +63,14 @@ namespace ET
                 AssetDatabase.Refresh();
             }
             
+            string address = EditorGUILayout.TextField($"Address", globalConfig.Address);
+            if (address != globalConfig.Address)
+            {
+                globalConfig.Address = address;
+                EditorResHelper.SaveAssets(globalConfig);
+                AssetDatabase.Refresh();
+            }
+            
         }
     }
 }

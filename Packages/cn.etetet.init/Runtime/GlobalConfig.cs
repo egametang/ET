@@ -23,5 +23,7 @@ namespace ET
         public BuildType BuildType;
 
         public string SceneName;
+
+        public string Address;
     }
 }

@@ -8,7 +8,6 @@
 [301, {"_t":"StartSceneConfig","_id":301,"Process":1,"Zone":3,"SceneType":"Gate","Name":"Gate1","Port":30101}],
 [302, {"_t":"StartSceneConfig","_id":302,"Process":1,"Zone":3,"SceneType":"Gate","Name":"Gate2","Port":30102}],
 [303, {"_t":"StartSceneConfig","_id":303,"Process":1,"Zone":3,"SceneType":"Location","Name":"Location","Port":0}],
-[304, {"_t":"StartSceneConfig","_id":304,"Process":1,"Zone":3,"SceneType":"Match","Name":"Match","Port":0}],
-[305, {"_t":"StartSceneConfig","_id":305,"Process":1,"Zone":3,"SceneType":"Map","Name":"Map1","Port":0}],
-[306, {"_t":"StartSceneConfig","_id":306,"Process":1,"Zone":3,"SceneType":"Map","Name":"Map2","Port":0}],
+[304, {"_t":"StartSceneConfig","_id":304,"Process":1,"Zone":3,"SceneType":"Map","Name":"Map1","Port":0}],
+[305, {"_t":"StartSceneConfig","_id":305,"Process":1,"Zone":3,"SceneType":"Map","Name":"Map2","Port":0}],
 ]}

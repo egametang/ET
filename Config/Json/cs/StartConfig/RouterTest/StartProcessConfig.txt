@@ -1,9 +1,0 @@
-{"dict": [
-[1, {"_t":"StartProcessConfig","_id":1,"MachineId":1,"Port":20001}],
-[2, {"_t":"StartProcessConfig","_id":2,"MachineId":1,"Port":20002}],
-[3, {"_t":"StartProcessConfig","_id":3,"MachineId":1,"Port":20003}],
-[4, {"_t":"StartProcessConfig","_id":4,"MachineId":1,"Port":20004}],
-[5, {"_t":"StartProcessConfig","_id":5,"MachineId":1,"Port":20005}],
-[6, {"_t":"StartProcessConfig","_id":6,"MachineId":1,"Port":20006}],
-[7, {"_t":"StartProcessConfig","_id":7,"MachineId":1,"Port":20007}],
-]}
