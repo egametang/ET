@@ -30,6 +30,12 @@
 19. [Tank Clash: Blitz!](https://apps.apple.com/us/app/tank-clash-blitz/id6477913248)
 ---
 
+# ET9.0 develop (西施)  
+
+# [ET Packages](https://github.com/orgs/ET-Packages/repositories)  
+# [ET Package制作指南](./Book/8.1ET Package制作指南.md)  
+
+
 # ET8.1 发布!  
 8.1跟8区别不大，代码结构完全没有变化，主要是编译方式的修改，可以在Unity中按F6进行编译，也可以在IDE中进行编译，运行中reload可以先按F6编译，再按F7进行热重载   
 
@@ -81,8 +87,6 @@
 
 
 # [ET论坛](https://et-framework.cn)  
-
-# [ET商店](./Store)  
 
 # [ET视频教程](https://community.uwa4d.com/search?keyword=ET&scope=1)   
 
