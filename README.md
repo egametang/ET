@@ -32,8 +32,9 @@
 
 # ET9.0 develop (西施)  
 
-# [ET Packages](https://github.com/orgs/ET-Packages/repositories)  
-# [ET Package制作指南](./Book/8.1ET Package制作指南.md)  
+# [ETPackages](https://github.com/orgs/ET-Packages/repositories)  
+
+# [ETPackages制作指南](./Book/8.1ET Package制作指南.md)  
 
 
 # ET8.1 发布!  
