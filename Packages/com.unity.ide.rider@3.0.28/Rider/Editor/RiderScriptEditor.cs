@@ -311,13 +311,13 @@ namespace Packages.Rider.Editor
         return false;
       }
       
-      if (!IsUnityScript(path))
-      {
-        m_ProjectGeneration.SyncIfNeeded(affectedFiles: new string[] { }, new string[] { });
-        var fastOpenResult = EditorPluginInterop.OpenFileDllImplementation(path, line, column);
-        if (fastOpenResult)
-          return true;
-      }
+      //if (!IsUnityScript(path))
+      //{
+      //  m_ProjectGeneration.SyncIfNeeded(affectedFiles: new string[] { }, new string[] { });
+      //  var fastOpenResult = EditorPluginInterop.OpenFileDllImplementation(path, line, column);
+      //  if (fastOpenResult)
+      //    return true;
+      //}
       
       var slnFile = GetSolutionFile(path);
       return Discovery.RiderFileOpener.OpenFile(CurrentEditor, slnFile, path, line, column);
@@ -325,18 +325,18 @@ namespace Packages.Rider.Editor
 
     private string GetSolutionFile(string path)
     {
-      if (IsUnityScript(path))
-      {
-        return Path.Combine(GetBaseUnityDeveloperFolder(), "Projects/CSharp/Unity.CSharpProjects.gen.sln");
-      }
+      //if (IsUnityScript(path))
+      //{
+      //  return Path.Combine(GetBaseUnityDeveloperFolder(), "Projects/CSharp/Unity.CSharpProjects.gen.sln");
+      //}
+//
+      //var solutionFile = m_ProjectGeneration.SolutionFile();
+      //if (File.Exists(solutionFile))
+      //{
+      //  return solutionFile;
+      //}
 
-      var solutionFile = m_ProjectGeneration.SolutionFile();
-      if (File.Exists(solutionFile))
-      {
-        return solutionFile;
-      }
-
-      return "";
+      return "ET.sln";
     }
 
     static bool IsUnityScript(string path)
