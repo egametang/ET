@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ET.Loader
+namespace ET
 {
     public class AssemblyDefinitionAsset
     {
@@ -45,7 +45,6 @@ namespace ET.Loader
         public static readonly string[] PackagePaths = { "Packages", "Library/PackageCache" };
         
         // 自动把各个包中的引用加到Assets对应的包中去，后面搞个编辑器来编辑每个包的引用
-        [MenuItem("ET/Update Model Hotfix Assembly Definition")]
         public static void UpdateAssemblyDefinition()
         {
             AllRefInfo allRefInfo = new();
