@@ -146,6 +146,7 @@ namespace Hibzz.DependencyResolver
         {
             if (dependencies.Count == 0)
             {
+                MoveToPackage();
                 return;
             }
             
