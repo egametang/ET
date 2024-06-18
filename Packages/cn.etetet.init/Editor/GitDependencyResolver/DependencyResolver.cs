@@ -35,7 +35,6 @@ namespace Hibzz.DependencyResolver
         
         static AddAndRemoveRequest packageInstallationRequest;
 
-        // called by the attribute [InitializeOnLoad]
         static DependencyResolver()
         {
             Events.registeredPackages += OnPackagesRegistered;
@@ -187,6 +186,50 @@ namespace Hibzz.DependencyResolver
             
             EditorUtility.ClearProgressBar();
             EditorApplication.update -= DisplayProgress;
+        }
+        
+        [MenuItem("ET/RepairDependencies")]
+        static void RepairDependencies()
+        {
+            Dictionary<string, string> dependencies = new();
+            List<PackageInfo> installedPackages = PackageInfo.GetAllRegisteredPackages().ToList();
+            
+            foreach (var package in installedPackages)
+            {
+                if (!GetDependencies(package, out PackageGitDependency packageDependencies))
+                {
+                    continue;
+                }
+                
+                foreach (var gitDependency in packageDependencies.gitDependencies)
+                {
+                    if (IsInCollection(gitDependency.Key, installedPackages))
+                    {
+                        continue;
+                    }
+                    Debug.Log($"Dependency not found: {gitDependency.Key}");
+                    dependencies.Add(gitDependency.Key, gitDependency.Value);
+                }
+            }
+
+            if (dependencies.Count == 0)
+            {
+                Debug.Log($"git Dependencies are all installed");
+                return;
+            }
+            
+            if (!Application.isBatchMode &&
+                !EditorUtility.DisplayDialog(
+                    $"Dependency Resolver",
+                    $"The following dependencies are required:\n{string.Join("\n", dependencies.Keys)}",
+                    "Install Dependencies",
+                    "Cancel"))
+            {
+                // user decided to cancel the installation of the dependencies...
+                return;
+            }
+            
+            InstallDependencies(dependencies);
         }
     }
 }
