@@ -88,6 +88,12 @@ namespace Hibzz.DependencyResolver
         {
             // Read the contents of the package.json file
             string packageJsonPath = $"{packageInfo.resolvedPath}/package.json";
+
+            if (!File.Exists(packageJsonPath))
+            {
+                throw new Exception("package already move to packages dir, please refresh your unity project!");
+            }
+            
             string packageJsonContent = File.ReadAllText(packageJsonPath);
 
             PackageGitDependency packageGitDependency = BsonSerializer.Deserialize<PackageGitDependency>(packageJsonContent);
