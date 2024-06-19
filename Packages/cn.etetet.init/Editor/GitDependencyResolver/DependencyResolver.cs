@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ET;
@@ -7,10 +8,9 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using UnityEditor;
 using UnityEditor.PackageManager;
-using UnityEngine;
-
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using UnityEditor.PackageManager.Requests;
+using Debug = UnityEngine.Debug;
 
 namespace Hibzz.DependencyResolver
 {
@@ -23,14 +23,15 @@ namespace Hibzz.DependencyResolver
     [InitializeOnLoad]
     public class DependencyResolver
     {
-        [MenuItem("ET/MoveToPackages")]
         static void MoveToPackage()
         {
 #if UNITY_EDITOR_WIN
-            ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
+            Process process = ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
 #else
-            ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
+            Process process = ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
 #endif
+            Debug.Log(process.StandardOutput.ReadToEnd());
+            AssetDatabase.Refresh();
         }
         
         static AddAndRemoveRequest packageInstallationRequest;
@@ -72,9 +73,6 @@ namespace Hibzz.DependencyResolver
                     dependencies[gitDependency.Key] = gitDependency.Value;
                 }
             }
-
-            MoveToPackage();
-            AssetDatabase.Refresh();
 
             // Install the dependencies
             InstallDependencies(dependencies);
@@ -147,6 +145,8 @@ namespace Hibzz.DependencyResolver
             if (dependencies.Count == 0)
             {
                 MoveToPackage();
+                
+                Debug.Log($"git Dependencies are all installed");
                 return;
             }
             
@@ -183,9 +183,7 @@ namespace Hibzz.DependencyResolver
         [MenuItem("ET/RepairDependencies")]
         static void RepairDependencies()
         {
-            AssetDatabase.Refresh();
             MoveToPackage();
-            AssetDatabase.Refresh();
             
             Dictionary<string, string> dependencies = new();
             List<PackageInfo> installedPackages = PackageInfo.GetAllRegisteredPackages().ToList();
