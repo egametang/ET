@@ -27,9 +27,9 @@ namespace Hibzz.DependencyResolver
         static void MoveToPackage()
         {
 #if UNITY_EDITOR_WIN
-            ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"");
+            ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
 #else
-            ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"");
+            ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
 #endif
         }
         
@@ -72,9 +72,10 @@ namespace Hibzz.DependencyResolver
                     dependencies[gitDependency.Key] = gitDependency.Value;
                 }
             }
-            
-            Debug.Log($"Packages Dependency: {string.Join(" ", dependencies.Keys)}");
-            
+
+            MoveToPackage();
+            AssetDatabase.Refresh();
+
             // Install the dependencies
             InstallDependencies(dependencies);
         }
@@ -153,16 +154,7 @@ namespace Hibzz.DependencyResolver
             // the dependencies to install are... additionally, check if the
             // application is being run on batch mode so that we can skip the
             // installation dialog
-            if (!Application.isBatchMode &&
-                !EditorUtility.DisplayDialog(
-                    $"Dependency Resolver",
-                    $"The following dependencies are required:\n{string.Join("\n", dependencies.Keys)}",
-                    "Install Dependencies",
-                    "Cancel"))
-            {
-                // user decided to cancel the installation of the dependencies...
-                return;
-            }
+            Debug.Log($"The following dependencies are required:\n{string.Join("\n", dependencies.Keys)}");
 
             // the user pressed install, perform the actual installation
             // (or the application was in batch mode)
@@ -191,6 +183,10 @@ namespace Hibzz.DependencyResolver
         [MenuItem("ET/RepairDependencies")]
         static void RepairDependencies()
         {
+            AssetDatabase.Refresh();
+            MoveToPackage();
+            AssetDatabase.Refresh();
+            
             Dictionary<string, string> dependencies = new();
             List<PackageInfo> installedPackages = PackageInfo.GetAllRegisteredPackages().ToList();
             
@@ -215,17 +211,6 @@ namespace Hibzz.DependencyResolver
             if (dependencies.Count == 0)
             {
                 Debug.Log($"git Dependencies are all installed");
-                return;
-            }
-            
-            if (!Application.isBatchMode &&
-                !EditorUtility.DisplayDialog(
-                    $"Dependency Resolver",
-                    $"The following dependencies are required:\n{string.Join("\n", dependencies.Keys)}",
-                    "Install Dependencies",
-                    "Cancel"))
-            {
-                // user decided to cancel the installation of the dependencies...
                 return;
             }
             

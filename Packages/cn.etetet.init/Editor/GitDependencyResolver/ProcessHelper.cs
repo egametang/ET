@@ -40,7 +40,7 @@ namespace ET
 
                 if (waitExit)
                 {
-                    WaitExitAsync(process);
+                    process.WaitForExit();
                 }
 
                 return process;
@@ -50,55 +50,5 @@ namespace ET
                 throw new Exception($"dir: {Path.GetFullPath(workingDirectory)}, command: {exe} {arguments}", e);
             }
         }
-        
-        private static async Task WaitExitAsync(System.Diagnostics.Process process)
-        {
-            await process.WaitForExitAsync();
-#if UNITY
-            Debug.Log($"process exit, exitcode: {process.ExitCode} {process.StandardOutput.ReadToEnd()} {process.StandardError.ReadToEnd()}");
-#endif
-        }
-        
-#if UNITY
-        private static async Task WaitForExitAsync(this System.Diagnostics.Process self)
-        {
-            if (!self.HasExited)
-            {
-                return;
-            }
-
-            try
-            {
-                self.EnableRaisingEvents = true;
-            }
-            catch (InvalidOperationException)
-            {
-                if (self.HasExited)
-                {
-                    return;
-                }
-                throw;
-            }
-
-            var tcs = new TaskCompletionSource<bool>();
-
-            void Handler(object s, EventArgs e) => tcs.TrySetResult(true);
-            
-            self.Exited += Handler;
-
-            try
-            {
-                if (self.HasExited)
-                {
-                    return;
-                }
-                await tcs.Task;
-            }
-            finally
-            {
-                self.Exited -= Handler;
-            }
-        }
-#endif
     }
 }
