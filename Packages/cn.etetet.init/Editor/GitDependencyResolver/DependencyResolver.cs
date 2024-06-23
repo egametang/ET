@@ -91,7 +91,7 @@ namespace Hibzz.DependencyResolver
 
             if (!File.Exists(packageJsonPath))
             {
-                throw new Exception("package already move to packages dir, please refresh your unity project!");
+                throw new Exception("package already move to packages dir, please refresh your unity project!  RepairDependencies retry please!");
             }
             
             string packageJsonContent = File.ReadAllText(packageJsonPath);
