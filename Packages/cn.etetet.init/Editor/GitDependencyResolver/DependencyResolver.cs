@@ -207,6 +207,17 @@ namespace Hibzz.DependencyResolver
                     {
                         continue;
                     }
+                    
+                    if (dependencies.TryGetValue(gitDependency.Key, out string findV))
+                    {
+                        if (findV != gitDependency.Value)
+                        {
+                            Debug.Log($"package dup {gitDependency.Key} but git url diff: {findV} {gitDependency.Value}");
+                        }
+                        
+                        continue;
+                    }
+                    
                     Debug.Log($"Dependency not found: {gitDependency.Key}");
                     dependencies.Add(gitDependency.Key, gitDependency.Value);
                 }
