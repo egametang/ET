@@ -60,6 +60,11 @@ namespace Hibzz.DependencyResolver
             List<PackageInfo> installedPackages = PackageInfo.GetAllRegisteredPackages().ToList();
             foreach (var package in packageRegistrationInfo.added)
             {
+                if (!package.name.StartsWith("cn.etetet."))
+                {
+                    continue;
+                }
+                
                 // get the dependencies of the added package
                 if (!GetDependencies(package, out PackageGitDependency packageDependencies))
                 {
@@ -93,7 +98,7 @@ namespace Hibzz.DependencyResolver
 
             if (!File.Exists(packageJsonPath))
             {
-                throw new Exception("package already move to packages dir, please refresh your unity project!  RepairDependencies retry please!");
+                throw new Exception($"package already move to packages dir, please refresh your unity project!  RepairDependencies retry please! {packageInfo.name} {packageJsonPath}");
             }
             
             string packageJsonContent = File.ReadAllText(packageJsonPath);
