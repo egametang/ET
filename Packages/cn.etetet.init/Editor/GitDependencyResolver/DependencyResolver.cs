@@ -17,7 +17,9 @@ namespace Hibzz.DependencyResolver
     [BsonIgnoreExtraElements]
     public class PackageGitDependency
     {
-        public Dictionary<string, string> gitDependencies;
+        public int Id;
+        public string Name;
+        public Dictionary<string, string> GitDependencies;
     }
     
     [InitializeOnLoad]
@@ -64,7 +66,7 @@ namespace Hibzz.DependencyResolver
                     continue;
                 }
                 
-                foreach (var gitDependency in packageDependencies.gitDependencies)
+                foreach (var gitDependency in packageDependencies.GitDependencies)
                 {
                     if (IsInCollection(gitDependency.Key, installedPackages))
                     {
@@ -87,7 +89,7 @@ namespace Hibzz.DependencyResolver
         static bool GetDependencies(PackageInfo packageInfo, out PackageGitDependency dependencies)
         {
             // Read the contents of the package.json file
-            string packageJsonPath = $"{packageInfo.resolvedPath}/package.json";
+            string packageJsonPath = $"{packageInfo.resolvedPath}/packagegit.json";
 
             if (!File.Exists(packageJsonPath))
             {
@@ -98,7 +100,7 @@ namespace Hibzz.DependencyResolver
 
             PackageGitDependency packageGitDependency = BsonSerializer.Deserialize<PackageGitDependency>(packageJsonContent);
             // if no token with the key git-dependecies is found, failed to get git dependencies
-            if (packageGitDependency.gitDependencies is null || packageGitDependency.gitDependencies.Count == 0)
+            if (packageGitDependency.GitDependencies is null || packageGitDependency.GitDependencies.Count == 0)
             {
                 dependencies = null;
                 return false;
@@ -201,7 +203,7 @@ namespace Hibzz.DependencyResolver
                     continue;
                 }
                 
-                foreach (var gitDependency in packageDependencies.gitDependencies)
+                foreach (var gitDependency in packageDependencies.GitDependencies)
                 {
                     if (IsInCollection(gitDependency.Key, installedPackages))
                     {
