@@ -1,0 +1,22 @@
+{
+    "name": "Halodi.PackageRegistryManager.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Artees.SemanticVersioning"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll",
+        "Unity.SharpZipLib.dll",
+        "Tomlyn.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

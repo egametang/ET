@@ -1,0 +1,25 @@
+{
+  "name": "com.halodi.halodi-unity-package-registry-manager",
+  "version": "1.0.5",
+  "displayName": "Halodi Package Registry Manager",
+  "type": "tool",
+  "samples": [],
+  "description": "Simple tool to manage scoped registries and NPM credentials.",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Halodi",
+    "email": "jesper@halodi.com",
+    "url": "https://halodi.com"
+  },
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.0.2",
+    "com.unity.sharp-zip-lib": "1.3.4-preview"
+  },
+  "publishConfig": {
+    "registry": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Halodi/halodi-unity-package-registry-manager.git"
+  }
+}
