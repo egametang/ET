@@ -203,6 +203,11 @@ namespace Hibzz.DependencyResolver
             
             foreach (var package in installedPackages)
             {
+                if (!package.name.StartsWith("cn.etetet."))
+                {
+                    continue;
+                }
+                
                 if (!GetDependencies(package, out PackageGitDependency packageDependencies))
                 {
                     continue;
