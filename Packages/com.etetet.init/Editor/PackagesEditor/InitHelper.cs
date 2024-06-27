@@ -23,7 +23,7 @@ namespace ET
         {
             AsmdefEditor.UpdateAssemblyDefinition();
             
-            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/cn.etetet.init/Resources/GlobalConfig.asset");
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
             
             AssetDatabase.Refresh();
