@@ -28,9 +28,9 @@ namespace Hibzz.DependencyResolver
         static void MoveToPackage()
         {
 #if UNITY_EDITOR_WIN
-            Process process = ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
+            Process process = ProcessHelper.Run("powershell.exe", $"-NoExit -ExecutionPolicy Bypass -File .\\Scripts/MoveToPackages.ps1", waitExit: true);
 #else
-            Process process = ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File \"Scripts/MoveToPackages.ps1\"", waitExit: true);
+            Process process = ProcessHelper.Run("pwsh", $"-NoExit -ExecutionPolicy Bypass -File ./Scripts/MoveToPackages.ps1", waitExit: true);
 #endif
             Debug.Log(process.StandardOutput.ReadToEnd());
             AssetDatabase.Refresh();
