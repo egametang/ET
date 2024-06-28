@@ -336,6 +336,8 @@ namespace Packages.Rider.Editor
       //  return solutionFile;
       //}
 
+      ET.CopyETslnHelper.Run();
+
       return "ET.sln";
     }
 

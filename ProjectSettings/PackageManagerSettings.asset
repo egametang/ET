@@ -34,11 +34,19 @@ MonoBehaviour:
     m_IsDefault: 0
     m_Capabilities: 0
     m_ConfigSource: 4
-  m_UserSelectedRegistryName: package.openupm.com
+  - m_Id: scoped:project:ET-Packages
+    m_Name: ET-Packages
+    m_Url: https://npm.pkg.github.com/@ET-Packages
+    m_Scopes:
+    - cn.etetet
+    m_IsDefault: 0
+    m_Capabilities: 0
+    m_ConfigSource: 4
+  m_UserSelectedRegistryName: ET-Packages
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_Modified: 0
     m_ErrorMessage: 
-    m_UserModificationsInstanceId: -838
-    m_OriginalInstanceId: -842
+    m_UserModificationsInstanceId: -858
+    m_OriginalInstanceId: -862
   m_LoadAssets: 0
