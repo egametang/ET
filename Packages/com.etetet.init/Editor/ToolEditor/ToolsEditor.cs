@@ -12,7 +12,7 @@ namespace ET
 #else
             const string tools = "dotnet.exe";
 #endif
-            ShellHelper.Run($"{tools} ./Bin/ET.ExcelExporter.dll", "./");
+            ShellHelper.Run($"{tools} ./Packages/cn.etetet.excel/DotNet~/Exe/ET.ExcelExporter.dll", "./");
         }
         
         [MenuItem("ET/Proto2CS")]
@@ -23,7 +23,7 @@ namespace ET
 #else
             const string tools = "dotnet.exe";
 #endif
-            ShellHelper.Run($"{tools} ./Bin/ET.Proto2CS.dll", "./");
+            ShellHelper.Run($"{tools} ./Packages/cn.etetet.proto/DotNet~/Exe/ET.Proto2CS.dll", "./");
         }
     }
 }
