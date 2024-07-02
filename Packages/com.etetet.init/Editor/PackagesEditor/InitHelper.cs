@@ -18,7 +18,21 @@ namespace ET
             Debug.Log("regenerate csproj");
         }
 
-        [MenuItem("ET/Packages Refresh")]
+        [MenuItem("ET/Init")]
+        public static void Init()
+        {
+            ToolsEditor.ExcelExporter();
+            
+            ToolsEditor.Proto2CS();
+            
+            Refresh();
+            
+            DefineHelper.EnableDefineSymbols("INITED", true);
+            
+            Debug.Log("Init finish!");
+        }
+
+        [MenuItem("ET/Refresh")]
         public static void Refresh()
         {
             AsmdefEditor.UpdateAssemblyDefinition();
@@ -26,7 +40,6 @@ namespace ET
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
             
-            DefineHelper.EnableDefineSymbols("INITED", true);
             
             AssetDatabase.Refresh();
             Debug.Log("packages refresh finish!");
