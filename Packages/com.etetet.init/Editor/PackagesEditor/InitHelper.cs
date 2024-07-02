@@ -26,6 +26,8 @@ namespace ET
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
             
+            DefineHelper.EnableDefineSymbols("INITED", true);
+            
             AssetDatabase.Refresh();
             Debug.Log("packages refresh finish!");
         }
