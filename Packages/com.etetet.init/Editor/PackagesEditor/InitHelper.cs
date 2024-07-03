@@ -21,13 +21,20 @@ namespace ET
         [MenuItem("ET/Init")]
         public static void Init()
         {
+            LinkSlnHelper.Run();
+            
             ToolsEditor.ExcelExporter();
             
             ToolsEditor.Proto2CS();
             
-            Refresh();
+            AsmdefEditor.UpdateAssemblyDefinition();
+            
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
+            CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
             
             DefineHelper.EnableDefineSymbols("INITED", true);
+            
+            AssetDatabase.Refresh();
             
             Debug.Log("Init finish!");
         }
@@ -39,7 +46,6 @@ namespace ET
             
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
-            
             
             AssetDatabase.Refresh();
             Debug.Log("packages refresh finish!");
