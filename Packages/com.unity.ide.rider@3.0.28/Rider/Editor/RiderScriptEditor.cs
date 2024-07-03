@@ -336,7 +336,7 @@ namespace Packages.Rider.Editor
       //  return solutionFile;
       //}
 
-      return "ET.sln";
+      return System.IO.Path.GetFullPath("./ET.sln");
     }
 
     static bool IsUnityScript(string path)

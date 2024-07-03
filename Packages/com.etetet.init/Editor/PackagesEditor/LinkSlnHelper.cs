@@ -25,11 +25,7 @@ namespace ET
                 throw new Exception("not found ET.sln in et packages!");
             }
             
-#if UNITY_EDITOR_WIN
-            Process process = ProcessHelper.Run("powershell.exe", $"New-Item -ItemType HardLink -Target {slns[0]} ./ET.sln", waitExit: true);
-#else
-            Process process = ProcessHelper.Run("pwsh", $"New-Item -ItemType HardLink -Target {slns[0]} ./ET.sln", waitExit: true);
-#endif
+            Process process = ProcessHelper.PowerShell($"-c New-Item -ItemType HardLink -Target {slns[0]} ./ET.sln", waitExit: true);
             UnityEngine.Debug.Log(process.StandardOutput.ReadToEnd());
         }
     }

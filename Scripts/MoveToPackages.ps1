@@ -8,9 +8,10 @@ foreach($dir in Get-ChildItem "Library/PackageCache")
     if ($dir.Name.StartsWith("cn.etetet"))
     {
         $baseName = $dir.Name.Substring(0, $dir.Name.indexOf("@"))
-             
-        Move-Item "Library/PackageCache/$dir" "Packages/$baseName"
-        Write-Host "move Library/PackageCache/$dir to Packages/$baseName"
+        
+        $t = $dir.Name
+        Write-Host "move Library/PackageCache/$t to Packages/$baseName"
+        Move-Item "Library/PackageCache/$t" "Packages/$baseName"
     }  
 }
 

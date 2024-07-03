@@ -9,6 +9,18 @@ namespace ET
 {
     public static class ProcessHelper
     {
+        public static System.Diagnostics.Process PowerShell(string arguments, string workingDirectory = ".", bool waitExit = false)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Run("powershell.exe", arguments, workingDirectory, waitExit);
+            }
+            else
+            {
+                return Run("/usr/local/bin/pwsh", arguments, workingDirectory, waitExit);
+            }
+        }
+
         public static System.Diagnostics.Process Run(string exe, string arguments, string workingDirectory = ".", bool waitExit = false)
         {
             //Log.Debug($"Process Run exe:{exe} ,arguments:{arguments} ,workingDirectory:{workingDirectory}");
