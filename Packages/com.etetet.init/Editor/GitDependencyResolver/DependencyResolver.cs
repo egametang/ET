@@ -14,14 +14,6 @@ using Debug = UnityEngine.Debug;
 
 namespace Hibzz.DependencyResolver
 {
-    [BsonIgnoreExtraElements]
-    public class PackageGitDependency
-    {
-        public int Id;
-        public string Name;
-        public Dictionary<string, string> GitDependencies;
-    }
-    
     [InitializeOnLoad]
     public class DependencyResolver
     {
@@ -63,7 +55,7 @@ namespace Hibzz.DependencyResolver
                 }
                 
                 // get the dependencies of the added package
-                if (!GetDependencies(package, out PackageGitDependency packageDependencies))
+                if (!GetDependencies(package, out PackageGit packageDependencies))
                 {
                     continue;
                 }
@@ -88,9 +80,8 @@ namespace Hibzz.DependencyResolver
         /// <param name="packageInfo">The package to get the git dependencies from</param>
         /// <param name="dependencies">The retrieved list of git dependencies </param>
         /// <returns>Was the request successful?</returns>
-        static bool GetDependencies(PackageInfo packageInfo, out PackageGitDependency dependencies)
+        static bool GetDependencies(PackageInfo packageInfo, out PackageGit dependencies)
         {
-            // Read the contents of the package.json file
             string packageJsonPath = $"{packageInfo.resolvedPath}/packagegit.json";
 
             if (!File.Exists(packageJsonPath))
@@ -98,20 +89,12 @@ namespace Hibzz.DependencyResolver
                 throw new Exception($"package already move to packages dir, please refresh your unity project!  RepairDependencies retry please! {packageInfo.name} {packageJsonPath}");
             }
             
-            string packageJsonContent = File.ReadAllText(packageJsonPath);
-
-            PackageGitDependency packageGitDependency = BsonSerializer.Deserialize<PackageGitDependency>(packageJsonContent);
-            // if no token with the key git-dependecies is found, failed to get git dependencies
-            if (packageGitDependency.GitDependencies is null || packageGitDependency.GitDependencies.Count == 0)
+            dependencies = PackageGitHelper.Load(packageJsonPath);
+            
+            if (dependencies.GitDependencies is null || dependencies.GitDependencies.Count == 0)
             {
-                dependencies = null;
                 return false;
             }
-
-            // convert the git dependency token to a list of strings...
-            // maybe we should check for errors in this process? what if git-dependency isn't array of string?
-            
-            dependencies = packageGitDependency;
             return true;
         }
 
@@ -205,7 +188,7 @@ namespace Hibzz.DependencyResolver
                     continue;
                 }
                 
-                if (!GetDependencies(package, out PackageGitDependency packageDependencies))
+                if (!GetDependencies(package, out PackageGit packageDependencies))
                 {
                     continue;
                 }

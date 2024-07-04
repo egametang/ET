@@ -25,61 +25,41 @@ namespace ET
         public string[] additionalReferences;
         public string compilerOptions;
     }
-
-    public class AllRefInfo
-    {
-        public Dictionary<string, HashSet<string>> References = new();
-        
-        public AllRefInfo()
-        {
-            foreach (string assName in AsmdefEditor.AssNames)
-            {
-                References[assName] = new HashSet<string>();
-            }
-        }
-    }
     
-    public static class AsmdefEditor
+    public static class ScriptsReferencesHelper
     {
         public static readonly string[] AssNames = { "Model", "ModelView", "Hotfix", "HotfixView" };
         public static readonly string[] PackagePaths = { "Packages", "Library/PackageCache" };
         
         // 自动把各个包中的引用加到Assets对应的包中去，后面搞个编辑器来编辑每个包的引用
-        public static void UpdateAssemblyDefinition()
+        [MenuItem("ET/UpdateScriptsReferences")]
+        public static void Run()
         {
-            AllRefInfo allRefInfo = new();
-
-            foreach (string packagePath in PackagePaths)
+            Dictionary<string, HashSet<string>> refs = new ()
             {
-                foreach (string directory in Directory.GetDirectories(packagePath, "cn.etetet.*"))
+                {"Model", new HashSet<string>()}, 
+                {"Hotfix", new HashSet<string>()},
+                {"ModelView", new HashSet<string>()}, 
+                {"HotfixView", new HashSet<string>()}
+            }; 
+            foreach (string directory in Directory.GetDirectories("Packages", "cn.etetet.*"))
+            {
+                PackageGit packageGit = PackageGitHelper.Load(Path.Combine(directory, "packagegit.json"));
+                if (packageGit.ScriptsReferences == null)
                 {
-                    foreach (string assName in AssNames)
+                    continue;
+                }
+                foreach ((string assName, string[] references) in packageGit.ScriptsReferences)
+                {
+                    foreach (string s in references)
                     {
-                        string p = Path.Combine(directory, "Scripts/" + assName + "/asmdef.txt");
-                        if (!File.Exists(p))
-                        {
-                            continue;
-                        }
-
-                        string json = File.ReadAllText(p);
-                        try
-                        {
-                            AssemblyDefinitionAsset assemblyDefinitionAsset = JsonUtility.FromJson<AssemblyDefinitionAsset>(json);
-                            foreach (string reference in assemblyDefinitionAsset.references)
-                            {
-                                allRefInfo.References[assName].Add(reference);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception($"parse json error: {p} {json}", e);
-                        }
+                        refs[assName].Add(s);
                     }
                 }
             }
 
             List<string> findRet = new List<string>();
-            foreach (string assName in AssNames)
+            foreach ((string assName, HashSet<string> refAss) in refs)
             {
                 findRet.Clear();
                 FileHelper.GetAllFiles(findRet, "./Packages", $"ET.{assName}.asmdef");
@@ -92,7 +72,7 @@ namespace ET
                 string json = File.ReadAllText(p);
                 AssemblyDefinitionAsset assemblyDefinitionAsset = JsonUtility.FromJson<AssemblyDefinitionAsset>(json);
 
-                assemblyDefinitionAsset.references = allRefInfo.References[assName].ToArray();
+                assemblyDefinitionAsset.references = refAss.ToArray();
 
                 File.WriteAllText(p, JsonUtility.ToJson(assemblyDefinitionAsset, true));
             }

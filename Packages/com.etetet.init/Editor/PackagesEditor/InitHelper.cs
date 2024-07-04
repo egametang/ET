@@ -27,7 +27,7 @@ namespace ET
             
             ToolsEditor.Proto2CS();
             
-            AsmdefEditor.UpdateAssemblyDefinition();
+            ScriptsReferencesHelper.Run();
             
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
@@ -42,7 +42,7 @@ namespace ET
         [MenuItem("ET/Refresh")]
         public static void Refresh()
         {
-            AsmdefEditor.UpdateAssemblyDefinition();
+            ScriptsReferencesHelper.Run();
             
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
