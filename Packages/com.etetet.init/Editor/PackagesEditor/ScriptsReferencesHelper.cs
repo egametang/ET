@@ -72,7 +72,9 @@ namespace ET
                 string json = File.ReadAllText(p);
                 AssemblyDefinitionAsset assemblyDefinitionAsset = JsonUtility.FromJson<AssemblyDefinitionAsset>(json);
 
-                assemblyDefinitionAsset.references = refAss.ToArray();
+                List<string> list = refAss.ToList();
+                list.Sort();
+                assemblyDefinitionAsset.references = list.ToArray();
 
                 File.WriteAllText(p, JsonUtility.ToJson(assemblyDefinitionAsset, true));
             }
