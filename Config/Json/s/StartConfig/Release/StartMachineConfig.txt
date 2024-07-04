@@ -1,3 +1,0 @@
-{"dict": [
-[1, {"_t":"StartMachineConfig","_id":1,"InnerIP":"127.0.0.1","OuterIP":"127.0.0.1","WatcherPort":"10000"}],
-]}
