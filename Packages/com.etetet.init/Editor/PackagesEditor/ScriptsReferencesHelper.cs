@@ -58,11 +58,21 @@ namespace ET
                 }
             }
 
+            string fourAssemblyDir = null;
+            foreach (string directory in Directory.GetDirectories("Packages", "cn.etetet.*"))
+            {
+                if (File.Exists(Path.Combine(directory, "Runtime/Model/ET.Model.asmdef")))
+                {
+                    fourAssemblyDir = directory;
+                    break;
+                }
+            }
+            
             List<string> findRet = new List<string>();
             foreach ((string assName, HashSet<string> refAss) in refs)
             {
                 findRet.Clear();
-                FileHelper.GetAllFiles(findRet, "./Packages", $"ET.{assName}.asmdef");
+                FileHelper.GetAllFiles(findRet, fourAssemblyDir, $"ET.{assName}.asmdef");
                 string p = findRet[0];
                 if (!File.Exists(p))
                 {
