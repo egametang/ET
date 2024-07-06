@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
   CodeMode: 3
-  BuildType: 0
-  SceneName: LockStep
+  BuildType: 1
+  SceneName: StateSync
   Address: 127.0.0.1:10101
