@@ -17,7 +17,7 @@ namespace Hibzz.DependencyResolver
     [InitializeOnLoad]
     public class DependencyResolver
     {
-        [MenuItem("ET/MoveToPackage")]
+        //[MenuItem("ET/MoveToPackage")]
         static void MoveToPackage()
         {
             Process process = ProcessHelper.PowerShell($"-NoExit -ExecutionPolicy Bypass -File .\\Scripts/MoveToPackages.ps1", waitExit: true);

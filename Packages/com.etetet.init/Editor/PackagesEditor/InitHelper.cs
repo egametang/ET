@@ -6,6 +6,7 @@ namespace ET
     public static class InitHelper
     {
         [InitializeOnLoadMethod]
+        [MenuItem("ET/ReGenerateProjectFiles")]
         public static void ReGenerateProjectFiles()
         {
             Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
@@ -27,10 +28,14 @@ namespace ET
             
             ToolsEditor.Proto2CS();
             
+            // 刷新4个程序集的asmdef引用
             ScriptsReferencesHelper.Run();
             
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Packages/com.etetet.init/Resources/GlobalConfig.asset");
             CodeModeChangeHelper.ChangeToCodeMode(globalConfig.CodeMode);
+            
+            // 设置GlobalConfig中的SceneName字段
+            SceneNameSetHelper.Run();
             
             InitScriptHelper.Run();
             

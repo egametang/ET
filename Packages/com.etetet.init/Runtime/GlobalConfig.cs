@@ -20,8 +20,6 @@ namespace ET
     {
         public CodeMode CodeMode;
 
-        public BuildType BuildType;
-
         public string SceneName;
 
         public string Address;

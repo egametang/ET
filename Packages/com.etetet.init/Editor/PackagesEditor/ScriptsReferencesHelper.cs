@@ -32,7 +32,7 @@ namespace ET
         public static readonly string[] PackagePaths = { "Packages", "Library/PackageCache" };
         
         // 自动把各个包中的引用加到Assets对应的包中去，后面搞个编辑器来编辑每个包的引用
-        [MenuItem("ET/UpdateScriptsReferences")]
+        //[MenuItem("ET/UpdateScriptsReferences")]
         public static void Run()
         {
             Dictionary<string, HashSet<string>> refs = new ()

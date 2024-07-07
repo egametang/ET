@@ -11,7 +11,7 @@ namespace ET
         private void OnEnable()
         {
             GlobalConfig globalConfig = (GlobalConfig)this.target;
-            globalConfig.BuildType = EditorUserBuildSettings.development ? BuildType.Debug : BuildType.Release;
+            //globalConfig.BuildType = EditorUserBuildSettings.development ? BuildType.Debug : BuildType.Release;
             EditorResHelper.SaveAssets(globalConfig);
         }
 
@@ -27,21 +27,6 @@ namespace ET
                 
                 CodeModeChangeHelper.ChangeToCodeMode(codeMode);
                 
-                AssetDatabase.Refresh();
-                InitHelper.ReGenerateProjectFiles();
-            }
-            
-            BuildType buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType", globalConfig.BuildType);
-            if (buildType != globalConfig.BuildType)
-            {
-                globalConfig.BuildType = buildType;
-                EditorUserBuildSettings.development = globalConfig.BuildType switch
-                {
-                    BuildType.Debug => true,
-                    BuildType.Release => false,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-                EditorResHelper.SaveAssets(globalConfig);
                 AssetDatabase.Refresh();
                 InitHelper.ReGenerateProjectFiles();
             }
