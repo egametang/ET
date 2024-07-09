@@ -173,7 +173,7 @@ namespace Hibzz.DependencyResolver
             EditorApplication.update -= DisplayProgress;
         }
         
-        [MenuItem("ET/RepairDependencies")]
+        [MenuItem("ET/Init/RepairDependencies")]
         static void RepairDependencies()
         {
             MoveToPackage();
