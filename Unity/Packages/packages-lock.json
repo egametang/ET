@@ -8,7 +8,7 @@
       "hash": "51da1d4c433504f3171fff66217035b89c45d823"
     },
     "com.cysharp.memorypack": {
-      "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
+      "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack#1.10.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
