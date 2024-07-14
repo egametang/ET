@@ -277,6 +277,7 @@ namespace ET
             ikcp_release(_kcp);
             _kcp = null;
             _output = null;
+            _buffer = null;
             GC.SuppressFinalize(this);
         }
 

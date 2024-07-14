@@ -152,6 +152,8 @@ namespace ET
         public const uint OUT_ACK = 512;
         public const uint OUT_PROBE = 1024;
         public const uint OUT_WINS = 2048;
+
+        // TODO: remove it if not needed
         public const uint REVERSED_HEAD = 5;
     }
 }

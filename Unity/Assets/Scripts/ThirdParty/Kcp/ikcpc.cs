@@ -15,40 +15,26 @@ namespace ET
 {
     internal static unsafe class IKCP
     {
-        private static void memcpy(void* dest, void* src, int n)
-        {
-#if UNITY_ANDROID || GODOT_ANDROID
-            Unsafe.CopyBlockUnaligned(dest, src, (uint)n);
-#else
-            Unsafe.CopyBlock(dest, src, (uint)n);
-#endif
-        }
+        private static void memcpy(void* dest, void* src, int n) => Unsafe.CopyBlock(dest, src, (uint)n);
 
-        private static void memcpy(void* dest, void* src, uint n)
-        {
-#if UNITY_ANDROID || GODOT_ANDROID
-            Unsafe.CopyBlockUnaligned(dest, src, n);
-#else
-            Unsafe.CopyBlock(dest, src, n);
-#endif
-        }
+        private static void memcpy(void* dest, void* src, uint n) => Unsafe.CopyBlock(dest, src, n);
 
         private static void* malloc(nint size) =>
-#if !UNITY_2021_3_OR_NEWER
+#if !UNITY_2021_3_OR_NEWER || NET6_0_OR_GREATER
             NativeMemory.Alloc((nuint)size);
 #else
             (void*)Marshal.AllocHGlobal(size);
 #endif
 
         private static void* malloc(nuint size) =>
-#if !UNITY_2021_3_OR_NEWER
+#if !UNITY_2021_3_OR_NEWER || NET6_0_OR_GREATER
             NativeMemory.Alloc(size);
 #else
             (void*)Marshal.AllocHGlobal((nint)size);
 #endif
 
         private static void free(void* ptr) =>
-#if !UNITY_2021_3_OR_NEWER
+#if !UNITY_2021_3_OR_NEWER || NET6_0_OR_GREATER
             NativeMemory.Free(ptr);
 #else
             Marshal.FreeHGlobal((nint)ptr);
@@ -148,8 +134,6 @@ namespace ET
         public static IKCPCB* ikcp_create(uint conv, ref byte[] buffer)
         {
             var kcp = (IKCPCB*)ikcp_malloc(sizeof(IKCPCB));
-            if (kcp == null)
-                return null;
             kcp->conv = conv;
             kcp->snd_una = 0;
             kcp->snd_nxt = 0;
@@ -359,8 +343,6 @@ namespace ET
                         var capacity = (int)kcp->mss - (int)old->len;
                         var extend = len < capacity ? len : capacity;
                         seg = ikcp_segment_new(kcp, (int)old->len + extend);
-                        if (seg == null)
-                            return -2;
                         iqueue_add_tail(&seg->node, &kcp->snd_queue);
                         memcpy(seg->data, old->data, old->len);
                         if (buffer != null)
@@ -388,8 +370,8 @@ namespace ET
                 else
                 {
                     count = (int)((len + kcp->mss - 1) / kcp->mss);
-                    if (count > FRG_LIMIT || count >= (int)kcp->rcv_wnd)
-                        return -2;
+                    if (count >= (int)kcp->rcv_wnd)
+                        return sent > 0 ? sent : -2;
                     if (count == 0)
                         count = 1;
                 }
@@ -399,8 +381,6 @@ namespace ET
                 {
                     var size = len > (int)kcp->mss ? (int)kcp->mss : len;
                     seg = ikcp_segment_new(kcp, size);
-                    if (seg == null)
-                        return -2;
                     if (buffer != null && len > 0)
                         memcpy(seg->data, buffer, size);
                     seg->len = (uint)size;
@@ -435,8 +415,6 @@ namespace ET
                 {
                     var size = len > (int)kcp->mss ? (int)kcp->mss : len;
                     seg = ikcp_segment_new(kcp, size);
-                    if (seg == null)
-                        return -2;
                     if (buffer != null && len > 0)
                         memcpy(seg->data, buffer, size);
                     seg->len = (uint)size;
@@ -562,8 +540,6 @@ namespace ET
             {
                 var newblock = newsize <= 8 ? 8 : _iceilpow2_(newsize);
                 var acklist = (uint*)ikcp_malloc(newblock << 3);
-                if (acklist == null)
-                    goto abort;
                 if (kcp->acklist != null)
                 {
                     uint x;
@@ -585,8 +561,6 @@ namespace ET
             ptr[1] = ts;
             kcp->ackcount++;
             return 0;
-            abort:
-            return -1;
         }
 
         private static void ikcp_ack_get(IKCPCB* kcp, int p, uint* sn, uint* ts)
@@ -666,8 +640,9 @@ namespace ET
                 if (size < (int)OVERHEAD)
                     break;
                 data = ikcp_decode32u(data, &conv);
-                //if (conv != kcp->conv)
-                //    return -1;
+                // TODO: disable conv
+                // if (conv != kcp->conv)
+                //     return -1;
                 data = ikcp_decode8u(data, &cmd);
                 data = ikcp_decode8u(data, &frg);
                 data = ikcp_decode16u(data, &wnd);
