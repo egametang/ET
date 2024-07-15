@@ -1,6 +1,6 @@
 # English: please use your browser to translate to english
 
-# __讨论QQ群 : 474643097__  
+# __讨论QQ群 : 474643097__ （已满） 新手请加新手群:688514974 
 
 ---
 # 公司黑名单：  
@@ -28,16 +28,41 @@
 17. [史莱姆大乱斗](https://www.taptap.cn/app/228923)  
 18. [魔灵幻想](https://www.taptap.cn/app/337878)  一个技术
 19. [Tank Clash: Blitz!](https://apps.apple.com/us/app/tank-clash-blitz/id6477913248)
+20. [黑山之巅](https://store.steampowered.com/app/2015760/_/?l=schinese)
 ---
 
-# ET9.0 develop (西施)  
 
-# [ETPackages](https://github.com/orgs/ET-Packages/repositories)  
+# ET9.0 发布！(西施)  
+1. ET9改成了Package模式，任何功能可以制作成ET Package放到ET Package中心，用户能极其简单的集成到自己项目中。制作package请看上面的制作指南    
+2. ETTask实现了传递上下文功能，可以去掉烦人的CancellationToken传递 感谢 花语梦蝶 提出的的新思路  
+3. Entity简化，去掉了ChildrenDB跟ComponentDB，自定义序列化SortedDictionary，可以指定某个Child或者Componet跟不跟随Parent序列化  
+4. Kcp改成非托管内存分配，GC更少，感谢 Molth 提交的代码  
+5. LICENSE更改了，为了保证让的大家修改的代码所有人都能方便的使用，ET9使用了新的LICENSE，具体请看LICENSE文件  
+6. YIUI Package 感谢亦亦开发
+7. FGUI Package 感谢IcePower开发
 
-# [ETPackages制作指南](./Book/8.1ET Package制作指南.md)  
+# [ET Packages](https://github.com/orgs/ET-Packages/packages)  
+
+# [ET Packages制作指南]("./Book/8.1ET%20Package制作指南.md")  
+
+# [ET论坛](https://et-framework.cn)  
+
+# [ET视频教程](https://community.uwa4d.com/search?keyword=ET&scope=1)   
+
+# [运行指南](./Book/1.1运行指南.md)  
+
+# [分析器说明](https://www.yuque.com/u28961999/yms0nt/)
+
+
+# 熊猫的三门课程,需要请加QQ 80081771：  
+1. [网络游戏架构设计](https://www.bilibili.com/video/BV1h84y1G7aH/?spm_id_from=333.999.0.0&vd_source=e55f8234b8f8039504cbf131082c93dd)  基于ET7.2，共27集，讲解ET7.2的框架设计细节  
+2. [帧同步设计](https://www.bilibili.com/video/BV1tX4y1C7pM/?share_source=copy_web&vd_source=001b901865c99550d1b2a8cd663695d4)  基于ET8，共12集，讲解预测回滚帧同步设计  
+3. [多线程架构设计](https://www.bilibili.com/video/BV1Ah4y1f7QT/?spm_id_from=333.999.0.0&vd_source=e55f8234b8f8039504cbf131082c93dd)  基于ET8，共11集，讲解ET8的多线程设计  
+4. WebGL小游戏框架，基于ET8，完善的网络，配置，热更等等，跟ET8使用一样  
 
 
 # ET8.1 发布!  
+
 8.1跟8区别不大，代码结构完全没有变化，主要是编译方式的修改，可以在Unity中按F6进行编译，也可以在IDE中进行编译，运行中reload可以先按F6编译，再按F7进行热重载   
 
 # ET8 发布! 貂蝉  
@@ -80,20 +105,6 @@
 18. WebGL以及微信小游戏支持，有ET8的webgl版本，开发体验跟ET8完全一致，无缝对接ET8的服务器  
 
 
-# 熊猫的三门课程,需要请加QQ 80081771：  
-1. [网络游戏架构设计](https://www.bilibili.com/video/BV1h84y1G7aH/?spm_id_from=333.999.0.0&vd_source=e55f8234b8f8039504cbf131082c93dd)  基于ET7.2，共27集，讲解ET7.2的框架设计细节  
-2. [帧同步设计](https://www.bilibili.com/video/BV1tX4y1C7pM/?share_source=copy_web&vd_source=001b901865c99550d1b2a8cd663695d4)  基于ET8，共12集，讲解预测回滚帧同步设计  
-3. [多线程架构设计](https://www.bilibili.com/video/BV1Ah4y1f7QT/?spm_id_from=333.999.0.0&vd_source=e55f8234b8f8039504cbf131082c93dd)  基于ET8，共11集，讲解ET8的多线程设计  
-4. WebGL小游戏框架，基于ET8，完善的网络，配置，热更等等，跟ET8使用一样  
-
-
-# [ET论坛](https://et-framework.cn)  
-
-# [ET视频教程](https://community.uwa4d.com/search?keyword=ET&scope=1)   
-
-# [运行指南](./Book/1.1运行指南.md)  
-
-# [分析器说明](https://www.yuque.com/u28961999/yms0nt/)
 
 # Benchmark
 100W Ping Pong 平均耗时4秒左右，平均每秒收发20W的消息。这个网络性能远远超过主线程的需求，大家可以自己测试一下，测试方法：
