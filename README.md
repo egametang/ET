@@ -43,7 +43,7 @@
 
 # [ET Packages](https://github.com/orgs/ET-Packages/packages)  
 
-# [ET Packages制作指南]("./Book/8.1ET%20Package制作指南.md")  
+# [ET Packages制作指南](./Book/8.1ET%20Package制作指南.md)  
 
 # [ET论坛](https://et-framework.cn)  
 
