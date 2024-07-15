@@ -20,7 +20,7 @@ namespace Hibzz.DependencyResolver
         //[MenuItem("ET/MoveToPackage")]
         static void MoveToPackage()
         {
-            Process process = ProcessHelper.PowerShell($"-NoExit -ExecutionPolicy Bypass -File .\\Scripts/MoveToPackages.ps1", waitExit: true);
+            Process process = ProcessHelper.PowerShell($"-NoExit -ExecutionPolicy Bypass -File ./Packages/com.etetet.init/MoveToPackages.ps1", waitExit: true);
             Debug.Log(process.StandardOutput.ReadToEnd());
             AssetDatabase.Refresh();
         }
