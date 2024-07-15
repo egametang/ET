@@ -49,7 +49,7 @@
 
 # [ET视频教程](https://community.uwa4d.com/search?keyword=ET&scope=1)   
 
-# [运行指南](/Book/1.1运行指南.md)  
+# [运行指南](Book/1.1运行指南.md)  
 
 # [分析器说明](https://www.yuque.com/u28961999/yms0nt/)
 
