@@ -131,7 +131,7 @@ namespace ET
             output(data, size);
         }
 
-        public static IKCPCB* ikcp_create(uint conv, ref byte[] buffer)
+        public static IKCPCB* ikcp_create(uint conv)
         {
             var kcp = (IKCPCB*)ikcp_malloc(sizeof(IKCPCB));
             kcp->conv = conv;
@@ -149,7 +149,6 @@ namespace ET
             kcp->mtu = MTU_DEF;
             kcp->mss = kcp->mtu - OVERHEAD;
             kcp->stream = 0;
-            buffer = new byte[REVERSED_HEAD + (kcp->mtu + OVERHEAD) * 3];
             iqueue_init(&kcp->snd_queue);
             iqueue_init(&kcp->rcv_queue);
             iqueue_init(&kcp->snd_buf);
@@ -533,7 +532,7 @@ namespace ET
             }
         }
 
-        private static int ikcp_ack_push(IKCPCB* kcp, uint sn, uint ts)
+        private static void ikcp_ack_push(IKCPCB* kcp, uint sn, uint ts)
         {
             var newsize = kcp->ackcount + 1;
             if (newsize > kcp->ackblock)
@@ -560,7 +559,6 @@ namespace ET
             ptr[0] = sn;
             ptr[1] = ts;
             kcp->ackcount++;
-            return 0;
         }
 
         private static void ikcp_ack_get(IKCPCB* kcp, int p, uint* sn, uint* ts)
@@ -691,8 +689,7 @@ namespace ET
                 {
                     if (_itimediff(sn, kcp->rcv_nxt + kcp->rcv_wnd) < 0)
                     {
-                        if (ikcp_ack_push(kcp, sn, ts) != 0)
-                            return -4;
+                        ikcp_ack_push(kcp, sn, ts);
                         if (_itimediff(sn, kcp->rcv_nxt) >= 0)
                         {
                             var seg = ikcp_segment_new(kcp, (int)len);
@@ -1154,13 +1151,12 @@ namespace ET
             return current + minimal;
         }
 
-        public static int ikcp_setmtu(IKCPCB* kcp, int mtu, ref byte[] buffer)
+        public static int ikcp_setmtu(IKCPCB* kcp, int mtu)
         {
             if (kcp->mtu == (uint)mtu)
                 return 0;
             if (mtu < (int)OVERHEAD)
                 return -1;
-            buffer = new byte[REVERSED_HEAD + (mtu + OVERHEAD) * 3];
             kcp->mtu = (uint)mtu;
             kcp->mss = kcp->mtu - OVERHEAD;
             return 0;

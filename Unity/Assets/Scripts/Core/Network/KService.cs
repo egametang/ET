@@ -111,6 +111,8 @@ namespace ET
         public readonly ArrayPool<byte> byteArrayPool = ArrayPool<byte>.Create(2048,200);
 #endif
 
+        private readonly byte[] KcpBuffer = new byte[KCPBASIC.REVERSED_HEAD + (1400 + KCPBASIC.OVERHEAD) * 3];
+
         private readonly Dictionary<long, Action<byte>> routerAckCallback = new();
 
         public void AddRouterAckCallback(long id, Action<byte> action)
@@ -564,7 +566,7 @@ namespace ET
                     continue;
                 }
 
-                kChannel.Update(timeNow);
+                kChannel.Update(timeNow, this.KcpBuffer);
             }
             this.updateIds.Clear();
         }
