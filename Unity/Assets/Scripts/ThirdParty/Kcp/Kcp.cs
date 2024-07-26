@@ -29,11 +29,6 @@ namespace ET
         private KcpCallback _output;
 
         /// <summary>
-        ///     Buffer
-        /// </summary>
-        private byte[] _buffer;
-
-        /// <summary>
         ///     Disposed
         /// </summary>
         private int _disposed;
@@ -53,7 +48,7 @@ namespace ET
         /// <param name="output">Output</param>
         public Kcp(uint conv, KcpCallback output)
         {
-            _kcp = ikcp_create(conv, ref _buffer);
+            _kcp = ikcp_create(conv);
             _output = output;
         }
 
@@ -238,11 +233,6 @@ namespace ET
         public uint AckBlock => _kcp->ackblock;
 
         /// <summary>
-        ///     Buffer
-        /// </summary>
-        public byte[] Buffer => _buffer;
-
-        /// <summary>
         ///     Fast resend trigger count
         /// </summary>
         public int FastResend => _kcp->fastresend;
@@ -277,7 +267,6 @@ namespace ET
             ikcp_release(_kcp);
             _kcp = null;
             _output = null;
-            _buffer = null;
             GC.SuppressFinalize(this);
         }
 
@@ -560,7 +549,8 @@ namespace ET
         ///     Update
         /// </summary>
         /// <param name="current">Timestamp</param>
-        public void Update(uint current) => ikcp_update(_kcp, current, _output, _buffer);
+        /// <param name="bytes">Buffer</param>
+        public void Update(uint current, byte[] bytes) => ikcp_update(this._kcp, current, this._output, bytes);
 
         /// <summary>
         ///     Check
@@ -572,14 +562,15 @@ namespace ET
         /// <summary>
         ///     Flush
         /// </summary>
-        public void Flush() => ikcp_flush(_kcp, _output, _buffer);
+        /// <param name="bytes">Buffer</param>
+        public void Flush(byte[] bytes) => ikcp_flush(this._kcp, this._output, bytes);
 
         /// <summary>
         ///     Set maximum transmission unit
         /// </summary>
         /// <param name="mtu">Maximum transmission unit</param>
         /// <returns>Set</returns>
-        public int SetMtu(int mtu) => ikcp_setmtu(_kcp, mtu, ref _buffer);
+        public int SetMtu(int mtu) => ikcp_setmtu(_kcp, mtu);
 
         /// <summary>
         ///     Set flush interval

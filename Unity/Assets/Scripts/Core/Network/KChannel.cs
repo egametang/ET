@@ -199,7 +199,7 @@ namespace ET
 			}
 		}
 
-		public void Update(uint timeNow)
+		public void Update(uint timeNow, byte[] bytes)
 		{
 			if (this.IsDisposed)
 			{
@@ -220,7 +220,7 @@ namespace ET
 			
 			try
 			{
-				this.kcp.Update(timeNow);
+				this.kcp.Update(timeNow, bytes);
 			}
 			catch (Exception e)
 			{
