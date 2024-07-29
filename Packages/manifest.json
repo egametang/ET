@@ -39,13 +39,6 @@
   },
   "scopedRegistries": [
     {
-      "name": "package.openupm.com",
-      "url": "https://package.openupm.com",
-      "scopes": [
-        "com.tuyoogame.yooasset"
-      ]
-    },
-    {
       "name": "ET-Packages",
       "url": "https://npm.pkg.github.com/@ET-Packages",
       "scopes": [
