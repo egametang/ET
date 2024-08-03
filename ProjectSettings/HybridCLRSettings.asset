@@ -30,13 +30,13 @@ MonoBehaviour:
   patchAOTAssemblies:
   - ET.Loader.dll
   - ET.Core.dll
-  - ET.YooAssets
+  - ET.YooAssets.dll
   - MongoDB.Bson.dll
   - CommandLine.dll
   - System.dll
   - System.Core.dll
   - mscorlib.dll
-  - MemoryPack.dll
+  - ET.MemoryPack.dll
   - System.Runtime.CompilerServices.Unsafe.dll
   outputLinkFile: HybridCLR/link.xml
   outputAOTGenericReferenceFile: HybridCLR/AOTGenericReferences.cs
