@@ -10,7 +10,7 @@ namespace Halodi.PackageRegistry.UI
 {
     public class RegistryManagerView : EditorWindow
     {
-        [MenuItem("Packages/Manage scoped registries", false, 21)]
+        [MenuItem("ET/Init/Manage scoped registries", false, 21)]
         internal static void ManageRegistries()
         {
             SettingsService.OpenProjectSettings("Project/Package Manager/Credentials");

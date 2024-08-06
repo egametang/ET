@@ -9,7 +9,7 @@ namespace Halodi.PackageRegistry.UI
 {
     internal class UpgradePackagesView : EditorWindow
     {
-        [MenuItem("Packages/Upgrade Packages", false, 23)]
+        //[MenuItem("Packages/Upgrade Packages", false, 23)]
         internal static void ManageRegistries()
         {
             EditorWindow.GetWindow<UpgradePackagesView>(true, "Upgrade packages", true);
