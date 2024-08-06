@@ -12,7 +12,7 @@ namespace Halodi.PackageRegistry.UI
     {
         private string PackageList = "";
 
-        [MenuItem("Packages/Add packages (bulk)", false, 22)]
+        //[MenuItem("Packages/Add packages (bulk)", false, 22)]
         internal static void ManageRegistries()
         {
             EditorWindow.GetWindow<BulkAddPackages>(true, "Add packages", true);
