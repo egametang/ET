@@ -53,6 +53,7 @@ namespace ET.Server
             session.LastRecvTime = TimeInfo.Instance.ClientFrameTime();
 
             (ActorId actorId, object message) = MessageSerializeHelper.ToMessage(self.AService, memoryBuffer);
+            self.AService.Recycle(memoryBuffer);
             
             if (message is IResponse response)
             {

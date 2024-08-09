@@ -62,9 +62,6 @@ namespace ET
                     break;
                 }
             }
-            
-            ((MessageObject)message).Dispose(); // 回收message
-            
             return (opcode, memoryBuffer);
         }
         
@@ -95,8 +92,6 @@ namespace ET
                     break;
                 }
             }
-            
-            service.Recycle(memoryStream);
             
             return (actorId, message);
         }
