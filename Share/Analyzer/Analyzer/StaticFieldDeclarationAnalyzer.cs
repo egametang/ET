@@ -37,7 +37,7 @@ namespace ET.Analyzer
 
             foreach (ISymbol? memberSymbol in namedTypeSymbol.GetMembers())
             {
-                if (memberSymbol is IFieldSymbol { IsConst: false,IsStatic:true } or IPropertySymbol { IsStatic: true })
+                if (memberSymbol is IFieldSymbol { IsConst: false,IsStatic:true } or IPropertySymbol { IsStatic: true, GetMethod: null })
                 {
                     bool hasAttr = memberSymbol.GetAttributes().Any(x => x.AttributeClass?.ToString() == Definition.StaticFieldAttribute);
                     if (!hasAttr)
