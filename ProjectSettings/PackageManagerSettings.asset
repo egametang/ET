@@ -26,14 +26,6 @@ MonoBehaviour:
     m_IsDefault: 1
     m_Capabilities: 7
     m_ConfigSource: 0
-  - m_Id: scoped:project:package.openupm.com
-    m_Name: package.openupm.com
-    m_Url: https://package.openupm.com
-    m_Scopes:
-    - com.tuyoogame.yooasset
-    m_IsDefault: 0
-    m_Capabilities: 0
-    m_ConfigSource: 4
   - m_Id: scoped:project:ET-Packages
     m_Name: ET-Packages
     m_Url: https://npm.pkg.github.com/@ET-Packages
