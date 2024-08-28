@@ -83,7 +83,7 @@ namespace ET
         {
             ResultCallback<T> tcs = new ResultCallback<T>();
             Type type = typeof (T);
-            self.Add(type, tcs);
+            self.tcss.Add(type, tcs);
 
             void CancelAction()
             {
@@ -106,7 +106,6 @@ namespace ET
         public static async ETTask<T> Wait<T>(this ObjectWait self, int timeout, ETCancellationToken cancellationToken = null) where T : struct, IWaitType
         {
             ResultCallback<T> tcs = new ResultCallback<T>();
-            Type type = typeof(T);
             async ETTask WaitTimeout()
             {
                 await self.Root().GetComponent<TimerComponent>().WaitAsync(timeout, cancellationToken);
@@ -118,18 +117,12 @@ namespace ET
                 {
                     return;
                 }
-                
-                if (!self.tcss.TryGetValue(type, out var tcsList))
-                {
-                    return;
-                }
-                tcsList.Remove(tcs);
-                tcs.SetResult(new T() { Error = WaitTypeError.Timeout });
+                self.Notify(new T() { Error = WaitTypeError.Timeout });
             }
             
             WaitTimeout().Coroutine();
             
-            self.Add(type, tcs);
+            self.tcss.Add(typeof (T), tcs);
             
             void CancelAction()
             {
@@ -152,35 +145,19 @@ namespace ET
         public static void Notify<T>(this ObjectWait self, T obj) where T : struct, IWaitType
         {
             Type type = typeof (T);
-            if (!self.tcss.TryGetValue(type, out var tcsList) || tcsList.Count == 0)
+            if (!self.tcss.TryGetValue(type, out object tcs))
             {
                 return;
             }
 
-            foreach(var tcs in tcsList)
-            {
-                ((ResultCallback<T>) tcs).SetResult(obj);
-            }
-            tcsList.Clear();
-        }
-
-
-        private static void Add(this ObjectWait self, Type type, object obj)
-        {
-            if (self.tcss.TryGetValue(type, out var list))
-            {
-                list.Add(obj);
-            }
-            else
-            {
-                self.tcss.Add(type, new List<object> { obj });
-            }
+            self.tcss.Remove(type);
+            ((ResultCallback<T>) tcs).SetResult(obj);
         }
     }
 
     [ComponentOf]
     public class ObjectWait: Entity, IAwake, IDestroy
     {
-        public Dictionary<Type, List<object>> tcss = new();
+        public Dictionary<Type, object> tcss = new Dictionary<Type, object>();
     }
 }
