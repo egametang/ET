@@ -22,6 +22,7 @@ using System;
 namespace TrueSync
 {
 
+#if !DISABLE_FP_SIN_COS_TAN
     /// <summary>
     /// A Quaternion representing an orientation.
     /// </summary>
@@ -519,4 +520,5 @@ namespace TrueSync
         }
 
     }
+#endif
 }

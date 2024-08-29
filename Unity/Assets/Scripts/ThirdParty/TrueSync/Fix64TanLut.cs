@@ -1,3 +1,4 @@
+#if !DISABLE_FP_SIN_COS_TAN
 namespace TrueSync {
     partial struct FP {
         public static readonly long[] TanLut = new[] {
@@ -25740,3 +25741,4 @@ namespace TrueSync {
         };
     }
 }
+#endif

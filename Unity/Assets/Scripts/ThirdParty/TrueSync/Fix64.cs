@@ -539,7 +539,7 @@ namespace TrueSync {
             return r;
             //return new FP((long)result);
         }
-
+#if !DISABLE_FP_SIN_COS_TAN
         /// <summary>
         /// Returns the Sine of x.
         /// This function has about 9 decimals of accuracy for small values of x.
@@ -598,7 +598,7 @@ namespace TrueSync {
             return result;
             //return new FP(flipVertical ? -nearestValue : nearestValue);
         }
-
+#endif
 
 
         //[MethodImplAttribute(MethodImplOptions.AggressiveInlining)] 
@@ -625,7 +625,7 @@ namespace TrueSync {
             }
             return clampedPiOver2;
         }
-
+#if !DISABLE_FP_SIN_COS_TAN
         /// <summary>
         /// Returns the cosine of x.
         /// See Sin() for more details.
@@ -636,7 +636,8 @@ namespace TrueSync {
             FP a2 = Sin(new FP(rawAngle));
             return a2;
         }
-
+#endif
+#if !DISABLE_FP_SIN_COS_TAN
         /// <summary>
         /// Returns a rough approximation of the cosine of x.
         /// See FastSin for more details.
@@ -646,7 +647,8 @@ namespace TrueSync {
             var rawAngle = xl + (xl > 0 ? -PI - PI_OVER_2 : PI_OVER_2);
             return FastSin(new FP(rawAngle));
         }
-
+#endif
+#if !DISABLE_FP_SIN_COS_TAN
         /// <summary>
         /// Returns the tangent of x.
         /// </summary>
@@ -681,6 +683,7 @@ namespace TrueSync {
             FP a2 = new FP(finalValue);
             return a2;
         }
+#endif
 
         /// <summary>
         /// Returns the arctan of of the specified number, calculated using Euler series
