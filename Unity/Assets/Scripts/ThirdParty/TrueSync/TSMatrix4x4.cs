@@ -19,7 +19,7 @@
 
 namespace TrueSync
 {
-
+#if !DISABLE_FP_SIN_COS_TAN
     /// <summary>
     /// 3x3 Matrix.
     /// </summary>
@@ -1194,5 +1194,5 @@ namespace TrueSync
             return result;
         }
     }
-
+#endif
 }

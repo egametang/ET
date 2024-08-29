@@ -150,6 +150,7 @@ namespace TrueSync {
         /// <param name="matrix">The matrix.</param>
         /// <param name="result">The absolute matrix.</param>
         #region public static void Absolute(ref JMatrix matrix,out JMatrix result)
+#if !DISABLE_FP_SIN_COS_TAN
         public static void Absolute(ref TSMatrix matrix, out TSMatrix result) {
             result.M11 = FP.Abs(matrix.M11);
             result.M12 = FP.Abs(matrix.M12);
@@ -161,8 +162,10 @@ namespace TrueSync {
             result.M32 = FP.Abs(matrix.M32);
             result.M33 = FP.Abs(matrix.M33);
         }
+#endif
         #endregion
 
+#if !DISABLE_FP_SIN_COS_TAN
         /// <summary>
         /// Returns the sine of value.
         /// </summary>
@@ -183,6 +186,7 @@ namespace TrueSync {
         public static FP Tan(FP value) {
             return FP.Tan(value);
         }
+#endif
 
         /// <summary>
         /// Returns the arc sine of value.

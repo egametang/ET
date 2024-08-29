@@ -369,6 +369,7 @@ namespace TrueSync
         /// <param name="matrix">The transform matrix.</param>
         /// <returns>The transformed vector.</returns>
         #region public static JVector Transform(JVector position, JMatrix matrix)
+#if !DISABLE_FP_SIN_COS_TAN
         public static TSVector Transform(TSVector position, TSMatrix matrix)
         {
             TSVector result;
@@ -409,6 +410,7 @@ namespace TrueSync
             result.y = num1;
             result.z = num2;
         }
+#endif
         #endregion
 
         /// <summary>
