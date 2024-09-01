@@ -43,7 +43,7 @@
                 self.LastCheckTime = timeNow;
             }
 
-            if (++self.LimitCountPerSecond > 1000)
+            if (++self.LimitCountPerSecond > 50)
             {
                 return false;
             }
