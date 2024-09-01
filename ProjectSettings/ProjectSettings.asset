@@ -861,7 +861,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: UNITY;ENABLE_VIEW
     Server: UNITY;ENABLE_VIEW
-    Standalone: UNITY;ENABLE_VIEW;INITED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3
+    Standalone: UNITY;ENABLE_VIEW
     WebGL: UNITY;ENABLE_VIEW
     iPhone: UNITY;ENABLE_VIEW
   additionalCompilerArguments: {}
