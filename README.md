@@ -31,6 +31,9 @@
 20. [黑山之巅](https://store.steampowered.com/app/2015760/_/?l=schinese)
 ---
 
+# ET9最新付费插件，有需要请私聊熊猫
+1. [cn.etetet.yiuiluban](https://lib9kmxvq7k.feishu.cn/wiki/W1ylwC9xDip1YQk4eijcxgO9nh0) 无缝替换cn.etetet.excel成luban配置，售价100元
+
 
 # ET9.0 发布！(西施)  
 1. ET9改成了Package模式，任何功能可以制作成ET Package放到ET Package中心，用户能极其简单的集成到自己项目中。制作package请看上面的制作指南    
