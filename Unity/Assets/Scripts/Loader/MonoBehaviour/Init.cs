@@ -21,7 +21,7 @@ namespace ET
 			};
 
 			// 命令行参数
-			string[] args = "".Split(" ");
+			string[] args = "--Process=0".Split(" ");
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed((o)=>World.Instance.AddSingleton(o));
