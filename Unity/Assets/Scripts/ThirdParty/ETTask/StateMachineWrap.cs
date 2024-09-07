@@ -26,10 +26,11 @@ namespace ET
         
         public void Recycle()
         {
-            if (queue.Count > 1000)
+            if (queue.Count > 100)
             {
                 return;
             }
+            this.StateMachine = default;
             queue.Enqueue(this);
         }
 
