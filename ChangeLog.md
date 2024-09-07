@@ -1,5 +1,6 @@
 |包名| 版本 | 更新内容 |
 |-------|-------|-------|
+|cn.etetet.core| 1.0.1 |  修复TcpTransport服务端会去Connect客户端的bug |
 |cn.etetet.excel| 0.0.8|  修复excelexporter的编译bug |
 |cn.etetet.router| 0.0.6|  RouterConfigSingleton删除 |
 |cn.etetet.hybridclr| 6.7.1|  同步最新版本hybridclr|
