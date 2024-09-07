@@ -29,6 +29,7 @@
 18. [魔灵幻想](https://www.taptap.cn/app/337878)  一个技术
 19. [Tank Clash: Blitz!](https://apps.apple.com/us/app/tank-clash-blitz/id6477913248)
 20. [黑山之巅](https://store.steampowered.com/app/2015760/_/?l=schinese)
+21. [赴江湖](https://www.taptap.cn/app/712191) 千年类MMO
 ---
 
 # ET9最新付费插件，有需要请私聊熊猫
