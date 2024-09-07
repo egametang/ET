@@ -9,7 +9,7 @@ namespace ET
 {
     public interface IKcpTransport: IDisposable
     {
-        void Send(byte[] bytes, int index, int length, EndPoint endPoint);
+        void Send(byte[] bytes, int index, int length, EndPoint endPoint, ChannelType channelType);
         int Recv(byte[] buffer, ref EndPoint endPoint);
         int Available();
         void Update();
@@ -47,7 +47,7 @@ namespace ET
             NetworkHelper.SetSioUdpConnReset(this.socket);
         }
         
-        public void Send(byte[] bytes, int index, int length, EndPoint endPoint)
+        public void Send(byte[] bytes, int index, int length, EndPoint endPoint, ChannelType channelType)
         {
             this.socket.SendTo(bytes, index, length, SocketFlags.None, endPoint);
         }
@@ -128,15 +128,22 @@ namespace ET
             channelRecvDatas.Enqueue((channel.RemoteAddress, memoryBuffer));
         }
         
-        public void Send(byte[] bytes, int index, int length, EndPoint endPoint)
+        public void Send(byte[] bytes, int index, int length, EndPoint endPoint, ChannelType channelType)
         {
             long id = this.idEndpoints.GetKeyByValue(endPoint);
             if (id == 0)
             {
-                id = IdGenerater.Instance.GenerateInstanceId();
-                this.tService.Create(id, (IPEndPoint)endPoint);
-                this.idEndpoints.Add(id, endPoint);
-                this.channelIds.Enqueue(id);
+                if (channelType == ChannelType.Connect)
+                {
+                    id = IdGenerater.Instance.GenerateInstanceId();
+                    this.tService.Create(id, (IPEndPoint)endPoint);
+                    this.idEndpoints.Add(id, endPoint);
+                    this.channelIds.Enqueue(id);
+                }
+                else
+                {
+                    return;
+                }
             }
             MemoryBuffer memoryBuffer = this.tService.Fetch();
             memoryBuffer.Write(bytes, index, length);

@@ -184,7 +184,7 @@ namespace ET
 				buffer.WriteTo(0, KcpProtocalType.SYN);
 				buffer.WriteTo(1, this.LocalConn);
 				buffer.WriteTo(5, this.RemoteConn);
-				this.Service.Transport.Send(buffer, 0, 9, this.RemoteAddress);
+				this.Service.Transport.Send(buffer, 0, 9, this.RemoteAddress, ChannelType.Connect);
 				// 这里很奇怪 调用socket.LocalEndPoint会动到this.RemoteAddressNonAlloc里面的temp，这里就不仔细研究了
 				Log.Info($"kchannel connect {this.LocalConn} {this.RemoteConn} {this.RealAddress}");
 
@@ -350,7 +350,7 @@ namespace ET
 				bytes.WriteTo(0, KcpProtocalType.MSG);
 				// 每个消息头部写下该channel的id;
 				bytes.WriteTo(1, this.LocalConn);
-				this.Service.Transport.Send(bytes, 0, count + 5, this.RemoteAddress);
+				this.Service.Transport.Send(bytes, 0, count + 5, this.RemoteAddress, this.ChannelType);
 			}
 			catch (Exception e)
 			{

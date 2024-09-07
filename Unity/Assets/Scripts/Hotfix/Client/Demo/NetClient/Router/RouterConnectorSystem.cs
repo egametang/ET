@@ -29,7 +29,7 @@ namespace ET.Client
         {
             NetComponent netComponent = self.GetParent<NetComponent>();
             KService kService = (KService)netComponent.AService;
-            kService.Transport.Send(bytes, index, length, ipEndPoint);
+            kService.Transport.Send(bytes, index, length, ipEndPoint, ChannelType.Connect);
         }
     }
 }
