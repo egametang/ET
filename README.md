@@ -32,9 +32,11 @@
 21. [赴江湖](https://www.taptap.cn/app/712191) 千年类MMO
 ---
 
-# ET9最新付费插件，有需要请私聊熊猫
+# ET9最新Package，在这里搜索插件[ET Packages](https://github.com/orgs/ET-Packages/packages)，安装请看运行指南 
 1. [cn.etetet.yiuiluban](https://lib9kmxvq7k.feishu.cn/wiki/W1ylwC9xDip1YQk4eijcxgO9nh0) 无缝替换cn.etetet.excel成luban配置，售价100元
 2. cn.etetet.webgl et9，客户端支持打包webgl，前后端websocket连接，注意微信小游戏需要自己接入，由于已经支持了webgl，小游戏接入并不复杂，不接入小游戏主要是因为有人会使用团结有人用unity，没法统一版本，售价999元(购买过et8 webgl的可以免费升级)
+3. FGUI系列插件，icepower开发，免费
+4. YIUI系列插件，yiyi开发，免费
    
 
 
