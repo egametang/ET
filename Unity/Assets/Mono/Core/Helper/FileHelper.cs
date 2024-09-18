@@ -23,14 +23,16 @@ namespace ET
 		
 		public static void CleanDirectory(string dir)
 		{
-			foreach (string subdir in Directory.GetDirectories(dir))
-			{
-				Directory.Delete(subdir, true);		
-			}
+			if (Directory.Exists(dir)) {
+				foreach (string subdir in Directory.GetDirectories(dir))
+				{
+					Directory.Delete(subdir, true);		
+				}
 
-			foreach (string subFile in Directory.GetFiles(dir))
-			{
-				File.Delete(subFile);
+				foreach (string subFile in Directory.GetFiles(dir))
+				{
+					File.Delete(subFile);
+				}
 			}
 		}
 
