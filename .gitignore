@@ -53,8 +53,7 @@ Publish/
 */TestResults/
 Assets/Generate/Model/Proto*
 Assets/Generate/Model/Excel*
-/**/AssemblyReference.asmref
-/**/AssemblyReference.asmref.meta
+MongoDB/
 Unity.sln
 Unity.sln.DotSettings.user
 
