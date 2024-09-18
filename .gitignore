@@ -44,7 +44,8 @@ bin/
 Bin/
 /Log
 /Logs
-obj/
+/**/obj/
+/obj/
 /Release
 /Temp
 /Tools/MongoDB
