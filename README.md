@@ -36,10 +36,11 @@
 1. cn.etetet.mongodb  数据库补丁工具增强db包，用于团队或者线上对数据库数据打补丁，售价100元  
 2. [cn.etetet.yiuinumeric](https://lib9kmxvq7k.feishu.cn/wiki/GHDOwsmy0iQQMok3gU7cgxbpn7x) 增强版数值系统，需要搭配下面的luban插件使用，售价100元
 3. [cn.etetet.yiuiluban](https://lib9kmxvq7k.feishu.cn/wiki/W1ylwC9xDip1YQk4eijcxgO9nh0) 无缝替换cn.etetet.excel成luban配置，售价100元
-    0. 限免 购买luban包即赠送以下所有
-    1. [cn.etetet.yiuicondition](https://lib9kmxvq7k.feishu.cn/wiki/Kc0awA9EXiRJylkreL9cfLJFnsg)  条件系统
-    2. [cn.etetet.yiuigameobjectpool](https://lib9kmxvq7k.feishu.cn/wiki/UyigweBFXipNJnkCIY6coHzFnSc)  游戏对象缓存池
-    3. [cn.etetet.yiuiaudio](https://lib9kmxvq7k.feishu.cn/wiki/ECbzwVPmDiQNY9ktJHecCuGsnig)  音乐音效
+   0. 限免 购买luban包即赠送以下所有
+   1. [cn.etetet.yiuicondition](https://lib9kmxvq7k.feishu.cn/wiki/Kc0awA9EXiRJylkreL9cfLJFnsg)  条件系统
+   2. [cn.etetet.yiuigameobjectpool](https://lib9kmxvq7k.feishu.cn/wiki/UyigweBFXipNJnkCIY6coHzFnSc)  游戏对象缓存池
+   3. [cn.etetet.yiuiaudio](https://lib9kmxvq7k.feishu.cn/wiki/ECbzwVPmDiQNY9ktJHecCuGsnig)  音乐音效
+   4. [cn.etetet.yiuidamagetips](https://lib9kmxvq7k.feishu.cn/wiki/Yt8PwrobfiYijDkuZTWcsGyJnFh)  伤害提示
 4. cn.etetet.webgl  客户端支持打包webgl，前后端websocket连接，注意微信小游戏需要自己接入，由于已经支持了webgl，小游戏接入并不复杂，不接入小游戏主要是因为有人会使用团结有人用unity，没法统一版本，售价999元(购买过et8 webgl的可以免费升级)
 5. FGUI系列插件，icepower开发，免费
 6. [YIUI系列插件](https://lib9kmxvq7k.feishu.cn/wiki/XJxLwzTlViqD5TkSAw1c32Rqnd1) ET-UGUI框架 (yiyi开发，免费)
