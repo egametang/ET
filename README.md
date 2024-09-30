@@ -40,7 +40,8 @@
    1. [cn.etetet.yiuicondition](https://lib9kmxvq7k.feishu.cn/wiki/Kc0awA9EXiRJylkreL9cfLJFnsg)  条件系统
    2. [cn.etetet.yiuigameobjectpool](https://lib9kmxvq7k.feishu.cn/wiki/UyigweBFXipNJnkCIY6coHzFnSc)  游戏对象缓存池
    3. [cn.etetet.yiuiaudio](https://lib9kmxvq7k.feishu.cn/wiki/ECbzwVPmDiQNY9ktJHecCuGsnig)  音乐音效
-   4. [cn.etetet.yiuidamagetips](https://lib9kmxvq7k.feishu.cn/wiki/Yt8PwrobfiYijDkuZTWcsGyJnFh)  伤害提示
+   4. [cn.etetet.yiuivideo](https://lib9kmxvq7k.feishu.cn/wiki/Wt7twM5nciZl5rkKf7ScpGGAn4c)  视频播放
+   5. [cn.etetet.yiuidamagetips](https://lib9kmxvq7k.feishu.cn/wiki/Yt8PwrobfiYijDkuZTWcsGyJnFh)  伤害提示
 4. cn.etetet.webgl  客户端支持打包webgl，前后端websocket连接，注意微信小游戏需要自己接入，由于已经支持了webgl，小游戏接入并不复杂，不接入小游戏主要是因为有人会使用团结有人用unity，没法统一版本，售价999元(购买过et8 webgl的可以免费升级)
 5. FGUI系列插件，icepower开发，免费
 6. [YIUI系列插件](https://lib9kmxvq7k.feishu.cn/wiki/XJxLwzTlViqD5TkSAw1c32Rqnd1) ET-UGUI框架 (yiyi开发，免费)
