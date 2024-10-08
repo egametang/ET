@@ -29,13 +29,6 @@ Assets/Bundles/AotDlls/*
 Assets/StreamingAssets/
 Assets/StreamingAssets.meta
 
-#Unity中的IgnoreAssembly定义文件
-Assets/Scripts/**/Ignore.asmdef
-Assets/Scripts/**/Ignore.asmdef.meta
-
-#WebGL
-WebGL
-
 #其他
 .objs/
 .DS_Store
