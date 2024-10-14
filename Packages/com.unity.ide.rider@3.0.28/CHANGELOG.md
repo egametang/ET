@@ -1,6 +1,12 @@
 # Code Editor Package for Rider
 
 
+## [3.0.31] - 2024-06-17
+
+fix RIDER-104519 Rider is reporting errors in scripts that work fine in Unity when utilizing DOTS - when Player project, by generating projects for all assemblies in "com.unity.entities", "com.unity.collections"
+fix RIDER-111622 Unity Rider package is not compatible with Rider Dev builds
+
+
 ## [3.0.28] - 2024-02-20
 
 - fix RIDER-103933 "PlayerSettings.suppressCommonWarnings" is not supported in Unity 2019.4.40f

@@ -2,25 +2,25 @@
   "name": "com.unity.ide.rider",
   "displayName": "JetBrains Rider Editor",
   "description": "The JetBrains Rider Editor package provides an integration for using the JetBrains Rider IDE as a code editor for Unity. It adds support for generating .csproj files for code completion and auto-discovery of installations.",
-  "version": "3.0.28",
+  "version": "3.0.31",
   "unity": "2019.2",
   "unityRelease": "6f1",
   "dependencies": {
     "com.unity.ext.nunit": "1.0.6"
   },
   "relatedPackages": {
-    "com.unity.ide.rider.tests": "3.0.28"
+    "com.unity.ide.rider.tests": "3.0.31"
   },
   "_upm": {
-    "changelog": "- fix RIDER-103933 \"PlayerSettings.suppressCommonWarnings\" is not supported in Unity 2019.4.40f\n- fix https://github.com/JetBrains/resharper-unity/issues/2431 and [RIDER-104221](https://youtrack.jetbrains.com/issue/RIDER-104221)"
+    "changelog": "fix RIDER-104519 Rider is reporting errors in scripts that work fine in Unity when utilizing DOTS - when Player project, by generating projects for all assemblies in \"com.unity.entities\", \"com.unity.collections\"\nfix RIDER-111622 Unity Rider package is not compatible with Rider Dev builds"
   },
   "upmCi": {
-    "footprint": "b3c7b10f2b4529c477b9695954f7ccea32424aba"
+    "footprint": "b575d2acd4f31d85999e18d8204f19ec61b9c179"
   },
   "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.ide.rider@3.0/manual/index.html",
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/com.unity.ide.rider.git",
     "type": "git",
-    "revision": "f4880c72477e9bbd7321c0dbda4428fa10d916df"
+    "revision": "ccd778a2275ff09f1a83bc924cfb2fb4d5b63566"
   }
 }

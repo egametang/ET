@@ -12,6 +12,7 @@ namespace Packages.Rider.Editor.ProjectGeneration
   {
     private readonly Dictionary<string, PackageInfo> m_PackageInfoCache = new Dictionary<string, PackageInfo>();
     private readonly Dictionary<string, ResponseFileData> m_ResponseFilesCache = new Dictionary<string, ResponseFileData>();
+    private readonly string[] _specialPackagesForProjectGen = new[] { "com.unity.entities", "com.unity.collections" };
 
     ProjectGenerationFlag m_ProjectGenerationFlag = (ProjectGenerationFlag)EditorPrefs.GetInt("unity_project_generation_flag", 3);
 
@@ -172,6 +173,13 @@ namespace Packages.Rider.Editor.ProjectGeneration
       var packageInfo = GetPackageInfoForAssetPath(path);
       if (packageInfo == null)
       {
+        return false;
+      }
+      
+      if (ProjectGenerationFlag.HasFlag(ProjectGenerationFlag.PlayerAssemblies) && _specialPackagesForProjectGen.Contains(packageInfo.name))
+      {
+        // special case for RIDER-104519 Rider is reporting errors in scripts that work fine in Unity when utilizing DOTS
+        // it would be better to only generate .Player projects and not Editor ones, but that would require big changes in ProjectGeneration
         return false;
       }
 
