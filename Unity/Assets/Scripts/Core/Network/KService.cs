@@ -276,6 +276,10 @@ namespace ET
                             {
                                 realAddress = this.cache.ToStr(9, messageLength - 9);
                             }
+                            else
+                            {
+                                realAddress = this.ipEndPoint.ToString();    
+                            }
 
                             remoteConn = BitConverter.ToUInt32(this.cache, 1);
                             localConn = BitConverter.ToUInt32(this.cache, 5);
@@ -298,7 +302,7 @@ namespace ET
                                 
                                 kChannel.RealAddress = realAddress;
 
-                                IPEndPoint realEndPoint = kChannel.RealAddress == null? kChannel.RemoteAddress : NetworkHelper.ToIPEndPoint(kChannel.RealAddress);
+                                IPEndPoint realEndPoint = NetworkHelper.ToIPEndPoint(kChannel.RealAddress);
                                 this.AcceptCallback(kChannel.Id, realEndPoint);
                             }
                             if (kChannel.RemoteConn != remoteConn)
