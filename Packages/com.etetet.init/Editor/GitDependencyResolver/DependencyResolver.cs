@@ -20,14 +20,23 @@ namespace Hibzz.DependencyResolver
         //[MenuItem("ET/MoveToPackage")]
         static void MoveToPackage(string package, string version)
         {
-            string dir = Path.Combine("Library/PackageCache", $"{package}@{version}");
+            string packageName = default;
+            string moveFileName = default;
+            #if UNITY_6000_0_OR_NEWER
+            packageName = package;
+            moveFileName = "MoveToPackages_6";
+            #else 
+            packageName =$"{package}@{version}";
+            moveFileName = "MoveToPackages";
+            #endif
+            string dir = Path.Combine("Library/PackageCache", packageName);
             if (!Directory.Exists(dir))
             {
                 return;
             }
         
-            Debug.Log($"move package: {package}@{version}");
-            Process process = ProcessHelper.PowerShell($"-NoExit -ExecutionPolicy Bypass -File ./Packages/com.etetet.init/MoveToPackages.ps1 {package} {version}", waitExit: true);
+            Debug.Log($"move package: {packageName}");
+            Process process = ProcessHelper.PowerShell($"-NoExit -ExecutionPolicy Bypass -File ./Packages/com.etetet.init/{moveFileName}.ps1 {package} {version}", waitExit: true);
             Debug.Log(process.StandardOutput.ReadToEnd());
         }
         
@@ -83,7 +92,11 @@ namespace Hibzz.DependencyResolver
                 
                 string[] ss = baseName.Split("@");
                 string packageName = ss[0];
+                #if UNITY_6000_0_OR_NEWER
+                string version = "";
+                #else 
                 string version = ss[1];
+                #endif
 
                 MoveToPackage(packageName, version);
             }
