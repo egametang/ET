@@ -1,0 +1,22 @@
+{
+    "name": "ET.YIUI.Numeric.Editor",
+    "rootNamespace": "",
+    "references": [
+        "ET.Core",
+        "ET.Core.Editor",
+        "ET.Model",
+        "ET.Hotfix",
+        "ET.HotfixView"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,28 @@
+<module name="cn.etetet.yiuinumericconfig">
+
+    <enum name="ENumericValueType">
+
+        <!-- 数值 对应的数值的类型 -->
+        <var name="None" value="0" alias="EV_None"/>
+        <var name="Int" value="1" alias="EV_Init"/>
+        <var name="Long" value="2" alias="EV_Long"/>
+        <var name="Bool" value="3" alias="EV_Bool"/>
+        <var name="Float" value="4" alias="EV_Float"/>
+
+    </enum>
+
+    <enum name="ENumericDefinitionType">
+
+        <!-- 数值的定义类型 0 = ((1+2)*3+4)*5+6 -->
+        <var name="None" value="-1" alias="无"/>
+        <var name="Result" value="0" alias="结果"/>
+        <var name="Base" value="1" alias="基础"/>
+        <var name="Add" value="2" alias="基础增加"/>
+        <var name="Pct" value="3" alias="基础百分比"/>
+        <var name="FinalAdd" value="4" alias="最终增加"/>
+        <var name="FinalPct" value="5" alias="最终百分比"/>
+        <var name="ResultAdd" value="6" alias="结果增加"/>
+
+    </enum>
+
+</module>

@@ -1,0 +1,22 @@
+{
+  "name": "cn.etetet.yiuinumeric",
+  "displayName": "ET.YIUI.Numeric",
+  "version": "1.0.1",
+  "unity": "2022.3",
+  "category": "UI/YIUI",
+  "description": "Numeric 数值系统 >>> 文档: https://lib9kmxvq7k.feishu.cn/wiki/GHDOwsmy0iQQMok3gU7cgxbpn7x",
+  "author": {
+    "name": "YIYI",
+    "url": "https://github.com/LiShengYang-yiyi/YIUI/tree/YIUI-ET9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ET-Packages/cn.etetet.yiuiluban"
+  },
+  "relatedPackages": {},
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  },
+  "_fingerprint": "f68afa0cee38060f163183704e56cddf84d05ad6"
+}

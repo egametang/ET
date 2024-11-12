@@ -1,0 +1,261 @@
+[
+  {
+    "id": 100000,
+    "check": 1,
+    "alias": "测试",
+    "desc": "数值测试",
+    "not_grow": true
+  },
+  {
+    "id": 990001,
+    "check": 1,
+    "alias": "临时1数据",
+    "desc": "临时1数据",
+    "not_grow": true
+  },
+  {
+    "id": 990002,
+    "check": 1,
+    "alias": "临时2数据",
+    "desc": "临时2数据",
+    "not_grow": true
+  },
+  {
+    "id": 990003,
+    "check": 1,
+    "alias": "临时3数据",
+    "desc": "临时3数据",
+    "not_grow": true
+  },
+  {
+    "id": 990004,
+    "check": 1,
+    "alias": "临时4数据",
+    "desc": "临时4数据",
+    "not_grow": true
+  },
+  {
+    "id": 990005,
+    "check": 1,
+    "alias": "临时5数据",
+    "desc": "临时5数据",
+    "not_grow": true
+  },
+  {
+    "id": 990006,
+    "check": 1,
+    "alias": "临时6数据",
+    "desc": "临时6数据",
+    "not_grow": true
+  },
+  {
+    "id": 990007,
+    "check": 1,
+    "alias": "临时7数据",
+    "desc": "临时7数据",
+    "not_grow": true
+  },
+  {
+    "id": 990008,
+    "check": 1,
+    "alias": "临时8数据",
+    "desc": "临时8数据",
+    "not_grow": true
+  },
+  {
+    "id": 990009,
+    "check": 1,
+    "alias": "临时9数据",
+    "desc": "临时9数据",
+    "not_grow": true
+  },
+  {
+    "id": 990010,
+    "check": 1,
+    "alias": "临时10数据",
+    "desc": "临时10数据",
+    "not_grow": true
+  },
+  {
+    "id": 100001,
+    "check": 1,
+    "alias": "等级",
+    "desc": "等级",
+    "not_grow": true
+  },
+  {
+    "id": 100002,
+    "check": 1,
+    "alias": "经验值",
+    "desc": "经验值",
+    "not_grow": true
+  },
+  {
+    "id": 100003,
+    "check": 1,
+    "alias": "金钱",
+    "desc": "金钱",
+    "not_grow": true
+  },
+  {
+    "id": 100004,
+    "check": 1,
+    "alias": "钻石",
+    "desc": "钻石",
+    "not_grow": true
+  },
+  {
+    "id": 200001,
+    "check": 1,
+    "alias": "当前血量",
+    "desc": "当前血量",
+    "not_grow": true
+  },
+  {
+    "id": 200002,
+    "check": 1,
+    "alias": "最大血量",
+    "desc": "最大血量",
+    "not_grow": false
+  },
+  {
+    "id": 2000021,
+    "check": 1,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000022,
+    "check": 1,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000023,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000024,
+    "check": 1,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000025,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000026,
+    "check": 1,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 200003,
+    "check": 4,
+    "alias": "速度",
+    "desc": "速度",
+    "not_grow": false
+  },
+  {
+    "id": 2000031,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000032,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000033,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000034,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000035,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000036,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 200004,
+    "check": 4,
+    "alias": "AOI",
+    "desc": "AOI",
+    "not_grow": false
+  },
+  {
+    "id": 2000041,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000042,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000043,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000044,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000045,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  },
+  {
+    "id": 2000046,
+    "check": 4,
+    "alias": "",
+    "desc": "",
+    "not_grow": false
+  }
+]

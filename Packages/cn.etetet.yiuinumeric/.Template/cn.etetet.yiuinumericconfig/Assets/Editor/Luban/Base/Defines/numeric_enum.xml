@@ -1,0 +1,81 @@
+
+<module name="cn.etetet.yiuinumericconfig" >
+<enum name="ENumericType" >
+
+<!-- 数值测试 -->
+<var name="NumericTest0" value="100000"  alias="测试_0" comment = "测试_0 (Int)"/> 
+
+<!-- 临时1数据 -->
+<var name="Temp1Data0" value="990001"  alias="临时1数据_0" comment = "临时1数据_0 (Int)"/> 
+
+<!-- 临时2数据 -->
+<var name="Temp2Data0" value="990002"  alias="临时2数据_0" comment = "临时2数据_0 (Int)"/> 
+
+<!-- 临时3数据 -->
+<var name="Temp3Data0" value="990003"  alias="临时3数据_0" comment = "临时3数据_0 (Int)"/> 
+
+<!-- 临时4数据 -->
+<var name="Temp4Data0" value="990004"  alias="临时4数据_0" comment = "临时4数据_0 (Int)"/> 
+
+<!-- 临时5数据 -->
+<var name="Temp5Data0" value="990005"  alias="临时5数据_0" comment = "临时5数据_0 (Int)"/> 
+
+<!-- 临时6数据 -->
+<var name="Temp6Data0" value="990006"  alias="临时6数据_0" comment = "临时6数据_0 (Int)"/> 
+
+<!-- 临时7数据 -->
+<var name="Temp7Data0" value="990007"  alias="临时7数据_0" comment = "临时7数据_0 (Int)"/> 
+
+<!-- 临时8数据 -->
+<var name="Temp8Data0" value="990008"  alias="临时8数据_0" comment = "临时8数据_0 (Int)"/> 
+
+<!-- 临时9数据 -->
+<var name="Temp9Data0" value="990009"  alias="临时9数据_0" comment = "临时9数据_0 (Int)"/> 
+
+<!-- 临时10数据 -->
+<var name="Temp10Data0" value="990010"  alias="临时10数据_0" comment = "临时10数据_0 (Int)"/> 
+
+<!-- 等级 -->
+<var name="Level0" value="100001"  alias="等级_0" comment = "等级_0 (Int)"/> 
+
+<!-- 经验值 -->
+<var name="Exp0" value="100002"  alias="经验值_0" comment = "经验值_0 (Int)"/> 
+
+<!-- 金钱 -->
+<var name="Money0" value="100003"  alias="金钱_0" comment = "金钱_0 (Int)"/> 
+
+<!-- 钻石 -->
+<var name="Diamond0" value="100004"  alias="钻石_0" comment = "钻石_0 (Int)"/> 
+
+<!-- 当前血量 -->
+<var name="Hp0" value="200001"  alias="当前血量_0" comment = "当前血量_0 (Int)"/> 
+
+<!-- 最大血量 -->
+<var name="MaxHp0" value="200002"  alias="最大血量_0" comment = "最大血量_0 (Int)"/> 
+<var name="MaxHp1" value="2000021" alias="最大血量_1" comment = "最大血量_1 (Int)"/>
+<var name="MaxHp2" value="2000022" alias="最大血量_2" comment = "最大血量_2 (Int)"/>
+<var name="MaxHp3" value="2000023" alias="最大血量_3" comment = "最大血量_3 (Float)"/>
+<var name="MaxHp4" value="2000024" alias="最大血量_4" comment = "最大血量_4 (Int)"/>
+<var name="MaxHp5" value="2000025" alias="最大血量_5" comment = "最大血量_5 (Float)"/>
+<var name="MaxHp6" value="2000026" alias="最大血量_6" comment = "最大血量_6 (Int)"/>
+
+<!-- 速度 -->
+<var name="Speed0" value="200003"  alias="速度_0" comment = "速度_0 (Float)"/> 
+<var name="Speed1" value="2000031" alias="速度_1" comment = "速度_1 (Float)"/>
+<var name="Speed2" value="2000032" alias="速度_2" comment = "速度_2 (Float)"/>
+<var name="Speed3" value="2000033" alias="速度_3" comment = "速度_3 (Float)"/>
+<var name="Speed4" value="2000034" alias="速度_4" comment = "速度_4 (Float)"/>
+<var name="Speed5" value="2000035" alias="速度_5" comment = "速度_5 (Float)"/>
+<var name="Speed6" value="2000036" alias="速度_6" comment = "速度_6 (Float)"/>
+
+<!-- AOI -->
+<var name="AOI0" value="200004"  alias="AOI_0" comment = "AOI_0 (Float)"/> 
+<var name="AOI1" value="2000041" alias="AOI_1" comment = "AOI_1 (Float)"/>
+<var name="AOI2" value="2000042" alias="AOI_2" comment = "AOI_2 (Float)"/>
+<var name="AOI3" value="2000043" alias="AOI_3" comment = "AOI_3 (Float)"/>
+<var name="AOI4" value="2000044" alias="AOI_4" comment = "AOI_4 (Float)"/>
+<var name="AOI5" value="2000045" alias="AOI_5" comment = "AOI_5 (Float)"/>
+<var name="AOI6" value="2000046" alias="AOI_6" comment = "AOI_6 (Float)"/>
+
+</enum>
+</module>

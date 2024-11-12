@@ -268,6 +268,24 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "cn.etetet.yiuinumeric": {
+      "version": "file:cn.etetet.yiuinumeric",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "cn.etetet.yiuinumericconfig": {
+      "version": "file:cn.etetet.yiuinumericconfig",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "cn.etetet.yiuinumericdemo": {
+      "version": "file:cn.etetet.yiuinumericdemo",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "cn.etetet.yooassets": {
       "version": "file:cn.etetet.yooassets",
       "depth": 0,
