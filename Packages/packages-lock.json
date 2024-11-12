@@ -256,6 +256,24 @@
         "cn.etetet.yooassets": "2.1.4"
       }
     },
+    "cn.etetet.yiuicondition": {
+      "version": "file:cn.etetet.yiuicondition",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "cn.etetet.yiuiconditionconfig": {
+      "version": "file:cn.etetet.yiuiconditionconfig",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "cn.etetet.yiuiinvoke": {
+      "version": "file:cn.etetet.yiuiinvoke",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "cn.etetet.yiuiluban": {
       "version": "file:cn.etetet.yiuiluban",
       "depth": 0,
@@ -276,12 +294,6 @@
     },
     "cn.etetet.yiuinumericconfig": {
       "version": "file:cn.etetet.yiuinumericconfig",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
-    "cn.etetet.yiuinumericdemo": {
-      "version": "file:cn.etetet.yiuinumericdemo",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

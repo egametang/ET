@@ -1,0 +1,14 @@
+[
+  {
+    "id": -1,
+    "condition_type": -1,
+    "listener": true,
+    "compare_type": 6,
+    "dynamic_condition": true,
+    "check_value": {
+      "$type": "ConditionCheckLevel",
+      "level": 0
+    },
+    "tips": "测试条件 >= {0}"
+  }
+]

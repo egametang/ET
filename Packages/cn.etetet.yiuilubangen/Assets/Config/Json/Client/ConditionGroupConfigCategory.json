@@ -1,0 +1,56 @@
+[
+  {
+    "id": -1,
+    "use_group": false,
+    "check_groups": [],
+    "operation_type": 1,
+    "check_list": [
+      {
+        "id": -1,
+        "check_value": {
+          "$type": "ConditionCheckLevel",
+          "level": 1
+        }
+      },
+      {
+        "id": -1,
+        "check_value": {
+          "$type": "ConditionCheckLevel",
+          "level": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": -2,
+    "use_group": false,
+    "check_groups": [],
+    "operation_type": 2,
+    "check_list": [
+      {
+        "id": -1,
+        "check_value": {
+          "$type": "ConditionCheckLevel",
+          "level": 1
+        }
+      },
+      {
+        "id": -1,
+        "check_value": {
+          "$type": "ConditionCheckLevel",
+          "level": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": -3,
+    "use_group": true,
+    "check_groups": [
+      -1,
+      -2
+    ],
+    "operation_type": 1,
+    "check_list": []
+  }
+]
