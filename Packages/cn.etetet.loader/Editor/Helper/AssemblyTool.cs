@@ -116,8 +116,8 @@ namespace ET
             FileHelper.CleanDirectory(Define.CodeDir);
             foreach (string dllName in DllNames)
             {
-                string sourceDll = $"{Define.BuildOutputDir}/{dllName}.dll";
-                string sourcePdb = $"{Define.BuildOutputDir}/{dllName}.pdb";
+                string sourceDll = $"{Define.BuildOutputDir}/{dllName}/{dllName}.dll";
+                string sourcePdb = $"{Define.BuildOutputDir}/{dllName}/{dllName}.pdb";
                 File.Copy(sourceDll, $"{Define.CodeDir}/{dllName}.dll.bytes", true);
                 File.Copy(sourcePdb, $"{Define.CodeDir}/{dllName}.pdb.bytes", true);
             }

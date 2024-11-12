@@ -9,10 +9,160 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 2e7632af306142c89f6a8bd3e6d68e0f, type: 3}
   m_Name: PackageInfoAsset
-  m_EditorClassIdentifier: ET.PackageManager.Editor:ET.PackageManager.Editor:PackageInfoAsset
-  AllLastPackageInfo: []
+  m_EditorClassIdentifier: 
+  AllLastPackageInfo:
+  - Name: com.halodi.halodi-unity-package-registry-manager
+    Version: 
+  - Name: com.etetet.init
+    Version: 
+  - Name: cn.etetet.yiuinumericconfig
+    Version: 
+  - Name: cn.etetet.yiuilubangen
+    Version: 
+  - Name: cn.etetet.yiuiconditionconfig
+    Version: 
+  - Name: cn.etetet.xetyooassets
+    Version: 0.0.5
+  - Name: cn.etetet.xetfui
+    Version: 0.0.6
+  - Name: cn.etetet.ui
+    Version: 2.0.0
+  - Name: cn.etetet.memorypack
+    Version: 1.10.0
+  - Name: cn.etetet.demores
+    Version: 0.0.2
+  - Name: cn.etetet.ai
+    Version: 2.0.1
+  - Name: com.unity.modules.wind
+    Version: 1.0.0
+  - Name: com.unity.modules.video
+    Version: 1.0.0
+  - Name: com.unity.modules.vehicles
+    Version: 1.0.0
+  - Name: com.unity.modules.unitywebrequestwww
+    Version: 1.0.0
+  - Name: com.unity.modules.unitywebrequesttexture
+    Version: 1.0.0
+  - Name: com.unity.modules.unitywebrequestaudio
+    Version: 1.0.0
+  - Name: com.unity.modules.unitywebrequestassetbundle
+    Version: 1.0.0
+  - Name: com.unity.modules.unitywebrequest
+    Version: 1.0.0
+  - Name: com.unity.modules.unityanalytics
+    Version: 1.0.0
+  - Name: com.unity.modules.umbra
+    Version: 1.0.0
+  - Name: com.unity.modules.uielements
+    Version: 1.0.0
+  - Name: com.unity.modules.ui
+    Version: 1.0.0
+  - Name: com.unity.modules.tilemap
+    Version: 1.0.0
+  - Name: com.unity.modules.terrainphysics
+    Version: 1.0.0
+  - Name: com.unity.modules.terrain
+    Version: 1.0.0
+  - Name: com.unity.modules.screencapture
+    Version: 1.0.0
+  - Name: com.unity.modules.physics2d
+    Version: 1.0.0
+  - Name: com.unity.modules.physics
+    Version: 1.0.0
+  - Name: com.unity.modules.particlesystem
+    Version: 1.0.0
+  - Name: com.unity.modules.imgui
+    Version: 1.0.0
+  - Name: com.unity.modules.imageconversion
+    Version: 1.0.0
+  - Name: com.unity.modules.director
+    Version: 1.0.0
+  - Name: com.unity.modules.cloth
+    Version: 1.0.0
+  - Name: com.unity.modules.audio
+    Version: 1.0.0
+  - Name: com.unity.modules.assetbundle
+    Version: 1.0.0
+  - Name: com.unity.modules.animation
+    Version: 1.0.0
+  - Name: com.unity.modules.androidjni
+    Version: 1.0.0
+  - Name: com.unity.modules.ai
+    Version: 1.0.0
+  - Name: com.unity.modules.accessibility
+    Version: 1.0.0
+  - Name: com.unity.ugui
+    Version: 3.0.0-exp.4
+  - Name: com.unity.timeline
+    Version: 1.8.7
+  - Name: com.unity.render-pipelines.universal
+    Version: 17.0.3
+  - Name: com.unity.ide.visualstudio
+    Version: 2.0.22
+  - Name: com.unity.ide.rider
+    Version: 3.0.34
+  - Name: com.unity.ai.navigation
+    Version: 2.0.4
+  - Name: cn.etetet.yooassets
+    Version: 2.1.4
+  - Name: cn.etetet.yiuinumeric
+    Version: 1.0.1
+  - Name: cn.etetet.yiuiluban
+    Version: 1.1.0
+  - Name: cn.etetet.yiuiinvoke
+    Version: 3.0.0
+  - Name: cn.etetet.yiuicondition
+    Version: 2.0.2
+  - Name: cn.etetet.xetdemo
+    Version: 0.0.9
+  - Name: cn.etetet.watcher
+    Version: 2.0.0
+  - Name: cn.etetet.unit
+    Version: 2.0.0
+  - Name: cn.etetet.startconfig
+    Version: 2.0.1
+  - Name: cn.etetet.sourcegenerator
+    Version: 0.0.7
+  - Name: cn.etetet.router
+    Version: 2.0.1
+  - Name: cn.etetet.referencecollector
+    Version: 2.0.0
+  - Name: cn.etetet.recast
+    Version: 2.0.0
+  - Name: cn.etetet.proto
+    Version: 2.0.1
+  - Name: cn.etetet.packagemanager
+    Version: 1.0.2
+  - Name: cn.etetet.numeric
+    Version: 2.0.0
+  - Name: cn.etetet.netinner
+    Version: 2.0.1
+  - Name: cn.etetet.move
+    Version: 2.0.0
+  - Name: cn.etetet.mathematics
+    Version: 0.0.2
+  - Name: cn.etetet.login
+    Version: 2.0.1
+  - Name: cn.etetet.loader
+    Version: 2.0.7
+  - Name: cn.etetet.hybridclr
+    Version: 6.7.1
+  - Name: cn.etetet.http
+    Version: 2.0.0
+  - Name: cn.etetet.excel
+    Version: 2.0.0
+  - Name: cn.etetet.db
+    Version: 1.0.0
+  - Name: cn.etetet.core
+    Version: 2.0.8
+  - Name: cn.etetet.console
+    Version: 2.0.0
+  - Name: cn.etetet.aoi
+    Version: 2.0.0
+  - Name: cn.etetet.actorlocation
+    Version: 2.0.1
   BanPackageInfo: []
-  LastUpdateTime: 0
+  LastUpdateTime: 1731377952
   UpdateInterval: 3600
