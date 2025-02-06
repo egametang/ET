@@ -1,0 +1,22 @@
+﻿{
+  "name": "cn.etetet.referencecollector",
+  "displayName": "ET.ReferenceCollector",
+  "version": "2.0.0",
+  "unity": "2022.3",
+  "description": "一个unity脚本，可以挂在gameobject上实现资源引用",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

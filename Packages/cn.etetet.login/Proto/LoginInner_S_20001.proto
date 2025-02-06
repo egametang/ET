@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ET;
+
+// ResponseType G2R_GetLoginKey
+message R2G_GetLoginKey // IRequest
+{
+	int32 RpcId = 1;
+	string Account = 2;
+}
+
+message G2R_GetLoginKey // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 Key = 4;
+	int64 GateId = 5;
+}
+
+message G2M_SessionDisconnect // ILocationMessage
+{
+	int32 RpcId = 1;
+}

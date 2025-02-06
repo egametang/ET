@@ -1,0 +1,23 @@
+﻿{
+  "name": "cn.etetet.netinner",
+  "displayName": "ET.NetInner",
+  "version": "2.0.1",
+  "description": "内网消息模块",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.excel": "2.0.0",
+    "cn.etetet.proto": "2.0.1",
+    "cn.etetet.sourcegenerator": "0.0.5"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

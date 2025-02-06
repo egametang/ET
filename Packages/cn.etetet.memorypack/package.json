@@ -1,0 +1,16 @@
+{
+  "name": "cn.etetet.memorypack",
+  "displayName": "ET.MemoryPack",
+  "unity": "2022.3",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "version": "1.10.0",
+  "description": "Copy From https://github.com/Cysharp/MemoryPack",
+  "keywords": [ "Serialization" ],
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

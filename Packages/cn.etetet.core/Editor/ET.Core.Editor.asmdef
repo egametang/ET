@@ -1,0 +1,20 @@
+{
+    "name": "ET.Core.Editor",
+    "rootNamespace": "ET",
+    "references": [
+        "MemoryPack",
+        "Unity.Mathematics",
+        "ET.Core"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

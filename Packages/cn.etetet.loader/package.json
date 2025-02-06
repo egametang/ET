@@ -1,0 +1,23 @@
+﻿{
+  "name": "cn.etetet.loader",
+  "displayName": "ET.Loader",
+  "version": "2.0.7",
+  "unity": "2022.3",
+  "description": "et框架核心，是一个加载器，用于加载model modelview hotfix hotfixview",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "2.0.8",
+    "cn.etetet.yooassets": "2.1.4"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

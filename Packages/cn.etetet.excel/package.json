@@ -1,0 +1,20 @@
+﻿{
+  "name": "cn.etetet.excel",
+  "displayName": "ET.Excel",
+  "version": "2.0.0",
+  "unity": "2022.3",
+  "description": "excelexporter工具，把excel导出成代码跟配置数据",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

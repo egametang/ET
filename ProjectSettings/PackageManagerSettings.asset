@@ -21,7 +21,7 @@ MonoBehaviour:
   m_Registries:
   - m_Id: main
     m_Name: 
-    m_Url: https://packages.unity.com
+    m_Url: https://packages.unity.cn
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
@@ -39,6 +39,6 @@ MonoBehaviour:
   m_RegistryInfoDraft:
     m_Modified: 0
     m_ErrorMessage: 
-    m_UserModificationsInstanceId: -838
-    m_OriginalInstanceId: -842
+    m_UserModificationsInstanceId: -854
+    m_OriginalInstanceId: -858
   m_LoadAssets: 0

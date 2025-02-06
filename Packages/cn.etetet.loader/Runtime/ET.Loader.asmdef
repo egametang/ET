@@ -1,0 +1,21 @@
+{
+    "name": "ET.Loader",
+    "rootNamespace": "ET",
+    "references": [
+        "ET.Core",
+        "ET.YooAssets",
+        "ET.SourceGeneratorAttribute",
+        "ET.HybridCLR"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

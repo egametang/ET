@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <AssemblyName>ET.Model</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>DOTNET</DefineConstants>
+        <OutputPath>$(SolutionDir)Bin</OutputPath> 
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Optimize>false</Optimize>
+        <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"> 
+        <DefineConstants>DOTNET</DefineConstants>
+        <OutputPath>$(SolutionDir)Bin</OutputPath>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Optimize>true</Optimize>
+        <NoWarn>0169,0649,3021,8981,CS9193,CS9192</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Compile Include="$(SolutionDir)Packages\cn.etetet.*\Scripts\Model\Share\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="$(SolutionDir)Packages\cn.etetet.*\Scripts\Model\Server\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="$(SolutionDir)Packages\cn.etetet.*\Scripts\Model\Client\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="$(SolutionDir)Packages\cn.etetet.*\CodeMode\Model\Server\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        
+    </ItemGroup> 
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)Packages\cn.etetet.sourcegenerator\DotNet~\ET.SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\..\cn.etetet.loader\DotNet~\ET.Loader.csproj" />
+        <ProjectReference Include="..\..\..\cn.etetet.mathematics\DotNet~\ET.Mathematics.csproj" />
+        <ProjectReference Include="..\..\..\cn.etetet.recast\DotNet~\ET.Recast.csproj" />
+        <ProjectReference Include="..\..\..\cn.etetet.sourcegenerator\DotNet~\ET.SourceGeneratorAttribute\ET.SourceGeneratorAttribute.csproj" />
+    </ItemGroup>
+
+    <!-- sourcegenerator use -->
+    <ItemGroup>
+        <CompilerVisibleProperty Include="DotNetAssembly" />
+    </ItemGroup>
+</Project>

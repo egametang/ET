@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec995e51a6e251468d2a3fd8a686257, type: 3}
+  m_Name: UniversalRenderPipelineGlobalSettings
+  m_EditorClassIdentifier: 
+  k_AssetVersion: 3
+  m_RenderingLayerNames:
+  - Default
+  m_ValidRenderingLayers: 1
+  lightLayerName0: 
+  lightLayerName1: 
+  lightLayerName2: 
+  lightLayerName3: 
+  lightLayerName4: 
+  lightLayerName5: 
+  lightLayerName6: 
+  lightLayerName7: 
+  m_StripDebugVariants: 1
+  m_StripUnusedPostProcessingVariants: 0
+  m_StripUnusedVariants: 1
+  m_StripUnusedLODCrossFadeVariants: 1
+  m_StripScreenCoordOverrideVariants: 1
+  supportRuntimeDebugDisplay: 0
+  m_ShaderVariantLogLevel: 0
+  m_ExportShaderVariants: 1

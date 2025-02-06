@@ -1,0 +1,20 @@
+{
+  "name": "cn.etetet.demores",
+  "displayName": "ET.DemoRes",
+  "version": "0.0.2",
+  "unity": "2022.3",
+  "description": "et自带demo的一些资源",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "publishConfig": 
+  { 
+    "registry": "https://npm.pkg.github.com/@ET-Packages" 
+  }
+}

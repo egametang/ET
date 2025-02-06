@@ -1,0 +1,16 @@
+﻿{
+  "name": "cn.etetet.${PackageName}",
+  "displayName": "${DisplayName}",
+  "version": "0.0.0",
+  "unity": "2022.3",
+  "description": "${Description}",
+  "author": {
+    "name": "${PackageAuthor}"
+  },
+  "repository": {},
+  "relatedPackages": {},
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

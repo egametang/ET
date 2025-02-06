@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>DOTNET</DefineConstants>
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <Optimize>false</Optimize>
+      <NoWarn>0169,0649,3021,8981,CS9193,CS9192,NU1903</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">  
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
+      <DefineConstants>DOTNET</DefineConstants>
+      <OutputPath>$(SolutionDir)Bin</OutputPath>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <NoWarn>0169,0649,3021,8981,CS9193,CS9192,NU1903</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="$(SolutionDir)Packages\cn.etetet.*\Scripts\Core\Share\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Include="$(SolutionDir)Packages\cn.etetet.*\Scripts\Core\Server\**\*.cs">
+            <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <ProjectReference Include="$(SolutionDir)Packages\cn.etetet.sourcegenerator\DotNet~\ET.SourceGenerator\ET.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="$(SolutionDir)Packages\cn.etetet.sourcegenerator\DotNet~\ET.SourceGeneratorAttribute\ET.SourceGeneratorAttribute.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+        <PackageReference Include="MemoryPack" Version="1.10.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
+        <PackageReference Include="NLog" Version="5.3.2" />
+    </ItemGroup>
+</Project>

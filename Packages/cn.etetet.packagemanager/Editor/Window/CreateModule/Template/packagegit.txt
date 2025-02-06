@@ -1,0 +1,8 @@
+﻿{
+    "Id": ${PackageId},
+    "Name": "${PackageName}",
+    "ScriptsReferences": 
+    {
+${ScriptsReferences}
+    }
+}

@@ -1,0 +1,18 @@
+{
+"Id": 28,
+"Name": "NetInner",
+"ScriptsReferences": {
+  "ModelView": [
+    "ET.Core"
+  ],
+  "Model": [
+    "ET.Core"
+  ],
+  "HotfixView": [
+    "ET.Core"
+  ],
+  "Hotfix": [
+    "ET.Core"
+  ]
+}
+}

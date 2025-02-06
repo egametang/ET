@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar name="Toolbar" style="display: flex;">
+        <uie:ToolbarMenu display-tooltip-when-elided="true" name="ViewModeMenu" text="ViewMode" style="width: 100px; flex-grow: 0;" />
+        <uie:ToolbarSearchField focusable="true" name="SearchField" style="width: 300px; flex-grow: 1;" />
+        <ui:Button text="Import" display-tooltip-when-elided="true" name="ImportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+    </uie:Toolbar>
+</ui:UXML>

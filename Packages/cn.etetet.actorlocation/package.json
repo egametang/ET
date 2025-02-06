@@ -1,0 +1,24 @@
+﻿{
+  "name": "cn.etetet.actorlocation",
+  "displayName": "ET.ActorLocation",
+  "version": "2.0.1",
+  "unity": "2022.3",
+  "description": "实现了actor location机制",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "2.0.0",
+    "cn.etetet.netinner": "2.0.1",
+    "cn.etetet.startconfig": "2.0.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

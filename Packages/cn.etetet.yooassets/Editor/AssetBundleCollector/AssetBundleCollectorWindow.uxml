@@ -1,0 +1,60 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <uie:Toolbar name="Toolbar" style="display: flex; flex-direction: row-reverse;">
+        <ui:Button text="Save" display-tooltip-when-elided="true" name="SaveButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Export" display-tooltip-when-elided="true" name="ExportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Import" display-tooltip-when-elided="true" name="ImportButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+        <ui:Button text="Fix" display-tooltip-when-elided="true" name="FixButton" style="width: 50px; background-color: rgb(56, 147, 58);" />
+    </uie:Toolbar>
+    <ui:VisualElement name="PublicContainer" style="background-color: rgb(79, 79, 79); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px;">
+        <ui:VisualElement name="HelpBoxContainer" style="flex-grow: 1;" />
+        <ui:VisualElement name="GlobalSettingsContainer">
+            <ui:Button text="Global Settings" name="GlobalSettingsButton" />
+            <ui:VisualElement name="PublicContainer1">
+                <ui:Toggle label="Show Packages" name="ShowPackages" style="width: 196px; -unity-text-align: middle-left;" />
+                <ui:Toggle label="Show Rule Alias" name="ShowRuleAlias" style="width: 196px; -unity-text-align: middle-left;" />
+                <ui:Toggle label="Unique Bundle Name" name="UniqueBundleName" style="width: 196px; -unity-text-align: middle-left;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="PackageSettingsContainer">
+            <ui:Button text="Package Settings" display-tooltip-when-elided="true" name="PackageSettingsButton" />
+            <ui:VisualElement name="PublicContainer2">
+                <ui:Toggle label="Enable Addressable" name="EnableAddressable" style="width: 196px; -unity-text-align: middle-left;" />
+                <ui:Toggle label="Location To Lower" name="LocationToLower" style="width: 196px; -unity-text-align: middle-left;" />
+                <ui:Toggle label="Include Asset GUID" name="IncludeAssetGUID" style="width: 196px; -unity-text-align: middle-left;" />
+                <ui:Toggle label="Ignore Default Type" name="IgnoreDefaultType" style="width: 196px; -unity-text-align: middle-left;" />
+                <ui:Toggle label="Auto Collect Shaders" name="AutoCollectShaders" value="true" style="width: 196px; -unity-text-align: middle-left;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="ContentContainer" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="PackageContainer" style="width: 200px; flex-grow: 0; background-color: rgb(67, 67, 67); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px;">
+            <ui:Label text="Packages" display-tooltip-when-elided="true" name="PackageTitle" style="background-color: rgb(89, 89, 89); -unity-text-align: upper-center; -unity-font-style: bold; border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; font-size: 12px;" />
+            <ui:ListView focusable="true" name="PackageListView" item-height="20" virtualization-method="DynamicHeight" style="flex-grow: 1;" />
+            <ui:VisualElement name="PackageAddContainer" style="height: 20px; flex-direction: row; justify-content: center;">
+                <ui:Button text=" - " display-tooltip-when-elided="true" name="RemoveBtn" />
+                <ui:Button text=" + " display-tooltip-when-elided="true" name="AddBtn" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="GroupContainer" style="width: 200px; flex-grow: 0; background-color: rgb(67, 67, 67); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px;">
+            <ui:Label text="Groups" display-tooltip-when-elided="true" name="GroupTitle" style="background-color: rgb(89, 89, 89); -unity-text-align: upper-center; -unity-font-style: bold; border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; font-size: 12px;" />
+            <ui:TextField picking-mode="Ignore" label="Package Name" value="filler text" name="PackageName" style="flex-direction: column;" />
+            <ui:TextField picking-mode="Ignore" label="Package Desc" value="filler text" name="PackageDesc" style="flex-direction: column;" />
+            <ui:ListView focusable="true" name="GroupListView" item-height="20" virtualization-method="DynamicHeight" style="flex-grow: 1;" />
+            <ui:VisualElement name="GroupAddContainer" style="height: 20px; flex-direction: row; justify-content: center;">
+                <ui:Button text=" - " display-tooltip-when-elided="true" name="RemoveBtn" />
+                <ui:Button text=" + " display-tooltip-when-elided="true" name="AddBtn" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="CollectorContainer" style="flex-grow: 1; border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px;">
+            <ui:Label text="Collectors" display-tooltip-when-elided="true" name="CollectorTitle" style="background-color: rgb(89, 89, 89); -unity-text-align: upper-center; -unity-font-style: bold; border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; font-size: 12px;" />
+            <ui:VisualElement name="ActiveRuleContainer" style="height: 20px;" />
+            <ui:TextField picking-mode="Ignore" label="Group Name" name="GroupName" />
+            <ui:TextField picking-mode="Ignore" label="Group Desc" name="GroupDesc" />
+            <ui:TextField picking-mode="Ignore" label="Asset Tags" name="GroupTags" />
+            <ui:VisualElement name="CollectorAddContainer" style="height: 20px; flex-direction: row-reverse;">
+                <ui:Button text="[ + ]" display-tooltip-when-elided="true" name="AddBtn" />
+            </ui:VisualElement>
+            <ui:ScrollView name="CollectorScrollView" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

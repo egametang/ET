@@ -1,0 +1,21 @@
+{
+    "name": "ET.StateSync.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:000a53018e5e7c14aa75273e1f7be8e2",
+        "GUID:8143775d3da845e45a4f85b1ce296dbd",
+        "GUID:a3afba8ed306dd44d8fc07ebdecebe02",
+        "GUID:8c9e39eefd0c20b4694e7abae61c53b5"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,3 @@
+{"dict": [
+[1, {"_t":"StartProcessConfig","_id":1,"MachineId":1,"Port":20001}],
+]}

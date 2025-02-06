@@ -1,0 +1,12 @@
+{
+"Id": 14,
+"Name": "Recast",
+"ScriptsReferences": {
+  "Model": [
+    "ET.Recast"
+  ],
+  "Hotfix": [
+    "ET.Recast"
+  ]
+}
+}

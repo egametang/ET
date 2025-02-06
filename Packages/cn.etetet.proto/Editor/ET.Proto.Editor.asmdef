@@ -1,0 +1,18 @@
+{
+    "name": "ET.Proto.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9ef2053bcf13a254ab3940a767f7b1a5"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

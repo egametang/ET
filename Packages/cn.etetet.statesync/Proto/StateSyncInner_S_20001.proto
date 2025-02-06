@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package ET;
+
+// ResponseType A2M_Reload
+message M2A_Reload // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message A2M_Reload // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+
+// ResponseType M2M_UnitTransferResponse
+message M2M_UnitTransferRequest // IRequest
+{
+	int32 RpcId = 1;
+	ActorId OldActorId = 2;
+	bytes Unit = 3;
+	repeated bytes Entitys = 4;
+}
+
+message M2M_UnitTransferResponse // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

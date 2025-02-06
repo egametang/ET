@@ -1,0 +1,22 @@
+﻿{
+  "name": "cn.etetet.login",
+  "displayName": "ET.Login",
+  "version": "2.0.1",
+  "unity": "2022.3",
+  "description": "实现前后端登录流程，客户端网络是独立的纤程，服务端提供了realm gate scene",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.router": "2.0.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

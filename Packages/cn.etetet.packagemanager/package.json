@@ -1,0 +1,21 @@
+﻿{
+  "name": "cn.etetet.packagemanager",
+  "displayName": "ET.PackageManager",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "category": "Core/Manager|UI/YIUI",
+  "description": "ETPackageManager ET包管理 >>> 文档: https://lib9kmxvq7k.feishu.cn/wiki/DzqwwwBJvixRvtkCI4dcatGcnAd",
+  "author": {
+    "name": "YIYI",
+    "url": "https://github.com/LiShengYang-yiyi/YIUI/tree/YIUI-ET9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ET-Packages/cn.etetet.packagemanager"
+  },
+  "relatedPackages": {},
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

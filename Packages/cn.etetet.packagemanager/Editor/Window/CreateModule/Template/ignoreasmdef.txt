@@ -1,0 +1,16 @@
+﻿{
+    "name": "Ignore.${AssemblyName}",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "IGNORE"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

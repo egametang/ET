@@ -1,0 +1,20 @@
+{
+  "name": "cn.etetet.sourcegenerator",
+  "displayName": "ET.SourceGenerator",
+  "version": "0.0.7",
+  "unity": "2022.3",
+  "description": "et框架的分析器跟代码生成器",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "publishConfig": 
+  { 
+    "registry": "https://npm.pkg.github.com/@ET-Packages" 
+  }
+}

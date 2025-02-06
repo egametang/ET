@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="TopGroup" style="flex-grow: 1; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); margin-left: 0; margin-right: 0; margin-top: 2px; margin-bottom: 1px; display: flex;">
+        <uie:Toolbar name="TopBar" style="height: 25px; margin-left: 1px; margin-right: 1px;">
+            <uie:ToolbarButton text="Asset Path" display-tooltip-when-elided="true" name="TopBar1" style="width: 280px; -unity-text-align: middle-left; flex-grow: 1;" />
+            <uie:ToolbarButton text="Main Bundle" display-tooltip-when-elided="true" name="TopBar2" style="width: 145px; -unity-text-align: middle-left; flex-grow: 1;" />
+        </uie:Toolbar>
+        <ui:ListView focusable="true" name="TopListView" item-height="18" virtualization-method="DynamicHeight" style="flex-grow: 1; flex-basis: 60px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="BottomGroup" style="height: 200px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); margin-left: 0; margin-right: 0; margin-top: 1px; margin-bottom: 1px; display: flex;">
+        <uie:Toolbar name="BottomBar" style="height: 25px; margin-left: 1px; margin-right: 1px;">
+            <uie:ToolbarButton text="Depend Bundles" display-tooltip-when-elided="true" name="BottomBar1" style="width: 280px; -unity-text-align: middle-left; flex-grow: 1;" />
+            <uie:ToolbarButton text="File Size" display-tooltip-when-elided="true" name="BottomBar2" style="width: 100px; -unity-text-align: middle-left; flex-grow: 0;" />
+            <uie:ToolbarButton text="File Hash" display-tooltip-when-elided="true" name="BottomBar3" style="width: 280px; -unity-text-align: middle-left;" />
+        </uie:Toolbar>
+        <ui:ListView focusable="true" name="BottomListView" item-height="18" virtualization-method="DynamicHeight" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

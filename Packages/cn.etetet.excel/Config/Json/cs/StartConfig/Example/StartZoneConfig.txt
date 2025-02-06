@@ -1,0 +1,5 @@
+{"dict": [
+[1, {"_t":"StartZoneConfig","_id":1,"ZoneType":1,"DBConnection":"mongodb://127.0.0.1","DBName":"ET1"}],
+[2, {"_t":"StartZoneConfig","_id":2,"ZoneType":2,"DBConnection":"","DBName":""}],
+[3, {"_t":"StartZoneConfig","_id":3,"ZoneType":3,"DBConnection":"","DBName":""}],
+]}

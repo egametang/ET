@@ -1,0 +1,34 @@
+{
+"Id": 2,
+"Name": "Loader",
+"ScriptsReferences": {
+  "ModelView": [
+    "ET.Loader"
+  ],
+  "Model": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.MemoryPack",
+    "ET.YooAssets",
+    "ET.SourceGeneratorAttribute"
+  ],
+  "HotfixView": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.Loader",
+    "ET.MemoryPack",
+    "ET.Model",
+    "ET.Hotfix",
+    "ET.ModelView",
+    "ET.YooAssets",
+    "ET.SourceGeneratorAttribute"
+  ],
+  "Hotfix": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.MemoryPack",
+    "ET.Model",
+    "ET.SourceGeneratorAttribute"
+  ]
+}
+}

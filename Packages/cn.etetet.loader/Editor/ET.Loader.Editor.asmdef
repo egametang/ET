@@ -1,0 +1,22 @@
+{
+    "name": "ET.Loader.Editor",
+    "rootNamespace": "ET",
+    "references": [
+        "ET.Core",
+        "ET.YooAssets",
+        "ET.Core.Editor",
+        "ET.Loader",
+        "ET.Init.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

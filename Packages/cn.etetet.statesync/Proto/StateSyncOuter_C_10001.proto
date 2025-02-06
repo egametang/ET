@@ -1,0 +1,183 @@
+syntax = "proto3";
+package ET;
+
+message RouterSync
+{
+	uint32 ConnectId = 1;
+	string Address = 2;
+}
+
+// ResponseType M2C_TestResponse
+message C2M_TestRequest // ILocationRequest
+{
+	int32 RpcId = 1;
+	string request = 2;
+}
+
+message M2C_TestResponse // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	string response = 4;
+}
+
+// ResponseType G2C_EnterMap
+message C2G_EnterMap // ISessionRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_EnterMap // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	/// 自己的UnitId
+	int64 MyId = 4;
+}
+
+message MoveInfo
+{
+	repeated Unity.Mathematics.float3 Points = 1;
+	Unity.Mathematics.quaternion Rotation = 2;
+	int32 TurnSpeed = 3;
+}
+
+message UnitInfo
+{
+	int64 UnitId = 1;
+	int32 ConfigId = 2;
+	int32 Type = 3;
+	Unity.Mathematics.float3 Position = 4;
+	Unity.Mathematics.float3 Forward = 5;
+	map<int32, int64> KV = 6;
+	MoveInfo MoveInfo = 7;
+}
+
+message M2C_CreateUnits // IMessage
+{
+	repeated UnitInfo Units = 1;
+}
+
+message M2C_CreateMyUnit // IMessage
+{
+	UnitInfo Unit = 1;
+}
+
+message M2C_StartSceneChange // IMessage
+{
+	int64 SceneInstanceId = 1;
+	string SceneName = 2;
+}
+
+message M2C_RemoveUnits // IMessage
+{
+	repeated int64 Units = 1;
+}
+
+message C2M_PathfindingResult // ILocationMessage
+{
+	int32 RpcId = 1;
+	Unity.Mathematics.float3 Position = 2;
+}
+
+message C2M_Stop // ILocationMessage
+{
+	int32 RpcId = 1;
+}
+
+message M2C_PathfindingResult // IMessage
+{
+	int64 Id = 1;
+	Unity.Mathematics.float3 Position = 2;
+	repeated Unity.Mathematics.float3 Points = 3;
+}
+
+message M2C_Stop // IMessage
+{
+	int32 Error = 1;
+	int64 Id = 2;
+	Unity.Mathematics.float3 Position = 3;
+	Unity.Mathematics.quaternion Rotation = 4;
+}
+
+
+message G2C_Test // ISessionMessage
+{
+}
+
+// ResponseType M2C_Reload
+message C2M_Reload // ISessionRequest
+{
+	int32 RpcId = 1;
+	string Account = 2;
+	string Password = 3;
+}
+
+message M2C_Reload // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+
+
+message G2C_TestHotfixMessage // ISessionMessage
+{
+	string Info = 1;
+}
+
+// ResponseType M2C_TestRobotCase
+message C2M_TestRobotCase // ILocationRequest
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
+message M2C_TestRobotCase // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int32 N = 4;
+}
+
+message C2M_TestRobotCase2 // ILocationMessage
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
+message M2C_TestRobotCase2 // ILocationMessage
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
+// ResponseType M2C_TransferMap
+message C2M_TransferMap // ILocationRequest
+{
+	int32 RpcId = 1;
+}
+
+message M2C_TransferMap // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+// ResponseType G2C_Benchmark
+message C2G_Benchmark // ISessionRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_Benchmark // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

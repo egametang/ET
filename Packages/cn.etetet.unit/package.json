@@ -1,0 +1,22 @@
+﻿{
+  "name": "cn.etetet.unit",
+  "displayName": "ET.Unit",
+  "version": "2.0.0",
+  "unity": "2022.3",
+  "description": "提供一个包含位置旋转的entity，可以作为场景中的实体",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

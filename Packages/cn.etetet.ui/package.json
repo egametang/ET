@@ -1,0 +1,22 @@
+﻿{
+  "name": "cn.etetet.ui",
+  "displayName": "ET.UI",
+  "version": "2.0.0",
+  "unity": "2022.3",
+  "description": "et框架实现的一个简单UI",
+  "author": {
+    "name": "tanghai",
+    "url": "https://github.com/egametang/ET"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egametang/ET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

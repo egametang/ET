@@ -1,0 +1,18 @@
+{
+"Id": 1,
+"Name": "Core",
+"ScriptsReferences": {
+  "ModelView": [
+    "ET.SourceGeneratorAttribute"
+  ],
+  "Model": [
+    "ET.SourceGeneratorAttribute"
+  ],
+  "HotfixView": [
+    "ET.SourceGeneratorAttribute"
+  ],
+  "Hotfix": [
+    "ET.SourceGeneratorAttribute"
+  ]
+}
+}

@@ -1,0 +1,25 @@
+﻿{
+  "name": "cn.etetet.yooassets",
+  "displayName": "ET.YooAssets",
+  "version": "2.1.4",
+  "unity": "2022.3",
+  "description": "unity3d resources management system.",
+  "author": {
+    "name": "TuYoo Games",
+    "url": "https://github.com/tuyoogame/YooAsset"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tuyoogame/YooAsset.git"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "com.unity.scriptablebuildpipeline": "1.21.21",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@ET-Packages"
+  }
+}

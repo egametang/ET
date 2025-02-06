@@ -1,0 +1,17 @@
+{
+    "name": "ET.Core",
+    "rootNamespace": "ET",
+    "references": [
+        "ET.SourceGeneratorAttribute",
+        "ET.MemoryPack"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

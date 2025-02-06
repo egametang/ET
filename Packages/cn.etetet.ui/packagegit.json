@@ -1,0 +1,13 @@
+{
+"Id": 25,
+"Name": "UI",
+"ScriptsReferences": {
+    "ModelView": [
+        "ET.ReferenceCollector"
+    ],
+    "HotfixView": [
+        "ET.ReferenceCollector",
+        "ET.UI"
+    ]
+}
+}

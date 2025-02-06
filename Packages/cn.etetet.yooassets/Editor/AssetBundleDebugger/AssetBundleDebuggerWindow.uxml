@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar name="TopToolbar" style="display: flex;">
+        <ui:Label text="Player" display-tooltip-when-elided="true" name="PlayerName" style="width: 200px; -unity-text-align: lower-left; padding-left: 5px;" />
+        <uie:ToolbarMenu display-tooltip-when-elided="true" name="ViewModeMenu" text="ViewMode" style="width: 100px; flex-grow: 0;" />
+        <uie:ToolbarSearchField focusable="true" name="SearchField" style="flex-grow: 1;" />
+        <uie:ToolbarButton text="Refresh" display-tooltip-when-elided="true" name="SampleButton" style="width: 70px; background-color: rgb(15, 118, 31); -unity-text-align: middle-center; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-left-width: 1px; border-right-width: 1px;" />
+        <uie:ToolbarButton text="Export" display-tooltip-when-elided="true" name="ExportButton" style="width: 70px; background-color: rgb(15, 118, 31); -unity-text-align: middle-center; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-left-width: 1px; border-right-width: 1px;" />
+    </uie:Toolbar>
+    <uie:Toolbar name="FrameToolbar">
+        <ui:SliderInt picking-mode="Ignore" label="Frame:" value="42" high-value="100" name="FrameSlider" style="flex-grow: 1;" />
+        <uie:ToolbarButton text=" &lt;&lt; " display-tooltip-when-elided="true" name="FrameLast" />
+        <uie:ToolbarButton text=" &gt;&gt; " display-tooltip-when-elided="true" name="FrameNext" />
+        <uie:ToolbarButton text="Clear" display-tooltip-when-elided="true" name="FrameClear" />
+    </uie:Toolbar>
+</ui:UXML>

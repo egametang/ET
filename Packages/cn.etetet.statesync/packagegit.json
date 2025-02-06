@@ -1,0 +1,41 @@
+{
+"Id": 10,
+"Name": "StateSync",
+"ScriptsReferences": {
+  "ModelView": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.Loader",
+    "ET.Model",
+    "ET.UI",
+    "ET.Init"
+  ],
+  "Model": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.MemoryPack",
+    "ET.Recast"
+  ],
+  "HotfixView": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.Loader",
+    "ET.MemoryPack",
+    "ET.Model",
+    "ET.Hotfix",
+    "ET.ModelView",
+    "ET.YooAssets",
+    "ET.UI",
+    "ET.ReferenceCollector",
+    "ET.Init"
+  ],
+  "Hotfix": [
+    "ET.Core",
+    "Unity.Mathematics",
+    "ET.Loader",
+    "ET.MemoryPack",
+    "ET.Model",
+    "ET.Recast"
+  ]
+}
+}

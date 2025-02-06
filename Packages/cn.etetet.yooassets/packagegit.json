@@ -1,0 +1,12 @@
+{
+"Id": 7,
+"Name": "YooAssets",
+"ScriptsReferences": {
+    "ModelView": [
+      "ET.YooAssets"
+    ],
+    "HotfixView": [
+      "ET.YooAssets"
+    ]
+}
+}
