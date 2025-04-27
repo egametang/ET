@@ -1,4 +1,6 @@
 ﻿using MemoryPack;
+using System;
+using mimalloc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Serializers;
 
@@ -30,6 +32,29 @@ namespace ET
         
         private static async ETTask StartAsync()
         {
+#if DOTNET
+            // 尝试在DotNet使用mimalloc
+            bool mimallocEnabled = true;
+            try
+            {
+                _ = MiMalloc.mi_version();
+            }
+            catch
+            {
+                mimallocEnabled = false;
+                Log.Info("mimalloc 不支持");
+            }
+
+            if (mimallocEnabled)
+            {
+                unsafe
+                {
+                    // 替换kcp的默认分配
+                    KCP.ikcp_allocator(&MiMalloc.mi_malloc, &MiMalloc.mi_free);
+                }
+            }
+#endif
+            
             WinPeriod.Init();
 
             // 注册Mongo type
