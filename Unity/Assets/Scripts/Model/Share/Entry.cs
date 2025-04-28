@@ -1,6 +1,8 @@
 ﻿using MemoryPack;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Serializers;
+using System;
+using mimalloc;
 
 namespace ET
 {
@@ -30,6 +32,26 @@ namespace ET
         
         private static async ETTask StartAsync()
         {
+#if DOTNET
+            bool mimallocEnabled = true;
+            try
+            {
+                _ = MiMalloc.mi_version();
+            }
+            catch
+            {
+                mimallocEnabled = false;
+            }
+
+            if (mimallocEnabled)
+            {
+                unsafe
+                {
+                    KCP.ikcp_allocator(&MiMalloc.mi_malloc, &MiMalloc.mi_free);
+                }
+            }
+#endif
+
             WinPeriod.Init();
 
             // 注册Mongo type

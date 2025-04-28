@@ -50,4 +50,7 @@
         <ProjectReference Include="..\Core\DotNet.Core.csproj" />
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup> 
+    <ItemGroup>
+      <PackageReference Include="mimalloc-csharp" Version="1.0.7" />
+    </ItemGroup> 
 </Project>
