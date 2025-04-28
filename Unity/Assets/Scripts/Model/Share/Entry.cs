@@ -2,7 +2,9 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Serializers;
 using System;
+#if DOTNET
 using mimalloc;
+#endif
 
 namespace ET
 {
