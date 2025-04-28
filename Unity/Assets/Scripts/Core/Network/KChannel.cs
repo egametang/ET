@@ -8,6 +8,8 @@ namespace ET
 {
 	public class KChannel : AChannel
 	{
+		private const int KcpReservedOverhead = 5;
+
 		private const int MaxKcpMessageSize = 10000;
 		
 		private readonly KService Service;
@@ -88,7 +90,7 @@ namespace ET
 			this.LocalConn = localConn;
 			this.RemoteConn = remoteConn;
 			this.RemoteAddress = remoteEndPoint;
-			this.kcp = new Kcp(this.RemoteConn, this.Output);
+			this.kcp = new Kcp(this.RemoteConn, this.Output, KcpReservedOverhead);
 			this.InitKcp();
 			
 			this.CreateTime = kService.TimeNow;
@@ -133,7 +135,7 @@ namespace ET
 				return;
 			}
 
-			this.kcp = new Kcp(this.RemoteConn, this.Output);
+			this.kcp = new Kcp(this.RemoteConn, this.Output, KcpReservedOverhead);
 			this.InitKcp();
 
 			Log.Info($"channel connected: {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
