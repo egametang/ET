@@ -696,6 +696,8 @@ namespace MongoDB.Bson.IO
                 try
                 {
                     Close();
+                    // CA2213 fix: Dispose _baseStream if we own it
+                    _textWriter?.Dispose();
                 }
                 catch { } // ignore exceptions
             }
