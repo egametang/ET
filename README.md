@@ -1,5 +1,7 @@
 # English: please use your browser to translate to english
 
+[![gitcgr](https://gitcgr.com/badge/egametang/ET.svg)](https://gitcgr.com/egametang/ET)
+
 # 全新结合AI的ET框架，实现AI自动写逻辑，自动写机器人测试用例，自动编译，自动运行，全闭环操作
 
 1. 全新的机器人测试框架，完全为AI设计。方便AI自动编写机器人用例，每个机器人用例都是一个全新沙箱环境，相互之间不受影响。配置等等无需重新加载，比每次启动进程速度快的多
