@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b02dfa7aa9d4545b3417a18477fbee, type: 3}
+  m_Name: BuildinFileManifest
+  m_EditorClassIdentifier: 
+  BuildinFiles:
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls.bundle
+    FileCRC32: c75c9f09
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls.bundle.manifest
+    FileCRC32: be61ebdc
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code.bundle
+    FileCRC32: ca38bef0
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code.bundle.manifest
+    FileCRC32: 2b9fd619
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_config.bundle
+    FileCRC32: b0585d5a
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_config.bundle.manifest
+    FileCRC32: 4a537b21
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map1.bundle
+    FileCRC32: 165f4809
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map1.bundle.manifest
+    FileCRC32: f31fa2f6
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map2.bundle
+    FileCRC32: d10bc891
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map2.bundle.manifest
+    FileCRC32: 93aaca04
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_demo_uihelp.bundle
+    FileCRC32: dfec2e36
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_demo_uihelp.bundle.manifest
+    FileCRC32: 9f602bf2
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_demo_uilobby.bundle
+    FileCRC32: f1a6e85a
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_demo_uilobby.bundle.manifest
+    FileCRC32: 6923a2b9
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_demo_uilogin.bundle
+    FileCRC32: 50af061b
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_demo_uilogin.bundle.manifest
+    FileCRC32: 3b173e66
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_lockstep_uilslobby.bundle
+    FileCRC32: 5afb7abb
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_lockstep_uilslobby.bundle.manifest
+    FileCRC32: 0447e3bd
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_lockstep_uilslogin.bundle
+    FileCRC32: 79d3918c
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_lockstep_uilslogin.bundle.manifest
+    FileCRC32: 85ee4b05
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_lockstep_uilsroom.bundle
+    FileCRC32: e63ffd15
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_lockstep_uilsroom.bundle.manifest
+    FileCRC32: 8516ff7f
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_unit_unit.bundle
+    FileCRC32: b67fbe7d
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_unit_unit.bundle.manifest
+    FileCRC32: 2f1d0c2a
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes.bundle
+    FileCRC32: f8334aa7
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes.bundle.manifest
+    FileCRC32: c90c761a
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_map1.bundle
+    FileCRC32: ad897c57
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_map1.bundle.manifest
+    FileCRC32: 0400c69d
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_map2.bundle
+    FileCRC32: fa762913
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_map2.bundle.manifest
+    FileCRC32: 02779cf8
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_mat.bundle
+    FileCRC32: 0e2ed44e
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_mat.bundle.manifest
+    FileCRC32: 98a4b454
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton.bundle
+    FileCRC32: 07d756f8
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton.bundle.manifest
+    FileCRC32: 1aa451c6
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_ani.bundle
+    FileCRC32: a8d3e485
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_ani.bundle.manifest
+    FileCRC32: 8357a5e9
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_ani_materials.bundle
+    FileCRC32: d7827b1b
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_ani_materials.bundle.manifest
+    FileCRC32: 7ae2802b
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_texture.bundle
+    FileCRC32: 7a48e197
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_texture.bundle.manifest
+    FileCRC32: f5214649
+  - PackageName: DefaultPackage
+    FileName: unityshaders.bundle
+    FileCRC32: 75acb12b
+  - PackageName: DefaultPackage
+    FileName: unityshaders.bundle.manifest
+    FileCRC32: c4612957

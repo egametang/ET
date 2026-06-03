@@ -82,33 +82,33 @@ MonoBehaviour:
   m_Textures:
     blueNoise64LTex: {fileID: 2800000, guid: e3d24661c1e055f45a7560c033dbb837, type: 3}
     bayerMatrixTex: {fileID: 2800000, guid: f9ee4ed84c1d10c49aabb9b210b0fc44, type: 3}
-  m_PrefilteringModeMainLightShadows: 1
-  m_PrefilteringModeAdditionalLight: 4
-  m_PrefilteringModeAdditionalLightShadows: 1
-  m_PrefilterXRKeywords: 0
-  m_PrefilteringModeForwardPlus: 1
-  m_PrefilteringModeDeferredRendering: 1
-  m_PrefilteringModeScreenSpaceOcclusion: 1
-  m_PrefilterDebugKeywords: 0
-  m_PrefilterWriteRenderingLayers: 0
-  m_PrefilterHDROutput: 0
-  m_PrefilterSSAODepthNormals: 0
-  m_PrefilterSSAOSourceDepthLow: 0
-  m_PrefilterSSAOSourceDepthMedium: 0
-  m_PrefilterSSAOSourceDepthHigh: 0
-  m_PrefilterSSAOInterleaved: 0
-  m_PrefilterSSAOBlueNoise: 0
-  m_PrefilterSSAOSampleCountLow: 0
-  m_PrefilterSSAOSampleCountMedium: 0
-  m_PrefilterSSAOSampleCountHigh: 0
-  m_PrefilterDBufferMRT1: 0
-  m_PrefilterDBufferMRT2: 0
-  m_PrefilterDBufferMRT3: 0
-  m_PrefilterSoftShadowsQualityLow: 0
-  m_PrefilterSoftShadowsQualityMedium: 0
-  m_PrefilterSoftShadowsQualityHigh: 0
+  m_PrefilteringModeMainLightShadows: 3
+  m_PrefilteringModeAdditionalLight: 3
+  m_PrefilteringModeAdditionalLightShadows: 0
+  m_PrefilterXRKeywords: 1
+  m_PrefilteringModeForwardPlus: 0
+  m_PrefilteringModeDeferredRendering: 0
+  m_PrefilteringModeScreenSpaceOcclusion: 0
+  m_PrefilterDebugKeywords: 1
+  m_PrefilterWriteRenderingLayers: 1
+  m_PrefilterHDROutput: 1
+  m_PrefilterSSAODepthNormals: 1
+  m_PrefilterSSAOSourceDepthLow: 1
+  m_PrefilterSSAOSourceDepthMedium: 1
+  m_PrefilterSSAOSourceDepthHigh: 1
+  m_PrefilterSSAOInterleaved: 1
+  m_PrefilterSSAOBlueNoise: 1
+  m_PrefilterSSAOSampleCountLow: 1
+  m_PrefilterSSAOSampleCountMedium: 1
+  m_PrefilterSSAOSampleCountHigh: 1
+  m_PrefilterDBufferMRT1: 1
+  m_PrefilterDBufferMRT2: 1
+  m_PrefilterDBufferMRT3: 1
+  m_PrefilterSoftShadowsQualityLow: 1
+  m_PrefilterSoftShadowsQualityMedium: 1
+  m_PrefilterSoftShadowsQualityHigh: 1
   m_PrefilterSoftShadows: 0
-  m_PrefilterScreenCoord: 0
-  m_PrefilterNativeRenderPass: 0
+  m_PrefilterScreenCoord: 1
+  m_PrefilterNativeRenderPass: 1
   m_ShaderVariantLogLevel: 0
   m_ShadowCascades: 0
