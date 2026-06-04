@@ -1,4 +1,4 @@
-# English: please use your browser to translate to english by Dumas
+# English: please use your browser to translate to english by Tiger
 
 # __ET框架讨论群: 474643097 新手请加新手群:688514974__  
 
