@@ -17,7 +17,7 @@
             "$id": 2,
             "$type": "3|System.Collections.Generic.GenericEqualityComparer`1[[System.String, mscorlib]], mscorlib"
         },
-        "$rlength": 13,
+        "$rlength": 16,
         "$rcontent": [
             {
                 "$k": "startconfig\\Luban\\Localhost",
@@ -148,22 +148,52 @@
                     "Alias": null,
                     "Desc": null
                 }
+            },
+            {
+                "$k": "config",
+                "$v": {
+                    "$id": 16,
+                    "$type": 4,
+                    "PackageName": "config",
+                    "Alias": null,
+                    "Desc": null
+                }
+            },
+            {
+                "$k": "statesync",
+                "$v": {
+                    "$id": 17,
+                    "$type": 4,
+                    "PackageName": "statesync",
+                    "Alias": null,
+                    "Desc": null
+                }
+            },
+            {
+                "$k": "transfer",
+                "$v": {
+                    "$id": 18,
+                    "$type": 4,
+                    "PackageName": "transfer",
+                    "Alias": null,
+                    "Desc": null
+                }
             }
         ]
     },
     "LubanEditorConfigSettings": {
-        "$id": 16,
+        "$id": 19,
         "$type": "5|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[YIUILuban.Editor.LubanConfigEditorData, ET.YIUI.LubanTools.Editor]], mscorlib]], mscorlib",
         "comparer": $iref:2,
-        "$rlength": 11,
+        "$rlength": 14,
         "$rcontent": [
             {
                 "$k": "xlsx",
                 "$v": {
-                    "$id": 17,
+                    "$id": 20,
                     "$type": "6|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[YIUILuban.Editor.LubanConfigEditorData, ET.YIUI.LubanTools.Editor]], mscorlib",
                     "comparer": {
-                        "$id": 18,
+                        "$id": 21,
                         "$type": 3
                     },
                     "$rlength": 16,
@@ -171,7 +201,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 19,
+                                "$id": 22,
                                 "$type": "7|YIUILuban.Editor.LubanConfigEditorData, ET.YIUI.LubanTools.Editor",
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
@@ -182,7 +212,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 20,
+                                "$id": 23,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
@@ -193,7 +223,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 21,
+                                "$id": 24,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
@@ -204,7 +234,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 22,
+                                "$id": 25,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
@@ -215,7 +245,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 23,
+                                "$id": 26,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
@@ -226,7 +256,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 24,
+                                "$id": 27,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
@@ -237,7 +267,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 25,
+                                "$id": 28,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
@@ -248,7 +278,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 26,
+                                "$id": 29,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
@@ -259,7 +289,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Map.xlsx",
                             "$v": {
-                                "$id": 27,
+                                "$id": 30,
                                 "$type": 7,
                                 "Name": "Map.xlsx",
                                 "Alias": null,
@@ -270,7 +300,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\MapTransferRule.xlsx",
                             "$v": {
-                                "$id": 28,
+                                "$id": 31,
                                 "$type": 7,
                                 "Name": "MapTransferRule.xlsx",
                                 "Alias": null,
@@ -281,7 +311,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\MapUnit.xlsx",
                             "$v": {
-                                "$id": 29,
+                                "$id": 32,
                                 "$type": 7,
                                 "Name": "MapUnit.xlsx",
                                 "Alias": null,
@@ -292,7 +322,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\NumericType.xlsx",
                             "$v": {
-                                "$id": 30,
+                                "$id": 33,
                                 "$type": 7,
                                 "Name": "NumericType.xlsx",
                                 "Alias": null,
@@ -303,7 +333,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Quest.xlsx",
                             "$v": {
-                                "$id": 31,
+                                "$id": 34,
                                 "$type": 7,
                                 "Name": "Quest.xlsx",
                                 "Alias": null,
@@ -314,7 +344,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\QuestObjective.xlsx",
                             "$v": {
-                                "$id": 32,
+                                "$id": 35,
                                 "$type": 7,
                                 "Name": "QuestObjective.xlsx",
                                 "Alias": null,
@@ -325,7 +355,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Text.xlsx",
                             "$v": {
-                                "$id": 33,
+                                "$id": 36,
                                 "$type": 7,
                                 "Name": "Text.xlsx",
                                 "Alias": null,
@@ -336,7 +366,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Unit.xlsx",
                             "$v": {
-                                "$id": 34,
+                                "$id": 37,
                                 "$type": 7,
                                 "Name": "Unit.xlsx",
                                 "Alias": null,
@@ -350,15 +380,15 @@
             {
                 "$k": "xml",
                 "$v": {
-                    "$id": 35,
+                    "$id": 38,
                     "$type": 6,
-                    "comparer": $iref:18,
+                    "comparer": $iref:21,
                     "$rlength": 1,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Defines\\EnumMapper.xml",
                             "$v": {
-                                "$id": 36,
+                                "$id": 39,
                                 "$type": 7,
                                 "Name": "EnumMapper.xml",
                                 "Alias": null,
@@ -372,10 +402,10 @@
             {
                 "$k": "startconfig",
                 "$v": {
-                    "$id": 37,
+                    "$id": 40,
                     "$type": 6,
                     "comparer": {
-                        "$id": 38,
+                        "$id": 41,
                         "$type": 3
                     },
                     "$rlength": 38,
@@ -383,7 +413,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 39,
+                                "$id": 42,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
@@ -394,7 +424,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 40,
+                                "$id": 43,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
@@ -405,7 +435,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 41,
+                                "$id": 44,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
@@ -416,7 +446,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 42,
+                                "$id": 45,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
@@ -427,7 +457,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 43,
+                                "$id": 46,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
@@ -438,7 +468,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 44,
+                                "$id": 47,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
@@ -449,7 +479,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 45,
+                                "$id": 48,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
@@ -460,7 +490,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 46,
+                                "$id": 49,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
@@ -471,7 +501,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Datas/StartMachine.xlsx",
                             "$v": {
-                                "$id": 47,
+                                "$id": 50,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
@@ -482,7 +512,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Datas/StartProcess.xlsx",
                             "$v": {
-                                "$id": 48,
+                                "$id": 51,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
@@ -493,7 +523,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Datas/StartScene.xlsx",
                             "$v": {
-                                "$id": 49,
+                                "$id": 52,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
@@ -504,7 +534,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Datas/StartZone.xlsx",
                             "$v": {
-                                "$id": 50,
+                                "$id": 53,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
@@ -515,7 +545,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Datas/StartMachine.xlsx",
                             "$v": {
-                                "$id": 51,
+                                "$id": 54,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
@@ -526,7 +556,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Datas/StartProcess.xlsx",
                             "$v": {
-                                "$id": 52,
+                                "$id": 55,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
@@ -537,7 +567,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Datas/StartScene.xlsx",
                             "$v": {
-                                "$id": 53,
+                                "$id": 56,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
@@ -548,7 +578,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Datas/StartZone.xlsx",
                             "$v": {
-                                "$id": 54,
+                                "$id": 57,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
@@ -559,7 +589,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Base/__beans__.xlsx",
                             "$v": {
-                                "$id": 55,
+                                "$id": 58,
                                 "$type": 7,
                                 "Name": "__beans__.xlsx",
                                 "Alias": null,
@@ -570,7 +600,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Base/__enums__.xlsx",
                             "$v": {
-                                "$id": 56,
+                                "$id": 59,
                                 "$type": 7,
                                 "Name": "__enums__.xlsx",
                                 "Alias": null,
@@ -581,7 +611,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Localhost/Base/__tables__.xlsx",
                             "$v": {
-                                "$id": 57,
+                                "$id": 60,
                                 "$type": 7,
                                 "Name": "__tables__.xlsx",
                                 "Alias": null,
@@ -592,7 +622,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Base/__beans__.xlsx",
                             "$v": {
-                                "$id": 58,
+                                "$id": 61,
                                 "$type": 7,
                                 "Name": "__beans__.xlsx",
                                 "Alias": null,
@@ -603,7 +633,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Base/__enums__.xlsx",
                             "$v": {
-                                "$id": 59,
+                                "$id": 62,
                                 "$type": 7,
                                 "Name": "__enums__.xlsx",
                                 "Alias": null,
@@ -614,7 +644,7 @@
                         {
                             "$k": "cn.etetet.startconfig/Luban/Release/Base/__tables__.xlsx",
                             "$v": {
-                                "$id": 60,
+                                "$id": 63,
                                 "$type": 7,
                                 "Name": "__tables__.xlsx",
                                 "Alias": null,
@@ -625,176 +655,176 @@
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 61,
+                                "$id": 64,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartMachine.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartMachine.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 62,
+                                "$id": 65,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartProcess.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartProcess.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 63,
+                                "$id": 66,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartScene.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartScene.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 64,
+                                "$id": 67,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartZone.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Localhost\\Datas\\StartZone.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 65,
+                                "$id": 68,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartMachine.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartMachine.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 66,
+                                "$id": 69,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartProcess.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartProcess.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 67,
+                                "$id": 70,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartScene.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartScene.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 68,
+                                "$id": 71,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartZone.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Mmo\\Datas\\StartZone.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 69,
+                                "$id": 72,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartMachine.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartMachine.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 70,
+                                "$id": 73,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartProcess.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartProcess.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 71,
+                                "$id": 74,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartScene.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartScene.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 72,
+                                "$id": 75,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartZone.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Moba\\Datas\\StartZone.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Release\\Datas\\StartMachine.xlsx",
                             "$v": {
-                                "$id": 73,
+                                "$id": 76,
                                 "$type": 7,
                                 "Name": "StartMachine.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartMachine.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartMachine.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Release\\Datas\\StartProcess.xlsx",
                             "$v": {
-                                "$id": 74,
+                                "$id": 77,
                                 "$type": 7,
                                 "Name": "StartProcess.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartProcess.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartProcess.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Release\\Datas\\StartScene.xlsx",
                             "$v": {
-                                "$id": 75,
+                                "$id": 78,
                                 "$type": 7,
                                 "Name": "StartScene.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartScene.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartScene.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.startconfig\\Luban\\Release\\Datas\\StartZone.xlsx",
                             "$v": {
-                                "$id": 76,
+                                "$id": 79,
                                 "$type": 7,
                                 "Name": "StartZone.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartZone.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.startconfig\\Luban\\Release\\Datas\\StartZone.xlsx",
                                 "Desc": null
                             }
                         }
@@ -804,15 +834,15 @@
             {
                 "$k": "wow",
                 "$v": {
-                    "$id": 77,
+                    "$id": 80,
                     "$type": 6,
-                    "comparer": $iref:38,
+                    "comparer": $iref:41,
                     "$rlength": 26,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Map.xlsx",
                             "$v": {
-                                "$id": 78,
+                                "$id": 81,
                                 "$type": 7,
                                 "Name": "Map.xlsx",
                                 "Alias": null,
@@ -823,7 +853,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\MapTransferRule.xlsx",
                             "$v": {
-                                "$id": 79,
+                                "$id": 82,
                                 "$type": 7,
                                 "Name": "MapTransferRule.xlsx",
                                 "Alias": null,
@@ -834,7 +864,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\MapUnit.xlsx",
                             "$v": {
-                                "$id": 80,
+                                "$id": 83,
                                 "$type": 7,
                                 "Name": "MapUnit.xlsx",
                                 "Alias": null,
@@ -845,7 +875,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\NumericType.xlsx",
                             "$v": {
-                                "$id": 81,
+                                "$id": 84,
                                 "$type": 7,
                                 "Name": "NumericType.xlsx",
                                 "Alias": null,
@@ -856,7 +886,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Quest.xlsx",
                             "$v": {
-                                "$id": 82,
+                                "$id": 85,
                                 "$type": 7,
                                 "Name": "Quest.xlsx",
                                 "Alias": null,
@@ -867,7 +897,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\QuestObjective.xlsx",
                             "$v": {
-                                "$id": 83,
+                                "$id": 86,
                                 "$type": 7,
                                 "Name": "QuestObjective.xlsx",
                                 "Alias": null,
@@ -878,7 +908,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Text.xlsx",
                             "$v": {
-                                "$id": 84,
+                                "$id": 87,
                                 "$type": 7,
                                 "Name": "Text.xlsx",
                                 "Alias": null,
@@ -889,7 +919,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Datas\\Unit.xlsx",
                             "$v": {
-                                "$id": 85,
+                                "$id": 88,
                                 "$type": 7,
                                 "Name": "Unit.xlsx",
                                 "Alias": null,
@@ -900,7 +930,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config\\Defines\\EnumMapper.xml",
                             "$v": {
-                                "$id": 86,
+                                "$id": 89,
                                 "$type": 7,
                                 "Name": "EnumMapper.xml",
                                 "Alias": null,
@@ -911,7 +941,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config/Base\\__beans__.xlsx",
                             "$v": {
-                                "$id": 87,
+                                "$id": 90,
                                 "$type": 7,
                                 "Name": "__beans__.xlsx",
                                 "Alias": null,
@@ -922,7 +952,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config/Base\\__enums__.xlsx",
                             "$v": {
-                                "$id": 88,
+                                "$id": 91,
                                 "$type": 7,
                                 "Name": "__enums__.xlsx",
                                 "Alias": null,
@@ -933,7 +963,7 @@
                         {
                             "$k": "cn.etetet.wow.yiui/Packages/cn.etetet.wow\\Luban\\Config/Base\\__tables__.xlsx",
                             "$v": {
-                                "$id": 89,
+                                "$id": 92,
                                 "$type": 7,
                                 "Name": "__tables__.xlsx",
                                 "Alias": null,
@@ -944,7 +974,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/Map.xlsx",
                             "$v": {
-                                "$id": 90,
+                                "$id": 93,
                                 "$type": 7,
                                 "Name": "Map.xlsx",
                                 "Alias": null,
@@ -955,7 +985,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/MapTransferRule.xlsx",
                             "$v": {
-                                "$id": 91,
+                                "$id": 94,
                                 "$type": 7,
                                 "Name": "MapTransferRule.xlsx",
                                 "Alias": null,
@@ -966,7 +996,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/MapUnit.xlsx",
                             "$v": {
-                                "$id": 92,
+                                "$id": 95,
                                 "$type": 7,
                                 "Name": "MapUnit.xlsx",
                                 "Alias": null,
@@ -977,7 +1007,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/NumericType.xlsx",
                             "$v": {
-                                "$id": 93,
+                                "$id": 96,
                                 "$type": 7,
                                 "Name": "NumericType.xlsx",
                                 "Alias": null,
@@ -988,7 +1018,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/Quest.xlsx",
                             "$v": {
-                                "$id": 94,
+                                "$id": 97,
                                 "$type": 7,
                                 "Name": "Quest.xlsx",
                                 "Alias": null,
@@ -999,7 +1029,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/QuestObjective.xlsx",
                             "$v": {
-                                "$id": 95,
+                                "$id": 98,
                                 "$type": 7,
                                 "Name": "QuestObjective.xlsx",
                                 "Alias": null,
@@ -1010,7 +1040,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/Text.xlsx",
                             "$v": {
-                                "$id": 96,
+                                "$id": 99,
                                 "$type": 7,
                                 "Name": "Text.xlsx",
                                 "Alias": null,
@@ -1021,7 +1051,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Datas/Unit.xlsx",
                             "$v": {
-                                "$id": 97,
+                                "$id": 100,
                                 "$type": 7,
                                 "Name": "Unit.xlsx",
                                 "Alias": null,
@@ -1032,7 +1062,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Defines/EnumMapper.xml",
                             "$v": {
-                                "$id": 98,
+                                "$id": 101,
                                 "$type": 7,
                                 "Name": "EnumMapper.xml",
                                 "Alias": null,
@@ -1043,7 +1073,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Base/__beans__.xlsx",
                             "$v": {
-                                "$id": 99,
+                                "$id": 102,
                                 "$type": 7,
                                 "Name": "__beans__.xlsx",
                                 "Alias": null,
@@ -1054,7 +1084,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Base/__enums__.xlsx",
                             "$v": {
-                                "$id": 100,
+                                "$id": 103,
                                 "$type": 7,
                                 "Name": "__enums__.xlsx",
                                 "Alias": null,
@@ -1065,7 +1095,7 @@
                         {
                             "$k": "cn.etetet.wow/Luban/Config/Base/__tables__.xlsx",
                             "$v": {
-                                "$id": 101,
+                                "$id": 104,
                                 "$type": 7,
                                 "Name": "__tables__.xlsx",
                                 "Alias": null,
@@ -1076,7 +1106,7 @@
                         {
                             "$k": "cn.etetet.wow\\Luban\\Config\\Datas\\Text.xlsx",
                             "$v": {
-                                "$id": 102,
+                                "$id": 105,
                                 "$type": 7,
                                 "Name": "Text.xlsx",
                                 "Alias": null,
@@ -1087,7 +1117,7 @@
                         {
                             "$k": "cn.etetet.wow\\Luban\\Config\\Defines\\EnumMapper.xml",
                             "$v": {
-                                "$id": 103,
+                                "$id": 106,
                                 "$type": 7,
                                 "Name": "EnumMapper.xml",
                                 "Alias": null,
@@ -1101,33 +1131,66 @@
             {
                 "$k": "achievement",
                 "$v": {
-                    "$id": 104,
+                    "$id": 107,
                     "$type": 6,
                     "comparer": {
-                        "$id": 105,
+                        "$id": 108,
                         "$type": 3
                     },
-                    "$rlength": 2,
+                    "$rlength": 5,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.achievement\\Luban\\Config\\Datas\\Achievement.xlsx",
                             "$v": {
-                                "$id": 106,
+                                "$id": 109,
                                 "$type": 7,
                                 "Name": "Achievement.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.achievement\\Luban\\Config\\Datas\\Achievement.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.achievement\\Luban\\Config\\Datas\\Achievement.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.achievement\\Luban\\Config\\Datas\\AchievementCategory.xlsx",
                             "$v": {
-                                "$id": 107,
+                                "$id": 110,
                                 "$type": 7,
                                 "Name": "AchievementCategory.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.achievement\\Luban\\Config\\Datas\\AchievementCategory.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.achievement\\Luban\\Config\\Datas\\AchievementCategory.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.achievement\\Luban\\Config/Base\\__beans__.xlsx",
+                            "$v": {
+                                "$id": 111,
+                                "$type": 7,
+                                "Name": "__beans__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.achievement\\Luban\\Config/Base\\__beans__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.achievement\\Luban\\Config/Base\\__enums__.xlsx",
+                            "$v": {
+                                "$id": 112,
+                                "$type": 7,
+                                "Name": "__enums__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.achievement\\Luban\\Config/Base\\__enums__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.achievement\\Luban\\Config/Base\\__tables__.xlsx",
+                            "$v": {
+                                "$id": 113,
+                                "$type": 7,
+                                "Name": "__tables__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.achievement\\Luban\\Config/Base\\__tables__.xlsx",
                                 "Desc": null
                             }
                         }
@@ -1137,19 +1200,52 @@
             {
                 "$k": "equipment",
                 "$v": {
-                    "$id": 108,
+                    "$id": 114,
                     "$type": 6,
-                    "comparer": $iref:105,
-                    "$rlength": 1,
+                    "comparer": $iref:108,
+                    "$rlength": 4,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.equipment\\Luban\\Config\\Datas\\Equipment.xlsx",
                             "$v": {
-                                "$id": 109,
+                                "$id": 115,
                                 "$type": 7,
                                 "Name": "Equipment.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.equipment\\Luban\\Config\\Datas\\Equipment.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.equipment\\Luban\\Config\\Datas\\Equipment.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.equipment\\Luban\\Config/Base\\__beans__.xlsx",
+                            "$v": {
+                                "$id": 116,
+                                "$type": 7,
+                                "Name": "__beans__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.equipment\\Luban\\Config/Base\\__beans__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.equipment\\Luban\\Config/Base\\__enums__.xlsx",
+                            "$v": {
+                                "$id": 117,
+                                "$type": 7,
+                                "Name": "__enums__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.equipment\\Luban\\Config/Base\\__enums__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.equipment\\Luban\\Config/Base\\__tables__.xlsx",
+                            "$v": {
+                                "$id": 118,
+                                "$type": 7,
+                                "Name": "__tables__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.equipment\\Luban\\Config/Base\\__tables__.xlsx",
                                 "Desc": null
                             }
                         }
@@ -1159,19 +1255,52 @@
             {
                 "$k": "item",
                 "$v": {
-                    "$id": 110,
+                    "$id": 119,
                     "$type": 6,
-                    "comparer": $iref:105,
-                    "$rlength": 1,
+                    "comparer": $iref:108,
+                    "$rlength": 4,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.item\\Luban\\Config\\Datas\\Item.xlsx",
                             "$v": {
-                                "$id": 111,
+                                "$id": 120,
                                 "$type": 7,
                                 "Name": "Item.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.item\\Luban\\Config\\Datas\\Item.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.item\\Luban\\Config\\Datas\\Item.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.item\\Luban\\Config/Base\\__beans__.xlsx",
+                            "$v": {
+                                "$id": 121,
+                                "$type": 7,
+                                "Name": "__beans__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.item\\Luban\\Config/Base\\__beans__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.item\\Luban\\Config/Base\\__enums__.xlsx",
+                            "$v": {
+                                "$id": 122,
+                                "$type": 7,
+                                "Name": "__enums__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.item\\Luban\\Config/Base\\__enums__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.item\\Luban\\Config/Base\\__tables__.xlsx",
+                            "$v": {
+                                "$id": 123,
+                                "$type": 7,
+                                "Name": "__tables__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.item\\Luban\\Config/Base\\__tables__.xlsx",
                                 "Desc": null
                             }
                         }
@@ -1181,26 +1310,26 @@
             {
                 "$k": "map",
                 "$v": {
-                    "$id": 112,
+                    "$id": 124,
                     "$type": 6,
-                    "comparer": $iref:105,
+                    "comparer": $iref:108,
                     "$rlength": 4,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.map\\Luban\\Config\\Datas\\Map.xlsx",
                             "$v": {
-                                "$id": 113,
+                                "$id": 125,
                                 "$type": 7,
                                 "Name": "Map.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.map\\Luban\\Config\\Datas\\Map.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.map\\Luban\\Config\\Datas\\Map.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.map\\Luban\\Config\\Datas\\MapTransferRule.xlsx",
                             "$v": {
-                                "$id": 114,
+                                "$id": 126,
                                 "$type": 7,
                                 "Name": "MapTransferRule.xlsx",
                                 "Alias": null,
@@ -1211,22 +1340,22 @@
                         {
                             "$k": "cn.etetet.map\\Luban\\Config\\Datas\\MapUnit.xlsx",
                             "$v": {
-                                "$id": 115,
+                                "$id": 127,
                                 "$type": 7,
                                 "Name": "MapUnit.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.map\\Luban\\Config\\Datas\\MapUnit.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.map\\Luban\\Config\\Datas\\MapUnit.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.map\\Luban\\Config\\Datas\\Unit.xlsx",
                             "$v": {
-                                "$id": 116,
+                                "$id": 128,
                                 "$type": 7,
                                 "Name": "Unit.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.map\\Luban\\Config\\Datas\\Unit.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.map\\Luban\\Config\\Datas\\Unit.xlsx",
                                 "Desc": null
                             }
                         }
@@ -1236,19 +1365,30 @@
             {
                 "$k": "numeric",
                 "$v": {
-                    "$id": 117,
+                    "$id": 129,
                     "$type": 6,
-                    "comparer": $iref:105,
-                    "$rlength": 1,
+                    "comparer": $iref:108,
+                    "$rlength": 2,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.numeric\\Luban\\Config\\Datas\\NumericType.xlsx",
                             "$v": {
-                                "$id": 118,
+                                "$id": 130,
                                 "$type": 7,
                                 "Name": "NumericType.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.numeric\\Luban\\Config\\Datas\\NumericType.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.numeric\\Luban\\Config\\Datas\\NumericType.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.numeric\\Luban\\Config\\Defines\\NumericType.xml",
+                            "$v": {
+                                "$id": 131,
+                                "$type": 7,
+                                "Name": "NumericType.xml",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.numeric\\Luban\\Config\\Defines\\NumericType.xml",
                                 "Desc": null
                             }
                         }
@@ -1258,41 +1398,41 @@
             {
                 "$k": "quest",
                 "$v": {
-                    "$id": 119,
+                    "$id": 132,
                     "$type": 6,
-                    "comparer": $iref:105,
+                    "comparer": $iref:108,
                     "$rlength": 3,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.quest\\Luban\\Config\\Datas\\Quest.xlsx",
                             "$v": {
-                                "$id": 120,
+                                "$id": 133,
                                 "$type": 7,
                                 "Name": "Quest.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.quest\\Luban\\Config\\Datas\\Quest.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.quest\\Luban\\Config\\Datas\\Quest.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.quest\\Luban\\Config\\Datas\\QuestObjective.xlsx",
                             "$v": {
-                                "$id": 121,
+                                "$id": 134,
                                 "$type": 7,
                                 "Name": "QuestObjective.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.quest\\Luban\\Config\\Datas\\QuestObjective.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.quest\\Luban\\Config\\Datas\\QuestObjective.xlsx",
                                 "Desc": null
                             }
                         },
                         {
                             "$k": "cn.etetet.quest\\Luban\\Config\\Datas\\Text.xlsx",
                             "$v": {
-                                "$id": 122,
+                                "$id": 135,
                                 "$type": 7,
                                 "Name": "Text.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.quest\\Luban\\Config\\Datas\\Text.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.quest\\Luban\\Config\\Datas\\Text.xlsx",
                                 "Desc": null
                             }
                         }
@@ -1302,19 +1442,121 @@
             {
                 "$k": "spell",
                 "$v": {
-                    "$id": 123,
+                    "$id": 136,
                     "$type": 6,
-                    "comparer": $iref:105,
+                    "comparer": $iref:108,
                     "$rlength": 1,
                     "$rcontent": [
                         {
                             "$k": "cn.etetet.spell\\Luban\\Config\\Datas\\Text.xlsx",
                             "$v": {
-                                "$id": 124,
+                                "$id": 137,
                                 "$type": 7,
                                 "Name": "Text.xlsx",
                                 "Alias": null,
-                                "Path": "D:/Unity/Project/ET/et.wow/Packages/cn.etetet.spell\\Luban\\Config\\Datas\\Text.xlsx",
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.spell\\Luban\\Config\\Datas\\Text.xlsx",
+                                "Desc": null
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "$k": "statesync",
+                "$v": {
+                    "$id": 138,
+                    "$type": 6,
+                    "comparer": {
+                        "$id": 139,
+                        "$type": 3
+                    },
+                    "$rlength": 2,
+                    "$rcontent": [
+                        {
+                            "$k": "cn.etetet.statesync\\Luban\\Config\\Datas\\Text.xlsx",
+                            "$v": {
+                                "$id": 140,
+                                "$type": 7,
+                                "Name": "Text.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.statesync\\Luban\\Config\\Datas\\Text.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.statesync\\Luban\\Config\\Defines\\EnumMapper.xml",
+                            "$v": {
+                                "$id": 141,
+                                "$type": 7,
+                                "Name": "EnumMapper.xml",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.statesync\\Luban\\Config\\Defines\\EnumMapper.xml",
+                                "Desc": null
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "$k": "transfer",
+                "$v": {
+                    "$id": 142,
+                    "$type": 6,
+                    "comparer": $iref:139,
+                    "$rlength": 1,
+                    "$rcontent": [
+                        {
+                            "$k": "cn.etetet.transfer\\Luban\\Config\\Datas\\MapTransferRule.xlsx",
+                            "$v": {
+                                "$id": 143,
+                                "$type": 7,
+                                "Name": "MapTransferRule.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.transfer\\Luban\\Config\\Datas\\MapTransferRule.xlsx",
+                                "Desc": null
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "$k": "config",
+                "$v": {
+                    "$id": 144,
+                    "$type": 6,
+                    "comparer": $iref:139,
+                    "$rlength": 3,
+                    "$rcontent": [
+                        {
+                            "$k": "cn.etetet.config\\Luban\\Config/Base\\__beans__.xlsx",
+                            "$v": {
+                                "$id": 145,
+                                "$type": 7,
+                                "Name": "__beans__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.config\\Luban\\Config/Base\\__beans__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.config\\Luban\\Config/Base\\__enums__.xlsx",
+                            "$v": {
+                                "$id": 146,
+                                "$type": 7,
+                                "Name": "__enums__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.config\\Luban\\Config/Base\\__enums__.xlsx",
+                                "Desc": null
+                            }
+                        },
+                        {
+                            "$k": "cn.etetet.config\\Luban\\Config/Base\\__tables__.xlsx",
+                            "$v": {
+                                "$id": 147,
+                                "$type": 7,
+                                "Name": "__tables__.xlsx",
+                                "Alias": null,
+                                "Path": "E:/UnityStudy/ET/Packages/cn.etetet.config\\Luban\\Config/Base\\__tables__.xlsx",
                                 "Desc": null
                             }
                         }
