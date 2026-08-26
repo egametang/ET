@@ -11,7 +11,7 @@ namespace ET
     {
         void Send(byte[] bytes, int index, int length, EndPoint endPoint, ChannelType channelType);
         int Recv(byte[] buffer, ref EndPoint endPoint);
-        int Available();
+        bool Available();
         void Update();
         void OnError(long id, int error);
     }
@@ -57,9 +57,9 @@ namespace ET
             return this.socket.ReceiveFrom(buffer, ref endPoint);
         }
 
-        public int Available()
+        public bool Available()
         {
-            return this.socket.Available;
+            return this.socket.Poll(0, SelectMode.SelectRead);
         }
 
         public void Update()
@@ -168,9 +168,9 @@ namespace ET
             return count;
         }
 
-        public int Available()
+        public bool Available()
         {
-            return this.channelRecvDatas.Count;
+            return this.channelRecvDatas.Count > 0;
         }
 
         public void Update()
