@@ -206,7 +206,7 @@ namespace ET
                 return;
             }
 
-            while (socket != null && this.socket.Available > 0)
+            while (socket != null && this.socket.Poll(0, SelectMode.SelectRead))
             {
                 int messageLength = this.socket.ReceiveFrom(this.cache, ref this.ipEndPoint);
 

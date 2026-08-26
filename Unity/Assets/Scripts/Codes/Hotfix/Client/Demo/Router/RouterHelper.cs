@@ -81,7 +81,7 @@ namespace ET.Client
                 await TimerComponent.Instance.WaitFrameAsync();
                     
                 // 接收
-                if (socket.Available > 0)
+                if (socket.Poll(0, SelectMode.SelectRead))
                 {
                     int messageLength = socket.ReceiveFrom(recvCache, ref recvIPEndPoint);
                     if (messageLength != 9)
