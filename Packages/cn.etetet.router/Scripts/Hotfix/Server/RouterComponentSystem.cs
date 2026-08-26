@@ -63,7 +63,7 @@ namespace ET.Server
         // 接收tcp消息
         private static void RecvOuterTcp(this RouterComponent self, long timeNow)
         {
-            while (self.OuterTcp != null && self.OuterTcp.Available() > 0)
+            while (self.OuterTcp != null && self.OuterTcp.Available())
             {
                 try
                 {
@@ -80,7 +80,7 @@ namespace ET.Server
         // 接收udp消息
         private static void RecvOuterUdp(this RouterComponent self, long timeNow)
         {
-            while (self.OuterUdp != null && self.OuterUdp.Available() > 0)
+            while (self.OuterUdp != null && self.OuterUdp.Available())
             {
                 try
                 {
@@ -134,7 +134,7 @@ namespace ET.Server
 
         private static void RecvInner(this RouterComponent self, long timeNow)
         {
-            while (self.InnerSocket != null && self.InnerSocket.Available() > 0)
+            while (self.InnerSocket != null && self.InnerSocket.Available())
             {
                 try
                 {

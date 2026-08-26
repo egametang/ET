@@ -136,7 +136,7 @@ namespace ET
                 return;
             }
 
-            while (this.Transport != null && this.Transport.Available() > 0)
+            while (this.Transport != null && this.Transport.Available())
             {
                 int messageLength = this.Transport.Recv(this.cache, ref this.ipEndPoint);
                 // 长度小于1，不是正常的消息

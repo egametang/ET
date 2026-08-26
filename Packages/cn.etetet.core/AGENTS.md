@@ -16,3 +16,9 @@
 | `DotNet~` | `ET.Core.csproj` 与相关生成脚本 |
 | `Scripts` | Core 层共享与服务端代码 |
 | `Runtime` | Unity 运行时代码 |
+
+## UDP Transport 可读性契约
+
+- `IKcpTransport.Available()` 是 bool 可读门控；已排队的零长度 UDP datagram 也必须返回 `true`，以便 `Recv()` 消费它并继续处理后续 datagram。
+- `UdpTransport.Available()` 通过非阻塞 `Socket.Poll(0, SelectMode.SelectRead)` 判断是否可读，不提供 datagram 字节数语义。
+- 回归测试入口：`Core_UdpTransport_ZeroLengthDatagram_Test`，位于 `Scripts/Hotfix/Test/Network/`。
