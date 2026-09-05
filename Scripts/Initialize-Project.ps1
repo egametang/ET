@@ -305,7 +305,7 @@ function Invoke-InitializationBuilds {
     }
 
     if (!$SkipLubanBuild) {
-        Invoke-CheckedCommand -FilePath 'dotnet' -ArgumentList @('build', (Resolve-ProjectPath 'Packages/cn.etetet.yiuiluban/DontNet~/luban/src/Luban.sln'), '-p:NuGetAudit=false') -Description '编译 Luban'
+        Invoke-CheckedCommand -FilePath 'dotnet' -ArgumentList @('build', (Resolve-ProjectPath 'Packages/cn.etetet.yiuiluban/DontNet~/luban/src/Luban.sln'), '-p:NoWarn=NU1902%3BNU1903%3BCA2022') -Description '编译 Luban'
     }
 
     if (!$SkipToolBuild) {
